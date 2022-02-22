@@ -93,6 +93,29 @@ private int height(TreeNode node) {
 
 [Diameter of N-Ary Tree][diameter-of-n-ary-tree]
 
+[Distribute Coins in Binary Tree][distribute-coins-in-binary-tree]
+
+{% highlight java %}
+private int move = 0;
+
+public int distributeCoins(TreeNode root) {
+    dfs(root);
+    return move;
+}
+
+// excess of the subtree (coins - nodes)
+private int dfs(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+
+    int left = dfs(node.left);
+    int right = dfs(node.right);
+    move += (Math.abs(left) + Math.abs(right));
+    return left + right + node.val - 1;
+}
+{% endhighlight %}
+
 [Equal Tree Partition][equal-tree-partition]
 
 {% highlight java %}
@@ -1101,6 +1124,7 @@ public int checkWays(int[][] pairs) {
 [delete-nodes-and-return-forest]: https://leetcode.com/problems/delete-nodes-and-return-forest/
 [diameter-of-binary-tree]: https://leetcode.com/problems/diameter-of-binary-tree/
 [diameter-of-n-ary-tree]: https://leetcode.com/problems/diameter-of-n-ary-tree/
+[distribute-coins-in-binary-tree]: https://leetcode.com/problems/distribute-coins-in-binary-tree/
 [equal-tree-partition]: https://leetcode.com/problems/equal-tree-partition/
 [find-bottom-left-tree-value]: https://leetcode.com/problems/find-bottom-left-tree-value/
 [find-distance-in-a-binary-tree]: https://leetcode.com/problems/find-distance-in-a-binary-tree/

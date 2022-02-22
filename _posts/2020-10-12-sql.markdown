@@ -2135,6 +2135,70 @@ log_id, num, difference
 8, 5, 3
 10, 6, 4
 ```
+
+[Longest Winning Streak][longest-winning-streak]
+
+{% highlight sql %}
+WITH cte AS (
+    SELECT
+        player_id,
+        result,
+        match_day,
+        ROW_NUMBER() OVER(PARTITION BY player_id ORDER BY match_day) AS rnk
+    FROM
+        matches
+),
+
+player_groups AS (
+SELECT
+    player_id,
+    -- winning streak will be in the same group
+    rnk - ROW_NUMBER() OVER(PARTITION BY player_id ORDER BY match_day) AS group_id
+FROM
+    cte
+WHERE
+    result = 'Win'
+)
+
+SELECT
+    players.player_id,
+    IFNULL(MAX(group_count.cnt), 0) AS longest_streak
+FROM
+    (SELECT
+        DISTINCT player_id
+     FROM
+        matches) players
+LEFT JOIN
+    (SELECT
+        player_id,
+        group_id,
+        COUNT(*) AS cnt
+     FROM
+        player_groups
+     GROUP BY
+        1, 2) group_count
+    ON players.player_id = group_count.player_id
+GROUP BY
+    1
+;
+{% endhighlight %}
+
+[he Change in Global Rankings][the-change-in-global-rankings]
+
+{% highlight sql %}
+SELECT
+    t.team_id,
+    t.name,
+    CAST(ROW_NUMBER() OVER(ORDER BY points DESC, name) AS SIGNED) -
+    CAST(ROW_NUMBER() OVER(ORDER BY points + points_change DESC, name) as SIGNED) as rank_diff
+FROM
+    TeamPoints t
+JOIN
+    PointsChange p
+    ON t.team_id = p.team_id
+;
+{% endhighlight %}
+
 [Median Employee Salary][median-employee-salary]
 
 {% highlight sql %}
@@ -2280,6 +2344,7 @@ ORDER BY
 [leetcodify-similar-friends]: https://leetcode.com/problems/leetcodify-similar-friends/
 [leetflex-banned-accounts]: https://leetcode.com/problems/leetflex-banned-accounts/
 [league-statistics]: https://leetcode.com/problems/league-statistics/
+[longest-winning-streak]: https://leetcode.com/problems/longest-winning-streak/
 [median-employee-salary]: https://leetcode.com/problems/median-employee-salary/
 [monthly-transactions-ii]: https://leetcode.com/problems/monthly-transactions-ii/
 [nth-highest-salary]: https://leetcode.com/problems/nth-highest-salary/
@@ -2303,6 +2368,7 @@ ORDER BY
 [suspicious-bank-accounts]: https://leetcode.com/problems/suspicious-bank-accounts/
 [swap-salary]: https://leetcode.com/problems/swap-salary/
 [team-scores-in-football-tournament]: https://leetcode.com/problems/team-scores-in-football-tournament/
+[the-change-in-global-rankings]: https://leetcode.com/problems/the-change-in-global-rankings/
 [the-most-frequently-ordered-products-for-each-customer]: https://leetcode.com/problems/the-most-frequently-ordered-products-for-each-customer/
 [the-most-recent-orders-for-each-product]: https://leetcode.com/problems/the-most-recent-orders-for-each-product/
 [the-most-recent-three-orders]: https://leetcode.com/problems/the-most-recent-three-orders/

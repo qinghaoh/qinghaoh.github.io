@@ -305,6 +305,22 @@ public int maxChunksToSorted(int[] arr) {
 }
 {% endhighlight %}
 
+[Removing Minimum Number of Magic Beans][removing-minimum-number-of-magic-beans]
+
+{% highlight java %}
+public long minimumRemoval(int[] beans) {
+    long min = Long.MAX_VALUE, sum = Arrays.stream(beans).mapToLong(Long::valueOf).sum();
+
+    Arrays.sort(beans);
+
+    int n = beans.length;
+    for (int i = 0; i < n; i++) {
+        min = Math.min(min, sum - (long)(n - i) * beans[i]);
+    }
+    return min;
+}
+{% endhighlight %}
+
 # Shift
 
 [Minimum Number of Operations to Reinitialize a Permutation][minimum-number-of-operations-to-reinitialize-a-permutation]
@@ -642,6 +658,7 @@ public long largestEvenSum(int[] nums, int k) {
 [minimum-number-of-flips-to-make-the-binary-string-alternating]: https://leetcode.com/problems/minimum-number-of-flips-to-make-the-binary-string-alternating/
 [minimum-number-of-operations-to-reinitialize-a-permutation]: https://leetcode.com/problems/minimum-number-of-operations-to-reinitialize-a-permutation/
 [patching-array]: https://leetcode.com/problems/patching-array/
+[removing-minimum-number-of-magic-beans]: https://leetcode.com/problems/removing-minimum-number-of-magic-beans/
 [reverse-words-in-a-string-ii]: https://leetcode.com/problems/reverse-words-in-a-string-ii/
 [rotate-array]: https://leetcode.com/problems/rotate-array/
 [shift-2d-grid]: https://leetcode.com/problems/shift-2d-grid/

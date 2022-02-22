@@ -532,6 +532,27 @@ public int longestPalindromeSubseq(String s) {
 }
 {% endhighlight %}
 
+[Maximum Product of the Length of Two Palindromic Subsequences][maximum-product-of-the-length-of-two-palindromic-subsequences]
+
+{% highlight java %}
+public int maxProduct(String s) {
+    int n = s.length(), max = 0;
+    for (int i = 0; i < (1 << n); i++) {
+        StringBuilder left = new StringBuilder(), right = new StringBuilder();
+        for (int j = 0; j < n; j++) {
+            char c = s.charAt(j);
+            if ((i & (1 << j)) != 0) {
+                left.append(c);
+            } else {
+                right.append(c);
+            }
+        }
+        max = Math.max(max, longestPalindromeSubseq(left) * longestPalindromeSubseq(right));
+    }
+    return max;
+}
+{% endhighlight %}
+
 [Palindrome Removal][palindrome-removal]
 
 {% highlight java %}
@@ -686,6 +707,7 @@ public int countPalindromicSubsequences(String S) {
 [longest-palindromic-subsequence]: https://leetcode.com/problems/longest-palindromic-subsequence/
 [longest-palindromic-substring]: https://leetcode.com/problems/longest-palindromic-substring/
 [maximize-palindrome-length-from-subsequences]: https://leetcode.com/problems/maximize-palindrome-length-from-subsequences/
+[maximum-product-of-the-length-of-two-palindromic-subsequences]: https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/
 [maximum-product-of-the-length-of-two-palindromic-substrings]: https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-substrings/
 [palindrome-number]: https://leetcode.com/problems/palindrome-number/
 [palindrome-pairs]: https://leetcode.com/problems/palindrome-pairs/

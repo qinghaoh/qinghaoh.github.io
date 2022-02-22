@@ -476,6 +476,27 @@ public long maxTaxiEarnings(int n, int[][] rides) {
 }
 {% endhighlight %}
 
+[Minimum Time to Remove All Cars Containing Illegal Goods][minimum-time-to-remove-all-cars-containing-illegal-goods]
+
+{% highlight java %}
+public int minimumTime(String s) {
+    // implicit DP
+    // left: number of cars in s[0...i] that contain illegal goods
+    int n = s.length(), left = 0, min = n;
+    for (int i = 0; i < n; i++) {
+        // previous min left + current cost, or
+        // removes from start to current consecutively
+        left = Math.min(left + (s.charAt(i) - '0') * 2, i + 1);
+
+        // removes s[i + 1] to end consecutively costs n - 1 - i
+        // to make things easier, Operation #3 is always considered in left,
+        // and right is always Operation #2
+        min = Math.min(min, left + n - 1 - i);
+    }
+    return min;
+}
+{% endhighlight %}
+
 [decode-ways]: https://leetcode.com/problems/decode-ways/
 [delete-and-earn]: https://leetcode.com/problems/delete-and-earn/
 [flip-string-to-monotone-increasing]: https://leetcode.com/problems/flip-string-to-monotone-increasing/
@@ -483,6 +504,7 @@ public long maxTaxiEarnings(int n, int[][] rides) {
 [house-robber-ii]: https://leetcode.com/problems/house-robber-ii/
 [maximum-earnings-from-taxi]: https://leetcode.com/problems/maximum-earnings-from-taxi/
 [minimum-deletions-to-make-string-balanced]: https://leetcode.com/problems/minimum-deletions-to-make-string-balanced/
+[minimum-time-to-remove-all-cars-containing-illegal-goods]: https://leetcode.com/problems/minimum-time-to-remove-all-cars-containing-illegal-goods/
 [number-of-sets-of-k-non-overlapping-line-segments]: https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/
 [number-of-ways-to-form-a-target-string-given-a-dictionary]: https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary/
 [number-of-ways-to-paint-n-3-grid]: https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/

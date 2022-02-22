@@ -447,6 +447,30 @@ public int maxTotalFruits(int[][] fruits, int startPos, int k) {
 }
 {% endhighlight %}
 
+[Find Good Days to Rob the Bank][find-good-days-to-rob-the-bank]
+
+{% highlight java %}
+public List<Integer> goodDaysToRobBank(int[] security, int time) {
+    int n = security.length;
+    int[] p = new int[n], s = new int[n];
+    for (int i = 1; i < n; i++) {
+        p[i] = (security[i - 1] >= security[i]) ? p[i - 1] + 1 : 0;
+    }
+
+    for (int i = n - 1; i > 0; i--) {
+        s[i - 1] = (security[i - 1] <= security[i]) ? s[i] + 1 : 0;
+    }
+
+    List<Integer> list = new ArrayList<>();
+    for (int i = time; i < n - time; i++) {
+        if (p[i] >= time && s[i] >= time) {
+            list.add(i);
+        }
+    }
+    return list;
+}
+{% endhighlight %}
+
 # Rolling Prefix Sum
 
 [Maximize the Beauty of the Garden][maximize-the-beauty-of-the-garden]
@@ -849,6 +873,7 @@ public int findMinMoves(int[] machines) {
 [contiguous-array]: https://leetcode.com/problems/contiguous-array/
 [count-subarrays-with-more-ones-than-zeros]: https://leetcode.com/problems/count-subarrays-with-more-ones-than-zeros/
 [count-triplets-that-can-form-two-arrays-of-equal-xor]: https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/
+[find-good-days-to-rob-the-bank]: https://leetcode.com/problems/find-good-days-to-rob-the-bank/
 [longest-well-performing-interval]: https://leetcode.com/problems/longest-well-performing-interval/
 [make-sum-divisible-by-p]: https://leetcode.com/problems/make-sum-divisible-by-p/
 [max-sum-of-rectangle-no-larger-than-k]: https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/

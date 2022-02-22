@@ -79,10 +79,11 @@ public int countDifferentSubsequenceGCDs(int[] nums) {
     }
     return count;
 }
-
-private int gcd(int a, int b) {
-}
 {% endhighlight %}
+
+## Properties
+
+If `n1 * n2 % k == 0`, then `gcd(n1, k) * gcd(n2, k) % k == 0`
 
 # Least Common Multiple
 

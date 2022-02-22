@@ -1134,6 +1134,35 @@ private boolean backtrack(boolean[] used, List<Character> charList, int index, i
 }
 {% endhighlight %}
 
+[Remove All Ones With Row and Column Flips II][remove-all-ones-with-row-and-column-flips-ii]
+
+{% highlight java %}
+public int removeOnes(int[][] grid) {
+    int m = grid.length, n = grid[0].length, min = Integer.MAX_VALUE;
+    int[] row = new int[n], col = new int[m];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1) {
+                for (int r = 0; r < m; r++) {
+                    col[r] = grid[r][j];
+                    grid[r][j] = 0;
+                }
+                System.arraycopy(grid[i], 0, row, 0, n);
+                Arrays.fill(grid[i], 0);
+
+                min = Math.min(min, removeOnes(grid) + 1);
+
+                System.arraycopy(row, 0, grid[i], 0, n);
+                for (int r = 0; r < m; r++) {
+                    grid[r][j] = col[r];
+                }
+            }
+        }
+    }
+    return min == Integer.MAX_VALUE ? 0 : min;
+}
+{% endhighlight %}
+
 [24-game]: https://leetcode.com/problems/24-game/
 [android-unlock-patterns]: https://leetcode.com/problems/android-unlock-patterns/
 [beautiful-arrangement]: https://leetcode.com/problems/beautiful-arrangement/
@@ -1158,6 +1187,7 @@ private boolean backtrack(boolean[] used, List<Character> charList, int index, i
 [partition-to-k-equal-sum-subsets]: https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
 [permutations]: https://leetcode.com/problems/permutations/
 [permutations-ii]: https://leetcode.com/problems/permutations-ii/
+[remove-all-ones-with-row-and-column-flips-ii]: https://leetcode.com/problems/remove-all-ones-with-row-and-column-flips-ii/
 [robot-room-cleaner]: https://leetcode.com/problems/robot-room-cleaner/
 [shopping-offers]: https://leetcode.com/problems/shopping-offers/
 [subsets]: https://leetcode.com/problems/subsets/
