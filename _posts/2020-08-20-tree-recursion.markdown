@@ -449,6 +449,30 @@ private int[] dfs(TreeNode node) {
 }
 {% endhighlight %}
 
+[Maximum Width of Binary Tree][maximum-width-of-binary-tree]
+
+{% highlight java %}
+public int widthOfBinaryTree(TreeNode root) {
+    return dfs(root, 0, 0, new ArrayList<>());
+}
+
+private int dfs(TreeNode node, int level, int index, List<Integer> starts) {
+    if (node == null) {
+        return 0;
+    }
+
+    // the first node visited in this level
+    if (starts.size() == level) {
+        starts.add(index);
+    }
+
+    int curr = index - starts.get(level) + 1;
+    int left = dfs(node.left, level + 1, index * 2 + 1, starts);
+    int right = dfs(node.right, level + 1, index * 2 + 2, starts);
+    return Math.max(curr, Math.max(left, right));
+}
+{% endhighlight %}
+
 [House Robber III][house-robber-iii]
 
 {% highlight java %}
@@ -1137,6 +1161,7 @@ public int checkWays(int[][] pairs) {
 [longest-zigzag-path-in-a-binary-tree]: https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/
 [lowest-common-ancestor-of-deepest-leaves]: https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/
 [maximum-difference-between-node-and-ancestor]: https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
+[maximum-width-of-binary-tree]: https://leetcode.com/problems/maximum-width-of-binary-tree/
 [minimum-absolute-difference-in-bst]: https://leetcode.com/problems/minimum-absolute-difference-in-bst/
 [n-ary-tree-level-order-traversal]: https://leetcode.com/problems/n-ary-tree-level-order-traversal/
 [number-of-good-leaf-nodes-pairs]: https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/

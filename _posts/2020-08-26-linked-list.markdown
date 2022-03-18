@@ -3,6 +3,72 @@ layout: post
 title:  "Linked List"
 tags: array
 ---
+# Sort
+
+[Sort List][sort-list]
+
+{% highlight java %}
+public ListNode sortList(ListNode head) {
+    ListNode dummy = new ListNode();
+    dummy.next = head;
+    int n = 0;
+    while (head != null) {
+        head = head.next;
+        n++;
+    }
+
+    for (int step = 1; step < n; step <<= 1) {
+        ListNode prev = dummy, curr = dummy.next;
+        while (curr != null) {
+            ListNode left = curr, right = split(left, step);
+            curr = split(right, step);
+            prev = merge(left, right, prev);
+        }
+    }
+
+    return dummy.next;
+}
+
+private ListNode split(ListNode head, int step) {
+    if (head == null) {
+        return null;
+    }
+
+    for (int i = 1; head.next != null && i < step; i++) {
+        head = head.next;
+    }
+
+    ListNode right = head.next;
+    head.next = null;
+    return right;
+}
+
+private ListNode merge(ListNode left, ListNode right, ListNode prev) {
+    ListNode curr = prev;
+    while (left != null && right != null) {
+        if (left.val < right.val) {
+            curr.next = left;
+            left = left.next;
+        } else {
+            curr.next = right;
+            right = right.next;
+        }
+        curr = curr.next;
+    }
+
+    if (left != null) {
+        curr.next = left;
+    } else if (right != null) {
+        curr.next = right;
+    }
+
+    while (curr.next != null) {
+        curr = curr.next;
+    }
+    return curr;
+}
+{% endhighlight %}
+
 # Cycle Detection
 
 [Floyd's Tortoise and Hare](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_Tortoise_and_Hare)
@@ -249,3 +315,4 @@ public Node connect(Node root) {
 [linked-list-cycle-ii]: https://leetcode.com/problems/linked-list-cycle-ii/
 [palindrome-linked-list]: https://leetcode.com/problems/palindrome-linked-list/
 [populating-next-right-pointers-in-each-node]: https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+[sort-list]: https://leetcode.com/problems/sort-list/

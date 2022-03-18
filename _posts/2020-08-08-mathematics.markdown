@@ -249,6 +249,55 @@ for (int i = n - 1; i >= 0; i--) {
 }
 {% endhighlight %}
 
+[Median of Two Sorted Arrays][median-of-two-sorted-arrays]
+
+{% highlight java %}
+public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    int m = nums1.length, n = nums2.length;
+
+    if (m > n) {
+        return findMedianSortedArrays(nums2, nums1);
+    }
+
+    //       left_part          |        right_part
+    // A[0], A[1], ..., A[i-1]  |  A[i], A[i+1], ..., A[m-1]
+    // B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
+
+    // binary searches the cut point in nums1
+    int low = 0, high = m;
+    while (low <= high) {
+        // len(left) == len(right)
+        // (m + n is even) i + j == m - i + n - j
+        // (m + n is odd) i + j == m - i + n - j + 1
+        // combines the above two cases:
+        // j == (m + n + 1) / 2 - i
+        int i = (low + high) >>> 1, j = (m + n + 1) / 2 - i;
+
+        int nums1Left = i == 0 ? Integer.MIN_VALUE : nums1[i - 1];
+        int nums1Right = i == m ? Integer.MAX_VALUE : nums1[i];
+        int nums2Left = j == 0 ? Integer.MIN_VALUE : nums2[j - 1];
+        int nums2Right = j == n ? Integer.MAX_VALUE : nums2[j];
+
+        // max(left) <= min(right)
+        if (nums1Left > nums2Right) {
+            high = i - 1;
+        } else if (nums2Left > nums1Right) {
+            low = i + 1;
+        } else {
+            int maxLeft = Math.max(nums1Left, nums2Left);
+            int minRight = Math.min(nums1Right, nums2Right);
+            if ((m + n) % 2 == 1) {
+                // len(left) == len(right) + 1
+                return maxLeft;
+            } else {
+                return (maxLeft + minRight) / 2.0;
+            }
+        }
+    }
+    return -1;
+}
+{% endhighlight %}
+
 ## Catalan Number
 
 The nth Catalan number is given directly in terms of binomial coefficients by
@@ -776,6 +825,7 @@ public int numSquares(int n) {
 [find-unique-binary-string]: https://leetcode.com/problems/find-unique-binary-string/
 [handshakes-that-dont-cross]: https://leetcode.com/problems/handshakes-that-dont-cross/
 [maximum-of-absolute-value-expression]: https://leetcode.com/problems/maximum-of-absolute-value-expression/
+[median-of-two-sorted-arrays]: https://leetcode.com/problems/median-of-two-sorted-arrays/
 [non-negative-integers-without-consecutive-ones]: https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/
 [perfect-squares]: https://leetcode.com/problems/perfect-squares/
 [power-of-three]: https://leetcode.com/problems/power-of-three/

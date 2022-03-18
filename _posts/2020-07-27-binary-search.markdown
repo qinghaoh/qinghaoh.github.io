@@ -1130,7 +1130,80 @@ if (insertionPoint < 0) {
 
 [public static \<T\> int binarySearch(List\<? extends T\> list, T key, Comparator\<? super T\> c)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Collections.html#binarySearch(java.util.List,T,java.util.Comparator))
 
+[Count Good Triplets in an Array][count-good-triplets-in-an-array]
+
+{% highlight java %}
+public long goodTriplets(int[] nums1, int[] nums2) {
+    int n = nums1.length;
+
+    // index[num]: index of element num in nums2
+    int[] index = new int[n];
+    for (int i = 0; i < n; i++){
+        index[nums2[i]] = i;
+    }
+
+    // list of sorted index (in nums2) of visited elements in nums1
+    List<Integer> list = new ArrayList();
+    // p[i]: number of elements on the left of nums1[i] in both nums1 and nums2
+    int[] p = new int[n];
+    for (int i = 0; i < n; i++) {
+        list.add(p[i] = ~Collections.binarySearch(list, index[nums1[i]]), index[nums1[i]]);
+    }
+
+    list.clear();
+    // s[i]: number of elements on the right of nums1[i] in both nums1 and nums2
+    int[] s = new int[n];
+    for (int i = n - 1; i >= 0; i--) {
+        int insertionPoint = ~Collections.binarySearch(list, index[nums1[i]]);
+        s[i] = list.size() - insertionPoint;
+        list.add(insertionPoint, index[nums1[i]]);
+    }
+
+    long count = 0;
+    for (int i = 0; i < n; i++){
+        count += (long)p[i] * s[i];
+    }
+    return count;
+}
+{% endhighlight %}
+
+Simplified version:
+
+{% highlight java %}
+public long goodTriplets(int[] nums1, int[] nums2) {
+    int n = nums1.length;
+
+    // index[num]: index of element num in nums2
+    int[] index = new int[n];
+    for (int i = 0; i < n; i++){
+        index[nums2[i]] = i;
+    }
+
+    // list of sorted index (in nums2) of visited elements in nums1
+    List<Integer> list = new ArrayList();
+    list.add(index[nums1[0]]);
+
+    long count = 0;
+    // ignores the first and last element
+    for (int i = 1; i < n - 1; i++) {
+        // finds the insertion point of index[nums[i]] in the list
+        // it stands for the number of common elements on the left of nums[i] in both arrays
+        int insertionPoint = ~Collections.binarySearch(list, index[nums1[i]]);
+        list.add(insertionPoint, index[nums1[i]]);
+
+        //   common elements on the right
+        // = n - common elements on the left (= insertionPoint)
+        //   - unique elements in nums1 (= i - insertionPoint)
+        //   - unique elements in nums2 (= index[nums1[i]] - insertionPoint)
+        //   - self (= 1)
+        count += (long)insertionPoint * (n - i - index[nums1[i]] + insertionPoint - 1);
+    }
+    return count;
+}
+{% endhighlight %}
+
 [binary-search]: https://leetcode.com/problems/binary-search/
+[count-good-triplets-in-an-array]: https://leetcode.com/problems/count-good-triplets-in-an-array/
 [divide-chocolate]: https://leetcode.com/problems/divide-chocolate/
 [find-k-closest-elements]: https://leetcode.com/problems/find-k-closest-elements/
 [find-minimum-in-rotated-sorted-array]: https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/

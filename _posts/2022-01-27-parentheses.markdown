@@ -137,14 +137,14 @@ public int scoreOfParentheses(String S) {
 {% endhighlight %}
 
 {% highlight java %}
-public int scoreOfParentheses(String S) {
+public int scoreOfParentheses(String s) {
     int score = 0, opened = 0;
-    for (int i = 0; i < S.length(); i++) {
-        if (S.charAt(i) == '(') {
+    for (int i = 0; i < s.length(); i++) {
+        if (s.charAt(i) == '(') {
             opened++;
         } else {
             opened--;
-            if (S.charAt(i - 1) == '(') {
+            if (s.charAt(i - 1) == '(') {
                 // number of exterior sets of parentheses that contains this core
                 score += 1 << opened;
             }
@@ -217,11 +217,62 @@ public boolean canBeValid(String s, String locked) {
 }
 {% endhighlight %}
 
+[Minimum Remove to Make Valid Parentheses][minimum-remove-to-make-valid-parentheses]
+
+{% highlight java %}
+public String minRemoveToMakeValid(String s) {
+    StringBuilder sb = new StringBuilder(s);
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (c == '(') {
+            st.push(i);
+        } else if (c == ')') {
+            if (!st.isEmpty()) {
+                st.pop();
+            } else {
+                sb.setCharAt(i, '*');
+            }
+        }
+    }
+
+    while (!st.isEmpty()) {
+        sb.setCharAt(st.pop(), '*');
+    }
+    return sb.toString().replaceAll("\\*", "");
+}
+{% endhighlight %}
+
+{% highlight java %}
+public String minRemoveToMakeValid(String s) {
+    StringBuilder sb = new StringBuilder(s);
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i < sb.length(); i++) {
+        if (sb.charAt(i) == '(') {
+            st.push(i + 1);
+        }
+        if (sb.charAt(i) == ')') {
+            if (!st.isEmpty() && st.peek() >= 0) {
+                st.pop();
+            } else {
+                st.push(-(i + 1));
+            }
+        }
+    }
+
+    while (!st.isEmpty()) {
+        sb.deleteCharAt(Math.abs(st.pop()) - 1);
+    }
+    return sb.toString();
+}
+{% endhighlight %}
+
 [check-if-a-parentheses-string-can-be-valid]: https://leetcode.com/problems/check-if-a-parentheses-string-can-be-valid/
 [longest-valid-parentheses]: https://leetcode.com/problems/longest-valid-parentheses/
 [maximum-nesting-depth-of-two-valid-parentheses-strings]: https://leetcode.com/problems/maximum-nesting-depth-of-two-valid-parentheses-strings/
 [minimum-add-to-make-parentheses-valid]: https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/
 [minimum-insertions-to-balance-a-parentheses-string]: https://leetcode.com/problems/minimum-insertions-to-balance-a-parentheses-string/
+[minimum-remove-to-make-valid-parentheses]: https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
 [remove-outermost-parentheses]: https://leetcode.com/problems/remove-outermost-parentheses/
 [reverse-substrings-between-each-pair-of-parentheses]: https://leetcode.com/problems/reverse-substrings-between-each-pair-of-parentheses/
 [score-of-parentheses]: https://leetcode.com/problems/score-of-parentheses/
