@@ -297,6 +297,29 @@ public boolean canConstruct(String s, int k) {
 }
 {% endhighlight %}
 
+[Minimum Number of Moves to Make Palindrome][minimum-number-of-moves-to-make-palindrome]
+
+{% highlight java %}
+public int minMovesToMakePalindrome(String s) {
+    int count = 0;
+    while (s.length() > 0) {
+        // finds the occurrence of the end char closest to the start char
+        int i = s.indexOf(s.charAt(s.length() - 1));
+        if (i == s.length() - 1) {
+            // the last char is the center
+            count += i / 2;
+        } else {
+            count += i;
+            // swaps the found char with the start char
+            // deletes the two ends of the string
+            s = s.substring(0, i) + s.substring(i + 1);
+        }
+        s = s.substring(0, s.length() - 1);
+    }
+    return count;
+}
+{% endhighlight %}
+
 # Expand Around Center
 
 [Palindromic Substring][palindromic-substring]
@@ -709,6 +732,7 @@ public int countPalindromicSubsequences(String S) {
 [maximize-palindrome-length-from-subsequences]: https://leetcode.com/problems/maximize-palindrome-length-from-subsequences/
 [maximum-product-of-the-length-of-two-palindromic-subsequences]: https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/
 [maximum-product-of-the-length-of-two-palindromic-substrings]: https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-substrings/
+[minimum-number-of-moves-to-make-palindrome]: https://leetcode.com/problems/minimum-number-of-moves-to-make-palindrome/
 [palindrome-number]: https://leetcode.com/problems/palindrome-number/
 [palindrome-pairs]: https://leetcode.com/problems/palindrome-pairs/
 [palindrome-partitioning-ii]: https://leetcode.com/problems/palindrome-partitioning-ii/

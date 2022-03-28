@@ -337,6 +337,20 @@ public int reinitializePermutation(int n) {
 }
 {% endhighlight %}
 
+[Minimum Deletions to Make Array Beautiful][minimum-deletions-to-make-array-beautiful]
+
+{% highlight java %}
+public int minDeletion(int[] nums) {
+    int n = nums.length, deletions = 0;
+    for (int i = 0; i < n - 1; i++) {
+        if (nums[i] == nums[i + 1] && (i - deletions) % 2 == 0) {
+            deletions++;
+        }
+    }
+    return deletions + (n - deletions) % 2;
+}
+{% endhighlight %}
+
 # Swapping
 
 [Swap Adjacent in LR String][swap-adjacent-in-lr-string]
@@ -655,6 +669,7 @@ public long largestEvenSum(int[] nums, int k) {
 [max-chunks-to-make-sorted-ii]: https://leetcode.com/problems/max-chunks-to-make-sorted-ii/
 [maximum-matrix-sum]: https://leetcode.com/problems/maximum-matrix-sum/
 [maximum-building-height]: https://leetcode.com/problems/maximum-building-height/
+[minimum-deletions-to-make-array-beautiful]: https://leetcode.com/problems/minimum-deletions-to-make-array-beautiful/
 [minimum-number-of-flips-to-make-the-binary-string-alternating]: https://leetcode.com/problems/minimum-number-of-flips-to-make-the-binary-string-alternating/
 [minimum-number-of-operations-to-reinitialize-a-permutation]: https://leetcode.com/problems/minimum-number-of-operations-to-reinitialize-a-permutation/
 [patching-array]: https://leetcode.com/problems/patching-array/

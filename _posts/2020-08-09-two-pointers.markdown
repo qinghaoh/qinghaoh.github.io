@@ -330,7 +330,7 @@ public String pushDominoes(String dominoes) {
 
     // -> right
     for (int i = 0; i < n; i++) {
-        if (chars[i] == 'R'){
+        if (chars[i] == 'R') {
             force = n;
         } else if (chars[i] == 'L') {
             force = 0;
@@ -368,6 +368,33 @@ public String pushDominoes(String dominoes) {
 
 LL.RR.LLRRLL..
 ```
+
+[Count Collisions on a Road][count-collisions-on-a-road]
+
+{% highlight java %}
+public int countCollisions(String directions) {
+    int n = directions.length(), left = 0, right = n - 1;
+
+    // left end cars which are moving towards left will not collide
+    while (left < n && directions.charAt(left) == 'L') {
+        left++;
+    }
+
+    // right end cars which are moving towards right will not collide
+    while (right >= 0 && directions.charAt(right) == 'R') {
+        right--;
+    }
+
+    // all cars in between will collide
+    int count = 0;
+    for (int i = left; i <= right; i++) {
+        if (directions.charAt(i) != 'S') {
+            count++;
+        }
+    }
+    return count;
+}
+{% endhighlight %}
 
 [Get the Maximum Score][get-the-maximum-score]
 
@@ -510,6 +537,7 @@ private boolean dfs(String s1, String s2, int i, int j, int diff) {
 [backspace-string-compare]: https://leetcode.com/problems/backspace-string-compare/
 [check-if-an-original-string-exists-given-two-encoded-strings]: https://leetcode.com/problems/check-if-an-original-string-exists-given-two-encoded-strings/
 [container-with-most-water]: https://leetcode.com/problems/container-with-most-water/
+[count-collisions-on-a-road]: https://leetcode.com/problems/count-collisions-on-a-road/
 [count-substrings-that-differ-by-one-character]: https://leetcode.com/problems/count-substrings-that-differ-by-one-character/
 [count-unique-characters-of-all-substrings-of-a-given-string]: https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/
 [get-the-maximum-score]: https://leetcode.com/problems/get-the-maximum-score/

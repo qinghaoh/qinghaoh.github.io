@@ -84,13 +84,13 @@ public int videoStitching(int[][] clips, int T) {
 [Broken Calculator][broken-calculator]
 
 {% highlight java %}
-public int brokenCalc(int X, int Y) {
+public int brokenCalc(int startValue, int target) {
     int s = 0;
-    while (Y > X) {
-        Y = Y % 2 == 0 ? Y / 2 : Y + 1;
+    while (target > startValue) {
+        target = target % 2 == 0 ? target / 2 : target + 1;
         s++;
     }
-    return s + X - Y;
+    return s + startValue - target;
 }
 {% endhighlight %}
 

@@ -409,7 +409,8 @@ public int combinationSum4(int[] nums, int target) {
 In essence, it's recursion.
 
 ## Change-making Problem
-[Change-making problem](https://en.wikipedia.org/wiki/Change-making_problem)
+
+[Change-making problem](https://en.wikipedia.org/wiki/Change-making_problem): Weakly NP-hard. Find the minimum number of coins (of certain denominations) that add up to a given amount of money. It is a special case of the integer knapsack problem.
 
 minimize $$ f(W)=\sum _{j=1}^{n}x_{j} $$
 
@@ -419,11 +420,11 @@ subject to $$ \sum _{j=1}^{n}w_{j}x_{j}=W $$
 
 {% highlight java %}
 public int coinChange(int[] coins, int amount) {
-    int n = coins.length, max = amount + 1;
+    int n = coins.length;
 
     int[][] dp = new int[n + 1][amount + 1];
     for (int i = 0; i < dp.length; i++) {
-        Arrays.fill(dp[i], max);
+        Arrays.fill(dp[i], amount + 1);
     }
     for (int i = 0; i < dp.length; i++) {
         dp[i][0] = 0;
@@ -438,7 +439,7 @@ public int coinChange(int[] coins, int amount) {
             }
         }
     }
-    return dp[n][amount] == max ? -1 : dp[n][amount];
+    return dp[n][amount] > amount ? -1 : dp[n][amount];
 }
 {% endhighlight %}
 
