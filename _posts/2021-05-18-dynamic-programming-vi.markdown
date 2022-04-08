@@ -791,6 +791,94 @@ public int minSpaceWastedKResizing(int[] nums, int k) {
 }
 {% endhighlight %}
 
+[Minimum White Tiles After Covering With Carpets][minimum-white-tiles-after-covering-with-carpets]
+
+{% highlight java %}
+private static final int MAX_LENGTH = 1000;
+
+public int minimumWhiteTiles(String floor, int numCarpets, int carpetLen) {
+    int n = floor.length();
+    // dp[i][j]: covers the first i tiles with j carpets
+    int[][] dp = new int[n + 1][numCarpets + 1];
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= numCarpets; j++) {
+            int skip = dp[i - 1][j] + floor.charAt(i - 1) - '0';
+            int cover = j > 0 ? dp[Math.max(i - carpetLen, 0)][j - 1] : MAX_LENGTH;
+            dp[i][j] = Math.min(cover, skip);
+        }
+    }
+    return dp[n][numCarpets];
+}
+{% endhighlight %}
+
+[Minimum Time to Finish the Race][minimum-time-to-finish-the-race]
+
+{% highlight java %}
+// f * r ^ (x - 1) >= changeTime
+// if f == 1 and r == 2 (minimum)
+// x >= 18
+// i.e. it's better to change tire if the successiev laps >= 18
+private static final int NUM_LAPS_TO_CHANGE_TIRE = 18;
+// numLaps * max_time_per_lap
+// = numLaps * (max_f + changeTime)
+// = 2e8
+private static final int MAX_TOTAL_TIME = (int)2e8;
+
+public int minimumFinishTime(int[][] tires, int changeTime, int numLaps) {
+    int n = tires.length;
+
+    // noChange[i][j]: the total time to run j laps successively with tire i
+    // j is small enough
+    long[][] noChange = new long[n][NUM_LAPS_TO_CHANGE_TIRE];
+    for (long[] t : noChange) {
+        Arrays.fill(t, MAX_TOTAL_TIME);
+    }
+
+    for (int i = 0; i < n; i++) {
+        noChange[i][1] = tires[i][0];
+        // per lap
+        for (int j = 2; j < NUM_LAPS_TO_CHANGE_TIRE; j++) {
+            noChange[i][j] = noChange[i][j - 1] * tires[i][1];
+            if (noChange[i][j] > MAX_TOTAL_TIME) {
+                noChange[i][j] = MAX_TOTAL_TIME;
+                break;
+            }
+        }
+
+        // prefix sum
+        for (int j = 2; j < NUM_LAPS_TO_CHANGE_TIRE; j++) {
+            noChange[i][j] += noChange[i][j - 1];
+            if (noChange[i][j] > MAX_TOTAL_TIME) {
+                noChange[i][j] = MAX_TOTAL_TIME;
+                break;
+            }
+        }
+    }
+
+    // dp[i]: the minimum time to finish i laps
+    int[] dp = new int[numLaps + 1];
+    Arrays.fill(dp, MAX_TOTAL_TIME);
+    for (int[] tire : tires) {
+        dp[1] = Math.min(dp[1], tire[0]);
+    }
+
+    for (int i = 1; i <= numLaps; i++) {
+        if (i < NUM_LAPS_TO_CHANGE_TIRE) {
+            // when i is small enough, the optimal solution might never change tire
+            for (long[] t : noChange) {
+                dp[i] = Math.min(dp[i], (int)t[i]);
+            }
+        }
+
+        for (int j = i - 1; j > 0 && j >= i - NUM_LAPS_TO_CHANGE_TIRE; j--) {
+            dp[i] = Math.min(dp[i], dp[j] + changeTime + dp[i - j]);
+        }
+    }
+
+    return dp[numLaps];
+}
+{% endhighlight %}
+
 [best-team-with-no-conflicts]: https://leetcode.com/problems/best-team-with-no-conflicts/
 [build-array-where-you-can-find-the-maximum-exactly-k-comparisons]: https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/
 [choose-numbers-from-two-arrays-in-range]: https://leetcode.com/problems/choose-numbers-from-two-arrays-in-range/
@@ -801,7 +889,9 @@ public int minSpaceWastedKResizing(int[] nums, int k) {
 [minimum-difficulty-of-a-job-schedule]: https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/
 [minimum-distance-to-type-a-word-using-two-fingers]: https://leetcode.com/problems/minimum-distance-to-type-a-word-using-two-fingers/
 [minimum-skips-to-arrive-at-meeting-on-time]: https://leetcode.com/problems/minimum-skips-to-arrive-at-meeting-on-time/
+[minimum-time-to-finish-the-race]: https://leetcode.com/problems/minimum-time-to-finish-the-race/
 [minimum-total-space-wasted-with-k-resizing-operations]: https://leetcode.com/problems/minimum-total-space-wasted-with-k-resizing-operations/
+[minimum-white-tiles-after-covering-with-carpets]: https://leetcode.com/problems/minimum-white-tiles-after-covering-with-carpets/
 [number-of-music-playlists]: https://leetcode.com/problems/number-of-music-playlists/
 [number-of-ways-to-rearrange-sticks-with-k-sticks-visible]: https://leetcode.com/problems/number-of-ways-to-rearrange-sticks-with-k-sticks-visible/
 [paint-house-iii]: https://leetcode.com/problems/paint-house-iii/

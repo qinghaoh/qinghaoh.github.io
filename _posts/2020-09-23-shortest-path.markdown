@@ -2,6 +2,7 @@
 layout: post
 title:  "Shortest Path"
 tags: graph
+usemathjax: true
 ---
 # Dijkstra
 
@@ -275,6 +276,73 @@ public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
         }
     }
     return "impossible";
+}
+{% endhighlight %}
+
+[Minimum Weighted Subgraph With the Required Paths][minimum-weighted-subgraph-with-the-required-paths]
+
+{% highlight java %}
+public long minimumWeight(int n, int[][] edges, int src1, int src2, int dest) {
+    List<long[]>[] graph = new List[n], reverse = new List[n];
+
+    for (int i = 0; i < n; i++) {
+        graph[i] = new ArrayList<>();
+        reverse[i] = new ArrayList<>();
+    }
+
+    for (int[] e : edges) {
+        long w = (long) e[2];
+
+        graph[e[0]].add(new long[]{e[1], w});
+        reverse[e[1]].add(new long[]{e[0], w});
+    }
+
+    long[] weight1 = new long[n], weight2 = new long[n], weightDest = new long[n];
+    Arrays.fill(weight1, Long.MAX_VALUE);
+    Arrays.fill(weight2, Long.MAX_VALUE);
+    Arrays.fill(weightDest, Long.MAX_VALUE);
+
+    // 3 Dijkstra's
+    dijkstra(graph, src1, weight1);
+    dijkstra(graph, src2, weight2);
+    dijkstra(reverse, dest, weightDest);
+
+    // finds min weight
+    long min = Long.MAX_VALUE;
+    for (int i = 0; i < n; i++) {
+        if (weight1[i] < Long.MAX_VALUE &&
+            weight2[i] < Long.MAX_VALUE &&
+            weightDest[i] < Long.MAX_VALUE) {
+            min = Math.min(min, weight1[i] + weight2[i] + weightDest[i]);
+        }
+    }
+
+    return min == Long.MAX_VALUE ? -1 : min;
+}
+
+private void dijkstra(List<long[]>[] graph, int src, long[] weight) {
+    Queue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[1]));
+
+    pq.offer(new long[]{src, weight[src] = 0});
+
+    while (!pq.isEmpty()) {
+        long[] curr = pq.poll();
+        int node = (int)curr[0];
+        long w = curr[1];
+
+        if (weight[node] < w || graph[node].isEmpty()) {
+            continue;
+        }
+
+        for (var e : graph[node]) {
+            int neighbor = (int)e[0];
+            long neighborW = e[1];
+            if (weight[neighbor] > weight[node] + neighborW) {
+                weight[neighbor] = weight[node] + neighborW;
+                pq.offer(new long[]{neighbor, weight[neighbor]});
+            }
+        }
+    }
 }
 {% endhighlight %}
 
@@ -573,6 +641,8 @@ for k from 1 to |V|
                 dist[i][j] ← dist[i][k] + dist[k][j]
             end if
 ```
+
+Time complexity: \\(\Theta(V^3)\\)
 
 [Count Subtrees With Max Distance Between Cities][count-subtrees-with-max-distance-between-cities]
 
@@ -879,6 +949,7 @@ private int paint(int[][] grid, int i, int j, int color) {
 [minimum-cost-to-reach-city-with-discounts]: https://leetcode.com/problems/minimum-cost-to-reach-city-with-discounts/
 [minimum-cost-to-reach-destination-in-time]: https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/
 [minimum-number-of-days-to-disconnect-island]: https://leetcode.com/problems/minimum-number-of-days-to-disconnect-island/
+[minimum-weighted-subgraph-with-the-required-paths]: https://leetcode.com/problems/minimum-weighted-subgraph-with-the-required-paths/
 [number-of-restricted-paths-from-first-to-last-node]: https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/
 [number-of-ways-to-arrive-at-destination]: https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/
 [path-with-maximum-minimum-value]: https://leetcode.com/problems/path-with-maximum-minimum-value/
