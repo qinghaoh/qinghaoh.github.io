@@ -26,7 +26,7 @@ github_username:  qinghaoh
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-tactile
+theme: jekyll-theme-dinky
 remote_theme: pages-themes/tactile@v0.2.0
 plugins:
   - jekyll-feed
