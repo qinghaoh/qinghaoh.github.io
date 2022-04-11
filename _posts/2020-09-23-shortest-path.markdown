@@ -6,42 +6,117 @@ usemathjax: true
 ---
 # Dijkstra
 
+## Fundamentals
+
 [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
 
 Dijkstra's Shortest Path First algorithm (SPF algorithm) is an algorithm for finding the shortest paths between nodes in a graph. A ***single*** node as the "source" node and finds shortest paths from the source to all other nodes in the graph, producing a shortest-path tree.
 
+The weights of the graph must be **non-negative**.
+
+Pseuodo-code:
+
 ```
 function Dijkstra(Graph, source):
+    dist[source] ← 0                           // Initialization
 
-    create vertex set Q
+    create vertex priority queue Q
 
-    for each vertex v in Graph:
-        dist[v] ← INFINITY
-        prev[v] ← UNDEFINED
-        add v to Q
-    dist[source] ← 0
+    for each vertex v in Graph.Vertices:
+        if v ≠ source
+            dist[v] ← INFINITY                 // Unknown distance from source to v
+            prev[v] ← UNDEFINED                // Predecessor of v
 
-    while Q is not empty:
-        u ← vertex in Q with min dist[u]
+        Q.add_with_priority(v, dist[v])
 
-        remove u from Q
-
-        for each neighbor v of u:           // only v that are still in Q
-            alt ← dist[u] + length(u, v)
-            if alt < dist[v]:
+    while Q is not empty:                      // The main loop
+        u ← Q.extract_min()                    // Remove and return best vertex
+        for each neighbor v of u:              // only v that are still in Q
+            alt ← dist[u] + Graph.Edges(u, v)
+            if alt < dist[v]
                 dist[v] ← alt
                 prev[v] ← u
+                Q.decrease_priority(v, alt)
 
-    return dist[], prev[]
+    return dist, prev
 ```
 
-Comparison with BFS:
+Note it's very important that in each iteration, we handles **only** neighbor vertices that are still in the queue.
+
+If we are only interested in a shortest path between vertices source and target, we can terminate the search if `u == target`.
+
+Fibonacci heap or Brodal queue offer optimal implementations for the above 3 min-priority queque operations.
+
+Time complexity: 
+\\(\Theta(|V|+|E|\log{|V|})\\)
+
+Dijkstra's algorithm has some similarities with BFS:
 
 |       | BFS  | Dijkstra |
 |-------| ------------- | ------------- |
 | graph | unweighted  | weighted (non-negative) |
 | queue | queue  | priority queue  |
 | time complexity | O(V + E) | O(V + Elog(V)) |
+
+A common implementation with simple priority queue is as below:
+
+{% highlight java %}
+/**
+ * Dijkstra's algorithm.
+ * @param n number of vertices. Vertices range from 0 to (n - 1)
+ * @param graph graph[i][j] is the edge from vertex i to j
+ * @param src source node
+ */
+public void dijkstra(int n, List<int[]>[] graph, int src) {
+    // dist[i]: distance from src to vertex i
+    // initializes all elements in the array to 0
+    int[] dist = new int[n];
+
+    // {vertex, dist[vertex] when enqueued}
+    Queue<int[]> q = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+
+    // initializes the queue to contain only source
+    // dist[src] == 0
+    int[] curr = {src, 0}
+    q.offer(curr);
+
+    while (!q.isEmpty()) {
+        // dequeues the best vertex
+        curr = q.poll();
+        int u = curr[0], du = curr[1];
+        
+        // skips current if the vertex is visited
+        // (and hence already has a more optimal distance)
+        if (du > dist[u]) {
+            continue;
+        }
+
+        // checks all neighbors in the graph, whether they are still in the queue or not
+        // then a vertex can be re-enqueued and thus its time complexity is more
+        // compared to traditional Dijkstra (Fibonacci queue version)
+        for (int[] next : graph[u]) {
+            int v = next[0], duv = next[1];
+            int alt = du + duv;
+            if (alt < dist[v]) {
+                q.offer(new int[]{v, dist[v] = alt});
+            }
+        }
+    }
+}
+{% endhighlight %}
+
+See [Number of Ways to Arrive at Destination][number-of-ways-to-arrive-at-destination] as an example.
+
+Time Complexity:
+\\(\Theta((|V|+|E|)\log{|V|})\\)
+
+To skip visited vertices, we can use an array or set to mark them. See [reachable-nodes-in-subdivided-graph]. 
+
+A less efficient solution doesn't skip visited vertices, but the code is a bit concise, because we don't need to record the distance of a vertex when enqueued. An example is [Path with Maximum Probability][path-with-maximum-probability].
+
+## More Than One Shortest Path
+
+If there are multiple shortest paths from `source` to `target`, we can track the count with another auxiliary array. See the following problem:
 
 [Number of Ways to Arrive at Destination][number-of-ways-to-arrive-at-destination]
 
@@ -92,16 +167,28 @@ public int countPaths(int n, int[][] roads) {
 }
 {% endhighlight %}
 
+## Variations
+
+### Cost function
+
+Cost function is monotonically increasing/decreasing. The traditional cost function is summation of non-negative weights. The following are cost function variations:
+
+**Multiplication of probabilities**
+
 [Path with Maximum Probability][path-with-maximum-probability]
 
 {% highlight java %}
 public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
     // builds graph
-    Map<Integer, List<int[]>> graph = new HashMap<>();  // node : (neighbor : prob index)
+    List<int[]>[] graph = new List[n];
+    for (int i = 0; i < n; i++) {
+        graph[i] = new ArrayList<>();
+    }
+
     for (int i = 0; i < edges.length; i++) {
-        int[] edge = edges[i];
-        graph.computeIfAbsent(edge[0], k -> new ArrayList<>()).add(new int[]{edge[1], i});
-        graph.computeIfAbsent(edge[1], k -> new ArrayList<>()).add(new int[]{edge[0], i});
+        int[] e = edges[i];
+        graph[e[0]].add(new int[]{e[1], i});
+        graph[e[1]].add(new int[]{e[0], i});
     }
 
     // Dijkstra
@@ -110,20 +197,19 @@ public double maxProbability(int n, int[][] edges, double[] succProb, int start,
 
     // max heap
     Queue<Integer> pq = new PriorityQueue<>(Comparator.comparingDouble(i -> -p[i]));
-    int node = start;
-    pq.offer(node);
+    int curr = start;
+    pq.offer(curr);
 
-    while (!pq.isEmpty() && node != end) {
-        node = pq.poll();
-
-        if (!graph.containsKey(node)) {
-            continue;
+    while (!pq.isEmpty()) {
+        curr = pq.poll();
+        if (curr == end) {
+            break;
         }
 
-        for (int[] pair : graph.get(node)) {
-            int neighbor = pair[0], index = pair[1];
-            if (p[node] * succProb[index] > p[neighbor]) {
-                p[neighbor] = p[node] * succProb[index];
+        for (int[] next : graph[curr]) {
+            int neighbor = next[0], index = next[1];
+            if (p[curr] * succProb[index] > p[neighbor]) {
+                p[neighbor] = p[curr] * succProb[index];
                 pq.offer(neighbor);
             }
         }
@@ -133,7 +219,225 @@ public double maxProbability(int n, int[][] edges, double[] succProb, int start,
 }
 {% endhighlight %}
 
-DFS will underflow or LTE.
+**Summation of absolute difference**
+
+[Path with Minimum Effort][path-with-minimum-effort]
+
+{% highlight java %}
+{% raw %}
+private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+{% endraw %}
+
+public int minimumEffortPath(int[][] heights) {
+    int m = heights.length, n = heights[0].length;
+    int[][] dist = new int[m][n];
+    for (int i = 0; i < m; i++) {
+        Arrays.fill(dist[i], Integer.MAX_VALUE);
+    }
+
+    // {i, j, effort}
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+    int[] curr = new int[]{0, 0, 0};
+    pq.offer(curr);
+
+    while (!pq.isEmpty()) {
+        curr = pq.poll();
+        int i = curr[0], j = curr[1], e = curr[2];
+        if (i == m - 1 && j == n - 1) {
+            return e;
+        }
+
+        if (e > dist[i][j]) {
+            continue;
+        }
+
+        for (int[] d : DIRECTIONS) {
+            int r = i + d[0], c = j + d[1];
+            if (r >= 0 && r < m && c >= 0 && c < n) {
+                int alt = Math.max(Math.abs(heights[r][c] - heights[i][j]), e);
+                if (alt < dist[r][c]) {
+                    pq.offer(new int[]{r, c, dist[r][c] = alt});
+                }
+            }
+        }
+    }
+
+    return -1;        
+}
+{% endhighlight %}
+
+[Swim in Rising Water][swim-in-rising-water]
+
+* Dijkstra's Algorithm
+* BinarySearch + BFS/DFS
+* Union-Find
+
+**Summation of Manhattan distances**
+
+[Campus Bikes II][campus-bikes-ii]
+
+### Composite Vertex
+
+[Campus Bikes II][campus-bikes-ii]
+
+{% highlight java %}
+public int assignBikes(int[][] workers, int[][] bikes) {
+    // {worker, bike mask, distance}
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+    pq.offer(new int[]{0, 0, 0});
+
+    Set<String> visited = new HashSet<>();
+    while (!pq.isEmpty()){
+        int[] node = pq.poll();
+        int worker = node[0], mask = node[1], d = node[2];
+
+        if (visited.add(worker + "#" + mask)) {
+            if (worker == workers.length) {
+                return d;
+            }
+
+            for (int i = 0; i < bikes.length; i++) {
+                // i-th bike is available
+                if ((mask & (1 << i)) == 0) {
+                    pq.offer(new int[]{worker + 1, mask | (1 << i), d + distance(workers[worker], bikes[i])});
+                }
+            }
+        }
+
+    }
+    return -1;
+}
+
+private int distance(int[] p1, int[] p2) {
+    return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
+}
+{% endhighlight %}
+
+In this problem, each vertex is composite, i.e. a state that combines multiple variables. Specifically, vertices are constructed layer by layer from `workers[0]` to `workers[n - 1]`, and in the i-th layer, a vertex stands for a certain assignment of bikes to `workers[0...i]`. This solution is very similar to BFS - the only difference is we use a priority queue to find the min dist quickly in each layer.
+
+[The Maze III][the-maze-iii]
+
+{% highlight java %}
+{% raw %}
+private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+{% endraw %}
+private static final char[] INSTRUCTIONS = {'d', 'r', 'u', 'l'};
+
+class Point implements Comparable<Point> {
+    int row, col, distance;
+    String instruction;
+
+    Point(int row, int col, int distance, String instruction) {
+        this.row = row;
+        this.col = col;
+        this.distance = distance;
+        this.instruction = instruction;
+    }
+
+    @Override
+    public int compareTo(Point o) {
+        return this.distance == o.distance ? this.instruction.compareTo(o.instruction) : this.distance - o.distance;
+    }
+}
+
+public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
+    int m = maze.length, n = maze[0].length;
+    boolean[][] visited = new boolean[m][n];
+
+    Queue<Point> pq = new PriorityQueue<>();
+    Point p = new Point(ball[0], ball[1], 0, "");
+    pq.offer(p);
+
+    while (!pq.isEmpty()) {
+        p = pq.poll();
+        if (p.row == hole[0] && p.col == hole[1]) {
+            return p.instruction;
+        }
+
+        visited[p.row][p.col] = true;
+
+        for (int i = 0; i < DIRECTIONS.length; i++) {
+            int[] d = DIRECTIONS[i];
+            int r = p.row + d[0], c = p.col + d[1];
+            int distance = p.distance;
+
+            // keeps rolling until hitting a wall or the hole
+            while (r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0) {
+                distance++;
+                if (r == hole[0] && c == hole[1]) {
+                    r += d[0];
+                    c += d[1];
+                    break;
+                }
+                r += d[0];
+                c += d[1];
+            }
+            r -= d[0];
+            c -= d[1];
+
+            if (!visited[r][c]) {
+                pq.offer(new Point(r, c, distance, p.instruction + INSTRUCTIONS[i]));
+            }
+        }
+    }
+    return "impossible";
+}
+{% endhighlight %}
+
+### Constraint on Path Length
+
+Given upper limit of weight sum, find/count all paths.
+
+[Reachable Nodes In Subdivided Graph][reachable-nodes-in-subdivided-graph]
+
+{% highlight java %}
+public int reachableNodes(int[][] edges, int maxMoves, int n) {
+    // graph[i][j]: count between the edge [i, j]
+    int[][] graph = new int[n][n];
+    for (int[] g : graph) {
+        Arrays.fill(g, -1);
+    }
+    for (int[] e : edges) {
+        graph[e[0]][e[1]] = e[2];
+        graph[e[1]][e[0]] = e[2];
+    }
+
+    // {node, available moves}
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a[1]));
+    int[] curr = {0, maxMoves};
+    pq.offer(curr);
+
+    boolean[] visited = new boolean[n];
+    int count = 0;
+    while (!pq.isEmpty()) {
+        curr = pq.poll();
+        int node = curr[0], availableMoves = curr[1];
+
+        if (visited[node]) {
+            continue;
+        }
+
+        visited[node] = true;
+        count++;
+
+        for (int neighbor = 0; neighbor < n; neighbor++) {
+            if (graph[node][neighbor] >= 0) {
+                if (availableMoves > graph[node][neighbor] && !visited[neighbor]) {
+                    pq.offer(new int[]{neighbor, availableMoves - graph[node][neighbor] - 1});
+                }
+
+                // number of nodes that are reachable on the edge (node, neighbor]
+                int reach = Math.min(availableMoves, graph[node][neighbor]);
+                count += reach;
+
+                // the remaining new nodes could be visited from the other direction
+                graph[neighbor][node] -= reach;
+            }
+        }
+    }
+    return count;
+}
+{% endhighlight %}
 
 [Number of Restricted Paths From First to Last Node][number-of-restricted-paths-from-first-to-last-node]
 
@@ -208,74 +512,6 @@ private int dfs(int node) {
     }
 
     return memo[node] = count;
-}
-{% endhighlight %}
-
-[The Maze III][the-maze-iii]
-
-{% highlight java %}
-{% raw %}
-private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-{% endraw %}
-private static final char[] INSTRUCTIONS = {'d', 'r', 'u', 'l'};
-
-class Point implements Comparable<Point> {
-    int row, col, distance;
-    String instruction;
-
-    Point(int row, int col, int distance, String instruction) {
-        this.row = row;
-        this.col = col;
-        this.distance = distance;
-        this.instruction = instruction;
-    }
-
-    @Override
-    public int compareTo(Point o) {
-        return this.distance == o.distance ? this.instruction.compareTo(o.instruction) : this.distance - o.distance;
-    }
-}
-
-public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
-    int m = maze.length, n = maze[0].length;
-    boolean[][] visited = new boolean[m][n];
-
-    Queue<Point> pq = new PriorityQueue<>();
-    pq.offer(new Point(ball[0], ball[1], 0, ""));
-
-    while (!pq.isEmpty()) {
-        Point p = pq.poll();
-        if (p.row == hole[0] && p.col == hole[1]) {
-            return p.instruction;
-        }
-
-        visited[p.row][p.col] = true;
-
-        for (int i = 0; i < DIRECTIONS.length; i++) {
-            int[] d = DIRECTIONS[i];
-            int r = p.row + d[0], c = p.col + d[1];
-            int distance = p.distance;
-
-            // keeps rolling until hitting a wall or the hole
-            while (r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0) {
-                distance++;
-                if (r == hole[0] && c == hole[1]) {
-                    r += d[0];
-                    c += d[1];
-                    break;
-                }
-                r += d[0];
-                c += d[1];
-            }
-            r -= d[0];
-            c -= d[1];
-
-            if (!visited[r][c]) {
-                pq.offer(new Point(r, c, distance, p.instruction + INSTRUCTIONS[i]));
-            }
-        }
-    }
-    return "impossible";
 }
 {% endhighlight %}
 
@@ -487,138 +723,6 @@ public int minCost(int maxTime, int[][] edges, int[] passingFees) {
     }
 
     return costs[n - 1] == Integer.MAX_VALUE ? -1 : costs[n - 1];
-}
-{% endhighlight %}
-
-## Variations
-
-Cost function is monotonically increasing/decreasing.
-
-[Path with Minimum Effort][path-with-minimum-effort]
-
-{% highlight java %}
-{% raw %}
-private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-{% endraw %}
-
-public int minimumEffortPath(int[][] heights) {
-    int m = heights.length, n = heights[0].length;
-    Set<Integer> visited = new HashSet<>();
-
-    // i, j, effort
-    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
-    pq.offer(new int[]{0, 0, 0});
-
-    while (!pq.isEmpty()) {
-        int[] node = pq.poll();
-        int i = node[0], j = node[1], e = node[2];
-        if (i == m - 1 && j == n - 1) {
-            return e;
-        }
-
-        if (visited.add(i * n + j)) {
-            for (int[] d : DIRECTIONS) {
-                int r = i + d[0], c = j + d[1];
-                if (r >= 0 && r < m && c >= 0 && c < n && !visited.contains(r * n + c)) {
-                    pq.offer(new int[]{r, c, Math.max(Math.abs(heights[r][c] - heights[i][j]), e)});
-                }
-            }
-        }
-    }
-    return -1;
-}
-{% endhighlight %}
-
-[Path With Maximum Minimum Value][path-with-maximum-minimum-value]
-
-[Swim in Rising Water][swim-in-rising-water]
-
-* Dijkstra's Algorithm
-* BinarySearch + BFS/DFS
-* Union-Find
-
-[Campus Bikes II][campus-bikes-ii]
-
-{% highlight java %}
-public int assignBikes(int[][] workers, int[][] bikes) {
-    // worker, bike mask, distance
-    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
-    pq.offer(new int[]{0, 0, 0});
-
-    Set<String> visited = new HashSet<>();
-    while (!pq.isEmpty()){
-        int[] node = pq.poll();
-        int worker = node[0], mask = node[1], d = node[2];
-
-        if (visited.add(worker + "#" + mask)) {
-            if (worker == workers.length) {
-                return d;
-            }
-
-            for (int i = 0; i < bikes.length; i++) {
-                // i-th bike is available
-                if ((mask & (1 << i)) == 0) {
-                    pq.offer(new int[]{worker + 1, mask | (1 << i), d + distance(workers[worker], bikes[i])});
-                }
-            }
-        }
-
-    }
-    return -1;
-}
-
-private int distance(int[] p1, int[] p2) {
-    return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
-}
-{% endhighlight %}
-
-[Reachable Nodes In Subdivided Graph][reachable-nodes-in-subdivided-graph]
-
-{% highlight java %}
-public int reachableNodes(int[][] edges, int maxMoves, int n) {
-    // graph[i][j]: count between the edge [i, j]
-    int[][] graph = new int[n][n];
-    for (int[] g : graph) {
-        Arrays.fill(g, -1);
-    }
-    for (int[] e : edges) {
-        graph[e[0]][e[1]] = e[2];
-        graph[e[1]][e[0]] = e[2];
-    }
-
-    // {node, max moves}
-    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a[1]));
-    pq.offer(new int[]{0, maxMoves});
-
-    boolean[] visited = new boolean[n];
-    int count = 0;
-    while (!pq.isEmpty()) {
-        int[] curr = pq.poll();
-        int node = curr[0], move = curr[1];
-
-        if (visited[node]) {
-            continue;
-        }
-
-        visited[node] = true;
-        count++;
-
-        for (int neighbor = 0; neighbor < n; neighbor++) {
-            if (graph[node][neighbor] >= 0) {
-                if (move > graph[node][neighbor] && !visited[neighbor]) {
-                    pq.offer(new int[]{neighbor, move - graph[node][neighbor] - 1});
-                }
-
-                // number of nodes that are reachable on the edge [node, neighbor]
-                int reach = Math.min(move, graph[node][neighbor]);
-                count += reach;
-
-                // the remaining new nodes could be visited from the other direction
-                graph[neighbor][node] -= reach;
-            }
-        }
-    }
-    return count;
 }
 {% endhighlight %}
 

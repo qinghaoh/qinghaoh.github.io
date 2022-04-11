@@ -1163,6 +1163,49 @@ public int removeOnes(int[][] grid) {
 }
 {% endhighlight %}
 
+[Maximum Points in an Archery Competition][maximum-points-in-an-archery-competition]
+
+{% highlight java %}
+private int maxScore = 0;
+private int[] aliceArrows, bestBobArrows;
+
+public int[] maximumBobPoints(int numArrows, int[] aliceArrows) {
+    int n = aliceArrows.length;
+    this.aliceArrows = aliceArrows;
+    this.bestBobArrows= new int[n];
+
+    backtrack(0, numArrows, 0, new int[n]);
+
+    // if there are remaining arrows, Bob won all sections
+    // we simply put all of the remaining arrows to the first section
+    bestBobArrows[0] += numArrows - Arrays.stream(bestBobArrows).sum();
+    return bestBobArrows;
+}
+
+private void backtrack(int k, int remainingArrows, int score, int[] bobArrows) {
+    int n = bobArrows.length;
+    if (k == n) {
+        if (score > maxScore) {
+            maxScore = score;
+            bestBobArrows = Arrays.copyOf(bobArrows, n);
+        }
+        return;
+    }
+
+    // Bob loses
+    backtrack(k + 1, remainingArrows, score, bobArrows);
+
+    // Bob wins
+    int arrowsNeeded = aliceArrows[k] + 1;
+    if (remainingArrows >= arrowsNeeded) {
+        int tmp = bobArrows[k];
+        bobArrows[k] = arrowsNeeded;
+        backtrack(k + 1, remainingArrows - arrowsNeeded, score + k, bobArrows);
+        bobArrows[k] = tmp;
+    }
+}
+{% endhighlight %}
+
 [24-game]: https://leetcode.com/problems/24-game/
 [android-unlock-patterns]: https://leetcode.com/problems/android-unlock-patterns/
 [beautiful-arrangement]: https://leetcode.com/problems/beautiful-arrangement/
@@ -1179,6 +1222,7 @@ public int removeOnes(int[][] grid) {
 [matchsticks-to-square]: https://leetcode.com/problems/matchsticks-to-square/
 [maximum-number-of-achievable-transfer-requests]: https://leetcode.com/problems/maximum-number-of-achievable-transfer-requests/
 [maximum-number-of-groups-getting-fresh-donuts]: https://leetcode.com/problems/maximum-number-of-groups-getting-fresh-donuts/
+[maximum-points-in-an-archery-competition]: https://leetcode.com/problems/maximum-points-in-an-archery-competition/
 [maximum-score-words-formed-by-letters]: https://leetcode.com/problems/maximum-score-words-formed-by-letters/
 [optimal-account-balancing]: https://leetcode.com/problems/optimal-account-balancing/
 [palindrome-partitioning]: https://leetcode.com/problems/palindrome-partitioning/
