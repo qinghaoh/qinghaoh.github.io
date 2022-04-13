@@ -71,13 +71,13 @@ public void dijkstra(int n, List<int[]>[] graph, int src) {
     // dist[i]: distance from src to vertex i
     // initializes all elements in the array to 0
     int[] dist = new int[n];
+    Arrays.fill(dist, Integer.MAX_VALUE);
 
     // {vertex, dist[vertex] when enqueued}
     Queue<int[]> q = new PriorityQueue<>((a, b) -> a[1] - b[1]);
 
     // initializes the queue to contain only source
-    // dist[src] == 0
-    int[] curr = {src, 0}
+    int[] curr = {src, dist[src] = 0}
     q.offer(curr);
 
     while (!q.isEmpty()) {
@@ -105,7 +105,7 @@ public void dijkstra(int n, List<int[]>[] graph, int src) {
 }
 {% endhighlight %}
 
-See [Number of Ways to Arrive at Destination][number-of-ways-to-arrive-at-destination] as an example.
+See [Minimum Weighted Subgraph With the Required Paths][minimum-weighted-subgraph-with-the-required-paths], [Number of Ways to Arrive at Destination][number-of-ways-to-arrive-at-destination] as examples.
 
 Time Complexity:
 \\(\Theta((|V|+|E|)\log{|V|})\\)
@@ -114,62 +114,150 @@ To skip visited vertices, we can use an array or set to mark them. See [reachabl
 
 A less efficient solution doesn't skip visited vertices, but the code is a bit concise, because we don't need to record the distance of a vertex when enqueued. An example is [Path with Maximum Probability][path-with-maximum-probability].
 
-## More Than One Shortest Path
+## Examples
 
-If there are multiple shortest paths from `source` to `target`, we can track the count with another auxiliary array. See the following problem:
+This section demos how to apply Dijkstra's algorithm to solve problems, along with some other steps (e.g. DFS).
 
-[Number of Ways to Arrive at Destination][number-of-ways-to-arrive-at-destination]
+[Minimum Weighted Subgraph With the Required Paths][minimum-weighted-subgraph-with-the-required-paths]
 
 {% highlight java %}
-private static final int MOD = (int)1e9 + 7;
+public long minimumWeight(int n, int[][] edges, int src1, int src2, int dest) {
+    List<long[]>[] graph = new List[n], reverse = new List[n];
 
-public int countPaths(int n, int[][] roads) {
-    List<int[]>[] graph = new List[n];
     for (int i = 0; i < n; i++) {
         graph[i] = new ArrayList<>();
+        reverse[i] = new ArrayList<>();
     }
 
-    for (int[] r : roads) {
-        graph[r[0]].add(new int[]{r[1], r[2]});
-        graph[r[1]].add(new int[]{r[0], r[2]});
+    for (int[] e : edges) {
+        graph[e[0]].add(new long[]{e[1], e[2]});
+        reverse[e[1]].add(new long[]{e[0], e[2]});
     }
 
-    // time[i]: shortest amount of time from 0 to i so far
-    int[] time = new int[n], ways = new int[n];
-    Arrays.fill(time, Integer.MAX_VALUE);
-    time[0] = 0;
-    ways[0] = 1;
+    long[] weight1 = new long[n], weight2 = new long[n], weightDest = new long[n];
+    Arrays.fill(weight1, Long.MAX_VALUE);
+    Arrays.fill(weight2, Long.MAX_VALUE);
+    Arrays.fill(weightDest, Long.MAX_VALUE);
 
-    // {city, time from 0 to city at the time of enqueue}
-    Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-    int[] node = {0, 0};
-    pq.offer(node);
+    // 3 Dijkstra's
+    dijkstra(graph, src1, weight1);
+    dijkstra(graph, src2, weight2);
+    dijkstra(reverse, dest, weightDest);
+
+    // finds min weight
+    long min = Long.MAX_VALUE;
+    for (int i = 0; i < n; i++) {
+        if (weight1[i] < Long.MAX_VALUE &&
+            weight2[i] < Long.MAX_VALUE &&
+            weightDest[i] < Long.MAX_VALUE) {
+            min = Math.min(min, weight1[i] + weight2[i] + weightDest[i]);
+        }
+    }
+
+    return min == Long.MAX_VALUE ? -1 : min;
+}
+
+private void dijkstra(List<long[]>[] graph, int src, long[] weight) {
+    Queue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[1]));
+    long[] curr = {src, weight[src] = 0};
+    pq.offer(curr);
 
     while (!pq.isEmpty()) {
-        node = pq.poll();
-        int city = node[0], currentTime = node[1];
-        if (currentTime > time[city]) {
+        curr = pq.poll();
+        int node = (int)curr[0];
+        long w = curr[1];
+
+        if (weight[node] < w || graph[node].isEmpty()) {
             continue;
         }
 
-        for (int[] next : graph[city]) {
-            int neighbor = next[0], betweenTime = next[1];
-            if (time[neighbor] > currentTime + betweenTime) {
-                time[neighbor] = currentTime + betweenTime;
-                ways[neighbor] = ways[city];
-                pq.offer(new int[]{neighbor, time[neighbor]});
-            } else if (time[neighbor] == currentTime + betweenTime) {
-                ways[neighbor] = (ways[neighbor] + ways[city]) % MOD;
+        for (var e : graph[node]) {
+            int neighbor = (int)e[0];
+            long neighborW = e[1];
+            if (weight[neighbor] > weight[node] + neighborW) {
+                weight[neighbor] = weight[node] + neighborW;
+                pq.offer(new long[]{neighbor, weight[neighbor]});
             }
         }
     }
-    return ways[n - 1];
 }
 {% endhighlight %}
 
-## Variations
+[Number of Restricted Paths From First to Last Node][number-of-restricted-paths-from-first-to-last-node]
 
-### Cost function
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+private List<int[]>[] graph;
+private int[] dist, memo;
+private int n;
+
+public int countRestrictedPaths(int n, int[][] edges) {
+    this.n = n;
+    this.graph = new List[n + 1];
+    for (int i = 1; i <= n; i++) {
+        graph[i] = new ArrayList<>();
+    }
+
+    // u : {v, weight}
+    for (int[] e : edges) {
+        graph[e[0]].add(new int[]{e[1], e[2]});
+        graph[e[1]].add(new int[]{e[0], e[2]});
+    }
+
+    this.dist = new int[n + 1];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+    int[] curr = new int[]{n, dist[n] = 0};
+    pq.offer(curr);
+
+    while (!pq.isEmpty()) {
+        curr = pq.poll();
+        int node = curr[0], d = curr[1];
+
+        if (dist[curr] < d) {
+            continue;
+        }
+
+        for (int[] next : graph[curr]) {
+            int neighbor = next[0], e = next[1];
+            int alt = dist[curr] + e;
+            if (alt < dist[neighbor]) {
+                pq.offer(new int[]{neighbor, dist[neighbor] = alt});
+            }
+        }
+    }
+
+    this.memo = new int[n + 1];
+    Arrays.fill(memo, -1);
+
+    return dfs(1);
+}
+
+private int dfs(int node) {
+    if (node == n) {
+        return 1;
+    }
+
+    if (memo[node] >= 0) {
+        return memo[node];
+    }
+
+    int count = 0;
+    for (var e : graph[node]) {
+        int neighbor = e[0];
+        // on a restricted path, dist is monotonically decreasing
+        // so there's no cycle
+        if (dist[neighbor] < dist[node]) {
+            count = (count + dfs(neighbor)) % MOD;
+        }
+    }
+
+    return memo[node] = count;
+}
+{% endhighlight %}
+
+## Cost function
 
 Cost function is monotonically increasing/decreasing. The traditional cost function is summation of non-negative weights. The following are cost function variations:
 
@@ -276,44 +364,7 @@ public int minimumEffortPath(int[][] heights) {
 
 [Campus Bikes II][campus-bikes-ii]
 
-### Composite Vertex
-
-[Campus Bikes II][campus-bikes-ii]
-
-{% highlight java %}
-public int assignBikes(int[][] workers, int[][] bikes) {
-    // {worker, bike mask, distance}
-    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
-    pq.offer(new int[]{0, 0, 0});
-
-    Set<String> visited = new HashSet<>();
-    while (!pq.isEmpty()){
-        int[] node = pq.poll();
-        int worker = node[0], mask = node[1], d = node[2];
-
-        if (visited.add(worker + "#" + mask)) {
-            if (worker == workers.length) {
-                return d;
-            }
-
-            for (int i = 0; i < bikes.length; i++) {
-                // i-th bike is available
-                if ((mask & (1 << i)) == 0) {
-                    pq.offer(new int[]{worker + 1, mask | (1 << i), d + distance(workers[worker], bikes[i])});
-                }
-            }
-        }
-
-    }
-    return -1;
-}
-
-private int distance(int[] p1, int[] p2) {
-    return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
-}
-{% endhighlight %}
-
-In this problem, each vertex is composite, i.e. a state that combines multiple variables. Specifically, vertices are constructed layer by layer from `workers[0]` to `workers[n - 1]`, and in the i-th layer, a vertex stands for a certain assignment of bikes to `workers[0...i]`. This solution is very similar to BFS - the only difference is we use a priority queue to find the min dist quickly in each layer.
+## Composite Vertex
 
 [The Maze III][the-maze-iii]
 
@@ -384,7 +435,96 @@ public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
 }
 {% endhighlight %}
 
-### Constraint on Path Length
+[Campus Bikes II][campus-bikes-ii]
+
+{% highlight java %}
+public int assignBikes(int[][] workers, int[][] bikes) {
+    // {worker, bike mask, distance}
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+    pq.offer(new int[]{0, 0, 0});
+
+    Set<String> visited = new HashSet<>();
+    while (!pq.isEmpty()){
+        int[] node = pq.poll();
+        int worker = node[0], mask = node[1], d = node[2];
+
+        if (visited.add(worker + "#" + mask)) {
+            if (worker == workers.length) {
+                return d;
+            }
+
+            for (int i = 0; i < bikes.length; i++) {
+                // i-th bike is available
+                if ((mask & (1 << i)) == 0) {
+                    pq.offer(new int[]{worker + 1, mask | (1 << i), d + distance(workers[worker], bikes[i])});
+                }
+            }
+        }
+
+    }
+    return -1;
+}
+
+private int distance(int[] p1, int[] p2) {
+    return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
+}
+{% endhighlight %}
+
+In this problem, each vertex is composite, i.e. a state that combines multiple variables. Specifically, vertices are constructed layer by layer from `workers[0]` to `workers[n - 1]`, and in the i-th layer, a vertex stands for a certain assignment of bikes to `workers[0...i]`. This solution is very similar to BFS - the only difference is we use a priority queue to find the min dist quickly in each layer.
+
+## More Than One Shortest Path
+
+If there are multiple shortest paths from `source` to `target`, we can track the count with another auxiliary array. See the following problem:
+
+[Number of Ways to Arrive at Destination][number-of-ways-to-arrive-at-destination]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+
+public int countPaths(int n, int[][] roads) {
+    List<int[]>[] graph = new List[n];
+    for (int i = 0; i < n; i++) {
+        graph[i] = new ArrayList<>();
+    }
+
+    for (int[] r : roads) {
+        graph[r[0]].add(new int[]{r[1], r[2]});
+        graph[r[1]].add(new int[]{r[0], r[2]});
+    }
+
+    // time[i]: shortest amount of time from 0 to i so far
+    int[] time = new int[n], ways = new int[n];
+    Arrays.fill(time, Integer.MAX_VALUE);
+
+    // {city, time from 0 to city at the time of enqueue}
+    Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+    int[] curr = {0, time[0] = 0};
+    pq.offer(curr);
+
+    ways[0] = 1;
+    while (!pq.isEmpty()) {
+        curr = pq.poll();
+        int city = curr[0], currentTime = curr[1];
+        if (currentTime > time[city]) {
+            continue;
+        }
+
+        for (int[] next : graph[city]) {
+            int neighbor = next[0], betweenTime = next[1];
+            int alt = currentTime + betweenTime;
+            if (time[neighbor] > alt) {
+                ways[neighbor] = ways[city];
+                pq.offer(new int[]{neighbor, time[neighbor] = alt});
+            } else if (time[neighbor] == currentTime + betweenTime) {
+                ways[neighbor] = (ways[neighbor] + ways[city]) % MOD;
+            }
+        }
+    }
+    return ways[n - 1];
+}
+{% endhighlight %}
+
+## Constrained Dijkstra's
 
 Given upper limit of weight sum, find/count all paths.
 
@@ -439,192 +579,101 @@ public int reachableNodes(int[][] edges, int maxMoves, int n) {
 }
 {% endhighlight %}
 
-[Number of Restricted Paths From First to Last Node][number-of-restricted-paths-from-first-to-last-node]
-
-{% highlight java %}
-private static final int MOD = (int)1e9 + 7;
-private List<int[]>[] graph;
-private int[] dist, memo;
-private int n;
-
-public int countRestrictedPaths(int n, int[][] edges) {
-    this.n = n;
-    this.graph = new List[n + 1];
-    for (int i = 1; i <= n; i++) {
-        graph[i] = new ArrayList<>();
-    }
-
-    // u : {v, weight}
-    for (int[] e : edges) {
-        graph[e[0]].add(new int[]{e[1], e[2]});
-        graph[e[1]].add(new int[]{e[0], e[2]});
-    }
-
-    this.dist = new int[n + 1];
-    Arrays.fill(dist, Integer.MAX_VALUE);
-    dist[n] = 0;
-
-    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
-    int[] node = new int[]{n, 0};
-    pq.offer(node);
-
-    while (!pq.isEmpty()) {
-        node = pq.poll();
-
-        // there's a node in the queue that's processed and more preferred
-        // so this node can be discarded
-        if (dist[node[0]] < node[1]) {
-            continue;
-        }
-
-        for (var e : graph[node[0]]) {
-            int neighbor = e[0];
-            if (dist[node[0]] + e[1] < dist[neighbor]) {
-                dist[neighbor] = dist[node[0]] + e[1];
-                pq.offer(new int[]{neighbor, dist[neighbor]});
-            }
-        }
-    }
-
-    this.memo = new int[n + 1];
-    Arrays.fill(memo, -1);
-
-    return dfs(1);
-}
-
-private int dfs(int node) {
-    if (node == n) {
-        return 1;
-    }
-
-    if (memo[node] >= 0) {
-        return memo[node];
-    }
-
-    int count = 0;
-    for (var e : graph[node]) {
-        int neighbor = e[0];
-        // on the restricted path, dist is monotonically increasing
-        // so there's no cycle
-        if (dist[neighbor] < dist[node]) {
-            count = (count + dfs(neighbor)) % MOD;
-        }
-    }
-
-    return memo[node] = count;
-}
-{% endhighlight %}
-
-[Minimum Weighted Subgraph With the Required Paths][minimum-weighted-subgraph-with-the-required-paths]
-
-{% highlight java %}
-public long minimumWeight(int n, int[][] edges, int src1, int src2, int dest) {
-    List<long[]>[] graph = new List[n], reverse = new List[n];
-
-    for (int i = 0; i < n; i++) {
-        graph[i] = new ArrayList<>();
-        reverse[i] = new ArrayList<>();
-    }
-
-    for (int[] e : edges) {
-        long w = (long) e[2];
-
-        graph[e[0]].add(new long[]{e[1], w});
-        reverse[e[1]].add(new long[]{e[0], w});
-    }
-
-    long[] weight1 = new long[n], weight2 = new long[n], weightDest = new long[n];
-    Arrays.fill(weight1, Long.MAX_VALUE);
-    Arrays.fill(weight2, Long.MAX_VALUE);
-    Arrays.fill(weightDest, Long.MAX_VALUE);
-
-    // 3 Dijkstra's
-    dijkstra(graph, src1, weight1);
-    dijkstra(graph, src2, weight2);
-    dijkstra(reverse, dest, weightDest);
-
-    // finds min weight
-    long min = Long.MAX_VALUE;
-    for (int i = 0; i < n; i++) {
-        if (weight1[i] < Long.MAX_VALUE &&
-            weight2[i] < Long.MAX_VALUE &&
-            weightDest[i] < Long.MAX_VALUE) {
-            min = Math.min(min, weight1[i] + weight2[i] + weightDest[i]);
-        }
-    }
-
-    return min == Long.MAX_VALUE ? -1 : min;
-}
-
-private void dijkstra(List<long[]>[] graph, int src, long[] weight) {
-    Queue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[1]));
-
-    pq.offer(new long[]{src, weight[src] = 0});
-
-    while (!pq.isEmpty()) {
-        long[] curr = pq.poll();
-        int node = (int)curr[0];
-        long w = curr[1];
-
-        if (weight[node] < w || graph[node].isEmpty()) {
-            continue;
-        }
-
-        for (var e : graph[node]) {
-            int neighbor = (int)e[0];
-            long neighborW = e[1];
-            if (weight[neighbor] > weight[node] + neighborW) {
-                weight[neighbor] = weight[node] + neighborW;
-                pq.offer(new long[]{neighbor, weight[neighbor]});
-            }
-        }
-    }
-}
-{% endhighlight %}
-
-## Multiple Constraints
-
 [Cheapest Flights Within K Stops][cheapest-flights-within-k-stops]
 
 {% highlight java %}
 public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-    // buils graph
+    // builds graph
     int[][] graph = new int[n][n];
     for (int[] f : flights) {
         graph[f[0]][f[1]] = f[2];
     }
 
-    // Dijkstra
-    // the stops of visited node
-    int[] visited = new int[n];
-    Arrays.fill(visited, Integer.MAX_VALUE);
+    int[] prices = new int[n], stops = new int[n];
+    Arrays.fill(prices, Integer.MAX_VALUE);
+    Arrays.fill(stops, Integer.MAX_VALUE);
 
-    int[] node = {src, 0, 0};  // city, price, stops
+    // {city, prices, stops}
     Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
-    pq.offer(node);
+    int[] curr = {src, prices[src] = 0, stops[src] = 0};
+    pq.offer(curr);
 
     while (!pq.isEmpty()) {
-        node = pq.poll();
-        int city = node[0], cost = node[1], stops = node[2];
-        visited[city] = stops;
+        curr = pq.poll();
+        int city = curr[0], p = curr[1], s = curr[2];
 
         if (city == dst) {
-            return cost;
+            return p;
         }
 
-        if (stops <= k) {
-            for (int neighbor = 0; neighbor < n; neighbor++) {
-                // visited nodes should have more stops than current
-                // otherwise, that visited node is a better candidate of the current one
-                if (graph[city][neighbor] > 0 && visited[neighbor] > stops) {
-                    pq.offer(new int[]{neighbor, cost + graph[city][neighbor], stops + 1});
+        for (int neighbor = 0; neighbor < n; neighbor++) {
+            if (graph[city][neighbor] > 0 && s <= k) {
+                int alt = p + graph[city][neighbor];
+                if (alt < prices[neighbor]) {
+                    pq.offer(new int[]{neighbor, prices[neighbor] = alt, stops[neighbor] = s + 1});
+                } else if (s + 1 < stops[neighbor]) {
+                    pq.offer(new int[]{neighbor, alt, s + 1});
                 }
             }
         }
     }
-    return -1;
+
+    return prices[dst] == Integer.MAX_VALUE ? -1 : prices[dst];
 }
 {% endhighlight %}
+
+[Minimum Cost to Reach Destination in Time][minimum-cost-to-reach-destination-in-time]
+
+{% highlight java %}
+public int minCost(int maxTime, int[][] edges, int[] passingFees) {
+    // builds graph
+    int n = passingFees.length;
+    List<int[]>[] graph = new List[n];
+    for (int i = 0; i < n; i++) {
+        graph[i] = new ArrayList<>();
+    }
+    for (int[] e : edges) {
+        graph[e[0]].add(new int[]{e[1], e[2]});
+        graph[e[1]].add(new int[]{e[0], e[2]});
+    }
+
+    int[] costs = new int[n], times = new int[n];        
+    Arrays.fill(costs, Integer.MAX_VALUE);
+    Arrays.fill(times, Integer.MAX_VALUE);
+
+    // {city, cost, time}
+    Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] == b[1] ? a[2] - b[2] : a[1] - b[1]);
+    int[] curr = {0, costs[0] = passingFees[0], times[0] = 0};
+    pq.offer(curr);
+
+    while (!pq.isEmpty()) {
+        curr = pq.poll();
+        int city = curr[0], cost = curr[1], time = curr[2];
+
+        if (city == n - 1) {
+            return cost;
+        }
+
+        for (int[] next : graph[city]) {
+            int neighbor = next[0];
+            int altTime = time + next[1];
+
+            if (altTime <= maxTime) {
+                int altCost = cost + passingFees[neighbor];
+                if (altCost < costs[neighbor]) {
+                    pq.offer(new int[]{neighbor, costs[neighbor] = altCost, times[neighbor] = altTime});
+                } else if (altTime < times[neighbor]) {
+                    pq.offer(new int[]{neighbor, altCost, times[neighbor] = altTime});
+                }
+            }
+        }
+    }
+
+    return costs[n - 1] == Integer.MAX_VALUE ? -1 : costs[n - 1];
+}
+{% endhighlight %}
+
+## Dijkstra's + DP
 
 [Minimum Cost to Reach City With Discounts][minimum-cost-to-reach-city-with-discounts]
 
@@ -640,89 +689,46 @@ public int minimumCost(int n, int[][] highways, int discounts) {
         graph[h[1]].add(new int[]{h[0], h[2]});
     }
 
-    // Dijkstra
+    // Dijkstra + DP
     // visited[i][j]: min cost of visited city i with j discounts
     int[][] visited = new int[n][discounts + 1];
     for (int i = 0; i < n; i++) {
         Arrays.fill(visited[i], Integer.MAX_VALUE);
     }
-    visited[0][0] = 0;
 
-    int[] node = {0, 0, 0};  // city, cost, discount
-    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
-    pq.offer(node);
+    // {city, usedDiscount, cost}
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+    int[] curr = {0, 0, visited[0][0] = 0};
+    pq.offer(curr);
 
     while (!pq.isEmpty()) {
-        node = pq.poll();
-        int city = node[0], cost = node[1], discount = node[2];
+        curr = pq.poll();
+        int city = curr[0], d = curr[1], cost = curr[2];
+
+        if (visited[city][d] < cost) {
+            continue;
+        }
 
         if (city == n - 1) {
             return cost;
         }
 
         for (int[] next : graph[city]) {
-            int neighbor = next[0], weight = next[1];
+            int neighbor = next[0], toll = next[1];
             // doesn't use discount
-            if (cost + weight < visited[neighbor][discount]) {
-                pq.offer(new int[]{neighbor, visited[neighbor][discount] = cost + weight, discount});
+            int alt = cost + toll;
+            if (alt < visited[neighbor][d]) {
+                pq.offer(new int[]{neighbor, d, visited[neighbor][d] = alt});
             }
 
             // uses discount
-            if (discount < discounts && cost + weight / 2 < visited[neighbor][discount + 1]) {
-                pq.offer(new int[]{neighbor, visited[neighbor][discount + 1] = cost + weight / 2, discount + 1});
+            alt = cost + toll / 2;
+            if (d < discounts && alt < visited[neighbor][d + 1]) {
+                pq.offer(new int[]{neighbor, d + 1, visited[neighbor][d + 1] = alt});
             }
         }
     }
     return -1;
-}
-{% endhighlight %}
-
-[Minimum Cost to Reach Destination in Time][minimum-cost-to-reach-destination-in-time]
-
-{% highlight java %}
-public int minCost(int maxTime, int[][] edges, int[] passingFees) {
-    // {city : {neighbor, time}}
-    Map<Integer, List<int[]>> graph = new HashMap<>();
-    for (int[] e : edges) {
-        graph.computeIfAbsent(e[0], k -> new ArrayList<>()).add(new int[]{e[1], e[2]});
-        graph.computeIfAbsent(e[1], k -> new ArrayList<>()).add(new int[]{e[0], e[2]});
-    }
-
-    int n = passingFees.length;
-    int[] costs = new int[n], times = new int[n];
-    Arrays.fill(costs, Integer.MAX_VALUE);
-    costs[0] = passingFees[0];
-
-    Arrays.fill(times, Integer.MAX_VALUE);
-    times[0] = 0;
-
-    // {city, cost, time}
-    Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] == b[1] ? a[2] - b[2] : a[1] - b[1]);
-    pq.add(new int[]{0, costs[0], times[0]});
-
-    while (!pq.isEmpty()) {
-        int[] node = pq.poll();
-        int city = node[0], cost = node[1], time = node[2];
-
-        if (city == n - 1) {
-            return cost;
-        }
-
-        for (int[] neighborNode : graph.get(city)) {
-            int neighbor = neighborNode[0];
-            int neighborCost = passingFees[neighbor], neighborTime = neighborNode[1];
-
-            if (time + neighborTime <= maxTime) {
-                // if cost will decrease or time will decrease
-                if (cost + neighborCost < costs[neighbor] || time + neighborTime < times[neighbor]) {
-                    costs[neighbor] = Math.min(costs[neighbor], cost + neighborCost);
-                    pq.offer(new int[]{neighbor, cost + neighborCost, times[neighbor] = time + neighborTime});
-                }
-            }
-        }
-    }
-
-    return costs[n - 1] == Integer.MAX_VALUE ? -1 : costs[n - 1];
 }
 {% endhighlight %}
 

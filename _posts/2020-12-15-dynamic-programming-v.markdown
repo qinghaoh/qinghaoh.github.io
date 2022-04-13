@@ -5,9 +5,107 @@ tag: dynamic programming
 ---
 # At i
 
-[Paint Fence][paint-fence]
+[Wiggle Subsequence][wiggle-subsequence]
 
-![Paint Fence](/assets/paint_fence.png)
+{% highlight java %}
+public int wiggleMaxLength(int[] nums) {
+    // max wiggle sequence length so far at index i
+    int up = 1, down = 1;
+    for (int i = 1; i < nums.length; i++) {
+        if (nums[i] > nums[i - 1]) {
+            up = down + 1;
+        } else if (nums[i] < nums[i - 1]) {
+            down = up + 1;
+        }
+    }
+    return Math.max(up, down);
+}
+{% endhighlight %}
+
+[Flip String to Monotone Increasing][flip-string-to-monotone-increasing]
+
+{% highlight java %}
+public int minFlipsMonoIncr(String s) {
+    // count of 1's and flips so far
+    // to make [0...i] monotone increasing
+    int ones = 0, flips = 0;
+    for (char ch : s.toCharArray()) {
+        if (ch == '1') {
+            // no need to flip
+            ones++;
+        } else {
+            // keeps current number as 0, and flips all preceding 1's
+            // or flips the current 0 to 1
+            flips = Math.min(ones, flips + 1);
+        }
+    }
+    return flips;
+}
+{% endhighlight %}
+
+Similar: [Minimum Deletions to Make String Balanced][minimum-deletions-to-make-string-balanced]
+
+## Adjacency Model
+
+Current element depends on or affect adjacent elements.
+
+### Linear
+
+[House Robber][house-robber]
+
+{% highlight java %}
+public int rob(int[] nums) {
+    int n = nums.length;
+    int[] dp = new int[n + 1];
+    dp[1] = nums[0];
+    for (int i = 1; i < n; i++) {
+        // dp[i] = max(dpRob[i], dpSkip[i])
+        //       = max(dpRob[i], dp[i - 1])
+        //       = max(dpSkip[i - 1] + curr, dp[i - 1])
+        //       = max(dp[i - 2] + curr, dp[i - 1])
+        dp[i + 1] = Math.max(dp[i], dp[i - 1] + nums[i]);
+    }
+    return dp[n];
+}
+{% endhighlight %}
+
+Reduced to 0D:
+
+{% highlight java %}
+public int rob(int[] nums) {
+    int prev = 0, curr = 0;
+    for (int num : nums) {
+        int tmp = curr;
+        curr = Math.max(curr, prev + num);
+        prev = tmp;
+    }
+    return curr;
+}
+{% endhighlight %}
+
+[Delete and Earn][delete-and-earn]
+
+{% highlight java %}
+private static final int MAX_NUM = (int)1e4;
+
+public int deleteAndEarn(int[] nums) {
+    int[] sum = new int[MAX_NUM + 1];
+    for (int num : nums) {
+        sum[num] += num;
+    }
+
+    // to take or skip the prev bucket value
+    int take = 0, skip = 0;
+    for (int s : sum) {
+        int tmp = skip;
+        skip = Math.max(skip, take);
+        take = tmp + s;
+    }
+    return Math.max(take, skip);
+}
+{% endhighlight %}
+
+[Paint Fence][paint-fence]
 
 {% highlight java %}
 public int numWays(int n, int k) {
@@ -23,6 +121,10 @@ public int numWays(int n, int k) {
     dp[2] = k * k;
 
     for (int i = 3; i <= n; i++) {
+        // dp[i] = dpSameAsPrev[i] + dpDiffFromPrev[i]
+        //       = dpSameAsPrev[i] + dp[i - 1] * (k - 1)
+        //       = dpDiffFromPrev[i - 1] + dp[i - 1] * (k - 1)
+        //       = dp[i - 2] * (k - 1) + dp[i - 1] * (k - 1)
         dp[i] = (dp[i - 1] + dp[i - 2]) * (k - 1);
     }
     return dp[n];
@@ -50,42 +152,21 @@ public int numWays(int n, int k) {
 }
 {% endhighlight %}
 
-[House Robber][house-robber]
-
-{% highlight java %}
-public int rob(int[] nums) {
-    int n = nums.length;
-    int[] dp = new int[n + 1];
-    dp[1] = nums[0];
-    for (int i = 1; i < n; i++) {
-        dp[i + 1] = Math.max(dp[i], dp[i - 1] + nums[i]);
-    }       
-    return dp[n];
-}
-{% endhighlight %}
-
-Reduced to 0D:
-
-{% highlight java %}
-public int rob(int[] nums) {
-    int prev = 0, curr = 0;
-    for (int num : nums) {
-        int tmp = curr;
-        curr = Math.max(curr, prev + num);
-        prev = tmp;
-    }
-    return curr;
-}
-{% endhighlight %}
+### Circular
 
 [House Robber II][house-robber-ii]
 
 {% highlight java %}
 public int rob(int[] nums) {
-    if (nums.length == 1) {
+    int n = nums.length;
+    if (n == 1) {
         return nums[0];
     }
-    return Math.max(rob(nums, 0, nums.length - 1), rob(nums, 1, nums.length));
+    // house[0] and house[n - 1] can't be robbed together, so it can be divided into two subproblems:
+    // - nums[0...(n - 2)]
+    // - nums[1...(n - 1)]
+    // (break the chain!)
+    return Math.max(rob(nums, 0, n - 1), rob(nums, 1, n));
 }
 
 // 198. House Robber
@@ -136,67 +217,6 @@ private int maxSizeSlices(int[] slices, int n) {
     return dp[m][n];
 }
 {% endhighlight %}
-
-[Delete and Earn][delete-and-earn]
-
-{% highlight java %}
-public int deleteAndEarn(int[] nums) {
-    int[] sum = new int[10001];
-    for (int num : nums) {
-        sum[num] += num;
-    }
-
-    int take = 0, skip = 0;
-    for (int s : sum) {
-        int tmp = skip;
-        skip = Math.max(skip, take);
-        take = tmp + s;
-    }
-    return Math.max(take, skip);
-}
-{% endhighlight %}
-
-[Wiggle Subsequence][wiggle-subsequence]
-
-{% highlight java %}
-public int wiggleMaxLength(int[] nums) {
-    // max wiggle sequence length so far at index i
-    int up = 1, down = 1;
-    for (int i = 1; i < nums.length; i++) {
-        if (nums[i] > nums[i - 1]) {
-            up = down + 1;
-        } else if (nums[i] < nums[i - 1]) {
-            down = up + 1;
-        }
-    }
-    return Math.max(up, down);
-}
-{% endhighlight %}
-
-[Flip String to Monotone Increasing][flip-string-to-monotone-increasing]
-
-{% highlight java %}
-public int minFlipsMonoIncr(String s) {
-    // count of '1's and flips so far
-    // to make [0...i] monotone increasing
-    int one = 0, flip = 0;
-    for (int i = 0; i < s.length(); i++) {
-        // [0...i] is monotone increasing
-        if (s.charAt(i) == '1') {
-            one++;
-        } else {
-            flip++;
-        }
-
-        // either flips all '1's
-        // or keeps as is
-        flip = Math.min(one, flip);
-    }
-    return flip;
-}
-{% endhighlight %}
-
-Similar: [Minimum Deletions to Make String Balanced][minimum-deletions-to-make-string-balanced]
 
 [Number of Sets of K Non-Overlapping Line Segments][number-of-sets-of-k-non-overlapping-line-segments]
 
