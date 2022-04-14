@@ -1,53 +1,69 @@
 ---
 layout: post
-title:  "Dynamic Programming V"
+title:  "Dynamic Programming (Linear Scan)"
 tag: dynamic programming
 ---
-# At i
 
-[Wiggle Subsequence][wiggle-subsequence]
+In this type of problem, we linear scan the elements one by one, and use `dp[i]` to store the state at a certain position. The DP array (1D) can usually be reduced to a DP variable (0D).
+
+# Single DP Variable
+
+[Decode Ways][decode-ways]
 
 {% highlight java %}
-public int wiggleMaxLength(int[] nums) {
-    // max wiggle sequence length so far at index i
-    int up = 1, down = 1;
-    for (int i = 1; i < nums.length; i++) {
-        if (nums[i] > nums[i - 1]) {
-            up = down + 1;
-        } else if (nums[i] < nums[i - 1]) {
-            down = up + 1;
+public int numDecodings(String s) {
+    int n = s.length();
+    // dp[i]: number of ways ending at s[i]
+    int[] dp = new int[n + 1];
+    dp[0] = s.charAt(0) == '0' ? 0 : 1;
+
+    for (int i = 1; i < n; i++) {
+        // one digit
+        if (s.charAt(i) != '0') {
+            dp[i] += dp[i - 1];
+        }
+
+        // two digits
+        int twoDigits = Integer.valueOf(s.substring(i - 1, i + 1));
+        if (twoDigits >= 10 && twoDigits <= 26) {
+            dp[i] += i == 1 ? 1 : dp[i - 2];
         }
     }
-    return Math.max(up, down);
+
+    return dp[n - 1];
 }
 {% endhighlight %}
 
-[Flip String to Monotone Increasing][flip-string-to-monotone-increasing]
+Reduced to 1D:
 
 {% highlight java %}
-public int minFlipsMonoIncr(String s) {
-    // count of 1's and flips so far
-    // to make [0...i] monotone increasing
-    int ones = 0, flips = 0;
-    for (char ch : s.toCharArray()) {
-        if (ch == '1') {
-            // no need to flip
-            ones++;
-        } else {
-            // keeps current number as 0, and flips all preceding 1's
-            // or flips the current 0 to 1
-            flips = Math.min(ones, flips + 1);
-        }
+public int numDecodings(String s) {
+    if (s.charAt(0) == '0') {
+        return 0;
     }
-    return flips;
+
+    int oneBack = 1, twoBack = 1;
+    for (int i = 1; i < s.length(); i++) {
+        int curr = 0;
+        if (s.charAt(i) != '0') {
+            curr = oneBack;
+        }
+
+        int twoDigits = Integer.parseInt(s.substring(i - 1, i + 1));
+        if (twoDigits >= 10 && twoDigits <= 26) {
+            curr += twoBack;
+        }
+
+        twoBack = oneBack;
+        oneBack = curr;
+    }
+    return oneBack;
 }
 {% endhighlight %}
 
-Similar: [Minimum Deletions to Make String Balanced][minimum-deletions-to-make-string-balanced]
+## Adjacency Model (House Robber)
 
-## Adjacency Model
-
-Current element depends on or affect adjacent elements.
+In this model, at each position there are multiple choices (e.g. to skip or rob). Current `dp[i]` depends on or affects adjacent elements `dp[i + k]`, `k = ..., -2, -1, ..., 1, 2, ...`. With a linear scan from left to right, we don't need to care about neighbors on the right (`k > 0`), because they have been equivalently included when we deal with their counterparts on the left (`-k`). The key is to find the recursive formula.
 
 ### Linear
 
@@ -152,6 +168,30 @@ public int numWays(int n, int k) {
 }
 {% endhighlight %}
 
+Two dimensional fence painting problem:
+
+[Number of Ways to Paint N × 3 Grid][number-of-ways-to-paint-n-3-grid]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+
+public int numOfWays(int n) {
+    // pattern 1: aba
+    // pattern 2: abc
+    // next level:
+    // - ryr -> yry, yrg, ygy, gry, grg (3 aba, 2 abc)
+    // - ryg -> yry, ygr, ygy, gry (2 aba, 2 abc)
+    long prev1 = 6, prev2 = 6, curr1 = 0, curr2 = 0;
+    for (int i = 1; i < n; i++) {
+        curr1 = prev1 * 3 + prev2 * 2;
+        curr2 = prev1 * 2 + prev2 * 2;
+        prev1 = curr1 % MOD;
+        prev2 = curr2 % MOD;
+    }
+    return (int)((prev1 + prev2) % MOD);
+}
+{% endhighlight %}
+
 ### Circular
 
 [House Robber II][house-robber-ii]
@@ -180,6 +220,50 @@ private int rob(int[] nums, int start, int end) {
     return curr;
 }
 {% endhighlight %}
+
+# Multiple DP Variables
+
+In this model, there are multiple choices at the current position, and we assign each choice a dp variable, which essentially is a 0-dimensional dp array. Then we find the relations between the dp variables.
+
+[Wiggle Subsequence][wiggle-subsequence]
+
+{% highlight java %}
+public int wiggleMaxLength(int[] nums) {
+    // max wiggle sequence length so far at index i
+    int up = 1, down = 1;
+    for (int i = 1; i < nums.length; i++) {
+        if (nums[i] > nums[i - 1]) {
+            up = down + 1;
+        } else if (nums[i] < nums[i - 1]) {
+            down = up + 1;
+        }
+    }
+    return Math.max(up, down);
+}
+{% endhighlight %}
+
+[Flip String to Monotone Increasing][flip-string-to-monotone-increasing]
+
+{% highlight java %}
+public int minFlipsMonoIncr(String s) {
+    // count of 1's and flips so far
+    // to make [0...i] monotone increasing
+    int ones = 0, flips = 0;
+    for (char ch : s.toCharArray()) {
+        if (ch == '1') {
+            // no need to flip
+            ones++;
+        } else {
+            // keeps current number as 0, and flips all preceding 1's
+            // or flips the current 0 to 1
+            flips = Math.min(ones, flips + 1);
+        }
+    }
+    return flips;
+}
+{% endhighlight %}
+
+Similar: [Minimum Deletions to Make String Balanced][minimum-deletions-to-make-string-balanced]
 
 [Pizza With 3n Slices][pizza-with-3n-slices]
 
@@ -241,87 +325,6 @@ public int numberOfSets(int n, int k) {
     }
 
     return (dp[0][0][k] + dp[1][0][k]) % MOD;
-}
-{% endhighlight %}
-
-[Decode Ways][decode-ways]
-
-{% highlight java %}
-public int numDecodings(String s) {
-    int n = s.length();
-    // dp[i]: number of ways ending at s[i - 1]
-    int[] dp = new int[n + 1];
-    dp[0] = 1;
-    dp[1] = s.charAt(0) == '0' ? 0 : 1;
-
-    for (int i = 2; i < dp.length; i++) {
-        // one digit
-        if (s.charAt(i - 1) != '0') {
-            dp[i] += dp[i - 1];
-        }
-
-        // two digits
-        int twoDigits = Integer.valueOf(s.substring(i - 2, i));
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            dp[i] += dp[i - 2];
-        }
-    }
-
-    return dp[n];
-}
-{% endhighlight %}
-
-Reduced to 1D:
-
-{% highlight java %}
-public int numDecodings(String s) {
-    if (s.charAt(0) == '0') {
-        return 0;
-    }
-
-    int oneBack = 1, twoBack = 1;
-    for (int i = 1; i < s.length(); i++) {
-        int curr = 0;
-        if (s.charAt(i) != '0') {
-            curr = oneBack;
-        }
-
-        int twoDigits = Integer.parseInt(s.substring(i - 1, i + 1));
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            curr += twoBack;
-        }
-
-        twoBack = oneBack;
-        oneBack = curr;
-    }
-    return oneBack;
-}
-{% endhighlight %}
-
-[Number of Ways to Paint N × 3 Grid][number-of-ways-to-paint-n-3-grid]
-
-{% highlight java %}
-public int numDecodings(String s) {
-    if (s.charAt(0) == '0') {
-        return 0;
-    }
-
-    int oneBack = 1, twoBack = 1;
-    for (int i = 1; i < s.length(); i++) {
-        int curr = 0;
-        if (s.charAt(i) != '0') {
-            curr = oneBack;
-        }
-
-        int twoDigits = Integer.parseInt(s.substring(i - 1, i + 1));
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            curr += twoBack;
-        }
-
-        twoBack = oneBack;
-        oneBack = curr;
-    }
-    return oneBack;
 }
 {% endhighlight %}
 
