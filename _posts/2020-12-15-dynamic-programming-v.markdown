@@ -8,59 +8,6 @@ In this type of problem, we linear scan the elements one by one, and use `dp[i]`
 
 # Single DP Variable
 
-[Decode Ways][decode-ways]
-
-{% highlight java %}
-public int numDecodings(String s) {
-    int n = s.length();
-    // dp[i]: number of ways ending at s[i]
-    int[] dp = new int[n + 1];
-    dp[0] = s.charAt(0) == '0' ? 0 : 1;
-
-    for (int i = 1; i < n; i++) {
-        // one digit
-        if (s.charAt(i) != '0') {
-            dp[i] += dp[i - 1];
-        }
-
-        // two digits
-        int twoDigits = Integer.valueOf(s.substring(i - 1, i + 1));
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            dp[i] += i == 1 ? 1 : dp[i - 2];
-        }
-    }
-
-    return dp[n - 1];
-}
-{% endhighlight %}
-
-Reduced to 1D:
-
-{% highlight java %}
-public int numDecodings(String s) {
-    if (s.charAt(0) == '0') {
-        return 0;
-    }
-
-    int oneBack = 1, twoBack = 1;
-    for (int i = 1; i < s.length(); i++) {
-        int curr = 0;
-        if (s.charAt(i) != '0') {
-            curr = oneBack;
-        }
-
-        int twoDigits = Integer.parseInt(s.substring(i - 1, i + 1));
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            curr += twoBack;
-        }
-
-        twoBack = oneBack;
-        oneBack = curr;
-    }
-    return oneBack;
-}
-{% endhighlight %}
-
 ## Adjacency Model (House Robber)
 
 In this model, at each position there are multiple choices (e.g. to skip or rob). Current `dp[i]` depends on or affects adjacent elements `dp[i + k]`, `k = ..., -2, -1, ..., 1, 2, ...`. With a linear scan from left to right, we don't need to care about neighbors on the right (`k > 0`), because they have been equivalently included when we deal with their counterparts on the left (`-k`). The key is to find the recursive formula.
@@ -96,28 +43,6 @@ public int rob(int[] nums) {
         prev = tmp;
     }
     return curr;
-}
-{% endhighlight %}
-
-[Delete and Earn][delete-and-earn]
-
-{% highlight java %}
-private static final int MAX_NUM = (int)1e4;
-
-public int deleteAndEarn(int[] nums) {
-    int[] sum = new int[MAX_NUM + 1];
-    for (int num : nums) {
-        sum[num] += num;
-    }
-
-    // to take or skip the prev bucket value
-    int take = 0, skip = 0;
-    for (int s : sum) {
-        int tmp = skip;
-        skip = Math.max(skip, take);
-        take = tmp + s;
-    }
-    return Math.max(take, skip);
 }
 {% endhighlight %}
 
@@ -192,6 +117,118 @@ public int numOfWays(int n) {
 }
 {% endhighlight %}
 
+[Decode Ways][decode-ways]
+
+{% highlight java %}
+public int numDecodings(String s) {
+    int n = s.length();
+    // dp[i]: number of ways ending at s[i]
+    int[] dp = new int[n + 1];
+    dp[0] = s.charAt(0) == '0' ? 0 : 1;
+
+    for (int i = 1; i < n; i++) {
+        // one digit
+        if (s.charAt(i) != '0') {
+            dp[i] += dp[i - 1];
+        }
+
+        // two digits
+        int twoDigits = Integer.valueOf(s.substring(i - 1, i + 1));
+        if (twoDigits >= 10 && twoDigits <= 26) {
+            dp[i] += i == 1 ? 1 : dp[i - 2];
+        }
+    }
+
+    return dp[n - 1];
+}
+{% endhighlight %}
+
+Reduced to 1D:
+
+{% highlight java %}
+public int numDecodings(String s) {
+    if (s.charAt(0) == '0') {
+        return 0;
+    }
+
+    int oneBack = 1, twoBack = 1;
+    for (int i = 1; i < s.length(); i++) {
+        int curr = 0;
+        if (s.charAt(i) != '0') {
+            curr = oneBack;
+        }
+
+        int twoDigits = Integer.parseInt(s.substring(i - 1, i + 1));
+        if (twoDigits >= 10 && twoDigits <= 26) {
+            curr += twoBack;
+        }
+
+        twoBack = oneBack;
+        oneBack = curr;
+    }
+    return oneBack;
+}
+{% endhighlight %}
+
+**2D**
+
+[Number of Ways to Stay in the Same Place After Some Steps][number-of-ways-to-stay-in-the-same-place-after-some-steps]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+
+public int numWays(int steps, int arrLen) {
+    // updates arrLen
+    arrLen = Math.min(arrLen, steps / 2 + 1);
+
+    // dp[i][j]: number of ways to back index i to index 0 using exactly j steps
+    int[][] dp = new int[arrLen][steps + 1];
+    dp[0][0] = 1;
+
+    int ways = 0;
+    for (int j = 0; j < steps; j++) {
+        for (int i = 0; i < arrLen; i++) {
+            dp[i][j + 1] = dp[i][j];
+            if (i > 0) {
+                dp[i][j + 1] = (dp[i][j + 1] + dp[i - 1][j]) % MOD;
+            }
+            if (i < arrLen - 1) {
+                dp[i][j + 1] = (dp[i][j + 1] + dp[i + 1][j]) % MOD;
+            }
+        }
+    }
+    return dp[0][steps];
+}
+{% endhighlight %}
+
+Reduced to 1D
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+
+public int numWays(int steps, int arrLen) {
+    // updates arrLen
+    arrLen = Math.min(arrLen, steps / 2 + 1);
+
+    // dp[i]: number of ways to back index i to index 0
+    int[] dp = new int[arrLen];
+    dp[0] = 1;
+
+    int[] tmp = new int[arrLen];
+    for (int j = 0; j < steps; j++) {
+        System.arraycopy(dp, 0, tmp, 0, arrLen);
+        for (int i = 0; i < arrLen; i++) {
+            if (i > 0) {
+                dp[i] = (dp[i] + tmp[i - 1]) % MOD;
+            }
+            if (i < arrLen - 1) {
+                dp[i] = (dp[i] + tmp[i + 1]) % MOD;
+            }
+        }
+    }
+    return dp[0];
+}
+{% endhighlight %}
+
 ### Circular
 
 [House Robber II][house-robber-ii]
@@ -218,6 +255,42 @@ private int rob(int[] nums, int start, int end) {
         prev = tmp;
     }
     return curr;
+}
+{% endhighlight %}
+
+**2D**
+
+[Pizza With 3n Slices][pizza-with-3n-slices]
+
+{% highlight java %}
+public int maxSizeSlices(int[] slices) {
+    int m = slices.length;
+
+    // picks n non-adjacent elements from circular array 3n
+    // slices[0] and slices[m - 1] can't be chosen at the same time
+    return Math.max(maxSizeSlices(slices, 0, m - 1), maxSizeSlices(slices, 1, m));
+}
+
+private int maxSizeSlices(int[] slices, int start, int end) {
+    int m = slices.length, n = m / 3;
+    // dp[i][j]: maximum sum of j elements from slices[start...(start + i)]
+    int[][] dp = new int[m][n + 1];
+
+    // dp[i][0] = 0
+    for (int i = start; i < end; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (i == start) {
+                // slices has only one element
+                dp[i][j] = slices[i];
+            } else if (i == start + 1) {
+                dp[i][j] = Math.max(slices[i - 1], slices[i]);
+            } else {
+                // skips or picks slices[i]
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i - 2][j - 1] + slices[i]);
+            }
+        }
+    }
+    return dp[end - 1][n];
 }
 {% endhighlight %}
 
@@ -265,40 +338,25 @@ public int minFlipsMonoIncr(String s) {
 
 Similar: [Minimum Deletions to Make String Balanced][minimum-deletions-to-make-string-balanced]
 
-[Pizza With 3n Slices][pizza-with-3n-slices]
+[Delete and Earn][delete-and-earn]
 
 {% highlight java %}
-public int maxSizeSlices(int[] slices) {
-    int m = slices.length, n = m / 3;
+private static final int MAX_NUM = (int)1e4;
 
-    // picks n non-adjacent elements from circular array 3n
-    // slices[0] and slices[m - 1] can't be chosen at the same time
-    int[] slices1 = Arrays.copyOfRange(slices, 0, m - 1);
-    int[] slices2 = Arrays.copyOfRange(slices, 1, m);
-
-    return Math.max(maxSizeSlices(slices1, n), maxSizeSlices(slices2, n));
-}
-
-private int maxSizeSlices(int[] slices, int n) {
-    int m = slices.length;
-    // dp[i][j]: maximum sum of j elements from slices[0...(i - 1)]
-    int[][] dp = new int[m + 1][n + 1];
-
-    // dp[i][0] = 0
-    // dp[0][j] = 0
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (i == 1) {
-                // slices has only one element
-                dp[i][j] = slices[0];
-            } else {
-                // skips slices[i - 1]
-                // or picks slices[i - 1]
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i - 2][j - 1] + slices[i - 1]);
-            }
-        }
+public int deleteAndEarn(int[] nums) {
+    int[] sum = new int[MAX_NUM + 1];
+    for (int num : nums) {
+        sum[num] += num;
     }
-    return dp[m][n];
+
+    // to take or skip the prev bucket value
+    int take = 0, skip = 0;
+    for (int s : sum) {
+        int tmp = skip;
+        skip = Math.max(skip, take);
+        take = tmp + s;
+    }
+    return Math.max(take, skip);
 }
 {% endhighlight %}
 
@@ -431,14 +489,6 @@ public int minCostII(int[][] costs) {
 
     return min1;
 }
-{% endhighlight %}
-
-[Number of Ways to Stay in the Same Place After Some Steps][number-of-ways-to-stay-in-the-same-place-after-some-steps]
-
-{% highlight java %}
-int[][] dp = new int[arrLen][steps];
-// reduced to 1D
-int[] dp = new int[arrLen];
 {% endhighlight %}
 
 [Number of Ways to Form a Target String Given a Dictionary][number-of-ways-to-form-a-target-string-given-a-dictionary]

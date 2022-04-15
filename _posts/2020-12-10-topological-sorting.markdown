@@ -7,25 +7,32 @@ usemathjax: true
 
 [Topological sorting](https://en.wikipedia.org/wiki/Topological_sorting): In computer science, a topological sort or topological ordering of a directed graph is a linear ordering of its vertices such that for every directed edge `uv` from vertex `u` to vertex `v`, `u` comes before `v` in the ordering.
 
-# Kahn's Algorithm
+# Algorithms
+
+## Kahn's Algorithm
+
+**Directed Graph**
 
 [Course Schedule II][course-schedule-ii]
 
 {% highlight java %}
 // Kahn's algorithm
 public int[] findOrder(int numCourses, int[][] prerequisites) {
-    Map<Integer, List<Integer>> graph = new HashMap<>();
-    int[] indegree = new int[numCourses];
+    List<Integer>[] graph = new List[numCourses];
+    for (int i = 0; i < numCourses; i++) {
+        graph[i] = new ArrayList<>();
+    }
 
+    int[] indegree = new int[numCourses];
     for (int[] p : prerequisites) {
-        graph.computeIfAbsent(p[1], k -> new ArrayList<>()).add(p[0]);
-        indegree[p[0]]++;
+        graph[p[1]].add(p[0]);
+        indegrees[p[0]]++;
     }
 
     // zero indegree
     Queue<Integer> q = new LinkedList<>();
     for (int i = 0; i < numCourses; i++) {
-        if (indegree[i] == 0) {
+        if (indegrees[i] == 0) {
             q.offer(i);
         }
     }
@@ -34,11 +41,9 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
     int count = 0;
     while (!q.isEmpty()) {
         int course = q.poll();
-        if (graph.containsKey(course)) {
-            for (int neighbor : graph.get(course)) {
-                if (--indegree[neighbor] == 0) {
-                    q.offer(neighbor);
-                }
+        for (int neighbor : graph[course]) {
+            if (--indegrees[neighbor] == 0) {
+                q.offer(neighbor);
             }
         }
         order[count++] = course;
@@ -48,72 +53,32 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 }
 {% endhighlight %}
 
-[Parallel Courses III][parallel-courses-iii]
-
-{% highlight java %}
-public int minimumTime(int n, int[][] relations, int[] time) {
-    int[] indegree = new int[n + 1];
-    List<Integer>[] graph = new List[n + 1];
-    for (int i = 0; i <= n; i++) {
-        graph[i] = new ArrayList<>();
-    }
-    for (int[] r : relations) {
-        graph[r[0]].add(r[1]);
-        indegree[r[1]]++;
-    }
-
-    // minimum time to reach this node
-    int[] cost = new int[n + 1];
-    Queue<Integer> q = new LinkedList<>();
-    for (int i = 1; i <= n; i++) {
-        if (indegree[i] == 0) {
-            q.offer(i);
-            cost[i] = time[i - 1];
-        }
-    }
-
-    while (!q.isEmpty()) {
-        int node = q.poll();
-        for (int neighbor : graph[node]) {
-            cost[neighbor] = Math.max(cost[neighbor], cost[node] + time[neighbor - 1]);
-            if (--indegree[neighbor] == 0) {
-                q.offer(neighbor);
-            }
-        }
-    }
-    return Arrays.stream(cost).max().getAsInt();
-}
-{% endhighlight %}
-
 [Find All Possible Recipes from Given Supplies][find-all-possible-recipes-from-given-supplies]
 
 {% highlight java %}
 public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
-    Set<String> set = new HashSet<>();
-    Arrays.stream(supplies).forEach(set::add);
-
     int n = recipes.length;
     // {ingredient : recipe index}
     Map<String, List<Integer>> graph = new HashMap<>();
     int[] indegree = new int[n];
+    Set<String> set = Arrays.stream(supplies).collect(Collectors.toSet());
     for (int i = 0; i < n; i++) {
         // if an ingredient is not in supplies, makes it a graph node
         // i.e. supplied ingredients are omitted in the graph
-        // the graph helps us to find the topological order of unsupplied ingredients (in fact recipes)
         for (String in : ingredients.get(i)) {
             if (!set.contains(in)) {
                 graph.computeIfAbsent(in, k -> new ArrayList<>()).add(i);
-                indegree[i]++;
+                // indegrees[i] denotes the number of unsupplied ingredients of the i-th recipe
+                indegrees[i]++;
             }
         }
     }
 
     // leaves are recipes with 0 indegree
     // i.e. whose ingredients are all supplied
-    // q contains recipes only
     Queue<String> q = new LinkedList<>();
     for (int i = 0; i < n; i++) {
-        if (indegree[i] == 0) {
+        if (indegrees[i] == 0) {
             q.offer(recipes[i]);
         }
     }
@@ -121,72 +86,95 @@ public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredie
     List<String> list = new ArrayList<>();
     while (!q.isEmpty()) {
         String node = q.poll();
-        list.add(node);
         if (graph.containsKey(node)) {
             for (int i : graph.get(node)) {
-                if (--indegree[i] == 0) {
+                if (--indegrees[i] == 0) {
                     q.offer(recipes[i]);
                 }
             }
         }
+        list.add(node);
     }
     return list;
 }
 {% endhighlight %}
 
-[Largest Color Value in a Directed Graph][largest-color-value-in-a-directed-graph]
+** Undirected Graph**
+
+For undirected graphs, leaves are nodes with `indegree == 1`.
+
+[Distance to a Cycle in Undirected Graph][distance-to-a-cycle-in-undirected-graph]
 
 {% highlight java %}
-public int largestPathValue(String colors, int[][] edges) {
-    int n = colors.length();
+public int[] distanceToCycle(int n, int[][] edges) {
+    int[] indegree = new int[n];
     List<Integer>[] graph = new List[n];
     for (int i = 0; i < n; i++) {
         graph[i] = new ArrayList<>();
     }
-
-    int[] indegree = new int[n];
     for (int[] e : edges) {
+        indegrees[e[0]]++;
+        indegrees[e[1]]++;
         graph[e[0]].add(e[1]);
-        indegree[e[1]]++;
+        graph[e[1]].add(e[0]);
     }
 
-    // dp[i][j]: max count of i-th node, j-th color
-    int[][] dp = new int[n][26];
-
-    // zero indegree
+    boolean[] visited = new boolean[n];
+    // enqueues leaves
     Queue<Integer> q = new LinkedList<>();
-    for (int i = 0; i < n; i++) {
-        if (indegree[i] == 0) {
+    for (int i = 0; i < n; ++i) {
+        // undirected graph
+        if (indegrees[i] == 1) {
             q.offer(i);
-            dp[i][colors.charAt(i) - 'a'] = 1;
+            visited[i] = true;
         }
     }
 
-    int count = 0, max = 0;
     while (!q.isEmpty()) {
         int node = q.poll();
-        count++;
-
-        // if max is updated at this node
-        // then the color of this node must be the most frequent
-        max = Math.max(max, dp[node][colors.charAt(node) - 'a']);
-
-        for (int child : graph[node]) {
-            // updates dp of child node
-            for (int i = 0; i < 26; i++) {
-                dp[child][i] = Math.max(dp[child][i], dp[node][i] + (colors.charAt(child) - 'a' == i ? 1 : 0));
+        for (int neighbor : graph[node]) {
+            if (visited[neighbor]) {
+                continue;
             }
-
-            if (--indegree[child] == 0) {
-                q.offer(child);
+            // undirected graph
+            if (--indegrees[neighbor] == 1) {
+                q.offer(neighbor);
+                visited[neighbor] = true;
             }
         }
     }
-    return count == n ? max : -1;
+
+    // the nodes in cycle are unvisited
+    // flips visisted[] and dfs from the cycle to outer
+    q.clear();
+    for (int i = 0; i < n; i++) {
+        visited[i] = !visited[i];
+        if (visited[i]) {
+            q.offer(i);
+        }
+    }
+
+    int[] answer = new int[n];
+    int level = 1;
+    while (!q.isEmpty()) {
+        for (int i = q.size(); i > 0; i--) {
+            int node = q.poll();
+            for (int neighbor : graph[node]) {
+                if (!visited[neighbor]) {
+                    q.offer(neighbor);
+                    answer[neighbor] = level;
+                    visited[neighbor] = true;
+                }
+            }
+        }
+        level++;
+    }
+
+    return answer;
 }
 {% endhighlight %}
 
-# DFS
+## DFS
 
 [Sort Items by Groups Respecting Dependencies][sort-items-by-groups-respecting-dependencies]
 
@@ -204,13 +192,13 @@ public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItem
     // if k < n
     //   if k is in a group
     //     - graph[k] is inner-group after items of item k
-    //     - indegree[k] is inner-group indegree of item k
+    //     - indegrees[k] is inner-group indegree of item k
     //   else if k is not in any group
     //     - graph[k] is after items of item k
-    //     - indegree[k] is indegree of item k
+    //     - indegrees[k] is indegree of item k
     // otherwise
     //   - graph[k] is members of group (k - n)
-    //   - indegree[k] is indegree of group (k - n)
+    //   - indegrees[k] is indegree of group (k - n)
     this.graph = new ArrayList[n + m];
     this.indegree = new int[n + m];
 
@@ -226,7 +214,7 @@ public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItem
             // marks indegree as 1
             // so when we scan to find the 0-indegree node
             // if index < n, it guarantees to be a node that doesn't belong to a group
-            indegree[i]++;
+            indegrees[i]++;
         }
     }
 
@@ -239,23 +227,23 @@ public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItem
             if (bg == ig) {
                 graph[b].add(i);
                 // remember, inner-group indegrees start from 1
-                indegree[i]++;
+                indegrees[i]++;
             } else {
                 // either i is not in a group
                 // or i and b are in different groups
                 // this is for "external" links
                 graph[bg].add(ig);
-                indegree[ig]++;
+                indegrees[ig]++;
             }
         }
     }
 
     List<Integer> list = new ArrayList<>();
     for (int i = 0; i < indegree.length; i++) {
-        // when indegree[i] == 0
+        // when indegrees[i] == 0
         // if i < n, the node i doesn't belong to any group (see comments above)
         // if i >= n, the dfs topologically sorts the members in the group
-        if (indegree[i] == 0) {
+        if (indegrees[i] == 0) {
             dfs(i, list);
         }
     }
@@ -275,8 +263,8 @@ private void dfs(int curr, List<Integer> list) {
     }
 
     // marks it as visited (-1)
-    // so the start condition of the dfs indegree[node] == 0 won't be met again
-    indegree[curr]--;
+    // so the start condition of the dfs indegrees[node] == 0 won't be met again
+    indegrees[curr]--;
 
     // if curr < n, and
     // - curr doesn't belong to any group, then graph[curr] is its after items
@@ -284,129 +272,27 @@ private void dfs(int curr, List<Integer> list) {
     // otherwise, graph[curr] are the members of the group, and only members with degree 1 will be picked
     for (int child : graph[curr]) {
         // remember, inner-group indegrees are based on 1
-        if (--indegree[child] == 0) {
+        if (--indegrees[child] == 0) {
             dfs(child, list);
         }
     }
 }
 {% endhighlight %}
 
-# Two-level Topological Sort
-
-[Sort Items by Groups Respecting Dependencies][sort-items-by-groups-respecting-dependencies]
-
-{% highlight java %}
-private List<Integer>[] groupGraph, itemGraph;
-private int[] groupsIndegree, itemsIndegree;
-
-public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItems) {
-    // maps items with -1 group to new isolated groups
-    // and updates the group count
-    for (int i = 0; i < group.length; i++) {
-        if (group[i] < 0) {
-            group[i] = m++;
-        }
-    }
-
-    this.itemGraph = new ArrayList[n];
-    this.groupGraph = new ArrayList[m];
-
-    for (int i = 0; i < n; i++) {
-        itemGraph[i] = new ArrayList<>();
-    }
-    for (int i = 0; i < m; i++) {
-        groupGraph[i] = new ArrayList<>();
-    }
-
-    this.itemsIndegree = new int[n];
-    this.groupsIndegree = new int[m];
-
-    // builds items
-    for (int i = 0; i < n; i++) {
-        for (int item : beforeItems.get(i)) {
-            itemGraph[item].add(i);
-            itemsIndegree[i]++;
-        }
-    }
-
-    // builds group
-    for (int i = 0; i < group.length; i++) {
-        int toGroup = group[i];
-        for (int fromItem : beforeItems.get(i)) {
-            int fromGroup = group[fromItem];
-            if (fromGroup != toGroup) {
-                groupGraph[fromGroup].add(toGroup);
-                groupsIndegree[toGroup]++;
-            }
-        }
-    }
-
-    // topological sort
-    List<Integer> itemsList = sort(itemGraph, itemsIndegree, n);
-    List<Integer> groupsList = sort(groupGraph, groupsIndegree, m);
-
-    // detects if there are any cycles
-    if (groupsList.isEmpty() || itemsList.isEmpty()) {
-        return new int[0];
-    }
-
-    // maps items to their group
-    List<Integer>[] membersInGroup = new ArrayList[m];
-    for (int i = 0; i < m; i++) {
-        membersInGroup[i] = new ArrayList<>();
-    }
-
-    for (int item : itemsList) {
-        membersInGroup[group[item]].add(item);
-    }
-
-    int[] result = new int[n];
-    int index = 0;
-    for (int g : groupsList) {
-        List <Integer> items = membersInGroup[g];
-        for (int item : items) {
-            result[index++] = item;
-        }
-    }
-    return result;
-}
-
-private List<Integer> sort(List<Integer>[] graph, int[] indegree, int count) {
-    List <Integer> list = new ArrayList<>();
-    Queue <Integer> q = new LinkedList();
-    for (int i = 0; i < graph.length; i++) {
-        if (indegree[i] == 0) {
-            q.offer(i);
-        }
-    }
-
-    while (!q.isEmpty()) {
-        int node = q.poll();
-        count--;
-        list.add(node);
-        for (int neighbor : graph[node]) {
-            indegree[neighbor]--;
-            if (indegree[neighbor] == 0) {
-                q.offer(neighbor);
-            }
-        }
-    }
-    return count == 0 ? list : Collections.EMPTY_LIST;
-}
-{% endhighlight %}
-
-# Cycle Detection
+# DAG
 
 A topological ordering is possible iff the graph has no directed cycles, that is, iff it is a directed acyclic graph (DAG).
+
+## Cycle Detection
 
 **White-Gray-Black DFS**
 
 [Course Schedule II][course-schedule-ii]
 
 {% highlight java %}
-private Map<Integer, List<Integer>> graph;
+private List<Integer>[] graph;
 private Color[] color;
-private List<Integer> order;
+private List<Integer> order = new ArrayList<>();
 
 private enum Color {
     WHITE,  // node is not processed yet
@@ -416,14 +302,16 @@ private enum Color {
 
 public int[] findOrder(int numCourses, int[][] prerequisites) {        
     color = new Color[numCourses];
-    order = new ArrayList<>();
 
     // by default all nodes are WHITE
     Arrays.fill(color, Color.WHITE);
 
-    graph = new HashMap<>();
+    graph = new List[numCourses];
+    for (int i = 0; i < numCourses; i++) {
+        graph[i] = new ArrayList<>();
+    }
     for (int[] p : prerequisites) {
-        graph.computeIfAbsent(p[1], k -> new ArrayList<>()).add(p[0]);
+        graph[p[1]].add(p[0]);
     }
 
     // dfs unprocessed node
@@ -439,16 +327,16 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
     return order.stream().mapToInt(Integer::valueOf).toArray();
 }
 
+// returns false if cycle is detected.
 private boolean dfs(int node) {
     // starts the recursion
     color[node] = Color.GRAY;
 
-    if (graph.containsKey(node)) {
-        for (int neighbor : graph.get(node)) {
-            // detects cycle; stops
-            if ((color[neighbor] == Color.WHITE && !dfs(neighbor)) || color[neighbor] == Color.GRAY) {
-                return false;
-            }
+    for (int neighbor : graph[node]) {
+        // skips back nodes
+        // stops if cycle detected
+        if ((color[neighbor] == Color.WHITE && !dfs(neighbor)) || color[neighbor] == Color.GRAY) {
+            return false;
         }
     }
 
@@ -459,9 +347,9 @@ private boolean dfs(int node) {
 }
 {% endhighlight %}
 
-[Detect Cycles in 2D Grid][detect-cycles-in-2d-grid]
+Similar problem in grid: [Detect Cycles in 2D Grid][detect-cycles-in-2d-grid]
 
-Don't visit the last cell.
+To complete DFS in grid to simulate directed graph, in each DFS path we don't visit the prev visited cell.
 
 ## Cycle Length
 
@@ -526,6 +414,277 @@ public int maximumInvitations(int[] favorite) {
         }
     }
     return Math.max(count1, count2);
+}
+{% endhighlight %}
+
+# Longest Path
+
+Longest path in a DAG can be solved by topological sorting.
+
+[Longest Increasing Path in a Matrix][longest-increasing-path-in-a-matrix]
+
+Another solution is DFS + memoization
+
+# Uniqueness
+
+[Uniqueness](https://en.wikipedia.org/wiki/Topological_sorting#Uniqueness)
+
+If a topological sort has the property that *all* pairs of *consecutive vertices* in the sorted order are connected by edges, then these edges form a directed Hamiltonian path in the DAG.
+
+A [Hamiltonian path](sort-items-by-groups-respecting-dependencies) (or traceable path) is a path in an undirected or directed graph that visits each vertex exactly once.
+
+Iff a Hamiltonian path exists, the topological sort order is unique; no other order respects the edges of the path.
+
+If a topological sort does not form a Hamiltonian path, it is always possible to form a second valid ordering by swapping two consecutive vertices that are not connected by an edge to each other.
+
+[Sequence Reconstruction][sequence-reconstruction]
+
+{% highlight java %}
+public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences) {
+    int n = nums.length;
+    // index[i]: index of element nums[i] in nums
+    int[] index = new int[n + 1];
+    for (int i = 0; i < n; i++) {
+        index[nums[i]] = i;
+    }
+
+    // pairs[i]: nums[i] and nums[i + 1] make a pair
+    boolean[] pairs = new boolean[n];
+    for (List<Integer> seq : sequences) {
+        for (int i = 0; i < seq.size(); i++) {
+            if (seq.get(i) > n) {
+                return false;
+            }
+
+            // each seq in sequences should be a subsequence of nums
+            if (i > 0 && index[seq.get(i - 1)] >= index[seq.get(i)]) {
+                return false;
+            }
+
+            // all pairs of consecutive elements in nums should be in some seq in sequences
+            if (i > 0 && index[seq.get(i - 1)] + 1 == index[seq.get(i)]) {
+                pairs[index[seq.get(i - 1)]] = true;
+            }
+        }
+    }
+
+    for (int i = 0; i < n - 1; i++) {
+        if (!pairs[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+{% endhighlight %}
+
+# Count
+
+[Count Ways to Build Rooms in an Ant Colony][count-ways-to-build-rooms-in-an-ant-colony]
+
+$$ \frac{n!}{\prod{s_i}} $$
+
+where \\(s_i\\) is the size of the subtree at the i-th node.
+
+# + DP
+
+`dp[node]` denotes a certain state of all paths to this node.
+
+**Shortest Path**
+
+[Parallel Courses III][parallel-courses-iii]
+
+{% highlight java %}
+public int minimumTime(int n, int[][] relations, int[] time) {
+    List<Integer>[] graph = new List[n + 1];
+    for (int i = 1; i <= n; i++) {
+        graph[i] = new ArrayList<>();
+    }
+
+    int[] indegree = new int[n + 1];
+    for (int[] r : relations) {
+        graph[r[0]].add(r[1]);
+        indegrees[r[1]]++;
+    }
+
+    // DP: minimum time to reach this node
+    int[] cost = new int[n + 1];
+    Queue<Integer> q = new LinkedList<>();
+    for (int i = 1; i <= n; i++) {
+        if (indegrees[i] == 0) {
+            q.offer(i);
+            cost[i] = time[i - 1];
+        }
+    }
+
+    while (!q.isEmpty()) {
+        int node = q.poll();
+        for (int neighbor : graph[node]) {
+            cost[neighbor] = Math.max(cost[neighbor], cost[node] + time[neighbor - 1]);
+            if (--indegrees[neighbor] == 0) {
+                q.offer(neighbor);
+            }
+        }
+    }
+    return Arrays.stream(cost).max().getAsInt();
+}
+{% endhighlight %}
+
+**Highest Frequency**
+
+[Largest Color Value in a Directed Graph][largest-color-value-in-a-directed-graph]
+
+{% highlight java %}
+public int largestPathValue(String colors, int[][] edges) {
+    int n = colors.length();
+    List<Integer>[] graph = new List[n];
+    for (int i = 0; i < n; i++) {
+        graph[i] = new ArrayList<>();
+    }
+
+    int[] indegree = new int[n];
+    for (int[] e : edges) {
+        graph[e[0]].add(e[1]);
+        indegrees[e[1]]++;
+    }
+
+    // dp[i][j]: max count of i-th node, j-th color
+    int[][] dp = new int[n][26];
+
+    // zero indegree
+    Queue<Integer> q = new LinkedList<>();
+    for (int i = 0; i < n; i++) {
+        if (indegrees[i] == 0) {
+            q.offer(i);
+            dp[i][colors.charAt(i) - 'a'] = 1;
+        }
+    }
+
+    int count = 0, max = 0;
+    while (!q.isEmpty()) {
+        int node = q.poll();
+        count++;
+
+        // if max is updated at this node
+        // then the color of this node must be the most frequent
+        max = Math.max(max, dp[node][colors.charAt(node) - 'a']);
+
+        for (int child : graph[node]) {
+            // updates dp of child node
+            for (int i = 0; i < 26; i++) {
+                dp[child][i] = Math.max(dp[child][i], dp[node][i] + (colors.charAt(child) - 'a' == i ? 1 : 0));
+            }
+
+            if (--indegrees[child] == 0) {
+                q.offer(child);
+            }
+        }
+    }
+    return count == n ? max : -1;
+}
+{% endhighlight %}
+
+# Two-level Topological Sort
+
+[Sort Items by Groups Respecting Dependencies][sort-items-by-groups-respecting-dependencies]
+
+{% highlight java %}
+private List<Integer>[] groupGraph, itemGraph;
+private int[] groupsIndegree, itemsIndegree;
+
+public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItems) {
+    // maps items with -1 group to new isolated groups
+    // and updates the group count
+    for (int i = 0; i < group.length; i++) {
+        if (group[i] < 0) {
+            group[i] = m++;
+        }
+    }
+
+    this.itemGraph = new ArrayList[n];
+    this.groupGraph = new ArrayList[m];
+
+    for (int i = 0; i < n; i++) {
+        itemGraph[i] = new ArrayList<>();
+    }
+    for (int i = 0; i < m; i++) {
+        groupGraph[i] = new ArrayList<>();
+    }
+
+    this.itemsIndegree = new int[n];
+    this.groupsIndegree = new int[m];
+
+    // builds items
+    for (int i = 0; i < n; i++) {
+        for (int item : beforeItems.get(i)) {
+            itemGraph[item].add(i);
+            itemsIndegrees[i]++;
+        }
+    }
+
+    // builds group
+    for (int i = 0; i < group.length; i++) {
+        int toGroup = group[i];
+        for (int fromItem : beforeItems.get(i)) {
+            int fromGroup = group[fromItem];
+            if (fromGroup != toGroup) {
+                groupGraph[fromGroup].add(toGroup);
+                groupsIndegrees[toGroup]++;
+            }
+        }
+    }
+
+    // topological sort
+    List<Integer> itemsList = sort(itemGraph, itemsIndegree, n);
+    List<Integer> groupsList = sort(groupGraph, groupsIndegree, m);
+
+    // detects if there are any cycles
+    if (groupsList.isEmpty() || itemsList.isEmpty()) {
+        return new int[0];
+    }
+
+    // maps items to their group
+    List<Integer>[] membersInGroup = new ArrayList[m];
+    for (int i = 0; i < m; i++) {
+        membersInGroup[i] = new ArrayList<>();
+    }
+
+    for (int item : itemsList) {
+        membersInGroup[group[item]].add(item);
+    }
+
+    int[] result = new int[n];
+    int index = 0;
+    for (int g : groupsList) {
+        List <Integer> items = membersInGroup[g];
+        for (int item : items) {
+            result[index++] = item;
+        }
+    }
+    return result;
+}
+
+private List<Integer> sort(List<Integer>[] graph, int[] indegree, int count) {
+    List <Integer> list = new ArrayList<>();
+    Queue <Integer> q = new LinkedList();
+    for (int i = 0; i < graph.length; i++) {
+        if (indegrees[i] == 0) {
+            q.offer(i);
+        }
+    }
+
+    while (!q.isEmpty()) {
+        int node = q.poll();
+        count--;
+        list.add(node);
+        for (int neighbor : graph[node]) {
+            indegrees[neighbor]--;
+            if (indegrees[neighbor] == 0) {
+                q.offer(neighbor);
+            }
+        }
+    }
+    return count == 0 ? list : Collections.EMPTY_LIST;
 }
 {% endhighlight %}
 
@@ -693,83 +852,12 @@ public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 
 [Count Subtrees With Max Distance Between Cities][count-subtrees-with-max-distance-between-cities]
 
-# Uniqueness
-
-[Uniqueness](https://en.wikipedia.org/wiki/Topological_sorting#Uniqueness)
-
-[Hamiltonian path](https://en.wikipedia.org/wiki/Hamiltonian_path)
-
-In the mathematical field of graph theory, a Hamiltonian path (or traceable path) is a path in an undirected or directed graph that visits each vertex exactly once.
-
-If a topological sort has the property that all pairs of consecutive vertices in the sorted order are connected by edges, then these edges form a directed Hamiltonian path in the DAG.
-
-If a Hamiltonian path exists, the topological sort order is unique; no other order respects the edges of the path. Conversely, if a topological sort does not form a Hamiltonian path, the DAG will have two or more valid topological orderings, for in this case it is always possible to form a second valid ordering by swapping two consecutive vertices that are not connected by an edge to each other.
-
-[Sequence Reconstruction][sequence-reconstruction]
-
-{% highlight java %}
-public boolean sequenceReconstruction(int[] org, List<List<Integer>> seqs) {
-    if (seqs.size() == 0){
-        return false;
-    }
-
-    int n = org.length;
-    int[] index = new int[n + 1];  // index of element in org
-    boolean[] pairs = new boolean[n];  // pairs[i]: org[i] and org[i + 1] make a pair
-
-    for (int i = 0; i < n; i++) {
-        index[org[i]] = i;
-    }
-
-    for(List<Integer> s : seqs) {
-        for (int i = 0; i < s.size(); i++) {
-            if (s.get(i) > n || s.get(i) < 0) {
-                return false;
-            }
-
-            // all sequences in seqs should be a subsequence of org
-            if (i > 0 && index[s.get(i - 1)] >= index[s.get(i)]) {
-                return false;
-            }
-
-            // all pairs of consecutive elements in org should be in some sequence in seqs
-            if (i > 0 && index[s.get(i - 1)] + 1 == index[s.get(i)]) {
-                pairs[index[s.get(i - 1)]] = true;
-            }
-        }
-    }
-
-    for (int i = 0; i < n - 1; i++) {
-        if (!pairs[i]) {
-            return false;
-        }
-    }
-
-    return true;
-}
-{% endhighlight %}
-
-# Longest Path
-
-Longest path in a DAG can be solved by topological sorting.
-
-[Longest Increasing Path in a Matrix][longest-increasing-path-in-a-matrix]
-
-Another solution is DFS + memoization
-
-# Count
-
-[Count Ways to Build Rooms in an Ant Colony][count-ways-to-build-rooms-in-an-ant-colony]
-
-$$ \frac{n!}{\prod{s_i}} $$
-
-where \\(s_i\\) is the size of the subtree at the i-th node.
-
 [count-subtrees-with-max-distance-between-cities]: https://leetcode.com/problems/count-subtrees-with-max-distance-between-cities/
 [count-ways-to-build-rooms-in-an-ant-colony]: https://leetcode.com/problems/count-ways-to-build-rooms-in-an-ant-colony/
 [course-schedule-ii]: https://leetcode.com/problems/course-schedule-ii/
 [critical-connections-in-a-network]: https://leetcode.com/problems/critical-connections-in-a-network/
 [detect-cycles-in-2d-grid]: https://leetcode.com/problems/detect-cycles-in-2d-grid/
+[distance-to-a-cycle-in-undirected-graph]: https://leetcode.com/problems/distance-to-a-cycle-in-undirected-graph/
 [find-all-possible-recipes-from-given-supplies]: https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/
 [largest-color-value-in-a-directed-graph]: https://leetcode.com/problems/largest-color-value-in-a-directed-graph/
 [longest-increasing-path-in-a-matrix]: https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
