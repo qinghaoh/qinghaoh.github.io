@@ -471,6 +471,80 @@ public int scheduleCourse(int[][] courses) {
 }
 {% endhighlight %}
 
+[Minimum Interval to Include Each Query][minimum-interval-to-include-each-query]
+
+{% highlight java %}
+public int[] minInterval(int[][] intervals, int[] queries) {
+    // {size, end}
+    // we can use priority queue as well
+    TreeMap<Integer, Integer> map = new TreeMap<>();
+
+    // sorts intervals
+    Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+
+    // sorts queries index mapping array
+    int n = intervals.length, m = queries.length;
+    Integer[] index = new Integer[m];
+    for (int i = 0; i < m; i++) {
+        index[i] = i;
+    }
+    Arrays.sort(index, Comparator.comparingInt(i -> queries[i]));
+
+    int j = 0;  // index of current interval
+    int[] ans = new int[m];
+    // scans through queries in order
+    for (int i : index) {
+        // enqueues
+        while (j < n && intervals[j][0] <= queries[i]) {
+            map.put(intervals[j][1] - intervals[j][0] + 1, intervals[j][1]);
+            j++;
+        }
+
+        // dequeues
+        while (!map.isEmpty() && map.firstEntry().getValue() < queries[i]) {
+            map.pollFirstEntry();
+        }
+        ans[i] = map.isEmpty() ? -1 : map.firstKey();
+    }
+    return ans;
+}
+{% endhighlight %}
+
+[Amount of New Area Painted Each Day][amount-of-new-area-painted-each-day]
+
+{% highlight java %}
+public int[] amountPainted(int[][] paint) {
+    int n = paint.length;
+    int max = Arrays.stream(paint).mapToInt(p -> p[1]).max().getAsInt();
+
+    // area[i]: end of continuous painted area starting at i
+    int[] area = new int[max + 1], worklog = new int[n];
+    for (int i = 0; i < n; i++) {
+        int start = paint[i][0], end = paint[i][1];
+        while (start < end) {
+            // next position of the brush
+            int jump = 0;
+            // if the area is empty (area[start] == 0), jumps one step forward
+            if (area[start] == 0) {
+                jump = start + 1;
+                worklog[i]++;
+            } else {
+                // jumps to the end of existing painted area
+                jump = area[start];
+            }
+
+            // updates the end of the painted area starting from current `start`
+            if (end > area[start]) {
+                area[start] = end;
+            }
+
+            start = jump;
+        }
+    }
+    return worklog;
+}
+{% endhighlight %}
+
 [Maximum Distance in Arrays][maximum-distance-in-arrays]
 
 {% highlight java %}
@@ -852,6 +926,7 @@ class Interval implements Comparable<Interval> {
 }
 {% endhighlight %}
 
+[amount-of-new-area-painted-each-day]: https://leetcode.com/problems/amount-of-new-area-painted-each-day/
 [check-if-all-the-integers-in-a-range-are-covered]: https://leetcode.com/problems/check-if-all-the-integers-in-a-range-are-covered/
 [course-schedule-iii]: https://leetcode.com/problems/course-schedule-iii/
 [exam-room]: https://leetcode.com/problems/exam-room/
@@ -867,6 +942,7 @@ class Interval implements Comparable<Interval> {
 [meeting-rooms-ii]: https://leetcode.com/problems/meeting-rooms-ii/
 [meeting-scheduler]: https://leetcode.com/problems/meeting-scheduler/
 [merge-intervals]: https://leetcode.com/problems/merge-intervals/
+[minimum-interval-to-include-each-query]: https://leetcode.com/problems/minimum-interval-to-include-each-query/
 [minimum-number-of-arrows-to-burst-balloons]: https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
 [minimum-number-of-taps-to-open-to-water-a-garden]: https://leetcode.com/problems/minimum-number-of-taps-to-open-to-water-a-garden/
 [non-overlapping-intervals]: https://leetcode.com/problems/non-overlapping-intervals/

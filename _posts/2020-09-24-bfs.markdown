@@ -3,52 +3,16 @@ layout: post
 title:  "BFS"
 tags: bfs
 ---
-# Template
+# Fundamentals
 
-## Queue
+Level traversal. The most common data structure used is Queue. Two rolling Lists or Sets (de-dupe) can also be used, but less common.
 
-# Deduplication
-
-[Perfect Squares][perfect-squares]
-
-{% highlight java %}
-public int numSquares(int n) {
-    // pre-calculates the square numbers
-    int[] squares = new int[(int)Math.sqrt(n) + 1];
-    for (int i = 1; i < squares.length; ++i) {
-        squares[i] = i * i;
-    }
-
-    Set<Integer> q = new HashSet<>();
-    q.add(n);
-
-    int level = 0;
-    while (!q.isEmpty()) {
-        level++;
-        Set<Integer> next = new HashSet<Integer>();
-
-        for (int remainder : q) {
-            for (int s : squares) {
-                if (remainder == s) {
-                    return level;
-                }
-
-                if (remainder >= s) {
-                    next.add(remainder - s);
-                }
-            }
-        }
-        q = next;
-    }
-    return level;
-}
-{% endhighlight %}
-
-# Variants
 
 [Minimum Knight Moves][minimum-knight-moves]
 
-Symmetry
+Symmetry: `x -> |x|, y -> |y|`
+
+Some BFS problems are implicit and don't need a data structure.
 
 [Jump Game II][jump-game-ii]
 
@@ -102,7 +66,13 @@ public int jump(int[] nums) {
 
 {% highlight java %}
 public int minimumJumps(int[] forbidden, int a, int b, int x) {
+    // as per Bezout's Identity
+    // if the bug can reach a position, it must be a multiple of gcd(a, b)
+    // we use an integer to hold two dimensions: position and direction
+    // since the bug never jumps to negative positions
+    // we use + to denote "forward", and - to denote "backward"
     Set<Integer> visited = new HashSet<>();
+    // boundary is max(max(forbidden) + a + b, x)
     int furthest = x;
     for (int p : forbidden) {
         visited.add(p);  // forward
@@ -140,6 +110,10 @@ public int minimumJumps(int[] forbidden, int a, int b, int x) {
     return -1;
 }
 {% endhighlight %}
+
+The proof of the max boundary can be found at [here](https://leetcode-cn.com/problems/minimum-jumps-to-reach-home/solution/dao-jia-de-zui-shao-tiao-yue-ci-shu-zui-duan-lu-zh/). Credits to @newhar.
+
+![proof](/assets/minimum_jumps_to_home.png)
 
 [Nested List Weight Sum II][nested-list-weight-sum-ii]
 
@@ -226,6 +200,8 @@ public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edg
 }
 {% endhighlight %}
 
+# Expanding
+
 [Walls and Gates][walls-and-gates]
 
 {% highlight java %}
@@ -235,8 +211,6 @@ private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public void wallsAndGates(int[][] rooms) {
     int m = rooms.length, n = rooms[0].length;
     Queue<int[]> q = new LinkedList<>();
-
-    // enqueues all gates
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             if (rooms[i][j] == 0) {
@@ -250,15 +224,13 @@ public void wallsAndGates(int[][] rooms) {
         int r = p[0], c = p[1];
         for (int[] d : DIRECTIONS) {
             int i = r + d[0], j = c + d[1];
-            // Integer.MAX_VALUE marks unvisited cells
-            if (i < 0 || i >= m || j < 0 || j >= n || rooms[i][j] != Integer.MAX_VALUE) {
-                continue;
+            if (i >= 0 && i < m && j >= 0 && j < n && rooms[i][j] == Integer.MAX_VALUE) {
+                // each gate only checks the areas within 1 space
+                // then these emptry rooms are marked and enqueued, so on and so forth.
+                // it's like a few water waves expanding
+                rooms[i][j] = rooms[r][c] + 1;
+                q.offer(new int[]{i, j});
             }
-
-            // each gate only checks the areas within 1 space
-            // so whenever an empty room is reached, it must be from the closest gate
-            rooms[i][j] = rooms[r][c] + 1;
-            q.offer(new int[] {i, j});
         }
     }
 }
@@ -823,7 +795,6 @@ public int shortestPathLength(int[][] graph) {
 [minimum-knight-moves]: https://leetcode.com/problems/minimum-knight-moves/
 [minimum-moves-to-reach-target-with-rotations]: https://leetcode.com/problems/minimum-moves-to-reach-target-with-rotations/
 [nested-list-weight-sum-ii]: https://leetcode.com/problems/nested-list-weight-sum-ii/
-[perfect-squares]: https://leetcode.com/problems/perfect-squares/
 [rotting-oranges]: https://leetcode.com/problems/rotting-oranges/
 [second-minimum-time-to-reach-destination]: https://leetcode.com/problems/second-minimum-time-to-reach-destination/
 [shortest-distance-from-all-buildings]: https://leetcode.com/problems/shortest-distance-from-all-buildings/
