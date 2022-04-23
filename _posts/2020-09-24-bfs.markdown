@@ -7,12 +7,11 @@ tags: bfs
 
 Level traversal. The most common data structure used is Queue. Two rolling Lists or Sets (de-dupe) can also be used, but less common.
 
+[Smallest Greater Multiple Made of Two Digits][smallest-greater-multiple-made-of-two-digits]
 
-[Minimum Knight Moves][minimum-knight-moves]
+**Implicit BFS**
 
-Symmetry: `x -> |x|, y -> |y|`
-
-Some BFS problems are implicit and don't need a data structure.
+No complex data structure is used.
 
 [Jump Game II][jump-game-ii]
 
@@ -61,6 +60,57 @@ public int jump(int[] nums) {
     return jumps;
 }
 {% endhighlight %}
+
+**Priority Queue**
+
+[Trapping Rain Water II][trapping-rain-water-ii]
+
+{% highlight java %}
+{% raw %}
+private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+{% endraw %}
+public int trapRainWater(int[][] heightMap) {
+    int m = heightMap.length, n = heightMap[0].length;
+
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+    boolean[][] visited = new boolean[m][n];
+
+    // enqueues boarder cells
+    for (int i = 0; i < m; i++) {
+        pq.offer(new int[] {i, 0, heightMap[i][0]});
+        pq.offer(new int[] {i, n - 1, heightMap[i][n - 1]});
+        visited[i][0] = visited[i][n - 1] = true;
+    }
+    for (int j = 1; j < n - 1; j++) {
+        pq.offer(new int[] {0, j, heightMap[0][j]});
+        pq.offer(new int[] {m - 1, j, heightMap[m - 1][j]});
+        visited[0][j] = visited[m - 1][j] = true;
+    }
+
+    int volume = 0;
+    while (!pq.isEmpty()) {
+        // picks the cell with lowest height
+        int[] cell = pq.poll();
+        for (int[] d : DIRECTIONS) {
+            int i = cell[0] + d[0], j = cell[1] + d[1];
+            if (i < 0 || i == m || j < 0 || j == n || visited[i][j]) {
+                continue;
+            }
+
+            // collects the water it can trap
+            volume += Math.max(0, cell[2] - heightMap[i][j]);
+            // updates the height
+            pq.offer(new int[] {i, j, Math.max(heightMap[i][j], cell[2])});
+            visited[i][j] = true;
+        }
+    }
+    return volume;
+}
+{% endhighlight %}
+
+In fact, this problem can be solved with Dijkstra's algorithm, too.
+
+# Composite Vertex
 
 [Minimum Jumps to Reach Home][minimum-jumps-to-reach-home]
 
@@ -115,6 +165,40 @@ The proof of the max boundary can be found at [here](https://leetcode-cn.com/pro
 
 ![proof](/assets/minimum_jumps_to_home.png)
 
+[Minimum Moves to Reach Target with Rotations][minimum-moves-to-reach-target-with-rotations]
+
+{% highlight java %}
+// {i, j, orientation (horizontal: 0, vertical: 1)}
+Queue<int[]> q = new LinkedList<>();
+int[] node = {0, 0, 0};
+q.offer(node);
+
+boolean[][][] visited = new boolean[n][n][2];
+visited[0][0][0] = true;
+{% endhighlight %}
+
+[Shortest Path in a Grid with Obstacles Elimination][shortest-path-in-a-grid-with-obstacles-elimination]
+
+{% highlight java %}
+// {i, j, number of eliminated obstacles}
+Queue<int[]> q = new LinkedList<>();
+int[] node = new int[]{0, 0, 0};
+q.offer(node);
+
+boolean[][][] visited = new boolean[m][n][k + 1];
+visited[0][0][0] = true;
+{% endhighlight %}
+
+[Shortest Path to Get All Keys][shortest-path-to-get-all-keys]
+
+{% highlight java %}
+// {i, j, key mask}
+{% endhighlight %}
+
+Encode the layout as a String.
+
+[Sliding Puzzle][sliding-puzzle]
+
 [Nested List Weight Sum II][nested-list-weight-sum-ii]
 
 {% highlight java %}
@@ -136,20 +220,22 @@ public int depthSumInverse(List<NestedInteger> nestedList) {
 }
 {% endhighlight %}
 
+# Memoization
+
 [Shortest Path with Alternating Colors][shortest-path-with-alternating-colors]
 
 {% highlight java %}
 public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edges) {
-    // red: 0
-    // blue: 1
+    // red: 0, blue: 1
     List<List<Integer>>[] graph = new ArrayList[2];
 
     for (int i = 0; i < graph.length; i++) {
         graph[i] = new ArrayList<>();
     }
-    for (int i = 0; i < n; i++) {
-        graph[0].add(new ArrayList<>());
-        graph[1].add(new ArrayList<>());
+    for (var list : graph) {
+        for (int i = 0; i < n; i++) {
+            list.add(new ArrayList<>());
+        }
     }
 
     for (int[] r : red_edges) {
@@ -159,8 +245,8 @@ public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edg
         graph[1].get(b[0]).add(b[1]);
     }
 
-    // dp
     int max = 2 * n;
+    // distance[i][j]: shortest path from 0 to j ending with i-color edge
     int[][] distance = new int[2][n];
     // distance[][0] == 0
     // maximum distance == 2 * n - 3
@@ -172,17 +258,14 @@ public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edg
     }
 
     Queue<int[]> q = new LinkedList<>();
-    // either with red or blue
-    q.offer(new int[] {0, 0});
-    q.offer(new int[] {0, 1});
+    // {node, color}
+    q.offer(new int[]{0, 0});
+    q.offer(new int[]{0, 1});
 
     while (!q.isEmpty()) {
         int[] node = q.poll();
         int color = node[1];
 
-        // No need to keep track of level up to now
-        // distance[][] is the shortest path so far
-        // it gets rid of duplicate computation
         for (int neighbor : graph[1 - color].get(node[0])) {
             if (distance[1 - color][neighbor] == max) {
                 distance[1 - color][neighbor] = distance[color][node[0]] + 1;
@@ -194,77 +277,15 @@ public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edg
     int[] answer = new int[n];
     for (int i = 0; i < n; i++) {
         int p = Math.min(distance[0][i], distance[1][i]);
-        answer[i] = (p == max) ? -1 : p;
+        answer[i] = p == max ? -1 : p;
     }
     return answer;
 }
 {% endhighlight %}
 
-# Expanding
+# Variants
 
-[Walls and Gates][walls-and-gates]
-
-{% highlight java %}
-{% raw %}
-private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-{% endraw %}
-public void wallsAndGates(int[][] rooms) {
-    int m = rooms.length, n = rooms[0].length;
-    Queue<int[]> q = new LinkedList<>();
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (rooms[i][j] == 0) {
-                q.offer(new int[]{i, j});
-            }
-        }
-    }
-
-    while (!q.isEmpty()) {
-        int[] p = q.poll();
-        int r = p[0], c = p[1];
-        for (int[] d : DIRECTIONS) {
-            int i = r + d[0], j = c + d[1];
-            if (i >= 0 && i < m && j >= 0 && j < n && rooms[i][j] == Integer.MAX_VALUE) {
-                // each gate only checks the areas within 1 space
-                // then these emptry rooms are marked and enqueued, so on and so forth.
-                // it's like a few water waves expanding
-                rooms[i][j] = rooms[r][c] + 1;
-                q.offer(new int[]{i, j});
-            }
-        }
-    }
-}
-{% endhighlight %}
-
-[Minimum Moves to Reach Target with Rotations][minimum-moves-to-reach-target-with-rotations]
-
-{% highlight java %}
-// {i, j, orientation (horizontal: 0, vertical: 1)}
-Queue<int[]> q = new LinkedList<>();
-int[] node = {0, 0, 0};
-q.offer(node);
-
-boolean[][][] visited = new boolean[n][n][2];
-visited[0][0][0] = true;
-{% endhighlight %}
-
-[Shortest Path to Get All Keys][shortest-path-to-get-all-keys]
-
-{% highlight java %}
-// {i, j, key mask}
-{% endhighlight %}
-
-[Shortest Path in a Grid with Obstacles Elimination][shortest-path-in-a-grid-with-obstacles-elimination]
-
-{% highlight java %}
-// {i, j, number of eliminated obstacles}
-Queue<int[]> q = new LinkedList<>();
-int[] node = new int[]{0, 0, 0};
-q.offer(node);
-
-boolean[][][] visited = new boolean[m][n][k + 1];
-visited[0][0][0] = true;
-{% endhighlight %}
+In the following "maze" model, the neighbors of a node is not adjacent to it.
 
 [The Maze][the-maze]
 
@@ -315,73 +336,30 @@ public boolean hasPath(int[][] maze, int[] start, int[] destination) {
 boolean[][] visited -> int[][] distance
 {% endhighlight %}
 
-[Trapping Rain Water II][trapping-rain-water-ii]
+# Pruning
 
-{% highlight java %}
-{% raw %}
-private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-{% endraw %}
-public int trapRainWater(int[][] heightMap) {
-    int m = heightMap.length, n = heightMap[0].length;
+[Minimum Knight Moves][minimum-knight-moves]
 
-    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
-    boolean[][] visited = new boolean[m][n];
-
-    // enqueues boarder cells
-    for (int i = 0; i < m; i++) {
-        pq.offer(new int[] {i, 0, heightMap[i][0]});
-        pq.offer(new int[] {i, n - 1, heightMap[i][n - 1]});
-        visited[i][0] = visited[i][n - 1] = true;
-    }
-
-    for (int j = 1; j < n - 1; j++) {
-        pq.offer(new int[] {0, j, heightMap[0][j]});
-        pq.offer(new int[] {m - 1, j, heightMap[m - 1][j]});
-        visited[0][j] = visited[m - 1][j] = true;
-    }
-
-    int volume = 0;
-    while (!pq.isEmpty()) {
-        // picks the cell with lowest height
-        int[] cell = pq.poll();
-        for (int[] d : DIRECTIONS) {
-            int i = cell[0] + d[0], j = cell[1] + d[1];
-            if (i < 0 || i == m || j < 0 || j == n || visited[i][j]) {
-                continue;
-            }
-
-            // collects the water it can trap
-            volume += Math.max(0, cell[2] - heightMap[i][j]);
-            // updates the height
-            pq.offer(new int[] {i, j, Math.max(heightMap[i][j], cell[2])});
-            visited[i][j] = true;
-        }
-    }
-    return volume;
-}
-{% endhighlight %}
-
-# Prune
+Symmetry: `x -> |x|, y -> |y|`
 
 [K-Similar Strings][k-similar-strings]
 
 {% highlight java %}
 private List<String> getNeighbors(String source, String target) {
-    List<String> list = new ArrayList<>();
-    char[] arr = source.toCharArray();
-
     // finds an index i where source[i] != target[i]
-    int i = 0;
-    while (i < arr.length) {
+    char[] arr = source.toCharArray();
+    int n = arr.length, i = 0;
+    while (i < n) {
         if (arr[i] != target.charAt(i)) {
             break;
         }
         i++;
     }
 
-    // finds all index j where souce[j] == target[i]
+    // finds all index j where source[j] == target[i]
     // in this case, swapping i and j makes source and target closer
-    for (int j = i + 1; j < arr.length; j++) {
+    List<String> list = new ArrayList<>();
+    for (int j = i + 1; j < n; j++) {
         if (arr[j] == target.charAt(i)) {
             swap(arr, i, j);
             list.add(new String(arr));
@@ -460,6 +438,11 @@ private int calculateTime(int steps, int time, int change) {
 
 # In-place BFS
 
+Properties:
+
+* There can be more than one source
+* Vertex values are updated layer by layer from sources (Expanding)
+
 [Rotting Oranges][rotting-oranges]
 
 {% highlight java %}
@@ -510,6 +493,77 @@ private int rot(int[][] grid, int i, int j, int time) {
 }
 {% endhighlight %}
 
+[Walls and Gates][walls-and-gates]
+
+{% highlight java %}
+{% raw %}
+private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+{% endraw %}
+public void wallsAndGates(int[][] rooms) {
+    int m = rooms.length, n = rooms[0].length;
+    Queue<int[]> q = new LinkedList<>();
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (rooms[i][j] == 0) {
+                q.offer(new int[]{i, j});
+            }
+        }
+    }
+
+    while (!q.isEmpty()) {
+        int[] p = q.poll();
+        int r = p[0], c = p[1];
+        for (int[] d : DIRECTIONS) {
+            int i = r + d[0], j = c + d[1];
+            if (i >= 0 && i < m && j >= 0 && j < n && rooms[i][j] == Integer.MAX_VALUE) {
+                // each gate only checks the areas within 1 space
+                // then these emptry rooms are marked and enqueued, so on and so forth.
+                // it's like a few water waves expanding
+                rooms[i][j] = rooms[r][c] + 1;
+                q.offer(new int[]{i, j});
+            }
+        }
+    }
+}
+{% endhighlight %}
+
+[Map of Highest Peak][map-of-highest-peak]
+
+{% highlight java %}
+{% raw %}
+private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+{% endraw %}
+public int[][] highestPeak(int[][] isWater) {
+    int m = isWater.length, n = isWater[0].length;
+    // enqueues all sources
+    Queue<int[]> q = new LinkedList<>();
+    int[][] height = new int[m][n];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (isWater[i][j] == 1) {
+                height[i][j] = 0;
+                q.offer(new int[]{i, j});
+            } else {
+                height[i][j] = -1;
+            }
+        }
+    }
+
+    while (!q.isEmpty()) {
+        int[] cell = q.poll();
+        int r = cell[0], c = cell[1];
+        for (int[] d : DIRECTIONS) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < m && nc >= 0 && nc < n && height[nr][nc] == -1) {
+                height[nr][nc] = height[r][c] + 1;
+                q.offer(new int[]{nr, nc});
+            }
+        }
+    }
+    return height;
+}
+{% endhighlight %}
+
 # Bidirectional BFS
 
 [Word Ladder][word-ladder]
@@ -528,6 +582,7 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
     int len = 1;
     Set<String> visited = new HashSet<>();
 
+    // in each iteration, builds up the elements in beginSet
     while (!beginSet.isEmpty() && !endSet.isEmpty()) {
         // always makes beginSet the smaller one by swapping
         if (beginSet.size() > endSet.size()) {
@@ -568,46 +623,13 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 }
 {% endhighlight %}
 
-# Multi-Source BFS
+# + Other Algorithms/Data Structures
 
-[Map of Highest Peak][map-of-highest-peak]
+## + Priority Queue
 
-{% highlight java %}
-{% raw %}
-private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-{% endraw %}
-public int[][] highestPeak(int[][] isWater) {
-    int m = isWater.length, n = isWater[0].length;
-    // enqueues all sources
-    Queue<int[]> q = new LinkedList<>();
-    int[][] height = new int[m][n];
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (isWater[i][j] == 1) {
-                height[i][j] = 0;
-                q.offer(new int[]{i, j});
-            } else {
-                height[i][j] = -1;
-            }
-        }
-    }
+[Cut Off Trees for Golf Event][cut-off-trees-for-golf-event]
 
-    while (!q.isEmpty()) {
-        int[] cell = q.poll();
-        int r = cell[0], c = cell[1];
-        for (int[] d : DIRECTIONS) {
-            int nr = r + d[0], nc = c + d[1];
-            if (nr >= 0 && nr < m && nc >= 0 && nc < n && height[nr][nc] == -1) {
-                height[nr][nc] = height[r][c] + 1;
-                q.offer(new int[]{nr, nc});
-            }
-        }
-    }
-    return height;
-}
-{% endhighlight %}
-
-# BFS + DFS
+## + DFS
 
 [Minimum Cost to Make at Least One Valid Path in a Grid][minimum-cost-to-make-at-least-one-valid-path-in-a-grid]
 
@@ -664,18 +686,6 @@ private void dfs(int r, int c) {
     dfs(r + d[0], c + d[1]);
 }
 {% endhighlight %}
-
-# Priority Queue + BFS
-
-[Cut Off Trees for Golf Event][cut-off-trees-for-golf-event]
-
-# Shape Transformation
-
-[Sliding Puzzle][sliding-puzzle]
-
-# Construction
-
-[Smallest Greater Multiple Made of Two Digits][smallest-greater-multiple-made-of-two-digits]
 
 # Total Distance
 
