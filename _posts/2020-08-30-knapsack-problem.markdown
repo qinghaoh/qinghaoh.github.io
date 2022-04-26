@@ -14,7 +14,7 @@ subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\in \{0,1\} $$
 
 ## Backtracking
 
-Backtracking takes `O(2^n)` time, so it's less preferable.
+Backtracking takes \\(O(2^n)\\) time, so it's less preferable.
 
 ## Dynamic Programming
 
@@ -24,20 +24,17 @@ With full dimensionality (no reduction), we can backtrace.
 
 {% highlight java %}
 public boolean canPartition(int[] nums) {
-    int sum = 0;
-    for (int i = 0; i < nums.length; i++) {
-        sum += nums[i];
-    }
+    int n = nums.length, sum = Arrays.stream(nums).sum();
 
     if (sum % 2 == 1) {
         return false;
     }
 
     // dp[i][j]: whether the first i elements can sum up to j
-    boolean[][] dp = new boolean[nums.length + 1][sum / 2 + 1];
+    boolean[][] dp = new boolean[n + 1][sum / 2 + 1];
     dp[0][0] = true;
 
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < n; i++) {
         for (int j = 0; j <= sum / 2; j++) {
             if (j < nums[i]) {
                 dp[i + 1][j] = dp[i][j];
@@ -46,7 +43,7 @@ public boolean canPartition(int[] nums) {
             }
         }
     }
-    return dp[nums.length][sum / 2];
+    return dp[n][sum / 2];
 }
 {% endhighlight %}
 
@@ -64,10 +61,7 @@ For example, `nums = [1,2,5,1]`, then `dp` is:
 
 {% highlight java %}
 public boolean canPartition(int[] nums) {
-    int sum = 0;
-    for (int i = 0; i < nums.length; i++) {
-        sum += nums[i];
-    }
+    int sum = Arrays.stream(nums).sum();
 
     if (sum % 2 == 1) {
         return false;

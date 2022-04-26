@@ -1126,6 +1126,59 @@ if (insertionPoint < 0) {
 // now 0 <= insertionPoint <= toIndex
 {% endhighlight %}
 
+[Maximum Total Beauty of the Gardens][maximum-total-beauty-of-the-gardens]
+
+{% highlight java %}
+public long maximumBeauty(int[] flowers, long newFlowers, int target, int full, int partial) {
+    Arrays.sort(flowers);
+
+    int n = flowers.length;
+    // cost[i]: total flowers needed to make flowers[0...(i - 1)] == flowers[i]
+    long[] cost = new long[n];
+    for (int i = 1; i < n; i++) {
+        // trims down each garden to at most target flowers
+        flowers[i] = Math.min(flowers[i], target);
+        cost[i] = cost[i - 1] + i * (flowers[i] - flowers[i - 1]);
+    }
+
+    // if all gardens are already complete
+    if (flowers[0] == target) {
+        return (long)full * n;
+    }
+
+    // if we can make all gardens complete with newFlowers
+    if (newFlowers >= cost[n - 1] + (target - flowers[n - 1]) * n) {
+        // all complete vs. all partial (with max possible number of flowers in partial gardens: target - 1)
+        return (long)full * (n - 1) + Math.max(full, (long)partial * (target - 1));
+    }
+
+    // finds the first partial garden from right to left
+    int j = n - 1;
+    while (flowers[j] == target) {
+        j--;
+    }
+
+    // starting from j-th garden, they are complete
+    long max = 0;
+    while (newFlowers > 0) {
+        // binary searches the i-th garden, where cost[i] <= newFlowers
+        int index = Arrays.binarySearch(cost, 0, j + 1, newFlowers);
+        if (index < 0) {
+            index = ~index - 1;
+        }
+
+        long height = flowers[index] + (newFlowers - cost[index]) / (index + 1);
+        max = Math.max(max, height * partial + (long)full * (n - j - 1));
+        newFlowers -= target - flowers[j--];
+    }
+    return max;
+}
+{% endhighlight %}
+
+The key is to understand the computation of `cost[i]`:
+
+![cost array](/assets/maximum_total_beauty_of_gardens.png)
+
 ## Collections
 
 [public static \<T\> int binarySearch(List\<? extends T\> list, T key, Comparator\<? super T\> c)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Collections.html#binarySearch(java.util.List,T,java.util.Comparator))
