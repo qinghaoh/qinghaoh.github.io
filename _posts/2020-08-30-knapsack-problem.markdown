@@ -4,7 +4,11 @@ title:  "Knapsack Problem"
 tag: dynamic programming
 usemathjax: true
 ---
+# Fundamentals
+
 [Knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem)
+
+Backtracking takes \\(O(2^n)\\) time, so it's less preferable. Dynamic Programming is better, and its form is like `dp[i][j]`, which means the first i elements sums to j.
 
 # 0-1 Knapsack Problem
 
@@ -12,11 +16,9 @@ maximize $$ \sum _{i=1}^{n}v_{i}x_{i} $$
 
 subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\in \{0,1\} $$
 
-## Backtracking
+## Subset Sum Problem
 
-Backtracking takes \\(O(2^n)\\) time, so it's less preferable.
-
-## Dynamic Programming
+The [subset sum problem (SSP)](https://en.wikipedia.org/wiki/Subset_sum_problem):  there is a multiset `S` of integers and a target-sum `T`, and the question is to decide whether any subset of the integers sum to precisely `T`. It's NP-complete.
 
 [Partition Equal Subset Sum][partition-equal-subset-sum]
 
@@ -88,57 +90,56 @@ In 2D, `dp[i + 1][j] = dp[i][j] || dp[i][j - nums[i]]`. The reverse iteration en
 [Target Sum][target-sum]
 
 {% highlight java %}
-public int findTargetSumWays(int[] nums, int S) {
-    int sum = 0;
+public int findTargetSumWays(int[] nums, int target) {
+    int sum = Arrays.stream(nums).sum();
+
+    // sum(P) - sum(N) == target
+    // sum(P) - (sum - sum(P)) == target
+    // 2 * sum(P) == target + sum
+    // sum(P) == (target + sum) / 2
+    return target + sum < 0 || (target + sum) % 2 > 0 ? 0 : subsetSum(nums, (target + sum) >>> 1); 
+}   
+
+private int subsetSum(int[] nums, int target) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;
     for (int num : nums) {
-        sum += num;
+        for (int i = target; i >= num; i--) {
+            dp[i] += dp[i - num]; 
+        }
     }
+    return dp[target];
+}
+{% endhighlight %}
 
-    // d[i][j]: ways to sum up to j with the first i elements
-    int[][] dp = new int[nums.length][2 * sum + 1];
+[Split Array With Same Average][split-array-with-same-average]
 
-    // + sum ensures the index >= 0
-    dp[0][nums[0] + sum] = 1;
-    dp[0][-nums[0] + sum] += 1;  // +0, -0
+{% highlight java %}
+public boolean splitArraySameAverage(int[] nums) {
+    int n = nums.length, sum = Arrays.stream(nums).sum();
 
-    for (int i = 1; i < nums.length; i++) {
-        for (int j = -sum; j <= sum; j++) {
-            if (dp[i - 1][j + sum] > 0) {
-                dp[i][j + nums[i] + sum] += dp[i - 1][j + sum];
-                dp[i][j - nums[i] + sum] += dp[i - 1][j + sum];
+    // dp[i][j]: whether it's possible to sum to i using j elements
+    boolean[][] dp = new boolean[sum + 1][n / 2 + 1];
+    dp[0][0] = true;
+
+    for (int num : nums) {
+        for (int i = sum; i >= num; i--) {
+            for (int j = 1; j <= n / 2; j++) {
+                dp[i][j] = dp[i][j] || dp[i - num][j - 1];
             }
         }
     }
 
-    return S > sum ? 0 : dp[nums.length - 1][S + sum];
-}
-{% endhighlight %}
-
-Refer to subset sum problem:
-
-{% highlight java %}
-public int findTargetSumWays(int[] nums, int S) {
-    int sum = 0;
-    for (int num : nums) {
-        sum += num;
-    }
-
-    // sum(P) - sum(N) == S
-    // sum(P) - (sum(nums) - sum(P)) == S
-    // 2 * sum(P) == S + sum(nums)
-    // sum(P) == (S + sum(nums)) / 2
-    return sum < S || (S + sum) % 2 > 0 ? 0 : subsetSum(nums, (S + sum) >>> 1); 
-}   
-
-private int subsetSum(int[] nums, int S) {
-    int[] dp = new int[S + 1]; 
-    dp[0] = 1;
-    for (int num : nums) {
-        for (int i = S; i >= num; i--) {
-            dp[i] += dp[i - num]; 
+    // if avg(A) = avg(B) = avg(nums)
+    // assumes size(A) <= size(B)
+    // sum(A) = avg(nums) * size(A)
+    //        = sum * size(A) / n
+    for (int i = 1; i <= n / 2; i++)  {
+        if (sum * i % n == 0 && dp[sum * i / n][i]) {
+            return true;
         }
     }
-    return dp[S];
+    return false;
 }
 {% endhighlight %}
 
@@ -148,7 +149,8 @@ private int subsetSum(int[] nums, int S) {
 private static final int MAX = 30 * 100;
 
 public int lastStoneWeightII(int[] stones) {
-    // smaller group
+    // dp[i]: in the smaller group, is it possible to sum to ii
+    // (with the first k stones, where the current stone s is the k-th stone)
     boolean[] dp = new boolean[MAX / 2 + 1];
     dp[0] = true;
 
@@ -163,12 +165,16 @@ public int lastStoneWeightII(int[] stones) {
 
     for (int i = sum / 2; i >= 0; i--) {
         if (dp[i]) {
-            return sum - i - i;
+            return sum - 2 * i;
         }
     }
     return 0;
 }
 {% endhighlight %}
+
+## Variants
+
+**Probability**
 
 [Toss Strange Coins][toss-strange-coins]
 
@@ -193,15 +199,16 @@ public double probabilityOfHeads(double[] prob, int target) {
 }
 {% endhighlight %}
 
-### 3D
+**3D**
 
 [Ones and Zeroes][ones-and-zeroes]
 
 {% highlight java %}
 public int findMaxForm(String[] strs, int m, int n) {
-    int[][][] dp = new int[strs.length + 1][m + 1][n + 1];
+    int len = strs.length;
+    int[][][] dp = new int[len + 1][m + 1][n + 1];
 
-    for (int i = 0; i < strs.length; i++) {
+    for (int i = 0; i < len; i++) {
         int zeroes = 0, ones = 0;
         for (char c : strs[i].toCharArray()) {
             if (c == '0') {
@@ -222,7 +229,7 @@ public int findMaxForm(String[] strs, int m, int n) {
         }
     }
 
-    return dp[strs.length][m][n];
+    return dp[len][m][n];
 }
 {% endhighlight %}
 
@@ -258,7 +265,6 @@ public int findMaxForm(String[] strs, int m, int n) {
 {% highlight java %}
 private static final int MOD = (int)1e9 + 7;
 
-// Knapsack
 public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
     // dp[i][j]: count of schemes with profit >= j done by exactly i members
     int[][] dp = new int[n + 1][minProfit + 1];
@@ -277,42 +283,6 @@ public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
         count = (count + dp[i][minProfit]) % MOD;
     }
     return count;
-}
-{% endhighlight %}
-
-[Split Array With Same Average][split-array-with-same-average]
-
-{% highlight java %}
-// NP
-public boolean splitArraySameAverage(int[] nums) {
-    int n = nums.length, sum = 0;
-    for (int num : nums) {
-        sum += num;
-    }
-
-    // if avg(A) = avg(B) = avg(nums)
-    // assumes size(A) <= size(B)
-    // sum(A) = avg(nums) * size(A)
-    //        = sum * size(A) / n
-
-    // dp[i][j]: whether it's possible to sum to i using j elements
-    boolean[][] dp = new boolean[sum + 1][n / 2 + 1];
-    dp[0][0] = true;
-
-    for (int num : nums) {
-        for (int i = sum; i >= num; i--) {
-            for (int j = 1; j <= n / 2; j++) {
-                dp[i][j] = dp[i][j] || dp[i - num][j - 1];
-            }
-        }
-    }
-
-    for (int i = 1; i <= n / 2; i++)  {
-        if (sum * i % n == 0 && dp[sum * i / n][i]) {
-            return true;
-        }
-    }
-    return false;
 }
 {% endhighlight %}
 
