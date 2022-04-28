@@ -209,14 +209,8 @@ public int findMaxForm(String[] strs, int m, int n) {
     int[][][] dp = new int[len + 1][m + 1][n + 1];
 
     for (int i = 0; i < len; i++) {
-        int zeroes = 0, ones = 0;
-        for (char c : strs[i].toCharArray()) {
-            if (c == '0') {
-                zeroes++;
-            } else {
-                ones++;
-            }
-        }
+        int zeroes = (int)str.chars().filter(ch -> ch == '0').count();
+        int ones = str.length() - zeroes;
 
         for (int j = 0; j <= m; j++) {
             for (int k = 0; k <= n; k++) {
@@ -240,14 +234,8 @@ public int findMaxForm(String[] strs, int m, int n) {
     int[][] dp = new int[m + 1][n + 1];
 
     for (String str : strs) {
-        int zeroes = 0, ones = 0;
-        for (char c : str.toCharArray()) {
-            if (c == '0') {
-                zeroes++;
-            } else {
-                ones++;
-            }
-        }
+        int zeroes = (int)str.chars().filter(ch -> ch == '0').count();
+        int ones = str.length() - zeroes;
 
         for (int i = m; i >= zeroes; i--) {
             for (int j = n; j >= ones; j--) {
@@ -332,10 +320,8 @@ public int change(int amount, int[] coins) {
     dp[0] = 1;
 
     for (int coin : coins) {  
-        for (int i = 0; i <= amount; i++) {
-            if (i >= coin) {
-                dp[i] += dp[i - coin];
-            }
+        for (int i = coin; i <= amount; i++) {
+            dp[i] += dp[i - coin];
         }
     }
     return dp[amount];
@@ -347,6 +333,52 @@ In 2D, `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - nums[i]]`. The natural iteration
 ![1D](/assets/knapsack_coin_change_2_1d.png)
 
 [Form Largest Integer With Digits That Add up to Target][form-largest-integer-with-digits-that-add-up-to-target]
+
+{% highlight java %}
+public String largestNumber(int[] cost, int target) {
+    int n = 9;
+
+    String[][] dp = new String[n + 1][target + 1];
+    dp[0][0] = "";
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= target; j++) {
+            if (j < cost[i] || dp[i + 1][j - cost[i]] == null) {
+                dp[i + 1][j] = dp[i][j];
+            } else {
+                // i is increasing, and that ensures (i + 1) + dp[i + 1][j - cost[i]] is always the largest
+                // among all possible combinations with the same set of digits
+                // therefore, no sorting is required
+                dp[i + 1][j] = max(dp[i][j], (i + 1) + dp[i + 1][j - cost[i]]);
+            }
+        }
+    }
+    return dp[n][target] == null ? "0" : dp[n][target];
+}
+
+private String max(String a, String b) {
+    return a == null ? b : (a.length() == b.length() ?
+        (a.compareTo(b) > 0 ? a : b) :
+        (a.length() > b.length() ? a : b));
+}
+{% endhighlight %}
+
+[Number of Ways to Build House of Cards][number-of-ways-to-build-house-of-cards]
+
+{% highlight java %}
+public int houseOfCards(int n) {
+    int[] dp = new int[n + 1];
+    dp[0] = 1;
+    // it takes 2 * k - 1 cards to build a row
+    // 2, 5, 8, ...
+    for (int cards = 2; cards <= n; cards += 3) {
+        for (int i = n; i >= cards; i--) {
+            dp[i] += dp[i - cards];
+        }
+    }
+    return dp[n];
+}
+{% endhighlight %}
 
 ## Permutation Sum
 
@@ -370,7 +402,7 @@ public int combinationSum4(int[] nums, int target) {
 }
 {% endhighlight %}
 
-In essence, it's recursion.
+In essence, it's bottom-up DP.
 
 ## Change-making Problem
 
@@ -414,21 +446,27 @@ public int coinChange(int[] coins, int amount) {
     dp[0] = 0;
 
     for (int coin : coins) {
-        for (int i = 0; i <= amount; i++) {
-            if (i >= coin) {
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-            }
+        for (int i = coin; i <= amount; i++) {
+            dp[i] = Math.min(dp[i], dp[i - coin] + 1);
         }
     }
     return dp[amount] > amount ? -1 : dp[amount];
 }
 {% endhighlight %}
 
+# Summary
+
+|       | 2D     | 1D order |
+|-------|--------|----------|
+| 0-1 | `dp[i + 1][j] = dp[i][j] + dp[i][j - num]` | -> |
+| UKP | `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - num]` | <- |
+
 [coin-change]: https://leetcode.com/problems/coin-change/
 [coin-change-2]: https://leetcode.com/problems/coin-change-2/
 [combination-sum-iv]: https://leetcode.com/problems/combination-sum-iv/
 [form-largest-integer-with-digits-that-add-up-to-target]: https://leetcode.com/problems/form-largest-integer-with-digits-that-add-up-to-target/
 [last-stone-weight-ii]: https://leetcode.com/problems/last-stone-weight-ii/
+[number-of-ways-to-build-house-of-cards]: https://leetcode.com/problems/number-of-ways-to-build-house-of-cards/
 [ones-and-zeroes]: https://leetcode.com/problems/ones-and-zeroes/
 [partition-equal-subset-sum]: https://leetcode.com/problems/partition-equal-subset-sum/
 [profitable-schemes]: https://leetcode.com/problems/profitable-schemes/
