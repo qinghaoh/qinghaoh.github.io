@@ -250,6 +250,177 @@ class Region {
 }
 {% endhighlight %}
 
+# Cycle Detection
+
+**White-Gray-Black DFS**
+
+[Course Schedule II][course-schedule-ii]
+
+{% highlight java %}
+private List<Integer>[] graph;
+private Color[] color;
+private List<Integer> order = new ArrayList<>();
+
+private enum Color {
+    WHITE,  // node is not processed yet
+    GRAY,  // node is being processed
+    BLACK  // node and all its descendants are processed
+}
+
+public int[] findOrder(int numCourses, int[][] prerequisites) {
+    color = new Color[numCourses];
+
+    // by default all nodes are WHITE
+    Arrays.fill(color, Color.WHITE);
+
+    graph = new List[numCourses];
+    for (int i = 0; i < numCourses; i++) {
+        graph[i] = new ArrayList<>();
+    }
+    for (int[] p : prerequisites) {
+        graph[p[1]].add(p[0]);
+    }
+
+    // dfs unprocessed node
+    for (int i = 0; i < numCourses; i++) {
+        if (color[i] == Color.WHITE) {
+            if (!dfs(i)) {
+                return new int[0];
+            }
+        }
+    }
+
+    Collections.reverse(order);
+    return order.stream().mapToInt(Integer::valueOf).toArray();
+}
+
+// returns false if cycle is detected.
+private boolean dfs(int node) {
+    // starts the recursion
+    color[node] = Color.GRAY;
+
+    for (int neighbor : graph[node]) {
+        // skips back nodes
+        // stops if cycle detected
+        if ((color[neighbor] == Color.WHITE && !dfs(neighbor)) || color[neighbor] == Color.GRAY) {
+            return false;
+        }
+    }
+
+    // finishes the recursion
+    color[node] = Color.BLACK;
+    order.add(node);
+    return true;
+}
+{% endhighlight %}
+
+Similar problem in grid: [Detect Cycles in 2D Grid][detect-cycles-in-2d-grid]
+
+To complete DFS in grid to simulate directed graph, in each DFS path we don't visit the prev visited cell.
+
+[Critical Connections in a Network][critical-connections-in-a-network]
+
+{% highlight java %}
+private List<List<Integer>> graph;
+private Set<List<Integer>> set;
+
+public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+    this.graph = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) {
+        graph.add(new ArrayList<>());
+    }
+    for (List<Integer> e : connections) {
+        int s1 = e.get(0), s2 = e.get(1);
+        graph.get(s1).add(s2);
+        graph.get(s2).add(s1);
+    }
+
+    this.set = new HashSet<>(connections);
+
+    // the depth of a node during DFS
+    int[] rank = new int[n];
+    Arrays.fill(rank, -2);
+
+    dfs(rank, 0, 0);
+    return new ArrayList<>(set);
+}
+
+// returns min depth of all nodes in the subtree
+private int dfs(int[] rank, int node, int depth) {
+    if (rank[node] >= 0) {
+        return rank[node];
+    }
+
+    rank[node] = depth;
+
+    int min = depth;
+    for (int neighbor: graph.get(node)) {
+        // skips parent
+        // here's the reason why rank is initialized with -2, rather than -1:
+        // if depth == 0, then its child node will be skipped by mistake
+        if (rank[neighbor] == depth - 1) {
+            continue;
+        }
+
+        int minSub = dfs(rank, neighbor, depth + 1);
+        min = Math.min(min, minSub);
+
+        // cycle detected
+        if (minSub <= depth) {
+            // discards the edge (node, neighbor) in the cycle
+            set.remove(Arrays.asList(node, neighbor));
+            set.remove(Arrays.asList(neighbor, node));
+        }
+    }
+    return min;
+}
+{% endhighlight %}
+
+This algorith  is very similar to Tarjan's Algorithm. The meaning of `rank` and `dfn/low` is slightly different, but in essence they are closely related.
+
+![Example](https://assets.leetcode.com/uploads/2019/09/03/1537_ex1_2.png)
+
+```
+node: 0
+rank: 0,-2,-2,-2
+
+node: 1
+rank: 0,1,-2,-2
+
+node: 2
+rank: 0,1,2,-2
+
+neighbor: 0
+depth: 2
+minSub: 0
+rank: 0,1,2,-2
+
+neighbor: 2
+depth: 1
+minSub: 0
+rank: 0,1,2,-2
+
+node: 3
+rank: 0,1,2,2
+
+neighbor: 3
+depth: 1
+minSub: 2
+rank: 0,1,2,2
+
+neighbor: 1
+depth: 0
+minSub: 0
+rank: 0,1,2,2
+
+neighbor: 2
+depth: 0
+minSub: 2
+rank: 0,1,2,2
+```
+
+**Topological Sorting** is another common approach for cycle detection. See [Topological Sorting](../../12/10/topological-sorting.html) for details.
+
 # Brute Force
 
 [Lexicographically Smallest String After Applying Operations][lexicographically-smallest-string-after-applying-operations]
@@ -569,6 +740,9 @@ public int dfs(String[] pieces, int[][] positions, int p) {
 [bricks-falling-when-hit]: https://leetcode.com/problems/bricks-falling-when-hit/
 [clone-graph]: https://leetcode.com/problems/clone-graph/
 [contain-virus]: https://leetcode.com/problems/contain-virus/
+[course-schedule-ii]: https://leetcode.com/problems/course-schedule-ii/
+[critical-connections-in-a-network]: https://leetcode.com/problems/critical-connections-in-a-network/
+[detect-cycles-in-2d-grid]: https://leetcode.com/problems/detect-cycles-in-2d-grid/
 [keys-and-rooms]: https://leetcode.com/problems/keys-and-rooms/
 [lexicographical-numbers]: https://leetcode.com/problems/lexicographical-numbers/
 [lexicographically-smallest-string-after-applying-operations]: https://leetcode.com/problems/lexicographically-smallest-string-after-applying-operations/

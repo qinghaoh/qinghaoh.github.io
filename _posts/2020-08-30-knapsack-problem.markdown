@@ -332,6 +332,23 @@ In 2D, `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - nums[i]]`. The natural iteration
 
 ![1D](/assets/knapsack_coin_change_2_1d.png)
 
+[Number of Ways to Build House of Cards][number-of-ways-to-build-house-of-cards]
+
+{% highlight java %}
+public int houseOfCards(int n) {
+    int[] dp = new int[n + 1];
+    dp[0] = 1;
+    // it takes 2 * k - 1 cards to build a row
+    // 2, 5, 8, ...
+    for (int cards = 2; cards <= n; cards += 3) {
+        for (int i = n; i >= cards; i--) {
+            dp[i] += dp[i - cards];
+        }
+    }
+    return dp[n];
+}
+{% endhighlight %}
+
 [Form Largest Integer With Digits That Add up to Target][form-largest-integer-with-digits-that-add-up-to-target]
 
 {% highlight java %}
@@ -360,23 +377,6 @@ private String max(String a, String b) {
     return a == null ? b : (a.length() == b.length() ?
         (a.compareTo(b) > 0 ? a : b) :
         (a.length() > b.length() ? a : b));
-}
-{% endhighlight %}
-
-[Number of Ways to Build House of Cards][number-of-ways-to-build-house-of-cards]
-
-{% highlight java %}
-public int houseOfCards(int n) {
-    int[] dp = new int[n + 1];
-    dp[0] = 1;
-    // it takes 2 * k - 1 cards to build a row
-    // 2, 5, 8, ...
-    for (int cards = 2; cards <= n; cards += 3) {
-        for (int i = n; i >= cards; i--) {
-            dp[i] += dp[i - cards];
-        }
-    }
-    return dp[n];
 }
 {% endhighlight %}
 
@@ -458,8 +458,8 @@ public int coinChange(int[] coins, int amount) {
 
 |       | 2D     | 1D order |
 |-------|--------|----------|
-| 0-1 | `dp[i + 1][j] = dp[i][j] + dp[i][j - num]` | -> |
-| UKP | `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - num]` | <- |
+| 0-1 | `dp[i + 1][j] = dp[i][j] + dp[i][j - num]` | j: num <- target |
+| UKP | `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - num]` | j: num -> target |
 
 [coin-change]: https://leetcode.com/problems/coin-change/
 [coin-change-2]: https://leetcode.com/problems/coin-change-2/

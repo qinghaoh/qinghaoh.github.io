@@ -87,15 +87,13 @@ TreeSet<Integer> left = new TreeSet<>(comparator), right = new TreeSet<>(compara
 {% highlight java %}
 class PhoneDirectory {
     private int max;
-    private Set<Integer> used;
-    private LinkedList<Integer> released;
+    private Set<Integer> used = new HashSet<>();
+    private LinkedList<Integer> released = new LinkedList<>();
 
     /** Initialize your data structure here
         @param maxNumbers - The maximum numbers that can be stored in the phone directory. */
     public PhoneDirectory(int maxNumbers) {
         this.max = maxNumbers;
-        this.used = new HashSet<>();
-        this.released = new LinkedList<>();
     }
     
     /** Provide a number which is not assigned to anyone.
