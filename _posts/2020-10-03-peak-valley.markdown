@@ -59,19 +59,26 @@ public int movesToMakeZigzag(int[] nums) {
 [Find Permutation][find-permutation]
 
 {% highlight java %}
-private int MAX = 1001;
+public int[] findPermutation(String s) {
+    int n = s.length();
+    int[] perm = new int[n + 1];
+    perm[n] = n + 1;
+    int i = 0;
+    while (i < n) {
+        // finds next 'I'
+        int j = i;
+        while (j < n && s.charAt(j) == 'D') {
+            j++;
+        }
 
-public int movesToMakeZigzag(int[] nums) {
-    int[] result = new int[2];
-    int left = 0, right = 0;
-    for (int i = 0; i < nums.length; ++i) {
-        left = i > 0 ? nums[i - 1] : MAX;
-        right = i < nums.length - 1 ? nums[i + 1] : MAX;
-
-        // decreases nums[odd] or nums[even]
-        result[i % 2] += Math.max(0, nums[i] - Math.min(left, right) + 1);
+        // s.charAt(i)
+        // 'I': j == i
+        // 'D': swaps [i, j]
+        for (int k = j - i; k >= 0; k--, j--) {
+            perm[i++] = j + 1;
+        }
     }
-    return Math.min(result[0], result[1]);
+    return perm;
 }
 {% endhighlight %}
 

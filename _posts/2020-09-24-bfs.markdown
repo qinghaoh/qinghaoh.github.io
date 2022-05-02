@@ -370,83 +370,7 @@ private List<String> getNeighbors(String source, String target) {
 }
 {% endhighlight %}
 
-[Second Minimum Time to Reach Destination][second-minimum-time-to-reach-destination]
-
-{% highlight java %}
-private static final int MAX_NUM_NODES = (int)1e4;
-
-public int secondMinimum(int n, int[][] edges, int time, int change) {
-    List<Integer>[] graph = new List[n + 1];
-    for (int i = 0; i <= n; i++) {
-        graph[i] = new ArrayList<>();
-    }
-    for (int[] e : edges) {
-        graph[e[0]].add(e[1]);
-        graph[e[1]].add(e[0]);
-    }
-
-    // minSteps[i]: minimum steps from vertex i to vertex n
-    int[] minSteps = new int[n + 1];
-    Arrays.fill(minSteps, MAX_NUM_NODES + 1);
-    int node = n;
-    minSteps[node] = 0;
-
-    // first BFS
-    Queue<Integer> q = new LinkedList<>();
-    q.offer(node);
-    while (!q.isEmpty()) {
-        node = q.poll();
-        for (int neighbor : graph[node]) {
-            if (minSteps[neighbor] == MAX_NUM_NODES + 1) {
-                minSteps[neighbor] = minSteps[node] + 1;
-                q.offer(neighbor);
-            }
-        }
-    }
-
-    // if the minimum number of steps from 1 to n is k
-    // then the second minimum time is either:
-    // k + 2 (goes back-and-forth once) or
-    // k + 1 (takes a detour)
-
-    // second BFS
-    int steps = minSteps[node = 1] + 2;
-    q.offer(node);
-    while (!q.isEmpty()) {
-        node = q.poll();
-        for (int neighbor : graph[node]) {
-            // there exists a detour
-            if (minSteps[neighbor] == minSteps[node]) {
-                return calculateTime(steps - 1, time, change);
-            }
-
-            // pruning: enqueues only the neighbors that are on the shortest path from current node to n
-            // in fact, there are only 3 possibilities:
-            // 1.  minSteps[neighbor] == minSteps[node]
-            // 2.  minSteps[neighbor] == minSteps[node] - 1
-            // 3.  minSteps[neighbor] == minSteps[node] + 1
-            if (minSteps[neighbor] == minSteps[node] - 1) {
-                q.offer(neighbor);
-            }
-        }
-    }
-    return calculateTime(steps, time, change);
-}
-
-private int calculateTime(int steps, int time, int change) {
-    int total = 0;
-    while (steps-- > 0) {
-        // traffic light switches (to red), waits another change
-        if ((total / change) % 2 == 1) {
-            total = (total / change + 1) * change;
-        }
-        total += time;
-    }
-    return total;
-}
-{% endhighlight %}
-
-# Multi-sources BFS
+# Multi-source BFS
 
 Vertex values are updated layer by layer from sources (Expanding)
 
@@ -699,11 +623,192 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 }
 {% endhighlight %}
 
-# + Other Algorithms/Data Structures
+# + Algorithms/Data Structures
 
 ## + Priority Queue
 
 [Cut Off Trees for Golf Event][cut-off-trees-for-golf-event]
+
+## + BFS
+
+[Second Minimum Time to Reach Destination][second-minimum-time-to-reach-destination]
+
+{% highlight java %}
+private static final int MAX_NUM_NODES = (int)1e4;
+
+public int secondMinimum(int n, int[][] edges, int time, int change) {
+    List<Integer>[] graph = new List[n + 1];
+    for (int i = 0; i <= n; i++) {
+        graph[i] = new ArrayList<>();
+    }
+    for (int[] e : edges) {
+        graph[e[0]].add(e[1]);
+        graph[e[1]].add(e[0]);
+    }
+
+    // minSteps[i]: minimum steps from vertex i to vertex n
+    int[] minSteps = new int[n + 1];
+    Arrays.fill(minSteps, MAX_NUM_NODES + 1);
+    int node = n;
+    minSteps[node] = 0;
+
+    // first BFS
+    Queue<Integer> q = new LinkedList<>();
+    q.offer(node);
+    while (!q.isEmpty()) {
+        node = q.poll();
+        for (int neighbor : graph[node]) {
+            if (minSteps[neighbor] == MAX_NUM_NODES + 1) {
+                minSteps[neighbor] = minSteps[node] + 1;
+                q.offer(neighbor);
+            }
+        }
+    }
+
+    // if the minimum number of steps from 1 to n is k
+    // then the second minimum time is either:
+    // k + 2 (goes back-and-forth once) or
+    // k + 1 (takes a detour)
+
+    // second BFS
+    int steps = minSteps[node = 1] + 2;
+    q.offer(node);
+    while (!q.isEmpty()) {
+        node = q.poll();
+        for (int neighbor : graph[node]) {
+            // there exists a detour
+            if (minSteps[neighbor] == minSteps[node]) {
+                return calculateTime(steps - 1, time, change);
+            }
+
+            // pruning: enqueues only the neighbors that are on the shortest path from current node to n
+            // in fact, there are only 3 possibilities:
+            // 1.  minSteps[neighbor] == minSteps[node]
+            // 2.  minSteps[neighbor] == minSteps[node] - 1
+            // 3.  minSteps[neighbor] == minSteps[node] + 1
+            if (minSteps[neighbor] == minSteps[node] - 1) {
+                q.offer(neighbor);
+            }
+        }
+    }
+    return calculateTime(steps, time, change);
+}
+
+private int calculateTime(int steps, int time, int change) {
+    int total = 0;
+    while (steps-- > 0) {
+        // traffic light switches (to red), waits another change
+        if ((total / change) % 2 == 1) {
+            total = (total / change + 1) * change;
+        }
+        total += time;
+    }
+    return total;
+}
+{% endhighlight %}
+
+[Escape the Spreading Fire][escape-the-spreading-fire]
+
+{% highlight java %}
+{% raw %}
+private static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+{% endraw %}
+public int maximumMinutes(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+
+    // personMinutes[i][j]: the earliest time you will reach the cell (i, j)
+    int[][] personMinutes = new int[m][n];
+    for (int i = 0; i < m; i++) {
+        Arrays.fill(personMinutes[i], -1);
+    }
+    personMinutes[0][0] = 0;
+
+    int minute = 0;
+    int[] cell = {0, 0};
+    Queue<int[]> q = new LinkedList<>();
+    q.offer(cell);
+
+    while (!q.isEmpty()) {
+        minute++;
+        for (int i = q.size(); i > 0; i--) {
+            cell = q.poll();
+            for (int[] d : DIRECTIONS) {
+                int r = cell[0] + d[0], c = cell[1] + d[1];
+                if (r >= 0 && r < m && c >= 0 && c < n && personMinutes[r][c] < 0 && grid[r][c] == 0) {
+                    personMinutes[r][c] = minute;
+                    q.offer(new int[]{r, c});
+                }
+            }
+        }
+    }
+
+    // fireMinutes[i][j]: the earliest time the person will reach the cell (i, j)
+    int[][] fireMinutes = new int[m][n];
+    minute = 0;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            fireMinutes[i][j] = -1;
+            if (grid[i][j] == 1) {
+                q.offer(new int[]{i, j});
+                fireMinutes[i][j] = 0;
+            }
+        }
+    }
+
+    while (!q.isEmpty()) {
+        minute++;
+        for (int i = q.size(); i > 0; i--) {
+            cell = q.poll();
+            for (int[] d : DIRECTIONS) {
+                int r = cell[0] + d[0], c = cell[1] + d[1];
+                if (r >= 0 && r < m && c >= 0 && c < n && fireMinutes[r][c] < 0 && grid[r][c] == 0) {
+                    fireMinutes[r][c] = minute;
+                    q.offer(new int[]{r, c});
+                }
+            }
+        }
+    }
+
+    // you can't reach the safehouse
+    if (personMinutes[m - 1][n - 1] < 0) {
+        return -1;
+    }
+
+    // fire can't spread to the safehouse
+    if (fireMinutes[m - 1][n - 1] < 0) {
+        return (int)1e9;
+    }
+
+    // the fire spreads to it earlier than you
+    if (personMinutes[m - 1][n - 1] > fireMinutes[m - 1][n - 1]) {
+        return -1;
+    }
+
+    // on a valid path from start to safehouse, diff = (fireMinutes - personMinutes) is non-increasing
+    // suppose you and the fire meet at a cell (i, j), and diff == 2
+    // it means you are ahead of the fire by 2 minutes.
+    // from now on, the fire can conservatively follow your trace so the diff remains as 2.
+    // there possibly exists a better strategy for the fire at drive the diff down even further.
+
+    // diff at (m - 2, n - 1) > diff at safehouse means you and fire came from different directions
+    // (otherwise the diff at this west neighbor would be == diff at safehouse)
+    // same as the north neighbor.
+    // in this case, you meet the fire right at the safehouse.
+    //
+    // otherwise, diff at west and north neighbors are the same as the safehouse,
+    // which means you and fire meet right before the safehouse.
+    // (the fire follows you all the way)
+    // in this case, you need to wait one minute shorter
+    int diff = fireMinutes[m - 1][n - 1] - personMinutes[m - 1][n - 1];
+    return personMinutes[m - 2][n - 1] >= 0 && personMinutes[m - 1][n - 2] >= 0 &&
+       (fireMinutes[m - 2][n - 1] - personMinutes[m - 2][n - 1] > diff ||
+       fireMinutes[m - 1][n - 2] - personMinutes[m - 1][n - 2] > diff) ? diff : diff - 1;
+}
+{% endhighlight %}
+
+![Edge cases](/assets/escaping_the_spreading_fire.png)
+
+Another solution is to compute `fireMinutes`, and binary searches the max wait time so that you can reach the safehouse.
 
 ## + DFS
 
@@ -804,6 +909,7 @@ public int shortestPathLength(int[][] graph) {
 
 [cheapest-flights-within-k-stops]: https://leetcode.com/problems/cheapest-flights-within-k-stops/
 [cut-off-trees-for-golf-event]: https://leetcode.com/problems/cut-off-trees-for-golf-event/
+[escape-the-spreading-fire]: https://leetcode.com/problems/escape-the-spreading-fire/
 [jump-game-ii]: https://leetcode.com/problems/jump-game-ii/
 [k-similar-strings]: https://leetcode.com/problems/k-similar-strings/
 [map-of-highest-peak]: https://leetcode.com/problems/map-of-highest-peak/

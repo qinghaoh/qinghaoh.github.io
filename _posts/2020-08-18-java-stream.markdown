@@ -3,6 +3,14 @@ layout: post
 title:  "Java Stream"
 tags: java
 ---
+# Ordering
+
+https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/package-summary.html
+
+Streams may or may not have a defined encounter order. Whether or not a stream has an encounter order depends on the source and the intermediate operations. Certain stream sources (such as List or arrays) are intrinsically ordered, whereas others (such as HashSet) are not. Some intermediate operations, such as sorted(), may impose an encounter order on an otherwise unordered stream, and others may render an ordered stream unordered, such as BaseStream.unordered(). Further, some terminal operations may ignore encounter order, such as forEach().
+
+[Stream<T> sorted(Comparator<? super T> comparator)](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#sorted(java.util.Comparator)): For ordered streams, the sort is stable. For unordered streams, no stability guarantees are made.
+
 # Summing numbers
 
 ## Stream.reduce()
