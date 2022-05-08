@@ -111,14 +111,6 @@ public int minDistance(String word1, String word2) {
 [Minimum ASCII Delete Sum for Two Strings][minimum-ascii-delete-sum-for-two-strings]
 
 {% highlight java %}
-if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-    dp[i][j] = dp[i - 1][j - 1];
-} else {
-    dp[i][j] = Math.min(dp[i][j - 1], dp[i - 1][j]) + 1;
-}
-{% endhighlight %}
-
-{% highlight java %}
 char c1 = s1.charAt(i - 1), c2 = s2.charAt(j - 1);
 if (c1 == c2) {
     dp[i][j] = dp[i - 1][j - 1];
@@ -126,6 +118,8 @@ if (c1 == c2) {
     dp[i][j] = Math.min(dp[i][j - 1] + c2, dp[i - 1][j] + c1);
 }
 {% endhighlight %}
+
+**Longest Common Subsequence**
 
 [Longest Common Subsequence][longest-common-subsequence]
 
@@ -137,17 +131,23 @@ if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
 }
 {% endhighlight %}
 
-[Uncrossed Lines][uncrossed-lines]
+[Uncrossed Lines][uncrossed-lines] can be transformed to [Longest Common Subsequence][longest-common-subsequence]!
+
+**Longest Common Subarray**
+
+[Maximum Length of Repeated Subarray][maximum-length-of-repeated-subarray]
 
 {% highlight java %}
-if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
-    dp[i][j] = dp[i - 1][j - 1] + 1;
-} else {
-    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
+// dp[i][j]: max length of repeated subarray ending with nums1[i - 1] and nums2[j - 1]
+int[][] dp = new int[n1 + 1][n2 + 1];
+for (int i = 1; i <= n1; i++) {
+    for (int j = 1;j <= n2; j++) {
+        if (nums1[i - 1] == nums2[j - 1]) {
+            max = Math.max(max, dp[i][j] = dp[i - 1][j - 1] + 1);
+        }
+    }
 }
 {% endhighlight %}
-
-Look how it's transformed to [Longest Common Subsequence][longest-common-subsequence]!
 
 [Distinct Subsequences][distinct-subsequences]
 
@@ -159,25 +159,10 @@ for (int i = 0; i <= m; i++) {
 
 for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
+        dp[i + 1][j + 1] = dp[i][j + 1];
+
         if (s.charAt(i) == t.charAt(j)) {
-            dp[i + 1][j + 1] = dp[i][j];
-        }
-        dp[i + 1][j + 1] += dp[i][j + 1];
-    }
-}
-{% endhighlight %}
-
-[Maximum Length of Repeated Subarray][maximum-length-of-repeated-subarray]
-
-{% highlight java %}
-// dp[i][j]: max length of repeated subarray ending with nums1[i - 1] and nums2[j - 1]
-int[][] dp = new int[n1 + 1][n2 + 1];
-for (int i = 0; i <= n1; i++) {
-    for (int j = 0;j <= n2; j++) {
-        if (i == 0 || j == 0){
-            dp[i][j] = 0;
-        } else if (nums1[i - 1] == nums2[j - 1]) {
-            max = Math.max(max, dp[i][j] = dp[i - 1][j - 1] + 1);
+            dp[i + 1][j + 1] += dp[i][j];
         }
     }
 }

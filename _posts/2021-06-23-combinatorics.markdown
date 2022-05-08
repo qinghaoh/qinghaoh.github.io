@@ -107,6 +107,25 @@ private boolean backtrack(StringBuilder sb, Set<String> visited, int target, int
 }
 {% endhighlight %}
 
+[Total Appeal of A String][total-appeal-of-a-string]
+
+{% highlight java %}
+public long appealSum(String s) {
+    int[] last = new int[26];
+    Arrays.fill(last, -1);
+
+    int n = s.length();
+    long count = 0;
+    for (int i = 0; i < n; i++) {
+        // the char at i appears in (i + 1) * (n - i)
+        // also needs to subtract the duplicates: (last[ch] + 1) * (n - i)
+        count += (i - last[s.charAt(i) - 'a']) * (n - i);
+        last[s.charAt(i) - 'a'] = i;
+    }
+    return count;
+}
+{% endhighlight %}
+
 # Combinations
 
 [Count Sorted Vowel Strings][count-sorted-vowel-strings]
@@ -230,3 +249,4 @@ public int waysToDistribute(int n, int k) {
 [kth-smallest-instructions]: https://leetcode.com/problems/kth-smallest-instructions/
 [number-of-sets-of-k-non-overlapping-line-segments]: https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/
 [probability-of-a-two-boxes-having-the-same-number-of-distinct-balls]: https://leetcode.com/problems/probability-of-a-two-boxes-having-the-same-number-of-distinct-balls/
+[total-appeal-of-a-string]: https://leetcode.com/problems/total-appeal-of-a-string/

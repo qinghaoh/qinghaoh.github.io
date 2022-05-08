@@ -72,8 +72,8 @@ public int[] findPermutation(String s) {
         }
 
         // s.charAt(i)
-        // 'I': j == i
-        // 'D': swaps [i, j]
+        // - 'I': j == i
+        // - 'D': two pointers, reverses [i + 1, j + 1]
         for (int k = j - i; k >= 0; k--, j--) {
             perm[i++] = j + 1;
         }
@@ -81,6 +81,14 @@ public int[] findPermutation(String s) {
     return perm;
 }
 {% endhighlight %}
+
+In this solution, the final result is split into groups, with `I` as delimiter. In each group, the numbers are contiguous, and the groups are in ascending order.
+
+e.g. 
+```
+ I    D I    D D I    D  D D I    D
+[1, ' 3,2, ' 6,5,4, ' 10,9,8,7, ' 12,11]
+```
 
 [Candy][candy]
 
@@ -159,4 +167,4 @@ public int findLengthOfShortestSubarray(int[] arr) {
 [decrease-elements-to-make-array-zigzag]: https://leetcode.com/problems/decrease-elements-to-make-array-zigzag/
 [find-permutation]: https://leetcode.com/problems/find-permutation/
 [maximum-alternating-subsequence-sum]: https://leetcode.com/problems/maximum-alternating-subsequence-sum/
-[shortest-subarray-to-be-removed-to-make-array-sorted]: https://leetcode.com/problems/find-permutation/shortest-subarray-to-be-removed-to-make-array-sorted/
+[shortest-subarray-to-be-removed-to-make-array-sorted]: https://leetcode.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/
