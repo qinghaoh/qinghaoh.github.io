@@ -8,6 +8,54 @@ In this type of problem, we linear scan the elements one by one, and use `dp[i]`
 
 # Single DP Variable
 
+[Min Cost Climbing Stairs][min-cost-climbing-stairs]
+
+{% highlight java %}
+public int minCostClimbingStairs(int[] cost) {
+    int[] dp = new int[cost.length];
+    dp[0] = cost[0];
+    dp[1] = cost[1];
+
+    for (int i = 2; i < cost.length; i++) {
+        dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
+    }
+    return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
+}
+{% endhighlight %}
+
+{% highlight java %}
+public int minCostClimbingStairs(int[] cost) {
+    int dp0 = cost[0], dp1 = cost[1];
+
+    for (int i = 2; i < cost.length; i++) {
+        int tmp = Math.min(dp0, dp1) + cost[i];
+        dp0 = dp1;
+        dp1 = tmp;
+    }
+    return Math.min(dp0, dp1);
+}
+{% endhighlight %}
+
+[Greatest Sum Divisible by Three][greatest-sum-divisible-by-three]
+
+This problem can be generalized to "Divisible by k":
+
+{% highlight java %}
+public int maxSumDivThree(int[] nums) {
+    int k = 3;
+    int[] dp = new int[k];
+    for (int num : nums) {
+        int[] tmp = Arrays.copyOf(dp, k);
+        for (int i = 0; i < k; i++) {
+            int r = (dp[i] + num) % k;
+            tmp[r] = Math.max(tmp[r], dp[i] + num);
+        }
+        dp = tmp;
+    }
+    return dp[0];
+}
+{% endhighlight %}
+
 ## Adjacency Model (House Robber)
 
 In this model, at each position there are multiple choices (e.g. to skip or rob). Current `dp[i]` depends on or affects adjacent elements `dp[i + k]`, `k = ..., -2, -1, ..., 1, 2, ...`. With a linear scan from left to right, we don't need to care about neighbors on the right (`k > 0`), because they have been equivalently included when we deal with their counterparts on the left (`-k`). The key is to find the recursive formula.
@@ -573,8 +621,10 @@ public int minimumTime(String s) {
 [decode-ways]: https://leetcode.com/problems/decode-ways/
 [delete-and-earn]: https://leetcode.com/problems/delete-and-earn/
 [flip-string-to-monotone-increasing]: https://leetcode.com/problems/flip-string-to-monotone-increasing/
+[greatest-sum-divisible-by-three]: https://leetcode.com/problems/greatest-sum-divisible-by-three/
 [house-robber]: https://leetcode.com/problems/house-robber/
 [house-robber-ii]: https://leetcode.com/problems/house-robber-ii/
+[min-cost-climbing-stairs]: https://leetcode.com/problems/min-cost-climbing-stairs/
 [maximum-earnings-from-taxi]: https://leetcode.com/problems/maximum-earnings-from-taxi/
 [minimum-deletions-to-make-string-balanced]: https://leetcode.com/problems/minimum-deletions-to-make-string-balanced/
 [minimum-time-to-remove-all-cars-containing-illegal-goods]: https://leetcode.com/problems/minimum-time-to-remove-all-cars-containing-illegal-goods/

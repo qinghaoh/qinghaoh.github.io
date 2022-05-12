@@ -221,70 +221,24 @@ for (int i = 0; i < n1; i++) {
 return dp[n2];
 {% endhighlight %}
 
-[Min Cost Climbing Stairs][min-cost-climbing-stairs]
-
-{% highlight java %}
-public int minCostClimbingStairs(int[] cost) {
-    int[] dp = new int[cost.length];
-    dp[0] = cost[0];
-    dp[1] = cost[1];
-
-    for (int i = 2; i < cost.length; i++) {
-        dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
-    }
-    return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
-}
-{% endhighlight %}
-
-{% highlight java %}
-public int minCostClimbingStairs(int[] cost) {
-    int dp0 = cost[0], dp1 = cost[1];
-
-    for (int i = 2; i < cost.length; i++) {
-        int tmp = Math.min(dp0, dp1) + cost[i];
-        dp0 = dp1;
-        dp1 = tmp;
-    }
-    return Math.min(dp0, dp1);
-}
-{% endhighlight %}
-
-[Greatest Sum Divisible by Three][greatest-sum-divisible-by-three]
-
--> Divisible by K
-
-{% highlight java %}
-public int maxSumDivThree(int[] nums) {
-    int k = 3;
-    int[] dp = new int[k];
-    for (int num : nums) {
-        int[] tmp = Arrays.copyOf(dp, k);
-        for (int i = 0; i < k; i++) {
-            int r = (dp[i] + num) % k;
-            tmp[r] = Math.max(tmp[r], dp[i] + num);
-        }
-        dp = tmp;
-    }
-    return dp[0];
-}
-{% endhighlight %}
-
 [Longest String Chain][longest-string-chain]
 
 {% highlight java %}
-public int minimumTotal(List<List<Integer>> triangle) {
-    int n = triangle.size();
-    // bottom level
-    Integer[] dp = triangle.get(n - 1).toArray(new Integer[0]);
+public int longestStrChain(String[] words) {
+    Arrays.sort(words, Comparator.comparingInt(s -> s.length()));
 
-    // from bottom to top
-    for (int i = n - 2; i >= 0; i--) {
-        for (int j = 0; j <= i; j++) {
-            dp[j] = Math.min(dp[j], dp[j + 1]) + triangle.get(i).get(j);
+    Map<String, Integer> dp = new HashMap<>();
+    int max = 0;
+    for (String word : words) {
+        int length = 0;
+        for (int i = 0; i < word.length(); ++i) {
+            String predecessor = word.substring(0, i) + word.substring(i + 1);
+            length = Math.max(length, dp.getOrDefault(predecessor, 0) + 1);
         }
+        dp.put(word, length);
+        max = Math.max(max, length);
     }
-
-    return dp[0];
+    return max;
 }
 {% endhighlight %}
 
@@ -464,12 +418,10 @@ private int[][] preProcess(String r, int orientation) {
 [distinct-subsequences]: https://leetcode.com/problems/distinct-subsequences/
 [edit-distance]: https://leetcode.com/problems/edit-distance/
 [freedom-trail]: https://leetcode.com/problems/freedom-trail/
-[greatest-sum-divisible-by-three]: https://leetcode.com/problems/greatest-sum-divisible-by-three/
 [interleaving-string]: https://leetcode.com/problems/interleaving-string/
 [longest-common-subsequence]: https://leetcode.com/problems/longest-common-subsequence/
 [longest-string-chain]: https://leetcode.com/problems/longest-string-chain/
 [make-array-strictly-increasing]: https://leetcode.com/problems/make-array-strictly-increasing/
 [maximum-length-of-repeated-subarray]: https://leetcode.com/problems/maximum-length-of-repeated-subarray/
-[min-cost-climbing-stairs]: https://leetcode.com/problems/min-cost-climbing-stairs/
 [minimum-ascii-delete-sum-for-two-strings]: https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/
 [uncrossed-lines]: https://leetcode.com/problems/uncrossed-lines/

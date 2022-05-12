@@ -485,11 +485,33 @@ public int earliestFullBloom(int[] plantTime, int[] growTime) {
 }
 {% endhighlight %}
 
+[Make Array Non-decreasing or Non-increasing][make-array-non-decreasing-or-non-increasing]
+
+{% highlight java %}
+public int convertArray(int[] nums) {
+    return Math.min(helper(nums, 1), helper(nums, -1));
+}
+
+private int helper(int[] nums, int sign) {
+    Queue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+    int cost = 0;
+    for (int i = sign > 0 ? 0 : nums.length - 1; i < nums.length && i >= 0; i += sign) {
+        if (!pq.isEmpty() && pq.peek() > nums[i]) {
+            cost += pq.poll() - nums[i];
+            pq.offer(nums[i]);
+        }
+        pq.offer(nums[i]);
+    }
+    return cost;
+}
+{% endhighlight %}
+
 [broken-calculator]: https://leetcode.com/problems/broken-calculator/
 [earliest-possible-day-of-full-bloom]: https://leetcode.com/problems/earliest-possible-day-of-full-bloom/
 [flower-planting-with-no-adjacent]: https://leetcode.com/problems/flower-planting-with-no-adjacent/
 [hand-of-straights]: https://leetcode.com/problems/hand-of-straights/
 [jump-game]: https://leetcode.com/problems/jump-game/
+[make-array-non-decreasing-or-non-increasing]: https://leetcode.com/problems/make-array-non-decreasing-or-non-increasing/
 [maximum-binary-string-after-change]: https://leetcode.com/problems/maximum-binary-string-after-change/
 [maximum-number-of-ones]: https://leetcode.com/problems/maximum-number-of-ones/
 [maximum-score-from-removing-substrings]: https://leetcode.com/problems/maximum-score-from-removing-substrings/
