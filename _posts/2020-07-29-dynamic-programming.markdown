@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Dynamic Programming"
+title:  "Dynamic Programming (Edit Distance)"
 tag: dynamic programming
 ---
 [Edit Distance][edit-distance]
@@ -36,6 +36,8 @@ public int minDistance(String word1, String word2) {
     return dp[n1][n2];
 }
 {% endhighlight %}
+
+Visually, we initialize boarder cells.
 
 For example, `word1 = "newton", word2 = "einstein"`, then `dp` is:
 ```
@@ -141,7 +143,7 @@ if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
 // dp[i][j]: max length of repeated subarray ending with nums1[i - 1] and nums2[j - 1]
 int[][] dp = new int[n1 + 1][n2 + 1];
 for (int i = 1; i <= n1; i++) {
-    for (int j = 1;j <= n2; j++) {
+    for (int j = 1; j <= n2; j++) {
         if (nums1[i - 1] == nums2[j - 1]) {
             max = Math.max(max, dp[i][j] = dp[i - 1][j - 1] + 1);
         }
@@ -220,116 +222,6 @@ for (int i = 0; i < n1; i++) {
 
 return dp[n2];
 {% endhighlight %}
-
-[Longest String Chain][longest-string-chain]
-
-{% highlight java %}
-public int longestStrChain(String[] words) {
-    Arrays.sort(words, Comparator.comparingInt(s -> s.length()));
-
-    Map<String, Integer> dp = new HashMap<>();
-    int max = 0;
-    for (String word : words) {
-        int length = 0;
-        for (int i = 0; i < word.length(); ++i) {
-            String predecessor = word.substring(0, i) + word.substring(i + 1);
-            length = Math.max(length, dp.getOrDefault(predecessor, 0) + 1);
-        }
-        dp.put(word, length);
-        max = Math.max(max, length);
-    }
-    return max;
-}
-{% endhighlight %}
-
-[Make Array Strictly Increasing][make-array-strictly-increasing]
-
-{% highlight java %}
-public int makeArrayIncreasing(int[] arr1, int[] arr2) {
-    Arrays.sort(arr2);
-
-    // rolling dp
-    // dp[i]: i is the element we choose for the current position.
-    // this element can be from either arr1 or arr2.
-    Map<Integer, Integer> dp = new HashMap<>();
-    dp.put(-1, 0);
-
-    for (int a1: arr1) {
-        // builds temporary dp map for i-th element of arr1
-        Map<Integer, Integer> tmp = new HashMap<>();
-        for (int key : dp.keySet()) {
-            int val = dp.get(key);
-            // path one
-            // no assignment for key -> a1
-            if (a1 > key) {
-                tmp.put(a1, Math.min(tmp.getOrDefault(a1, Integer.MAX_VALUE), val));
-            }
-
-            int index = Arrays.binarySearch(arr2, key + 1);
-            if (index < 0) {
-                index = ~index;
-            }
-
-            // path two
-            // one assignment for key -> arr2[index]
-            if (index < arr2.length) {
-                tmp.put(arr2[index], Math.min(tmp.getOrDefault(arr2[index], Integer.MAX_VALUE), val + 1));
-            }
-        }
-        dp = tmp;
-    }
-
-    return dp.isEmpty() ? - 1: Collections.min(dp.values());
-}
-{% endhighlight %}
-
-# Reverse
-
-[Coin Path][coin-path]
-
-{% highlight java %}
-public List<Integer> cheapestJump(int[] coins, int maxJump) {
-    int n = coins.length;
-    List<Integer> path = new ArrayList<>();
-    if (coins[n - 1] < 0){
-        return path;
-    }
-
-    // dp[i]: cost from coins[i] to coins[n - 1]
-    int[] dp = new int[n], next = new int[n];
-    Arrays.fill(dp, Integer.MAX_VALUE);
-    Arrays.fill(next, -1);
-
-    dp[n - 1] = coins[n - 1];
-
-    // reverse order
-    for (int i = n - 2; i >= 0; i--) {
-        if (coins[i] == -1) {
-            continue;
-        }
-
-        for (int j = i + 1; j <= Math.min(i + maxJump, n - 1); j++) {
-            // strict > guarantees lexicographical order
-            if (dp[i] > dp[j] + coins[i] && dp[j] != Integer.MAX_VALUE) {
-                dp[i] = dp[j] + coins[i];
-                next[i] = j;
-            }
-        }
-    }
-
-    if (dp[0] == Integer.MAX_VALUE) {
-        return path;
-    }
-
-    int index = 0;
-    while (index != -1) {
-        path.add(index + 1);
-        index = next[index];
-    }
-    return path;
-}
-{% endhighlight %}
-
 
 [Freedom Trail][freedom-trail]
 
@@ -413,15 +305,12 @@ private int[][] preProcess(String r, int orientation) {
 }
 {% endhighlight %}
 
-[coin-path]: https://leetcode.com/problems/coin-path/
 [delete-operation-for-two-strings]: https://leetcode.com/problems/delete-operation-for-two-strings/
 [distinct-subsequences]: https://leetcode.com/problems/distinct-subsequences/
 [edit-distance]: https://leetcode.com/problems/edit-distance/
 [freedom-trail]: https://leetcode.com/problems/freedom-trail/
 [interleaving-string]: https://leetcode.com/problems/interleaving-string/
 [longest-common-subsequence]: https://leetcode.com/problems/longest-common-subsequence/
-[longest-string-chain]: https://leetcode.com/problems/longest-string-chain/
-[make-array-strictly-increasing]: https://leetcode.com/problems/make-array-strictly-increasing/
 [maximum-length-of-repeated-subarray]: https://leetcode.com/problems/maximum-length-of-repeated-subarray/
 [minimum-ascii-delete-sum-for-two-strings]: https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/
 [uncrossed-lines]: https://leetcode.com/problems/uncrossed-lines/

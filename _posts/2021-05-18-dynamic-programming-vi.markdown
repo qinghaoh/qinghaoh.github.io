@@ -879,11 +879,122 @@ public int minimumFinishTime(int[][] tires, int changeTime, int numLaps) {
 }
 {% endhighlight %}
 
+[Longest String Chain][longest-string-chain]
+
+{% highlight java %}
+public int longestStrChain(String[] words) {
+    Arrays.sort(words, Comparator.comparingInt(s -> s.length()));
+
+    Map<String, Integer> dp = new HashMap<>();
+    int max = 0;
+    for (String word : words) {
+        int length = 0;
+        for (int i = 0; i < word.length(); i++) {
+            String predecessor = word.substring(0, i) + word.substring(i + 1);
+            length = Math.max(length, dp.getOrDefault(predecessor, 0) + 1);
+        }
+        dp.put(word, length);
+        max = Math.max(max, length);
+    }
+    return max;
+}
+{% endhighlight %}
+
+[Make Array Strictly Increasing][make-array-strictly-increasing]
+
+{% highlight java %}
+public int makeArrayIncreasing(int[] arr1, int[] arr2) {
+    Arrays.sort(arr2);
+
+    // rolling dp
+    // dp[i]: i is the element we choose for the current position.
+    // this element can be from either arr1 or arr2.
+    Map<Integer, Integer> dp = new HashMap<>();
+    dp.put(-1, 0);
+
+    for (int a1 : arr1) {
+        // builds temporary dp map for i-th element of arr1
+        Map<Integer, Integer> tmp = new HashMap<>();
+        for (int key : dp.keySet()) {
+            int val = dp.get(key);
+            // option #1: no assignment for key -> a1
+            if (a1 > key && (!tmp.containsKey(a1) || val < tmp.get(a1))) {
+                tmp.put(a1, val);
+            }
+
+            // finds the smallest element in arr2 that's >= key
+            int index = Arrays.binarySearch(arr2, key + 1);
+            if (index < 0) {
+                index = ~index;
+            }
+
+            // option #2: one assignment for key -> arr2[index]
+            if (index < arr2.length && (!tmp.containsKey(arr2[index]) || val + 1 < tmp.get(arr2[index]))) {
+                tmp.put(arr2[index], val + 1);
+            }
+        }
+        dp = tmp;
+    }
+
+    return dp.isEmpty() ? -1 : Collections.min(dp.values());
+}
+{% endhighlight %}
+
+# Reverse
+
+[Coin Path][coin-path]
+
+{% highlight java %}
+public List<Integer> cheapestJump(int[] coins, int maxJump) {
+    int n = coins.length;
+    List<Integer> path = new ArrayList<>();
+    if (coins[n - 1] < 0) {
+        return path;
+    }
+
+    // dp[i]: cost from coins[i] to coins[n - 1]
+    int[] dp = new int[n], next = new int[n];
+    Arrays.fill(dp, Integer.MAX_VALUE);
+    Arrays.fill(next, -1);
+
+    dp[n - 1] = coins[n - 1];
+
+    // reverse order to ensure we get the lexicographically smallest path
+    for (int i = n - 2; i >= 0; i--) {
+        if (coins[i] == -1) {
+            continue;
+        }
+
+        for (int j = i + 1; j <= Math.min(i + maxJump, n - 1); j++) {
+            // strict > guarantees lexicographical order
+            if (dp[i] > dp[j] + coins[i] && dp[j] != Integer.MAX_VALUE) {
+                dp[i] = dp[j] + coins[i];
+                next[i] = j;
+            }
+        }
+    }
+
+    if (dp[0] == Integer.MAX_VALUE) {
+        return path;
+    }
+
+    int index = 0;
+    while (index != -1) {
+        path.add(index + 1);
+        index = next[index];
+    }
+    return path;
+}
+{% endhighlight %}
+
 [best-team-with-no-conflicts]: https://leetcode.com/problems/best-team-with-no-conflicts/
 [build-array-where-you-can-find-the-maximum-exactly-k-comparisons]: https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/
 [choose-numbers-from-two-arrays-in-range]: https://leetcode.com/problems/choose-numbers-from-two-arrays-in-range/
+[coin-path]: https://leetcode.com/problems/coin-path/
 [first-day-where-you-have-been-in-all-the-rooms]: https://leetcode.com/problems/first-day-where-you-have-been-in-all-the-rooms/
 [frog-jump]: https://leetcode.com/problems/frog-jump/
+[longest-string-chain]: https://leetcode.com/problems/longest-string-chain/
+[make-array-strictly-increasing]: https://leetcode.com/problems/make-array-strictly-increasing/
 [make-the-xor-of-all-segments-equal-to-zero]: https://leetcode.com/problems/make-the-xor-of-all-segments-equal-to-zero/
 [maximum-height-by-stacking-cuboids]: https://leetcode.com/problems/maximum-height-by-stacking-cuboids/
 [minimum-difficulty-of-a-job-schedule]: https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/
