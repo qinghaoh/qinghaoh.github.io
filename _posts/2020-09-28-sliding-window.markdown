@@ -7,30 +7,29 @@ tags: array
 
 [Longest Substring Without Repeating Characters][longest-substring-without-repeating-characters]
 
-# At Most
+# Max Length with Constraints (Upper Bound)
 
-## Max Length
+The common steps to resolve the problems:
 
-### Template
+1. Move the right pointer (`j`) and update related variables (counters, frequency array, etc.)
+1. Check if the constraint is satisfied. If not, move the left pointer (`i`) and update related variables
+1. If `j` is out of boundary, the final answer is `j - i`
+
+[Max Consecutive Ones III][max-consecutive-ones-iii]
 
 {% highlight java %}
-/**
- * Finds the length of the longest subarray that contains at most k elements
- * that match a given condition.
- */
-public int maxLength(int[] nums, int k) {
+public int longestOnes(int[] nums, int k) {
     int i = 0, j = 0;
-    
     // the sliding window never shrinks
     // even if it doesn't meet the requirement at a certain moment
     while (j < nums.length) {
-        if (updateCounters(nums, j++)) {
+        if (nums[j++] == 0) {
             k--;
         }
 
         // if k < 0, both i, j move forward together
-        // i.e. right shifts
-        if (k < 0 && updateCounters(nums, i++)) {
+        // i.e. right shift by one
+        if (k < 0 && nums[i++] == 0) {
             k++;
         }
     }
@@ -39,37 +38,7 @@ public int maxLength(int[] nums, int k) {
     // its span memorizes the max range so far
     return j - i;
 }
-
-/**
- * There can be multiple counters to track status.
- * Updates the counters based on the index.
- * @return true if nums[index] matches the given condition, otherwise false
- */
-private boolean updateCounters(int[] nums, int index) {
-    update();
-    return condition(nums[index]);
-}
 {% endhighlight %}
-
-[Max Consecutive Ones III][max-consecutive-ones-iii]
-
-{% highlight java %}
-public int longestOnes(int[] A, int K) {
-    int i = 0, j = 0;
-    while (j < A.length) {
-        if (A[j++] == 0) {
-            K--;
-        }
-
-        if (K < 0 && A[i++] == 0) {
-            K++;
-        }
-    }
-    return j - i;
-}
-{% endhighlight %}
-
-[Get Equal Substrings Within Budget][get-equal-substrings-within-budget]
 
 [Fruit Into Baskets][fruit-into-baskets]
 
@@ -91,6 +60,24 @@ public int totalFruit(int[] tree) {
 }
 {% endhighlight %}
 
+[Get Equal Substrings Within Budget][get-equal-substrings-within-budget]
+
+{% highlight java %}
+public int equalSubstring(String s, String t, int maxCost) {
+    int i = 0, j = 0, cost = 0;
+    while (j < s.length()) {
+        cost += Math.abs(s.charAt(j) - t.charAt(j));
+        j++;
+
+        if (cost > maxCost) {
+            cost -= Math.abs(s.charAt(i) - t.charAt(i));
+            i++;
+        }
+    }
+    return j - i;
+}
+{% endhighlight %}
+
 [Longest Repeating Character Replacement][longest-repeating-character-replacement]
 
 {% highlight java %}
@@ -104,6 +91,26 @@ public int characterReplacement(String s, int k) {
         // count of other chars == j - i - max
         if (j - i - max > k) {
             count[s.charAt(i++) - 'A']--;
+        }
+    }
+    return j - i;
+}
+{% endhighlight %}
+
+[Frequency of the Most Frequent Element][frequency-of-the-most-frequent-element]
+
+{% highlight java %}
+public int maxFrequency(int[] nums, int k) {
+    Arrays.sort(nums);
+
+    int i = 0, j = 0;
+    long sum = k;    
+    while (j < nums.length) {
+        sum += nums[j++];
+
+        // constraint: sum >= max * length
+        if (sum < (long)nums[j - 1] * (j - i)) {
+            sum -= nums[i++];
         }
     }
     return j - i;
@@ -141,31 +148,6 @@ public int longestSubarray(int[] nums, int limit) {
             i++;
         }
     }
-    return j - i;
-}
-{% endhighlight %}
-
-[Frequency of the Most Frequent Element][frequency-of-the-most-frequent-element]
-
-{% highlight java %}
-public int maxFrequency(int[] nums, int k) {
-    Arrays.sort(nums);
-
-    // sliding window, never shrinks
-    // k + sum >= size * max
-    int i = 0, j = 0;
-    long kl = k;
-    while (j < nums.length) {
-        kl += nums[j];
-
-        if (kl < (long)nums[j] * (j - i + 1)) {
-            kl -= nums[i++];
-        }
-        j++;
-    }
-
-    // [i, j) is a sliding window.
-    // its span memorizes the max range so far
     return j - i;
 }
 {% endhighlight %}
