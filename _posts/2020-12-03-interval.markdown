@@ -40,6 +40,50 @@ public List<Integer> fallingSquares(int[][] positions) {
 }
 {% endhighlight %}
 
+[Count Integers in Intervals][count-integers-in-intervals]
+
+{% highlight java %}
+class CountIntervals {
+    // {start : end}
+    private TreeMap<Integer, Integer> map = new TreeMap<>();
+    private int count = 0;
+
+    public CountIntervals() {
+        
+    }
+    
+    public void add(int left, int right) {
+        // processes floor interval
+        var f = map.floorEntry(left);
+        if (f != null && f.getValue() >= left) {
+            // updates left and right ends of the current interval
+            left = f.getKey();
+            right = Math.max(right, f.getValue());
+    
+            // removes the floor interval
+            count -= f.getValue() - f.getKey() + 1;
+            map.remove(f.getKey());
+        }
+        
+        // processes intervals between floor and ceiling
+        var subMap = map.subMap(left, false, right, true);
+        for (var e : subMap.entrySet()) {
+            right = Math.max(right, e.getValue());
+            count -= e.getValue() - e.getKey() + 1;
+        }
+        subMap.clear();
+        
+        // adds the new interval
+        map.put(left, right);
+        count += right - left + 1; 
+    }
+    
+    public int count() {
+        return count;
+    }
+}
+{% endhighlight %}
+
 [Check if All the Integers in a Range Are Covered][check-if-all-the-integers-in-a-range-are-covered]
 
 {% highlight java %}
@@ -928,6 +972,7 @@ class Interval implements Comparable<Interval> {
 
 [amount-of-new-area-painted-each-day]: https://leetcode.com/problems/amount-of-new-area-painted-each-day/
 [check-if-all-the-integers-in-a-range-are-covered]: https://leetcode.com/problems/check-if-all-the-integers-in-a-range-are-covered/
+[count-integers-in-intervals]: https://leetcode.com/problems/count-integers-in-intervals/
 [course-schedule-iii]: https://leetcode.com/problems/course-schedule-iii/
 [exam-room]: https://leetcode.com/problems/exam-room/
 [falling-squares]: https://leetcode.com/problems/falling-squares/

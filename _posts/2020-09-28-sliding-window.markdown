@@ -7,13 +7,19 @@ tags: array
 
 [Longest Substring Without Repeating Characters][longest-substring-without-repeating-characters]
 
-# Max Length with Constraints (Upper Bound)
+# Elastic-size Window
+
+## Upper Bound Constraints
+
+Upper bound constraints include e.g. "**at most** k elements".
+
+### Max Length 
 
 The common steps to resolve the problems:
 
 1. Move the right pointer (`j`) and update related variables (counters, frequency array, etc.)
-1. Check if the constraint is satisfied. If not, move the left pointer (`i`) and update related variables
-1. If `j` is out of boundary, the final answer is `j - i`
+1. Check if the constraint is satisfied. If not, move the left pointer (`i`) **once** and update related variables
+1. Repeat 1. 2. until `j` is out of boundary, the final answer is `j - i`
 
 [Max Consecutive Ones III][max-consecutive-ones-iii]
 
@@ -152,48 +158,14 @@ public int longestSubarray(int[] nums, int limit) {
 }
 {% endhighlight %}
 
-# At Most K Different Elements
+### Count of Subarrays
 
-## Count
+The common steps to resolve the problems:
 
-### Template
-
-{% highlight java %}
-/**
- * Finds the count of the subarrays that contain at most k elements
- * that match a given condition.
- */
-public int atMost(int[] nums, int k) {
-    int i = 0, j = 0, count = 0;
-
-    // the sliding window never shrinks
-    // even if it doesn't meet the requirement at a certain moment
-    while (j < nums.length) {
-        if (updateCounters(nums, j++)) {
-            k--;
-        }
-
-        while (k < 0) {
-            k += updateCounters(nums, i++));
-        }
-
-        // (j - i) is the length of each valid contiguous subarray with at most K different integers
-        // Fomula: given an array of length n, it will produce (n * (n + 1)) / 2 total contiguous subarrays
-        count += j - i;
-    }
-
-    // [i, j) is a sliding window.
-    return count;
-}
-
-/**
- * There can be multiple counters to track status.
- * Updates the counters based on the index.
- * @return
- */
-private int updateCounters(int[] nums, int index) {
-}
-{% endhighlight %}
+1. Move the right pointer (`j`) and update related variables (counters, frequency array, etc.)
+1. Move the left pointer (`i`) and update related variables in a loop, until the constraint is satisfied
+1. Add `j - i` to the final answer
+1. Repeat 1. 2. 3. until `j` is out of boundary
 
 [Subarrays with K Different Integers][subarrays-with-k-different-integers]
 
@@ -217,38 +189,13 @@ private int atMost(int[] nums, int k) {
             }
         }
 
+        // [i, j) is a sliding window
+        // (j - i) represents the count of subarrays that has at most k different integers and end at index j
+        // i.e., these subarrays [i, j), [i + 1, j), ..., [j - 1, j)
+        // since each loop iteration moves j by one from start to end,
+        // the final result will include the counts at all positions of j
+        // Fomula: given an array of length n, it will produce (n * (n + 1)) / 2 total contiguous subarrays
         result += j - i;
-    }
-    return result;
-}
-{% endhighlight %}
-
-[Count Vowel Substrings of a String][count-vowel-substrings-of-a-string]
-
-{% highlight java %}
-public int countVowelSubstrings(String word) {
-    return atMost(word, 5) - atMost(word, 4);
-}
-
-private int atMost(String word, int k) {
-    Map<Character, Integer> count = new HashMap<>();
-    int i = 0, j = 0, result = 0;
-    while (j < word.length()) {
-        char cj = word.charAt(j);
-        if ("aeiou".indexOf(cj) < 0) {
-            i = ++j;
-            count.clear();
-            continue;
-        }
-
-        count.put(cj, count.getOrDefault(cj, 0) + 1);
-        while (count.size() > k) {
-            char ci = word.charAt(i);
-            count.put(ci, count.get(ci) - 1);
-            count.remove(ci, 0);
-            i++;
-        }
-        result += ++j - i;
     }
     return result;
 }
@@ -272,7 +219,6 @@ private int atMost(int[] nums, int k) {
 
         result += j - i;
     }
-
     return result;
 }
 {% endhighlight %}
@@ -298,12 +244,40 @@ public int numberOfSubarrays(int[] nums, int k) {
         // i moves forward by `count` steps in the last move
         result += count;
     }
-
     return result;
 }
 {% endhighlight %}
 
-# At Most
+[Count Vowel Substrings of a String][count-vowel-substrings-of-a-string]
+
+{% highlight java %}
+public int countVowelSubstrings(String word) {
+    return atMost(word, 5) - atMost(word, 4);
+}
+
+private int atMost(String word, int k) {
+    Map<Character, Integer> freq = new HashMap<>();
+    int i = 0, j = 0, count = 0;
+    while (j < word.length()) {
+        char cj = word.charAt(j++);
+        // relocates i if the current char is not vowel
+        if ("aeiou".indexOf(cj) < 0) {
+            freq.clear();
+            i = j;
+            continue;
+        }
+
+        freq.put(cj, freq.getOrDefault(cj, 0) + 1);
+        while (freq.size() > k) {
+            char ci = word.charAt(i++);
+            freq.put(ci, freq.get(ci) - 1);
+            freq.remove(ci, 0);
+        }
+        count += j - i;
+    }
+    return count;
+}
+{% endhighlight %}
 
 [Subarray Product Less Than K][subarray-product-less-than-k]
 
@@ -322,6 +296,22 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
         count += j - i;
     }
     return count;
+}
+{% endhighlight %}
+
+[Kth Smallest Subarray Sum][kth-smallest-subarray-sum]
+
+{% highlight java %}
+private boolean condition(int[] nums, int upper, int k) {
+    int i = 0, j = 0, sum = 0, count = 0;
+    while (j < nums.length) {
+        sum += nums[j++];
+        while (sum > upper) {
+            sum -= nums[i++];
+        }
+        count += j - i;
+    }
+    return count >= k;
 }
 {% endhighlight %}
 
@@ -349,36 +339,31 @@ private boolean condition(int[] nums, int distance, int k) {
         while (nums[j] - nums[i] > distance) {
             i++;
         }
-        count += j - i;
-        j++;
+        // it's not `count += j - i` because it's the count of pairs (start != end)
+        // rather than the count of subarrays (start == end is possible)
+        count += j++ - i;
     }
     return count >= k;
 }
 {% endhighlight %}
 
-[Kth Smallest Subarray Sum][kth-smallest-subarray-sum]
+## Lower Bound Constraints
 
-{% highlight java %}
-private boolean condition(int[] nums, int upper, int k) {
-    int i = 0, j = 0, sum = 0, count = 0;
-    while (j < nums.length) {
-        sum += nums[j++];
-        while (sum > upper) {
-            sum -= nums[i++];
-        }
-        count += j - i;
-    }
-    return count >= k;
-}
-{% endhighlight %}
+Lower bound constraints include e.g. "sum is **greater than or equal to** target".
 
-# Min Length
+The common steps to resolve the problems:
+
+1. Move the right pointer (`j`) and update related variables (counters, frequency array, etc.)
+1. Move the left pointer (`i`) and update related variables in a loop, until the constraint is not satisfied. Each iteration represents a valid subarray.
+1. Repeat 1. 2. until `j` is out of boundary
+
+**Min Length**
 
 [Minimum Size Subarray Sum][minimum-size-subarray-sum]
 
 {% highlight java %}
 public int minSubArrayLen(int s, int[] nums) {
-    int i = 0, j = 0, min = nums.length + 1;
+    int i = 0, j = 0, min = Integer.MAX_VALUE;
     while (j < nums.length) {
         s -= nums[j++];
 
@@ -388,7 +373,7 @@ public int minSubArrayLen(int s, int[] nums) {
         }
     }
 
-    return min == nums.length + 1 ? 0 : min;
+    return min == Integer.MAX_VALUE ? 0 : min;
 }
 {% endhighlight %}
 
@@ -396,30 +381,23 @@ public int minSubArrayLen(int s, int[] nums) {
 
 {% highlight java %}
 public int balancedString(String s) {
-    int[] count = new int[26];
-    for (char c : s.toCharArray()) {
-        count[c - 'A']++;
+    int[] freq = new int[26];
+    for (char ch : s.toCharArray()) {
+        freq[ch - 'A']++;
     }
 
-    int i = 0, j = 0, min = s.length(), k = s.length() / 4;
-    while (j < s.length()) {
-        count[s.charAt(j++) - 'A']--;
+    int i = 0, j = 0, n = s.length(), min = n;
+    while (j < n) {
+        // erases all chars inside the window
+        freq[s.charAt(j++) - 'A']--;
 
-        while (i < s.length() && condition(count, k)) {
+        // outside the window, max(count[]) < n / 4
+        while (i < n && "QWER".chars().allMatch(ch -> freq[ch - 'A'] <= n / 4)) {
             min = Math.min(min, j - i);
-            count[s.charAt(i++) - 'A']++;
+            freq[s.charAt(i++) - 'A']++;
         }
     }
     return min;
-}
-
-private boolean condition(int[] count, int k) {
-    for (char c : "QWER".toCharArray()) {
-        if (count[c - 'A'] > k) {
-            return false;
-        }
-    }
-    return true;
 }
 {% endhighlight %}
 
@@ -427,9 +405,9 @@ private boolean condition(int[] count, int k) {
 
 {% highlight java %}
 public String minWindow(String s, String t) {
-    int[] count = new int[256];
-    for (char c : t.toCharArray()) {
-        count[c]++;
+    int[] freq = new int[256];
+    for (char ch : t.toCharArray()) {
+        freq[ch]++;
     }
 
     int i = 0, j = 0, k = t.length(), min = s.length();
@@ -437,7 +415,7 @@ public String minWindow(String s, String t) {
     while (j < s.length()) {
         // count of t-chars > 0
         // count of non-t-chars == 0
-        if (count[s.charAt(j++)]-- > 0) {
+        if (freq[s.charAt(j++)]-- > 0) {
             // only t-chars will decrement k
             k--;
         }
@@ -449,7 +427,7 @@ public String minWindow(String s, String t) {
             }
 
             // count of non-t-chars < 0
-            if (count[s.charAt(i++)]++ == 0) {
+            if (freq[s.charAt(i++)]++ == 0) {
                 // only t-chars will increment k
                 k++;
             }
@@ -494,9 +472,11 @@ public String minWindow(String s1, String s2) {
 }
 {% endhighlight %}
 
-# At Least
+**Count of Subarrays** 
 
 [Number of Substrings Containing All Three Characters][number-of-substrings-containing-all-three-characters]
+
+This problem is very similar to [Minimum Window Substring][minimum-window-substring]:
 
 {% highlight java %}
 public int numberOfSubstrings(String s) {
@@ -519,7 +499,127 @@ public int numberOfSubstrings(String s) {
 }
 {% endhighlight %}
 
-# Fixed Size
+## Exact-value Constraints
+
+[Minimum Operations to Reduce X to Zero][minimum-operations-to-reduce-x-to-zero]
+
+{% highlight java %}
+public int minOperations(int[] nums, int x) {
+    int i = 0, j = 0, n = nums.length, sum = Arrays.stream(nums).sum(), min = Integer.MAX_VALUE;
+    while (j < nums.length) {
+        // sum([0...i) + (j...n - 1]) == x
+        sum -= nums[j++];
+
+        while (sum < x && i < j) {
+            sum += nums[i++];
+        }
+
+        if (sum == x) {
+            min = Math.min(min, n - j + i);
+        }
+    }
+    return min == Integer.MAX_VALUE ? -1 : min;
+}
+{% endhighlight %}
+
+Similar to: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equals-k]
+
+# Elastic Size
+
+[Moving Stones Until Consecutive II][moving-stones-until-consecutive-ii]
+
+{% highlight java %}
+public int[] numMovesStonesII(int[] stones) {
+    Arrays.sort(stones);
+
+    // sliding window
+    int n = stones.length;
+    int i = 0, j = 0, min = n;
+    while (j < n) {
+        // moves i so that the window size is <= n and as close to n as possible
+        while (stones[j] - stones[i] >= n) {
+            i++;
+        }
+
+        // corner case
+        // - number of stones in the window is (n - 1)
+        // - window size is (n - 1)
+        // e.g. [1,2,3,4,10] -> [2,3,4,6,10] -> [2,3,4,5,6]
+        if (j - i + 1 == n - 1 && stones[j] - stones[i] == n - 2) {
+            min = Math.min(min, 2);
+        } else {
+            // e.g. [1,2,4,5,10] -> [1,2,3,4,5]
+            // e.g. [1,2,3,4,6] -> [2,3,4,5,6]
+            // the 2nd example has two windows:
+            // - the first window matches the corner case, min = 2;
+            // - the second window falls into this else block, min = 1
+            min = Math.min(min, n - (j - i + 1));
+        }
+        j++;
+    }
+
+    // moves leftmost or rightmost stone
+    // e.g. moves leftmost to the next available slot
+    // [1,3,5,10] -> [3,4,5,10] -> [4,5,6,10]
+    //
+    // max of avaible slots:
+    // - left -> right: (stones[n - 1] - stones[1] + 1) - (n - 1)
+    // - right -> left: (stones[n - 2] - stones[0] + 1) - (n - 1)
+    int max = Math.max(stones[n - 1] - stones[1] - n + 2, stones[n - 2] - stones[0] - n + 2);
+
+    return new int[]{min, max};
+}
+{% endhighlight %}
+
+[Delivering Boxes from Storage to Ports][delivering-boxes-from-storage-to-ports]
+
+{% highlight java %}
+private static final int MAX_TRIPS = (int)2e5;
+
+public int boxDelivering(int[][] boxes, int portsCount, int maxBoxes, int maxWeight) {
+    int n = boxes.length;
+    // dp[i]: minimum number of trips to deliver boxes[0, i)
+    int[] dp = new int[n + 1];
+    Arrays.fill(dp, MAX_TRIPS);
+    dp[0] = 0;
+
+    // trips needed to deliver box(i, j]
+    int trips = 0, j = 0, prevJ = 0;
+    for (int i = 0; i < n; i++) {
+        // sliding window
+        while (j < n && maxBoxes > 0 && maxWeight >= boxes[j][1]) {
+            maxBoxes--;
+            maxWeight -= boxes[j][1];
+
+            // current port is different from previous port
+            if (j == 0 || boxes[j][0] != boxes[j - 1][0]) {
+                prevJ = j;
+                trips++;
+            }
+            j++;
+        }
+
+        // delivers boxes[prevJ...j] ('+1')
+        dp[j] = Math.min(dp[j], dp[i] + trips + 1);
+
+        // or, don't deliver boxes[prevJ...j] to save one trip (no '+1')
+        dp[prevJ] = Math.min(dp[prevJ], dp[i] + trips);
+
+        // gets ready to move the left pointer i forward
+        maxBoxes++;
+        maxWeight += boxes[i][1];
+
+        // if after moving the left pointer i forward, the port is different
+        // then the trips between the new i and j needs to decrement by 1
+        if (i < n - 1 && boxes[i][0] != boxes[i + 1][0]) {
+            trips--;
+        }
+    }
+    return dp[n];
+}
+{% endhighlight %}
+
+# Fixed-size Window
 
 [Maximum Points You Can Obtain from Cards][maximum-points-you-can-obtain-from-cards]
 
@@ -529,15 +629,10 @@ public int numberOfSubstrings(String s) {
 
 {% highlight java %}
 public int minSwaps(int[] data) {
-    int sum = 0;
-    for (int d : data) {
-        sum += d;
-    }
-
-    int i = 0, j = 0, count = 0, min = data.length;
+    int i = 0, j = 0, sum = Arrays.stream(data).sum(), count = 0, min = sum;
     while (j < data.length) {
         count += data[j++];
-        if (j - i >= sum) {
+        if (j - i == sum) {
             min = Math.min(min, sum - count);
             count -= data[i++];
         }
@@ -545,6 +640,37 @@ public int minSwaps(int[] data) {
     return min;
 }
 {% endhighlight %}
+
+[Find All Anagrams in a String][find-all-anagrams-in-a-string]
+
+{% highlight java %}
+public List<Integer> findAnagrams(String s, String p) {
+    int[] count = new int[26];
+    for (char ch : p.toCharArray()) {
+        count[ch - 'a']++;
+    }
+
+    List<Integer> list = new ArrayList<>();
+    int i = 0, j = 0, k = p.length();
+    while (j < s.length()) {
+        if (count[s.charAt(j++) - 'a']-- > 0) {
+            k--; 
+        }
+
+        if (k == 0) {
+            list.add(i);
+        }
+
+        // count of chars in p won't go below 0
+        if (j - i == p.length() && count[s.charAt(i++) - 'a']++ >= 0) {
+            k++;
+        }
+    }
+    return list;
+}
+{% endhighlight %}
+
+The above problem is similar to [Minimum Window Substring][minimum-window-substring], but when moving left pointer, we use `if` rather than `while`. That's because the window size is fixed to be the length of `p`, and for a particular `j` we move `i` at most once.
 
 [Number of Equal Count Substrings][number-of-equal-count-substrings]
 
@@ -696,35 +822,6 @@ public int minOperations(int[] nums) {
 }
 {% endhighlight %}
 
-[Find All Anagrams in a String][find-all-anagrams-in-a-string]
-
-{% highlight java %}
-public List<Integer> findAnagrams(String s, String p) {
-    int[] count = new int[26];
-    for (char c : p.toCharArray()) {
-        count[c - 'a']++;
-    }
-
-    List<Integer> list = new ArrayList<>();
-    int i = 0, j = 0, k = p.length();
-    while (j < s.length()) {
-        if (count[s.charAt(j++) - 'a']-- > 0) {
-            k--; 
-        }
-
-        if (k == 0) {
-            list.add(i);
-        }
-
-        // count of chars in p won't go below 0
-        if (j - i == p.length() && count[s.charAt(i++) - 'a']++ >= 0) {
-            k++;
-        }
-    }
-    return list;
-}
-{% endhighlight %}
-
 [K Empty Slots][k-empty-slots]
 
 {% highlight java %}
@@ -798,131 +895,6 @@ public int minFlips(String s) {
         }
     }
     return flips;
-}
-{% endhighlight %}
-
-# Exact Size
-
-[Minimum Operations to Reduce X to Zero][minimum-operations-to-reduce-x-to-zero]
-
-{% highlight java %}
-public int minOperations(int[] nums, int x) {
-    int sum = 0;
-    for (int num : nums) {
-        sum += num;
-    }
-
-    int i = 0, j = 0, min = Integer.MAX_VALUE;
-    while (j < nums.length) {
-        // sum([0...i) + (j...n - 1]) == x
-        sum -= nums[j++];
-
-        while (sum < x && i < j) {
-            sum += nums[i++];
-        }
-
-        if (sum == x) {
-            min = Math.min(min, nums.length - j + i);
-        }
-    }
-    return min == Integer.MAX_VALUE ? -1 : min;
-}
-{% endhighlight %}
-
-Similar to: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equals-k]
-
-# Elastic Size
-
-[Moving Stones Until Consecutive II][moving-stones-until-consecutive-ii]
-
-{% highlight java %}
-public int[] numMovesStonesII(int[] stones) {
-    Arrays.sort(stones);
-
-    // sliding window
-    int n = stones.length;
-    int i = 0, j = 0, min = n;
-    while (j < n) {
-        // moves i so that the window size is <= n and as close to n as possible
-        while (stones[j] - stones[i] >= n) {
-            i++;
-        }
-
-        // corner case
-        // - number of stones in the window is (n - 1)
-        // - window size is (n - 1)
-        // e.g. [1,2,3,4,10] -> [2,3,4,6,10] -> [2,3,4,5,6]
-        if (j - i + 1 == n - 1 && stones[j] - stones[i] == n - 2) {
-            min = Math.min(min, 2);
-        } else {
-            // e.g. [1,2,4,5,10] -> [1,2,3,4,5]
-            // e.g. [1,2,3,4,6] -> [2,3,4,5,6]
-            // the 2nd example has two windows:
-            // - the first window matches the corner case, min = 2;
-            // - the second window falls into this else block, min = 1
-            min = Math.min(min, n - (j - i + 1));
-        }
-        j++;
-    }
-
-    // moves leftmost or rightmost stone
-    // e.g. moves leftmost to the next available slot
-    // [1,3,5,10] -> [3,4,5,10] -> [4,5,6,10]
-    //
-    // max of avaible slots:
-    // - left -> right: (stones[n - 1] - stones[1] + 1) - (n - 1)
-    // - right -> left: (stones[n - 2] - stones[0] + 1) - (n - 1)
-    int max = Math.max(stones[n - 1] - stones[1] - n + 2, stones[n - 2] - stones[0] - n + 2);
-
-    return new int[]{min, max};
-}
-{% endhighlight %}
-
-[Delivering Boxes from Storage to Ports][delivering-boxes-from-storage-to-ports]
-
-{% highlight java %}
-private static final int MAX_TRIPS = (int)2e5;
-
-public int boxDelivering(int[][] boxes, int portsCount, int maxBoxes, int maxWeight) {
-    int n = boxes.length;
-    // dp[i]: minimum number of trips to deliver boxes[0, i)
-    int[] dp = new int[n + 1];
-    Arrays.fill(dp, MAX_TRIPS);
-    dp[0] = 0;
-
-    // trips needed to deliver box(i, j]
-    int trips = 0, j = 0, prevJ = 0;
-    for (int i = 0; i < n; i++) {
-        // sliding window
-        while (j < n && maxBoxes > 0 && maxWeight >= boxes[j][1]) {
-            maxBoxes--;
-            maxWeight -= boxes[j][1];
-
-            // current port is different from previous port
-            if (j == 0 || boxes[j][0] != boxes[j - 1][0]) {
-                prevJ = j;
-                trips++;
-            }
-            j++;
-        }
-
-        // delivers boxes[prevJ...j] ('+1')
-        dp[j] = Math.min(dp[j], dp[i] + trips + 1);
-
-        // or, don't deliver boxes[prevJ...j] to save one trip (no '+1')
-        dp[prevJ] = Math.min(dp[prevJ], dp[i] + trips);
-
-        // gets ready to move the left pointer i forward
-        maxBoxes++;
-        maxWeight += boxes[i][1];
-
-        // if after moving the left pointer i forward, the port is different
-        // then the trips between the new i and j needs to decrement by 1
-        if (i < n - 1 && boxes[i][0] != boxes[i + 1][0]) {
-            trips--;
-        }
-    }
-    return dp[n];
 }
 {% endhighlight %}
 
