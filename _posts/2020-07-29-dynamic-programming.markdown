@@ -170,6 +170,37 @@ for (int i = 0; i < m; i++) {
 }
 {% endhighlight %}
 
+[Minimum Window Subsequence][minimum-window-subsequence]
+
+{% highlight java %}
+public String minWindow(String s1, String s2) {
+    int n1 = s1.length(), n2 = s2.length();
+    // dp[i][j]: start index k, that s1.substring(k, k + i) that contains s2.substring(0, j)
+    int[][] dp = new int[n1 + 1][n2 + 1];
+
+    for (int i = 0; i <= n1; i++) {
+        dp[i][0] = i + 1;
+    }
+    for (int j = 1; j <= n2; j++) {
+        for (int i = 1; i <= n1; i++) {
+            if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                dp[i][j] = dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = dp[i - 1][j];
+            }
+        }
+    }
+
+    int start = 0, len = n1 + 1;
+    for (int i = 1; i <= n1; i++) {
+        if (dp[i][n2] != 0 && i - dp[i][n2] + 1 < len) {
+            start = dp[i][n2] - 1;
+            len = i - dp[i][n2] + 1;
+        }
+    }
+    return s1.substring(start, start + (len > n1 ? 0 : len));
+}
+{% endhighlight %}
 [Interleaving String][interleaving-string]
 
 {% highlight java %}
@@ -313,4 +344,5 @@ private int[][] preProcess(String r, int orientation) {
 [longest-common-subsequence]: https://leetcode.com/problems/longest-common-subsequence/
 [maximum-length-of-repeated-subarray]: https://leetcode.com/problems/maximum-length-of-repeated-subarray/
 [minimum-ascii-delete-sum-for-two-strings]: https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/
+[minimum-window-subsequence]: https://leetcode.com/problems/minimum-window-subsequence/
 [uncrossed-lines]: https://leetcode.com/problems/uncrossed-lines/

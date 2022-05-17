@@ -3,12 +3,31 @@ layout: post
 title:  "Tree Recursion"
 tags: tree
 ---
-# Global State
+# Fundamentals
+
+The usual pattern of Tree DFS (or recursion) is:
+
+{% highlight java %}
+private T1 global;
+
+public T2 processTree(TreeNode root) {
+    // call dfs(root)
+}
+
+private T4 dfs(TreeNode node, T3 local) {
+    // call dfs(node.left) and dfs(node.right)
+} 
+{% endhighlight %}
+
+There are 3 core components:
+1. Global variable (`T1 global`)
+1. DFS parameter (`T3 local`)
+1. DFS return value (`T4`)
 
 [Convert BST to Greater Tree][convert-bst-to-greater-tree]
 
 {% highlight java %}
-private int sum = 0;  // global state
+private int sum = 0;
 
 public TreeNode convertBST(TreeNode root) {
     if (root != null) {
@@ -18,6 +37,78 @@ public TreeNode convertBST(TreeNode root) {
         convertBST(root.left);
     }
     return root;
+}
+{% endhighlight %}
+
+[Distribute Coins in Binary Tree][distribute-coins-in-binary-tree]
+
+{% highlight java %}
+private int move = 0;
+
+public int distributeCoins(TreeNode root) {
+    dfs(root);
+    return move;
+}
+
+// excess of the subtree (#coins - #nodes)
+private int dfs(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+
+    int left = dfs(node.left), right = dfs(node.right);
+    move += Math.abs(left) + Math.abs(right);
+    return left + right + node.val - 1;
+}
+{% endhighlight %}
+
+[Diameter of Binary Tree][diameter-of-binary-tree]
+
+{% highlight java %}
+private int diameter = 0;
+
+public int diameterOfBinaryTree(TreeNode root) {
+    height(root);
+    return diameter;
+}
+
+private int height(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+
+    int left = height(node.left), right = height(node.right);
+    diameter = Math.max(diameter, left + right);
+    return Math.max(left, right) + 1;
+}
+{% endhighlight %}
+
+Similar problem: [Diameter of N-Ary Tree][diameter-of-n-ary-tree]
+
+[Binary Tree Maximum Path Sum][binary-tree-maximum-path-sum]
+
+{% highlight java %}
+private int sum = Integer.MIN_VALUE;
+
+public int maxPathSum(TreeNode root) {
+    dfs(root);
+    return sum;
+}
+
+/**
+ * Max sum of paths which start from node.
+ * @param node the root of the subtree
+ * @return the max sum of paths starting from node
+ */
+private int dfs(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+
+    int left = Math.max(0, dfs(node.left)), right = Math.max(0, dfs(node.right));
+
+    sum = Math.max(sum, node.val + left + right);
+    return node.val + Math.max(left, right);
 }
 {% endhighlight %}
 
@@ -59,60 +150,14 @@ public Node flatten(Node head) {
     head.prev = tail;
     tail = head;
 
-    Node nextNode = head.next;
+    Node next = head.next;
 
     head.next = flatten(head.child);
     head.child = null;
 
-    tail.next = flatten(nextNode);
+    tail.next = flatten(next);
 
     return head;
-}
-{% endhighlight %}
-
-[Diameter of Binary Tree][diameter-of-binary-tree]
-
-{% highlight java %}
-private int diameter = 0;
-
-public int diameterOfBinaryTree(TreeNode root) {
-    height(root);
-    return diameter;
-}
-
-private int height(TreeNode node) {
-    if (node == null) {
-        return 0;
-    }
-
-    int left = height(node.left), right = height(node.right);
-    diameter = Math.max(diameter, left + right);
-    return Math.max(left, right) + 1;
-}
-{% endhighlight %}
-
-[Diameter of N-Ary Tree][diameter-of-n-ary-tree]
-
-[Distribute Coins in Binary Tree][distribute-coins-in-binary-tree]
-
-{% highlight java %}
-private int move = 0;
-
-public int distributeCoins(TreeNode root) {
-    dfs(root);
-    return move;
-}
-
-// excess of the subtree (coins - nodes)
-private int dfs(TreeNode node) {
-    if (node == null) {
-        return 0;
-    }
-
-    int left = dfs(node.left);
-    int right = dfs(node.right);
-    move += (Math.abs(left) + Math.abs(right));
-    return left + right + node.val - 1;
 }
 {% endhighlight %}
 
@@ -163,34 +208,6 @@ private int height(TreeNode node) {
     leaves.get(h).add(node.val);
 
     return h;
-}
-{% endhighlight %}
-
-[Binary Tree Maximum Path Sum][binary-tree-maximum-path-sum]
-
-{% highlight java %}
-private int sum;
-
-public int maxPathSum(TreeNode root) {
-    sum = Integer.MIN_VALUE;
-    dfs(root);
-    return sum;
-}
-
-/**
- * Max sum of paths which start from node.
- * @param node the root of the subtree
- * @return the max sum of paths starting from node
- */
-private int dfs(TreeNode node) {
-    if (node == null) {
-        return 0;
-    }
-
-    int left = Math.max(0, dfs(node.left)), right = Math.max(0, dfs(node.right));
-
-    sum = Math.max(sum, node.val + left + right);
-    return node.val + Math.max(left, right);
 }
 {% endhighlight %}
 
