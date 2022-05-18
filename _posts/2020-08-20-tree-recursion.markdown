@@ -112,6 +112,43 @@ private int dfs(TreeNode node) {
 }
 {% endhighlight %}
 
+[Longest Univalue Path][longest-univalue-path]
+
+{% highlight java %}
+private int path = 0;
+
+public int longestUnivaluePath(TreeNode root) {
+    length(root);
+    return path;
+}
+
+/**
+ * Max length of univalue paths which start from node.
+ * @param node the root of the subtree
+ * @return the max length of univalue paths starting from node
+ */
+private int length(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+
+    // max univalue paths from the child nodes
+    int left = length(node.left), right = length(node.right);
+
+    // max univalue paths from the current node
+    int leftPath = 0, rightPath = 0;
+    if (node.left != null && node.left.val == node.val) {
+        leftPath = left + 1;
+    }
+    if (node.right != null && node.right.val == node.val) {
+        rightPath = right + 1;
+    }
+
+    path = Math.max(path, leftPath + rightPath);
+    return Math.max(leftPath, rightPath);
+}
+{% endhighlight %}
+
 [Minimum Absolute Difference in BST][minimum-absolute-difference-in-bst]
 
 {% highlight java %}
@@ -211,135 +248,6 @@ private int height(TreeNode node) {
 }
 {% endhighlight %}
 
-[Number of Good Leaf Nodes Pairs][number-of-good-leaf-nodes-pairs]
-
-{% highlight java %}
-private int distance = 0;
-private int pairs = 0;
-
-public int countPairs(TreeNode root, int distance) {
-    this.distance = distance;
-    dfs(root);
-    return pairs;
-}
-
-/**
- * Gets the leaf node count array. Here's the definition for the array:
- *   The leaf node count array contains (distance + 1) elements. The i-th element
- *   denotes the count of leaf nodes which are i away from current node's parent.
- *   The 0-th element of the array is not used.
- * @param node node the root of the subtree
- * @return left node count array
- */
-private int[] dfs(TreeNode node) {
-    int[] count = new int[distance + 1];
-    if (node == null) {
-        return count;
-    }
-
-    if (node.left == node.right) {
-        count[1] = 1;
-        return count;
-    }
-
-    int[] left = dfs(node.left), right = dfs(node.right);
-
-    // prefix sum of right
-    int[] p = new int[right.length];
-    for (int i = 0; i < distance; i++) {
-        p[i + 1] = p[i] + right[i];
-    }
-
-    for (int i = 1; i < distance; i++) {
-        // p[distance - i + 1] = right[0] + right[1] + ... + right[distance - i]
-        // i.e. count of all right nodes where left[i] + right[j] <= distance
-        pairs += left[i] * p[distance - i + 1];
-    }
-
-    for (int i = 1; i < distance; i++) {
-        count[i + 1] = left[i] + right[i];
-    }
-
-    return count;
-}
-{% endhighlight %}
-
-[Find Distance in a Binary Tree][find-distance-in-a-binary-tree]
-
-{% highlight java %}
-private int d = -1;
-
-public int findDistance(TreeNode root, int p, int q) {
-    dfs(root, p, q);
-    return Math.max(d, 0);
-}
-
-private int dfs(TreeNode node, int p, int q) {
-    if (node == null) {
-        return -1;
-    }
-
-    int left = dfs(node.left, p, q), right = dfs(node.right, p, q);
-    if (node.val == p || node.val == q) {
-        if (left < 0 && right < 0) {
-            return 0;
-        }
-        d = Math.max(left, right) + 1;
-        return -1;
-    }
-
-    if (left >= 0 && right >= 0) {
-        d = left + right + 2;
-        return -1;
-    }
-
-    if (left >= 0 || right >= 0) {
-        return Math.max(left, right) + 1;
-    }
-
-    return -1;
-}
-{% endhighlight %}
-
-[Longest Univalue Path][longest-univalue-path]
-
-{% highlight java %}
-private int path;
-
-public int longestUnivaluePath(TreeNode root) {
-    path = 0;
-    length(root);
-    return path;
-}
-
-/**
- * Max length of univalue paths which start from node.
- * @param node the root of the subtree
- * @return the max length of univalue paths starting from node
- */
-private int length(TreeNode node) {
-    if (node == null) {
-        return 0;
-    }
-
-    // max univalue paths from the child nodes
-    int left = length(node.left);
-    int right = length(node.right);
-
-    // max univalue paths from the current node
-    int leftPath = 0, rightPath = 0;
-    if (node.left != null && node.left.val == node.val) {
-        leftPath = left + 1;
-    }
-    if (node.right != null && node.right.val == node.val) {
-        rightPath = right + 1;
-    }
-
-    path = Math.max(path, leftPath + rightPath);
-    return Math.max(leftPath, rightPath);
-}
-{% endhighlight %}
-
 [Binary Tree Right Side View][binary-tree-right-side-view]
 
 {% highlight java %}
@@ -418,6 +326,86 @@ private void dfs(TreeNode node, int d) {
 
 Another solution is right-to-left-BFS.
 
+[Maximum Width of Binary Tree][maximum-width-of-binary-tree]
+
+{% highlight java %}
+public int widthOfBinaryTree(TreeNode root) {
+    return dfs(root, 0, 0, new ArrayList<>());
+}
+
+private int dfs(TreeNode node, int level, int index, List<Integer> starts) {
+    if (node == null) {
+        return 0;
+    }
+
+    // the first node visited in this level
+    if (starts.size() == level) {
+        starts.add(index);
+    }
+
+    int curr = index - starts.get(level) + 1;
+    int left = dfs(node.left, level + 1, index * 2 + 1, starts);
+    int right = dfs(node.right, level + 1, index * 2 + 2, starts);
+    return Math.max(curr, Math.max(left, right));
+}
+{% endhighlight %}
+
+# Return Value of DFS
+
+[House Robber III][house-robber-iii]
+
+{% highlight java %}
+public int rob(TreeNode root) {
+    int[] dp = dfs(root);
+    return Math.max(dp[0], dp[1]);
+}
+
+private int[] dfs(TreeNode root) {
+    // {not robbed, robbed}
+    int[] dp = new int[2];
+    if (root == null) {
+        return dp;
+    }
+
+    int[] left = dfs(root.left), right = dfs(root.right);
+
+    dp[0] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+    dp[1] = root.val + left[0] + right[0];
+
+    return dp;
+}
+{% endhighlight %}
+
+[Largest BST Subtree][largest-bst-subtree]
+
+{% highlight java %}
+public int largestBSTSubtree(TreeNode root) {
+    return dfs(root)[0];
+}
+
+private int[] dfs(TreeNode node) {
+    if (node == null) {
+        // [0]: number of nodes of the largest BST in this subtree
+        // [1]: min value of the subtree
+        // [2]: max value of the subtree
+        // it's a hack to assign null node in this way
+        // so any node can be a valid parent of it to form a BST 
+        return new int[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE};
+    }
+
+    int[] left = dfs(node.left), right = dfs(node.right);
+    return node.val > left[2] && node.val < right[1] ?
+        // valid BST
+        // [1] is min(node.val, left[1]) rather than left[1] to handle the corner case
+        // when left child node is null
+        // same for [2]
+        new int[]{1 + left[0] + right[0], Math.min(node.val, left[1]), Math.max(node.val, right[2])} :
+        // invalid BST
+        // assign min and max in this way so no node can be a valid parent of it to form a BST
+        new int[]{Math.max(left[0], right[0]), Integer.MIN_VALUE, Integer.MAX_VALUE};
+}
+{% endhighlight %}
+
 [Longest ZigZag Path in a Binary Tree][longest-zigzag-path-in-a-binary-tree]
 
 {% highlight java %}
@@ -444,73 +432,56 @@ private int[] dfs(TreeNode node) {
 }
 {% endhighlight %}
 
-[Largest BST Subtree][largest-bst-subtree]
+[Number of Good Leaf Nodes Pairs][number-of-good-leaf-nodes-pairs]
 
 {% highlight java %}
-public int largestBSTSubtree(TreeNode root) {
-    return dfs(root)[0];
+private int distance = 0;
+private int pairs = 0;
+
+public int countPairs(TreeNode root, int distance) {
+    this.distance = distance;
+    dfs(root);
+    return pairs;
 }
 
+/**
+ * Gets the leaf node count array. Here's the definition for the array:
+ *   The leaf node count array contains (distance + 1) elements. The i-th element
+ *   denotes the count of leaf nodes which are i away from current node's parent.
+ *   The 0-th element of the array is not used.
+ * @param node node the root of the subtree
+ * @return left node count array
+ */
 private int[] dfs(TreeNode node) {
+    int[] count = new int[distance + 1];
     if (node == null) {
-        // [0]: largets BST in this subtree
-        // [1]: low
-        // [2]: high
-        return new int[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE};
+        return count;
+    }
+
+    if (node.left == node.right) {
+        count[1] = 1;
+        return count;
     }
 
     int[] left = dfs(node.left), right = dfs(node.right);
-    return node.val > left[2] && node.val < right[1] ?
-        new int[]{1 + left[0] + right[0], Math.min(node.val, left[1]), Math.max(node.val, right[2])} :
-        new int[]{Math.max(left[0], right[0]), Integer.MIN_VALUE, Integer.MAX_VALUE};
-}
-{% endhighlight %}
 
-[Maximum Width of Binary Tree][maximum-width-of-binary-tree]
-
-{% highlight java %}
-public int widthOfBinaryTree(TreeNode root) {
-    return dfs(root, 0, 0, new ArrayList<>());
-}
-
-private int dfs(TreeNode node, int level, int index, List<Integer> starts) {
-    if (node == null) {
-        return 0;
+    // prefix sum of right
+    int[] p = new int[right.length];
+    for (int i = 0; i < distance; i++) {
+        p[i + 1] = p[i] + right[i];
     }
 
-    // the first node visited in this level
-    if (starts.size() == level) {
-        starts.add(index);
+    for (int i = 1; i < distance; i++) {
+        // p[distance - i + 1] = right[0] + right[1] + ... + right[distance - i]
+        // i.e. count of all right nodes where left[i] + right[j] <= distance
+        pairs += left[i] * p[distance - i + 1];
     }
 
-    int curr = index - starts.get(level) + 1;
-    int left = dfs(node.left, level + 1, index * 2 + 1, starts);
-    int right = dfs(node.right, level + 1, index * 2 + 2, starts);
-    return Math.max(curr, Math.max(left, right));
-}
-{% endhighlight %}
-
-[House Robber III][house-robber-iii]
-
-{% highlight java %}
-public int rob(TreeNode root) {
-    int[] dp = dfs(root);
-    return Math.max(dp[0], dp[1]);
-}
-
-private int[] dfs(TreeNode root) {
-    // {not robbed, robbed}
-    int[] dp = new int[2];
-    if (root == null) {
-        return dp;
+    for (int i = 1; i < distance; i++) {
+        count[i + 1] = left[i] + right[i];
     }
 
-    int[] left = dfs(root.left), right = dfs(root.right);
-
-    dp[0] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
-    dp[1] = root.val + left[0] + right[0];
-
-    return dp;
+    return count;
 }
 {% endhighlight %}
 
@@ -1168,7 +1139,6 @@ public int checkWays(int[][] pairs) {
 [distribute-coins-in-binary-tree]: https://leetcode.com/problems/distribute-coins-in-binary-tree/
 [equal-tree-partition]: https://leetcode.com/problems/equal-tree-partition/
 [find-bottom-left-tree-value]: https://leetcode.com/problems/find-bottom-left-tree-value/
-[find-distance-in-a-binary-tree]: https://leetcode.com/problems/find-distance-in-a-binary-tree/
 [find-leaves-of-binary-tree]: https://leetcode.com/problems/find-leaves-of-binary-tree/
 [flatten-a-multilevel-doubly-linked-list]: https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/
 [house-robber-iii]: https://leetcode.com/problems/house-robber-iii/

@@ -87,6 +87,43 @@ public Node lowestCommonAncestor(Node p, Node q) {
 
 [Intersection of Two Linked Lists][intersection-of-two-linked-lists]
 
+[Find Distance in a Binary Tree][find-distance-in-a-binary-tree]
+
+{% highlight java %}
+private int d = -1;
+
+public int findDistance(TreeNode root, int p, int q) {
+    dfs(root, p, q);
+    return Math.max(d, 0);
+}
+
+private int dfs(TreeNode node, int p, int q) {
+    if (node == null) {
+        return -1;
+    }
+
+    int left = dfs(node.left, p, q), right = dfs(node.right, p, q);
+    if (node.val == p || node.val == q) {
+        if (left < 0 && right < 0) {
+            return 0;
+        }
+        d = Math.max(left, right) + 1;
+        return -1;
+    }
+
+    if (left >= 0 && right >= 0) {
+        d = left + right + 2;
+        return -1;
+    }
+
+    if (left >= 0 || right >= 0) {
+        return Math.max(left, right) + 1;
+    }
+
+    return -1;
+}
+{% endhighlight %}
+
 # Binary Lifting
 
 [Kth Ancestor of a Tree Node][kth-ancestor-of-a-tree-node]
@@ -132,6 +169,7 @@ public int getKthAncestor(int node, int k) {
 }
 {% endhighlight %}
 
+[find-distance-in-a-binary-tree]: https://leetcode.com/problems/find-distance-in-a-binary-tree/
 [kth-ancestor-of-a-tree-node]: https://leetcode.com/problems/kth-ancestor-of-a-tree-node/
 [intersection-of-two-linked-lists]: https://leetcode.com/problems/intersection-of-two-linked-lists/
 [lowest-common-ancestor-of-a-binary-tree]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/

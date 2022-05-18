@@ -17,9 +17,12 @@ Upper bound constraints include e.g. "**at most** k elements".
 
 The common steps to resolve the problems:
 
-1. Move the right pointer (`j`) and update related variables (counters, frequency array, etc.)
-1. Check if the constraint is satisfied. If not, move the left pointer (`i`) **once** and update related variables
-1. Repeat 1. 2. until `j` is out of boundary, the final answer is `j - i`
+1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
+2. Increment `j` (move to right by one)
+3. Check if the constraint is satisfied. If not:
+  - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
+  - Increment `i` (move to right by one)
+4. Repeat 1. 2. 3. until `j` is out of boundary, the final answer is `j - i`
 
 [Max Consecutive Ones III][max-consecutive-ones-iii]
 
@@ -162,10 +165,13 @@ public int longestSubarray(int[] nums, int limit) {
 
 The common steps to resolve the problems:
 
-1. Move the right pointer (`j`) and update related variables (counters, frequency array, etc.)
-1. Move the left pointer (`i`) and update related variables in a loop, until the constraint is satisfied
-1. Add `j - i` to the final answer
-1. Repeat 1. 2. 3. until `j` is out of boundary
+1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
+2. Increment `j` (move to right by one)
+3. Do the following in a loop until the constraint is satisfied:
+  - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
+  - Increment `i` (move to right by one)
+4. Add `j - i` to the final answer
+5. Repeat 1. 2. 3. 4. until `j` is out of boundary
 
 [Subarrays with K Different Integers][subarrays-with-k-different-integers]
 
@@ -353,9 +359,12 @@ Lower bound constraints include e.g. "sum is **greater than or equal to** target
 
 The common steps to resolve the problems:
 
-1. Move the right pointer (`j`) and update related variables (counters, frequency array, etc.)
-1. Move the left pointer (`i`) and update related variables in a loop, until the constraint is not satisfied. Each iteration represents a valid subarray.
-1. Repeat 1. 2. until `j` is out of boundary
+1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
+2. Increment `j` (move to right by one)
+3. Do the following in a loop until the constraint is not satisfied (each iteration represents a valid subarray):
+  - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
+  - Increment `i` (move to right by one)
+4. Repeat 1. 2. 3. until `j` is out of boundary
 
 **Min Length**
 
@@ -620,6 +629,15 @@ public int boxDelivering(int[][] boxes, int portsCount, int maxBoxes, int maxWei
 {% endhighlight %}
 
 # Fixed-size Window
+
+The common steps to resolve the problems:
+
+1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
+2. Increment `j` (move to right by one)
+3. Check if the window expands to the required size. If so:
+  - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
+  - Increment `i` (move to right by one)
+4. Repeat 1. 2. 3. until `j` is out of boundary
 
 [Maximum Points You Can Obtain from Cards][maximum-points-you-can-obtain-from-cards]
 
@@ -1010,6 +1028,37 @@ public boolean checkInclusion(String s1, String s2) {
 }
 {% endhighlight %}
 
+# In Batch
+
+[Maximum White Tiles Covered by a Carpet][maximum-white-tiles-covered-by-a-carpet]
+
+{% highlight java %}
+public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
+    Arrays.sort(tiles, Comparator.comparingInt(t -> t[0]));
+
+    // it's always optimal to place the carpet at the left of tile range
+    // i, j are indices of tiles array, not the actual tile position
+    int i = 0, j = 0, max = 0, cover = 0;
+    while (max < carpetLen && j < tiles.length) {
+        if (i == j || tiles[i][0] + carpetLen > tiles[j][1]) {
+            // carpet fully covers tiles[j]
+            // moves tiles[j] into the window
+            cover += Math.min(carpetLen, tiles[j][1] - tiles[j][0] + 1);
+            max = Math.max(max, cover);
+            j++;
+        } else {
+            // partial of tiles[j] is covered by the carpet
+            int partial = Math.max(0, tiles[i][0] + carpetLen - tiles[j][0]);
+            max = Math.max(max, cover + partial);
+            // moves tile[j] out of the window
+            cover -= tiles[i][1] - tiles[i][0] + 1;
+            i++;
+        }
+    }
+    return max;
+}
+{% endhighlight %}
+
 [count-number-of-nice-subarrays]: https://leetcode.com/problems/count-number-of-nice-subarrays/
 [count-vowel-substrings-of-a-string]: https://leetcode.com/problems/count-vowel-substrings-of-a-string/
 [delivering-boxes-from-storage-to-ports]: https://leetcode.com/problems/delivering-boxes-from-storage-to-ports/
@@ -1029,6 +1078,7 @@ public boolean checkInclusion(String s1, String s2) {
 [maximum-number-of-visible-points]: https://leetcode.com/problems/maximum-number-of-visible-points/
 [maximum-points-you-can-obtain-from-cards]: https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/
 [maximum-size-subarray-sum-equals-k]: https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
+[maximum-white-tiles-covered-by-a-carpet]: https://leetcode.com/problems/maximum-white-tiles-covered-by-a-carpet/
 [minimum-adjacent-swaps-for-k-consecutive-ones]: https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/
 [minimum-difference-between-largest-and-smallest-value-in-three-moves]: https://leetcode.com/problems/minimum-difference-between-largest-and-smallest-value-in-three-moves/
 [minimum-number-of-flips-to-make-the-binary-string-alternating]: https://leetcode.com/problems/minimum-number-of-flips-to-make-the-binary-string-alternating/
