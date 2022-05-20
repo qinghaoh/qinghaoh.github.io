@@ -222,60 +222,6 @@ private int dfs(TreeNode node) {
 }
 {% endhighlight %}
 
-[Find Leaves of Binary Tree][find-leaves-of-binary-tree]
-
-{% highlight java %}
-private List<List<Integer>> leaves = new ArrayList<>();
-
-public List<List<Integer>> findLeaves(TreeNode root) {
-    dfs(root);
-    return leaves;
-}
-
-private int height(TreeNode node) {
-    if (node == null) {
-        return -1;
-    }
-
-    int h = Math.max(height(node.left), height(node.right)) + 1;
-
-    if (h == leaves.size()) {
-        leaves.add(new ArrayList<>());
-    }
-    leaves.get(h).add(node.val);
-
-    return h;
-}
-{% endhighlight %}
-
-[Binary Tree Right Side View][binary-tree-right-side-view]
-
-{% highlight java %}
-private List<Integer> rightside;
-
-public List<Integer> rightSideView(TreeNode root) {
-    this.rightside = new ArrayList<>();
-
-    dfs(root, 0);
-    return rightside;
-}
-
-public void dfs(TreeNode node, int level) {
-    if (node == null) {
-        return;
-    }
-
-    if (rightside.size() == level) {
-        rightside.add(node.val);
-    } 
-
-    dfs(node.right, level + 1);
-    dfs(node.left, level + 1);
-}
-{% endhighlight %}
-
-Another solution is BFS.
-
 [Split BST][split-bst]
 
 {% highlight java %}
@@ -531,25 +477,22 @@ public int findSecondMinimumValue(TreeNode root) {
 }
 {% endhighlight %}
 
-[Lowest Common Ancestor of Deepest Leaves][lowest-common-ancestor-of-deepest-leaves]
+# Level Order Traversal
+
+The most intuitive way is BFS:
 
 {% highlight java %}
-public TreeNode lcaDeepestLeaves(TreeNode root) {
-    return dfs(root).getValue();
-}
-
-// <depth, lowest_common_ancestor>
-private Pair<Integer, TreeNode> dfs(TreeNode node) {
-    if (node == null) {
-        return new Pair(0, null);
+List<Integer> currLevel = new ArrayList<>();
+for (int i = q.size(); i > 0; i--) {
+    Node node = q.poll();
+    currLevel.add(node.val);
+    for (Node child : node.children) {
+        q.offer(child);
     }
-
-    Pair<Integer, TreeNode> l = dfs(node.left), r = dfs(node.right);
-
-    int d1 = l.getKey(), d2 = r.getKey();
-    return new Pair(Math.max(d1, d2) + 1, d1 == d2 ? node : d1 > d2 ? l.getValue() : r.getValue());
 }
 {% endhighlight %}
+
+However, it can be implemented with DFS as well:
 
 [N-ary Tree Level Order Traversal][n-ary-tree-level-order-traversal]
 
@@ -578,17 +521,55 @@ private void dfs(Node node, int level) {
 }
 {% endhighlight %}
 
-Intuitively BFS also works for level order traversal. The condition to increment level is:
+[Find Leaves of Binary Tree][find-leaves-of-binary-tree]
 
 {% highlight java %}
-int size = q.size();
-List<Integer> currLevel = new ArrayList<>();
-for (int i = 0; i < size; i++) {
-    Node node = q.poll();
-    currLevel.add(node.val);
-    for (Node child : node.children) {
-        q.offer(child);
+private List<List<Integer>> leaves = new ArrayList<>();
+
+public List<List<Integer>> findLeaves(TreeNode root) {
+    dfs(root);
+    return leaves;
+}
+
+private int height(TreeNode node) {
+    if (node == null) {
+        return -1;
     }
+
+    int h = Math.max(height(node.left), height(node.right)) + 1;
+
+    if (h == leaves.size()) {
+        leaves.add(new ArrayList<>());
+    }
+    leaves.get(h).add(node.val);
+
+    return h;
+}
+{% endhighlight %}
+
+[Binary Tree Right Side View][binary-tree-right-side-view]
+
+{% highlight java %}
+private List<Integer> rightside;
+
+public List<Integer> rightSideView(TreeNode root) {
+    this.rightside = new ArrayList<>();
+
+    dfs(root, 0);
+    return rightside;
+}
+
+public void dfs(TreeNode node, int level) {
+    if (node == null) {
+        return;
+    }
+
+    if (rightside.size() == level) {
+        rightside.add(node.val);
+    } 
+
+    dfs(node.right, level + 1);
+    dfs(node.left, level + 1);
 }
 {% endhighlight %}
 
@@ -1146,7 +1127,6 @@ public int checkWays(int[][] pairs) {
 [largest-bst-subtree]: https://leetcode.com/problems/largest-bst-subtree/
 [longest-univalue-path]: https://leetcode.com/problems/longest-univalue-path/
 [longest-zigzag-path-in-a-binary-tree]: https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/
-[lowest-common-ancestor-of-deepest-leaves]: https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/
 [maximum-difference-between-node-and-ancestor]: https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
 [maximum-width-of-binary-tree]: https://leetcode.com/problems/maximum-width-of-binary-tree/
 [minimum-absolute-difference-in-bst]: https://leetcode.com/problems/minimum-absolute-difference-in-bst/

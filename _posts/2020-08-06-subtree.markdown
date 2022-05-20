@@ -124,6 +124,26 @@ private int dfs(TreeNode node, int p, int q) {
 }
 {% endhighlight %}
 
+[Lowest Common Ancestor of Deepest Leaves][lowest-common-ancestor-of-deepest-leaves]
+
+{% highlight java %}
+public TreeNode lcaDeepestLeaves(TreeNode root) {
+    return dfs(root).getValue();
+}
+
+// <depth, lowest_common_ancestor>
+private Pair<Integer, TreeNode> dfs(TreeNode node) {
+    if (node == null) {
+        return new Pair(0, null);
+    }
+
+    Pair<Integer, TreeNode> l = dfs(node.left), r = dfs(node.right);
+
+    int d1 = l.getKey(), d2 = r.getKey();
+    return new Pair(Math.max(d1, d2) + 1, d1 == d2 ? node : d1 > d2 ? l.getValue() : r.getValue());
+}
+{% endhighlight %}
+
 # Binary Lifting
 
 [Kth Ancestor of a Tree Node][kth-ancestor-of-a-tree-node]
@@ -175,4 +195,5 @@ public int getKthAncestor(int node, int k) {
 [lowest-common-ancestor-of-a-binary-tree]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
 [lowest-common-ancestor-of-a-binary-tree-ii]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/
 [lowest-common-ancestor-of-a-binary-tree-iii]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/
+[lowest-common-ancestor-of-deepest-leaves]: https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/
 [subtree-of-another-tree]: https://leetcode.com/problems/subtree-of-another-tree/

@@ -2,35 +2,33 @@
 layout: post
 title:  "Prefix Sum"
 ---
-# Template
+# Fundamentals
+
+The basic template for prefix sum creation is:
 
 {% highlight java %}
 int[] p = new int[n + 1];
 for (int i = 0: i < n; i++) {
     p[i + 1] = p[i] + nums[i];
 }
+
+// sum[i...j] = p[j + 1] - p[i]
 {% endhighlight %}
 
-# Basic
+We don't always have to create an array to record prefix sums. Sometimes we can use a running prefix sum instead. For example:
 
 [Subarray Sum Equals K][subarray-sum-equals-k]
 
 {% highlight java %}
 public int subarraySum(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();  // prefix sum : count
+    // prefix sum : count
+    Map<Integer, Integer> map = new HashMap<>();
     map.put(0, 1);  // p[0]
 
     int sum = 0, count = 0;
     for (int num : nums) {
-        // calculates p[i]
         sum += num;
-
-        // p[i] - k exists in the map
-        if (map.containsKey(sum - k)) {
-            count += map.get(sum - k);
-        }
-
-        // increments counter of p[i]
+        count += map.getOrDefault(sum - k, 0);
         map.put(sum, map.getOrDefault(sum, 0) + 1);
     }
 
@@ -38,10 +36,11 @@ public int subarraySum(int[] nums, int k) {
 }
 {% endhighlight %}
 
-[Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equals-k]
+Similar problem: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equals-k]
 
 {% highlight java %}
 public int maxSubArrayLen(int[] nums, int k) {
+    // prefix sum : index of first occurrence
     Map<Integer, Integer> map = new HashMap<>();
     map.put(0, -1);
 
@@ -50,10 +49,9 @@ public int maxSubArrayLen(int[] nums, int k) {
         sum += nums[i];
         if (map.containsKey(sum - k)) {
             max = Math.max(max, i - map.get(sum - k));
+        } else {
+            map.put(sum, i);
         }
-
-        // stores the index of the first occurrence of sum
-        map.putIfAbsent(sum, i);
     }
     return max;
 }
@@ -63,6 +61,7 @@ public int maxSubArrayLen(int[] nums, int k) {
 
 {% highlight java %}
 public int findMaxLength(int[] nums) {
+    // prefix sum : index of first occurrence
     Map<Integer, Integer> map = new HashMap<>();
     map.put(0, -1);
 
@@ -84,17 +83,21 @@ public int findMaxLength(int[] nums) {
 
 {% highlight java %}
 public int longestWPI(int[] hours) {
-    int max = 0, score = 0, n = hours.length;
-    Map<Integer, Integer> seen = new HashMap<>();
-    for (int i = 0; i < n; i++) {
+    // prefix sum : index of first occurrence
+    Map<Integer, Integer> map = new HashMap<>();
+    int max = 0, score = 0;
+    for (int i = 0; i < hours.length; i++) {
         // finds the longest subarray with positive sum
         score += hours[i] > 8 ? 1 : -1;
         if (score > 0) {
             max = i + 1;
         } else {
-            seen.putIfAbsent(score, i);
-            if (seen.containsKey(score - 1)) {
-                max = Math.max(max, i - seen.get(score - 1));
+            map.putIfAbsent(score, i);
+            // when score <= 0,
+            // the first occurrence of (score - 1) is always before (score - k), where k > 1
+            // i.e. map[score - 1] is the farthest from current position
+            if (map.containsKey(score - 1)) {
+                max = Math.max(max, i - map.get(score - 1));
             }
         }
     }
@@ -104,7 +107,136 @@ public int longestWPI(int[] hours) {
 
 # Variants
 
-## Multi-dimension
+**Product**
+
+[Product of the Last K Numbers][product-of-the-last-k-numbers]
+
+{% highlight java %}
+private List<Integer> p = new ArrayList<>(); 
+
+public ProductOfNumbers() {
+    p.add(1);
+}
+
+public void add(int num) {
+    if (num > 0) {
+        p.add(p.get(p.size() - 1) * num);
+    } else {
+        p = new ArrayList();
+        p.add(1);
+    }
+}
+
+public int getProduct(int k) {
+    int n = p.size();
+    return k < n ? p.get(n - 1) / p.get(n - k - 1) : 0;
+}
+{% endhighlight %}
+
+[Product of Array Except Self][product-of-array-except-self]
+
+{% highlight java %}
+public int[] productExceptSelf(int[] nums) {
+    int n = nums.length;
+    int[] answer = new int[n];
+
+    // prefix product, no last element
+    answer[0] = 1;
+    for (int i = 0; i < n - 1; i++) {
+        answer[i + 1] = nums[i] * answer[i];
+    }
+
+    int product = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        answer[i] *= product;
+        product *= nums[i];
+    }
+    return answer;
+}
+{% endhighlight %}
+
+**Mod**
+
+[Make Sum Divisible by P][make-sum-divisible-by-p]
+
+{% highlight java %}
+public int minSubarray(int[] nums, int p) {
+    // target remainder
+    int r = 0;
+    for (int num : nums) {
+        r = (r + num) % p;
+    }
+    if (r == 0) {
+        return 0;
+    }
+
+    // prefix mod : index of last occurrence
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, -1);
+
+    int n = nums.length, min = n, m = 0;
+    for (int i = 0; i < n; i++) {
+        m = (m + nums[i] % p) % p;
+        int d = (m - r + p) % p;
+        if (map.containsKey(d)) {
+            min = Math.min(min, i - map.get(d));
+        }
+        map.put(m, i);
+    }
+    return min == n ? -1 : min;
+}
+{% endhighlight %}
+
+**Exclusive Or**
+
+[Count Triplets That Can Form Two Arrays of Equal XOR][count-triplets-that-can-form-two-arrays-of-equal-xor]
+
+[Can Make Palindrome from Substring][can-make-palindrome-from-substring]
+
+{% highlight java %}
+public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
+    int n = s.length();
+    // 26 bits to represent prefix xor
+    int[] p = new int[n + 1];
+    for (int i = 0; i < n; i++) {
+        p[i + 1] = p[i] ^ (1 << (s.charAt(i) - 'a'));
+    }
+
+    List<Boolean> answer = new ArrayList<>();
+    for (int[] q : queries) {
+        int odd = Integer.bitCount(p[q[1] + 1] ^ p[q[0]]);
+        answer.add(odd <= 2 * q[2] + 1);
+    }
+    return answer;
+}
+{% endhighlight %}
+
+[Number of Wonderful Substrings][number-of-wonderful-substrings]
+
+{% highlight java %}
+private static final int NUM_CHARS = 10;
+
+public long wonderfulSubstrings(String word) {
+    // map[i]: count of bit mask i
+    long[] map = new long[1 << NUM_CHARS];
+    map[0] = 1;
+
+    // bits to represent prefix xor
+    long count = 0;
+    int p = 0;
+    for (int i = 0; i < word.length(); i++) {
+        p ^= 1 << (word.charAt(i) - 'a');
+        count += map[p];
+        for (int j = 0; j < NUM_CHARS; j++) {
+            count += map[p ^ (1 << j)];
+        }
+        map[p]++;
+    }
+    return count;
+}
+{% endhighlight %}
+
+**Multi-dimension**
 
 [Sum of Beauty of All Substrings][sum-of-beauty-of-all-substrings]
 
@@ -150,138 +282,7 @@ public int[] minDifference(int[] nums, int[][] queries) {
 }
 {% endhighlight %}
 
-## Exclusive Or
-
-[Count Triplets That Can Form Two Arrays of Equal XOR][count-triplets-that-can-form-two-arrays-of-equal-xor]
-
-[Can Make Palindrome from Substring][can-make-palindrome-from-substring]
-
-{% highlight java %}
-public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
-    int n = s.length();
-    // 26 bits to represent prefix xor
-    int[] p = new int[n + 1];
-    for (int i = 0; i < n; i++) {
-        p[i + 1] = p[i] ^ (1 << (s.charAt(i) - 'a'));
-    }
-
-    List<Boolean> answer = new ArrayList<>();
-    for (int[] q : queries) {
-        int odd = Integer.bitCount(p[q[1] + 1] ^ p[q[0]]);
-        answer.add(odd - 1 <= 2 * q[2]);
-    }
-    return answer;
-}
-{% endhighlight %}
-
-[Number of Wonderful Substrings][number-of-wonderful-substrings]
-
-{% highlight java %}
-private static final int NUM_CHARS = 10;
-
-public long wonderfulSubstrings(String word) {
-    // map[i]: count of bit mask i
-    long[] map = new long[1 << NUM_CHARS];
-    map[0] = 1;
-
-    // bits to represent prefix xor
-    long count = 0;
-    int p = 0;
-    for (int i = 0; i < word.length(); i++) {
-        p ^= 1 << (word.charAt(i) - 'a');
-        count += map[p];
-        for (int j = 0; j < NUM_CHARS; j++) {
-            count += map[p ^ (1 << j)];
-        }
-        map[p]++;
-    }
-    return count;
-}
-{% endhighlight %}
-
-## Product
-
-[Product of the Last K Numbers][product-of-the-last-k-numbers]
-
-{% highlight java %}
-private List<Integer> p;
-
-public ProductOfNumbers() {
-    p = new ArrayList<>();
-    p.add(1);
-}
-
-public void add(int num) {
-    if (num > 0) {
-        p.add(p.get(p.size() - 1) * num);
-    } else {
-        p = new ArrayList();
-        p.add(1);
-    }
-}
-
-public int getProduct(int k) {
-    int n = p.size();
-    return k < n ? p.get(n - 1) / p.get(n - k - 1) : 0;
-}
-{% endhighlight %}
-
-[Product of Array Except Self][product-of-array-except-self]
-
-{% highlight java %}
-public int[] productExceptSelf(int[] nums) {
-    int n = nums.length;
-    int[] answer = new int[n];
-
-    // prefix product, no last element
-    answer[0] = 1;
-    for (int i = 0; i < n - 1; i++) {
-        answer[i + 1] = nums[i] * answer[i];
-    }
-
-    int product = 1;
-    for (int i = n - 1; i >= 0; i--) {
-        answer[i] *= product;
-        product *= nums[i];
-    }
-    return answer;
-}
-{% endhighlight %}
-
-## Mod
-
-[Make Sum Divisible by P][make-sum-divisible-by-p]
-
-{% highlight java %}
-public int minSubarray(int[] nums, int p) {
-    int n = nums.length;
-
-    int r = 0;
-    for (int num : nums) {
-        r = (r + num) % p;
-    }
-    if (r == 0) {
-        return 0;
-    }
-
-    // index
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
-
-    int min = n, m = 0;
-    for (int i = 0; i < n; i++) {
-        m = (m + nums[i] % p) % p;
-        int d = (m - r + p) % p;
-        if (map.containsKey(d)) {
-            min = Math.min(min, i - map.get(d));
-        }
-        map.put(m, i);
-    }
-    return min == n ? -1 : min;
-}
-{% endhighlight %}
-
-## Frequency
+**Frequency**
 
 [Sum of Floored Pairs][sum-of-floored-pairs]
 
