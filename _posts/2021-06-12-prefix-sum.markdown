@@ -105,6 +105,30 @@ public int longestWPI(int[] hours) {
 }
 {% endhighlight %}
 
+[Maximize the Beauty of the Garden][maximize-the-beauty-of-the-garden]
+
+{% highlight java %}
+public int maximumBeauty(int[] flowers) {
+    // flower : first prefix sum of this flower
+    Map<Integer, Integer> map = new HashMap<>();
+    int sum = 0, max = Integer.MIN_VALUE;
+    for (int f : flowers) {
+        if (map.containsKey(f)) {
+            max = Math.max(max, sum - map.get(f) + 2 * f);
+        }
+
+        // counts positive beauty only,
+        // because we can always not pick the negative beauty in a window
+        if (f > 0) {
+            sum += f;
+        }
+
+        map.putIfAbsent(f, sum);
+    }
+    return max;
+}
+{% endhighlight %}
+
 # Variants
 
 **Product**
@@ -325,7 +349,7 @@ public int sumOfFlooredPairs(int[] nums) {
 }
 {% endhighlight %}
 
-## Linked List
+**Linked List**
 
 [Remove Zero Sum Consecutive Nodes from Linked List][remove-zero-sum-consecutive-nodes-from-linked-list]
 
@@ -334,10 +358,10 @@ public ListNode removeZeroSumSublists(ListNode head) {
     ListNode dummy = new ListNode();
     dummy.next = head;
 
+    // prefix sum : last node with this value
     Map<Integer, ListNode> map = new HashMap<>();
     map.put(0, dummy);
 
-    // stores the last node with the prefix sum
     int sum = 0;
     for (ListNode curr = dummy; curr != null; curr = curr.next) {
         sum += curr.val;
@@ -360,7 +384,7 @@ public ListNode removeZeroSumSublists(ListNode head) {
 abs(subarray) = p[i] - p[j] <= max(p) - min(p)
 ```
 
-## Range Sum
+# Range Sum
 
 [Number of Ways of Cutting a Pizza][number-of-ways-of-cutting-a-pizza]
 
@@ -417,7 +441,7 @@ private int dfs(int m, int n, int cuts, int i, int j, int[][] p) {
 }
 {% endhighlight %}
 
-## Discrete
+# Discrete
 
 [Maximum Fruits Harvested After at Most K Steps][maximum-fruits-harvested-after-at-most-k-steps]
 
@@ -473,31 +497,6 @@ public List<Integer> goodDaysToRobBank(int[] security, int time) {
 {% endhighlight %}
 
 # Rolling Prefix Sum
-
-[Maximize the Beauty of the Garden][maximize-the-beauty-of-the-garden]
-
-{% highlight java %}
-public int maximumBeauty(int[] flowers) {
-    // flower : first prefix sum of this flower
-    Map<Integer, Integer> map = new HashMap<>();
-    int sum = 0, max = Integer.MIN_VALUE;
-    for (int f : flowers) {
-        if (map.containsKey(f)) {
-            max = Math.max(max, sum - map.get(f) + 2 * f);
-        }
-
-        // counts positive beauty only
-        if (f > 0) {
-            sum += f;
-        }
-
-        if (!map.containsKey(f)) {
-            map.put(f, sum);
-        }
-    }
-    return max;
-}
-{% endhighlight %}
 
 [Change Minimum Characters to Satisfy One of Three Conditions][change-minimum-characters-to-satisfy-one-of-three-conditions]
 

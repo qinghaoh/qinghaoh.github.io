@@ -73,19 +73,21 @@ private ListNode merge(ListNode left, ListNode right, ListNode prev) {
 
 [Floyd's Tortoise and Hare](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_Tortoise_and_Hare)
 
+![Floyd's Tortoise and Hare](/assets/floyds_tortoise_and_hare.png)
+
 [Linked List Cycle II][linked-list-cycle-ii]
 
 {% highlight java %}
 public ListNode detectCycle(ListNode head) {
     ListNode tortoise = head, hare = head;
 
-    // Find the intersection point of the two runners
     while (hare != null && hare.next != null) {
         tortoise = tortoise.next;
         hare = hare.next.next;
 
+        // finds the first meeing point
         if (tortoise == hare) {
-            // Find the "entrance" to the cycle
+            // resets tortoise to head
             tortoise = head;
             while (tortoise != hare) {
                 tortoise = tortoise.next;
@@ -105,14 +107,14 @@ This algorithm can be used to detect duplicate elements in an array, too.
 
 {% highlight java %}
 public int findDuplicate(int[] nums) {
-    // Find the intersection point of the two runners
+    // finds the first meeting point
     int tortoise = nums[0], hare = nums[0];
     do {
         tortoise = nums[tortoise];
         hare = nums[nums[hare]];
     } while (tortoise != hare);
 
-    // Find the "entrance" to the cycle
+    // finds the entry to the cycle
     tortoise = nums[0];
     while (tortoise != hare) {
         tortoise = nums[tortoise];
