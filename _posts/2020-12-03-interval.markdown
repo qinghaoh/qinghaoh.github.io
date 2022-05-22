@@ -395,22 +395,24 @@ public int findMinArrowShots(int[][] points) {
 }
 {% endhighlight %}
 
+The typical approach of this type of problem is to use a Priority Queue to record the current state at each timestamp. As time flows, the Priority Queue removes or adds elements. The idea is very similar to Sliding window.
+
 [Meeting Rooms II][meeting-rooms-ii]
 
 {% highlight java %}
 public int minMeetingRooms(int[][] intervals) {
     // sorts invervals by start time
-    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
 
-    // stores the end time of current open meetings
+    // stores the end time of current open meetings in ascending order
     Queue<Integer> pq = new PriorityQueue<>();
     for (int[] interval : intervals) {
-        // frees up old room for the new meeting to occupy
+        // frees up one old room if it's already ended
         if (!pq.isEmpty() && interval[0] >= pq.peek()) {
             pq.poll();
         }
 
-        // occupies the old room or a new room
+        // occupies the spared old room or a new room
         pq.offer(interval[1]);
     }
 
@@ -418,6 +420,10 @@ public int minMeetingRooms(int[][] intervals) {
     return pq.size();
 }
 {% endhighlight %}
+
+Notice how similar it is to finding max length with upper bounded constraint by [Sliding window](../../../2020/09/28/sliding-window.html#max-length) - the window never shrinks.
+
+Another solution is Line weep. W  consolidate the number of occupied rooms at each time and find the max.
 
 [Maximum Number of Events That Can Be Attended][maximum-number-of-events-that-can-be-attended]
 

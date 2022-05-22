@@ -2,13 +2,17 @@
 layout: post
 title:  "Expression Evaluation"
 ---
-# Basic
+# Fundamentals
 
-|    Infix    |  Prefix   |  Postfix  |
-|-----------------------------------|
+|    Infix    |  Prefix (RN)  |  Postfix (RPN)  |
+|-------------------------------------|
 |    a + b    |   + a b   |   a b +   |
 |  a + b * c  | + a * b c | a b c * + |
 | (a + b) * c | * + a b c | a b + c * |
+| | | stack |
+
+* PN: Polish Notation
+* RPN: Reverse Polish Notation
 
 # Expression Tree
 

@@ -120,44 +120,41 @@ public int pick() {
 [Random Pick with Weight][random-pick-with-weight]
 
 {% highlight java %}
-private int[] p;  // prefix sum
-private Random rand;
+private int[] p;  // cumulative sum
+private Random rand = new Random();
 
 public Solution(int[] w) {
-    p = new int[w.length];
-    p[0] = w[0];
-    for (int i = 1; i < p.length; i++) {
-        p[i] = p[i - 1] + w[i];
+    p = new int[w.length + 1];
+    for (int i = 0; i < w.length; i++) {
+        p[i + 1] = p[i] + w[i];
     }
-
-    rand = new Random();
 }
 
 public int pickIndex() {
+    // target range: [1, sum]
     int index = Arrays.binarySearch(p, rand.nextInt(p[p.length - 1]) + 1);
-    return index < 0 ? ~index : index;
+    // w starts from p[1], therefore index - 1
+    return (index < 0 ? ~index : index) - 1;
 }
 {% endhighlight %}
+
+**Multi-dimension**
 
 [Random Point in Non-overlapping Rectangles][random-point-in-non-overlapping-rectangles]
 
 {% highlight java %}
 private int[][] rects;
 private int[] p;
-private Random rand;
+private Random rand = new Random();
 
 public Solution(int[][] rects) {
     this.rects = rects;
-    p = new int[rects.length];
-    // number of points
-    p[0] = (rects[0][2] - rects[0][0] + 1) * (rects[0][3] - rects[0][1] + 1);
 
-    for (int i = 1; i < rects.length; i++) {
-        int[] rect = rects[i];
-        p[i] = p[i - 1] + (rect[2] - rect[0] + 1) * (rect[3] - rect[1] + 1);
+    p = new int[rects.length + 1];
+    for (int i = 0; i < rects.length; i++) {
+        // number of points
+        p[i + 1] = p[i] + (rects[i][2] - rects[i][0] + 1) * (rects[i][3] - rects[i][1] + 1);
     }
-
-    rand = new Random();
 }
 
 public int[] pick() {
@@ -165,7 +162,8 @@ public int[] pick() {
     int i = Arrays.binarySearch(p, points);
     int index = i < 0 ? ~i : i;
 
-    int[] rect = rects[index];
+    // rect starts from p[1], therefore index - 1
+    int[] rect = rects[index - 1];
     int left = rect[0], bottom = rect[1], right = rect[2], top = rect[3];
     int x = left + (p[index] - points) % (right - left + 1);
     int y = bottom + (p[index] - points) / (right - left + 1);
