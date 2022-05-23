@@ -75,6 +75,7 @@ public int minAreaRect(int[][] points) {
     int min = Integer.MAX_VALUE;
     for (int i = 0; i < points.length; i++) {
         for (int j = 0; j < i; j++) {
+            // diagnoal opposite points
             int[] p1 = points[i], p2 = points[j];
             // skips same x or y
             if (p1[0] == p2[0] || p1[1] == p2[1]) {

@@ -879,6 +879,8 @@ public int minimumFinishTime(int[][] tires, int changeTime, int numLaps) {
 }
 {% endhighlight %}
 
+The previous states of elements is stored in a map.
+
 [Longest String Chain][longest-string-chain]
 
 {% highlight java %}

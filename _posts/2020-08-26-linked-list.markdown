@@ -127,6 +127,29 @@ public int findDuplicate(int[] nums) {
 
 A hidden condition is `nums[0] != 0`, otherwise the tortoise and hare will stay at `0` forever.
  
+[Happy Number][happy-number]
+
+{% highlight java %}
+public boolean isHappy(int n) {
+    // finds meeting point
+    int tortoise = n, hare = getNext(n);
+    while (hare != 1 && tortoise != hare) {
+        tortoise = getNext(tortoise);
+        hare = getNext(getNext(hare));
+    }
+    return hare == 1;
+}
+
+private int getNext(int n) {
+    int sum = 0;
+    while (n > 0) {
+        sum += (n % 10) * (n % 10);
+        n /= 10;
+    }
+    return sum;
+}
+{% endhighlight %}
+
 # Reverse
 
 [Palindrome Linked List][palindrome-linked-list]
@@ -318,6 +341,7 @@ public Node connect(Node root) {
 [add-two-numbers-ii]: https://leetcode.com/problems/add-two-numbers-ii/
 [copy-list-with-random-pointer]: https://leetcode.com/problems/copy-list-with-random-pointer/
 [find-the-duplicate-number]: https://leetcode.com/problems/find-the-duplicate-number/
+[happy-number]: https://leetcode.com/problems/happy-number/
 [linked-list-cycle-ii]: https://leetcode.com/problems/linked-list-cycle-ii/
 [palindrome-linked-list]: https://leetcode.com/problems/palindrome-linked-list/
 [populating-next-right-pointers-in-each-node]: https://leetcode.com/problems/populating-next-right-pointers-in-each-node/

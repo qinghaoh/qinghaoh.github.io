@@ -18,6 +18,13 @@ stack and minStack
 * LinkedHashMap
 * Double linked list + TreeMap<Node>
 
+[Snapshot Array][snapshot-array]
+
+{% highlight java %}
+List<int[]>[] record;
+// + binary search
+{% endhighlight %}
+
 [Sequentially Ordinal Rank Tracker][sequentially-ordinal-rank-tracker]
 
 Two priority queues
@@ -555,4 +562,5 @@ private int[] arr;
 [min-stack]: https://leetcode.com/problems/min-stack/
 [sequentially-ordinal-rank-tracker]: https://leetcode.com/problems/sequentially-ordinal-rank-tracker/
 [sliding-window-median]: https://leetcode.com/problems/sliding-window-median/
+[snapshot-array]: https://leetcode.com/problems/snapshot-array/
 [stock-price-fluctuation]: https://leetcode.com/problems/stock-price-fluctuation/

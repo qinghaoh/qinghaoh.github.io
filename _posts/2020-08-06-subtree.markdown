@@ -144,6 +144,10 @@ private Pair<Integer, TreeNode> dfs(TreeNode node) {
 }
 {% endhighlight %}
 
+[Step-By-Step Directions From a Binary Tree Node to Another][step-by-step-directions-from-a-binary-tree-node-to-another]
+
+The shortest path between any two nodes in a tree must pass through their Lowest LCA. Find the two paths `root -> startValue` and `root -> destValue`, then remove the longest common prefix from the two path strings.
+
 # Binary Lifting
 
 [Kth Ancestor of a Tree Node][kth-ancestor-of-a-tree-node]
@@ -196,4 +200,5 @@ public int getKthAncestor(int node, int k) {
 [lowest-common-ancestor-of-a-binary-tree-ii]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/
 [lowest-common-ancestor-of-a-binary-tree-iii]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/
 [lowest-common-ancestor-of-deepest-leaves]: https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/
+[step-by-step-directions-from-a-binary-tree-node-to-another]: https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another/
 [subtree-of-another-tree]: https://leetcode.com/problems/subtree-of-another-tree/
