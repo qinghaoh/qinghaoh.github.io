@@ -166,11 +166,7 @@ public long maxPoints(int[][] points) {
         dp = next;
     }
 
-    long max = 0;
-    for (long i : dp) {
-        max = Math.max(max, i);
-    }
-    return max;
+    return Arrays.stream(dp).max().getAsLong();
 }
 {% endhighlight %}
 

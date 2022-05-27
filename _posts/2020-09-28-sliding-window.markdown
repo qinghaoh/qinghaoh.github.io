@@ -630,6 +630,10 @@ public int boxDelivering(int[][] boxes, int portsCount, int maxBoxes, int maxWei
 
 # Fixed-size Window
 
+This type of problems can sometimes be solved by prefix sum:
+
+[Maximum Points You Can Obtain from Cards][maximum-points-you-can-obtain-from-cards]
+
 The common steps to resolve the problems:
 
 1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
@@ -638,8 +642,6 @@ The common steps to resolve the problems:
   - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
   - Increment `i` (move to right by one)
 4. Repeat 1. 2. 3. until `j` is out of boundary
-
-[Maximum Points You Can Obtain from Cards][maximum-points-you-can-obtain-from-cards]
 
 [Minimum Difference Between Largest and Smallest Value in Three Moves][minimum-difference-between-largest-and-smallest-value-in-three-moves]
 
@@ -943,46 +945,7 @@ public boolean canReach(String s, int minJump, int maxJump) {
 
 # Variants
 
-[Maximum Number of Visible Points][maximum-number-of-visible-points]
-
-{% highlight java %}
-public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
-    // list of radian degrees
-    List<Double> list = new ArrayList<>();
-    int locationPoints = 0;
-    for (List<Integer> p : points) {
-        if (p.equals(location)) {
-            locationPoints++;
-        } else {
-            list.add(Math.toDegrees(Math.atan2(p.get(1) - location.get(1), p.get(0) - location.get(0))));
-        }
-    }
-
-    Collections.sort(list);
-
-    // circular
-    int n = list.size();
-    for (int i = 0; i < n; i++) {
-        if (list.get(i) < 0) {
-            list.add(list.get(i) + 360);
-        }
-    }
-
-    // sliding window
-    int max = 0;
-    n = list.size();
-    for (int i = 0, j = 0; j < n; j++) {
-        while (list.get(j) - list.get(i) > angle) {
-            i++;
-        }
-        max = Math.max(max, j - i + 1);
-    }
-
-    return max + locationPoints;
-}
-{% endhighlight %}
-
-[Permutation in String][permutation-in-string]
+[permutation in string][permutation-in-string]
 
 {% highlight java %}
 public boolean checkInclusion(String s1, String s2) {
@@ -1027,6 +990,7 @@ public boolean checkInclusion(String s1, String s2) {
     return count == 26;
 }
 {% endhighlight %}
+
 
 # In Batch
 
@@ -1075,7 +1039,6 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 [longest-substring-with-at-most-k-distinct-characters]: https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
 [longest-substring-without-repeating-characters]: https://leetcode.com/problems/longest-substring-without-repeating-characters/
 [max-consecutive-ones-iii]: https://leetcode.com/problems/max-consecutive-ones-iii/
-[maximum-number-of-visible-points]: https://leetcode.com/problems/maximum-number-of-visible-points/
 [maximum-points-you-can-obtain-from-cards]: https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/
 [maximum-size-subarray-sum-equals-k]: https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
 [maximum-white-tiles-covered-by-a-carpet]: https://leetcode.com/problems/maximum-white-tiles-covered-by-a-carpet/

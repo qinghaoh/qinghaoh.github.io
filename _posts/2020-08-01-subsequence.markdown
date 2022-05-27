@@ -495,31 +495,29 @@ public int numberOfUniqueGoodSubsequences(String binary) {
 
 {% highlight java %}
 public int numMatchingSubseq(String s, String[] words) {
-    int count = 0;
     List<Deque<Character>>[] buckets = new List[26];
-    for (int i = 0; i < 26; i++) {
+    for (int i = 0; i < buckets.length; i++) {
         buckets[i] = new ArrayList();
     }
 
     // adds words to buckets based on the first letter
     for (String w : words) {
-        Deque<Character> q = new ArrayDeque<>();
-        for (char c: w.toCharArray()) {
-            q.offer(c);
-        }
-        buckets[w.charAt(0) - 'a'].add(q);
+        buckets[w.charAt(0) - 'a'].add(w.chars().mapToObj(ch -> (char)ch)
+                                       .collect(Collectors.toCollection(LinkedList::new)));
     }
 
-    for (char c : s.toCharArray()) {
-        List<Deque<Character>> list = buckets[c - 'a'];
-        buckets[c - 'a'] = new ArrayList();
+    int count = 0;
+    for (char ch : s.toCharArray()) {
+        List<Deque<Character>> list = buckets[ch - 'a'];
+        buckets[ch - 'a'] = new ArrayList();
         for (Deque<Character> q : list) {
             // O(1) removes the first letter
             q.pollFirst();
 
-            if (q.size() == 0) {  // no more letters
+            if (q.isEmpty()) {  // no more letters
                 count++;
             } else {
+                // reallocate the truncated word to (other) buckets
                 buckets[q.peekFirst() - 'a'].add(q);
             }
         }
@@ -528,7 +526,7 @@ public int numMatchingSubseq(String s, String[] words) {
 }
 {% endhighlight %}
 
-For example, `s = "abcde", words = ["a","bb","acd","ace"]`
+For example, `s = "abcde", words = ["a","bb","acd","ace"]`. In each iteration:
 
 ```
 'a':  ["(a)", "(a)cd", "(a)ce"]

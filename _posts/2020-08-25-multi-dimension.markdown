@@ -404,7 +404,14 @@ public int movesToChessboard(int[][] board) {
 
 {% highlight java %}
 public boolean removeOnes(int[][] grid) {
-    // checks if the current row is the same or the reverse of the first row
+    // order of flips doesn't matter
+    // e.g. r1 -> c1 is equivalant to c1 -> r1
+    // therefore we can flip all rows, then all colums
+
+    // checks if the current row is the same or the inverse of the first row
+    // e.g. 0101 vs 0101 vs 1010
+    // in this way, after flipping all rows,
+    // all columns are either all 1's or all 0's
     for (int i = 1; i < grid.length; i++) {
         for (int j = 0; j < grid[0].length; j++) {
             if ((grid[i][j] ^ grid[0][j]) != (grid[i][0] ^ grid[0][0])) {

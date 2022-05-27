@@ -20,13 +20,13 @@ public void findSecretWord(String[] wordlist, Master master) {
         }
 
         // the possiblity that a word has 0 match with the secret words is (25 / 26) ^ 6 ~= 80%
-        // say we have a group of words from the wordlist,
+        // say we have a group of candidate words from the wordlist,
         // and each word in the group has at least one match with the guess
-        // then we want to maximize the group so if the guess is wrong, we eliminate most words
+        // then we want to maximize the group size so if the guess is wrong, we eliminate most words
         int max = 0;
         String guess = wordlist[0];
-        for (String w: wordlist) {
-            // score is the sum of overall frequency of each char in this word
+        for (String w : wordlist) {
+            // score is the sum of overall frequency of all chars in this word
             // the higher the score is, the larger the group is
             int score = 0;
             for (int i = 0; i < w.length(); i++) {
@@ -39,8 +39,9 @@ public void findSecretWord(String[] wordlist, Master master) {
             }
         }
 
+        // now guess has the highest score
         matches = master.guess(guess);
-        List<String> tmp = new ArrayList<String>();
+        List<String> tmp = new ArrayList<>();
         for (String w : wordlist) {
             if (getMatches(guess, w) == matches) {
                 tmp.add(w);

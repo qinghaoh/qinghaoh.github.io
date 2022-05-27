@@ -206,12 +206,48 @@ private String dfs(TreeNode node) {
         return "#";
     }
 
+    // O(n) concatenation
     String s = node.val + "#" + dfs(node.left) + "#" + dfs(node.right);
     map.put(s, map.getOrDefault(s, 0) + 1);
     if (map.get(s) == 2) {
         list.add(node);
     }
     return s;
+}
+{% endhighlight %}
+
+Optimization:
+
+{% highlight java %}
+private int id = 0;
+private List<TreeNode> list = new ArrayList<>();
+// serialized string : id
+private Map<String, Integer> map = new HashMap<>();
+// id : count
+private Map<Integer, Integer> count = new HashMap<>();
+
+// O(n)
+public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    dfs(root);
+    return list;
+}
+
+private int dfs(TreeNode node) {
+    if (node == null) {
+        return Integer.MIN_VALUE;
+    }
+
+    // O(1) concatenation
+    String s = node.val + "#" + dfs(node.left) + "#" + dfs(node.right);
+    // if the pattern is new, assign a new id to it
+    map.putIfAbsent(s, id++);
+
+    int sid = map.get(s);
+    count.put(sid, count.getOrDefault(sid, 0) + 1);
+    if (count.get(sid) == 2) {
+        list.add(node);
+    }
+    return sid;
 }
 {% endhighlight %}
 

@@ -290,9 +290,48 @@ private double distance(int[] p1, int[] p2) {
 }
 {% endhighlight %}
 
+[Maximum Number of Visible Points][maximum-number-of-visible-points]
+
+{% highlight java %}
+public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
+    // list of radian degrees
+    List<Double> list = new ArrayList<>();
+    int locationPoints = 0;
+    for (List<Integer> p : points) {
+        if (p.equals(location)) {
+            locationPoints++;
+        } else {
+            list.add(Math.toDegrees(Math.atan2(p.get(1) - location.get(1), p.get(0) - location.get(0))));
+        }
+    }
+
+    Collections.sort(list);
+
+    // circular
+    int n = list.size();
+    for (int i = 0; i < n; i++) {
+        if (list.get(i) < 0) {
+            list.add(list.get(i) + 360);
+        }
+    }
+
+    // sliding window
+    int max = 0;
+    for (int i = 0, j = 0; j < list.size(); j++) {
+        while (list.get(j) - list.get(i) > angle) {
+            i++;
+        }
+        max = Math.max(max, j - i + 1);
+    }
+
+    return max + locationPoints;
+}
+{% endhighlight %}
+
 [average-height-of-buildings-in-each-segment]: https://leetcode.com/problems/average-height-of-buildings-in-each-segment/
 [count-positions-on-street-with-required-brightness]: https://leetcode.com/problems/count-positions-on-street-with-required-brightness/
 [describe-the-painting]: https://leetcode.com/problems/describe-the-painting/
 [maximum-number-of-darts-inside-of-a-circular-dartboard]: https://leetcode.com/problems/maximum-number-of-darts-inside-of-a-circular-dartboard/
+[maximum-number-of-visible-points]: https://leetcode.com/problems/maximum-number-of-visible-points/
 [range-addition]: https://leetcode.com/problems/range-addition/
 [the-skyline-problem]: https://leetcode.com/problems/the-skyline-problem/
