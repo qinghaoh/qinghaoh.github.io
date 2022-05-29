@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Dynamic Programming IV"
+title:  "Dynamic Programming (Multi-dimension)"
 tag: dynamic programming
 ---
 [Minimum Path Sum][minimum-path-sum]
@@ -169,8 +169,6 @@ public long maxPoints(int[][] points) {
     return Arrays.stream(dp).max().getAsLong();
 }
 {% endhighlight %}
-
-Similar: [Count Square Submatrices with All Ones][count-square-submatrices-with-all-ones]
 
 [Dungeon Game][dungeon-game]
 
@@ -351,6 +349,21 @@ public int maximalSquare(char[][] matrix) {
         }
     }
     return maxLen * maxLen;
+}
+{% endhighlight %}
+
+Similar: [Count Square Submatrices with All Ones][count-square-submatrices-with-all-ones]
+
+{% highlight java %}
+for (int i = 0; i < m; i++) {
+    for (int j = 0; j < n; j++) {
+        if (matrix[i][j] == 1) {
+            if (i > 0 && j > 0) {
+                matrix[i][j] = Math.min(Math.min(matrix[i - 1][j], matrix[i][j - 1]), matrix[i - 1][j - 1]) + 1;
+            }
+            count += matrix[i][j];
+        }
+    }
 }
 {% endhighlight %}
 

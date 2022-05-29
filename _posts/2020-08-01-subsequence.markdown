@@ -454,6 +454,7 @@ public int lenLongestFibSubseq(int[] A) {
 
 {% highlight java %}
 public int longestSubsequence(int[] arr, int difference) {
+    // array element : length of longest arithmetic subsequence ending at the key
     Map<Integer, Integer> dp = new HashMap<>();
     int max = 1;
     for (int a : arr) {

@@ -727,11 +727,13 @@ public int divide(int dividend, int divisor) {
 [Missing Number][missing-number]
 
 {% highlight java %}
+public int missingNumber(int[] nums) {
     int missing = nums.length;
     for (int i = 0; i < nums.length; i++) {
         missing ^= i ^ nums[i];
     }
     return missing;
+}
 {% endhighlight %}
 
 [UTF-8 Validation][utf-8-validation]

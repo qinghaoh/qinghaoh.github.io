@@ -112,7 +112,7 @@ public int wordsTyping(String[] sentence, int rows, int cols) {
         while (start > 0 && s.charAt(start % n) != ' ') {
             start--;
         }
-        // moves the pointer forward to a letter
+        // moves the pointer forward from the current space to a letter
         start++;
     }
 
@@ -127,9 +127,9 @@ public int wordsTyping(String[] sentence, int rows, int cols) {
     String s = String.join(" ", sentence) + " ";
     int start = 0, n = s.length();
 
-    // move[i]: the number of moves to adjust the start in s
+    // move[i]: the number of moves forward to adjust the start in s
     // if s[i] is a space, move[i] == 1 (next char)
-    // else, move[i] = move[i - 1] - 1 (moves to the first letter of the current work)
+    // else, move[i] = move[i - 1] - 1 (moves to the first letter of the current word)
     int[] move = new int[n];
 
     // move[0] = 0 because the first char is always a letter

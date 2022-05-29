@@ -760,15 +760,22 @@ public List<Integer> findAllPeople(int n, int[][] meetings, int firstPerson) {
     Arrays.sort(meetings, Comparator.comparingInt(m -> m[2]));
     union(0, firstPerson);
 
+    // at the start of each time, all componenets in the graph is connected to Person 0
     int m = meetings.length;
     Set<Integer> people = new HashSet<>();
     for (int i = 0; i < m; i++) {
+        // unions the two people in this meeting
+        // either person is possibly found not connected to Person 0 at the end of the current time
         union(meetings[i][0], meetings[i][1]);
         people.add(meetings[i][0]);
         people.add(meetings[i][1]);
 
+        // handles all the people at a particular time
         if (i == m - 1 || meetings[i][2] != meetings[i + 1][2]) {
             for (int p : people) {
+                // if a person is not connected to Person 0
+                // he doesn't know the secret
+                // so disconnects it from the disjoint set
                 if (find(p) != find(0)) {
                     parents[p] = null;
                 }

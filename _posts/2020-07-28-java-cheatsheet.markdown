@@ -70,6 +70,15 @@ Comparator.comparing(String::length)
 
 `Comparator.reverseOrder()` is preferable over `Collections.reverseOrder()` because it enforces the type argument to be a subtype of `Comparable`, and thus type safe.
 
+# Decimal
+
+https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/text/DecimalFormat.html
+
+{% highlight java %}
+DecimalFormat df = new DecimalFormat("0.00");
+df.format("1.2345");  // "1.23"
+{% endhighlight %}
+
 # Deque
 [Deque](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Deque.html)
 Deques can also be used as LIFO (Last-In-First-Out) stacks. This interface should be used in preference to the legacy `Stack` class. When a deque is used as a stack, elements are pushed and popped from the beginning of the deque.
