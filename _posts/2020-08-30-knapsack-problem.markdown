@@ -172,6 +172,22 @@ public int lastStoneWeightII(int[] stones) {
 }
 {% endhighlight %}
 
+**Max**
+
+[Maximum Profit From Trading Stocks][maximum-profit-from-trading-stocks]
+
+{% highlight java %}
+public int maximumProfit(int[] present, int[] future, int budget) {
+    int[] dp = new int[budget + 1];
+    for (int i = 0; i < present.length; i++) {
+        for (int j = budget; j >= present[i]; j--) {
+            dp[j] = Math.max(dp[j], dp[j - present[i]] + future[i] - present[i]);
+        }
+    }
+    return dp[budget];
+}
+{% endhighlight %}
+
 ## Variants
 
 **Probability**
@@ -182,7 +198,7 @@ public int lastStoneWeightII(int[] stones) {
 public double probabilityOfHeads(double[] prob, int target) {
     int n = prob.length;
 
-    // dp[i][j]: whether the first i elements can sum up to j
+    // dp[i][j]: probability that the number of the first i coins equals j
     double[][] dp = new double[n + 1][target + 1];
     dp[0][0] = 1d;
 
@@ -466,6 +482,7 @@ public int coinChange(int[] coins, int amount) {
 [combination-sum-iv]: https://leetcode.com/problems/combination-sum-iv/
 [form-largest-integer-with-digits-that-add-up-to-target]: https://leetcode.com/problems/form-largest-integer-with-digits-that-add-up-to-target/
 [last-stone-weight-ii]: https://leetcode.com/problems/last-stone-weight-ii/
+[maximum-profit-from-trading-stocks]: https://leetcode.com/problems/maximum-profit-from-trading-stocks/
 [number-of-ways-to-build-house-of-cards]: https://leetcode.com/problems/number-of-ways-to-build-house-of-cards/
 [ones-and-zeroes]: https://leetcode.com/problems/ones-and-zeroes/
 [partition-equal-subset-sum]: https://leetcode.com/problems/partition-equal-subset-sum/

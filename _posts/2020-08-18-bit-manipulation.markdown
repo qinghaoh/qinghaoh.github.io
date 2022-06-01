@@ -704,26 +704,6 @@ public int integerReplacement(int n) {
 }
 {% endhighlight %}
 
-[Divide Two Integers][divide-two-integers]
-
-{% highlight java %}
-public int divide(int dividend, int divisor) {
-    if (dividend == Integer.MIN_VALUE && divisor == -1) {
-        return Integer.MAX_VALUE;
-    }
-
-    int a = Math.abs(dividend), b = Math.abs(divisor), result = 0;
-    for (int i = 31; i >= 0; i--) {
-        if ((a >>> i) - b >= 0) {
-            result += 1 << i;
-            a -= b << i;
-        }
-    }
-
-    return (dividend > 0) == (divisor > 0) ? result : -result;
-}
-{% endhighlight %}
-
 [Missing Number][missing-number]
 
 {% highlight java %}
@@ -770,7 +750,6 @@ public boolean validUtf8(int[] data) {
 [circular-permutation-in-binary-representation]: https://leetcode.com/problems/circular-permutation-in-binary-representation/
 [count-pairs-with-xor-in-a-range]: https://leetcode.com/problems/count-pairs-with-xor-in-a-range/
 [counting-bits]: https://leetcode.com/problems/counting-bits/
-[divide-two-integers]: https://leetcode.com/problems/divide-two-integers/
 [find-a-value-of-a-mysterious-function-closest-to-target]: https://leetcode.com/problems/find-a-value-of-a-mysterious-function-closest-to-target/
 [find-root-of-n-ary-tree]: https://leetcode.com/problems/find-root-of-n-ary-tree/
 [flip-columns-for-maximum-number-of-equal-rows]: https://leetcode.com/problems/flip-columns-for-maximum-number-of-equal-rows/

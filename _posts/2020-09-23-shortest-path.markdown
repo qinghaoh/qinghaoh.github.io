@@ -257,6 +257,10 @@ private int dfs(int node) {
 }
 {% endhighlight %}
 
+[Minimum Obstacle Removal to Reach Corner][minimum-obstacle-removal-to-reach-corner]
+
+Model the grid as a graph where cells are nodes and edges are between adjacent cells. Edges to cells with obstacles have a cost of 1 and all other edges have a cost of 0.
+
 ## Cost function
 
 Cost function is monotonically increasing/decreasing. The traditional cost function is summation of non-negative weights. The following are cost function variations:
@@ -1059,6 +1063,7 @@ private int paint(int[][] grid, int i, int j, int color) {
 [minimum-cost-to-reach-city-with-discounts]: https://leetcode.com/problems/minimum-cost-to-reach-city-with-discounts/
 [minimum-cost-to-reach-destination-in-time]: https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/
 [minimum-number-of-days-to-disconnect-island]: https://leetcode.com/problems/minimum-number-of-days-to-disconnect-island/
+[minimum-obstacle-removal-to-reach-corner]: https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/
 [minimum-weighted-subgraph-with-the-required-paths]: https://leetcode.com/problems/minimum-weighted-subgraph-with-the-required-paths/
 [number-of-restricted-paths-from-first-to-last-node]: https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/
 [number-of-ways-to-arrive-at-destination]: https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/

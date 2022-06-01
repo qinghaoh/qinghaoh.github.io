@@ -465,6 +465,27 @@ public int[] addNegabinary(int[] arr1, int[] arr2) {
 }
 {% endhighlight %}
 
+[Divide Two Integers][divide-two-integers]
+
+{% highlight java %}
+public int divide(int dividend, int divisor) {
+    if (dividend == Integer.MIN_VALUE && divisor == -1) {
+        return Integer.MAX_VALUE;
+    }
+
+    // long division in base-2
+    int a = Math.abs(dividend), b = Math.abs(divisor), result = 0;
+    for (int i = 31; i >= 0; i--) {
+        if ((a >>> i) - b >= 0) {
+            result += 1 << i;
+            a -= b << i;
+        }
+    }
+
+    return (dividend ^ divisor) >= 0 ? result : -result;
+}
+{% endhighlight %}
+
 [Smallest Good Base][smallest-good-base]
 
 \\[
@@ -821,6 +842,7 @@ public int numSquares(int n) {
 [allocate-mailboxes]: https://leetcode.com/problems/allocate-mailboxes/
 [best-meeting-point]: https://leetcode.com/problems/best-meeting-point/
 [check-if-number-is-a-sum-of-powers-of-three]: https://leetcode.com/problems/check-if-number-is-a-sum-of-powers-of-three/
+[divide-two-integers]: https://leetcode.com/problems/divide-two-integers/
 [egg-drop-with-2-eggs-and-n-floors]: https://leetcode.com/problems/egg-drop-with-2-eggs-and-n-floors/
 [find-unique-binary-string]: https://leetcode.com/problems/find-unique-binary-string/
 [handshakes-that-dont-cross]: https://leetcode.com/problems/handshakes-that-dont-cross/
