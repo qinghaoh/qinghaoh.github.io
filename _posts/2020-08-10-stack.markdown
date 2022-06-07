@@ -368,63 +368,74 @@ public int totalSteps(int[] nums) {
 
 [Sum of Subarray Minimums][sum-of-subarray-minimums]
 
-{% highlight java %}
-private int MOD = (int)1e9 + 7;
-
-public int sumSubarrayMins(int[] arr) {
-    int n = arr.length;
-    // left[i]:  distance between arr[i] and its previous less element (prev, arr[i]]
-    // right[i]: distance between arr[i] and its next less element [arr[i], next)
-    int[] left = new int[n], right = new int[n];
-    for (int i = 0; i < n; i++) {
-        right[i] = n - i;
-    }
-
-    // element : index
-    Deque<Integer> st1 = new ArrayDeque<>(), st2 = new ArrayDeque<>();
-    int result = 0;
-
-    for (int i = 0; i < n; i++) {
-        // previous less element (non-strict)
-        while (!st1.isEmpty() && arr[i] < arr[st1.peek()]) {
-            st1.pop();
-        }
-        left[i] = i - (st1.isEmpty() ? -1 : st1.peek());
-        st1.push(i);
-
-        // next less element (strict)
-        while (!st2.isEmpty() && arr[i] < arr[st2.peek()]) {
-            int index = st2.pop();
-            right[index] = i - index;
-        }
-        st2.push(i);
-    }
-
-    for (int i = 0; i < n; i++) {
-        result = (result + arr[i] * left[i] * right[i]) % MOD;
-    }
-    return result;
-}
-{% endhighlight %}
+The basic idea is to find both the previous and next less elements of each array element with two stacks. This can be simplified to one stack:
 
 {% highlight java %}
 private int MOD = (int)1e9 + 7;
 
 public int sumSubarrayMins(int[] arr) {
     Deque<Integer> st = new ArrayDeque<>();
-    int result = 0, n = arr.length;
+    long result = 0;
+    int n = arr.length;
+    // virtually appends 0 to the end of the array
     for (int i = 0; i <= n; i++) {
-        // when arr is at the end, set i as 0 so that all stack elements are popped
-        while (!st.isEmpty() && (i == n ? 0 : arr[i]) < arr[st.peek()]) {
+        while (!st.isEmpty() && (i == n || arr[i] < arr[st.peek()])) {
+            // i is the next less (<) element of j
             int j = st.pop();
+            // k is the previous less (<=) element of j
             int k = st.isEmpty() ? -1 : st.peek();
-            result = (result + arr[j] * (i - j) * (j - k)) % MOD;
+            result = (result + (long)arr[j] * (i - j) * (j - k)) % MOD;
         }
         st.push(i);
     }
-    return result;
+    return (int)result;
 }
 {% endhighlight %}
+
+With this perspective, the solution of the following *Histogram* problem is much easier to understand:
+
+[Largest Rectangle in Histogram][largest-rectangle-in-histogram]
+
+{% highlight java %}
+public int largestRectangleArea(int[] heights) {
+    // index of non-descreasing heights
+    Deque<Integer> st = new ArrayDeque<>();
+    st.push(-1);  // makes width concise
+
+    int area = 0, n = heights.length;
+    for (int i = 0; i <= heights.length; i++) {
+        while (st.peek() >= 0 && (i == n || heights[i] < heights[st.peek()])) {
+            // j = st.pop()
+            // heights[i] is the next less (<) element of heights[j]
+            int h = heights[st.pop()];
+            // k = st.peek()
+            // heights[k] is the previous less (<=) element of heights[j]
+            // w = length of (k, i)
+            int w = i - 1 - st.peek();
+            area = Math.max(area, h * w);
+        }
+        st.push(i);
+    }
+    return area;
+}
+{% endhighlight %}
+
+```
+[2,1,5,6,2,3]
+i = 0	[0]				area = 0
+i = 1	[]		h * w = 2	area = 2
+i = 1	[1]				area = 2
+i = 2	[2,1]				area = 2
+i = 3	[3,2,1]				area = 2
+i = 4	[2,1]		h * w = 6	area = 6
+i = 4	[1]		h * w = 10	area = 10
+i = 4	[4,1]				area = 10
+i = 5	[5,4,1]				area = 10
+i = 6	[4,1]		h * w = 3	area = 10
+i = 6	[1]		h * w = 8	area = 10
+i = 6	[]		h * w = 6	area = 10
+i = 6	[6]				area = 10
+```
 
 [Maximum of Minimum Values in All Subarrays][maximum-of-minimum-values-in-all-subarrays]
 
@@ -434,10 +445,10 @@ public int[] findMaximums(int[] nums) {
     int[] ans = new int[n];
 
     Deque<Integer> st = new ArrayDeque<>();
-    // appends 0 to the end of the array
+    // virtually appends 0 to the end of the array
     for (int i = 0; i <= n; i++) {
-        // monotonically increasing stack
-        while (!st.isEmpty() && (i == n || nums[i] <= nums[st.peek()])) {
+        while (!st.isEmpty() && (i == n || nums[i] < nums[st.peek()])) {
+            // i is the next less (<) element of top
             int top = st.pop();
             // len = right - left - 1
             int len = i - (st.isEmpty() ? -1 : st.peek()) - 1;
@@ -518,24 +529,60 @@ public int[] canSeePersonsCount(int[] heights) {
     int[] answer = new int[n];
     Deque<Integer> st = new ArrayDeque<>();
     for (int i = 0; i < n; i++) {
-        // monotonically decreasing stack
+        // monotonically decreasing stack (strict)
         // next greater (>=) element
         while (!st.isEmpty() && heights[i] >= heights[st.peek()]) {
             // st.peek() can see i
-            // st.peek() can't see after i, so we've done for st.peek().
-            // pops it
+            // st.peek() can't see after i, so st.peek() is done and popped
             answer[st.pop()]++;
         }
 
         if (!st.isEmpty()) {
-            // previous less (<) element
+            // previous greater (>) element
             // st.peek() can see i
             answer[st.peek()]++;
         }
 
         st.push(i);
     }
+    return answer;
+}
+{% endhighlight %}
 
+Similar: [Number of People That Can Be Seen in a Grid][number-of-people-that-can-be-seen-in-a-grid]
+
+In this problem, elements are not necessarily distinct. Therefore, we need to make a slight change to the code:
+
+{% highlight java %}
+public int[] canSeePersonsCount(int[] heights) {
+    int n = heights.length;
+    int[] answer = new int[n];
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        // monotonically decreasing stack (strict)
+        // next greater (>=) element
+        boolean isEqual = false;
+        while (!st.isEmpty() && heights[i] >= heights[st.peek()]) {
+            if (heights[i] == heights[st.peek()]) {
+                isEqual = true;
+            }
+            // st.peek() can see i
+            // st.peek() can't see after i, so st.peek() is done and popped
+            answer[st.pop()]++;
+        }
+
+        // e.g. [4,2,1,1,3]
+        // we skip incrementing the answer at index 0 when i == 3
+        // because it's already incremented when i == 2
+        // iwo, heights[0] can't see heights[3] because of heights[2]
+        if (!st.isEmpty() && isEqual) {
+            // previous greater (>) element
+            // st.peek() can see i
+            answer[st.peek()]++;
+        }
+
+        st.push(i);
+    }
     return answer;
 }
 {% endhighlight %}
@@ -565,46 +612,6 @@ public int maxWidthRamp(int[] A) {
 {% endhighlight %}
 
 # Histogram
-
-[Largest Rectangle in Histogram][largest-rectangle-in-histogram]
-
-{% highlight java %}
-public int largestRectangleArea(int[] heights) {
-    // index of non-descreasing heights
-    Deque<Integer> st = new ArrayDeque<>();
-    st.push(-1);  // makes width concise
-
-    int area = 0;
-    for (int i = 0; i <= heights.length; i++) {            
-        int height = (i == heights.length ? 0 : heights[i]);
-        while (st.peek() >= 0 && height < heights[st.peek()]) {
-            // popped heights are no less than current height
-            int h = heights[st.pop()];
-            int w = i - 1 - st.peek();
-            area = Math.max(area, h * w);
-        }
-        st.push(i);
-    }
-    return area;
-}
-{% endhighlight %}
-
-```
-[2,1,5,6,2,3]
-i = 0	[0]				area = 0
-i = 1	[]		h * w = 2	area = 2
-i = 1	[1]				area = 2
-i = 2	[2,1]				area = 2
-i = 3	[3,2,1]				area = 2
-i = 4	[2,1]		h * w = 6	area = 6
-i = 4	[1]		h * w = 10	area = 10
-i = 4	[4,1]				area = 10
-i = 5	[5,4,1]				area = 10
-i = 6	[4,1]		h * w = 3	area = 10
-i = 6	[1]		h * w = 8	area = 10
-i = 6	[]		h * w = 6	area = 10
-i = 6	[6]				area = 10
-```
 
 [Maximal Rectangle][maximal-rectangle]
 
@@ -890,6 +897,7 @@ public int calculate(String s) {
 [minimum-number-of-swaps-to-make-the-string-balanced]: https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/
 [next-greater-element-ii]: https://leetcode.com/problems/next-greater-element-ii/
 [next-greater-node-in-linked-list]: https://leetcode.com/problems/next-greater-node-in-linked-list/
+[number-of-people-that-can-be-seen-in-a-grid]: https://leetcode.com/problems/number-of-people-that-can-be-seen-in-a-grid/
 [number-of-valid-subarrays]: https://leetcode.com/problems/number-of-valid-subarrays/
 [number-of-visible-people-in-a-queue]: https://leetcode.com/problems/number-of-visible-people-in-a-queue/
 [online-stock-span]: https://leetcode.com/problems/online-stock-span/

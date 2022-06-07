@@ -18,6 +18,10 @@ stack and minStack
 * LinkedHashMap
 * Double linked list + TreeMap<Node>
 
+[Design a Text Editor][design-a-text-editor]
+
+Two stacks
+
 [Snapshot Array][snapshot-array]
 
 {% highlight java %}
@@ -545,6 +549,7 @@ private int[] arr;
 [all-oone-data-structure]: https://leetcode.com/problems/all-oone-data-structure/
 [design-a-leaderboard]: https://leetcode.com/problems/design-a-leaderboard/
 [design-a-stack-with-increment-operation]: https://leetcode.com/problems/design-a-stack-with-increment-operation/
+[design-a-text-editor]: https://leetcode.com/problems/design-a-text-editor/
 [design-bitset]: https://leetcode.com/problems/design-bitset/
 [design-hashmap]: https://leetcode.com/problems/design-phone-hashmap/
 [design-movie-rental-system]: https://leetcode.com/problems/design-movie-rental-system/
