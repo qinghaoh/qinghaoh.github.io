@@ -4,6 +4,10 @@ title:  "Substring"
 tags: string
 usemathjax: true
 ---
+# Index Map
+
+[Longest Substring Without Repeating Characters][longest-substring-without-repeating-characters]
+
 # Dynamic Programming
 
 [Word Break][word-break]
@@ -215,6 +219,7 @@ private void doStamp(int pos) {
 [encode-string-with-shortest-length]: https://leetcode.com/problems/encode-string-with-shortest-length/
 [find-all-good-strings]: https://leetcode.com/problems/find-all-good-strings/
 [longest-repeating-substring]: https://leetcode.com/problems/longest-repeating-substring/
+[longest-substring-without-repeating-characters]: https://leetcode.com/problems/longest-substring-without-repeating-characters/
 [stamping-the-sequence]: https://leetcode.com/problems/stamping-the-sequence/
 [word-break]: https://leetcode.com/problems/word-break/
 [word-break-ii]: https://leetcode.com/problems/word-break-ii/

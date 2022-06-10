@@ -3,10 +3,6 @@ layout: post
 title:  "Sliding Window"
 tags: array
 ---
-# Index Map
-
-[Longest Substring Without Repeating Characters][longest-substring-without-repeating-characters]
-
 # Elastic-size Window
 
 ## Upper Bound Constraints
@@ -1037,7 +1033,6 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 [longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit]: https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
 [longest-repeating-character-replacement]: https://leetcode.com/problems/longest-repeating-character-replacement/
 [longest-substring-with-at-most-k-distinct-characters]: https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
-[longest-substring-without-repeating-characters]: https://leetcode.com/problems/longest-substring-without-repeating-characters/
 [max-consecutive-ones-iii]: https://leetcode.com/problems/max-consecutive-ones-iii/
 [maximum-points-you-can-obtain-from-cards]: https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/
 [maximum-size-subarray-sum-equals-k]: https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
