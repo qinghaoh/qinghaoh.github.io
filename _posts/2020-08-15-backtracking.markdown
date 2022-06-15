@@ -3,10 +3,9 @@ layout: post
 title:  "Backtracking"
 tags: dfs
 ---
+# Fundamentals
 
 Backtracking = DFS + pruning
-
-# Template
 
 {% highlight java %}
 private void backtrack(var i) {
@@ -613,6 +612,32 @@ private boolean backtrack(int[] nums, int index, boolean[] visited, int k, int s
 }
 {% endhighlight %}
 
+[Fair Distribution of Cookies][fair-distribution-of-cookies]
+
+{% highlight java %}
+public int distributeCookies(int[] cookies, int k) {
+    return backtrack(cookies, new int[k], 0);
+}
+
+private int backtrack(int[] cookies, int[] children, int index) {
+    if (index == cookies.length) {
+        int max = 0;
+        for (int num : children) {
+            max = Math.max(max, num);
+        }
+        return max;
+    }
+
+    int min = Integer.MAX_VALUE;
+    for (int i = 0; i < children.length; i++) {
+        children[i] += cookies[index];
+        min = Math.min(min, backtrack(cookies, children, index + 1));
+        children[i] -= cookies[index];
+    }
+    return min;
+}
+{% endhighlight %}
+
 [Matchsticks to Square][matchsticks-to-square]
 
 [Android Unlock Patterns][android-unlock-patterns]
@@ -1216,6 +1241,7 @@ private void backtrack(int k, int remainingArrows, int score, int[] bobArrows) {
 [construct-the-lexicographically-largest-valid-sequence]: https://leetcode.com/problems/construct-the-lexicographically-largest-valid-sequence/
 [expression-add-operators]: https://leetcode.com/problems/expression-add-operators/
 [factor-combinations]: https://leetcode.com/problems/factor-combinations/
+[fair-distribution-of-cookies]: https://leetcode.com/problems/fair-distribution-of-cookies/
 [find-minimum-time-to-finish-all-jobs]: https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/
 [generalized-abbreviation]: https://leetcode.com/problems/generalized-abbreviation/
 [letter-tile-possibilities]: https://leetcode.com/problems/letter-tile-possibilities/

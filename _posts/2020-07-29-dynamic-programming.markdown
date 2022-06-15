@@ -110,6 +110,8 @@ public int minDistance(String word1, String word2) {
 }
 {% endhighlight %}
 
+Similar problem: [Delete Operation for Two Strings][delete-operation-for-two-strings]
+
 [Minimum ASCII Delete Sum for Two Strings][minimum-ascii-delete-sum-for-two-strings]
 
 {% highlight java %}

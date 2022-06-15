@@ -227,26 +227,20 @@ private int atMost(int[] nums, int k) {
 
 If we apply `nums[i] -> nums[i] % 2`, the problem becomes [Subarray Sum Equals K][subarray-sum-equals-k]
 
-Another solution is by "three" pointers:
+[Count Subarrays With Score Less Than K][count-subarrays-with-score-less-than-k]
 
 {% highlight java %}
-public int numberOfSubarrays(int[] nums, int k) {
-    int i = 0, j = 0, count = 0, result = 0;
+public long countSubarrays(int[] nums, long k) {
+    long sum = 0, count = 0;
+    int i = 0, j = 0;
     while (j < nums.length) {
-        if (nums[j++] % 2 == 1) {
-            k--;
-            count = 0;
+        sum += nums[j++];
+        while (sum * (j - i) >= k) {
+            sum -= nums[i++];
         }
-
-        while (k == 0) {
-            k += nums[i++] % 2;
-            count++;
-        }
-
-        // i moves forward by `count` steps in the last move
-        result += count;
+        count += j - i;
     }
-    return result;
+    return count;
 }
 {% endhighlight %}
 
@@ -1020,6 +1014,7 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 {% endhighlight %}
 
 [count-number-of-nice-subarrays]: https://leetcode.com/problems/count-number-of-nice-subarrays/
+[count-subarrays-with-score-less-than-k]: https://leetcode.com/problems/count-subarrays-with-score-less-than-k/
 [count-vowel-substrings-of-a-string]: https://leetcode.com/problems/count-vowel-substrings-of-a-string/
 [delivering-boxes-from-storage-to-ports]: https://leetcode.com/problems/delivering-boxes-from-storage-to-ports/
 [find-all-anagrams-in-a-string]: https://leetcode.com/problems/find-all-anagrams-in-a-string/
