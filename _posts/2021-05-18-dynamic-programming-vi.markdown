@@ -989,6 +989,42 @@ public List<Integer> cheapestJump(int[] coins, int maxJump) {
 }
 {% endhighlight %}
 
+[Race Car][race-car]
+
+{% highlight java %}
+public int racecar(int target) {
+    // dp[i]: the length of the shortest sequence of instructions from initial speed 1 to target i
+    int[] dp = new int[target + 1];
+
+    for (int i = 1; i <= target; i++) {
+        dp[i] = Integer.MAX_VALUE;
+
+        // j is the position of the car right before the first reverse instruction
+        // j = 2 ^ a1 - 1, where a1 is the number of 'A's.
+        int a1 = 1, j = 1;
+
+        // if j < i, the reverse instruction is issued before the car reaches i
+        // the car is going away from the target
+        // we need to wait for the second reverse instruction
+        for (; j < i; j = (1 << ++a1) - 1) {
+            // j - k is the position of the car right before the second reverse instruction
+            // k = 2 ^ a2 - 1
+            // where a2 is the number of 'A's between j and the position of the second reverse instruction
+            for (int a2 = 0, k = 0; k < j; k = (1 << ++a2) - 1) {
+                // +1 are 'R's
+                dp[i] = Math.min(dp[i], a1 + 1 + a2 + 1 + dp[i - (j - k)]);
+            }
+        }
+
+        // if j == i, no reverse instructions
+        // if j > i, only one reverse instruction
+        dp[i] = Math.min(dp[i], a1 + (i == j ? 0 : 1 + dp[j - i]));
+    }
+
+    return dp[target];
+}
+{% endhighlight %}
+
 [best-team-with-no-conflicts]: https://leetcode.com/problems/best-team-with-no-conflicts/
 [build-array-where-you-can-find-the-maximum-exactly-k-comparisons]: https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/
 [choose-numbers-from-two-arrays-in-range]: https://leetcode.com/problems/choose-numbers-from-two-arrays-in-range/
@@ -1008,6 +1044,7 @@ public List<Integer> cheapestJump(int[] coins, int maxJump) {
 [number-of-music-playlists]: https://leetcode.com/problems/number-of-music-playlists/
 [number-of-ways-to-rearrange-sticks-with-k-sticks-visible]: https://leetcode.com/problems/number-of-ways-to-rearrange-sticks-with-k-sticks-visible/
 [paint-house-iii]: https://leetcode.com/problems/paint-house-iii/
+[race-car]: https://leetcode.com/problems/race-car/
 [stickers-to-spell-word]: https://leetcode.com/problems/stickers-to-spell-word/
 [stone-game-v]: https://leetcode.com/problems/stone-game-v/
 [tallest-billboard]: https://leetcode.com/problems/tallest-billboard/

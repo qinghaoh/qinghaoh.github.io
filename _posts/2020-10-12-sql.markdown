@@ -1947,6 +1947,29 @@ day   | overall_ranking| stats | rk | inv
 | 2019-01-09 | 9 | fail | 4 | 5
 ```
 
+## RANK
+
+[Arrange Table by Gender][arrange-table-by-gender]
+
+{% highlight sql %}
+WITH cte AS(
+    SELECT *,
+        RANK() OVER(PARTITION BY gender ORDER BY user_id) AS rnk,
+        IF(gender = 'female', 0, IF(gender = 'other', 1, 2)) AS rnk2
+    FROM Genders
+)
+
+SELECT
+    user_id,
+    gender
+FROM
+    cte
+ORDER BY
+    rnk,
+    rnk2
+;
+{% endhighlight %}
+
 ## DENSE_RANK
 
 [Rank Scores][rank-scores]
@@ -2302,6 +2325,7 @@ ORDER BY
 [ads-performance]: https://leetcode.com/problems/ads-performance/
 [all-people-report-to-the-given-manager]: https://leetcode.com/problems/all-people-report-to-the-given-manager/
 [all-valid-triplets-that-can-represent-a-country]: https://leetcode.com/problems/all-valid-triplets-that-can-represent-a-country/
+[arrange-table-by-gender]: https://leetcode.com/problems/arrange-table-by-gender/
 [biggest-window-between-visits]: https://leetcode.com/problems/biggest-window-between-visits/
 [build-the-equation]: https://leetcode.com/problems/build-the-equation/
 [calculate-salaries]: https://leetcode.com/problems/calculate-salaries/

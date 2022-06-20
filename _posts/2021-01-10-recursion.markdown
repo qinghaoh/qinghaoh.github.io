@@ -281,40 +281,6 @@ public boolean isSelfCrossing(int[] x) {
 }
 {% endhighlight %}
 
-[Race Car][race-car]
-
-{% highlight java %}
-private int[] dp = new int[10001];
-
-public int racecar(int target) {
-    if (dp[target] > 0) {
-        return dp[target];
-    }
-
-    // at first, keeps accelerating
-    // n is the number of consecutive 'A's
-    // the position after n 'A's is 2 ^ n - 1
-    //
-    // now finds the n so that: 2 ^ (n - 1) - 1 < target <= 2 ^ n - 1
-    int n = (int)(Math.log(target) / Math.log(2)) + 1;
-
-    if (1 << n == target + 1) {
-        dp[target] = n;
-    } else {
-        // 2 ^ (n - 1) - 1 < target < 2 ^ n - 1
-        // Strategy 1:
-        // n 'A's -> 'R' -> backwards dp[2 ^ n - 1 - target]
-        dp[target] = racecar((1 << n) - 1 - target) + n + 1;
-        // Strategy 2:
-        // (n - 1) 'A's -> 'R' -> backwards m 'A's -> 'R' -> dp[target - (2 ^ (n - 1) - 1) + (2 ^ m - 1)]
-        for (int m = 0; m < n - 1; m++) {
-            dp[target] = Math.min(dp[target], (n - 1) + 1 + m + 1 + racecar(target - (1 << (n - 1)) + (1 << m)));
-        }
-    }
-    return dp[target];
-}
-{% endhighlight %}
-
 [Least Operators to Express Number][least-operators-to-express-number]
 
 {% highlight java %}
@@ -476,7 +442,6 @@ public int lastRemaining(int n) {
 [largest-merge-of-two-strings]: https://leetcode.com/problems/largest-merge-of-two-strings/
 [least-operators-to-express-number]: https://leetcode.com/problems/least-operators-to-express-number/
 [minimum-cost-to-change-the-final-value-of-expression]: https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/
-[race-car]: https://leetcode.com/problems/race-car/
 [remove-invalid-parentheses]: https://leetcode.com/problems/remove-invalid-parentheses/
 [self-crossing]: https://leetcode.com/problems/self-crossing/
 [special-binary-string]: https://leetcode.com/problems/special-binary-string/

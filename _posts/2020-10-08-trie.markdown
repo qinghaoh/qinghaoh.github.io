@@ -86,7 +86,7 @@ public int f(String prefix, String suffix) {
 
 class TrieNode {
     TrieNode[] children;
-    int index;  // index in the dictionary. Larger index will overwrite old ones.
+    int index;  // index in the dictionary. Larger index overwrites the old one.
 
     TrieNode() {
         children = new TrieNode[27];
@@ -96,7 +96,7 @@ class TrieNode {
 
 private void insert(TrieNode root, String word, int index) {
     TrieNode node = root;
-    for (char c: word.toCharArray()) {
+    for (char c : word.toCharArray()) {
         if (node.children[c - 'a'] == null) {
             node.children[c - 'a'] = new TrieNode();
         }
