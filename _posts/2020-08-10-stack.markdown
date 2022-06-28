@@ -279,40 +279,29 @@ private double computeTime(int[][] cars, int i, int j) {
 }
 {% endhighlight %}
 
-## Previous/Next Less/Greater Element
+## PLE/PGE/NLE/NGE
 
-### Templates
+* Previous Less Element (PLE)
+* Previous Greater Element (PGE)
+* Next Less Element (NLE)
+* Next Greater Element (NGE)
 
-#### Previous Less Element
+The requested element can be strictly or non-strictly less/greater.
+
+### Template
 
 {% highlight java %}
 Deque<Integer> st = new ArrayDeque<>();
-int[] prev = new int[n];
+int[] prev = new int[n], next = new int[n];
+Arrays.fill(next, -1);
 
 for (int i = 0; i < n; i++) {
     // monotonically increasing stack
     // non-strictly less
     while (!st.isEmpty() && nums[i] < nums[st.peek()]) {
-        st.pop();
-    }
-    prev[i] = st.isEmpty() ? -1 : st.peek();
-    st.push(i);
-}
-{% endhighlight %}
-
-#### Next Less Element
-
-{% highlight java %}
-Deque<Integer> st = new ArrayDeque<>();
-int[] next = new int[n];
-Arrays.fill(next, -1);
-
-for (int i = 0; i < n; i++) {
-    // monotonically increasing stack
-    // strictly less
-    while (!st.isEmpty() && nums[i] < nums[st.peek()]) {
         next[st.pop()] = i;
     }
+    prev[i] = st.isEmpty() ? -1 : st.peek();
     st.push(i);
 }
 {% endhighlight %}
@@ -474,6 +463,15 @@ Similarly, with Monotonically Increasing Stack, we can get Previous Greater Elem
 |Monotonic Stack | Decreasing | Decreasing  |Decreasing|Decreasing |
 |Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
 |   Condition    |a[i] >= top | a[i] > top  |a[i] > top|a[i] >= top|
+
+### Summary
+
+1. L or G?
+ * L: increasing stack, `a[i] < top` or `a[i] <= top`
+ * G: decreasing stack, `a[i] > top` or `a[i] >= top`
+1. P or N?
+ * P: strictness of the comparsion operator in `a[i] ? top` is the opposite of PLE/PGE
+ * N: strictness of the comparsion operator in `a[i] ? top` is the same as NLE/NGE
 
 [Next Greater Element II][next-greater-element-ii]
 

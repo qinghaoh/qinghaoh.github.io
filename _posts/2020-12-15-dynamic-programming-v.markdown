@@ -94,6 +94,15 @@ public int rob(int[] nums) {
 }
 {% endhighlight %}
 
+[Count Number of Ways to Place Houses][count-number-of-ways-to-place-houses]
+
+{% endhighlight %}
+// dp[i] = dpPick[i] + dpSkip[i]
+//       = dpSkip[i - 1] + dp[i - 1]
+//       = dp[i - 2] + dp[i - 1]
+// --> Fibonacci
+{% highlight java %}
+
 [Paint Fence][paint-fence]
 
 {% highlight java %}
@@ -618,6 +627,7 @@ public int minimumTime(String s) {
 }
 {% endhighlight %}
 
+[count-number-of-ways-to-place-houses]: https://leetcode.com/problems/count-number-of-ways-to-place-houses/
 [decode-ways]: https://leetcode.com/problems/decode-ways/
 [delete-and-earn]: https://leetcode.com/problems/delete-and-earn/
 [flip-string-to-monotone-increasing]: https://leetcode.com/problems/flip-string-to-monotone-increasing/

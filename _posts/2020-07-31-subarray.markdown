@@ -63,11 +63,7 @@ public int minNumberOperations(int[] target) {
 }
 {% endhighlight %}
 
-## Sliding Window
-
-[Maximum Number of Occurrences of a Substring][maximum-number-of-occurrences-of-a-substring]
-
-If a substring occurs `n` times, any of its substring occurs at least `n` times. So a substring with length `minSize` will have the max occurrences.
+## Two Pointers
 
 [Shortest Unsorted Continuous Subarray][shortest-unsorted-continuous-subarray]
 
@@ -77,12 +73,23 @@ public int findUnsortedSubarray(int[] nums) {
     for (int i = 1; i < n; i++) {
         max = Math.max(max, nums[i]);
         min = Math.min(min, nums[n - 1 - i]);
+
+        // `end` is the rightmost index of an element which < the max of all the elements on its left
         if (nums[i] < max) {
             end = i;
         }
+
+        // `start` is the leftmost index of an element which > the min of all the elements on its right
         if (nums[n - 1 - i] > min) {
             start = n - 1 - i;
         }
+
+        // from the definitions of `start` and `end`:
+        // - all elements on the right of `end` > the max of all the elements on its left
+        // - all elements on the left of `start` < the min of all the elements on its right
+        // so these two parts are good
+        //
+        // `start` and `end` are not sorted by defintion, so the subarray bounds are tight
     }
     return end - start + 1;
 }
@@ -271,8 +278,8 @@ public int numberOfArithmeticSlices(int[] nums) {
 
 [arithmetic-slices]: https://leetcode.com/problems/arithmetic-slices/
 [find-two-non-overlapping-sub-arrays-each-with-target-sum]: https://leetcode.com/problems/find-two-non-overlapping-sub-arrays-each-with-target-sum/
-[maximum-number-of-occurrences-of-a-substring]: https://leetcode.com/problems/maximum-number-of-occurrences-of-a-substring/
 [maximum-sum-of-3-non-overlapping-subarrays]: https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/
 [minimum-moves-to-make-array-complementary]: https://leetcode.com/problems/minimum-moves-to-make-array-complementary/
 [minimum-number-of-increments-on-subarrays-to-form-a-target-array]: https://leetcode.com/problems/minimum-number-of-increments-on-subarrays-to-form-a-target-array/
+[shortest-unsorted-continuous-subarray]: https://leetcode.com/problems/shortest-unsorted-continuous-subarray/
 [subarrays-with-k-different-integers]: https://leetcode.com/problems/subarrays-with-k-different-integers/
