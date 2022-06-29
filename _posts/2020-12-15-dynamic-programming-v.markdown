@@ -96,12 +96,12 @@ public int rob(int[] nums) {
 
 [Count Number of Ways to Place Houses][count-number-of-ways-to-place-houses]
 
-{% endhighlight %}
+{% highlight java %}
 // dp[i] = dpPick[i] + dpSkip[i]
 //       = dpSkip[i - 1] + dp[i - 1]
 //       = dp[i - 2] + dp[i - 1]
 // --> Fibonacci
-{% highlight java %}
+{% endhighlight %}
 
 [Paint Fence][paint-fence]
 

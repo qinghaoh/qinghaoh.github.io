@@ -91,9 +91,20 @@ public int characterReplacement(String s, int k) {
     int i = 0, j = 0, max = 0;
     while (j < s.length()) {
         // grows the window when the count of the new char exceeds the historical max count
+        // so, max is non-decreasing
         max = Math.max(max, ++count[s.charAt(j++) - 'A']);
 
         // count of other chars == j - i - max
+        //
+        // without the loss of generality, assume in the last iteration, j - i - max > k before this if-condition
+        // (otherwise, the window will keep expanding until it reaches this threshold)
+        // because j was moved one step forward earlier in this iteration,
+        // if max remains the same as last iteration, at this moment, j - i - max > k must be true.
+        // if max is greater than that in last iteration, that means in this iteration the max is incremented
+        // i.e. the char at j - 1 is the new dominant char. j - i - max == k (windows expanded!)
+        //
+        // therefore, when the window is expanded, the max actually reflects the current char, not a previous one,
+        // and that explains why the logic is correct here.
         if (j - i - max > k) {
             count[s.charAt(i++) - 'A']--;
         }
