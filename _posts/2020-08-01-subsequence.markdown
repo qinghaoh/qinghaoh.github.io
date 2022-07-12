@@ -11,6 +11,29 @@ Where `0 <= i_0 < i_1 < ... < i_k <= a.length`
 
 # Algorithm
 
+## Greedy
+
+[Shortest Impossible Sequence of Rolls][shortest-impossible-sequence-of-rolls]
+
+{% highlight java %}
+public int shortestSequence(int[] rolls, int k) {
+    Set<Integer> seen = new HashSet<>();
+    int len = 1;
+    for (int r : rolls) {
+        seen.add(r);
+        // 1. finds the min index such that all sequences of length 1 can be formed until this index
+        // 2. finds the min index such that all sequences of length 2
+        // by finding all numbers of [1, k] after the previous min index
+        // 3. repeats Step #2
+        if (seen.size() == k) {
+            len++;
+            seen.clear();
+        }
+    }
+    return len;
+}
+{% endhighlight %}
+
 ## Sort
 
 [Smallest Range II][smallest-range-ii]
@@ -653,6 +676,7 @@ private void backtrack(int[] freq, int len, StringBuilder sb) {
 [number-of-unique-good-subsequences]: https://leetcode.com/problems/number-of-unique-good-subsequences/
 [russian-doll-envelopes]: https://leetcode.com/problems/russian-doll-envelopes/
 [shortest-common-subsequence]: https://leetcode.com/problems/shortest-common-subsequence/
+[shortest-impossible-sequence-of-rolls]: https://leetcode.com/problems/shortest-impossible-sequence-of-rolls/
 [smallest-range-ii]: https://leetcode.com/problems/smallest-range-ii/
 [sum-of-subsequence-widths]: https://leetcode.com/problems/sum-of-subsequence-widths/
 [shortest-common-supersequence]: https://leetcode.com/problems/shortest-common-supersequence/

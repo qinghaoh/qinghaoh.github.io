@@ -1970,6 +1970,28 @@ ORDER BY
 ;
 {% endhighlight %}
 
+[Compute the Rank as a Percentage][compute-the-rank-as-a-percentage]
+
+{% highlight sql %}
+SELECT
+    student_id,
+    department_id,
+    COALESCE
+        (ROUND(
+            (RANK () OVER (PARTITION BY department_id ORDER BY mark DESC) - 1) * 100 / 
+            (
+                SELECT
+                    COUNT(*) - 1
+                FROM
+                    Students s2
+                WHERE
+                    s1.department_id = s2.department_id)
+            , 2), 0) AS percentage
+FROM
+    Students s1
+;
+{% endhighlight %}
+
 ## DENSE_RANK
 
 [Rank Scores][rank-scores]
@@ -2330,6 +2352,7 @@ ORDER BY
 [build-the-equation]: https://leetcode.com/problems/build-the-equation/
 [calculate-salaries]: https://leetcode.com/problems/calculate-salaries/
 [classes-more-than-5-students]: https://leetcode.com/problems/classes-more-than-5-students/
+[compute-the-rank-as-a-percentage]: https://leetcode.com/problems/compute-the-rank-as-a-percentage/
 [consecutive-available-seats]: https://leetcode.com/problems/consecutive-available-seats/
 [consecutive-numbers]: https://leetcode.com/problems/consecutive-numbers/
 [countries-you-can-safely-invest-in]: https://leetcode.com/problems/countries-you-can-safely-invest-in/

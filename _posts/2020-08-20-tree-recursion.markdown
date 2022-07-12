@@ -550,11 +550,9 @@ private int height(TreeNode node) {
 [Binary Tree Right Side View][binary-tree-right-side-view]
 
 {% highlight java %}
-private List<Integer> rightside;
+private List<Integer> rightside = new ArrayList<>();
 
 public List<Integer> rightSideView(TreeNode root) {
-    this.rightside = new ArrayList<>();
-
     dfs(root, 0);
     return rightside;
 }
@@ -564,10 +562,12 @@ public void dfs(TreeNode node, int level) {
         return;
     }
 
+    // adds node value to the list if the level is new
     if (rightside.size() == level) {
         rightside.add(node.val);
-    } 
+    }
 
+    // first right, then left
     dfs(node.right, level + 1);
     dfs(node.left, level + 1);
 }

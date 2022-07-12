@@ -3,6 +3,22 @@ layout: post
 title:  "Two Pointers"
 tags: array
 ---
+[Number of Zero-Filled Subarrays][number-of-zero-filled-subarrays]
+
+{% highlight java %}
+public long zeroFilledSubarray(int[] nums) {
+    long count = 0;
+    for (int i = 0, j = 0; j < nums.length; j++) {
+        if (nums[j] != 0) {
+            // i is to the right of j, which makes (j - i + 1) == 0
+            i = j + 1;
+        }
+        count += j - i + 1;
+    }
+    return count;
+}
+{% endhighlight %}
+
 [Remove All Adjacent Duplicates in String II][remove-all-adjacent-duplicates-in-string-ii]
 
 {% highlight java %}
@@ -546,6 +562,7 @@ private boolean dfs(String s1, String s2, int i, int j, int diff) {
 [maximum-number-of-people-that-can-be-caught-in-tag]: https://leetcode.com/problems/maximum-number-of-people-that-can-be-caught-in-tag/
 [maximum-score-of-a-good-subarray]: https://leetcode.com/problems/maximum-score-of-a-good-subarray/
 [number-of-subsequences-that-satisfy-the-given-sum-condition]: https://leetcode.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/
+[number-of-zero-filled-subarrays]: https://leetcode.com/problems/number-of-zero-filled-subarrays/
 [one-edit-distance]: https://leetcode.com/problems/one-edit-distance/
 [push-dominoes]: https://leetcode.com/problems/push-dominoes/
 [remove-all-adjacent-duplicates-in-string-ii]: https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/

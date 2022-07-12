@@ -331,30 +331,6 @@ public int[] finalPrices(int[] prices) {
 }
 {% endhighlight %}
 
-[Steps to Make Array Non-decreasing][steps-to-make-array-non-decreasing]
-
-{% highlight java %}
-public int totalSteps(int[] nums) {
-    Deque<int[]> st = new ArrayDeque<>();
-    st.push(new int[]{nums[0], 0});
-
-    int max = 0;
-    for (int i = 1; i < nums.length; i++) {
-        // previous lt
-        int count = 0;
-        while (!st.isEmpty() && nums[i] >= st.peek()[0]) {
-            count = Math.max(count, st.peek()[1]);
-            st.pop();
-        }
-
-        count = st.isEmpty() ? 0 : count + 1;
-        max = Math.max(max, count);
-        st.push(new int[]{nums[i], count});
-    }
-    return max;
-}
-{% endhighlight %}
-
 [Sum of Subarray Minimums][sum-of-subarray-minimums]
 
 The basic idea is to find both the previous and next less elements of each array element with two stacks. This can be simplified to one stack:
@@ -456,13 +432,41 @@ public int[] findMaximums(int[] nums) {
 }
 {% endhighlight %}
 
-Similarly, with Monotonically Increasing Stack, we can get Previous Greater Element or Next Greater Element.
+Similarly, with Monotonically Decreasing Stack, we can get Previous Greater Element or Next Greater Element.
 
 |                | Previous > | Previous >= |  Next >  |  Next >=  | 
 |----------------|------------|-------------|----------|-----------|
 |Monotonic Stack | Decreasing | Decreasing  |Decreasing|Decreasing |
 |Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
 |   Condition    |a[i] >= top | a[i] > top  |a[i] > top|a[i] >= top|
+
+[Steps to Make Array Non-decreasing][steps-to-make-array-non-decreasing]
+
+{% highlight java %}
+public int totalSteps(int[] nums) {
+    Deque<int[]> st = new ArrayDeque<>();
+    // {number, count of preceding elements to remove before reaching PGE(>)}
+    st.push(new int[]{nums[0], 0});
+
+    int max = 0;
+    for (int i = 1; i < nums.length; i++) {
+        // previous greater element (>)
+        int steps = 0;
+        while (!st.isEmpty() && nums[i] >= st.peek()[0]) {
+            // the max steps among all the popped elements
+            steps = Math.max(steps, st.peek()[1]);
+            st.pop();
+        }
+
+        // when the stack is not empty
+        // increments the steps to include the current step
+        steps = st.isEmpty() ? 0 : steps + 1;
+        max = Math.max(max, steps);
+        st.push(new int[]{nums[i], steps});
+    }
+    return max;
+}
+{% endhighlight %}
 
 ### Summary
 

@@ -93,6 +93,28 @@ Comparator<Integer> comparator = (a, b) -> nums[a] == nums[b] ? a - b : Integer.
 TreeSet<Integer> left = new TreeSet<>(comparator), right = new TreeSet<>(comparator);
 {% endhighlight %}
 
+# ID Reuse Model
+
+[Smallest Number in Infinite Set][smallest-number-in-infinite-set]
+
+{% highlight java %}
+private TreeSet<Integer> addedBackSet = new TreeSet<>();
+private int currMin = 1;
+
+public SmallestInfiniteSet() {
+}
+
+public int popSmallest() {
+    return addedBackSet.isEmpty() ? currMin++ : addedBackSet.pollFirst();
+}
+
+public void addBack(int num) {
+    if (num < currMin) {
+        addedBackSet.add(num);
+    }
+}
+{% endhighlight %}
+
 [Design Phone Directory][design-phone-directory]
 
 {% highlight java %}
@@ -567,5 +589,6 @@ private int[] arr;
 [min-stack]: https://leetcode.com/problems/min-stack/
 [sequentially-ordinal-rank-tracker]: https://leetcode.com/problems/sequentially-ordinal-rank-tracker/
 [sliding-window-median]: https://leetcode.com/problems/sliding-window-median/
+[smallest-number-in-infinite-set]: https://leetcode.com/problems/smallest-number-in-infinite-set/
 [snapshot-array]: https://leetcode.com/problems/snapshot-array/
 [stock-price-fluctuation]: https://leetcode.com/problems/stock-price-fluctuation/
