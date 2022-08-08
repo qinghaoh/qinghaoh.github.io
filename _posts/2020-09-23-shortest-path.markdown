@@ -77,7 +77,7 @@ public void dijkstra(int n, List<int[]>[] graph, int src) {
     Queue<int[]> q = new PriorityQueue<>((a, b) -> a[1] - b[1]);
 
     // initializes the queue to contain only source
-    int[] curr = {src, dist[src] = 0}
+    int[] curr = {src, dist[src] = 0};
     q.offer(curr);
 
     while (!q.isEmpty()) {

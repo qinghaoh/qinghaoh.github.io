@@ -48,6 +48,24 @@ public boolean canVisitAllRooms(List<List<Integer>> rooms) {
 }
 {% endhighlight %}
 
+**For-loop**
+
+This is for a special case where every node in the directed graph has at most one destination node.
+
+[Longest Cycle in a Graph][longest-cycle-in-a-graph]
+
+{% highlight java %}
+for (int i = 0; i < n; i++) {
+    // dfs until no destination node
+    for (int j = i, dist = 0; j >= 0; j = edges[i]) {
+        // or detects a loop
+        if (memo.containsKey(j)) {
+            return;
+        }
+    }
+}
+{% endhighlight %}
+
 Again, because of the recursive nature, recursion problems can be solved by DFS:
 
 [Clone Graph][clone-graph]
@@ -738,6 +756,7 @@ public int dfs(String[] pieces, int[][] positions, int p) {
 [keys-and-rooms]: https://leetcode.com/problems/keys-and-rooms/
 [lexicographical-numbers]: https://leetcode.com/problems/lexicographical-numbers/
 [lexicographically-smallest-string-after-applying-operations]: https://leetcode.com/problems/lexicographically-smallest-string-after-applying-operations/
+[longest-cycle-in-a-graph]: https://leetcode.com/problems/longest-cycle-in-a-graph/
 [number-of-distinct-islands]: https://leetcode.com/problems/number-of-distinct-islands/
 [number-of-valid-move-combinations-on-chessboard]: https://leetcode.com/problems/number-of-valid-move-combinations-on-chessboard/
 [pyramid-transition-matrix]: https://leetcode.com/problems/pyramid-transition-matrix/

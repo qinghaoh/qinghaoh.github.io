@@ -24,6 +24,30 @@ There are 3 core components:
 1. DFS parameter (`T3 local`)
 1. DFS return value (`T4`)
 
+[Flatten Binary Tree to Linked List][flatten-binary-tree-to-linked-list]
+
+{% highlight java %}
+// the last node of the already formed linked list
+private TreeNode last = null;
+
+public void flatten(TreeNode root) {
+    if (root == null) {
+        return;
+    }
+
+    // makes current root as the right child of `last`
+    if (last != null) {
+        last.left = null;
+        last.right = root;
+    }
+
+    last = root;
+    TreeNode right = root.right;
+    flatten(root.left);
+    flatten(right);
+}
+{% endhighlight %}
+
 [Convert BST to Greater Tree][convert-bst-to-greater-tree]
 
 {% highlight java %}
@@ -1122,6 +1146,7 @@ public int checkWays(int[][] pairs) {
 [find-bottom-left-tree-value]: https://leetcode.com/problems/find-bottom-left-tree-value/
 [find-leaves-of-binary-tree]: https://leetcode.com/problems/find-leaves-of-binary-tree/
 [flatten-a-multilevel-doubly-linked-list]: https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/
+[flatten-binary-tree-to-linked-list]: https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
 [house-robber-iii]: https://leetcode.com/problems/house-robber-iii/
 [increasing-order-search-tree]: https://leetcode.com/problems/increasing-order-search-tree/
 [largest-bst-subtree]: https://leetcode.com/problems/largest-bst-subtree/
