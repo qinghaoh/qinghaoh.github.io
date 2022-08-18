@@ -23,6 +23,27 @@ public int maxSubArray(int[] nums) {
 
 This can be viewed as a simple/trivial example of dynamic programming.
 
+[Maximum Score Of Spliced Array][maximum-score-of-spliced-array]
+
+{% highlight java %}
+public int maximumsSplicedArray(int[] nums1, int[] nums2) {
+    // finds the maximum subarray of nums2 - nums1 into nums1
+    // or nums1 - nums2 into nums2
+    int sum1 = 0, sum2 = 0, currSum1 = 0, currSum2 = 0, max1 = 0, max2 = 0;
+    for (int i = 0; i < nums1.length; i++) {
+        sum1 += nums1[i];
+        sum2 += nums2[i];
+
+        currSum1 = nums2[i] - nums1[i] + Math.max(currSum1, 0);
+        currSum2 = nums1[i] - nums2[i] + Math.max(currSum2, 0);
+
+        max1 = Math.max(max1, currSum1);
+        max2 = Math.max(max2, currSum2);
+    }
+    return Math.max(sum1 + max1, sum2 + max2);
+}
+{% endhighlight %}
+
 [Maximum Product Subarray][maximum-product-subarray]
 
 {% highlight java %}
@@ -230,6 +251,7 @@ public int maxSatisfaction(int[] satisfaction) {
 [max-dot-product-of-two-subsequences]: https://leetcode.com/problems/max-dot-product-of-two-subsequences/
 [maximum-alternating-subarray-sum]: https://leetcode.com/problems/maximum-alternating-subarray-sum/
 [maximum-product-subarray]: https://leetcode.com/problems/maximum-product-subarray/
+[maximum-score-of-spliced-array]: https://leetcode.com/problems/maximum-score-of-spliced-array/
 [maximum-subarray]: https://leetcode.com/problems/maximum-subarray/
 [maximum-subarray-sum-after-one-operation]: https://leetcode.com/problems/maximum-subarray-sum-after-one-operation/
 [maximum-subarray-sum-with-one-deletion]: https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/

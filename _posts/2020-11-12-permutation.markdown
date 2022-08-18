@@ -125,6 +125,25 @@ private long modPow(long x, long y) {
 }
 {% endhighlight %}
 
+[Construct Smallest Number From DI String][construct-smallest-number-from-di-string]
+
+{% highlight java %}
+public String smallestNumber(String pattern) {
+    // 1 2 3 4 5 6 7 8 9
+    // D D I D D I D D
+    StringBuilder res = new StringBuilder(), sb = new StringBuilder();
+    for (int i = 0; i <= pattern.length(); i++) {
+        sb.append(i + 1);
+        // whenever encounters 'I', reverse the segment
+        if (i == pattern.length() || pattern.charAt(i) == 'I') {
+            res.append(sb.reverse());
+            sb = new StringBuilder();
+        }
+    }
+    return res.toString();
+}
+{% endhighlight %}
+
 [Numbers With Repeated Digits][numbers-with-repeated-digits]
 
 {% highlight java %}
@@ -228,6 +247,7 @@ public int numPermsDISequence(String s) {
 }
 {% endhighlight %}
 
+[construct-smallest-number-from-di-string]: https://leetcode.com/problems/construct-smallest-number-from-di-string/
 [minimum-number-of-operations-to-make-string-sorted]: https://leetcode.com/problems/minimum-number-of-operations-to-make-string-sorted/
 [next-permutation]: https://leetcode.com/problems/next-permutation/
 [numbers-with-repeated-digits]: https://leetcode.com/problems/numbers-with-repeated-digits/

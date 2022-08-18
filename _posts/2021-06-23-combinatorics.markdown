@@ -210,6 +210,70 @@ Positivity: Place \\(n\\) objects into \\(k\\) bins, such that all bins contain 
 
 \\[\binom {n-1}{k-1}\\]
 
+[Count the Number of Ideal Arrays][count-the-number-of-ideal-arrays]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+// the max length of each array is 14, since 2 ^ 14 = 16384 > 10 ^ 4 (see comments for dp)
+private static final int MAX_NUM_UNIQUE = 14;
+
+public int idealArrays(int n, int maxValue) {
+    // {element, divisors (not including the key itself)}
+    Map<Integer, List<Integer>> map = new HashMap();
+    for (int i = 1; i <= maxValue; i++) {
+        for (int j = 2 * i; j <= maxValue; j += i) {
+            map.computeIfAbsent(j, k -> new ArrayList()).add(i);
+        }
+    }
+
+    // dp[i][j]: num of ideal arrays of length i ending with value j,
+    // where each array doesn't contain duplicate numbers (strictly increasing)
+    // this is a special case of the original problem, e.g. [1, 2, 4, 8], [3, 6, 12]
+    // arr[i] % arr[i - 1] == 0
+    long[][] dp = new long[MAX_NUM_UNIQUE + 1][maxValue + 1];
+    Arrays.fill(dp[1], 1);
+
+    // for the strictly increasing ideal arrays case
+    for (int i = 2; i <= Math.min(n, MAX_NUM_UNIQUE); i++) {
+        for (int j = 1; j <= maxValue; j++) {
+            for (int k : map.getOrDefault(j, Collections.emptyList())) {
+                dp[i][j] += dp[i - 1][k];
+                dp[i][j] %= MOD;
+            }
+        }
+    }
+
+    // dp[i][0]: total number of strictly increasing ideal arrays of length i 
+    dp[1][0] = 0;
+    for (int i = 1; i <= Math.min(n, MAX_NUM_UNIQUE); i++) {
+        for (int j = 1; j <= maxValue; j++) {
+            dp[i][0] = (dp[i][0] + dp[i][j]) % MOD;
+        }
+    }
+
+    // n choose k
+    int[][] choose = new int[n + 1][MAX_NUM_UNIQUE + 1];
+    for (int i = 0; i < choose.length; i++) {
+        choose[i][0] = 1;
+    }
+    for (int i = 1; i < choose.length; i++) {
+        for (int j = 1; j < choose[0].length; j++) {
+            choose[i][j] = (choose[i - 1][j - 1] + choose[i - 1][j]) % MOD;
+        }
+    }
+
+    // solves the original problem with starts and bars (Theorem one)
+    int count = 0;
+    for (int i = 1; i <= Math.min(n, MAX_NUM_UNIQUE); i++) {
+        // e.g. [1, 2, 4], n = 5, len = 3
+        // -> 1 1 | 2 | 4 4
+        count += choose[n - 1][i - 1] * dp[i][0] % MOD;
+        count %= MOD;
+    }
+    return count;
+}
+{% endhighlight %}
+
 #### Theorem two
 
 [Number of combinations with repetition](https://en.wikipedia.org/wiki/Combination#Number_of_combinations_with_repetition)
@@ -244,6 +308,7 @@ public int waysToDistribute(int n, int k) {
 {% endhighlight %}
 
 [count-sorted-vowel-strings]: https://leetcode.com/problems/count-sorted-vowel-strings/
+[count-the-number-of-ideal-arrays]: https://leetcode.com/problems/count-the-number-of-ideal-arrays/
 [count-ways-to-distribute-candies]: https://leetcode.com/problems/count-ways-to-distribute-candies/
 [cracking-the-safe]: https://leetcode.com/problems/cracking-the-safe/
 [kth-smallest-instructions]: https://leetcode.com/problems/kth-smallest-instructions/

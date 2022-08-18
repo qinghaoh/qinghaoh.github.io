@@ -923,6 +923,70 @@ public int minFlips(String s) {
 }
 {% endhighlight %}
 
+[Substring with Concatenation of All Words][substring-with-concatenation-of-all-words]
+
+{% highlight java %}
+private int k = 0, len = 0;
+private Map<String, Integer> map = new HashMap<>();
+private List<Integer> list = new ArrayList<>();
+
+public List<Integer> findSubstring(String s, String[] words) {
+    k = words.length;
+    len = words[0].length();
+
+    for (String word : words) {
+        map.put(word, map.getOrDefault(word, 0) + 1);
+    }
+
+    // possible window start positions are bounded by the word length
+    for (int i = 0; i < len; i++) {
+        slidingWindow(s, i);
+    }
+    return list;
+}
+
+private void slidingWindow(String s, int i) {
+    Map<String, Integer> window = new HashMap<>();
+    // used words from the word list
+    int used = 0, n = s.length();
+
+    for (int j = i; j <= n - len; j += len) {
+        // new word that is to be added to the window
+        String newWord = s.substring(j, j + len);
+        if (map.containsKey(newWord)) {
+            window.put(newWord, window.getOrDefault(newWord, 0) + 1);
+            if (window.get(newWord) <= map.get(newWord)) {
+                used++;
+            } else {
+                while (window.get(newWord) > map.get(newWord)) {
+                    // old word that is removed from the window
+                    String oldWord = s.substring(i, i += len);
+                    window.put(oldWord, window.get(oldWord) - 1);
+                    // the removed old word was used
+                    if (window.get(oldWord) < map.get(oldWord)) {
+                        used--;
+                    }
+                }
+            }
+
+            // all words in the word list are used
+            if (used == k) {
+                list.add(i);
+                // moves the left pointer forward
+                String oldWord = s.substring(i, i += len);
+                window.put(oldWord, window.get(oldWord) - 1);
+                used--;
+            }
+        } else {
+            // resets the start of the sliding window
+            window.clear();
+            used = 0;
+            i = j + len;
+        }
+    }
+}
+{% endhighlight %}
+
 # Dynamic Programming
 
 [Jump Game VII][jump-game-vii]
@@ -1066,3 +1130,4 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 [subarray-product-less-than-k]: https://leetcode.com/problems/subarray-product-less-than-k/submissions/
 [subarray-sum-equals-k]: https://leetcode.com/problems/subarray-sum-equals-k/
 [subarrays-with-k-different-integers]: https://leetcode.com/problems/subarrays-with-k-different-integers/
+[substring-with-concatenation-of-all-words]: https://leetcode.com/problems/substring-with-concatenation-of-all-words/
