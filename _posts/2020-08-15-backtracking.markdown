@@ -1231,6 +1231,48 @@ private void backtrack(int k, int remainingArrows, int score, int[] bobArrows) {
 }
 {% endhighlight %}
 
+[Find the K-Sum of an Array][find-the-k-sum-of-an-array]
+
+{% highlight java %}
+public long kSum(int[] nums, int k) {
+    int n = nums.length;
+    long maxSum = 0;
+    // subsequence sums that need to be subtracted from the maximum sum
+    List<Long> subtrahends = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+        if (nums[i] >= 0) {
+            maxSum += nums[i];
+        } else {
+            // we can either subtract the min positive number
+            // or add min negative number to get next largest number
+            // converts all elements to non-negative so that we only subtract
+            nums[i] = -nums[i];
+        }
+    }
+
+    Arrays.sort(nums);
+
+    // {current min value which needs to be subtracted, index}
+    Queue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[0]));
+    pq.offer(new long[]{nums[0], 0});
+
+    while (!pq.isEmpty() && subtrahends.size() < k - 1) {
+        long[] curr = pq.poll();
+        long subtrahend = curr[0];
+        int index = (int)curr[1];
+        subtrahends.add(subtrahend);
+        if (index < n - 1) {
+            // for a sorted array, the following two operations generate all possible subtrahends
+            // similar to backtracking
+            pq.offer(new long[]{subtrahend + nums[index + 1], index + 1});
+            pq.offer(new long[]{nums[index + 1] + subtrahend - nums[index], index + 1});
+        }
+    }
+
+    return maxSum - (k == 1 ? 0 : subtrahends.get(k - 2));
+}
+{% endhighlight %}
+
 [24-game]: https://leetcode.com/problems/24-game/
 [android-unlock-patterns]: https://leetcode.com/problems/android-unlock-patterns/
 [beautiful-arrangement]: https://leetcode.com/problems/beautiful-arrangement/
@@ -1243,6 +1285,7 @@ private void backtrack(int k, int remainingArrows, int score, int[] bobArrows) {
 [factor-combinations]: https://leetcode.com/problems/factor-combinations/
 [fair-distribution-of-cookies]: https://leetcode.com/problems/fair-distribution-of-cookies/
 [find-minimum-time-to-finish-all-jobs]: https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/
+[find-the-k-sum-of-an-array]: https://leetcode.com/problems/find-the-k-sum-of-an-array/
 [generalized-abbreviation]: https://leetcode.com/problems/generalized-abbreviation/
 [letter-tile-possibilities]: https://leetcode.com/problems/letter-tile-possibilities/
 [matchsticks-to-square]: https://leetcode.com/problems/matchsticks-to-square/

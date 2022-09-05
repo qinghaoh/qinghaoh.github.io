@@ -100,7 +100,9 @@ public int findMaxValueOfEquation(int[][] points, int k) {
 }
 {% endhighlight %}
 
-# Max/Min in a Fixed Size Window
+# Max/Min in a Sliding Window
+
+## Fixed-size Window
 
 [Sliding Window Maximum][sliding-window-maximum]
 
@@ -111,22 +113,54 @@ public int[] maxSlidingWindow(int[] nums, int k) {
     Deque<Integer> dq = new ArrayDeque<>();
     for (int i = 0; i < n; i++) {
         // removes the out-of-window number
-        if (!dq.isEmpty() && dq.peek() == i - k) {
-            dq.poll();
+        if (!dq.isEmpty() && dq.peekFirst() == i - k) {
+            dq.pollFirst();
         }
 
-        // if i < j && nums[i] < nums[j], nums[j] is always the better candidate
-        // monotonically decreasing
+        // removes elements in stack that are less than nums[i]
+        // monotonically decreasing from head to tail
         while (!dq.isEmpty() && nums[i] > nums[dq.peekLast()]) {
             dq.pollLast();
         }
+        dq.offerLast(i);
 
-        dq.offer(i);
         if (i >= k - 1) {
-            result[i - k + 1] = nums[dq.peek()];
+            result[i - k + 1] = nums[dq.peekFirst()];
         }
     }
     return result;
+}
+{% endhighlight %}
+
+## Elastic-size Window
+
+[Maximum Number of Robots Within Budget][maximum-number-of-robots-within-budget]
+
+{% highlight java %}
+public int maximumRobots(int[] chargeTimes, int[] runningCosts, long budget) {
+    long sum = 0;
+    int i = 0, j = 0, n = chargeTimes.length;
+    Deque<Integer> dq = new LinkedList<>();
+    while (j < n) {
+        sum += runningCosts[j];
+
+        // monotonically decreasing
+        while (!dq.isEmpty() && chargeTimes[j] >= chargeTimes[dq.peekLast()]) {
+            dq.pollLast();
+        }
+        dq.offerLast(j++);
+
+        // moves i forward
+        if (chargeTimes[dq.peekFirst()] + (j - i) * sum > budget) {
+            if (dq.peekFirst() == i) {
+                dq.pollFirst();
+            }
+            sum -= runningCosts[i++];
+        }
+    }
+
+    // sliding window doesn't shrink
+    return n - i;
 }
 {% endhighlight %}
 
@@ -185,5 +219,6 @@ public int constrainedSubsetSum(int[] nums, int k) {
 [constrained-subsequence-sum]: https://leetcode.com/problems/constrained-subsequence-sum/
 [jump-game-vi]: https://leetcode.com/problems/jump-game-vi/
 [max-value-of-equation]: https://leetcode.com/problems/max-value-of-equation/
+[maximum-number-of-robots-within-budget]: https://leetcode.com/problems/maximum-number-of-robots-within-budget/
 [shortest-subarray-with-sum-at-least-k]: https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
 [sliding-window-maximum]: https://leetcode.com/problems/sliding-window-maximum/

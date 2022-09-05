@@ -22,7 +22,7 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
         graph[i] = new ArrayList<>();
     }
 
-    int[] indegree = new int[numCourses];
+    int[] indegrees = new int[numCourses];
     for (int[] p : prerequisites) {
         graph[p[1]].add(p[0]);
         indegrees[p[0]]++;

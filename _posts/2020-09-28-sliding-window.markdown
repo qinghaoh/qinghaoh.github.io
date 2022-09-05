@@ -536,6 +536,27 @@ Similar to: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equal
 
 # Elastic Size
 
+[Longest Nice Subarray][longest-nice-subarray]
+
+{% highlight java %}
+public int longestNiceSubarray(int[] nums) {
+    int mask = 0, i = 0, j = 0, max = 0;
+    while (j < nums.length) {
+        // with this loop, if a bit of mask is set,
+        // only one element in the window has that bit set
+        while ((mask & nums[j]) != 0) {
+            mask ^= nums[i++];
+        }
+
+        mask |= nums[j];
+        max = Math.max(max, ++j - i);
+    }
+    return max;
+}
+{% endhighlight %}
+
+We can't use "Upper Bound Constraints, Max Length" model, otherwise if a bit of the mask is set, it's possible more than one element in the window have that bit set. Therefore, we don't know what the new mask is like after moving `nums[i++]` out of the window.
+
 [Moving Stones Until Consecutive II][moving-stones-until-consecutive-ii]
 
 {% highlight java %}
@@ -1105,6 +1126,7 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 [k-empty-slots]: https://leetcode.com/problems/k-empty-slots/
 [kth-smallest-subarray-sum]: https://leetcode.com/problems/kth-smallest-subarray-sum/
 [longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit]: https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
+[longest-nice-subarray]: https://leetcode.com/problems/longest-nice-subarray/
 [longest-repeating-character-replacement]: https://leetcode.com/problems/longest-repeating-character-replacement/
 [longest-substring-with-at-most-k-distinct-characters]: https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
 [max-consecutive-ones-iii]: https://leetcode.com/problems/max-consecutive-ones-iii/

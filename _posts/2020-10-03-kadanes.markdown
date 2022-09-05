@@ -204,6 +204,22 @@ public int numSubarrayBoundedMax(int[] nums, int left, int right) {
 }
 {% endhighlight %}
 
+[Time Needed to Rearrange a Binary String][time-needed-to-rearrange-a-binary-string]
+
+{% highlight java %}
+public int secondsToRemoveOccurrences(String s) {
+    int zeros = 0, seconds = 0;
+    for (char ch : s.toCharArray()) {
+        zeros += '1' - ch;
+        if (ch == '1' && zeros > 0) {
+            // the time update is possible only at '1'
+            seconds = Math.max(seconds + 1, zeros);
+        }
+    }
+    return seconds;
+}
+{% endhighlight %}
+
 # 2D
 
 [Max Dot Product of Two Subsequences][max-dot-product-of-two-subsequences]
@@ -257,3 +273,4 @@ public int maxSatisfaction(int[] satisfaction) {
 [maximum-subarray-sum-with-one-deletion]: https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/
 [number-of-subarrays-with-bounded-maximum]: https://leetcode.com/problems/number-of-subarrays-with-bounded-maximum/
 [reducing-dishes]: https://leetcode.com/problems/reducing-dishes/
+[time-needed-to-rearrange-a-binary-string]: https://leetcode.com/problems/time-needed-to-rearrange-a-binary-string/
