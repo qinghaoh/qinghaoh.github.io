@@ -206,6 +206,41 @@ public int shortest(String word1, String word2) {
 }
 {% endhighlight %}
 
+[The Latest Time to Catch a Bus][the-latest-time-to-catch-a-bus]
+
+{% highlight java %}
+public int latestTimeCatchTheBus(int[] buses, int[] passengers, int capacity) {
+    Arrays.sort(buses);
+    Arrays.sort(passengers);
+
+    int n = buses.length, m = passengers.length;
+    for (int i = 0, j = 0; i < n; i++) {
+        // fills the bus with passengers
+        int count = 0;
+        while (j < m && passengers[j] <= buses[i] && count < capacity) {
+            j++;
+            count++;
+        }
+
+        if (i == n - 1) {
+            int t = 0;
+            // searches for the first unique position
+            if (count < capacity) {
+                // arrives before bus time and after the last passenger
+                t = buses[i];
+                for (int k = j - 1; k >= 0 && passengers[k] == t; k--, t--);
+            } else {
+                // arrives before the last passenger time who is on board
+                t = passengers[j - 1] - 1;
+                for (int k = j - 2; k >= 0 && passengers[k] == t; k--, t--);
+            }
+            return t;
+        }
+    }
+    return -1;
+}
+{% endhighlight %}
+
 # Unique Characters
 
 [Count Unique Characters of All Substrings of a Given String][count-unique-characters-of-all-substrings-of-a-given-string]
@@ -568,4 +603,5 @@ private boolean dfs(String s1, String s2, int i, int j, int diff) {
 [remove-all-adjacent-duplicates-in-string-ii]: https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/
 [shortest-word-distance-ii]: https://leetcode.com/problems/shortest-word-distance-ii/
 [sort-transformed-array]: https://leetcode.com/problems/sort-transformed-array/
+[the-latest-time-to-catch-a-bus]: https://leetcode.com/problems/the-latest-time-to-catch-a-bus/
 [trapping-rain-water]: https://leetcode.com/problems/trapping-rain-water/

@@ -279,6 +279,44 @@ private double computeTime(int[][] cars, int i, int j) {
 }
 {% endhighlight %}
 
+In the problem below, the monotonicity of the stack is not straightforward:
+
+[Maximum Number of Books You Can Take][maximum-number-of-books-you-can-take]
+
+{% highlight java %}
+public long maximumBooks(int[] books) {
+    Deque<Integer> st = new ArrayDeque<>();
+    // pushes a virtual index to makes formula simple
+    st.push(-1);
+
+    long max = 0, curr = 0;
+    for (int i = 0; i < books.length; i++) {
+        // monotonically increasing stack
+        // pops a shelf j if the b[j] > b[i] - (i - j)
+        // e.g. [3, 5, 4] -> [2, 3, 4]
+        // b[1]: 5 > 4 - 1
+        // b[0]: 3 > 4 - 2
+        while (st.peek() >= 0 && books[i] < books[st.peek()] + i - st.peek()) {
+            int top = st.pop();
+            curr -= sum(books[top], top - st.peek());
+        }
+
+        // uses the current shelf i as the last element of an arithmetic sequence (d = 1)
+        // the sequence stops by st.peek()
+        curr += sum(books[i], i - st.peek());
+        st.push(i);
+        max = Math.max(max, curr);
+    }
+    return max;
+}
+
+// sum of {an - n + 1, an - n + 2, ..., an}
+private long sum(long an, int n) {
+    long a1 = Math.max(0, an - n + 1);
+    return (a1 + an) * (an - a1 + 1) / 2;
+}
+{% endhighlight %}
+
 ## PLE/PGE/NLE/NGE
 
 * Previous Less Element (PLE)
@@ -331,6 +369,8 @@ public int[] finalPrices(int[] prices) {
 }
 {% endhighlight %}
 
+### Subarray Min/Max
+
 [Sum of Subarray Minimums][sum-of-subarray-minimums]
 
 The basic idea is to find both the previous and next less elements of each array element with two stacks. This can be simplified to one stack:
@@ -354,6 +394,14 @@ public int sumSubarrayMins(int[] arr) {
         st.push(i);
     }
     return (int)result;
+}
+{% endhighlight %}
+
+[Subarray With Elements Greater Than Varying Threshold][subarray-with-elements-greater-than-varying-threshold]
+
+{% highlight java %}
+if ((i - k - 1) * nums[j] > threshold) {
+    return i - k - 1;
 }
 {% endhighlight %}
 
@@ -895,6 +943,7 @@ public int calculate(String s) {
 [jump-game-v]: https://leetcode.com/problems/jump-game-v/
 [largest-rectangle-in-histogram]: https://leetcode.com/problems/largest-rectangle-in-histogram/
 [maximal-rectangle]: https://leetcode.com/problems/maximal-rectangle/
+[maximum-number-of-books-you-can-take]: https://leetcode.com/problems/maximum-number-of-books-you-can-take/
 [maximum-of-minimum-values-in-all-subarrays]: https://leetcode.com/problems/maximum-of-minimum-values-in-all-subarrays/
 [maximum-width-ramp]: https://leetcode.com/problems/maximum-width-ramp/
 [minimum-cost-tree-from-leaf-values]: https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/
@@ -908,6 +957,7 @@ public int calculate(String s) {
 [remove-duplicate-letters]: https://leetcode.com/problems/remove-duplicate-letters/
 [smallest-k-length-subsequence-with-occurrences-of-a-letter]: https://leetcode.com/problems/smallest-k-length-subsequence-with-occurrences-of-a-letter/
 [steps-to-make-array-non-decreasing]: https://leetcode.com/problems/steps-to-make-array-non-decreasing/
+[subarray-with-elements-greater-than-varying-threshold]: https://leetcode.com/problems/subarray-with-elements-greater-than-varying-threshold/
 [sum-of-subarray-minimums]: https://leetcode.com/problems/sum-of-subarray-minimums/
 [ternary-expression-parser]: https://leetcode.com/problems/ternary-expression-parser/
 [remove-k-digits]: https://leetcode.com/problems/remove-k-digits/

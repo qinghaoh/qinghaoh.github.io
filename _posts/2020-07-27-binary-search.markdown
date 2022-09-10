@@ -674,7 +674,7 @@ Maximize `x`, s.t. `condition(x) == true`
 public int binarySearch(int[] arr) {
     int low = min(searchSpace), high = max(searchSpace);
     while (low < high) {
-        int mid = low + (high - low + 1) / 2;
+        int mid = (low + high + 1) >>> 1;
         if (condition(mid)) {
             low = mid;
         } else {
@@ -1107,6 +1107,51 @@ private boolean condition(int[] tasks, int[] workers, int pills, int strength, i
 
 [Ways to Split Array Into Three Subarrays][ways-to-split-array-into-three-subarrays]
 
+## Nested Binary Search
+
+[Median of a Row Wise Sorted Matrix][median-of-a-row-wise-sorted-matrix]
+
+{% highlight java %}
+public int matrixMedian(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int low = 1, high = (int)1e6, k = m * n / 2 + 1;
+    while (low < high) {
+        // attempts mid as median
+        int mid = (low + high + 1) >>> 1, count = 0;
+        for (int[] row : grid) {
+            // since the helper function returns the min index so that row[index] >= mid,
+            // ALL row elements that >= mid will be counted
+            // this is why we count the right half rather than the left half
+            // (if the helper function returns the max index so that row[index] <= mid,
+            // we count the left helf instead)
+            count += n - binarySearch(row, mid);
+        }
+
+        if (count >= k) {
+            low = mid;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return low;
+}
+
+// binary searches for the min index so that nums[index] >= target.
+// if all nums elements < target, returns n
+private int binarySearch(int[] nums, int target) {
+    int n = nums.length, low = 0, high = n - 1;
+    while (low < high) {
+        int mid = (low + high) >>> 1;
+        if (nums[mid] >= target) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return nums[low] >= target ? low : n;
+}
+{% endhighlight %}
+
 # Java
 
 ## Arrays
@@ -1278,6 +1323,7 @@ public long goodTriplets(int[] nums1, int[] nums2) {
 [maximum-number-of-tasks-you-can-assign]: https://leetcode.com/problems/maximum-number-of-tasks-you-can-assign/
 [maximum-value-at-a-given-index-in-a-bounded-array]: https://leetcode.com/problems/maximum-value-at-a-given-index-in-a-bounded-array/
 [maximum-width-ramp]: https://leetcode.com/problems/maximum-width-ramp/
+[median-of-a-row-wise-sorted-matrix]: https://leetcode.com/problems/median-of-a-row-wise-sorted-matrix/
 [minimize-max-distance-to-gas-station]: https://leetcode.com/problems/minimize-max-distance-to-gas-station/
 [minimum-limit-of-balls-in-a-bag]: https://leetcode.com/problems/minimum-limit-of-balls-in-a-bag/
 [minimum-time-for-k-virus-variants-to-spread]: https://leetcode.com/problems/minimum-time-for-k-virus-variants-to-spread/

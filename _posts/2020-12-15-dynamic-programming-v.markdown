@@ -351,6 +351,48 @@ private int maxSizeSlices(int[] slices, int start, int end) {
 }
 {% endhighlight %}
 
+### Tree
+
+[Choose Edges to Maximize Score in a Tree][choose-edges-to-maximize-score-in-a-tree]
+
+{% highlight java %}
+public long maxScore(int[][] edges) {
+    int n = edges.length;
+    // {child, weight}
+    List<int[]>[] tree = new List[n];
+    for (int i = 0; i < n; i++) {
+        tree[i] = new ArrayList<>();
+    }
+
+    int root = 0;
+    for (int i = 1; i < n; i++) {
+        tree[edges[i][0]].add(new int[]{i, edges[i][1]});
+    }
+
+    // {with parent edge, without parent edge}
+    long[] res = dfs(root, tree);
+    return Math.max(res[0], res[1]);
+}
+
+private long[] dfs(int node , List<int[]>[] tree) {
+    long[] curr = new long[2];
+    for (int[] child : tree[node]) {
+        long[] next = dfs(child[0], tree);
+        curr[0] += next[1];
+        // child[1] + next[0] - next[1]
+        // = weight - (next[1] - next[0])
+        // = weight - (next contains one child edge)
+        curr[1] = Math.max(curr[1], child[1] + next[0] - next[1]);
+    }
+
+    // curr[1] means no parent edge, so there can be one or no child edge
+    // so far, curr[1] contains one child edge
+    // now adds the scenario of no child edge (curr[0]) to curr[1]
+    curr[1] += curr[0];
+    return curr;
+}
+{% endhighlight %}
+
 # Multiple DP Variables
 
 In this model, there are multiple choices at the current position, and we assign each choice a dp variable, which essentially is a 0-dimensional dp array. Then we find the relations between the dp variables.
@@ -627,6 +669,7 @@ public int minimumTime(String s) {
 }
 {% endhighlight %}
 
+[choose-edges-to-maximize-score-in-a-tree]: https://leetcode.com/problems/choose-edges-to-maximize-score-in-a-tree/
 [count-number-of-ways-to-place-houses]: https://leetcode.com/problems/count-number-of-ways-to-place-houses/
 [decode-ways]: https://leetcode.com/problems/decode-ways/
 [delete-and-earn]: https://leetcode.com/problems/delete-and-earn/
