@@ -25,22 +25,27 @@ Efficient range query, while array modification is flexible.
 
 The standard Segment Tree requires \\(4n\\) vertices for working on an array of size \\(n\\).
 
-The implementation below is based on Al.Cash's blog [Efficient and easy segment trees](https://codeforces.com/blog/entry/18051):
+The implementation below is based on Al.Cash's blog [Efficient and easy segment trees](https://codeforces.com/blog/entry/18051). We generalize the implementation to support a commutative bi-function `f(x, y)`:
 
 {% highlight java %}
-class Segment {
+class SegmentTree {
     private int n;
     private int[] arr;
 
-    public Segment(int[] nums) {
-        this.n = nums.length;
+    // default all-zero array
+    public SegmentTree(int n) {
+        this.n = n;
         this.arr = new int[2 * this.n];
+    }
+
+    public SegmentTree(int[] nums) {
+        this.SegmentTree(nums.length);
         System.arraycopy(nums, 0, arr, this.n, this.n);
     }
 
     public void build() {
         for (int i = n - 1; i > 0; i--) {
-            arr[i] = arr[i * 2] + arr[i * 2 + 1];
+            arr[i] = f(arr[i * 2], arr[i * 2 + 1]);
         }
     }
 
@@ -48,23 +53,47 @@ class Segment {
     public void update(int index, int value) {
         for (arr[index += n] = value; index > 1; index /= 2) {
             // index and index ^ 1 are siblings
-            arr[index / 2] = arr[index] + arr[index ^ 1];
+            arr[index / 2] = f(arr[index], arr[index ^ 1]);
         }
     }
 
     // sum on interval [start, end)
     public int query(int start, int end) {
-        in  res = 0;
+        int res = 0;
         for (start += n, end += n; start < end; start /= 2, end /= 2) {
             if (start % 2 == 1) {
-                res += arr[start++];
+                res = f(res, arr[start++]);
             }
             if (end % 2 == 1) {
-                res += arr[--end];
+                res = f(res, arr[--end]);
             }
         }
         return res;
     }
+}
+{% endhighlight %}
+
+Examples of commutative bi-functions:
+* Sum
+* Max
+
+**Max**
+
+[Longest Increasing Subsequence II][longest-increasing-subsequence-ii]
+
+{% highlight java %}
+public int lengthOfLIS(int[] nums, int k) {
+    SegmentTree st = new SegmentTree(Arrays.stream(nums).max().getAsInt() + 1);
+    int max = 0;
+    for (int num : nums) {
+        // implicit rolling dp:
+        // dp[i]: LIS until the current element, and the last element of the LIS is i
+        // finds the max in the range of the prev level dp
+        int prev = st.query(Math.max(1, num - k), num);
+        st.update(num, prev + 1);
+        max = Math.max(max, prev + 1);
+    }
+    return max;
 }
 {% endhighlight %}
 
@@ -251,5 +280,6 @@ class SegmentTreeNode {
 }
 {% endhighlight %}
 
+[longest-increasing-subsequence-ii]: https://leetcode.com/problems/longest-increasing-subsequence-ii/
 [longest-substring-of-one-repeating-character]: https://leetcode.com/problems/longest-substring-of-one-repeating-character/
 [rectangle-area-ii]: https://leetcode.com/problems/rectangle-area-ii/
