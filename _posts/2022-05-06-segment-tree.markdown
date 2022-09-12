@@ -25,27 +25,39 @@ Efficient range query, while array modification is flexible.
 
 The standard Segment Tree requires \\(4n\\) vertices for working on an array of size \\(n\\).
 
+## Implementation
+
+### Commutative
+
 The implementation below is based on Al.Cash's blog [Efficient and easy segment trees](https://codeforces.com/blog/entry/18051). We generalize the implementation to support a commutative bi-function `f(x, y)`:
 
 {% highlight java %}
 class SegmentTree {
     private int n;
     private int[] arr;
+    private BiFunction<Integer, Integer, Integer> f;
 
     // default all-zero array
-    public SegmentTree(int n) {
+    public SegmentTree(int n, BiFunction<Integer, Integer, Integer> f) {
         this.n = n;
-        this.arr = new int[2 * this.n];
+        this.arr = new int[2 * n];
+        this.f = f;
     }
 
-    public SegmentTree(int[] nums) {
-        this.SegmentTree(nums.length);
+    // initializes array with initValue
+    public SegmentTree(int n, int initValue, BiFunction<Integer, Integer, Integer> f) {
+        this(n, f);
+        Arrays.fill(arr, 0, this.n, initValue);
+    }
+
+    public SegmentTree(int[] nums, BiFunction<Integer, Integer, Integer> f) {
+        this(nums.length, f);
         System.arraycopy(nums, 0, arr, this.n, this.n);
     }
 
     public void build() {
         for (int i = n - 1; i > 0; i--) {
-            arr[i] = f(arr[i * 2], arr[i * 2 + 1]);
+            arr[i] = f.apply(arr[i * 2], arr[i * 2 + 1]);
         }
     }
 
@@ -53,19 +65,19 @@ class SegmentTree {
     public void update(int index, int value) {
         for (arr[index += n] = value; index > 1; index /= 2) {
             // index and index ^ 1 are siblings
-            arr[index / 2] = f(arr[index], arr[index ^ 1]);
+            arr[index / 2] = f.apply(arr[index], arr[index ^ 1]);
         }
     }
 
-    // sum on interval [start, end)
+    // f.apply() on interval [start, end)
     public int query(int start, int end) {
         int res = 0;
         for (start += n, end += n; start < end; start /= 2, end /= 2) {
             if (start % 2 == 1) {
-                res = f(res, arr[start++]);
+                res = f.apply(res, arr[start++]);
             }
             if (end % 2 == 1) {
-                res = f(res, arr[--end]);
+                res = f.apply(res, arr[--end]);
             }
         }
         return res;
@@ -75,6 +87,7 @@ class SegmentTree {
 
 Examples of commutative bi-functions:
 * Sum
+* Min
 * Max
 
 **Max**
@@ -83,7 +96,9 @@ Examples of commutative bi-functions:
 
 {% highlight java %}
 public int lengthOfLIS(int[] nums, int k) {
-    SegmentTree st = new SegmentTree(Arrays.stream(nums).max().getAsInt() + 1);
+    SegmentTree st = new SegmentTree(Arrays.stream(nums).max().getAsInt() + 1, (a, b) -> Math.max(a, b));
+    st.build();
+
     int max = 0;
     for (int num : nums) {
         // implicit rolling dp:
@@ -97,9 +112,128 @@ public int lengthOfLIS(int[] nums, int k) {
 }
 {% endhighlight %}
 
+[Booking Concert Tickets in Groups][booking-concert-tickets-in-groups]
+
+{% highlight java %}
+{% endhighlight %}
+
+### Non-commutative
+
 [Longest Substring of One Repeating Character][longest-substring-of-one-repeating-character]
 
 {% highlight java %}
+public int[] longestRepeating(String s, String queryCharacters, int[] queryIndices) {
+    int n = s.length();
+    Node[] nodes = new Node[n];
+    for (int i = 0; i < n; i++) {
+        nodes[i] = new Node(s.charAt(i));
+    }
+
+    SegmentTree st = new SegmentTree(nodes, (a, b) -> combine(a, b));
+    st.build();
+
+    int k = queryIndices.length;
+    int[] lengths = new int[k];
+    for (int i = 0; i < k; i++) {
+        st.update(queryIndices[i], new Node(queryCharacters.charAt(i)));
+        lengths[i] = st.query(0, n).longest;
+    }
+    return lengths;
+}
+
+class Node {
+    // e.g. "aabccc"
+    // len = 6
+    // longest = 3
+    // leftChar = 'a', rightChar = 'c'
+    // pLen = 2, sLen = 3
+    int len = 0;
+    int longest = 0;
+    char leftChar = 0, rightChar = 0;
+    // length of longest prefix/suffix substring of one repeating character
+    int pLen = 0, sLen = 0;
+
+    public Node() {
+    }
+
+    public Node(char ch) {
+        this.leftChar = this.rightChar = ch;
+        this.pLen = this.sLen = 1;
+        this.longest = 1;
+        this.len = 1;
+    }
+}
+
+public Node combine(Node left, Node right) {
+    Node node = new Node();
+    node.longest = Math.max(left.longest, right.longest);
+    if (left.rightChar == right.leftChar) {
+        node.longest = Math.max(node.longest, left.sLen + right.pLen);
+    }
+
+    node.len = left.len + right.len;
+    node.leftChar = left.leftChar;
+    node.rightChar = right.rightChar;
+    node.pLen = left.pLen + (left.pLen == left.len && left.leftChar == right.leftChar ? right.pLen : 0);
+    node.sLen = right.sLen + (right.sLen == right.len && right.rightChar == left.rightChar ? left.sLen : 0);
+
+    return node;
+}
+
+// non-commutative
+class SegmentTree {
+    private int n;
+    private Node[] arr;
+    private BiFunction<Node, Node, Node> f;
+
+    // default all-zero array
+    public SegmentTree(int n, BiFunction<Node, Node, Node> f) {
+        this.n = n;
+        this.arr = new Node[2 * n];
+        this.f = f;
+    }
+
+    // initializes array with initValue
+    public SegmentTree(int n, Node initValue, BiFunction<Node, Node, Node> f) {
+        this(n, f);
+        Arrays.fill(arr, 0, this.n, initValue);
+    }
+
+    public SegmentTree(Node[] nums, BiFunction<Node, Node, Node> f) {
+        this(nums.length, f);
+        System.arraycopy(nums, 0, arr, this.n, this.n);
+    }
+
+    public void build() {
+        for (int i = n - 1; i > 0; i--) {
+            arr[i] = f.apply(arr[i * 2], arr[i * 2 + 1]);
+        }
+    }
+
+    // set nums[index] = value
+    public void update(int index, Node value) {
+        for (arr[index += n] = value; (index /= 2) > 0; ) {
+            // ensures the correct ordering of children, knowing that left child has even index
+            arr[index] = f.apply(arr[2 * index], arr [2 * index + 1]);
+        }
+    }
+
+    // f.apply() on interval [start, end)
+    public Node query(int start, int end) {
+        Node resl = new Node(), resr = new Node();
+        for (start += n, end += n; start < end; start /= 2, end /= 2) {
+            // nodes corresponding to the left border are processed from left to right
+            // while the right border moves from right to left
+            if (start % 2 == 1) {
+                resl = f.apply(resl, arr[start++]);
+            }
+            if (end % 2 == 1) {
+                resr = f.apply(arr[--end], resr);
+            }
+        }
+        return f.apply(resl, resr);
+    }
+}
 {% endhighlight %}
 
 [Rectangle Area II][rectangle-area-ii]
@@ -280,6 +414,7 @@ class SegmentTreeNode {
 }
 {% endhighlight %}
 
+[booking-concert-tickets-in-groups]: https://leetcode.com/problems/booking-concert-tickets-in-groups/
 [longest-increasing-subsequence-ii]: https://leetcode.com/problems/longest-increasing-subsequence-ii/
 [longest-substring-of-one-repeating-character]: https://leetcode.com/problems/longest-substring-of-one-repeating-character/
 [rectangle-area-ii]: https://leetcode.com/problems/rectangle-area-ii/
