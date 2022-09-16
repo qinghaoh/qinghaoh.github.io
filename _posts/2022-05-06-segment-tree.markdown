@@ -52,7 +52,7 @@ class SegmentTree {
 
     public SegmentTree(int[] nums, BiFunction<Integer, Integer, Integer> f) {
         this(nums.length, f);
-        System.arraycopy(nums, 0, arr, this.n, this.n);
+        System.arraycopy(nums, 0, this.n, arr.length, this.n);
     }
 
     public void build() {
@@ -115,6 +115,117 @@ public int lengthOfLIS(int[] nums, int k) {
 [Booking Concert Tickets in Groups][booking-concert-tickets-in-groups]
 
 {% highlight java %}
+public class BookMyShow {
+    private int m, n;
+    private int[] rows;
+    private SegmentTree st;
+
+    public BookMyShow(int n, int m) {
+        this.m = m;
+        this.n = n;
+        this.rows = new int[n];
+
+        Arrays.fill(rows, m);
+
+        // {sum, max}
+        this.st = new SegmentTree(n, m, (a, b) -> new long[]{a[0] + b[0], Math.max(a[1], b[1])});
+        st.build();
+    }
+
+    public int[] gather(int k, int maxRow) {
+        int r = binarySearch(k, maxRow);
+        if (r < 0) {
+            return new int[0];
+        }
+
+        int col = m - rows[r];
+        rows[r] -= k;
+        st.update(r, k);
+        return new int[]{r, col};
+    }
+
+    private int binarySearch(int k, int maxRow) {
+        int low = 0, high = maxRow;
+        while (low < high) {
+            int mid = (low + high) >>> 1;
+            if (st.query(0, mid + 1)[1] >= k) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return rows[low] >= k ? low : -1;
+    }
+
+    public boolean scatter(int k, int maxRow) {
+        if (st.query(0, maxRow + 1)[0] < k) {
+            return false;
+        }
+
+        for (int i = 0; i <= maxRow && k > 0; i++) {
+            if (rows[i] > 0) {
+                int seats = Math.min(rows[i], k);
+                rows[i] -= seats;
+                k -= seats;
+                st.update(i, seats);
+            }
+        }
+        return true;
+    }
+
+    class SegmentTree {
+        private int n;
+        private long[][] arr;
+        private BiFunction<long[], long[], long[]> f;
+
+        // default all-zero array
+        public SegmentTree(int n, BiFunction<long[], long[], long[]> f) {
+            this.n = n;
+            this.arr = new long[2 * n][2];
+            this.f = f;
+        }
+
+        // initializes array with initValue
+        public SegmentTree(int n, int initValue, BiFunction<long[], long[], long[]> f) {
+            this(n, f);
+            for (int i = this.n; i < arr.length; i++) {
+                arr[i][0] = arr[i][1] = initValue;
+            }
+        }
+
+        public void build() {
+            for (int i = n - 1; i > 0; i--) {
+                arr[i] = f.apply(arr[i * 2], arr[i * 2 + 1]);
+            }
+        }
+
+        // set nums[index] -= k
+        public void update(int index, int k) {
+            arr[index + n][0] -= k;
+            arr[index + n][1] -= k;
+            index += n;
+            while (index > 1)  {
+                // index and index ^ 1 are siblings
+                arr[index / 2] = f.apply(arr[index], arr[index ^ 1]);
+                index /= 2;
+            }
+        }
+
+        // f.apply() on interval [start, end)
+        public long[] query(int start, int end) {
+            long[] res = new long[2];
+            for (start += n, end += n; start < end; start /= 2, end /= 2) {
+                if (start % 2 == 1) {
+                    res = f.apply(res, arr[start++]);
+                }
+                if (end % 2 == 1) {
+                    res = f.apply(res, arr[--end]);
+                }
+            }
+            return res;
+        }
+    }
+}
 {% endhighlight %}
 
 ### Non-commutative

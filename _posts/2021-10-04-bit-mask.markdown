@@ -634,6 +634,46 @@ public boolean canPartitionKSubsets(int[] nums, int k) {
 }
 {% endhighlight %}
 
+[Minimum Time to Kill All Monsters][minimum-time-to-kill-all-monsters]
+
+{% highlight java %}
+public long minimumTime(int[] power) {
+    int n = power.length;
+    long[] dp = new long[1 << n];
+    Arrays.fill(dp, Long.MAX_VALUE);
+
+    // kills the first monster
+    // now gain == 2
+    for (int i = 0; i < n; i++) {
+        dp[1 << i] = power[i];
+    } 
+
+    long[] dp2 = new long[1 << n];
+    Arrays.fill(dp2, Long.MAX_VALUE);
+
+    for (int gain = 2; gain <= n; gain++) {
+        for (int j = 0; j < (1 << n); j++) {
+            if (dp[j] != Long.MAX_VALUE) {
+                for (int k = 0; k < n; k++) {
+                    int curr = (1 << k);
+                    if ((j & curr) == 0) {
+                        // in the period of killing (k - 1, k]-th monsters
+                        // gain * days >= power[k]
+                        // days >= power[k] / gain
+                        dp2[j | curr] = Math.min(dp2[j | curr], dp[j] + (int)Math.ceil(power[k] / (double)gain));
+                    }
+                }
+            }
+        }
+
+        long[] tmp = dp;
+        dp = dp2;
+        dp2 = tmp;
+    }
+    return dp[(1 << n) - 1];
+}
+{% endhighlight %}
+
 [Maximum Students Taking Exam][maximum-students-taking-exam]
 
 {% highlight java %}
@@ -1025,6 +1065,7 @@ private int dp(int[] nums, int numSlots, int index, int mask, int[] memo) {
 [minimum-incompatibility]: https://leetcode.com/problems/minimum-incompatibility/
 [minimum-number-of-lines-to-cover-points]: https://leetcode.com/problems/minimum-number-of-lines-to-cover-points/
 [minimum-number-of-work-sessions-to-finish-the-tasks]: https://leetcode.com/problems/minimum-number-of-work-sessions-to-finish-the-tasks/
+[minimum-time-to-kill-all-monsters]: https://leetcode.com/problems/minimum-time-to-kill-all-monsters/
 [minimum-xor-sum-of-two-arrays]: https://leetcode.com/problems/minimum-xor-sum-of-two-arrays/
 [number-of-ways-to-build-sturdy-brick-wall]: https://leetcode.com/problems/number-of-ways-to-build-sturdy-brick-wall/
 [number-of-ways-to-wear-different-hats-to-each-other]: https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/
