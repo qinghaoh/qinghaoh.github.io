@@ -8,28 +8,13 @@ usemathjax: true
 
 [Segment tree](https://en.wikipedia.org/wiki/Segment_tree)
 
-Given a set `I` of intervals, or segments, a segment tree `T` for `I` is structured as follows:
-
-* `T` is a binary tree
-* Its leaves correspond to the elementary intervals induced by the endpoints in `I`, in an ordered way
-* The internal nodes of `T` correspond to intervals that are the union of elementary intervals: the interval corresponding to node `N` is the union of the intervals corresponding to the leaves of the tree rooted at `N`
-
-Time Complexity:
-* Construct: \\(O(nlog(n))\\)
-* Update: \\(O(log(n))\\)
-* Query (search for all the intervals that contain a query point): \\(O(log(n) + k)\\), \\(k\\) being the number of retrieved intervals or segments
-
-Space Complexity: \\(O(nlog(n))\\)
-
 Efficient range query, while array modification is flexible.
-
-The standard Segment Tree requires \\(4n\\) vertices for working on an array of size \\(n\\).
 
 ## Implementation
 
-### Commutative
+The [standard (recursive, top-down) Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html) requires \\(4n\\) vertices for working on an array of size \\(n\\).
 
-The implementation below is based on Al.Cash's blog [Efficient and easy segment trees](https://codeforces.com/blog/entry/18051). We generalize the implementation to support a commutative bi-function `f(x, y)`:
+The iterative (bottom-up) implementation below is based on Al.Cash's blog [Efficient and easy segment trees](https://codeforces.com/blog/entry/18051).
 
 {% highlight java %}
 class SegmentTree {
@@ -85,6 +70,10 @@ class SegmentTree {
 }
 {% endhighlight %}
 
+### Commutative
+
+We generalize the implementation to support a commutative bi-function `f(x, y)`.
+
 Examples of commutative bi-functions:
 * Sum
 * Min
@@ -132,6 +121,7 @@ public class BookMyShow {
         st.build();
     }
 
+    // O(nlog(n) * log(maxRow))
     public int[] gather(int k, int maxRow) {
         int r = binarySearch(k, maxRow);
         if (r < 0) {

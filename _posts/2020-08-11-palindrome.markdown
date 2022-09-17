@@ -180,52 +180,82 @@ private boolean isMirror(long num, int base) {
 }
 {% endhighlight %}
 
+# Trie
+
 [Palindrome Pairs][palindrome-pairs]
 
 {% highlight java %}
 public List<List<Integer>> palindromePairs(String[] words) {
-    Map<String, Integer> map = new HashMap<>();
+    TrieNode root = new TrieNode();
+
+    // builds the trie of reversed words
     for (int i = 0; i < words.length; i++) {
-        map.put(words[i], i);
+        String word = words[i];
+        TrieNode curr = root;
+        for (int j = word.length() - 1; j >= 0; j--) {
+            if (isPalindrome(word, 0, j + 1)) {
+                // e.g. words[0] = "cdeedcba"
+                // i = 0, j = 5
+                // root -> curr = "ab", curr -> end = prefix = "cdeedc"
+                curr.palindromePrefixWordIndices.add(i);
+            }
+            char ch = word.charAt(j);
+            curr.children.putIfAbsent(ch, new TrieNode());
+            curr = curr.children.get(ch);
+        }
+        curr.wordIndex = i;
     }
 
-    // finds all "word - reverse(word)" pairs
-    // this case is handled separately to avoid duplicates
+    // searches for pairs
     List<List<Integer>> list = new ArrayList<>();
-    for(int i = 0; i < words.length; i++){
-        int index = map.getOrDefault(new StringBuilder(words[i]).reverse().toString(), i);
-        if (index != i) {
-            list.add(Arrays.asList(i, index));
-        }
-    }
-
     for (int i = 0; i < words.length; i++) {
-        String w = words[i];
-        for (int j = 0; j <= w.length(); j++) {
-            // s1.substring(0, j) is palindrome
-            // s1.substring(j + 1) == reverse(s2) => (s2, s1)
-            if (j > 0 && isPalindrome(w.substring(0, j))) {
-                int index = map.getOrDefault(new StringBuilder(w.substring(j)).reverse().toString(), i);
-                if (index != i) {
-                    list.add(Arrays.asList(index, i));
-                }
+        String word = words[i];
+        TrieNode curr = root;
+        int j = 0;
+        while (j < word.length() && curr != null) {
+            // e.g. word = "abcded", root -> curr = "abc" (original word was the reverse: "cba")
+            if (curr.wordIndex >= 0 && isPalindrome(word, j, word.length())) {
+                list.add(Arrays.asList(i, curr.wordIndex));
             }
 
-            // s1.substring(j + 1) is palindrome
-            // s1.substring(0, j) == reverse(s2) => (s1, s2)
-            if (j < w.length() && isPalindrome(w.substring(j))) {
-                int index = map.getOrDefault(new StringBuilder(w.substring(0, j)).reverse().toString(), i);
-                if (index != i) {
-                    list.add(Arrays.asList(i, index));
-                }
+            curr = curr.children.get(word.charAt(j++));
+        }
+
+        // curr char == the last char of word
+        if (curr != null) {
+            // the pair are the reverse of each other
+            // e.g. word = "abc", root -> curr = "abc" (original word was the reverse: "cba")
+            // `curr.wordIndex != i` ensures distinct indices
+            if (curr.wordIndex >= 0 && curr.wordIndex != i) {
+                list.add(Arrays.asList(i, curr.wordIndex));
+            }
+
+            // e.g. word = "abc", root -> curr = "abc", curr -> end = "ded"
+            // (original word was the reverse: "dedcba")
+            for (int index : curr.palindromePrefixWordIndices) {
+                list.add(Arrays.asList(i, index));
             }
         }
     }
-
     return list;
 }
 
-private boolean isPalindrome(String s) {
+class TrieNode {
+    // index of word ending at the current node
+    // -1 if no word ends here
+    int wordIndex = -1;
+    Map<Character, TrieNode> children = new HashMap<>();
+    List<Integer> palindromePrefixWordIndices = new ArrayList<>();
+}
+
+private boolean isPalindrome(String s, int start, int end) {
+    int i = start, j = end - 1;
+    while (i < j) {
+        if (s.charAt(i++) != s.charAt(j--)) {
+            return false;
+        }
+    }
+    return true;
 }
 {% endhighlight %}
 
