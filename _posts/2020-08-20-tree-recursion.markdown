@@ -728,6 +728,31 @@ private int dfs(TreeNode node, int vector) {
 }
 {% endhighlight %}
 
+[Reverse Odd Levels of Binary Tree][reverse-odd-levels-of-binary-tree]
+
+{% highlight java %}
+public TreeNode reverseOddLevels(TreeNode root) {
+    dfs(root.left, root.right, 0);
+    return root;
+}
+
+// node1 and node2 are reflection symmetrical
+private void dfs(TreeNode node1, TreeNode node2, int level) {
+    if (node1 == node2) {
+        return;
+    }
+
+    if (level % 2 == 0) {
+        int tmp = node1.val;
+        node1.val = node2.val;
+        node2.val = tmp;
+    }
+
+    dfs(node1.left, node2.right, level + 1);
+    dfs(node1.right, node2.left, level + 1);
+}
+{% endhighlight %}
+
 # Nested DFS
 
 [Path Sum III][path-sum-iii]
@@ -1160,6 +1185,7 @@ public int checkWays(int[][] pairs) {
 [number-of-ways-to-reconstruct-a-tree]: https://leetcode.com/problems/number-of-ways-to-reconstruct-a-tree/
 [path-sum-iii]: https://leetcode.com/problems/path-sum-iii/
 [pseudo-palindromic-paths-in-a-binary-tree]: https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/
+[reverse-odd-levels-of-binary-tree]: https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/
 [second-minimum-node-in-a-binary-tree]: https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/
 [smallest-missing-genetic-value-in-each-subtree]: https://leetcode.com/problems/smallest-missing-genetic-value-in-each-subtree/
 [split-bst]: https://leetcode.com/problems/split-bst/

@@ -2,6 +2,49 @@
 layout: post
 title:  "Reverse Thinking"
 ---
+[Maximum Segment Sum After Removals][maximum-segment-sum-after-removals]
+
+{% highlight java %}
+private long[] parents;
+
+public long[] maximumSegmentSum(int[] nums, int[] removeQueries) {
+    // reverse union-find
+    int n = nums.length;
+    this.parents = new long[n];
+    // max long is used to mark unvisited
+    Arrays.fill(parents, Long.MAX_VALUE);
+
+    long[] answer = new long[n];
+    for (int i = n - 1; i > 0; i--) {
+        int q = removeQueries[i];
+        parents[q] = -nums[q];
+
+        // unions with left interval
+        if (q > 0 && parents[q - 1] != Long.MAX_VALUE) {
+            union(q, q - 1);
+        }
+
+        // unions with right interval
+        if (q < n - 1 && parents[q + 1] != Long.MAX_VALUE) {
+            union(q, q + 1);
+        }
+
+        answer[i - 1] = Math.max(answer[i], -parents[find(q)]);
+    }
+    return answer;
+}
+
+private int find(int u) {
+    return parents[u] < 0 ? u : (int)(parents[u] = find((int)parents[u]));
+}
+
+private void union(int u, int v) {
+    int pu = find(u), pv = find(v);
+    // negated sum
+    parents[pv] += parents[pu];
+    parents[pu] = pv;
+}
+{% endhighlight %}
 
 [Execution of All Suffix Instructions Staying in a Grid][execution-of-all-suffix-instructions-staying-in-a-grid]
 
@@ -66,3 +109,4 @@ public int[] executeInstructions(int n, int[] startPos, String s) {
 {% endhighlight %}
 
 [execution-of-all-suffix-instructions-staying-in-a-grid]: https://leetcode.com/problems/execution-of-all-suffix-instructions-staying-in-a-grid/
+[maximum-segment-sum-after-removals]: https://leetcode.com/problems/maximum-segment-sum-after-removals/

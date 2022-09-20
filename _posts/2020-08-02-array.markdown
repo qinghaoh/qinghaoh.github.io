@@ -4,6 +4,52 @@ title:  "Array"
 tags: array
 ---
 
+[Minimum Money Required Before Transactions][minimum-money-required-before-transactions]
+
+{% highlight java %}
+public long minimumMoney(int[][] transactions) {
+    // the worst order is all losing transcations (cost > cashback) are before winning transactions
+    // (cost <= cashback)
+    // sum of lost money in losing transactions
+    long lost = 0;
+    int extra = 0;
+    for (int[] t : transactions) {
+        lost += Math.max(t[0] - t[1], 0);
+        extra = Math.max(extra, Math.min(t[0], t[1]));
+    }
+    return lost + extra;
+}
+{% endhighlight %}
+
+To understand the above solution, see the unfolded version:
+
+{% highlight java %}
+public long minimumMoney(int[][] transactions) {
+    // the worst order is all losing transcations (cost > cashback) are before winning transactions
+    // (cost <= cashback)
+    // sum of lost money in losing transactions
+    long lost = 0;
+    int i = 0, j = 0;
+    for (int[] t : transactions) {
+        // we can't use the cashback of the last losing transaction
+        // so we need to add this cashback to the initial money.
+        lost += Math.max(t[0] - t[1], 0);
+        if (t[0] - t[1] >= 0) {
+           // finds the max cashback we can get after all losing transactions
+           i = Math.max(i, t[1]);
+        } else {
+           // finds the max cost from all winning transactions
+           j = Math.max(j, t[0]);
+       }
+    }
+    // if the max cashback is in the last transaction,
+    // we have to add an extra of max(cachback) (= i)
+    return lost + i + Math.max(0, j - i);
+    // = lost + Math.max(i, j)
+    // = loat + Math.max(min(t[0], t[1]))
+}
+{% endhighlight %}
+
 [Patching Array][patching-array]
 
 {% highlight java %}
@@ -674,6 +720,7 @@ public long largestEvenSum(int[] nums, int k) {
 [maximum-matrix-sum]: https://leetcode.com/problems/maximum-matrix-sum/
 [maximum-building-height]: https://leetcode.com/problems/maximum-building-height/
 [minimum-deletions-to-make-array-beautiful]: https://leetcode.com/problems/minimum-deletions-to-make-array-beautiful/
+[minimum-money-required-before-transactions]: https://leetcode.com/problems/minimum-money-required-before-transactions/
 [minimum-number-of-flips-to-make-the-binary-string-alternating]: https://leetcode.com/problems/minimum-number-of-flips-to-make-the-binary-string-alternating/
 [minimum-number-of-operations-to-reinitialize-a-permutation]: https://leetcode.com/problems/minimum-number-of-operations-to-reinitialize-a-permutation/
 [patching-array]: https://leetcode.com/problems/patching-array/

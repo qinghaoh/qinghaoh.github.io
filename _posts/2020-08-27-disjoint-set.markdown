@@ -190,11 +190,7 @@ public boolean[] distanceLimitedPathsExist(int n, int[][] edgeList, int[][] quer
 
 private int find(int u) {
     // path compression
-    int p = parents[u];
-    if (p < 0) {
-        return u;
-    }
-    return parents[u] = find(p);
+    return parents[u] < 0 ? u : (parents[u] = find(parents[u]));
 }
 
 private void union(int u, int v) {
