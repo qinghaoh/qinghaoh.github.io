@@ -1025,6 +1025,29 @@ public int racecar(int target) {
 }
 {% endhighlight %}
 
+# Precompute
+
+[Number of Ways to Reach a Position After Exactly k Steps][number-of-ways-to-reach-a-position-after-exactly-k-steps]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+private static final int MAX_POS = 1000;
+
+public int numberOfWays(int startPos, int endPos, int k) {
+    // dp[i][j]: uses exact i steps to reach end, while distance between start (fixed to 0) and end is j
+    int[][] dp = new int[MAX_POS + 1][MAX_POS + 1];
+    for (int i = 1; i < dp.length; i++) {
+        // one way to go distance i
+        dp[i][i] = 1;
+        for (int j = 0; j < i; j++) {
+            dp[i][j] = (dp[i - 1][Math.abs(j - 1)] + dp[i - 1][j + 1]) % MOD;
+        }
+    }
+
+    return dp[k][Math.abs(startPos - endPos)];
+}
+{% endhighlight %}
+
 [best-team-with-no-conflicts]: https://leetcode.com/problems/best-team-with-no-conflicts/
 [build-array-where-you-can-find-the-maximum-exactly-k-comparisons]: https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/
 [choose-numbers-from-two-arrays-in-range]: https://leetcode.com/problems/choose-numbers-from-two-arrays-in-range/
@@ -1042,6 +1065,7 @@ public int racecar(int target) {
 [minimum-total-space-wasted-with-k-resizing-operations]: https://leetcode.com/problems/minimum-total-space-wasted-with-k-resizing-operations/
 [minimum-white-tiles-after-covering-with-carpets]: https://leetcode.com/problems/minimum-white-tiles-after-covering-with-carpets/
 [number-of-music-playlists]: https://leetcode.com/problems/number-of-music-playlists/
+[number-of-ways-to-reach-a-position-after-exactly-k-steps]: https://leetcode.com/problems/number-of-ways-to-reach-a-position-after-exactly-k-steps/
 [number-of-ways-to-rearrange-sticks-with-k-sticks-visible]: https://leetcode.com/problems/number-of-ways-to-rearrange-sticks-with-k-sticks-visible/
 [paint-house-iii]: https://leetcode.com/problems/paint-house-iii/
 [race-car]: https://leetcode.com/problems/race-car/

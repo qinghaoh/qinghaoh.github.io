@@ -46,6 +46,8 @@ private void union(int u, int v) {
 }
 {% endhighlight %}
 
+This problem can also be resolved by TreeMap of intervals.
+
 [Execution of All Suffix Instructions Staying in a Grid][execution-of-all-suffix-instructions-staying-in-a-grid]
 
 {% highlight java %}

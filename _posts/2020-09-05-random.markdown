@@ -82,36 +82,73 @@ Map + List
 [Random Pick with Blacklist][random-pick-with-blacklist]
 
 {% highlight java %}
-private Map<Integer,Integer> map;
-private Random rand;
-private int size;  // whitelist size
+private Map<Integer, Integer> map = new HashMap<>();
+private Random rand = new Random();
+private int whitelistSize;  // number of integers in whitelist
 
-public Solution(int N, int[] blacklist) {
-    map = new HashMap<>();
-    rand = new Random();
-    size = N - blacklist.length;
+public Solution(int n, int[] blacklist) {
+    whitelistSize = n - blacklist.length;
 
+    // some blacklist integers already occupies positions in [whitelistSize, n)
     for (int b : blacklist) {
-        if (b >= size) {
+        if (b >= whitelistSize) {
             map.put(b, -1);
         }  
     }
 
-    // re-maps blacklist to [size, N)
-    int count = N - 1;
-    for (int b : blacklist){
-        if (b < size) {
-            while (map.containsKey(count)) {
-                count--;
+    // re-maps blacklist integers to the segment [whitelistSize, n)
+    int index = n - 1;
+    for (int b : blacklist) {
+        // finds the first vacant position in [whitelistSize, n)
+        // and maps b to it
+        if (b < whitelistSize) {
+            while (map.containsKey(index--)) {
             }
-            map.put(b, count--);
+            map.put(b, index + 1);
         }
     }
 }
 
-public int pick() {        
-    int num = rand.nextInt(size);
+public int pick() {
+    int num = rand.nextInt(whitelistSize);
     return map.getOrDefault(num, num);
+}
+{% endhighlight %}
+
+The above problem can be solved by binary search, too. But the time complexity will be higher:
+
+{% highlight java %}
+private int[] blacklist;
+private Random rand = new Random();
+private int whitelistSize;  // number of integers in whitelist
+
+public Solution(int n, int[] blacklist) {
+    this.blacklist = blacklist;
+    this.whitelistSize = n - blacklist.length;
+
+    Arrays.sort(blacklist);
+}
+
+// O(log(n))
+public int pick() {
+    int num = rand.nextInt(whitelistSize);
+    // if num is in [0, blacklist[0]), returns num
+    // if num is in [blacklist[0], blacklist[1] - 1), returns num + 1
+    // ...
+    // if num is in [blacklist[i] - i, blacklist[i + 1] - (i + 1)), returns num + (i + 1)
+    // ...
+    // searches for the index of the first right boundary so that blacklist[index] - index > num
+    // i.e. blacklist[index] - index - 1 >= num
+    int low = 0, high = blacklist.length;
+    while (low < high) {
+        int mid = (low + high) >>> 1;
+        if (blacklist[mid] - mid - 1 >= num) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return num + low;
 }
 {% endhighlight %}
 
