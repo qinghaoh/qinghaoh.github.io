@@ -45,7 +45,7 @@ Note it's very important that in each iteration, we handles **only** neighbor ve
 
 If we are only interested in a shortest path between vertices source and target, we can terminate the search if `u == target`.
 
-Fibonacci heap or Brodal queue offer optimal implementations for the above 3 min-priority queque operations.
+[Indexed priority queue](https://algs4.cs.princeton.edu/24pq/IndexMinPQ.java.html), Fibonacci heap or Brodal queue offer optimal implementations for the above 3 min-priority queque operations.
 
 Time complexity: 
 \\(\Theta(|V|+|E|\log{|V|})\\)

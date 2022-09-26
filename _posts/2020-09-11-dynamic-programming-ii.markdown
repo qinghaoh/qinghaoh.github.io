@@ -116,37 +116,28 @@ public double largestSumOfAverages(int[] A, int K) {
 }
 {% endhighlight %}
 
+DP scans array from right to left:
+
 [Maximum Score from Performing Multiplication Operations][maximum-score-from-performing-multiplication-operations]
 
 {% highlight java %}
-private int n, m;
-private int[] nums, multipliers;
-private int[][] memo;
-
 public int maximumScore(int[] nums, int[] multipliers) {
-    this.n = nums.length;
-    this.m = multipliers.length;
-    this.nums= nums;
-    this.multipliers = multipliers;
-    this.memo = new int[m][m];  // m is much smaller than n, avoid MLE
-    for (int i = 0; i < m; i++) {
-        Arrays.fill(memo[i], Integer.MIN_VALUE);
-    }
-    return helper(0, 0);
-}
+    int n = nums.length, m = multipliers.length;
+    // dp[i][j]: left of array elements has index i, and j is the index of multipliers 
+    int[][] dp = new int[m + 1][m + 1];
 
-private int helper(int start, int index) {
-    if (index == m) {
-        return 0;
+    for (int i = m - 1; i >= 0; i--) {
+        for (int j = m - 1; j >= 0; j--) {
+            // len = n - j
+            // right = left + len - 1
+            int right = i + (n - j) - 1;
+            if (right >= 0 && right < n) {
+                // chooses start or end
+                dp[i][j] = Math.max(dp[i + 1][j + 1] + nums[i] * multipliers[j], dp[i][j + 1] + nums[right] * multipliers[j]);
+            }
+        }
     }
-
-    if (memo[start][index] != Integer.MIN_VALUE) {
-        return memo[start][index];
-    }
-
-    int left = helper(start + 1, index + 1) + nums[start] * multipliers[index];
-    int right = helper(start, index + 1) + nums[start + n - index - 1] * multipliers[index];
-    return memo[start][index] = Math.max(left, right);
+    return dp[0][0];
 }
 {% endhighlight %}
 

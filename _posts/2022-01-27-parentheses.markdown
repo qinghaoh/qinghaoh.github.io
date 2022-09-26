@@ -156,8 +156,6 @@ public int scoreOfParentheses(String s) {
 
 [Longest Valid Parentheses][longest-valid-parentheses]
 
-TODO: what's the invariant/intuiation behind this?
-
 {% highlight java %}
 public int longestValidParentheses(String s) {
     Deque<Integer> st = new ArrayDeque<>();
@@ -170,10 +168,40 @@ public int longestValidParentheses(String s) {
         } else {
             st.pop();
             if (st.isEmpty()) {
+                // uses the current ')' as a checkpoint
                 st.push(i);
             } else {
                 max = Math.max(max, i - st.peek());
             }
+        }
+    }
+    return max;
+}
+{% endhighlight %}
+
+This problem can also be solved by two string scans with better space complexity:
+
+{% highlight java %}
+public int longestValidParentheses(String s) {
+    return Math.max(longestValidParentheses(s, true), longestValidParentheses(s, false));
+}
+
+// scans the string in one direction
+private int longestValidParentheses(String s, boolean isForward) {
+    int n = s.length(), open = 0, close = 0, max = 0;
+    // scans left to right
+    for (int i = isForward ? 0 : n - 1; i >= 0 && i < n; i = i + (isForward ? 1 : - 1)) {
+        char ch = s.charAt(i);
+        if ((isForward && ch == '(') || (!isForward && ch == ')')) {
+            open++;
+        } else {
+            close++;
+        }
+
+        if (open == close) {
+            max = Math.max(max, 2 * close);
+        } else if (open < close) {
+            open = close = 0;
         }
     }
     return max;

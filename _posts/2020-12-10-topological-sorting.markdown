@@ -343,6 +343,8 @@ public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences)
 }
 {% endhighlight %}
 
+A more intuitive solution is to reconstruct the topological sort from `sequences` and check if it's unique and equal to `nums`.
+
 # Two-level Topological Sort
 
 [Sort Items by Groups Respecting Dependencies][sort-items-by-groups-respecting-dependencies]
