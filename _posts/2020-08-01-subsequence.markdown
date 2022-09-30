@@ -91,23 +91,25 @@ public boolean isSubsequence(String s, String t) {
     }
 
     int index = 0;
-    for (char c : s.toCharArray()) {
-        if (!map.containsKey(c - 'a')) {
+    for (char ch : s.toCharArray()) {
+        if (!map.containsKey(ch - 'a')) {
             return false;
         }
 
-        int i = Collections.binarySearch(map.get(c - 'a'), index);
+        int i = Collections.binarySearch(map.get(ch - 'a'), index);
         if (i < 0) {
             i = ~i;
         }
-        if (i == map.get(c - 'a').size()) {
+        if (i == map.get(ch - 'a').size()) {
             return false;
         }
-        index = map.get(c - 'a').get(i) + 1;
+        index = map.get(ch - 'a').get(i) + 1;
     }
     return true;
 }
 {% endhighlight %}
+
+The above map pattern (character: list of indices) is very useful in many problems.
 
 ## Dynamic Programming
 

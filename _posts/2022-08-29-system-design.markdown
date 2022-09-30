@@ -16,11 +16,19 @@ mater sends a stream of commands to the replica to
 
 Topic
 
-Apache Cassandra
+## RabbitMQ
+
+# Database
+
+## Apache Cassandra
 
 ## MongoDB
 
-## HBase
+## Apache HBase
+Wide column. Time series data
+
+## InfluxDB
+Time series data
 
 # Distributed File System
 
@@ -39,6 +47,7 @@ Distributed cache:
 MemCacheD
 
 Shards: consistent hashing (cache client, server (Redis) or cache proxy (Twemproxy))
+e.g. MurmurHash
 Drawbacks:
 * Domino effect
 * Uneven server distribution
@@ -48,6 +57,11 @@ Solution:
 * Jump Hash algorithm (Google)
 * Proportional Hash (Yahoo!)
 Possible problem: hot shard
+
+Hot partition solution:
+* include event time to the parition key
+* Split hot parition into more partitions
+* Dedicated parition for popular items
 
 Configuration management tool
 * [Chef](https://docs.chef.io/)
@@ -148,6 +162,8 @@ Jay Kreps, Apache Kafka
 
 ## Apache Spark
 
+## Apache Flink
+
 Front-end
 * Request valiation
 * Authentication/Authorization
@@ -181,12 +197,24 @@ shard proxy
 * Terminate long queries 
 Vitess (YouTube)
 
+SQL
+* ACID transactions
+* Complex dynamic queries
+* Data analytics
+* Data warehousing
+
+NoSQL
+* Easy scaling for both writes and reads
+* Highly available
+* Tolerate network partitions
+
+Some keywords:
 * Scalable: partitioning
 * Reliable: replication and checkpointing
 * Fast: in-memory
 
 Data enrichment
-Embedded database (LinkedIn)
+Embedded database (LinkedIn): RocksDB
 
 Client
 * blocking: create one thread for each new connection, easy to debug
@@ -201,6 +229,77 @@ Timeouts
 * connection timeout: tens of ms
 * request timeout: exponential backoff and jitter
  * Circuite Breaker: prevents repeat retries
+
+Resource dispatching
+* Bulkhead pattern: isolates elements of an application into pools.
+
+Load balancers
+* Round robin
+* Least connections
+* Least response time
+* Hash-based
+
+Service discovery:
+* Server-side: load balancer
+* Client-side
+ * Service registry (e.g. Apache ZooKeeper, Netflix Eureka)
+ * Gossip protocol
+
+Replication
+* Single leader: SQL scaling
+* Multi leader: (TBD)
+* Leaderless: Apache Cassandra
+
+Binary formats:
+* Thrift: tag
+* Protocol buffers: tag
+* Avro
+
+Storage strategy: Data rollup
+Hot/Cold storage
+Data federation
+
+Clients:
+* Netty: Non-blocking I/O
+* Netflix Hystrix
+* Polly
+
+Load balancer:
+* NetScaler: hardware
+* NGINX: software
+
+Performace testing
+* Load testing
+* Stress testing: find break point
+* Soak testing: find leaking resources
+Apache JMeter to generate load
+
+Monitoring:
+* Latency
+* Traffic
+* Errors
+* Saturation
+
+Audit System:
+* Weak: Canary
+* Strong: Different path, Lambda Architecture
+
+Queue message deletion:
+* Offset (Apache Kafka)
+* Mark as invisible so other cosumers won't see it. The consumer who retrieved the message deletes it explicitly, otherwise it becomes visible again (AWS SQS)
+
+Message delivery:
+* At most once
+* At least once
+* Exactly once (hard to achieve)
+
+Message sharing
+* Broadcasting (full mesh)
+* Gossip protocol (< several thousands)
+* Redis
+* Coordination service
+
+Service + Daemon
 
 [Number of Distinct Roll Sequences][number-of-distinct-roll-sequences]
 

@@ -338,6 +338,52 @@ public Node connect(Node root) {
 }
 {% endhighlight %}
 
+Generalizing it with an arbitrary binary tree:
+
+[Populating Next Right Pointers in Each Node II][populating-next-right-pointers-in-each-node-ii]
+
+{% highlight java %}
+// the previous node on the next level
+// we're about to connect a new node as its next
+private Node prev = null;
+// leftmost node of the current level
+private Node leftmost = null;
+
+public Node connect(Node root) {
+    if (root == null) {
+        return root;
+    }
+
+    leftmost = root;
+    Node curr = leftmost;
+
+    while (leftmost != null) {
+        curr = leftmost;
+        prev = leftmost = null;
+        while (curr != null) {
+            helper(curr.left);
+            helper(curr.right);
+            curr = curr.next;
+        }
+    }
+
+    return root;
+}
+
+private void helper(Node node) {
+    if (node != null) {
+        if (prev == null) {
+            // current node is the first node of the next level
+            leftmost = node;
+        } else {
+            // connects current node to the previous node
+            prev.next = node;
+        }    
+        prev = node; 
+    }
+}
+{% endhighlight %}
+
 [add-two-numbers-ii]: https://leetcode.com/problems/add-two-numbers-ii/
 [copy-list-with-random-pointer]: https://leetcode.com/problems/copy-list-with-random-pointer/
 [find-the-duplicate-number]: https://leetcode.com/problems/find-the-duplicate-number/
@@ -345,4 +391,5 @@ public Node connect(Node root) {
 [linked-list-cycle-ii]: https://leetcode.com/problems/linked-list-cycle-ii/
 [palindrome-linked-list]: https://leetcode.com/problems/palindrome-linked-list/
 [populating-next-right-pointers-in-each-node]: https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+[populating-next-right-pointers-in-each-node-ii]: https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
 [sort-list]: https://leetcode.com/problems/sort-list/

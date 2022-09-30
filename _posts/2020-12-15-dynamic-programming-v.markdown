@@ -613,13 +613,13 @@ public int numWays(String[] words, String target) {
     for (int i = 0; i < m; i++) {
         // freq[j]: total frequency of letter j in the current position i
         int[] freq = new int[26];
-        for (int j = 0; j < words.length; j++){
-            freq[words[j].charAt(i)-'a']++;
+        for (int j = 0; j < words.length; j++) {
+            freq[words[j].charAt(i) - 'a']++;
         }
 
         // iterates backwards
         for (int j = Math.min(i + 1, n); j > 0; j--) {
-            dp[j] = (dp[j] + dp[j - 1] * freq[target.charAt(j - 1) -'a']) % MOD;
+            dp[j] = (dp[j] + dp[j - 1] * freq[target.charAt(j - 1) - 'a']) % MOD;
         }
     }
     return (int)dp[n];

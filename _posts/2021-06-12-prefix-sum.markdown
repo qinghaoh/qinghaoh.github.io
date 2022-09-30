@@ -609,7 +609,7 @@ public int subarraysWithMoreZerosThanOnes(int[] nums) {
     // dp[i]: count of subarrays ending at i
     int[] dp = new int[n];
 
-    // {sum : last index}
+    // {prefix sum : last index}
     Map<Integer, Integer> map = new HashMap<>();
     map.put(0, -1);
 
@@ -619,20 +619,61 @@ public int subarraysWithMoreZerosThanOnes(int[] nums) {
         // prefix sum of #1 - #0
         sum += nums[i] == 0 ? -1 : 1;
         if (map.containsKey(sum)) {
-            // between curr and prev, #0 == #1
+            // in (prev, i], #0 == #1
             int prev = map.get(sum);
             dp[i] = prev < 0 ? 0 : dp[prev];
 
-            // valley between curr and prev
+            // "valley" in (prev, i]: first 0's, then 1's
+            // so for all subarrays ending at i, i.e. nums[j...i] where prev + 1 < j <= i
+            // #1 > #0
             if (nums[i] == 1) {
                 dp[i] += i - prev - 1;
             }
         } else if (sum > 0) {
-            // the subarray ending at i has more ones than zeros
+            // "valley" in [0, i]
+            // for all the subarrays ending at i, #1 > #0
             dp[i] = i + 1;
         }
         count = (count + dp[i]) % MOD;
         map.put(sum, i);
+    }
+    return count;
+}
+{% endhighlight %}
+
+Another solution is to use two DP variables to track states:
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+
+public int subarraysWithMoreZerosThanOnes(int[] nums) {
+    // {prefix sum, count of indices with this prefix sum}
+    Map<Integer, Integer> map = new HashMap<>();
+    // no elements means #0 == #1 == 0
+    map.put(0, 1);
+
+    // dp0: #0 == #1
+    // dp1: #1 > #0
+    int dp0 = 0, dp1 = 0, sum = 0, count = 0;
+    for (int num : nums) {
+        // dp values at index "i - 1" (prev)
+        int pdp0 = dp0, pdp1 = dp1;
+        // prefix sum of #1 - #0
+        sum += num == 0 ? -1 : 1;
+
+        dp0 = map.getOrDefault(sum, 0);
+        map.put(sum, dp0 + 1);
+
+        if (num == 0) {
+            // pdp0 doesn't contribute to dp1
+            // because num == 0 on top of pdp0 will result in #0 > #1
+            // adjusts the equation to help understanding:
+            //   dp0 + dp1 == pdp1
+            dp1 = (pdp1 - dp0 + MOD) % MOD;
+        } else {
+            dp1 = (pdp0 + pdp1 + 1) % MOD;
+        }
+        count = (count + dp1) % MOD;
     }
     return count;
 }
