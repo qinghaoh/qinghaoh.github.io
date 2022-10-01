@@ -1234,74 +1234,66 @@ The key is to understand the computation of `cost[i]`:
 public long goodTriplets(int[] nums1, int[] nums2) {
     int n = nums1.length;
 
-    // index[num]: index of element num in nums2
-    int[] index = new int[n];
-    for (int i = 0; i < n; i++){
-        index[nums2[i]] = i;
-    }
-
-    // list of sorted index (in nums2) of visited elements in nums1
-    List<Integer> list = new ArrayList();
-    // p[i]: number of elements on the left of nums1[i] in both nums1 and nums2
-    int[] p = new int[n];
+    // indices[num]: index of element num in nums2
+    int[] indices = new int[n];
     for (int i = 0; i < n; i++) {
-        list.add(p[i] = ~Collections.binarySearch(list, index[nums1[i]]), index[nums1[i]]);
+        indices[nums2[i]] = i;
     }
 
-    list.clear();
-    // s[i]: number of elements on the right of nums1[i] in both nums1 and nums2
-    int[] s = new int[n];
-    for (int i = n - 1; i >= 0; i--) {
-        int insertionPoint = ~Collections.binarySearch(list, index[nums1[i]]);
-        s[i] = list.size() - insertionPoint;
-        list.add(insertionPoint, index[nums1[i]]);
-    }
+    // now the problem becomes: in the array `indices`, for each indices[i]
+    // counts the number of less elements on the left
+    // and the number of greater elements on the right
+    // result = sum(less[i] * greater[i])
 
-    long count = 0;
-    for (int i = 0; i < n; i++){
-        count += (long)p[i] * s[i];
-    }
-    return count;
-}
-{% endhighlight %}
-
-Simplified version:
-
-{% highlight java %}
-public long goodTriplets(int[] nums1, int[] nums2) {
-    int n = nums1.length;
-
-    // index[num]: index of element num in nums2
-    int[] index = new int[n];
-    for (int i = 0; i < n; i++){
-        index[nums2[i]] = i;
-    }
-
-    // list of sorted index (in nums2) of visited elements in nums1
+    // list of sorted indices (in nums2) of visited nums1 elements
     List<Integer> list = new ArrayList();
-    list.add(index[nums1[0]]);
+    list.add(indices[nums1[0]]);
 
     long count = 0;
     // ignores the first and last element
     for (int i = 1; i < n - 1; i++) {
         // finds the insertion point of index[nums[i]] in the list
         // it stands for the number of common elements on the left of nums[i] in both arrays
-        int insertionPoint = ~Collections.binarySearch(list, index[nums1[i]]);
-        list.add(insertionPoint, index[nums1[i]]);
+        int insertionPoint = ~Collections.binarySearch(list, indices[nums1[i]]);
+        list.add(insertionPoint, indices[nums1[i]]);
 
         //   common elements on the right
         // = n - common elements on the left (= insertionPoint)
         //   - unique elements in nums1 (= i - insertionPoint)
-        //   - unique elements in nums2 (= index[nums1[i]] - insertionPoint)
+        //   - unique elements in nums2 (= indices[nums1[i]] - insertionPoint)
         //   - self (= 1)
-        count += (long)insertionPoint * (n - i - index[nums1[i]] + insertionPoint - 1);
+        count += (long)insertionPoint * (n - i - indices[nums1[i]] + insertionPoint - 1);
     }
     return count;
 }
 {% endhighlight %}
 
+For example, `nums1 = [2,0,1,3], nums2 = [0,1,2,3]`
+
+```
+indices = [2,0,1,3]
+i = 0, list = [2]
+i = 1, list = [0, 2], insertionPoint = 0
+i = 2, list = [0, 1, 2], insertionPoint = 1
+i = 3, list = [0, 1, 2, 3], insertionPoint = 3
+```
+
+This problem is similar to [Count of Smaller Numbers After Self](count-of-smaller-numbers-after-self), so we can find this `insertionPoint` (i.e. number of less elements on the left) dynamically by merge sort or Fenwick Tree:
+
+{% highlight java %}
+FenwickTree ft = new FenwickTree(n);
+long count = 0;
+for (int i = 0; i < n - 1; i++) {
+    int less = ft.sum(indices[nums1[i]] + 1);
+    count += (long)less * (n - i - indices[nums1[i]] + less - 1);
+    ft.add(indices[nums1[i]] + 1, 1);
+}
+return count;
+{% endhighlight %}
+
 [binary-search]: https://leetcode.com/problems/binary-search/
 [count-good-triplets-in-an-array]: https://leetcode.com/problems/count-good-triplets-in-an-array/
+[count-of-smaller-numbers-after-self]: https://leetcode.com/problems/count-of-smaller-numbers-after-self/
 [divide-chocolate]: https://leetcode.com/problems/divide-chocolate/
 [find-k-closest-elements]: https://leetcode.com/problems/find-k-closest-elements/
 [find-minimum-in-rotated-sorted-array]: https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
@@ -1321,6 +1313,7 @@ public long goodTriplets(int[] nums1, int[] nums2) {
 [maximum-font-to-fit-a-sentence-in-a-screen]: https://leetcode.com/problems/maximum-font-to-fit-a-sentence-in-a-screen/
 [maximum-number-of-removable-characters]: https://leetcode.com/problems/maximum-number-of-removable-characters/
 [maximum-number-of-tasks-you-can-assign]: https://leetcode.com/problems/maximum-number-of-tasks-you-can-assign/
+[maximum-total-beauty-of-the-gardens]: https://leetcode.com/problems/maximum-total-beauty-of-the-gardens/
 [maximum-value-at-a-given-index-in-a-bounded-array]: https://leetcode.com/problems/maximum-value-at-a-given-index-in-a-bounded-array/
 [maximum-width-ramp]: https://leetcode.com/problems/maximum-width-ramp/
 [median-of-a-row-wise-sorted-matrix]: https://leetcode.com/problems/median-of-a-row-wise-sorted-matrix/

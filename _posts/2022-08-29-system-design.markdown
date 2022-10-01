@@ -4,7 +4,54 @@ title:  "System Design"
 usemathjax: true
 ---
 
-Redis:
+## Redis
+
+* [Documentation](https://redis.io/docs/)
+* [Interview questions](https://gist.github.com/aershov24/16f4e369a93182de3f235a9a154a6b4a)
+
+Redis (Remote Dictionary Server)
+
+In-memory key-value data store. Stores cache data into physical storage if needed.
+
+Datatypes:
+* string: C dynamic string library
+* hash: namespace/ group for several key/value pairs (??) Hash table
+* list: durable, atomic queues. Linked list
+* set: Hash table
+* sorted set: Skip list
+* bitmap
+* hyperlog
+* zip list
+* int set
+
+Pub-sub model
+
+Executes ultra-fast LUA scripts.
+
+Atomicity
+
+Item eviction policies
+
+Blocking queues
+
+Data persistence: snapshots (automatic, BGSAVE or at shutdown) (RDB?)
+AOF (Append Only Files): optional
+
+journaling??
+
+Single threaded: an individual command is always atomic
+Provide concurrency at the I/O level by I/O multiplexing + even loop. Atomicity is at no extra cost (doesn't require synchronization between threads)
+CPU is usually not the bottleneck. IT's either memory or network bound.
+Redis 4.0 more threaded: deleting objects in the background, blocking commands implemented via Redis modules
+
+Pipelining (vs batching?) Redis commands
+
+Multi/exec sequence ensures no other clients are executing commands in between.
+
+Transactions: MULTI, EXEC, DISCARD, WATCH
+Rollback is not supported
+
+Sharding + Replication
 
 Leader follower (master-replica) replication
 
@@ -300,6 +347,8 @@ Message sharing
 * Coordination service
 
 Service + Daemon
+
+maxmemory: write commands starts to fail or evict keys
 
 [Number of Distinct Roll Sequences][number-of-distinct-roll-sequences]
 

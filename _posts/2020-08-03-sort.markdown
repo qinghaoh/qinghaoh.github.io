@@ -227,6 +227,8 @@ index: [1,0,3,2] -> [3,1,0,2]
 counts: [1,0,1,0] -> [2,1,1,0]
 ```
 
+We can also leverage Fenwick Tree to solve the problem. See [Fenwick Tree](../../../2022/10/01/fenwick-tree.html).
+
 [Count of Range Sum][count-of-range-sum]
 
 `count` = count of `lower <= p[j] - p[i] <= higher` with `j > i`

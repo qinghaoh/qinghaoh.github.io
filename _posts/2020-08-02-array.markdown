@@ -77,10 +77,17 @@ public int minPatches(int[] nums, int n) {
 }
 {% endhighlight %}
 
+# Circular
+
+[Josephus problem](https://en.wikipedia.org/wiki/Josephus_problem)
+
 [Find the Winner of the Circular Game][find-the-winner-of-the-circular-game]
 
 {% highlight java %}
 public int findTheWinner(int n, int k) {
+    // Josephus Problem
+    // f(n, k) = (f(n - 1, k) + k) % n
+    // where f(n, k) assumes we start from the first seat
     int res = 0;
     for (int i = 1; i <= n; i++) {
         res = (res + k) % i;
