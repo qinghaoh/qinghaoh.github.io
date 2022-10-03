@@ -665,17 +665,15 @@ public int maxWidthRamp(int[] A) {
 
 # Histogram
 
+The problem [Largest Rectangle in Histogram][largest-rectangle-in-histogram] deserves a closer look. The stack approach can be applied to many similar problems, like rectangle count/max area in a matrix.
+
 [Maximal Rectangle][maximal-rectangle]
 
 {% highlight java %}
 public int maximalRectangle(char[][] matrix) {
-    if (matrix.length == 0) {
-        return 0;
-    }
-
     int m = matrix.length, n = matrix[0].length;
     int area = 0;
-    int[] height = new int[n + 1];
+    int[] heights = new int[n];
 
     for (int i = 0; i < m; i++) {
         Deque<Integer> st = new ArrayDeque<>();
@@ -683,14 +681,13 @@ public int maximalRectangle(char[][] matrix) {
 
         for (int j = 0; j <= n; j++) {
             // histogram height array in each row
-            if (j < n && matrix[i][j] == '1') {
-                height[j]++;
-            } else {
-                height[j] = 0;
+            if (j < n) {
+                heights[j] = matrix[i][j] == '0' ? 0 : heights[j] + 1;
             }
 
-            while (!st.isEmpty() && height[j] < height[st.peek()]) {
-                int h = height[st.pop()];
+            // 84. Largest Rectangle in Histogram
+            while (st.peek() >= 0 && (j == n || heights[j] < heights[st.peek()])) {
+                int h = heights[st.pop()];
                 int w = j - 1 - st.peek();
                 area = Math.max(area, h * w);
             }
@@ -706,30 +703,69 @@ public int maximalRectangle(char[][] matrix) {
 
 {% highlight java %}
 public int numSubmat(int[][] mat) {
-    int m = mat.length, n = mat[0].length;
-    int count = 0;
-    int[] height = new int[n + 1];
+    int m = mat.length, n = mat[0].length, count = 0;
+    // sums[i]: count of all-one submatrices with i as the right side
+    int[] sums = new int[n];
+    int[] heights = new int[n];
+
+    for (int i = 0; i < m; i++) {
+        Deque<Integer> st = new ArrayDeque<>();
+        st.push(-1);
+        Arrays.fill(sums, 0);
+
+        for (int j = 0; j < n; j++) {
+            // histogram height array in each row
+            heights[j] = mat[i][j] == 0 ? 0 : heights[j] + 1;
+
+            // 84. Largest Rectangle in Histogram
+            while (st.peek() >= 0 && heights[j] < heights[st.peek()]) {
+                st.pop();
+            }
+
+            // counts the all-one matrices whose bottom is at current row
+            // and right side is on heights[j]
+            int prev = st.peek();
+            sums[j] = (prev < 0 ? 0 : sums[prev]) + heights[j] * (j - prev);
+            st.push(j);
+        }
+
+        count += Arrays.stream(sums).sum();
+    }
+
+    return count;
+}
+{% endhighlight %}
+
+![Stack](/assets/count_submatrices_with_all_ones.png)
+
+Instead of maining an extra array `int[] sums`, we can use `{index, sum}` as the compound stack element.
+
+The final result is a culumative sum. The following solution gets rid of the extra array `int[] sums` and keeps using the single `index` stack element:
+
+{% highlight java %}
+public int numSubmat(int[][] mat) {
+    int m = mat.length, n = mat[0].length, count = 0;
+    int[] heights = new int[n];
 
     for (int i = 0; i < m; i++) {
         Deque<Integer> st = new ArrayDeque<>();
         st.push(-1);
 
+        // this is sums[j] in the above solution
         int sum = 0;
-        for (int j = 0; j <= n; j++) {
+        for (int j = 0; j < n; j++) {
             // histogram height array in each row
-            if (j < n && mat[i][j] == 1) {
-                height[j]++;
-            } else {
-                height[j] = 0;
+            heights[j] = mat[i][j] == 0 ? 0 : heights[j] + 1;
+
+            // subtracts sums[prev + 1], ..., sums[j - 1] in the above solution
+            // that yields to sums[prev]
+            while (st.peek() >= 0 && heights[j] < heights[st.peek()]) {
+                int top = st.pop();
+                sum -= heights[top] * (top - st.peek());
             }
 
-            while (st.peek() >= 0 && height[j] < height[st.peek()]) {
-                int index = st.pop();
-                sum -= height[index] * (index - st.peek());
-            }
-
-            // height[j] as right boundary
-            sum += height[j] * (j - st.peek());
+            // rhs is the new count which has j as right side
+            sum += heights[j] * (j - st.peek());
             count += sum;
             st.push(j);
         }

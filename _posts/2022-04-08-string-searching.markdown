@@ -78,6 +78,30 @@ List<Integer> kmp(String text, String pattern) {
 }
 {% endhighlight %}
 
+[Maximum Deletions on a String][maximum-deletions-on-a-string]
+
+{% highlight java %}
+public int deleteString(String s) {
+    int n = s.length();
+    int[] dp = new int[n];
+    dp[n - 1] = 1;
+
+    for (int i = n - 2; i >= 0; i--) {
+        dp[i] = 1;
+        int[] lps = computeLps(s.substring(i, n));
+        for (int j = 1; i + j < n; j += 2) {
+            // uses KMP LPS to quickly find the prefix which can be split to two identical parts
+            // e.g. "aaab"
+            // if i == 0, j == 1, then lps[1] = 1, which means "aa" is the good prefix
+            if (lps[j] == j / 2 + 1) {
+                dp[i] = Math.max(dp[i], 1 + dp[i + lps[j]]);
+            }
+        }
+    }
+    return dp[0];
+}
+{% endhighlight %}
+
 [Remove All Occurrences of a Substring][remove-all-occurrences-of-a-substring]
 
 {% highlight java %}
@@ -290,6 +314,7 @@ private String search(String s, int len) {
 [find-all-good-strings]: https://leetcode.com/problems/find-all-good-strings/
 [longest-duplicate-substring]: https://leetcode.com/problems/longest-duplicate-substring/
 [longest-happy-prefix]: https://leetcode.com/problems/longest-happy-prefix/
+[maximum-deletions-on-a-string]: https://leetcode.com/problems/maximum-deletions-on-a-string/
 [remove-all-occurrences-of-a-substring]: https://leetcode.com/problems/remove-all-occurrences-of-a-substring/
 [shortest-palindrome]: https://leetcode.com/problems/shortest-palindrome/
 [sum-of-scores-of-built-strings]: https://leetcode.com/problems/sum-of-scores-of-built-strings/

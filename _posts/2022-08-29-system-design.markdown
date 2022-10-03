@@ -157,6 +157,8 @@ MapReduce
 
 ## Apache ZooKeeper
 
+![Apache ZooKeeper](/assets/zookeeper_small.gif)
+
 [Apache ZooKeeper](https://zookeeper.apache.org/): high performace, high availability, strictly ordered access.
 
 * Shared hierarchical namespace (file system)
