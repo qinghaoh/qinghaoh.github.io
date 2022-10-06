@@ -92,6 +92,45 @@ public int minDistance(String word1, String word2) {
 }
 {% endhighlight %}
 
+# Projection
+
+[Smallest Rectangle Enclosing Black Pixels][smallest-rectangle-enclosing-black-pixels]
+
+{% highlight java %}
+public int minArea(char[][] image, int x, int y) {
+    int m = image.length, n = image[0].length;
+    // there's only one black region,
+    // so the horizontal/vertical projection is continuous
+    // horizontal projection
+    // first column that has black pixels
+    int left = binarySearch(image, 0, y, 0, m, true, true);
+    // first column that has all white pixels
+    int right = binarySearch(image, y, n, 0, m, false, true);
+    // vertical projection
+    // first row that has black pixels
+    int top = binarySearch(image, 0, x, left, right, true, false);
+    // first row that has all white pixels
+    int bottom = binarySearch(image, x, m, left, right, false, false);
+    return (right - left) * (bottom - top);
+}
+
+private int binarySearch(char[][] image, int low, int high, int min, int max, boolean isLowerBound, boolean isHorizontal) {
+    while (low < high) {
+        // k is the index of the first row/column which has black pixels
+        int k = min, mid = (low + high) >>> 1;
+        while (k < max && (isHorizontal ? image[k][mid] : image[mid][k]) == '0') {
+            k++;
+        }
+        if (k < max == isLowerBound) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return low;
+}
+{% endhighlight %}
+
 # Range Sum
 
 [Matrix Block Sum][matrix-block-sum]
@@ -486,6 +525,7 @@ public int[][] restoreMatrix(int[] rowSum, int[] colSum) {
 [number-of-submatrices-that-sum-to-target]: https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/
 [remove-all-ones-with-row-and-column-flips]: https://leetcode.com/problems/remove-all-ones-with-row-and-column-flips/
 [search-a-2d-matrix]: https://leetcode.com/problems/search-a-2d-matrix/
+[smallest-rectangle-enclosing-black-pixels]: https://leetcode.com/problems/smallest-rectangle-enclosing-black-pixels/
 [stamping-the-grid]: https://leetcode.com/problems/stamping-the-grid/
 [surrounded-regions]: https://leetcode.com/problems/surrounded-regions/
 [transform-to-chessboard]: https://leetcode.com/problems/transform-to-chessboard/

@@ -147,12 +147,7 @@ public int[] processQueries(int[] queries, int m) {
 private static final int MOD = (int)1e9 + 7;
 
 public int createSortedArray(int[] instructions) {
-    int max = 0;
-    for (int i : instructions) {
-        max = Math.max(max, i);
-    }
-
-    FenwickTree ft = new FenwickTree(max);
+    FenwickTree ft = new FenwickTree(Arrays.stream(instructions).max().getAsInt());
     int cost = 0;
     for (int i = 0; i < instructions.length; i++) {
         cost = (int)(cost + Math.min(ft.sum(instructions[i] - 1), i - ft.sum(instructions[i])) % MOD) % MOD;

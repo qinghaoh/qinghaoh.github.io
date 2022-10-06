@@ -177,14 +177,21 @@ for (int i = 0; i < m; i++) {
 {% highlight java %}
 public String minWindow(String s1, String s2) {
     int n1 = s1.length(), n2 = s2.length();
-    // dp[i][j]: start index k, that s1.substring(k, k + i) that contains s2.substring(0, j)
+    // dp[i][j] = k: (k - 1) is the start index of the shortest postfix of s1.substring(0, i)
+    // such that s1.substring(k, i) is a supersequence of s2.substring(0, j)
+    // notice k is 1-indexed
     int[][] dp = new int[n1 + 1][n2 + 1];
 
     for (int i = 0; i <= n1; i++) {
         dp[i][0] = i + 1;
     }
-    for (int j = 1; j <= n2; j++) {
-        for (int i = 1; i <= n1; i++) {
+
+    for (int i = 1; i <= n1; i++) {
+        for (int j = 1; j <= n2; j++) {
+            // e.g. s1 = "abbcd"
+            //      s2 =    "bd"
+            // s1[4] == s2[1]
+            // dp[5][2] = dp[4][1] = 3 (points the second 'b' in s1)
             if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
                 dp[i][j] = dp[i - 1][j - 1];
             } else {
@@ -195,14 +202,21 @@ public String minWindow(String s1, String s2) {
 
     int start = 0, len = n1 + 1;
     for (int i = 1; i <= n1; i++) {
+        // dp[i][n2] == 0 means not found
         if (dp[i][n2] != 0 && i - dp[i][n2] + 1 < len) {
             start = dp[i][n2] - 1;
+            // [start, end)
+            // len = end - start
+            //     = i   - (dp[i][n2] - 1)
             len = i - dp[i][n2] + 1;
         }
     }
     return s1.substring(start, start + (len > n1 ? 0 : len));
 }
 {% endhighlight %}
+
+The space complex can be optimized to `O(n)`.
+
 [Interleaving String][interleaving-string]
 
 {% highlight java %}

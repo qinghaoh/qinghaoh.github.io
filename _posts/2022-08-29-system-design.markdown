@@ -6,12 +6,48 @@ usemathjax: true
 
 ## Redis
 
+<img src="/assets/redis_logo.svg" width="150">
+
 * [Documentation](https://redis.io/docs/)
 * [Interview questions](https://gist.github.com/aershov24/16f4e369a93182de3f235a9a154a6b4a)
 
 Redis (Remote Dictionary Server)
 
 In-memory key-value data store. Stores cache data into physical storage if needed.
+
+[Scaling](https://redis.io/docs/manual/scaling/): Redis Cluster
+
+**Sharding**
+
+hash value = CRC16(key) / #hash_slots (=16384)
+
+NOT consistent hashing!
+
+[Replication](https://redis.io/docs/manual/replication/): Master-replica
+
+Asynchronous replication by default. Can be forced to synchronous by `WAIT` command when absolutely needed.
+
+After *node timeout* has elapsed:
+* Unresponsive master node is considered to be failing and can be replaced by one of its replicas
+* If a master node cannot sense the majority of the other masters, it enters error state
+
+**Node Communication**
+
+TCP ports:
+* Redis TCP port: node to clients
+* Cluster bus port: node to node
+ * Binary protocol: Redis Cluster Bus (Gossip)
+
+Nodes:
+* hold the data
+* take the state of the cluster, including mapping keys to the right nodes
+* auto-discover other nodes
+* detect non-working nodes
+* promote replica nodes to master (failover)
+
+**Consistency**
+
+NOT strong consistency.
 
 Datatypes:
 * string: C dynamic string library

@@ -54,29 +54,34 @@ public String shortestPalindrome(String s) {
 }
 {% endhighlight %}
 
-* Search pattern in text with the help of `lps[]`
+[Sum of Scores of Built Strings][sum-of-scores-of-built-strings]
 
 {% highlight java %}
-// finds the start indices of matches
-List<Integer> kmp(String text, String pattern) {
-    int n = text.length(), m = pattern.length();
-    int[] lps = computeLps(pattern);
-
-    List<Integer> list = new ArrayList<>();
-    for (int i = 0, j = 0; i < n; i++) {
-        while (j == m || (j > 0 && pattern.charAt(j) != text.charAt(i))) {
-            j = lps[j - 1];
-        }
-
-        if (pattern.charAt(j) == text.charAt(i)) {
-            if (++j == m) {
-                list.add(i - j + 1);
-            }
-        }
+public long sumScores(String s) {
+    int[] lps = computeLps(s);
+    int m = lps.length;
+    // count[i]: occurrences of s[i] as the last character of a postfix of s[j...i] which equals a prefix of s,
+    //   where j != 0
+    int[] count = new int[m];
+    for (int i = 0; i < m; i++) {
+        int j = lps[i];
+        // +1 is s.substring(0, j), because lps[j - 1] doesn't include s.substring[0, j] itself
+        count[i] = j == 0 ? 0 : count[j - 1] + 1;
     }
-    return list;
+    // adding count[i] of all chars yields the total score
+    return Arrays.stream(count).asLongStream().sum() + m;
 }
 {% endhighlight %}
+
+For example, `s = "babab"`
+
+```
+lps   = [0, 0, 1, 2, 3]
+count = [0, 0, 1, 1, 2] 
+               |     |
+              "b"    "b"   (count[2])
+                     "bab" (+1)
+```
 
 [Maximum Deletions on a String][maximum-deletions-on-a-string]
 
@@ -99,6 +104,30 @@ public int deleteString(String s) {
         }
     }
     return dp[0];
+}
+{% endhighlight %}
+
+* Search pattern in text with the help of `lps[]`
+
+{% highlight java %}
+// finds the start indices of matches
+List<Integer> kmp(String text, String pattern) {
+    int n = text.length(), m = pattern.length();
+    int[] lps = computeLps(pattern);
+
+    List<Integer> list = new ArrayList<>();
+    for (int i = 0, j = 0; i < n; i++) {
+        while (j == m || (j > 0 && pattern.charAt(j) != text.charAt(i))) {
+            j = lps[j - 1];
+        }
+
+        if (pattern.charAt(j) == text.charAt(i)) {
+            if (++j == m) {
+                list.add(i - j + 1);
+            }
+        }
+    }
+    return list;
 }
 {% endhighlight %}
 
@@ -211,9 +240,38 @@ private int getKey(int n, int m, boolean b1, boolean b2) {
 
 # Z Function
 
-https://cp-algorithms.com/string/z-function.html
+[Z-function and its calculation](https://cp-algorithms.com/string/z-function.html): `z[i]` is the length of the longest string that is, at the same time, a prefix of `s` and a prefix of `s.substring(i)`.
+
+{% highlight java %}
+// O(n)
+private int[] computeZ(String s) {
+    int n = s.length();
+    int[] z = new int[n];
+    for (int i = 1, l = 0, r = 0; i < n; i++) {
+        if (i <= r) {
+            z[i] = Math.min(r - i + 1, z[i - l]);
+        }
+
+        while (i + z[i] < n && s.charAt(z[i]) == s.charAt(i + z[i])) {
+            z[i]++;
+        }
+
+        if (i + z[i] - 1 > r) {
+            l = i;
+            r = i + z[i] - 1;
+        }
+    }
+    return z;
+}
+{% endhighlight %}
 
 [Sum of Scores of Built Strings][sum-of-scores-of-built-strings]
+
+{% highlight java %}
+public long sumScores(String s) {
+    return Arrays.stream(computeZ(s)).asLongStream().sum() + s.length();
+}
+{% endhighlight %}
 
 # Rolling Hash
 
