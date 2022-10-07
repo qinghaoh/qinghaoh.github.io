@@ -384,8 +384,81 @@ private void helper(Node node) {
 }
 {% endhighlight %}
 
+# Double Linked List
+
+## Circular Double Linked List
+
+[Design Most Recently Used Queue][design-most-recently-used-queue]
+
+{% highlight java %}
+// sqrt decomposition
+// seats are split to buckets
+// nodes are items
+// each bucket contains a circular double linked list of nodes
+private Node[] buckets;
+// count of nodes in each bucket
+private int m;
+
+public MRUQueue(int n) {
+    this.m = (int)Math.sqrt(n);
+    // Math.ceil(n / m)
+    this.buckets = new Node[(n + m - 1) / m];
+
+    for (int i = 0; i < buckets.length; i++) {
+        buckets[i] = new Node(0);
+    }
+
+    // bucket index for seat i: (i - 1) / m
+    for (int i = 1; i <= n; i++) {
+        buckets[(i - 1) / m].prepend(new Node(i));
+    }
+}
+
+public int fetch(int k) {
+    // bucket index for seat k: (k - 1) / m
+    Node node = buckets[(k - 1) / m].next;
+    // target seat index in the bucket: (k - 1) % m
+    for (int i = 0; i < (k - 1) % m; i++) {
+        node = node.next;
+    }
+    node.remove();
+
+    // for each bucket after the current bucket,
+    // moves one item to its previous bucket
+    for (int i = 1 + (k - 1) / m; i < buckets.length; i++) {
+        buckets[i - 1].prepend(buckets[i].next.remove());
+    }
+    buckets[buckets.length - 1].prepend(node);
+    return node.val;
+}
+
+class Node {
+    Node prev = this, next = this;
+    int val;
+
+    Node(int val) {
+        this.val = val;
+    }
+
+    // prepends `node` to this node
+    public void prepend(Node node) {
+        this.prev.next = node;
+        node.prev = this.prev;
+        this.prev = node;
+        node.next = this;
+    }
+
+    public Node remove() {
+        prev.next = next;
+        next.prev = prev;
+        return next = prev = this;
+    }
+}
+{% endhighlight %}
+
 [add-two-numbers-ii]: https://leetcode.com/problems/add-two-numbers-ii/
 [copy-list-with-random-pointer]: https://leetcode.com/problems/copy-list-with-random-pointer/
+[design-most-recently-used-queue]: https://leetcode.com/problems/design-most-recently-used-queue/
 [find-the-duplicate-number]: https://leetcode.com/problems/find-the-duplicate-number/
 [happy-number]: https://leetcode.com/problems/happy-number/
 [linked-list-cycle-ii]: https://leetcode.com/problems/linked-list-cycle-ii/

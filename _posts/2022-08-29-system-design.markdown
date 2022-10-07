@@ -97,7 +97,29 @@ mater sends a stream of commands to the replica to
 
 ## Apache Kafka
 
-Topic
+<img src="/assets/apache_kafka.png" width="150">
+
+[Documentation](https://kafka.apache.org/documentation/)
+[Interview questions](https://www.interviewbit.com/kafka-interview-questions/)
+
+Records -> Topic
+* Topics are separated into partitions
+* Record log: offset
+* A single topic can contain multiple partition logs (parallel processing)
+
+Replication
+* A replica is the redundant element of a topic partition
+* Each partition contains one or more replicas across brokers
+
+Brokers -> Cluster
+* Managed by Apache ZooKeeper
+* GB R/W /s
+* Leader election
+
+Consumers -> Consumer Group
+
+* Fault-tolerant storage
+* Pub/sub
 
 ## RabbitMQ
 

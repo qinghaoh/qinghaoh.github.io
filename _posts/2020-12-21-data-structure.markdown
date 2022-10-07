@@ -12,6 +12,15 @@ stack and minStack
 
 * Two stacks
 * Double linked list + TreeMap<Node>
+* Stack + Heap + Set
+
+{% highlight java %}
+private Deque<int[]> st = new LinkedList<>();
+// {element, id of the element}
+private Queue<int[]> pq = new PriorityQueue<>((a, b) -> b[0] == a[0] ? b[1] - a[1] : b[0] - a[0]);
+private Set<Integer> removed = new HashSet<>();
+private int id = 0;
+{% endhighlight %}
 
 [LRU Cache][lru-cache]
 
