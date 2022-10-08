@@ -121,7 +121,7 @@ public int[] distanceToCycle(int n, int[][] edges) {
     boolean[] visited = new boolean[n];
     // enqueues leaves
     Queue<Integer> q = new LinkedList<>();
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         // undirected graph leaf
         if (indegrees[i] == 1) {
             q.offer(i);
@@ -239,7 +239,7 @@ public int maximumInvitations(int[] favorite) {
     // enqueues leaves
     boolean[] removed = new boolean[n];
     Queue<Integer> q = new LinkedList<>();
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         if (indegrees[i] == 0) {
             removed[i] = true;
             q.offer(i);

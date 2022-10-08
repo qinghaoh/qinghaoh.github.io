@@ -124,7 +124,7 @@ private int operate(Deque<Integer> operands, Deque<Character> operators) {
     int a = operands.pop(), b = operands.pop();
     char c = operators.pop();
 
-    switch(c) {
+    switch (c) {
         case '+' : return a + b;
         case '-': return b - a;
         case '*': return a * b;
@@ -147,7 +147,7 @@ public int scoreOfStudents(String s, int[] answers) {
     // dp[i][j]: set of possible results of s[i...j], where the index is of digits only
     // e.g. 1 + 2 * 3, index 2 stands for 3
     Set<Integer>[][] dp = new Set[n][n];
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         dp[i][i] = new HashSet<>();
         // 2 * i is the actual index of the digit in the stringg
         dp[i][i].add(s.charAt(2 * i) - '0');

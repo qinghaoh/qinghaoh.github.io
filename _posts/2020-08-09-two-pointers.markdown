@@ -85,7 +85,7 @@ public int catchMaximumAmountofPeople(int[] team, int dist) {
     int n = team.length, count = 0;
     // i: it
     // j: non-it
-    for (int i = 0, j = 0; i < n; i++){
+    for (int i = 0, j = 0; i < n; i++) {
         if (team[i] == 1) {
             // out of reach
             while (j < i - dist) {

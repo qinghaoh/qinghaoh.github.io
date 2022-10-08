@@ -235,7 +235,7 @@ public List<String> maxNumOfSubstrings(String s) {
     Arrays.fill(intervals[0], n);
 
     List<String> list = new ArrayList<>();
-    for (int i = 0; i < s.length(); ++i) {
+    for (int i = 0; i < s.length(); i++) {
         int index = s.charAt(i) - 'a';
         intervals[0][index] = Math.min(intervals[0][index], i);
         intervals[1][index] = i;

@@ -500,7 +500,7 @@ public int numberOfUniqueGoodSubsequences(String binary) {
     // count of subsequences ending with 0 and 1, respectively
     int dp0 = 0, dp1 = 0;
     boolean has0 = false;
-    for (int i = 0; i < binary.length(); ++i) {
+    for (int i = 0; i < binary.length(); i++) {
         if (binary.charAt(i) == '0') {
             // appends '0'
             dp0 = (dp0 + dp1) % MOD;

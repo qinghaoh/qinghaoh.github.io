@@ -215,9 +215,49 @@ private void doStamp(int pos) {
 }
 {% endhighlight %}
 
+# Two Pointer
+
+[Last Substring in Lexicographical Order][last-substring-in-lexicographical-order]
+
+{% highlight java %}
+public String lastSubstring(String s) {
+    // finds the start index of a suffix, such that s[start:] is the largest substring
+    int i = 0, j = 1, k = 0;
+    while (j + k < s.length()) {
+        // compares two substrings:
+        // s.substring(i, i + k + 1) and s.substring(j, j + k + 1)
+        // k is the length of each substring
+        if (s.charAt(i + k) == s.charAt(j + k)) {
+            k++;
+            continue;
+        }
+
+        if (s.charAt(i + k) < s.charAt(j + k)) {
+            // for any mi in [i, i + k],
+            // s.substring(mi, i + k + 1) < s.substring(mj, i + k + 1)
+            // where mi - i == mj - j
+            // because these two substrings differ at (i + k) and (j + k) only
+
+            // therefore, moves i out of the range
+            i += k + 1;
+        } else {
+            j += k + 1;
+        }
+
+        // makes sure j is always greater than i
+        if (i == j) {
+            j++;
+        }
+        k = 0;
+    }
+    return s.substring(i);
+}
+{% endhighlight %}
+
 [distinct-echo-substrings]: https://leetcode.com/problems/distinct-echo-substrings/
 [encode-string-with-shortest-length]: https://leetcode.com/problems/encode-string-with-shortest-length/
 [find-all-good-strings]: https://leetcode.com/problems/find-all-good-strings/
+[last-substring-in-lexicographical-order]: https://leetcode.com/problems/last-substring-in-lexicographical-order/
 [longest-repeating-substring]: https://leetcode.com/problems/longest-repeating-substring/
 [longest-substring-without-repeating-characters]: https://leetcode.com/problems/longest-substring-without-repeating-characters/
 [stamping-the-sequence]: https://leetcode.com/problems/stamping-the-sequence/

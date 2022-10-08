@@ -104,24 +104,62 @@ mater sends a stream of commands to the replica to
 
 Records -> Topic
 * Topics are separated into partitions
-* Record log: offset
+* Partition: append-only sequence of records arranged chronologically
+* Each record is given an offset
 * A single topic can contain multiple partition logs (parallel processing)
+* Topic's default retention time: 7 days
 
 Replication
 * A replica is the redundant element of a topic partition
 * Each partition contains one or more replicas across brokers
+* Each partition has Leader + Followers
+* Per partition, "at least one" delivery semantics
+* ISR: In-Sync Replica. A replica that has been out of ISR for a long period of time indicates that the follower is unable to fetch data at the same rate as the leader
+* Geo-Replication: MirrorMaker
 
 Brokers -> Cluster
 * Managed by Apache ZooKeeper
-* GB R/W /s
-* Leader election
+* Each broker handles GB (~10^5 count) R/W /s
+* Broker leader election
+* Stateless
+* Multi-tenant: allow for many topics on the same cluster.
+* Unbalanced cluster
+ * Leader skew. Solutions:
+  * auto.leader.rebalance.enable=true
+  * Kafka-preferred-replica-election.sh
+ * Broker skew. Solutions:
+  * Partition reassignment tool
+
+Producers
+* Transmit JSON-format data to broker is in a compressed batch
+ * Batch size
+ * Liner duration
 
 Consumers -> Consumer Group
+* Pull model
+* For a topic, #(customers) == #(partitions) to ensure consumers keep up with producers
+
+Maximum message size: 1MB
+High throughput: millions of messages per second
 
 * Fault-tolerant storage
 * Pub/sub
+* Monitor metrics/security logs
+* Stream processing (inefficient for data transformations)
+
+Kafka Schema Registry: ensures the (Avro) schema used by the consumer and the producer are identical. The producer submits the schema ID using the Confluent schema registry in Kafka.
+
+* Log compaction
+ * For each topic partition, at least the last known value for each message key within the log of data is kept.
+ * Restoration
+
+* Quotas
+ * Byte-rate limits that are set for each client-id
+ * Prevent a single application from monopolizing broker resources
 
 ## RabbitMQ
+
+<img src="/assets/rabbitmq.png" width="150">
 
 # Database
 
@@ -244,7 +282,12 @@ Znode stat structure includes:
 * ACL changes
 * Timestamps
 
-Ephemeral nodes are znodes that live only when the session that created the znode is alive
+Znodes
+* Persistent Znodes
+* Ephemeral nodes are znodes that live only when the session that created the znode is alive
+* Sequential Znodes: appens an increasing counter to the path's end. Can be either persistent or ephemeral
+
+Leader election: Sequential feature??
 
 Client maintains a TCP connection to a znode. It can set a watch on a zonde that will be triggered when the znode changes.
 

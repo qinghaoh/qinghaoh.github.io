@@ -511,7 +511,7 @@ public int minCharacters(String a, String b) {
         c2[c - 'a']++;
     }
 
-    for (int i = 0; i < 26; ++i) {
+    for (int i = 0; i < 26; i++) {
         // Condition 3
         min = Math.min(min, m + n - c1[i] - c2[i]);
 
@@ -560,7 +560,7 @@ public int[] solve(int[] nums, int[][] queries) {
 
     int m = queries.length;
     int[] answer = new int[m];
-    for(int i = 0; i < m; i++) {
+    for (int i = 0; i < m; i++) {
         int x = queries[i][0], y = queries[i][1];
         if ((long)y * (long)y <= n) {
             answer[i] = map[y][x];

@@ -185,7 +185,7 @@ public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
     // capacity of each bucket
     long capacity = (long)t + 1;
 
-    for (int i = 0; i < nums.length; ++i) {
+    for (int i = 0; i < nums.length; i++) {
         long bucket = Math.floorDiv(nums[i], capacity);
 
         // checks if the bucket already contains a number

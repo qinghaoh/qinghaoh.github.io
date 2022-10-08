@@ -9,7 +9,7 @@ title:  "Parentheses"
 public String reverseParentheses(String s) {
     Deque<Integer> st = new ArrayDeque<>();
     int[] pairs = new int[s.length()];
-    for (int i = 0; i < s.length(); ++i) {
+    for (int i = 0; i < s.length(); i++) {
         if (s.charAt(i) == '(')
             st.push(i);
         if (s.charAt(i) == ')') {

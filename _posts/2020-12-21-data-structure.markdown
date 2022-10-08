@@ -530,7 +530,7 @@ class Skiplist {
             curr.next = new Node(num, curr.next, down);
             down = curr.next;
         // if coin tails up, stops appending new node to the level
-        } while(flipCoin() && !stack.isEmpty());
+        } while (flipCoin() && !stack.isEmpty());
 
         // if coin heads up, creates a new list head
         if (flipCoin()) {

@@ -225,8 +225,8 @@ public int findMaxForm(String[] strs, int m, int n) {
     int[][][] dp = new int[len + 1][m + 1][n + 1];
 
     for (int i = 0; i < len; i++) {
-        int zeroes = (int)str.chars().filter(ch -> ch == '0').count();
-        int ones = str.length() - zeroes;
+        int zeroes = (int)strs[i].chars().filter(ch -> ch == '0').count();
+        int ones = strs[i].length() - zeroes;
 
         for (int j = 0; j <= m; j++) {
             for (int k = 0; k <= n; k++) {
@@ -283,10 +283,51 @@ public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
     }
 
     int count = 0;
-    for (int i = 0; i < dp.length; i++){
+    for (int i = 0; i < dp.length; i++) {
         count = (count + dp[i][minProfit]) % MOD;
     }
     return count;
+}
+{% endhighlight %}
+
+## Top-down
+
+[Maximize Total Tastiness of Purchased Fruits][maximize-total-tastiness-of-purchased-fruits]
+
+{% highlight java %}
+private int[] price, tastiness;
+private int maxAmount, maxCoupons;
+private Integer[][][] memo;
+
+public int maxTastiness(int[] price, int[] tastiness, int maxAmount, int maxCoupons) {
+    this.price = price;
+    this.tastiness = tastiness;
+    this.maxAmount = maxAmount;
+    this.maxCoupons = maxCoupons;
+    this.memo = new Integer[price.length + 1][maxAmount + 1][maxCoupons + 1];
+
+    return dfs(0, maxAmount, maxCoupons);
+}
+
+private int dfs(int i, int amount, int coupon) {
+    if (i == price.length) {
+        return 0;
+    }
+
+    if (memo[i][amount][coupon] != null) {
+        return memo[i][amount][coupon];
+    }
+
+    int max = dfs(i + 1, amount, coupon);
+    if (price[i] <= amount) {
+        max = Math.max(max, dfs(i + 1, amount - price[i], coupon) + tastiness[i]);
+    }
+
+    if (coupon > 0 && price[i] / 2 <= amount) {
+        max = Math.max(max, dfs(i + 1, amount - price[i] / 2, coupon - 1) + tastiness[i]);
+    }
+
+    return memo[i][amount][coupon] = max;
 }
 {% endhighlight %}
 
@@ -483,6 +524,7 @@ public int coinChange(int[] coins, int amount) {
 [form-largest-integer-with-digits-that-add-up-to-target]: https://leetcode.com/problems/form-largest-integer-with-digits-that-add-up-to-target/
 [last-stone-weight-ii]: https://leetcode.com/problems/last-stone-weight-ii/
 [maximum-profit-from-trading-stocks]: https://leetcode.com/problems/maximum-profit-from-trading-stocks/
+[maximize-total-tastiness-of-purchased-fruits]: https://leetcode.com/problems/maximize-total-tastiness-of-purchased-fruits/
 [number-of-ways-to-build-house-of-cards]: https://leetcode.com/problems/number-of-ways-to-build-house-of-cards/
 [ones-and-zeroes]: https://leetcode.com/problems/ones-and-zeroes/
 [partition-equal-subset-sum]: https://leetcode.com/problems/partition-equal-subset-sum/

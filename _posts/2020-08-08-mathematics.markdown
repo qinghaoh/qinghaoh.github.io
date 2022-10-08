@@ -822,7 +822,7 @@ public int numSquares(int n) {
 
     // pre-calculates the square numbers
     int[] squares = new int[(int)Math.sqrt(n) + 1];
-    for (int i = 1; i < squares.length; ++i) {
+    for (int i = 1; i < squares.length; i++) {
         squares[i] = i * i;
     }
 

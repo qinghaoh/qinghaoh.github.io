@@ -448,7 +448,7 @@ public int assignBikes(int[][] workers, int[][] bikes) {
     pq.offer(new int[]{0, 0, 0});
 
     Set<String> visited = new HashSet<>();
-    while (!pq.isEmpty()){
+    while (!pq.isEmpty()) {
         int[] node = pq.poll();
         int worker = node[0], mask = node[1], d = node[2];
 

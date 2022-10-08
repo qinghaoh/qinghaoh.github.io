@@ -35,7 +35,7 @@ class Pool {
    protected boolean[] used = new boolean[MAX_AVAILABLE];
 
    protected synchronized Object getNextAvailableItem() {
-     for (int i = 0; i < MAX_AVAILABLE; ++i) {
+     for (int i = 0; i < MAX_AVAILABLE; i++) {
        if (!used[i]) {
           used[i] = true;
           return items[i];
@@ -45,7 +45,7 @@ class Pool {
    }
 
    protected synchronized boolean markAsUnused(Object item) {
-     for (int i = 0; i < MAX_AVAILABLE; ++i) {
+     for (int i = 0; i < MAX_AVAILABLE; i++) {
        if (item == items[i]) {
           if (used[i]) {
             used[i] = false;

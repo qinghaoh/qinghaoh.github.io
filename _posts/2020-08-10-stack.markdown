@@ -20,10 +20,9 @@ public String removeKdigits(String num, int k) {
         }
 
         // if c == '0', all elements in the stack are '0'
-        if (sb.length() == 0 && c == '0') {
-            continue;
+        if (sb.length() > 0 || c > '0') {
+            sb.append(c);
         }
-        sb.append(c);
     }
 
     while (k > 0 && sb.length() > 0) {
@@ -642,19 +641,19 @@ public int[] canSeePersonsCount(int[] heights) {
 [Maximum Width Ramp][maximum-width-ramp]
 
 {% highlight java %}
-public int maxWidthRamp(int[] A) {
+public int maxWidthRamp(int[] nums) {
     // decreasing stack
     Deque<Integer> st = new ArrayDeque<>();
-    int max = 0, n = A.length;
+    int max = 0, n = nums.length;
     for (int i = 0; i < n; i++) {
-        if (st.isEmpty() || A[i] < A[st.peek()]) {
+        if (st.isEmpty() || nums[i] < nums[st.peek()]) {
             st.push(i);
         }
     }
 
     for (int i = n - 1; i > max; i--) {
-        while (!st.isEmpty() && A[i] >= A[st.peek()]) {
-            // i is the largest index with A[i] >= stack top
+        while (!st.isEmpty() && nums[i] >= nums[st.peek()]) {
+            // i is the largest index with nums[i] >= stack top
             // so it's safe to pop
             max = Math.max(max, i - st.pop());
         }
@@ -775,6 +774,10 @@ public int numSubmat(int[][] mat) {
 }
 {% endhighlight %}
 
+# Lookahead
+
+Use an auxiliary array to check the occurrences of certain elements in later inputs.
+
 [Remove Duplicate Letters][remove-duplicate-letters]
 
 {% highlight java %}
@@ -806,6 +809,37 @@ public String removeDuplicateLetters(String s) {
         sb.append((char)('a' + i));
     }
     return sb.reverse().toString();
+}
+{% endhighlight %}
+
+[Using a Robot to Print the Lexicographically Smallest String][using-a-robot-to-print-the-lexicographically-smallest-string]
+
+{% highlight java %}
+public String robotWithString(String s) {
+    int[] count = new int[26];
+    for (char ch : s.toCharArray()) {
+        count[ch - 'a']++;
+    }
+
+    Deque<Character> st = new LinkedList<>();
+    StringBuilder sb = new StringBuilder();
+    int minCharIndex = 0;
+    for (char ch : s.toCharArray()) {
+        // always pushes the char to stack
+        // then decides which operation to take next
+        st.push(ch);
+        count[ch - 'a']--;
+
+        // finds the smallest unused char
+        while (minCharIndex < count.length && count[minCharIndex] == 0) {
+            minCharIndex++;
+        }
+
+        while (!st.isEmpty() && minCharIndex >= st.peek() - 'a') {
+            sb.append(st.pop());
+        }
+    }
+    return sb.toString();
 }
 {% endhighlight %}
 
@@ -997,3 +1031,4 @@ public int calculate(String s) {
 [sum-of-subarray-minimums]: https://leetcode.com/problems/sum-of-subarray-minimums/
 [ternary-expression-parser]: https://leetcode.com/problems/ternary-expression-parser/
 [remove-k-digits]: https://leetcode.com/problems/remove-k-digits/
+[using-a-robot-to-print-the-lexicographically-smallest-string]: https://leetcode.com/problems/using-a-robot-to-print-the-lexicographically-smallest-string/

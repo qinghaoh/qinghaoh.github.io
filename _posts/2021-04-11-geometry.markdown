@@ -186,7 +186,7 @@ private String norm(List<int[]>cells) {
     //  (y, x), (-y, x), (y, -x), (-y, -x)
     for (int[] t : TRANSFORMATIONS) {
         List<int[]> list1 = new ArrayList<>(), list2 = new ArrayList<>();
-        for (int[] c : cells){
+        for (int[] c : cells) {
             list1.add(new int[]{c[0] * t[0], c[1] * t[1]});
             list2.add(new int[]{c[1] * t[1], c[0] * t[0]});
         }
@@ -232,7 +232,7 @@ public int maxAbsValExpr(int[] arr1, int[] arr2) {
             // origin point
             int origin = p * arr1[0] + q * arr2[0] + 0;
             // computes the Manhattan distance to the origin point
-            for (int i = 1; i < n; ++i) {
+            for (int i = 1; i < n; i++) {
                 int value = p * arr1[i] + q * arr2[i] + i;
                 max = Math.max(max, value - origin);
                 origin = Math.min(origin, value);

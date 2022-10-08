@@ -283,7 +283,7 @@ public int getLengthOfOptimalCompression(String s, int k) {
     int n = s.length();
     // dp[i][j]: i-th character and j characters are deleted
     int[][] dp = new int[n + 1][k + 2];
-    for (int i = 0; i < dp.length; i++){
+    for (int i = 0; i < dp.length; i++) {
         Arrays.fill(dp[i], n + 1);
     }
     dp[0][0] = 0;
