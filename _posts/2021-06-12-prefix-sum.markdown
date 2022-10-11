@@ -384,6 +384,56 @@ public ListNode removeZeroSumSublists(ListNode head) {
 abs(subarray) = p[i] - p[j] <= max(p) - min(p)
 ```
 
+**Prefix Sum**
+
+[Sum of Total Strength of Wizards][sum-of-total-strength-of-wizards]
+
+{% highlight java %}
+private int MOD = (int)1e9 + 7;
+
+public int totalStrength(int[] strength) {
+    int n = strength.length;
+    long[] pp = new long[n + 1];
+
+    // prefix sum
+    // strength[i] = p[i + 1] - p[i]
+    for (int i = 0; i < n; i++) {
+        pp[i + 1] = (pp[i] + strength[i]) % MOD;
+    }
+
+    // prefix sum of prefix sum
+    // p[i + 1] = pp[i + 1] - pp[i]
+    for (int i = 0; i < n; i++) {
+        pp[i + 1] = (pp[i] + pp[i + 1]) % MOD;
+    }
+
+    Deque<Integer> st = new ArrayDeque<>();
+    long res = 0;
+    for (int i = 0; i <= n; i++) {
+        while (!st.isEmpty() && (i == n || strength[i] < strength[st.peek()])) {
+            int j = st.pop();
+            int k = st.isEmpty() ? -1 : st.peek();
+            // j is min in (k, i)
+            //
+            // sum of subarrays including j that start with m:
+            // s(m) = sum(sum(m, m + 1, ..., t))_{j <= t < i}
+            //      = sum(p[t + 1] - p[m])_{j <= t < i}
+            //      = sum(p[t + 1])_{j <= t < i} - p[m] * (i - j)
+            //      = pp[i] - pp[j] - p[m] * (i - j)
+            //
+            // sum of all subarrays including j:
+            // s = sum(s(m))_(k < m <= j)
+            //   = sum(pp[i] - pp[j] - (i - j) * p[m])_{k < m <= j}
+            //   = (pp[i] - pp[j]) * (j - k) - sum(p[m])_{k < m <= j} * (i - j)
+            //   = (pp[i] - pp[j]) * (j - k) - (pp[j] - pp[k]) * (i - j)
+            res = (res + (MOD + (pp[i] - pp[j] + MOD) % MOD * (j - k) % MOD - (pp[j] - pp[Math.max(0, k)] + MOD) % MOD * (i - j) % MOD) * strength[j]) % MOD;
+        }
+        st.push(i);
+    }
+    return (int)res;
+}
+{% endhighlight %}
+
 # Range Sum
 
 [Number of Ways of Cutting a Pizza][number-of-ways-of-cutting-a-pizza]
@@ -934,5 +984,6 @@ public int findMinMoves(int[] machines) {
 [subarray-sum-equals-k]: https://leetcode.com/problems/subarray-sum-equals-k/
 [sum-of-floored-pairs]: https://leetcode.com/problems/sum-of-floored-pairs/
 [sum-of-special-evenly-spaced-elements-in-array]: https://leetcode.com/problems/sum-of-special-evenly-spaced-elements-in-array/
+[sum-of-total-strength-of-wizards]: https://leetcode.com/problems/sum-of-total-strength-of-wizards/
 [sum-of-beauty-of-all-substrings]: https://leetcode.com/problems/sum-of-beauty-of-all-substrings/
 [super-washing-machines]: https://leetcode.com/problems/super-washing-machines/

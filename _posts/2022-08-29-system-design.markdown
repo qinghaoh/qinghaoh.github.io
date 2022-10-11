@@ -99,8 +99,8 @@ mater sends a stream of commands to the replica to
 
 <img src="/assets/apache_kafka.png" width="150">
 
-[Documentation](https://kafka.apache.org/documentation/)
-[Interview questions](https://www.interviewbit.com/kafka-interview-questions/)
+* [Documentation](https://kafka.apache.org/documentation/)
+* [Interview questions](https://www.interviewbit.com/kafka-interview-questions/)
 
 Records -> Topic
 * Topics are separated into partitions
@@ -164,6 +164,64 @@ Kafka Schema Registry: ensures the (Avro) schema used by the consumer and the pr
 # Database
 
 ## Apache Cassandra
+
+<img src="/assets/apache_cassandra.jpg" width="250">
+
+* [Basics](https://cassandra.apache.org/_/cassandra-basics.html)
+* [Documentation](https://cassandra.apache.org/doc/latest/)
+* [Interview questions](https://www.edureka.co/blog/interview-questions/cassandra-interview-questions/)
+
+Cluster: container for Keyspaces (database)
+
+Replication:
+Multi-master replication using versioned data and tunable consistency
+* Strategy
+ * Simple Strategy: Partitioner determines the node for the first replica; additional replicas are placed on the next nodes in the Ring clockwise
+ * Network Topology Strategy: consider rack or datacenter locations
+
+Column family: a container for an ordered collection of rows
+Row: an ordered collection of columns
+* Row key
+* Column keys
+* Column values
+
+Primary Key
+* Single Primary Key
+* Compound Primary Key
+ * Partitioning Key + Clustering Key
+ * Clustering is the process that sorts data in the partition
+* Composite Partitioning Key
+
+Gossip Protocol
+* Failure detection
+
+Consistent Hashing
+* Murmur3Partitioner (MurmurHash)
+* ByteOrderedPartioner: orders rows lexically by key bytes; allows ordered scans by primary key.
+
+Consistency
+* Tunable
+
+Inconsistency Repair
+* Anti-entropy: compare the data of all replicates and update them with the newest version using Merkle Tree
+* Read: fix at the time of read request (newer nodes overwrites older nodes)
+* Incremental: only repair the data that's bee nwriteen since the previous incremental repair
+
+Hinted Handoff (?)
+
+Snitch: determines which datacenters and racks, nodes belong to, informing Cassandra about the network topology
+
+Storage Engine: based on a Log Structured Merge Tree (LSM)
+* CommitLog: append-only log of all mutations local to a node
+* MemTables: in-memory structures where Cassandra buffers writes
+ * One active memtable per table
+* SSTables: the immutable data files that Cassandra uses for persisting data on disk
+ * Cassandra triggers compactions which combine multiple SSTables into one
+
+* Write: CommitLog -> MemTables -> SSTable
+* Read: Bloom Filter -> Partition Key Cache -> Partition Index
+
+Incremental scale-out on commodity hardware
 
 ## MongoDB
 
