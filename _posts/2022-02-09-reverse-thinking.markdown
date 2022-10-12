@@ -61,54 +61,61 @@ private static final Map<Character, int[]> DIRECTIONS = Map.of(
 );
 
 public int[] executeInstructions(int n, int[] startPos, String s) {
+    // offset[i]: steps to move off the grid from the start position in the i-th direction
+    // {top, left, bottom, right}
+    //
+    // assume the grid has no boundary
+    int[] offsets = {startPos[0] + 1, startPos[1] + 1, startPos[0] - n, startPos[1] - n};
+
     int m = s.length();
-    int[] answer = new int[m];
+    // maps[i]: {pos[i], last seen instruction index when robot is at pos[i]}
+    Map<Integer, Integer>[] maps = new Map[2];
+    maps[0] = new HashMap<>();  // horizontal
+    maps[1] = new HashMap<>();  // vertical
+    maps[0].put(0, m);
+    maps[1].put(0, m);
 
-    // steps to move off the grid from the start position
-    int top = startPos[0] + 1, bottom = n - startPos[0], left = startPos[1] + 1, right = n - startPos[1];
-
-    // (r, c) is the virtual start
-    // {r, index of instruction}
-    Map<Integer, Integer> rMap = new HashMap();
-    rMap.put(0, m);
-    // {c, index of instruction}
-    Map<Integer, Integer> cMap = new HashMap();
-    cMap.put(0, m);
-
-    // virtual start position at each index when the final position is (0, 0)
-    // assuming the grid has no boundary
-    // updates it when processing the instructions in reverse order
-    int[] pos = new int[2];
+    // virtualPos[i]: the virtual location that if the robot starts here at the i-th instruction
+    //    finally it will reach (0, 0) following the remaining instruction sequence
+    //
+    // assume the robot starts from the i-th instruction and ends at the top border (-1) at a certain instruction
+    // at the i-th time, the mirror robot is at (pos[0], pos[1])
+    // now we are computing which row is the end row of virtual robot
+    // denote the end position of mirror as (virtualEnd[0], virtualEnd[1])
+    // in the vertical direction, we have:
+    //  startPos[0] - (-1) = virtualPos[0] - virtualEnd[0]
+    //  virtualEnd[0] = virtualPos[0] - (startPos[0] + 1)
+    //    = virtualPos[0] - offset[top]
+    //
+    // now we processes the instructions in reverse order
+    int[] virtualPos = new int[2], answer = new int[m];
     for (int i = m - 1; i >= 0; i--) {
         int[] instr = DIRECTIONS.get(s.charAt(i));
-        pos[0] += instr[0];
-        pos[1] += instr[1];
+        virtualPos[0] += instr[0];
+        virtualPos[1] += instr[1];
 
-        int d = m - i;
-        // checks boundaries of four directions, centered at pos
-        if (rMap.containsKey(pos[0] - top)) {
-            d = Math.min(d, rMap.get(pos[0] - top) - i - 1);
+        int min = m - i;
+        for (int j = 0; j < offsets.length; j++) {
+            // 2 * m - (i + 1) >= m, so we use it as the default value
+            // if there was an instruction with index j when virtualPos equals this threshold (virtualPos - offset)
+            // then the real robot will be at border at index j
+            // so the feasible instructions are (j - i - 1)
+            min = Math.min(min, maps[j % 2].getOrDefault(virtualPos[j % 2] - offsets[j], 2 * m) - i - 1);
         }
 
-        if (rMap.containsKey(pos[0] + bottom)) {
-            d = Math.min(d, rMap.get(pos[0] + bottom) - i - 1);
-        }
-
-        if (cMap.containsKey(pos[1] - left)) {
-            d = Math.min(d, cMap.get(pos[1] - left) - i - 1);
-        }
-
-        if (cMap.containsKey(pos[1] + right)) {
-            d = Math.min(d, cMap.get(pos[1] + right) - i - 1);
-        }
-
-        rMap.put(pos[0], i);
-        cMap.put(pos[1], i);
-        answer[i] = d;
+        maps[0].put(virtualPos[0], i);
+        maps[1].put(virtualPos[1], i);
+        answer[i] = min;
     }
     return answer;
 }
 {% endhighlight %}
+
+For example, `n = 2, startPos = [1,1], s = "LURD"`
+
+![Steps](/assets/execution_of_all_suffix_instructions_staying_in_a_grid.png)
+
+We can see at each instruction, the virtual robot will eventually reach (0, 0) following the remaining instruction sequence.
 
 [execution-of-all-suffix-instructions-staying-in-a-grid]: https://leetcode.com/problems/execution-of-all-suffix-instructions-staying-in-a-grid/
 [maximum-segment-sum-after-removals]: https://leetcode.com/problems/maximum-segment-sum-after-removals/
