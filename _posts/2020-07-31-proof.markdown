@@ -3,10 +3,7 @@ layout: post
 title:  "Proof"
 usemathjax: true
 ---
-## Distance Barcodes
 [Distant Barcodes][distant-barcodes]
-
-### Algorithm
 
 Let `n = barcodes.length`. Find the elements `barcodes[i]` with the most occurrences \\(o_{max}\\). Assume an element `barcodes[k]` has occurences \\(o_k\\).
 
@@ -19,7 +16,7 @@ Steps:
 * Time complexity: `O(N)`
 * Space complexity: `O(N)`
 
-### Example
+For example,
 
 ```
 [1, 1, 1, 2, 2, 3, 4, 5, 6]
@@ -32,7 +29,8 @@ Steps:
 5. [1, 4, 1, 2, 1, 2, 3, *, 6]
 6. [1, 4, 1, 2, 1, 2, 3, 5, 6]
 ```
-### Proof
+**Proof**
+
 It is guaranteed an answer exists, therefore:
 
 \\[1 <= o_{max} <= (\text{barcodes.length} + 1) / 2\\]
@@ -53,7 +51,6 @@ Apparently now `2` has more occurrences than `1`. This is contradiction. Note th
 
 [Reorganize String][reorganize-string]
 
-## Array Partition I
 [Arry Parition I][array-partition-i]
 
 * `max1`, `max2`: max and second max in `nums[]`
@@ -62,7 +59,7 @@ Apparently now `2` has more occurrences than `1`. This is contradiction. Note th
 
 If in partition `P'`, `max1` is not paired with `max2`, prove `sum(P') >= sum(P)`.
 
-### Proof
+**Proof**
 Let pairs `(max1, num1)` and `(max2, num2)` be in partition `P'`, `num1 <= max2` and `num2 <= max2`, then `P'` has the same pairs as `P` except `(max1, max2)` and `(num1, num2)`. We wiill need to prove the following inequality (1):
 ```
 min(max1, max2) + min(num1, num2) >= min(max1, num1) + min(max2, num2).
@@ -153,7 +150,29 @@ Therefore,
 
 Q.E.D.
 
+[Maximum Running Time of N Computers][maximum-running-time-of-n-computers]
+
+{% highlight java %}
+public long maxRunTime(int n, int[] batteries) {
+    Arrays.sort(batteries);
+
+    long sum = Arrays.stream(batteries).mapToLong(i -> i).sum();
+    int i = 0, len = batteries.length;
+    // compares the max battery with average of the others
+    // if max > avg, then this battery can be used to charge a computer all the time
+    // the problem becomes: n - 1 computers with remaining batteries
+    while (batteries[len - 1 - i] > sum / (n - i)) {
+        sum -= batteries[len - ++i];
+    }
+
+    // if max <= avg, the charge can be distributed evenly
+    // in this case, a battery spans two computers at most, and the two parts won't overlap
+    return sum / (n - i);
+}
+{% endhighlight %}
+
 [airplane-seat-assignment-probability]: https://leetcode.com/problems/airplane-seat-assignment-probability/
 [array-partition-i]: https://leetcode.com/problems/array-partition-i/
 [distant-barcodes]: https://leetcode.com/problems/distant-barcodes/
+[maximum-running-time-of-n-computers]: https://leetcode.com/problems/maximum-running-time-of-n-computers/
 [reorganize-string]: https://leetcode.com/problems/reorganize-string/

@@ -197,6 +197,7 @@ public int findGoodStrings(int n, String s1, String s2, String evil) {
 // builds one character at each level
 private int dfs(int index, int evilMatched, boolean startInclusive, boolean endInclusive) {
     // KMP found a match of evil
+    // stops searching
     if (evilMatched == evil.length()) {
         return 0;
     }
@@ -215,7 +216,7 @@ private int dfs(int index, int evilMatched, boolean startInclusive, boolean endI
     char from = startInclusive ? s1.charAt(index) : 'a';
     char to = endInclusive ? s2.charAt(index) : 'z';
     for (char c = from; c <= to; c++) {
-        // KMP to count the number of matches of pattern evil in text current built string (ending at c)
+        // KMP to count the number of matches of pattern `evil` in current built text (path from root to c)
         int j = evilMatched;
         while (j > 0 && evil.charAt(j) != c) {
             j = lps[j - 1];
@@ -237,6 +238,10 @@ private int getKey(int n, int m, boolean b1, boolean b2) {
     return (n << 8) | (m << 2) | ((b1 ? 1 : 0) << 1) | (b2 ? 1 : 0);
 }
 {% endhighlight %}
+
+For example, `n = 2, s1 = "aa", s2 = "da", evil = "b"`
+
+![Good strings](/assets/find_all_good_strings.png)
 
 # Z Function
 

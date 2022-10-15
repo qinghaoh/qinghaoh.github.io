@@ -202,20 +202,24 @@ public boolean isPossible(int[] target) {
 
     // the max num in the target array must have been chosen in the previous step
     while (pq.peek() > 1) {
+        // largest target in queue
         int num = pq.poll();
+        // rest is the sum of all the elements except num
         int rest = sum - num;
 
-        // target[i] >= 1
-        // so rest == 1 means there's only one rest "1"
+        // all elements in queue are >= 1
+        // so this happens only if pq.size() == 2
         if (rest == 1) {
             return true;
         }
 
         // % prevents LTE
         int remainder = num % rest;
-        // sum could overflow
-        // num < rest will not work when rest < 0
-        // so we use remainder == num
+        // to construct the array, num must be < rest
+        // however, we are using integer to represent sum,
+        // so sum could overflow (sum < 0), hence rest < 0
+        // the condition num < rest will not work when rest < 0
+        // so we use the following equivalent condition:
         if (remainder == 0 || remainder == num) {
             return false;
         }

@@ -32,6 +32,7 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
 
     // increment
     for (int i = 0; i < nums.length; i++) { 
+        // the search space of each layer excludes already visited elements
         if (!tmpList.contains(nums[i])) {
             tmpList.add(nums[i]);
             backtrack(list, tmpList, nums);
@@ -81,6 +82,9 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
 
     // increment
     for (int i = 0; i < nums.length; i++) {
+        // the search space of each layer includes only the first of equal elements
+        // e.g. 2, 2, 2
+        //      ^
         if (used[i] || i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) {
             continue;
         }

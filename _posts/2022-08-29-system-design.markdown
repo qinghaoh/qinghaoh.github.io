@@ -23,9 +23,19 @@ hash value = CRC16(key) / #hash_slots (=16384)
 
 NOT consistent hashing!
 
-[Replication](https://redis.io/docs/manual/replication/): Master-replica
+**Replication**
 
-Asynchronous replication by default. Can be forced to synchronous by `WAIT` command when absolutely needed.
+[Replication](https://redis.io/docs/manual/replication/): Master-replica (Leader-follower)
+
+Asynchronous replication by default. Replicas asynchronously acknowledge the amount of data they received periodically with the master.
+
+Synchronous replication can be requested by `WAIT` command when absolutely needed. There's still a possibility that acknowledged writes get lost during a failover, so it doesn't ensure strong consistency. however the probability is very low. 
+
+Master sends a stream of commands to the replica to keep it updated when: client writes, keys expired or evicted, any other action chaning the master dataset
+
+Every time the link breaks, the replica will automatically reconnect to the master and proceed with a partial resynchronization (obatin the part of the stream of commands it missed during the disconnection).
+
+If partial resynchronization is not possible, the replica will attempt a more complex full resynchronization (master create snapshot and send it to replica).
 
 After *node timeout* has elapsed:
 * Unresponsive master node is considered to be failing and can be replaced by one of its replicas
