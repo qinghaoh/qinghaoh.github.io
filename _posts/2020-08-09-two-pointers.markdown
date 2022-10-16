@@ -519,6 +519,32 @@ public int longestDecomposition(String text) {
 }
 {% endhighlight %}
 
+[Count Subarrays With Fixed Bounds][count-subarrays-with-fixed-bounds]
+
+{% highlight java %}
+public long countSubarrays(int[] nums, int minK, int maxK) {
+    int n = nums.length, pOut = -1, pMin = -1, pMax = -1;
+    long count = 0;
+    for (int i = 0; i < n; i++) {
+        // out of range
+        if (nums[i] < minK || nums[i] > maxK) {
+            pOut = i;
+        }
+        if (nums[i] == minK) {
+            pMin = i;
+        }
+        if (nums[i] == maxK) {
+            pMax = i;
+        }
+
+        // the subarrays end at i
+        // the start index is in the range [pOut + 1, min(pMin, pMax)]
+        count += Math.max(0, Math.min(pMin, pMax) - pOut);
+    }
+    return count;
+}
+{% endhighlight %}
+
 # DFS
 
 [Check if an Original String Exists Given Two Encoded Strings][check-if-an-original-string-exists-given-two-encoded-strings]
@@ -589,6 +615,7 @@ private boolean dfs(String s1, String s2, int i, int j, int diff) {
 [check-if-an-original-string-exists-given-two-encoded-strings]: https://leetcode.com/problems/check-if-an-original-string-exists-given-two-encoded-strings/
 [container-with-most-water]: https://leetcode.com/problems/container-with-most-water/
 [count-collisions-on-a-road]: https://leetcode.com/problems/count-collisions-on-a-road/
+[count-subarrays-with-fixed-bounds]: https://leetcode.com/problems/count-subarrays-with-fixed-bounds/
 [count-substrings-that-differ-by-one-character]: https://leetcode.com/problems/count-substrings-that-differ-by-one-character/
 [count-unique-characters-of-all-substrings-of-a-given-string]: https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/
 [get-the-maximum-score]: https://leetcode.com/problems/get-the-maximum-score/

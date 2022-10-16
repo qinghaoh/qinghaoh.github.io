@@ -153,6 +153,79 @@ public int dfs(int i, int[] manager, int[] informTime) {
 }
 {% endhighlight %}
 
+# Tree
+
+DFS a tree usually follow the pattern:
+
+{% highlight java %}
+int dfs(List<Integer>[] tree, int node, int parent, ...) {
+{% endhighlight %}
+
+[Create Components With Same Value][create-components-with-same-value]
+
+{% highlight java %}
+private List<Integer>[] tree;
+
+public int componentValue(int[] nums, int[][] edges) {
+    int n = nums.length;
+    this.tree = new List[n];
+    for (int i = 0; i < n; i++) {
+        tree[i] = new ArrayList<>();
+    }
+    for (int[] e : edges) {
+        tree[e[0]].add(e[1]);
+        tree[e[1]].add(e[0]);
+    }
+
+    int i = 1;
+    while (i < n) {
+        if (nums[i] != nums[i - 1]) {
+            break;
+        }
+        i++;
+    }
+    if (i == n) {
+        return n - 1;
+    }
+
+    int sum = 0, max = 0;
+    for (int num : nums) {
+        sum += num;
+        max = Math.max(max, num);
+    }
+
+    // factorization
+    // sum of each component >= max node value
+    for (int f = sum / max; f > 1; f--) {
+        if (sum % f == 0 && dfs(0, -1, nums, sum / f) == 0) {
+            return f - 1;
+        }
+    }
+    return 0;
+}
+
+private int dfs(int node, int parent, int[] nums, int componentSum) {
+    int sum = nums[node];
+    for (int i : tree[node]) {
+        if (i != parent) {
+            int val = dfs(i, node, nums, componentSum);
+            if (val < 0) {
+                return -1;
+            }
+            sum += val;
+        }
+    }
+
+    // not a valid path
+    if (sum > componentSum) {
+        return -1;
+    }
+
+    // if sum == componentSum, the component is complete
+    return sum % componentSum;
+}
+{% endhighlight %}
+
 # Pattern Signature
 
 [Number of Distinct Islands][number-of-distinct-islands]
@@ -751,6 +824,7 @@ public int dfs(String[] pieces, int[][] positions, int p) {
 [clone-graph]: https://leetcode.com/problems/clone-graph/
 [contain-virus]: https://leetcode.com/problems/contain-virus/
 [course-schedule-ii]: https://leetcode.com/problems/course-schedule-ii/
+[create-components-with-same-value]: https://leetcode.com/problems/create-components-with-same-value/
 [critical-connections-in-a-network]: https://leetcode.com/problems/critical-connections-in-a-network/
 [detect-cycles-in-2d-grid]: https://leetcode.com/problems/detect-cycles-in-2d-grid/
 [keys-and-rooms]: https://leetcode.com/problems/keys-and-rooms/

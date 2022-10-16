@@ -2,12 +2,21 @@
 layout: post
 title:  "Sliding Window"
 tags: array
+usemathjax: true
 ---
 # Elastic-size Window
 
-## Upper Bound Constraints
+Define \\(v\\) as a variable which changes as the window slides, and it follows the function:
 
-Upper bound constraints include e.g. "**at most** k elements".
+\\[v = f(s, m)\\]
+
+where \\(s\\) is the start index of the window and \\(m\\) is the size of the window.
+
+Now we will categorize problem based on the function monotonicity when \\(s\\) is fixed.
+
+## Monotonically Increasing Function
+
+\\(v = f(s, m)\\) is a monotonically increasing function of \\(m\\), and \\(\max(v)\\) is constrained, e.g. "**at most** k elements".
 
 ### Max Length 
 
@@ -354,15 +363,15 @@ private boolean condition(int[] nums, int distance, int k) {
 }
 {% endhighlight %}
 
-## Lower Bound Constraints
+## Monotonically Decreasing Function
 
-Lower bound constraints include e.g. "sum is **greater than or equal to** target".
+\\(v = f(s, m)\\) is a monotonically decreasing function of \\(m\\), and \\(\min(v)\\) is constrained, e.g. "sum is **greater than or equal to** target".
 
 The common steps to resolve the problems:
 
 1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
 2. Increment `j` (move to right by one)
-3. Do the following in a loop until the constraint is not satisfied (each iteration represents a valid subarray):
+3. Do the following in a loop until the constraint is not satisfied (each iteration represents a valid window):
   - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
   - Increment `i` (move to right by one)
 4. Repeat 1. 2. 3. until `j` is out of boundary
@@ -506,6 +515,56 @@ public int numberOfSubstrings(String s) {
         result += i;
     }
     return result;
+}
+{% endhighlight %}
+
+## Non-monotonic Function
+
+\\(v = f(s, m)\\) is not a monotonic function of \\(m\\), e.g. "the frequency each character in the substring is greater than or equal to k". When you anchor the start index, expanding the window will either make all chars in thw window have more than k frequency, or introduce a new char so it goes the opposite direction of the goal.
+
+[Longest Substring with At Least K Repeating Characters][longest-substring-with-at-least-k-repeating-characters]
+
+{% highlight java %}
+public int longestSubstring(String s, int k) {
+    int max = 0;
+    // introduces a new constraint `uniqueCharsTarget` so that in sliding window function
+    // we know when to move i forward (shrink window) without losing possible candidates
+    for (int uniqueCharsTarget = 1; uniqueCharsTarget <= 26; uniqueCharsTarget++) {
+        max = Math.max(max, slidingWindow(s, k, uniqueCharsTarget));
+    }
+    return max;
+}
+
+private int slidingWindow(String s, int k, int uniqueCharsTarget) {
+    int[] counts = new int[26];
+    // unique chars in the window
+    // number of unique chars whose frequency >= k
+    int uniqueChars = 0, numGeK = 0;
+    int i = 0, j = 0, max = 0;
+    while (j < s.length()) {
+        if (counts[s.charAt(j) - 'a']++ == 0) {
+            uniqueChars++;
+        }
+        if (counts[s.charAt(j++) - 'a'] == k) {
+            numGeK++;
+        }
+
+        // adjusts the window so that uniqueChars <= uniqueCharsTarget
+        while (uniqueChars > uniqueCharsTarget) {
+            if (counts[s.charAt(i) - 'a']-- == k) {
+                numGeK--;
+            }
+            if (counts[s.charAt(i++) - 'a'] == 0) {
+                uniqueChars--;
+            }
+        }
+
+        // windows has target number of unique chars and all of them have frequency >= k
+        if (uniqueChars == uniqueCharsTarget && uniqueChars == numGeK) {
+            max = Math.max(max, j - i);
+        }
+    }
+    return max;
 }
 {% endhighlight %}
 
@@ -1128,6 +1187,7 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 [longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit]: https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
 [longest-nice-subarray]: https://leetcode.com/problems/longest-nice-subarray/
 [longest-repeating-character-replacement]: https://leetcode.com/problems/longest-repeating-character-replacement/
+[longest-substring-with-at-least-k-repeating-characters]: https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/
 [longest-substring-with-at-most-k-distinct-characters]: https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
 [max-consecutive-ones-iii]: https://leetcode.com/problems/max-consecutive-ones-iii/
 [maximum-number-of-occurrences-of-a-substring]: https://leetcode.com/problems/maximum-number-of-occurrences-of-a-substring/

@@ -235,6 +235,8 @@ Incremental scale-out on commodity hardware
 
 ## MongoDB
 
+<img src="/assets/mongodb_logo.svg" width="150">
+
 ## Apache HBase
 Wide column. Time series data
 

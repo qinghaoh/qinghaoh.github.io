@@ -97,12 +97,18 @@ floorMod(-4, +3) == +2;   and (-4 % +3) == -1
 
 # Division
 
-## By Zero
+**Ceil**
+
+{% highlight java %}
+Math.ceil(a / (double)b) = (a + b - 1) / b
+{% endhighlight %}
+
+**By Zero**
 
 * Double/Float division: the output is Infinity, the basic reason behind that it implements the floating point arithmetic algorithm which specifies a special values like “Not a number” OR “infinity” for “divided by zero cases” as per IEEE 754 standards.
 * Integer division: throws ArithmeticException.
 
-# Floating-point
+**Floating-point**
 
 The Java programming language defines % on floating-point operations to behave in a manner analogous to that of the integer remainder operator.
 

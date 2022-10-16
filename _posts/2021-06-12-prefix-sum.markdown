@@ -855,6 +855,8 @@ public int maxSumSubmatrix(int[][] matrix, int k) {
 
 # Prefix + Suffix Sum
 
+This can be extended to a very useful technique: for each element `arr[i]` in an array, compute its `left[i]` and `right[i]` for a particular variable (e.g. sum, min, max, etc.). Eventually we get two auxiliary arrays `left` and `right`.
+
 [Maximum Number of Ways to Partition an Array][maximum-number-of-ways-to-partition-an-array]
 
 {% highlight java %}
