@@ -2377,6 +2377,39 @@ ORDER BY
 ;
 {% endhighlight %}
 
+# Prepared Statements
+
+[Prepared statements](https://dev.mysql.com/doc/refman/8.0/en/sql-prepared-statements.html) has the following benefits:
+* Less overhead of parsing the statement at each execution
+* Protection against SQL injection attacks
+
+* PREPARE
+* EXECUTE
+* DEALLOCATE PREPARE
+
+[Dynamic Pivoting of a Table][dynamic-pivoting-of-a-table]
+
+{% highlight sql %}
+CREATE PROCEDURE PivotProducts()
+BEGIN
+    -- overrides GROUP_CONCAT default length (= 1024 characters)
+    SET SESSION group_concat_max_len = 1000000;
+
+    -- stores case-when statements for dynamically generated columns in a variable
+    SET @case_stmt = NULL;
+    SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(CASE WHEN store = "', store, '" THEN price END) AS ', store))
+    INTO @case_stmt
+    FROM products;
+
+    -- inserts @case_stmt in the main query
+    SET @sql = CONCAT('SELECT product_id, ', @case_stmt, ' FROM products GROUP BY product_id');
+
+    PREPARE sql_query FROM @sql;
+    EXECUTE sql_query;
+    DEALLOCATE PREPARE sql_query;
+END
+{% endhighlight %}
+
 [active-businesses]: https://leetcode.com/problems/active-businesses/
 [actors-and-directors-who-cooperated-at-least-three-times]: https://leetcode.com/problems/actors-and-directors-who-cooperated-at-least-three-times/
 [ads-performance]: https://leetcode.com/problems/ads-performance/
@@ -2397,6 +2430,7 @@ ORDER BY
 [customer-placing-the-largest-number-of-orders]: https://leetcode.com/problems/customer-placing-the-largest-number-of-orders/
 [customers-who-bought-all-products]: https://leetcode.com/problems/customers-who-bought-all-products/
 [customers-who-bought-products-a-and-b-but-not-c]: https://leetcode.com/problems/customers-who-bought-products-a-and-b-but-not-c/
+[dynamic-pivoting-of-a-table]: https://leetcode.com/problems/dynamic-pivoting-of-a-table/
 [employees-earning-more-than-their-managers]: https://leetcode.com/problems/employees-earning-more-than-their-managers/
 [evaluate-boolean-expression]: https://leetcode.com/problems/evaluate-boolean-expression/
 [exchange-seats]: https://leetcode.com/problems/exchange-seats/

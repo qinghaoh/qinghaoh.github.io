@@ -29,16 +29,19 @@ public List<Integer> fallingSquares(int[][] positions) {
 
         // sets [start, end) to height
         // sets [end, ) to prev
+        // prev is the height right before end before the current square is fallen
         int prev = map.floorEntry(end).getValue();
         map.put(start, height);
         map.put(end, prev);
 
-        // removes interval within (start, end)
+        // removes intervals within (start, end)
         map.subMap(start, false, end, false).clear();
     }
     return list;
 }
 {% endhighlight %}
+
+We can also leverage Segment Tree to solve the problem. See [Segment Tree](../../../2022/05/06/segment-tree.html).
 
 [Count Integers in Intervals][count-integers-in-intervals]
 

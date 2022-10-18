@@ -66,7 +66,7 @@ e -> a
 
 A [Lyndon word](https://en.wikipedia.org/wiki/Lyndon_word) is a nonempty string that is strictly smaller in lexicographic order than all of its rotations.
 
-Lyndon factorization: https://cp-algorithms.com/string/lyndon_factorization.html
+[Lyndon factorization](https://cp-algorithms.com/string/lyndon_factorization.html)
 
 [Orderly Queue][orderly-queue]
 

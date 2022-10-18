@@ -139,23 +139,13 @@ public int countVowelStrings(int n) {
 
 [Number of Sets of K Non-Overlapping Line Segments][number-of-sets-of-k-non-overlapping-line-segments]
 
-{% highlight java %}
-private static final int MOD = (int)1e9 + 7;
+Equivalent to: `n + k - 1` points, `k` segments, not allowed to share endpoints.
 
-public int numberOfSets(int n, int k) {
-    // equivalent to:
-    // n + k - 1 points, k segments, not allowed to share endpoints.
-    // C(n + k - 1, 2 * k)
-    // (n + k - 1)! / ((n - k - 1)! * (2 * k)!)
-    BigInteger count = BigInteger.valueOf(1);
-    for (int i = 1; i < k * 2 + 1; i++) {
-        count = count.multiply(BigInteger.valueOf(n + k - i));
-        count = count.divide(BigInteger.valueOf(i));
-    }
-    count = count.mod(BigInteger.valueOf(MOD));
-    return count.intValue();
-}
-{% endhighlight %}
+\\[{\binom {n + k - 1}{2 * k}}\\]
+
+For example, `n = 4, k = 2`
+
+![conversion](/assets/number_of_sets_of_k_non_overlapping_line_segments.png)
 
 ## Number of k-combinations
 

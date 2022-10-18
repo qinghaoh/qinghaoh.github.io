@@ -12,7 +12,11 @@ Efficient range query, while array modification is flexible.
 
 ## Implementation
 
+### Recursive
+
 The [standard (recursive, top-down) Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html) requires \\(4n\\) vertices for working on an array of size \\(n\\).
+
+### Iterative
 
 The iterative (bottom-up) implementation below is based on Al.Cash's blog [Efficient and easy segment trees](https://codeforces.com/blog/entry/18051).
 
@@ -46,7 +50,7 @@ class SegmentTree {
         }
     }
 
-    // set nums[index] = value
+    // sets nums[index] = value
     public void update(int index, int value) {
         for (arr[index += n] = value; index > 1; index /= 2) {
             // index and index ^ 1 are siblings
@@ -98,6 +102,39 @@ public int lengthOfLIS(int[] nums, int k) {
         max = Math.max(max, prev + 1);
     }
     return max;
+}
+{% endhighlight %}
+
+[Falling Squares][falling-squares]
+
+{% highlight java %}
+public List<Integer> fallingSquares(int[][] positions) {
+    // coordinate compression
+    Set<Integer> coords = new TreeSet();
+    for (int[] p : positions) {
+        coords.add(p[0]);
+        coords.add(p[0] + p[1]);
+    }
+
+    // {pos, index of pos after compression}
+    Map<Integer, Integer> map = new HashMap<>();
+    int index = 0;
+    for (int c : coords) {
+        map.put(c, index++);
+    }
+
+    SegmentTree st = new SegmentTree(map.size(), (a, b) -> Math.max(a, b));
+    List<Integer> list = new ArrayList();
+    int max = 0;
+    for (int[] p : positions) {
+        int l = map.get(p[0]), r = map.get(p[0] + p[1]);
+        int h = st.query(l, r) + p[1];
+        for (int i = l; i < r; i++) {
+            st.update(i, h);
+        }
+        list.add(max = Math.max(max, h));
+    }
+    return list;
 }
 {% endhighlight %}
 
@@ -516,6 +553,7 @@ class SegmentTreeNode {
 {% endhighlight %}
 
 [booking-concert-tickets-in-groups]: https://leetcode.com/problems/booking-concert-tickets-in-groups/
+[falling-squares]: https://leetcode.com/problems/falling-squares/
 [longest-increasing-subsequence-ii]: https://leetcode.com/problems/longest-increasing-subsequence-ii/
 [longest-substring-of-one-repeating-character]: https://leetcode.com/problems/longest-substring-of-one-repeating-character/
 [rectangle-area-ii]: https://leetcode.com/problems/rectangle-area-ii/

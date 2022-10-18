@@ -465,23 +465,21 @@ public int deleteAndEarn(int[] nums) {
 private static final int MOD = (int)1e9 + 7;
 
 public int numberOfSets(int n, int k) {
-    // dp[][i][j]
-    // 0: lines don't start from i
-    // 1: lines start from i
-    int[][][] dp = new int[2][n][k + 1];
-    for (int j = 0; j < n; j++) {
-        dp[0][j][0] = 1;
-        dp[1][j][0] = 1;
+    // dp[i][j][]:
+    // 0: segments don't start from i
+    // 1: segments start from i
+    int[][][] dp = new int[n][k + 1][2];
+    for (int i = 0; i < n; i++) {
+        dp[i][0][0] = dp[i][0][1] = 1;
     }
 
     for (int i = n - 2; i >= 0; i--) {
         for (int j = 1; j <= k; j++) {
-            dp[0][i][j] = (dp[0][i + 1][j] + dp[1][i + 1][j]) % MOD;
-            dp[1][i][j] = (dp[1][i + 1][j] + dp[0][i][j - 1]) % MOD;
+            dp[i][j][0] = (dp[i + 1][j][0] + dp[i + 1][j][1]) % MOD;
+            dp[i][j][1] = (dp[i][j - 1][0] + dp[i + 1][j][1]) % MOD;
         }
     }
-
-    return (dp[0][0][k] + dp[1][0][k]) % MOD;
+    return (dp[0][k][0] + dp[0][k][1]) % MOD;
 }
 {% endhighlight %}
 
