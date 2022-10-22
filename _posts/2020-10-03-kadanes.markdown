@@ -220,6 +220,34 @@ public int secondsToRemoveOccurrences(String s) {
 }
 {% endhighlight %}
 
+[Substring With Largest Variance][substring-with-largest-variance]
+
+{% highlight java %}
+public int largestVariance(String s) {
+    Set<Character> chars = s.chars().mapToObj(ch -> (char)ch).collect(Collectors.toSet());
+    int max = 0;
+    // the order is ch1 then ch2
+    // i.e. ch1 == 'a', ch2 == 'b' is different from ch1 == 'b', ch1 == 'a'
+    for (char a : chars) {
+        for (char b : chars) {
+            if (a != b) {
+                int prefix = 0, buff = 0, m = 10000; 
+                for (char ch : s.toCharArray()) {
+                    if (ch == a) {
+                        prefix++;
+                    } else if (ch == b) {
+                        m = Math.min(m, buff);
+                        buff = --prefix; 
+                    }
+                    max = Math.max(max, prefix - m); 
+                }
+            }
+        }
+    }
+    return max;
+}
+{% endhighlight %}
+
 # 2D
 
 [Max Dot Product of Two Subsequences][max-dot-product-of-two-subsequences]
@@ -273,4 +301,5 @@ public int maxSatisfaction(int[] satisfaction) {
 [maximum-subarray-sum-with-one-deletion]: https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/
 [number-of-subarrays-with-bounded-maximum]: https://leetcode.com/problems/number-of-subarrays-with-bounded-maximum/
 [reducing-dishes]: https://leetcode.com/problems/reducing-dishes/
+[substring-with-largest-variance]: https://leetcode.com/problems/substring-with-largest-variance/
 [time-needed-to-rearrange-a-binary-string]: https://leetcode.com/problems/time-needed-to-rearrange-a-binary-string/

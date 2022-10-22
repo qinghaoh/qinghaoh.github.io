@@ -2410,6 +2410,34 @@ BEGIN
 END
 {% endhighlight %}
 
+# INFORMATION_SCHEMA
+
+[INFORMATION_SCHEMA Table Reference](https://dev.mysql.com/doc/refman/8.0/en/information-schema-table-reference.html)
+
+[Dynamic Unpivoting of a Table][dynamic-unpivoting-of-a-table]
+
+{% highlight sql %}
+CREATE PROCEDURE UnpivotProducts()
+BEGIN
+    SET SESSION group_concat_max_len = 1000000;
+
+    SET @sql = NULL;
+    SELECT GROUP_CONCAT(
+        CONCAT(
+            'SELECT product_id, "', COLUMN_NAME, '" store, ', COLUMN_NAME,
+            ' price FROM Products WHERE ', COLUMN_NAME, ' IS NOT NULL'
+        ) SEPARATOR ' UNION '
+    )
+    INTO @sql
+    FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_SCHEMA = 'test' AND TABLE_NAME = 'products' AND COLUMN_NAME != 'product_id';
+
+    PREPARE sql_query FROM @sql;
+    EXECUTE sql_query;
+    DEALLOCATE PREPARE sql_query;
+END
+{% endhighlight %}
+
 [active-businesses]: https://leetcode.com/problems/active-businesses/
 [actors-and-directors-who-cooperated-at-least-three-times]: https://leetcode.com/problems/actors-and-directors-who-cooperated-at-least-three-times/
 [ads-performance]: https://leetcode.com/problems/ads-performance/
@@ -2431,6 +2459,7 @@ END
 [customers-who-bought-all-products]: https://leetcode.com/problems/customers-who-bought-all-products/
 [customers-who-bought-products-a-and-b-but-not-c]: https://leetcode.com/problems/customers-who-bought-products-a-and-b-but-not-c/
 [dynamic-pivoting-of-a-table]: https://leetcode.com/problems/dynamic-pivoting-of-a-table/
+[dynamic-unpivoting-of-a-table]: https://leetcode.com/problems/dynamic-unpivoting-of-a-table/
 [employees-earning-more-than-their-managers]: https://leetcode.com/problems/employees-earning-more-than-their-managers/
 [evaluate-boolean-expression]: https://leetcode.com/problems/evaluate-boolean-expression/
 [exchange-seats]: https://leetcode.com/problems/exchange-seats/

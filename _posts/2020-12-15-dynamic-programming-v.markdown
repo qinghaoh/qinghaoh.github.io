@@ -459,30 +459,6 @@ public int deleteAndEarn(int[] nums) {
 }
 {% endhighlight %}
 
-[Number of Sets of K Non-Overlapping Line Segments][number-of-sets-of-k-non-overlapping-line-segments]
-
-{% highlight java %}
-private static final int MOD = (int)1e9 + 7;
-
-public int numberOfSets(int n, int k) {
-    // dp[i][j][]:
-    // 0: segments don't start from i
-    // 1: segments start from i
-    int[][][] dp = new int[n][k + 1][2];
-    for (int i = 0; i < n; i++) {
-        dp[i][0][0] = dp[i][0][1] = 1;
-    }
-
-    for (int i = n - 2; i >= 0; i--) {
-        for (int j = 1; j <= k; j++) {
-            dp[i][j][0] = (dp[i + 1][j][0] + dp[i + 1][j][1]) % MOD;
-            dp[i][j][1] = (dp[i][j - 1][0] + dp[i + 1][j][1]) % MOD;
-        }
-    }
-    return (dp[0][k][0] + dp[0][k][1]) % MOD;
-}
-{% endhighlight %}
-
 [Painting a Grid With Three Different Colors][painting-a-grid-with-three-different-colors]
 
 {% highlight java %}
@@ -679,7 +655,6 @@ public int minimumTime(String s) {
 [maximum-earnings-from-taxi]: https://leetcode.com/problems/maximum-earnings-from-taxi/
 [minimum-deletions-to-make-string-balanced]: https://leetcode.com/problems/minimum-deletions-to-make-string-balanced/
 [minimum-time-to-remove-all-cars-containing-illegal-goods]: https://leetcode.com/problems/minimum-time-to-remove-all-cars-containing-illegal-goods/
-[number-of-sets-of-k-non-overlapping-line-segments]: https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/
 [number-of-ways-to-form-a-target-string-given-a-dictionary]: https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary/
 [number-of-ways-to-paint-n-3-grid]: https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/
 [number-of-ways-to-stay-in-the-same-place-after-some-steps]: https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/
