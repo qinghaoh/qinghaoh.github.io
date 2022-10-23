@@ -384,6 +384,43 @@ public ListNode removeZeroSumSublists(ListNode head) {
 abs(subarray) = p[i] - p[j] <= max(p) - min(p)
 ```
 
+**Diff**
+
+[Substring With Largest Variance][substring-with-largest-variance]
+
+{% highlight java %}
+public int largestVariance(String s) {
+    Set<Character> chars = s.chars().mapToObj(ch -> (char)ch).collect(Collectors.toSet());
+    int max = 0;
+    // the order is ch1 then ch2
+    // i.e. ch1 == 'a', ch2 == 'b' is different from ch1 == 'b', ch1 == 'a'
+    for (char ch1 : chars) {
+        for (char ch2 : chars) {
+            if (ch1 != ch2) {
+                // variance = #ch1 - #ch2
+                // splits the string into two parts
+                // variance = (#ch1_in_left + #ch1_in_right) - (#ch2_in_left + #ch2_in_right)
+                //          = (#ch1_in_left - #ch2_in_left) + (#ch1_in_right - #ch2_in_right)
+                // now the problem is to find the min left (and thus max right)
+                int variance = 0, left = 0, minLeft = s.length(); 
+                for (char ch : s.toCharArray()) {
+                    if (ch == ch1) {
+                        variance++;
+                    } else if (ch == ch2) {
+                        minLeft = Math.min(minLeft, left);
+                        left = --variance; 
+                    }
+                    max = Math.max(max, variance - minLeft); 
+                }
+            }
+        }
+    }
+    return max;
+}
+{% endhighlight %}
+
+This problem can also be solved by [Kadane's Algorithm](../../../2020/10/03/kadanes.html).
+
 **Prefix Sum**
 
 [Sum of Total Strength of Wizards][sum-of-total-strength-of-wizards]
@@ -984,6 +1021,7 @@ public int findMinMoves(int[] machines) {
 [product-of-the-last-k-numbers]: https://leetcode.com/problems/product-of-the-last-k-numbers/
 [remove-zero-sum-consecutive-nodes-from-linked-list]: https://leetcode.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list/
 [subarray-sum-equals-k]: https://leetcode.com/problems/subarray-sum-equals-k/
+[substring-with-largest-variance]: https://leetcode.com/problems/substring-with-largest-variance/
 [sum-of-floored-pairs]: https://leetcode.com/problems/sum-of-floored-pairs/
 [sum-of-special-evenly-spaced-elements-in-array]: https://leetcode.com/problems/sum-of-special-evenly-spaced-elements-in-array/
 [sum-of-total-strength-of-wizards]: https://leetcode.com/problems/sum-of-total-strength-of-wizards/

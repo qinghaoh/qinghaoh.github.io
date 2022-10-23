@@ -226,27 +226,44 @@ public int secondsToRemoveOccurrences(String s) {
 public int largestVariance(String s) {
     Set<Character> chars = s.chars().mapToObj(ch -> (char)ch).collect(Collectors.toSet());
     int max = 0;
-    // the order is ch1 then ch2
+    // the order is ch1 then ch2, and ch1 increases variance while ch2 decreases it
     // i.e. ch1 == 'a', ch2 == 'b' is different from ch1 == 'b', ch1 == 'a'
-    for (char a : chars) {
-        for (char b : chars) {
-            if (a != b) {
-                int prefix = 0, buff = 0, m = 10000; 
-                for (char ch : s.toCharArray()) {
-                    if (ch == a) {
-                        prefix++;
-                    } else if (ch == b) {
-                        m = Math.min(m, buff);
-                        buff = --prefix; 
-                    }
-                    max = Math.max(max, prefix - m); 
+    for (char ch1 : chars) {
+        for (char ch2 : chars) {
+            int variance = 0;
+            boolean hasCh2 = false, isFirstCharCh2 = false;
+            for (char ch : s.toCharArray()) {
+                // +1 if it's ch1
+                if (ch == ch1) {
+                    variance++;
                 }
+
+                if (ch == ch2) {
+                    hasCh2 = true;
+                    if (isFirstCharCh2 && variance >= 0) {
+                        // if the substring starts with ch2, we trim the leading ch2 when we encounter another ch2
+                        // the variance is not affected
+                        // e.g. "bab" -> "ab", "baab" -> "aab"
+                        isFirstCharCh2 = false;
+                    } else if (--variance < 0) {
+                        // -1 if it's ch2
+                        // if doing so makes variance negative, restarts from the current position
+                        // e.g. "abb" -> "b", "aabbb" -> "b"
+                        isFirstCharCh2 = true;
+                        variance = -1;
+                    }
+                }
+
+                // if there are less than 2 chars, the variance is 0
+                max = Math.max(max, hasCh2 ? variance : 0);
             }
         }
     }
     return max;
 }
 {% endhighlight %}
+
+This problem has a more intuitive [prefix sum](../../../2021/06/12/prefix-sum.html) solution.
 
 # 2D
 

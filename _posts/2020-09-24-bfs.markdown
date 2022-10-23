@@ -75,7 +75,7 @@ public int trapRainWater(int[][] heightMap) {
     Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
     boolean[][] visited = new boolean[m][n];
 
-    // enqueues boarder cells
+    // enqueues border cells
     for (int i = 0; i < m; i++) {
         pq.offer(new int[] {i, 0, heightMap[i][0]});
         pq.offer(new int[] {i, n - 1, heightMap[i][n - 1]});
@@ -93,22 +93,27 @@ public int trapRainWater(int[][] heightMap) {
         int[] cell = pq.poll();
         for (int[] d : DIRECTIONS) {
             int i = cell[0] + d[0], j = cell[1] + d[1];
-            if (i < 0 || i == m || j < 0 || j == n || visited[i][j]) {
-                continue;
-            }
+            if (i >= 0 && i < m && j >= 0 && j < n && !visited[i][j]) {
+                // if the neighbor is higher,
+                // computes the amount of water the current can trap by comparing its height with its neighbors'
+                // then enqueues the neighbor
+                volume += Math.max(0, cell[2] - heightMap[i][j]);
 
-            // collects the water it can trap
-            volume += Math.max(0, cell[2] - heightMap[i][j]);
-            // updates the height
-            pq.offer(new int[] {i, j, Math.max(heightMap[i][j], cell[2])});
-            visited[i][j] = true;
+                // if the neighbor is lower, fills the neighbor with the cell's height
+                // enqueues the neighbor and now it becomes a new border cell
+                pq.offer(new int[] {i, j, Math.max(heightMap[i][j], cell[2])});
+
+                // there might be more than one {i, j, _} nodes in the queue
+                // but their neighbors won't be processed more than once with the help of `visited` array
+                visited[i][j] = true;
+            }
         }
     }
     return volume;
 }
 {% endhighlight %}
 
-In fact, this problem can be solved with Dijkstra's algorithm, too.
+In fact, this problem can be solved with [Dijkstra's algorithm](../../../https://qinghaoh.github.io/2020/09/23/shortest-path.html#dijkstra), too.
 
 # Composite Vertex
 

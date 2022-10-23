@@ -368,6 +368,81 @@ public int minimumEffortPath(int[][] heights) {
 
 [Campus Bikes II][campus-bikes-ii]
 
+**Maximum of heights**
+
+[Trapping Rain Water II][trapping-rain-water-ii]
+
+{% highlight java %}
+{% raw %}
+private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+{% endraw %}
+public int trapRainWater(int[][] heightMap) {
+    int m = heightMap.length, n = heightMap[0].length;
+
+    // virtual start representing the outside world
+    int start = m * n;
+
+    // {row * n + col, weight}
+    // the path direction is from i to graph[i]
+    List<int[]>[] graph = new List[m * n + 1];
+    for (int i = 0; i < graph.length; i++) {
+        graph[i] = new ArrayList<>();
+    }
+
+    int[] dist = new int[graph.length];
+    Arrays.fill(dist, Integer.MAX_VALUE / 2);
+    dist[start] = 0;
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            // border cells
+            if (i == 0 || i == m - 1 || j == 0 || j == n - 1) {
+                graph[start].add(new int[]{i * n + j, 0});
+            }
+
+            for (int[] d : DIRECTIONS) {
+                int r = i + d[0], c = j + d[1];
+                if (r >= 0 && r < m && c >= 0 && c < n) {
+                    graph[i * n + j].add(new int[]{r * n + c, heightMap[i][j]});
+                }
+            }
+        }
+    }
+
+    // for each unit cell, finds the min of all paths' weight
+    // where a path's weight is defined as the highest height value along the path
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(c -> c[1]));
+    int[] curr = new int[]{start, 0};
+    pq.offer(curr);
+
+    while (!pq.isEmpty()) {
+        curr = pq.poll();
+        int u = curr[0], du = curr[1];
+        if (du > dist[u]) {
+            continue;
+        }
+
+        for (int[] next : graph[u]) {
+            int v = next[0], duv = next[1];
+            int alt = Math.max(du, duv);
+            if (alt < dist[v]) {
+                pq.offer(new int[]{v, dist[v] = alt});
+            }
+        }
+    }
+
+    int volume = 0;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            volume += Math.max(0, dist[i * n + j] - heightMap[i][j]);
+        }
+    }
+    return volume;
+}
+{% endhighlight %}
+
+This problem can be solved by [BFS](../../../2020/09/24/bfs.html) as well. We can see the intrinsic connection of the two approaches.
+
 ## Composite Vertex
 
 [The Maze III][the-maze-iii]
@@ -1074,3 +1149,4 @@ private int paint(int[][] grid, int i, int j, int color) {
 [shortest-bridge]: https://leetcode.com/problems/shortest-bridge/
 [swim-in-rising-water]: https://leetcode.com/problems/swim-in-rising-water/
 [the-maze-iii]: https://leetcode.com/problems/the-maze-iii/
+[trapping-rain-water-ii]: https://leetcode.com/problems/trapping-rain-water-ii/
