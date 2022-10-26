@@ -184,13 +184,21 @@ public int singleNumber(int[] nums) {
 
 [Single Number II][single-number-ii]
 
+Generalization: every element appears `k (k > 1)` times except for one.
+
+Solution I:
+
 {% highlight java %}
 public int singleNumber(int[] nums) {
+    return singleNumber(nums, 3);
+}
+
+private int singleNumber(int[] nums, int k) {
     int result = 0;
-    // counts 1's in each bit
     for (int i = 0; i < 32; i++) {
+        // counts 1's at each bit
         int sum = 0;
-        for (int num: nums) {
+        for (int num : nums) {
             sum += (num >> i) & 1;
         }
         sum %= 3;
@@ -200,38 +208,11 @@ public int singleNumber(int[] nums) {
 }
 {% endhighlight %}
 
-The above solution can be generalized to: every element appears `k (k > 1)` times except for one.
+@fun4LeetCode has a great [article](https://leetcode.com/problems/single-number-ii/discuss/43295/Detailed-explanation-and-generalization-of-the-bitwise-operation-method-for-single-numbers) about a futhur generaliztion, where the excepted number appears `m` times (`m > 0` and `m % k > 0`). That's a bit over complicated, so I'm just archiving the link here.
 
-Generalization II:
-
-{% highlight java %}
-public int singleNumber(int[] nums) {
-    // sets of numbers that appear once and twice respectively
-    int ones = 0, twos = 0;
-    for (int num : nums) {
-        // if ones doesn't contain num, adds num to ones iff it's not in twos
-        // otherwise removes num from ones
-        ones = (ones ^ num) & ~twos;
-        // if twos doesn't contain num, adds num to twos iff it's not in ones
-        // othwerwise removes it from twos
-        twos = (twos ^ num) & ~ones;
-
-        // Effectively, any number that appears:
-        // once: is added to ones but not to twos
-        // twice: is removed from ones and added twos
-        // thrice: is removed from twos and not in either set
-    }
-    return ones;
-}
-{% endhighlight %}
-
-Another perspective is:
-
-Since bitwise operations on each of the 32 bits are independent of each other, we can group, say the i-th bit of all counters, into one 32-bit number. All bits in this 32-bit number will follow the same bitwise operations. 
+Solution II: [Karnaugh map](https://en.wikipedia.org/wiki/Karnaugh_map)
 
 To cover `k` counts, we require `2 ^ n >= k`, where `n` is the total number of bits. Therefore, `n >= log(k)`. In this problem, `k == 3`, so the complete transition loop of the counter is `00 -> 01 -> 10 -> 00 -> ...`.
-
-[Karnaugh map](https://en.wikipedia.org/wiki/Karnaugh_map)
 
 ![Karnaugh map](/assets/karnaugh_map.png)
 

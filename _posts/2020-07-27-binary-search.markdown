@@ -61,6 +61,10 @@ There can be variants of this template. For example: [First Bad Version][first-b
 * `high = mid - 1`, `high = mid`, ...
 * `return -1`, `return low`, `return high`, ...
 
+## Function
+
+The function must be monotonic (or at least locally monotonic).
+
 ## While Condition
 
 `while (low < high)` is a better choice. The while loop only exits when `low == high`, which means there's only one element left.
