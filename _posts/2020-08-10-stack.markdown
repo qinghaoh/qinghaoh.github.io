@@ -368,6 +368,38 @@ public int[] finalPrices(int[] prices) {
 }
 {% endhighlight %}
 
+[Next Greater Element IV][next-greater-element-iv]
+
+{% highlight java %}
+public int[] secondGreaterElement(int[] nums) {
+    int n = nums.length;
+    int[] next = new int[n];
+    Arrays.fill(next, -1);
+
+    // stack1: elements that haven't found their first NGE
+    // stack2: elements that have found their first NGE but not second NGE
+    Deque<Integer> st1 = new ArrayDeque<>(), st2 = new ArrayDeque<>(), tmp = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        // finds second NGE
+        while (!st2.isEmpty() && nums[i] > nums[st2.peek()]) {
+            next[st2.pop()] = nums[i];
+        }
+
+        // moves all elements whose first NGE is nums[i] to stack2
+        while (!st1.isEmpty() && nums[i] > nums[st1.peek()]) {
+            tmp.push(st1.pop());
+        }
+
+        while (!tmp.isEmpty()) {
+            st2.push(tmp.pop());
+        }
+
+        st1.push(i);
+    }
+    return next;
+}
+{% endhighlight %}
+
 ### Subarray Min/Max
 
 [Sum of Subarray Minimums][sum-of-subarray-minimums]
@@ -1019,6 +1051,7 @@ public int calculate(String s) {
 [minimum-cost-tree-from-leaf-values]: https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/
 [minimum-number-of-swaps-to-make-the-string-balanced]: https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/
 [next-greater-element-ii]: https://leetcode.com/problems/next-greater-element-ii/
+[next-greater-element-iv]: https://leetcode.com/problems/next-greater-element-iv/
 [next-greater-node-in-linked-list]: https://leetcode.com/problems/next-greater-node-in-linked-list/
 [number-of-people-that-can-be-seen-in-a-grid]: https://leetcode.com/problems/number-of-people-that-can-be-seen-in-a-grid/
 [number-of-valid-subarrays]: https://leetcode.com/problems/number-of-valid-subarrays/

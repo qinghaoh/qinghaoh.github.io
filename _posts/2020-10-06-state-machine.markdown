@@ -138,14 +138,14 @@ public int minSwap(int[] A, int[] B) {
 
 [Valid Number][valid-number]
 
-![DFA](https://leetcode.com/problems/valid-number/Figures/65/dfa.png)
+![DFA](/assets/valid_number.png)
 
 {% highlight java %}
 private static final List<Map<String, Integer>> dfa = List.of(
     Map.of("digit", 1, "sign", 2, "dot", 3),
-    Map.of("digit", 1, "dot", 4, "exponent", 5), 
-    Map.of("digit", 1, "dot", 3), 
-    Map.of("digit", 4), 
+    Map.of("digit", 1, "dot", 4, "exponent", 5),
+    Map.of("digit", 1, "dot", 3),
+    Map.of("digit", 4),
     Map.of("digit", 4, "exponent", 5),
     Map.of("sign", 6, "digit", 7),
     Map.of("digit", 7),
@@ -158,14 +158,14 @@ public boolean isNumber(String s) {
     int currState = 0;
     String group = null;
 
-    for (char c : s.toCharArray()) {
-        if (Character.isDigit(c)) {
+    for (char ch : s.toCharArray()) {
+        if (Character.isDigit(ch)) {
             group = "digit";
-        } else if (c == '+' || c == '-') {
+        } else if (ch == '+' || ch == '-') {
             group = "sign";
-        } else if (c == 'e' || c == 'E') {
+        } else if (ch == 'e' || ch == 'E') {
             group = "exponent";
-        } else if (c == '.') {
+        } else if (ch == '.') {
             group = "dot";
         } else {
             return false;

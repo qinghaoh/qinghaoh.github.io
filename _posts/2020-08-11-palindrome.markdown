@@ -590,21 +590,19 @@ public int longestPalindromeSubseq(String s) {
 {% highlight java %}
 public int maxProduct(String s) {
     int n = s.length(), max = 0;
+    // iterates all masks
     for (int i = 0; i < (1 << n); i++) {
-        StringBuilder left = new StringBuilder(), right = new StringBuilder();
+        StringBuilder ones = new StringBuilder(), zeros = new StringBuilder();
         for (int j = 0; j < n; j++) {
-            char c = s.charAt(j);
-            if ((i & (1 << j)) != 0) {
-                left.append(c);
-            } else {
-                right.append(c);
-            }
+            ((i & (1 << j)) == 0 ? zeros : ones).append(s.charAt(j));
         }
-        max = Math.max(max, longestPalindromeSubseq(left) * longestPalindromeSubseq(right));
+        max = Math.max(max, longestPalindromeSubseq(ones) * longestPalindromeSubseq(zeros));
     }
     return max;
 }
 {% endhighlight %}
+
+This problem can be solved by backtracking, too. It reflects the close connection between bitmask and backtracking.
 
 [Palindrome Removal][palindrome-removal]
 

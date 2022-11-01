@@ -374,7 +374,151 @@ private String search(String s, int len) {
 }
 {% endhighlight %}
 
+# Suffix Automaton
+
+[Suffix Automaton](https://cp-algorithms.com/string/suffix-automaton.html)
+
+[Longest Common Subpath][longest-common-subpath]
+
+{% highlight java %}
+public class Solution {
+    public int longestCommonSubpath(int n, int[][] paths) {
+        // builds suffix automaton from the shortest path (denoted as path0)
+        return new SuffixAutomaton(Arrays.stream(paths).min(Comparator.comparingInt(p -> p.length)).get())
+                .longestCommonSubpath(paths);
+    }
+
+    // for a non-empty substring t of string s, endpos(t) is the set of all positions in the string s,
+    // in which the occurrences of t end
+    // e.g. s = "abcbc", endpos("bc") = {2, 4}
+    // endpos-equivalent substrings correspond to the same state
+    class State {
+        // len: length of the longest substring match of the state
+        // link: minLen(v) = len(link(v)) + 1
+        //   link(v) represents a suffix of w, where w is the longest substring of state v
+        int len = 0, link = -1;
+        // next transitions
+        Map<Integer, Integer> next = new HashMap<>();
+        // lcs: longest common subpath (LCS) among all paths
+        int lcs;
+    }
+
+    class SuffixAutomaton {
+        private final State[] states;
+        private int size = 1, last = 0;
+
+        public SuffixAutomaton(int n) {
+            // the number of states of a string of length n doesn't exceed 2 * n - 1
+            this.states = new State[2 * n];
+            for (int i = 0; i < states.length; i++) {
+                states[i] = new State();
+            }
+        }
+
+        public SuffixAutomaton(int[] path) {
+            this(path.length);
+            build(path);
+        }
+
+        public void extend(int c) {
+            int curr = size++;
+            states[curr].len = states[last].len + 1;
+
+            int p = last;
+            // only adds a new transition of c if it doesn't exist already
+            while (p != -1 && !states[p].next.containsKey(c)) {
+                states[p].next.put(c, curr);
+                p = states[p].link;
+            }
+
+            if (p == -1) {
+                states[curr].link = 0;
+            } else {
+                int q = states[p].next.get(c);
+                if (states[p].len + 1 == states[q].len) {
+                    // (p, q) is continuous
+                    states[curr].link = q;
+                } else {
+                    // splits q into two substates
+                    int clone = size++;
+                    states[clone].len = states[p].len + 1;
+                    states[clone].next = new HashMap<>(states[q].next);
+                    states[clone].link = states[q].link;
+                    while (p != -1 && states[p].next.replace(c, q, clone)) {
+                        p = states[p].link;
+                    }
+                    states[q].link = states[curr].link = clone;
+                }
+            }
+            last = curr;
+        }
+
+        // O(n * log(k))
+        public void build(int[] path) {
+            for (int c : path) {
+                extend(c);
+            }
+            
+            // LCS is the longest substring match for the first (shortest) path
+            for (State s : states) {
+                s.lcs = s.len;
+            }
+        }
+
+        // calculates the LCS of each state
+        private void lcs(int[] path) {
+            // lcs[i]: LCS ending at state i
+            int[] lcs = new int[size];
+
+            // state and len of the current matching part
+            int p = 0, len = 0;
+            
+            // for each position in `path`, finds the lcs of `path` and path0 ending in that position
+            for (int c : path) {
+                // shortens the current matching part
+                while (states[p].link >= 0 && !states[p].next.containsKey(c)) {
+                    p = states[p].link;
+                    len = states[p].len;
+                }
+                
+                if (states[p].next.containsKey(c)) {
+                    p = states[p].next.get(c);
+                    lcs[p] = Math.max(lcs[p], ++len);
+
+                    // traverses by suffix links to backfill all states with LCS's
+                    // each state on the traversal is a suffix of longest substring matching of p
+                    int q = states[p].link;
+                    while (lcs[q] < states[q].len) {
+                        lcs[q] = states[q].len;
+                        q = states[q].link;
+                    }
+                }
+            }
+
+            // state[i].lcs is the min among LCS of all paths at the state 
+            for (int i = 0; i < size; i++) {
+                states[i].lcs = Math.min(states[i].lcs, lcs[i]);
+            }
+        }
+
+        public int longestCommonSubpath(int[][] paths) {
+            for (int[] p : paths) {
+                lcs(p);
+            }
+
+            // finds the max LCS among all states
+            int max = 0;
+            for (int i = 0; i < size; i++) {
+                max = Math.max(max, states[i].lcs);
+            }
+            return max;
+        }
+    }
+}
+{% endhighlight %}
+
 [find-all-good-strings]: https://leetcode.com/problems/find-all-good-strings/
+[longest-common-subpath]: https://leetcode.com/problems/longest-common-subpath/
 [longest-duplicate-substring]: https://leetcode.com/problems/longest-duplicate-substring/
 [longest-happy-prefix]: https://leetcode.com/problems/longest-happy-prefix/
 [maximum-deletions-on-a-string]: https://leetcode.com/problems/maximum-deletions-on-a-string/
