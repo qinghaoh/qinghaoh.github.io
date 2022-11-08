@@ -804,6 +804,38 @@ public int equalCountSubstrings(String s, int count) {
 }
 {% endhighlight %}
 
+[Maximum Sum of Distinct Subarrays With Length K][maximum-sum-of-distinct-subarrays-with-length-k]
+
+{% highlight java %}
+public long maximumSubarraySum(int[] nums, int k) {
+    // the index of the last duplicate element in the window
+    int lastDup = -1;
+    // last index of an element
+    Map<Integer, Integer> map = new HashMap<>();
+    // sum: running sum of size-k window
+    long sum = 0, max = 0;
+    for (int i = 0; i < nums.length; i++) {
+        sum += nums[i];
+        if (i >= k) {
+            sum -= nums[i - k];
+        }
+
+        int lastIndex = map.getOrDefault(nums[i], -1);
+        if (i - lastIndex < k) {
+            lastDup = Math.max(lastDup, lastIndex);
+        }
+
+        // attempts to update the max if the last duplicate is out of th window
+        if (i - lastDup >= k) {
+            max = Math.max(max, sum);
+        }
+
+        map.put(nums[i], i);
+    }
+    return max;
+}
+{% endhighlight %}
+
 [Minimum Number of K Consecutive Bit Flips][minimum-number-of-k-consecutive-bit-flips]
 
 {% highlight java %}
@@ -1193,6 +1225,7 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 [maximum-number-of-occurrences-of-a-substring]: https://leetcode.com/problems/maximum-number-of-occurrences-of-a-substring/
 [maximum-points-you-can-obtain-from-cards]: https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/
 [maximum-size-subarray-sum-equals-k]: https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
+[maximum-sum-of-distinct-subarrays-with-length-k]: https://leetcode.com/problems/maximum-sum-of-distinct-subarrays-with-length-k/
 [maximum-white-tiles-covered-by-a-carpet]: https://leetcode.com/problems/maximum-white-tiles-covered-by-a-carpet/
 [minimum-adjacent-swaps-for-k-consecutive-ones]: https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/
 [minimum-difference-between-largest-and-smallest-value-in-three-moves]: https://leetcode.com/problems/minimum-difference-between-largest-and-smallest-value-in-three-moves/

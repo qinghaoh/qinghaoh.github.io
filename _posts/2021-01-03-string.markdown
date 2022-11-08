@@ -63,38 +63,51 @@ e -> a
 
 "xce" -> "xca" -> "xea" -> "cea"
 ```
-# Lydon Word
-
-A [Lyndon word](https://en.wikipedia.org/wiki/Lyndon_word) is a nonempty string that is strictly smaller in lexicographic order than all of its rotations.
+# Lyndon Factorization
 
 [Lyndon factorization](https://cp-algorithms.com/string/lyndon_factorization.html): A string is called simple (or a Lyndon word), if it is strictly smaller than any of its own nontrivial suffixes. The Lyndon factorization of the string \\(s\\) is a factorization \\(s = w_1w_2 \ldots w_k\\) where all strings \\(w_i\\) are simple, and they are in non-increasing order \\(w_1 \ge w_2 \ge \ldots \ge w_k\\).
+
+A [Lyndon word](https://en.wikipedia.org/wiki/Lyndon_word) is a nonempty string that is strictly smaller in lexicographic order than all of its rotations.
 
 [Orderly Queue][orderly-queue]
 
 {% highlight java %}
-// Lyndon word
-// Duval Algorithm, O(n)
-int n = s.length(), index = 0, i = 0;
-while (i < n) {
-    index = i;
-    int j = i + 1, k = i;
-    while (j < n && s.charAt(k) <= s.charAt(j)) {
-        if (s.charAt(k) < s.charAt(j)) {
-            // s2 + s[j] becomes simple
-            k = i;
-        } else {
-            // s2 is still pre-simple
-            k++;
-        }
-        j++;
+public String orderlyQueue(String s, int k) {
+    // bubble sort - swaps adjacent pairs
+    if (k > 1) {
+        char chars[] = s.toCharArray();
+        Arrays.sort(chars);
+        return new String(chars);
     }
 
-    // s[j] < s[k], s2 + s[j] is no longer pre-simple
-    while (i <= k) {
-        i += j - k;
-    }
+    return lyndonWord(s);
 }
-return s.substring(index) + s.substring(0, index);
+
+// Duval algorithm, O(n)
+private String lyndonWord(String s) {
+    s += s;
+    int n = s.length(), index = 0, i = 0;
+    while (i < n / 2) {
+        index = i;
+        int j = i + 1, k = i;
+        while (j < n && s.charAt(k) <= s.charAt(j)) {
+            if (s.charAt(k) < s.charAt(j)) {
+                // s2 + s[j] becomes simple
+                k = i;
+            } else {
+                // s2 is still pre-simple
+                k++;
+            }
+            j++;
+        }
+
+        // s[j] < s[k], s2 + s[j] is no longer pre-simple
+        while (i <= k) {
+            i += j - k;
+        }
+    }
+    return s.substring(index, index + n / 2);
+}
 {% endhighlight %}
 
 [Sentence Screen Fitting][sentence-screen-fitting]

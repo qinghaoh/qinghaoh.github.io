@@ -196,6 +196,78 @@ public int minScoreTriangulation(int[] values) {
     }
 {% endhighlight %}
 
+[Minimum Total Distance Traveled][minimum-total-distance-traveled]
+
+{% highlight java %}
+private Long[][][] memo;
+
+public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
+    int n = robot.size(), m = factory.length;
+    // memo[i][j][k]: the cost to fix robot[i...] at factory[j] which has already fixed k robots
+    this.memo = new Long[n + 1][m + 1][n + 1];
+
+    Collections.sort(robot);
+    Arrays.sort(factory, Comparator.comparingInt(f -> f[0]));
+
+    return helper(robot, factory, 0, 0, 0);
+}
+
+public long helper(List<Integer> robot, int[][] factory, int i, int j, int k) {
+    // all robots are fixed
+    if (i == robot.size()) {
+        return 0;
+    }
+
+    // no more factory to fix the remaining robots
+    if (j == factory.length) {
+        return Long.MAX_VALUE;
+    }
+
+    if (memo[i][j][k] != null) {
+        return memo[i][j][k];
+    }
+
+    // skips current factory
+    long res1 = helper(robot, factory, i, j + 1, 0);
+
+    // fixes current robot at current factory
+    long res2 = Long.MAX_VALUE;
+    if (factory[j][1] > k) {
+        long val = helper(robot, factory, i + 1, j, k + 1);
+        if (val != Long.MAX_VALUE) {
+            res2 = val + Math.abs(robot.get(i) - factory[j][0]);
+        }
+    }
+    return memo[i][j][k] = Math.min(res1, res2);
+}
+{% endhighlight %}
+
+{% highlight java %}
+public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
+    int n = robot.size(), m = factory.length;
+    long[] dp = new long[n + 1];
+    Arrays.fill(dp, (long)1e12);  // > 100 * 2 * 10 ^ 9
+    dp[n] = 0;
+
+    Collections.sort(robot);
+    Arrays.sort(factory, Comparator.comparingInt(f -> f[0]));
+
+    for (int j = m - 1; j >= 0; j--) {
+        for (int i = 0; i < n; i++) {
+            long d = 0;
+            for (int k = 1; k <= Math.min(factory[j][1], n - i); k++) {
+                // the (i + k - 1)-th robot is fixed by current factory 
+                d += Math.abs(robot.get(i + k - 1) - factory[j][0]);
+                dp[i] = Math.min(dp[i], dp[i + k] + d);
+            }
+        }
+    }
+    return dp[0];
+}
+{% endhighlight %}
+
 [largest-sum-of-averages]: https://leetcode.com/problems/largest-sum-of-averages/
 [maximum-score-from-performing-multiplication-operations]: https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations/
 [minimum-score-triangulation-of-polygon]: https://leetcode.com/problems/minimum-score-triangulation-of-polygon/
+[minimum-total-distance-traveled]: https://leetcode.com/problems/minimum-total-distance-traveled/
+

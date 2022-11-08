@@ -22,6 +22,12 @@ A tree is an undirected graph in which any two vertices are connected by *exactl
   * the root node has depth zero
 
 *degree*
+  * number of children of a node
+  * a leaf has degree zero
+
+[Height of Binary Tree After Subtree Removal Queries][height-of-binary-tree-after-subtree-removal-queries]
+
+Pre-compute the depths and heights of all nodes. Also pre-compute the largest and second largest height of each depth.
 
 [Verify Preorder Serialization of a Binary Tree][verify-preorder-serialization-of-a-binary-tree]
 
@@ -161,6 +167,7 @@ TreeNode -> Map<TreeNode, List<TreeNode>>
 
 [all-nodes-distance-k-in-binary-tree]: https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
 [count-complete-tree-nodes]: https://leetcode.com/problems/count-complete-tree-nodes/
+[height-of-binary-tree-after-subtree-removal-queries]: https://leetcode.com/problems/height-of-binary-tree-after-subtree-removal-queries/
 [maximum-binary-tree]: https://leetcode.com/problems/maximum-binary-tree/
 [minimum-time-to-build-blocks]: https://leetcode.com/problems/minimum-time-to-build-blocks/
 [queries-on-a-permutation-with-key]: https://leetcode.com/problems/queries-on-a-permutation-with-key/

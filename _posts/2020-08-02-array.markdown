@@ -246,6 +246,44 @@ private void reverse(char[] s, int start, int end) {
 }
 {% endhighlight %}
 
+[Sort Array by Moving Items to Empty Space][sort-array-by-moving-items-to-empty-space]
+
+{% highlight java %}
+public int sortArray(int[] nums) {
+    return Math.min(sortArray(nums, 0), sortArray(nums, 1));
+}
+
+private int sortArray(int[] nums, int s) {
+    int n = nums.length;
+    int[] indices = new int[n];
+    for (int i = 0; i < n; i++) {
+        indices[nums[i]] = i;
+    }
+
+    // sorted is the number of already sorted elements
+    int count = 0, sorted = 1;
+    while (true) {
+        // element to swap with 0
+        // if 0 is already in the right position, finds the first off-position element and swaps 0 with it
+        int num = indices[0] + s;
+        // otherwise swaps 0 with the element which is supposed to be here
+        if (indices[0] == s * (n - 1)) {
+            while (indices[sorted] == sorted - s) {
+                if (++sorted == n) {
+                    return count;
+                }
+            }
+            num = sorted;
+        }
+
+        int tmp = indices[0];
+        indices[0] = indices[num];
+        indices[num] = tmp;
+        count++;
+    }
+}
+{% endhighlight %}
+
 # Greedy
 
 [Gas Station][gas-station]
@@ -751,5 +789,6 @@ public long largestEvenSum(int[] nums, int k) {
 [shortest-distance-to-a-character]: https://leetcode.com/problems/shortest-distance-to-a-character/
 [shortest-distance-to-target-color]: https://leetcode.com/problems/shortest-distance-to-target-color/
 [smallest-rotation-with-highest-score]: https://leetcode.com/problems/smallest-rotation-with-highest-score/
+[sort-array-by-moving-items-to-empty-space]: https://leetcode.com/problems/sort-array-by-moving-items-to-empty-space/
 [subsequence-of-size-k-with-the-largest-even-sum]: https://leetcode.com/problems/subsequence-of-size-k-with-the-largest-even-sum/
 [swap-adjacent-in-lr-string]: https://leetcode.com/problems/swap-adjacent-in-lr-string/
