@@ -1,0 +1,28 @@
+---
+layout: post
+title:  "Classic Problems"
+---
+[Number of Sets of K Non-Overlapping Line Segments][number-of-sets-of-k-non-overlapping-line-segments]
+
+# Reverse Pairs
+
+Examples:
+
+* [Count of Smaller Numbers After Self][count-of-smaller-numbers-after-self]
+* [Reverse Pairs][reverse-pairs]
+* [Number of Pairs Satisfying Inequality][number-of-pairs-satisfying-inequality]
+
+Solutions:
+
+* Merge Sort
+* Fenwick Tree
+* Segment Tree
+* Binary Search Tree
+
+{% highlight java %}
+{% endhighlight %}
+
+[count-of-smaller-numbers-after-self]: https://leetcode.com/problems/count-of-smaller-numbers-after-self/
+[number-of-pairs-satisfying-inequality]: https://leetcode.com/problems/number-of-pairs-satisfying-inequality/
+[reverse-pairs]: https://leetcode.com/problems/reverse-pairs/
+

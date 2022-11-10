@@ -103,6 +103,8 @@ Leader follower (master-replica) replication
 
 mater sends a stream of commands to the replica to 
 
+[CRDTs](https://redis.com/blog/diving-into-crdts/): Conflict-Free Replicated Data Types
+
 # Distributed Messaging System
 
 ## Apache Kafka

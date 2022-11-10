@@ -19,8 +19,12 @@ public class FenwickTree {
         nums = new int[size + 1];
     }
 
-    // Returns the sum of index range [1, i]
-    // O(log(n))
+    /**
+     * Returns the sum of the input elements with index from 1 to i (one-based indexing)
+     * O(log(n))
+     * @param i upper index of the range (one-based indexing)
+     * @return sum of the input elements with index from 1 to i (one-based indexing)
+     */
     public int sum(int i) {
         int sum = 0;
         while (i > 0)  {
@@ -30,8 +34,12 @@ public class FenwickTree {
         return sum;
     }
 
-    // Adds k to element with index i
-    // O(log(n))
+    /**
+     * Adds k to the input element with index i (one-based indexing)
+     * O(log(n))
+     * @param i index of the input element (one-based indexing)
+     * @param k number to be added to the element
+     */
     public void add(int i, int k) {
         while (i <= size) {
             nums[i] += k;
@@ -51,10 +59,7 @@ public class FenwickTree {
 
 {% highlight java %}
 public List<Integer> countSmaller(int[] nums) {
-    int n = nums.length;
-    List<Integer> counts = new ArrayList<>(n);
-
-    // dedupe
+    // deduplication
     // if i != j && nums[i] == nums[j]
     // i and j should occupy only one position in the Fenwick Tree
     Set<Integer> set = new TreeSet<>();
@@ -69,12 +74,67 @@ public List<Integer> countSmaller(int[] nums) {
     }
 
     FenwickTree ft = new FenwickTree(indices.size());
+    int n = nums.length;
+    List<Integer> counts = new ArrayList<>(n);
     for (int j = n - 1; j >= 0; j--) {
         int index = indices.get(nums[j]);
+        // `index` + 1 is the one-based index of nums[j]
+        // so the index of max smaller number is `index`
         counts.add(0, ft.sum(index));
         ft.add(index + 1, 1);
     }
     return counts;
+}
+{% endhighlight %}
+
+This problem can be solved by [Merge Sort](../../../2020/08/03/sort.html#merge-sort), too.
+
+Similar problem:
+
+[Reverse Pairs][reverse-pairs]
+
+{% highlight java %}
+public int reversePairs(int[] nums) {
+    // deduplication
+    // if i != j && nums[i] == nums[j]
+    // i and j should occupy only one position in the Fenwick Tree
+    Set<Integer> set = new TreeSet<>();
+    for (int num : nums) {
+        set.add(num);
+    }
+
+    int i = 0;
+    Map<Integer, Integer> indices = new HashMap<>();
+    for (int num : set) {
+        indices.put(num, i++);
+    }
+
+    FenwickTree ft = new FenwickTree(indices.size());
+    int count = 0;
+    List<Integer> list = new ArrayList<>(set);
+    for (int j = nums.length - 1; j >= 0; j--) {
+        // index of the pair of nums[j]
+        int p = binarySearch(list, nums[j]);
+        if (p >= 0) {
+            count += ft.sum(indices.get(list.get(p)) + 1);
+        }
+
+        ft.add(indices.get(nums[j]) + 1, 1);
+    }
+    return count;
+}
+
+private int binarySearch(List<Integer> list, int target) {
+    int low = 0, high = list.size() - 1;
+    while (low < high) {
+        int mid = (low + high + 1) >>> 1;
+        if (2l * list.get(mid) < target) {
+            low = mid;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return 2l * list.get(low) < target ? low : -1;
 }
 {% endhighlight %}
 
@@ -282,3 +342,4 @@ public class FenwickTree {
 [queries-on-a-permutation-with-key]: https://leetcode.com/problems/queries-on-a-permutation-with-key/
 [range-sum-query-mutable]: https://leetcode.com/problems/range-sum-query-mutable/
 [range-sum-query-2d-mutable]: https://leetcode.com/problems/range-sum-query-2d-mutable/
+[reverse-pairs]: https://leetcode.com/problems/reverse-pairs/

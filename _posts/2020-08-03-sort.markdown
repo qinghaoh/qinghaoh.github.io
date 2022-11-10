@@ -87,6 +87,7 @@ private void mergeSort(int[] nums, int low, int high) {
     }
 }
 
+// nums[low...mid] and nums[mid + 1...high] are sorted
 private void merge(int[] nums, int low, int high) {
     int[] tmp = new int[high - low + 1];
     int mid = (low + high) >>> 1;
@@ -103,6 +104,119 @@ private void merge(int[] nums, int low, int high) {
     System.arraycopy(tmp, 0, nums, low, tmp.length);
 }
 {% endhighlight %}
+
+Another implementation of the `merge()` function:
+
+{% highlight java %}
+private void merge(int[] nums, int low, int high) {
+    int[] tmp = new int[high - low + 1];
+    int mid = (low + high) >>> 1;
+    int i = low, j = mid + 1, k = 0;
+
+        while (i <= mid) {
+        while (j <= high && nums[i] >= nums[j]) {
+            tmp[k++] = nums[j++];
+        }
+        tmp[k++] = nums[i++];
+    }
+
+    while (j <= high) {
+        tmp[k++] = nums[j++];
+    }
+
+    System.arraycopy(tmp, 0, nums, low, tmp.length);
+}
+{% endhighlight %}
+
+[Count of Smaller Numbers After Self][count-of-smaller-numbers-after-self]
+
+The smaller numbers on the right of a number are exactly those that jump from its right to its left during a stable sort.
+
+`counts[i]` = count of `nums[j] - nums[i] < 0` with `j > i`
+
+{% highlight java %}
+private int[] counts;
+
+public List<Integer> countSmaller(int[] nums) {
+    int n = nums.length;
+    this.counts = new int[n];
+
+    // nums[indices[i]] is the element at position i in the virtual sorted array
+    // so that the order of nums remains the same
+    int[] indices = new int[n];
+    for (int i = 0; i < n; i++) {
+        indices[i] = i;
+    }
+
+    // sorts indices by the corresponding elements in nums: nums[indices[i]]
+    mergeSort(nums, indices, 0, n - 1);
+    return Arrays.stream(counts).boxed().collect(Collectors.toList());
+}
+
+private void mergeSort(int[] nums, int[] indices, int low, int high) {
+    if (low < high) {
+        int mid = (low + high) >>> 1;
+        mergeSort(nums, indices, low, mid);
+        mergeSort(nums, indices, mid + 1, high);
+        merge(nums, indices, low, high);
+    }
+}
+
+private void merge(int[] nums, int[] indices, int low, int high) {
+    int mid = (low + high) >>> 1;
+    int i = low, j = mid + 1;
+    int[] tmp = new int[high - low + 1];
+
+    // running sum of count of smaller numbers after each number (i.e. nums[indices[i]])
+    int count = 0;
+    for (int k = 0; k < tmp.length; k++) {
+        // for a indices[i], the right partition nums[mid + 1...high] is sorted
+        // so the merge function handles all smaller numbers in the right array first (else-block)
+        // then handles the other numbers (>= nums[indices[i]]) in the partition (if-block)
+        if (i <= mid && (j > high || nums[indices[i]] <= nums[indices[j]])) {
+            // all smaller numbers in the right partition have been handled in the else-block
+            // so the running `count` already includes the count of smaller numbers than nums[indices[i]]
+            //
+            // the running `count` also includes the counts of smaller numbers than previous nums[indices[h]]
+            // where h < i
+            // since the left partition is also sorted, nums[indices[h]] < nums[indices[i]]
+            // we can conclude if a number is smaller than nums[indices[h]], it's also smaller than nums[indices[i]]
+            // therefore, the numbers represented by the running `count` are all smaller than nums[indices[i]]
+            //
+            // adds the running count to the global array at the position for indices[i]
+            // the final result at each position is the sum of running counts of all sub merge functions
+            counts[indices[i]] += count;
+            tmp[k] = indices[i++];
+        } else {
+            // nums[indices[i]] > nums[indices[j]]
+            if (i <= mid) {
+                count++;
+            }
+            tmp[k] = indices[j++];
+        }
+    }
+
+    System.arraycopy(tmp, 0, indices, low, tmp.length);
+}
+{% endhighlight %}
+
+```
+nums: [5,2,6,1]
+
+low: 0, high: 1
+indices: [0,1,2,3] -> [1,0,2,3]
+counts: [0,0,0,0] -> [1,0,0,0]
+
+low: 2, high: 3
+indices: [1,0,2,3] -> [1,0,3,2]
+counts: [1,0,0,0] -> [1,0,1,0]
+
+low: 0, high: 3
+indices: [1,0,3,2] -> [3,1,0,2]
+counts: [1,0,1,0] -> [2,1,1,0]
+```
+
+We can also leverage Fenwick Tree to solve the problem. See [Fenwick Tree](../../../2022/10/01/fenwick-tree.html).
 
 [Reverse Pairs][reverse-pairs]
 
@@ -149,85 +263,6 @@ private int merge(int[] nums, int low, int high) {
     return count;
 }
 {% endhighlight %}
-
-[Count of Smaller Numbers After Self][count-of-smaller-numbers-after-self]
-
-The smaller numbers on the right of a number are exactly those that jump from its right to its left during a stable sort.
-
-`counts[i]` = count of `nums[j] - nums[i] < 0` with `j > i`
-
-{% highlight java %}
-private int[] counts;
-
-public List<Integer> countSmaller(int[] nums) {
-    int n = nums.length;
-    this.counts = new int[n];
-
-    // nums[index[i]] is the element at position i in the virtual sorted array
-    // so that the order of nums remains the same
-    int[] index = new int[n];
-    for (int i = 0; i < n; i++) {
-        index[i] = i;
-    }
-
-    // sorts index by the corresponding elements in nums: nums[index[i]]
-    mergeSort(nums, index, 0, n - 1);
-    return Arrays.stream(counts).boxed().collect(Collectors.toList());
-}
-
-private void mergeSort(int[] nums, int[] index, int low, int high) {
-    if (low < high) {
-        int mid = (low + high) >>> 1;
-        mergeSort(nums, index, low, mid);
-        mergeSort(nums, index, mid + 1, high);
-        merge(nums, index, low, high);
-    }
-}
-
-private void merge(int[] nums, int[] index, int low, int high) {
-    int mid = (low + high) >>> 1;
-    int i = low, j = mid + 1;
-    int[] tmp = new int[high - low + 1];
-
-    // count of right elements that are strictly less than the current left element
-    // nums[index[j]] < nums[index[i]]
-    int count = 0;
-    for (int k = 0; k < tmp.length; k++) {
-        if (i <= mid && (j > high || nums[index[i]] <= nums[index[j]])) {
-            // all elements strictly less than nums[index[i]] have been counted
-            // in the else clause
-            // adds the count to the same position in the final result array
-            counts[index[i]] += count;
-            tmp[k] = index[i++];
-        } else {
-            if (i <= mid) {  // nums[index[i]] > nums[index[j]]
-                count++;
-            }
-            tmp[k] = index[j++];
-        }
-    }
-
-    System.arraycopy(tmp, 0, index, low, tmp.length);
-}
-{% endhighlight %}
-
-```
-nums: [5,2,6,1]
-
-low: 0, high: 1
-index: [0,1,2,3] -> [1,0,2,3]
-counts: [0,0,0,0] -> [1,0,0,0]
-
-low: 2, high: 3
-index: [1,0,2,3] -> [1,0,3,2]
-counts: [1,0,0,0] -> [1,0,1,0]
-
-low: 0, high: 3
-index: [1,0,3,2] -> [3,1,0,2]
-counts: [1,0,1,0] -> [2,1,1,0]
-```
-
-We can also leverage Fenwick Tree to solve the problem. See [Fenwick Tree](../../../2022/10/01/fenwick-tree.html).
 
 [Count of Range Sum][count-of-range-sum]
 
