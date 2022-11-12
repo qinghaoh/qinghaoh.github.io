@@ -16,6 +16,84 @@ Efficient range query, while array modification is flexible.
 
 The [standard (recursive, top-down) Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html) requires \\(4n\\) vertices for working on an array of size \\(n\\).
 
+{% highlight java %}
+class SegmentTree {
+    private int n;
+    // one-based indexing, i.e. root is at index 1
+    private int[] arr;
+    private BiFunction<Integer, Integer, Integer> f;
+
+    // default all-zero array
+    public SegmentTree(int n, BiFunction<Integer, Integer, Integer> f) {
+        this.n = n;
+        this.arr = new int[4 * n];
+        this.f = f;
+    }
+
+    /**
+     * Builds the segment tree.
+     * @param nums the input array
+     * @param v the index of the current vertex (initial value = 1, root)
+     * @param tl left boundary of the current segment (initial value = 0)
+     * @param tr right boundary of the current segment (initial value = n - 1)
+     */
+    public void build(int nums[], int v, int tl, int tr) {
+        if (tl == tr) {
+            arr[v] = nums[tl];
+        } else {
+            int tm = (tl + tr) / 2;
+            build(nums, v * 2, tl, tm);
+            build(nums, v * 2 + 1, tm + 1, tr);
+            arr[v] = f.apply(arr[v * 2], arr[v * 2 + 1]);
+        }
+    }
+
+    /**
+     * Updates nums[pos] = value.
+     * @param nums the input array
+     * @param v the index of the current vertex
+     * @param tl left boundary of the current segment
+     * @param tr right boundary of the current segment
+     * @param pos position of the element to be updated
+     * @param value new value
+     */
+    public void update(int v, int tl, int tr, int pos, int value) {
+        if (tl == tr) {
+            arr[v] = value;
+        } else {
+            int tm = (tl + tr) / 2;
+            if (pos <= tm) {
+                update(v * 2, tl, tm, pos, value);
+            } else {
+                update(v * 2 + 1, tm + 1, tr, pos, value);
+            }
+            arr[v] = f.apply(arr[v * 2], arr[v * 2 + 1]);
+        }
+    }
+
+    /**
+     * f.apply() on interval [l, r].
+     * @param v the index of the current vertex
+     * @param tl left boundary of the current segment
+     * @param tr right boundary of the current segment
+     * @param l left boundary of the query, inclusive
+     * @param r right boundary of the query, inclusive
+     * @return query result
+     */
+    public int query(int v, int tl, int tr, int l, int r) {
+        if (l > r) {
+            return 0;
+        }
+
+        if (l == tl && r == tr) {
+            return arr[v];
+        }
+        int tm = (tl + tr) / 2;
+        return f.apply(query(v * 2, tl, tm, l, Math.min(r, tm)), query(v * 2 + 1, tm + 1, tr, Math.max(l, tm + 1), r));
+    }
+}
+{% endhighlight %}
+
 ### Iterative
 
 The iterative (bottom-up) implementation below is based on Al.Cash's blog [Efficient and easy segment trees](https://codeforces.com/blog/entry/18051).
@@ -124,6 +202,8 @@ public List<Integer> fallingSquares(int[][] positions) {
     }
 
     SegmentTree st = new SegmentTree(map.size(), (a, b) -> Math.max(a, b));
+    st.build();
+
     List<Integer> list = new ArrayList();
     int max = 0;
     for (int[] p : positions) {
@@ -550,6 +630,13 @@ class SegmentTreeNode {
         return sum = count > 0 ? list.get(end) - list.get(start) : l.sum + r.sum;
     }
 }
+{% endhighlight %}
+
+# Range Updates (Lazy Propagation)
+
+[Falling Squares][falling-squares]
+
+{% highlight java %}
 {% endhighlight %}
 
 [booking-concert-tickets-in-groups]: https://leetcode.com/problems/booking-concert-tickets-in-groups/
