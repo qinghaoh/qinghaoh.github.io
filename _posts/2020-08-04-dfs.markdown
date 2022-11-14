@@ -158,7 +158,7 @@ public int dfs(int i, int[] manager, int[] informTime) {
 DFS a tree usually follow the pattern:
 
 {% highlight java %}
-int dfs(List<Integer>[] tree, int node, int parent, ...) {
+int dfs(List<Integer>[] tree, int node, int parent, ...)
 {% endhighlight %}
 
 [Create Components With Same Value][create-components-with-same-value]

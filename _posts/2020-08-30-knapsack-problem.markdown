@@ -344,7 +344,7 @@ public int change(int amount, int[] coins) {
     int n = coins.length;
 
     // dp[i][j]: combinations to make up amount j by using the first i kinds of coins
-    int[][] dp = new int[n + 1][amount + 1];
+    int[][] dp = new int[n + 2][amount + 1];
     dp[0][0] = 1;
 
     for (int i = 0; i < n; i++) {
@@ -461,6 +461,24 @@ public int combinationSum4(int[] nums, int target) {
 
 In essence, it's bottom-up DP.
 
+Similar problem: [Count Ways To Build Good Strings][count-ways-to-build-good-strings]
+
+{% highlight java %}
+    int sum = 0;
+    for (int i = 0; i <= high; i++) {
+        for (int num : new int[]{zero, one}) {
+            if (i >= num) {
+                dp[i] = (dp[i] + dp[i - num]) % MOD;
+            }
+        }
+        if (i >= low) {
+            sum = (sum + dp[i]) % MOD;
+        }
+    }
+{% endhighlight %}
+
+Even if `zero` and `one` are equal, they represent different base values. This is a bit different from the requirement of [Combination Sum IV][combination-sum-iv] that all base numbers are distinct.
+
 ## Change-making Problem
 
 [Change-making problem](https://en.wikipedia.org/wiki/Change-making_problem): Weakly NP-hard. Find the minimum number of coins (of certain denominations) that add up to a given amount of money. It is a special case of the integer knapsack problem.
@@ -521,6 +539,7 @@ public int coinChange(int[] coins, int amount) {
 [coin-change]: https://leetcode.com/problems/coin-change/
 [coin-change-2]: https://leetcode.com/problems/coin-change-2/
 [combination-sum-iv]: https://leetcode.com/problems/combination-sum-iv/
+[count-ways-to-build-good-strings]: https://leetcode.com/problems/count-ways-to-build-good-strings/
 [form-largest-integer-with-digits-that-add-up-to-target]: https://leetcode.com/problems/form-largest-integer-with-digits-that-add-up-to-target/
 [last-stone-weight-ii]: https://leetcode.com/problems/last-stone-weight-ii/
 [maximum-profit-from-trading-stocks]: https://leetcode.com/problems/maximum-profit-from-trading-stocks/
