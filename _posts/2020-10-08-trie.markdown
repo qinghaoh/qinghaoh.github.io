@@ -36,13 +36,8 @@ public int[][] indexPairs(String text, String[] words) {
 }
 
 class TrieNode {
-    TrieNode[] children;
-    boolean end;
-
-    TrieNode() {
-        end = false;
-        children = new TrieNode[26];
-    }
+    TrieNode[] children = new TrieNode[26];
+    boolean end = false;
 }
 
 private void insert(TrieNode root, String word) {        

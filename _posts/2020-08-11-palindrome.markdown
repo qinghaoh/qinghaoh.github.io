@@ -357,7 +357,7 @@ public int minMovesToMakePalindrome(String s) {
 {% highlight java %}
 public int countSubstrings(String s) {
     int n = s.length(), count = 0;
-    for (int center = 0; center <= 2 * n - 1; center++) {
+    for (int center = 0; center < 2 * n; center++) {
         int left = center / 2, right = left + center % 2;
         while (left >= 0 && right < n && s.charAt(left) == s.charAt(right)) {
             count++;
@@ -376,7 +376,7 @@ public int countSubstrings(String s) {
 public String longestPalindrome(String s) {
     String result = "";
     int n = s.length(), max = 0;
-    for (int center = 0; center <= 2 * n - 1; center++) {
+    for (int center = 0; center < 2 * n; center++) {
         int left = center / 2, right = left + center % 2;
         while (left >= 0 && right < n && s.charAt(left) == s.charAt(right)) {
             left--;
@@ -389,6 +389,28 @@ public String longestPalindrome(String s) {
         }
     }
     return result;
+}
+{% endhighlight %}
+
+[Maximum Number of Non-overlapping Palindrome Substrings][maximum-number-of-non-overlapping-palindrome-substrings]
+
+{% highlight java %}
+public int maxPalindromes(String s, int k) {
+    int n = s.length(), count = 0, start = 0;
+    for (int center = 0; center < 2 * n; center++) {
+        int left = center / 2, right = left + center % 2;
+        while (left >= start && right < n && s.charAt(left) == s.charAt(right)) {
+            // 435. Non-overlapping Intervals
+            if (right + 1 - left >= k) {
+                count++;
+                start = right + 1;
+                break;
+            }
+            left--;
+            right++;
+        }
+    }
+    return count;
 }
 {% endhighlight %}
 
@@ -533,6 +555,13 @@ public long maxProduct(String s) {
 
 # Dynamic Programming
 
+Iteration pattern:
+
+{% highlight java %}
+for (int i = n - 1; i >= 0; i--) {
+    for (int j = i; j < n; j++) {
+{% endhighlight %}
+
 [Palindrome Partitioning IV][palindrome-partitioning-iv]
 
 {% highlight java %}
@@ -585,6 +614,39 @@ public int longestPalindromeSubseq(String s) {
 }
 {% endhighlight %}
 
+[Palindrome Removal][palindrome-removal]
+
+{% highlight java %}
+public int minimumMoves(int[] arr) {
+    int n = arr.length;
+    // dp[i][j]: minimum number of moves for arr[i...j]
+    int[][] dp = new int[n][n];
+
+    for (int i = n - 1; i >= 0; i--) {
+        dp[i][i] = 1;
+        if (i < n - 1) {
+            dp[i][i + 1] = arr[i] == arr[i + 1] ? 1 : 2;
+        }
+
+        for (int j = i + 2; j < n; j++) {
+            dp[i][j] = Integer.MAX_VALUE;
+
+            if (arr[i] == arr[j]) {
+                // arr[i] and arr[j] can be removed together with the last move of arr[(i + 1)...(j - 1)]
+                dp[i][j] = dp[i + 1][j - 1];
+            }
+
+            // or, splits arr[i...j] in two parts
+            for (int k = i; k < j; k++) {
+                dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k + 1][j]);
+            }
+        }
+    }
+
+    return dp[0][n - 1];
+}
+{% endhighlight %}
+
 [Maximum Product of the Length of Two Palindromic Subsequences][maximum-product-of-the-length-of-two-palindromic-subsequences]
 
 {% highlight java %}
@@ -604,40 +666,6 @@ public int maxProduct(String s) {
 
 This problem can be solved by backtracking, too. It reflects the close connection between bitmask and backtracking.
 
-[Palindrome Removal][palindrome-removal]
-
-{% highlight java %}
-public int minimumMoves(int[] arr) {
-    int n = arr.length;
-    // dp[i][j]: minimum number of moves for arr[i...j]
-    int[][] dp = new int[n][n];
-
-    for (int i = 0; i < n; i++) {
-        dp[i][i] = 1;
-    }
-
-    for (int i = 0; i < n - 1; i++) {
-        dp[i][i + 1] = arr[i] == arr[i + 1] ? 1 : 2;
-    }
-
-    for (int len = 3; len <= n; len++) {
-        for (int i = 0, j = i + len - 1; j < n; i++, j++) {
-            dp[i][j] = Integer.MAX_VALUE;
-
-            if (arr[i] == arr[j]) {
-                dp[i][j] = dp[i + 1][j - 1];
-            }
-
-            for (int k = i; k < j; k++) {
-                dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k + 1][j]);
-            }
-        }
-    }
-
-    return dp[0][n - 1];
-}
-{% endhighlight %}
-
 [Palindrome Partitioning III][palindrome-partitioning-iii]
 
 {% highlight java %}
@@ -654,7 +682,7 @@ public int palindromePartition(String s, int k) {
         }
     }
 
-    // dp[i][m]: s.substring(0, i), m chunks
+    // dp2[i][m]: s.substring(0, i), m chunks
     int[][] dp2 = new int[n + 1][k + 1];
     for (int i = 1; i <= n; i++) {
         dp2[i][1] = dp1[0][i - 1];
@@ -758,6 +786,7 @@ public int countPalindromicSubsequences(String S) {
 [longest-palindromic-subsequence]: https://leetcode.com/problems/longest-palindromic-subsequence/
 [longest-palindromic-substring]: https://leetcode.com/problems/longest-palindromic-substring/
 [maximize-palindrome-length-from-subsequences]: https://leetcode.com/problems/maximize-palindrome-length-from-subsequences/
+[maximum-number-of-non-overlapping-palindrome-substrings]: https://leetcode.com/problems/maximum-number-of-non-overlapping-palindrome-substrings/
 [maximum-product-of-the-length-of-two-palindromic-subsequences]: https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/
 [maximum-product-of-the-length-of-two-palindromic-substrings]: https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-substrings/
 [minimum-number-of-moves-to-make-palindrome]: https://leetcode.com/problems/minimum-number-of-moves-to-make-palindrome/
