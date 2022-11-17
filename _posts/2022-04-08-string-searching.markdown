@@ -517,6 +517,56 @@ public class Solution {
 }
 {% endhighlight %}
 
+# Suffix Tree
+
+[Suffix Tree](https://en.wikipedia.org/wiki/Suffix_tree)
+
+[Ukkonen's Algorithm](https://cp-algorithms.com/string/suffix-tree-ukkonen.html): time complexity of tree construction: \\(O(nlog(k))\\)
+
+[String Matching in an Array][string-matching-in-an-array]
+
+{% highlight java %}
+public List<String> stringMatching(String[] words) {
+    TrieNode root = new TrieNode();
+    for (String w : words) {
+        for (int i = 0; i < w.length(); i++) {
+            insert(root, w.substring(i));
+        }
+    }
+
+    List<String> list = new ArrayList<>();
+    for (String w : words) {
+        TrieNode node = root;
+        for (char ch : w.toCharArray()) {
+            node = node.children[ch - 'a'];
+        }
+        if (node.count > 1) {
+            list.add(w);
+        }
+    }
+    return list;
+}
+
+class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    int count = 0;
+}
+
+private void insert(TrieNode root, String word) {        
+    TrieNode node = root;
+    for (char ch : word.toCharArray()) {
+        if (node.children[ch - 'a'] == null) {
+            node.children[ch - 'a'] = new TrieNode();
+        }
+        node = node.children[ch - 'a'];
+        // increases the counter of all nodes on the path
+        // because we will search for "substring" instead of "suffix" in the trie,
+        // we can't only mark the last node
+        node.count++;
+    }
+}
+{% endhighlight %}
+
 [find-all-good-strings]: https://leetcode.com/problems/find-all-good-strings/
 [longest-common-subpath]: https://leetcode.com/problems/longest-common-subpath/
 [longest-duplicate-substring]: https://leetcode.com/problems/longest-duplicate-substring/
@@ -524,4 +574,5 @@ public class Solution {
 [maximum-deletions-on-a-string]: https://leetcode.com/problems/maximum-deletions-on-a-string/
 [remove-all-occurrences-of-a-substring]: https://leetcode.com/problems/remove-all-occurrences-of-a-substring/
 [shortest-palindrome]: https://leetcode.com/problems/shortest-palindrome/
+[string-matching-in-an-array]: https://leetcode.com/problems/string-matching-in-an-array
 [sum-of-scores-of-built-strings]: https://leetcode.com/problems/sum-of-scores-of-built-strings/

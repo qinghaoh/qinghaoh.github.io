@@ -19,10 +19,21 @@ Solutions:
 * Segment Tree
 * Binary Search Tree
 
+# Swim in Rising Water
+
+* [Swim in Rising Water][swim-in-rising-water]
+
+Solutions:
+
+* Dijkstra's Algorithm
+* BinarySearch + BFS/DFS
+* Union-Find
+
 {% highlight java %}
 {% endhighlight %}
 
 [count-of-smaller-numbers-after-self]: https://leetcode.com/problems/count-of-smaller-numbers-after-self/
 [number-of-pairs-satisfying-inequality]: https://leetcode.com/problems/number-of-pairs-satisfying-inequality/
 [reverse-pairs]: https://leetcode.com/problems/reverse-pairs/
+[swim-in-rising-water]: https://leetcode.com/problems/swim-in-rising-water/
 

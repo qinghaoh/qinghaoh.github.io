@@ -76,7 +76,7 @@ public void dijkstra(int n, List<int[]>[] graph, int src) {
     // {vertex, dist[vertex] when enqueued}
     Queue<int[]> q = new PriorityQueue<>((a, b) -> a[1] - b[1]);
 
-    // initializes the queue to contain only source
+    // initializes the queue to contain source only
     int[] curr = {src, dist[src] = 0};
     q.offer(curr);
 
@@ -175,8 +175,7 @@ private void dijkstra(List<long[]>[] graph, int src, long[] weight) {
             int neighbor = (int)e[0];
             long neighborW = e[1];
             if (weight[neighbor] > weight[node] + neighborW) {
-                weight[neighbor] = weight[node] + neighborW;
-                pq.offer(new long[]{neighbor, weight[neighbor]});
+                pq.offer(new long[]{neighbor, weight[neighbor] = weight[node] + neighborW});
             }
         }
     }
@@ -357,12 +356,6 @@ public int minimumEffortPath(int[][] heights) {
     return -1;        
 }
 {% endhighlight %}
-
-[Swim in Rising Water][swim-in-rising-water]
-
-* Dijkstra's Algorithm
-* BinarySearch + BFS/DFS
-* Union-Find
 
 **Summation of Manhattan distances**
 
@@ -1147,6 +1140,5 @@ private int paint(int[][] grid, int i, int j, int color) {
 [path-with-minimum-effort]: https://leetcode.com/problems/path-with-minimum-effort/
 [reachable-nodes-in-subdivided-graph]: https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/
 [shortest-bridge]: https://leetcode.com/problems/shortest-bridge/
-[swim-in-rising-water]: https://leetcode.com/problems/swim-in-rising-water/
 [the-maze-iii]: https://leetcode.com/problems/the-maze-iii/
 [trapping-rain-water-ii]: https://leetcode.com/problems/trapping-rain-water-ii/
