@@ -634,9 +634,90 @@ class SegmentTreeNode {
 
 # Range Updates (Lazy Propagation)
 
+Updates and queries of an entire segment of an entire segment of contiguous elements. The time complexity of both operations are \\(O(\log n)\\).
+
+It's more straightforward to implement lazy propagation with recursive segment tree.
+
 [Falling Squares][falling-squares]
 
 {% highlight java %}
+public List<Integer> fallingSquares(int[][] positions) {
+    // coordinate compression
+    ...
+
+    int n = map.size();
+    SegmentTree st = new SegmentTree(n, (a, b) -> Math.max(a, b));
+
+    List<Integer> list = new ArrayList();
+    int max = 0;
+    for (int[] p : positions) {
+        // one-based indexing
+        int l = map.get(p[0]) + 1, r = map.get(p[0] + p[1]);
+        int h = st.query(1, 0, n - 1, l, r) + p[1];
+        st.update(1, 0, n - 1, l, r, h);
+        list.add(max = Math.max(max, h));
+    }
+    return list;
+}
+
+class SegmentTree {
+    private int n;
+    // root is at index 1
+    private int[] arr;
+    // marked[i]: all elements (the complete subtree) of segment i is assigned to the value arr[i]
+    private boolean[] marked;
+    private BiFunction<Integer, Integer, Integer> f;
+
+    // default all-zero array
+    public SegmentTree(int n, BiFunction<Integer, Integer, Integer> f) {
+        this.n = n;
+        this.arr = new int[4 * n];
+        this.marked = new boolean[4 * n];
+        this.f = f;
+    }
+
+    private void push(int v) {
+        if (marked[v]) {
+            arr[v * 2] = arr[v * 2 + 1] = arr[v];
+            marked[v * 2] = marked[v * 2 + 1] = true;
+            marked[v] = false;
+        }
+    }
+
+    // assignment on segments
+    public void update(int v, int tl, int tr, int l, int r, int value) {
+        if (l > r) {
+            return;
+        }
+
+        if (l == tl && tr == r) {
+            arr[v] = value;
+            marked[v] = true;
+        } else {
+            push(v);
+            int tm = (tl + tr) / 2;
+            update(v * 2, tl, tm, l, Math.min(r, tm), value);
+            update(v * 2 + 1, tm + 1, tr, Math.max(l, tm + 1), r, value);
+            // applies the update back to the parent node
+            arr[v] = f.apply(arr[v * 2], arr[v * 2 + 1]);
+        }
+    }
+
+    // query of a segment
+    public int query(int v, int tl, int tr, int l, int r) {
+        if (l > r) {
+            return 0;
+        }
+
+        if (l <= tl && tr <= r) {
+            return arr[v];
+        }
+
+        push(v);
+        int tm = (tl + tr) / 2;
+        return f.apply(query(v * 2, tl, tm, l, Math.min(r, tm)), query(v * 2 + 1, tm + 1, tr, Math.max(l, tm + 1), r));
+    }
+}
 {% endhighlight %}
 
 [booking-concert-tickets-in-groups]: https://leetcode.com/problems/booking-concert-tickets-in-groups/
