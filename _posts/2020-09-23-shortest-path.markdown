@@ -651,6 +651,8 @@ public int reachableNodes(int[][] edges, int maxMoves, int n) {
 }
 {% endhighlight %}
 
+Given a contraint on sum of vertex values, minimize the sum of path values. In the problem below, we view the value of each vertex as 1, so the constraint `stops` can be regarded as the sum of the vertex values.
+
 [Cheapest Flights Within K Stops][cheapest-flights-within-k-stops]
 
 {% highlight java %}
@@ -684,6 +686,15 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
                 if (alt < prices[neighbor]) {
                     pq.offer(new int[]{neighbor, prices[neighbor] = alt, stops[neighbor] = s + 1});
                 } else if (s + 1 < stops[neighbor]) {
+                    // although prices is not optimal at the moment, the number of stops is less than stops[neighbor]
+                    // which means this path has the potential to be the optimal solution in later steps
+                    //
+                    // do not set stops[neighbor] = s + 1 here!
+                    // stops[neighbor] is updated only if prices[neighbor] is updated
+                    // it doesn't reflect the least stops of all paths so far
+                    // iwo, currently it's possible that there exists a node where the stops are less than stops[node]
+                    //
+                    // stops[node] is a loose constraint
                     pq.offer(new int[]{neighbor, alt, s + 1});
                 }
             }
@@ -694,11 +705,12 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
 }
 {% endhighlight %}
 
+Given a contraint on sum of path values, minimize the sum of vertex values.
+
 [Minimum Cost to Reach Destination in Time][minimum-cost-to-reach-destination-in-time]
 
 {% highlight java %}
 public int minCost(int maxTime, int[][] edges, int[] passingFees) {
-    // builds graph
     int n = passingFees.length;
     List<int[]>[] graph = new List[n];
     for (int i = 0; i < n; i++) {
@@ -709,13 +721,12 @@ public int minCost(int maxTime, int[][] edges, int[] passingFees) {
         graph[e[1]].add(new int[]{e[0], e[2]});
     }
 
-    int[] costs = new int[n], times = new int[n];        
-    Arrays.fill(costs, Integer.MAX_VALUE);
-    Arrays.fill(times, Integer.MAX_VALUE);
+    int[] times = new int[n];
+    Arrays.fill(times, maxTime + 1);
 
     // {city, cost, time}
-    Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] == b[1] ? a[2] - b[2] : a[1] - b[1]);
-    int[] curr = {0, costs[0] = passingFees[0], times[0] = 0};
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+    int[] curr = {0, passingFees[0], times[0] = 0};
     pq.offer(curr);
 
     while (!pq.isEmpty()) {
@@ -727,21 +738,15 @@ public int minCost(int maxTime, int[][] edges, int[] passingFees) {
         }
 
         for (int[] next : graph[city]) {
-            int neighbor = next[0];
-            int altTime = time + next[1];
+            int neighbor = next[0], altTime = time + next[1], altCost = cost + passingFees[neighbor];
 
-            if (altTime <= maxTime) {
-                int altCost = cost + passingFees[neighbor];
-                if (altCost < costs[neighbor]) {
-                    pq.offer(new int[]{neighbor, costs[neighbor] = altCost, times[neighbor] = altTime});
-                } else if (altTime < times[neighbor]) {
-                    pq.offer(new int[]{neighbor, altCost, times[neighbor] = altTime});
-                }
+            if (altTime < times[neighbor]) {
+                pq.offer(new int[]{neighbor, altCost, times[neighbor] = altTime});
             }
         }
     }
 
-    return costs[n - 1] == Integer.MAX_VALUE ? -1 : costs[n - 1];
+    return -1;
 }
 {% endhighlight %}
 
@@ -801,6 +806,31 @@ public int minimumCost(int n, int[][] highways, int discounts) {
         }
     }
     return -1;
+}
+{% endhighlight %}
+
+# Bellman-Ford Algorithm
+
+[Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm) is an algorithm that computes shortest paths from a single source vertex to all of the other vertices in a weighted digraph. It is capable of handling graphs in which some of the edge weights are negative numbers.
+
+[Cheapest Flights Within K Stops][cheapest-flights-within-k-stops]
+
+{% highlight java %}
+public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    int[] prices = new int[n], tmp = new int[n];
+    Arrays.fill(prices, Integer.MAX_VALUE);
+
+    prices[src] = 0;
+    for(int i = 0; i <= k; i++) {
+        System.arraycopy(prices, 0, tmp, 0, n);
+        for (int[] f: flights) {
+            int curr = f[0], next = f[1], price = f[2];
+            if (tmp[curr] < Integer.MAX_VALUE) {
+                prices[next] = Math.min(prices[next], tmp[curr] + price);
+            }
+        }
+    }
+    return prices[dst] == Integer.MAX_VALUE ? -1 : prices[dst];
 }
 {% endhighlight %}
 

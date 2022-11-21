@@ -238,7 +238,7 @@ public class BookMyShow {
         st.build();
     }
 
-    // O(nlog(n) * log(maxRow))
+    // O(log^2(n))
     public int[] gather(int k, int maxRow) {
         int r = binarySearch(k, maxRow);
         if (r < 0) {
@@ -334,6 +334,8 @@ public class BookMyShow {
     }
 }
 {% endhighlight %}
+
+With recursive segment tree implementation, the binary search will take \\(O(\log n)\\) time, because we can check the parent node value `node[1] >= k` (\\(O(1)\\)) in each level top-down, instead of calling `query` function (\\(O(\log n)\\)) in each loop iteration bottom-up.
 
 ### Non-commutative
 

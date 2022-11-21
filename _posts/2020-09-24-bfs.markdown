@@ -912,7 +912,6 @@ public int shortestPathLength(int[][] graph) {
 }
 {% endhighlight %}
 
-[cheapest-flights-within-k-stops]: https://leetcode.com/problems/cheapest-flights-within-k-stops/
 [cut-off-trees-for-golf-event]: https://leetcode.com/problems/cut-off-trees-for-golf-event/
 [escape-the-spreading-fire]: https://leetcode.com/problems/escape-the-spreading-fire/
 [jump-game-ii]: https://leetcode.com/problems/jump-game-ii/

@@ -548,6 +548,36 @@ WHERE
 ;
 {% endhighlight %}
 
+**Consecutive Rows model**
+
+[Customers With Strictly Increasing Purchases][customers-with-strictly-increasing-purchases]
+
+{% highlight sql %}
+WITH cte AS (
+    SELECT
+        customer_id,
+        YEAR(MAX(order_date)) year,
+        SUM(price) price
+    FROM
+        orders
+    GROUP BY
+        YEAR(order_date),
+        customer_id)
+
+SELECT
+    t1.customer_id
+FROM
+    cte t1
+LEFT JOIN
+    cte t2
+    ON t1.customer_id = t2.customer_id AND t1.year + 1 = t2.year AND t1.price < t2.price
+GROUP BY
+    t1.customer_id
+    -- the last year contains NULL next year
+    HAVING COUNT(*) - 1 = COUNT(t2.customer_id)
+;
+{% endhighlight %}
+
 [Consecutive Available Seats][consecutive-available-seats]
 
 {% highlight sql %}
@@ -2113,7 +2143,7 @@ FROM
      FROM
         Logs) t
 WHERE
-    Num = lead_num AND Num = lag_num;
+    Num = lead_num AND Num = lag_num
 ;
 {% endhighlight %}
 
@@ -2458,6 +2488,7 @@ END
 [customer-placing-the-largest-number-of-orders]: https://leetcode.com/problems/customer-placing-the-largest-number-of-orders/
 [customers-who-bought-all-products]: https://leetcode.com/problems/customers-who-bought-all-products/
 [customers-who-bought-products-a-and-b-but-not-c]: https://leetcode.com/problems/customers-who-bought-products-a-and-b-but-not-c/
+[customers-with-strictly-increasing-purchases]: https://leetcode.com/problems/customers-with-strictly-increasing-purchases/
 [dynamic-pivoting-of-a-table]: https://leetcode.com/problems/dynamic-pivoting-of-a-table/
 [dynamic-unpivoting-of-a-table]: https://leetcode.com/problems/dynamic-unpivoting-of-a-table/
 [employees-earning-more-than-their-managers]: https://leetcode.com/problems/employees-earning-more-than-their-managers/
