@@ -62,7 +62,7 @@ public int binarySearchableNumbers(int[] nums) {
     // for an element to be found,
     // it should be greater that all elements before it,
     // and smaller than all element after it
-    Deque<Integer> st = new ArrayDeque();
+    Deque<Integer> st = new ArrayDeque<>();
     int max = Integer.MIN_VALUE;
     for (int num : nums) {
         // monotonically increasing
@@ -129,7 +129,7 @@ private boolean isGreaterThanOrEqualTo(int[] nums1, int i, int[] nums2, int j) {
  */
 private int[] maxArray(int[] nums, int k) {
     int n = nums.length;
-    Deque<Integer> st = new ArrayDeque<Integer>();
+    Deque<Integer> st = new ArrayDeque<>();
     for (int i = 0; i < n; i++) {
         // monotonically decreasing stack
         // st.size + n - i > k means if we push all the remaining digits to the stack

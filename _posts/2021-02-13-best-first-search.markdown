@@ -95,7 +95,7 @@ public int minPushBox(char[][] grid) {
     int[] node = new int[]{h(box[0], box[1], target), 0, start[0], start[1], box[0], box[1]};
     pq.offer(node);
 
-    Set<String> set = new HashSet();
+    Set<String> set = new HashSet<>();
     while (!pq.isEmpty()) {
         node = pq.poll();
         // box is at the target

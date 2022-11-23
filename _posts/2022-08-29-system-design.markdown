@@ -31,7 +31,10 @@ Asynchronous replication by default. Replicas asynchronously acknowledge the amo
 
 Synchronous replication can be requested by `WAIT` command when absolutely needed. There's still a possibility that acknowledged writes get lost during a failover, so it doesn't ensure strong consistency. however the probability is very low. 
 
-Master sends a stream of commands to the replica to keep it updated when: client writes, keys expired or evicted, any other action chaning the master dataset
+Master sends a stream of commands to the replica to keep it updated when:
+* client writes
+* keys expired or evicted
+* any other action changing the master dataset
 
 Every time the link breaks, the replica will automatically reconnect to the master and proceed with a partial resynchronization (obatin the part of the stream of commands it missed during the disconnection).
 
@@ -97,12 +100,6 @@ Multi/exec sequence ensures no other clients are executing commands in between.
 Transactions: MULTI, EXEC, DISCARD, WATCH
 Rollback is not supported
 
-Sharding + Replication
-
-Leader follower (master-replica) replication
-
-mater sends a stream of commands to the replica to 
-
 [CRDTs](https://redis.com/blog/diving-into-crdts/): Conflict-Free Replicated Data Types
 
 # Distributed Messaging System
@@ -136,16 +133,16 @@ Brokers -> Cluster
 * Stateless
 * Multi-tenant: allow for many topics on the same cluster.
 * Unbalanced cluster
- * Leader skew. Solutions:
-  * auto.leader.rebalance.enable=true
-  * Kafka-preferred-replica-election.sh
- * Broker skew. Solutions:
-  * Partition reassignment tool
+  * Leader skew. Solutions:
+    * auto.leader.rebalance.enable=true
+    * Kafka-preferred-replica-election.sh
+  * Broker skew. Solutions:
+    * Partition reassignment tool
 
 Producers
 * Transmit JSON-format data to broker is in a compressed batch
- * Batch size
- * Liner duration
+  * Batch size
+  * Liner duration
 
 Consumers -> Consumer Group
 * Pull model
@@ -162,12 +159,12 @@ High throughput: millions of messages per second
 Kafka Schema Registry: ensures the (Avro) schema used by the consumer and the producer are identical. The producer submits the schema ID using the Confluent schema registry in Kafka.
 
 * Log compaction
- * For each topic partition, at least the last known value for each message key within the log of data is kept.
- * Restoration
+  * For each topic partition, at least the last known value for each message key within the log of data is kept.
+  * Restoration
 
 * Quotas
- * Byte-rate limits that are set for each client-id
- * Prevent a single application from monopolizing broker resources
+  * Byte-rate limits that are set for each client-id
+  * Prevent a single application from monopolizing broker resources
 
 ## RabbitMQ
 
@@ -188,8 +185,8 @@ Cluster: container for Keyspaces (database)
 Replication:
 Multi-master replication using versioned data and tunable consistency
 * Strategy
- * Simple Strategy: Partitioner determines the node for the first replica; additional replicas are placed on the next nodes in the Ring clockwise
- * Network Topology Strategy: consider rack or datacenter locations
+  * Simple Strategy: Partitioner determines the node for the first replica; additional replicas are placed on the next nodes in the Ring clockwise
+  * Network Topology Strategy: consider rack or datacenter locations
 
 Column family: a container for an ordered collection of rows
 Row: an ordered collection of columns
@@ -200,8 +197,8 @@ Row: an ordered collection of columns
 Primary Key
 * Single Primary Key
 * Compound Primary Key
- * Partitioning Key + Clustering Key
- * Clustering is the process that sorts data in the partition
+  * Partitioning Key + Clustering Key
+  * Clustering is the process that sorts data in the partition
 * Composite Partitioning Key
 
 Gossip Protocol
@@ -226,9 +223,9 @@ Snitch: determines which datacenters and racks, nodes belong to, informing Cassa
 Storage Engine: based on a Log Structured Merge Tree (LSM)
 * CommitLog: append-only log of all mutations local to a node
 * MemTables: in-memory structures where Cassandra buffers writes
- * One active memtable per table
+  * One active memtable per table
 * SSTables: the immutable data files that Cassandra uses for persisting data on disk
- * Cassandra triggers compactions which combine multiple SSTables into one
+  * Cassandra triggers compactions which combine multiple SSTables into one
 
 * Write: CommitLog -> MemTables -> SSTable
 * Read: Bloom Filter -> Partition Key Cache -> Partition Index
@@ -288,9 +285,9 @@ Configuration Service:
 Data replication: availability
 Protocols:
 * Probabilistic: gossip, epidemic broadcast tree, bimodal multicase
- * Eventual consistency
+  * Eventual consistency
 * Consensus: 2 or 3 phase commit, Paxos, Raft, chain replication
- * Strong consistency
+  * Strong consistency
 
 Leader-Follower replication:
 * Leader: put, get
@@ -398,16 +395,16 @@ Front-end
 * Usage data collection
 
 * Users/Customers
- * Who
- * How
+  * Who
+  * How
 * Scale
- * Requests per second
- * Traffic spikes
+  * Requests per second
+  * Traffic spikes
 * Performace
- * Latency
+  * Latency
 * Cost
- * Development cost
- * Maintenance cost
+  * Development cost
+  * Maintenance cost
 
 SQL:
 Normalization
@@ -450,7 +447,7 @@ Batching:
 Timeouts
 * connection timeout: tens of ms
 * request timeout: exponential backoff and jitter
- * Circuite Breaker: prevents repeat retries
+  * Circuite Breaker: prevents repeat retries
 
 Resource dispatching
 * Bulkhead pattern: isolates elements of an application into pools.
@@ -464,8 +461,8 @@ Load balancers
 Service discovery:
 * Server-side: load balancer
 * Client-side
- * Service registry (e.g. Apache ZooKeeper, Netflix Eureka)
- * Gossip protocol
+  * Service registry (e.g. Apache ZooKeeper, Netflix Eureka)
+  * Gossip protocol
 
 Replication
 * Single leader: SQL scaling
@@ -524,8 +521,6 @@ Message sharing
 Service + Daemon
 
 maxmemory: write commands starts to fail or evict keys
-
-[Number of Distinct Roll Sequences][number-of-distinct-roll-sequences]
 
 {% highlight java %}
 {% endhighlight %}

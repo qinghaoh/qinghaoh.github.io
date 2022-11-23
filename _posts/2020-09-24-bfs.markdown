@@ -138,7 +138,7 @@ public int minimumJumps(int[] forbidden, int a, int b, int x) {
 
     // position, direction (0: forward, 1: backward)
     int[] node = {0, 0};
-    Queue<int[]> q = new LinkedList();
+    Queue<int[]> q = new LinkedList<>();
     q.offer(node);
     visited.add(0);
 
@@ -208,7 +208,7 @@ Encode the layout as a String.
 
 {% highlight java %}
 public int depthSumInverse(List<NestedInteger> nestedList) {
-    Queue<NestedInteger> q = new LinkedList(nestedList);
+    Queue<NestedInteger> q = new LinkedList<>(nestedList);
     int runningSum = 0, sum = 0;
     while (!q.isEmpty()) {
        for (int i = q.size(); i > 0; i--) {

@@ -99,15 +99,15 @@ public boolean isValid(String code) {
 
 {% highlight java %}
 public String countOfAtoms(String formula) {
-    Deque<Map<String, Integer>> st = new LinkedList();
-    st.push(new TreeMap());
+    Deque<Map<String, Integer>> st = new LinkedList<>();
+    st.push(new TreeMap<>());
 
     Matcher matcher = Pattern.compile("([A-Z][a-z]*)(\\d*)|(\\()|(\\))(\\d*)").matcher(formula);
     while (matcher.find()) {
         String match = matcher.group();
         if (match.equals("(")) {
             // (\\()
-            st.push(new TreeMap());
+            st.push(new TreeMap<>());
         } else if (match.startsWith(")")) {
             // (\\))(\\d*)
             for (var e : st.pop().entrySet()) {

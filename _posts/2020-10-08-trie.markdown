@@ -162,7 +162,7 @@ class TrieNode {
     int sum;
 
     TrieNode() {
-        children = new HashMap();
+        children = new HashMap<>();
         sum = 0;
     }
 }
@@ -218,7 +218,7 @@ public int countNodes(int n, long node1, long node2) {
 [Delete Duplicate Folders in System][delete-duplicate-folders-in-system]
 
 {% highlight java %}
-private List<List<String>> ans = new ArrayList();
+private List<List<String>> ans = new ArrayList<>();
 
 public List<List<String>> deleteDuplicateFolder(List<List<String>> paths) {
     TrieNode root = new TrieNode();
@@ -232,7 +232,7 @@ public List<List<String>> deleteDuplicateFolder(List<List<String>> paths) {
 class TrieNode {
     String name = null;
     // sorted map guarantees the serialization of identical subfolders is unique
-    Map<String, TrieNode> children = new TreeMap();
+    Map<String, TrieNode> children = new TreeMap<>();
     boolean toDelete = false;
 
     public TrieNode() {
@@ -265,7 +265,7 @@ private void dfs(TrieNode root) {
 }
 
 // postorder
-Map<String, TrieNode> seen = new HashMap();
+Map<String, TrieNode> seen = new HashMap<>();
 private String deDupe(TrieNode root) {
     String subfolders = "";
 

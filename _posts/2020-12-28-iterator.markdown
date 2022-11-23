@@ -10,7 +10,7 @@ public class ZigzagIterator {
     private Queue<Iterator<Integer>> q;
 
     public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
-        q = new LinkedList();
+        q = new LinkedList<>();
         if (!v1.isEmpty()) {
             q.offer(v1.iterator());
         }

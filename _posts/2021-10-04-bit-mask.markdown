@@ -376,7 +376,7 @@ private void backtrack(int width, int[] bricks, List<Integer> ways, int mask, in
 
 {% highlight java %}
 public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> people) {
-    Map<String, Integer> map = new HashMap();
+    Map<String, Integer> map = new HashMap<>();
     int index = 0;
     for (String s : req_skills) {
         map.put(s, index++);
@@ -386,7 +386,7 @@ public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> peop
 
     // dp[i]: the sufficient team of skill set i
     List<Integer>[] dp = new List[m];
-    dp[0] = new ArrayList();
+    dp[0] = new ArrayList<>();
 
     for (int i = 0; i < people.size(); i++) {
         // current skill set for the i-th person
@@ -430,7 +430,7 @@ public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> peop
 {% highlight java %}
 public boolean canDistribute(int[] nums, int[] quantity) {
     // frequency map
-    List<Long> freq = new ArrayList(Arrays.stream(nums).boxed()
+    List<Long> freq = new ArrayList<>(Arrays.stream(nums).boxed()
         .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
         .values());
 

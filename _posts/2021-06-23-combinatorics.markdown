@@ -209,10 +209,10 @@ private static final int MAX_NUM_UNIQUE = 14;
 
 public int idealArrays(int n, int maxValue) {
     // {element, divisors (not including the key itself)}
-    Map<Integer, List<Integer>> map = new HashMap();
+    Map<Integer, List<Integer>> map = new HashMap<>();
     for (int i = 1; i <= maxValue; i++) {
         for (int j = 2 * i; j <= maxValue; j += i) {
-            map.computeIfAbsent(j, k -> new ArrayList()).add(i);
+            map.computeIfAbsent(j, k -> new ArrayList<>()).add(i);
         }
     }
 

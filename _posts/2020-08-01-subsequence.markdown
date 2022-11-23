@@ -523,7 +523,7 @@ public int numberOfUniqueGoodSubsequences(String binary) {
 public int numMatchingSubseq(String s, String[] words) {
     List<Deque<Character>>[] buckets = new List[26];
     for (int i = 0; i < buckets.length; i++) {
-        buckets[i] = new ArrayList();
+        buckets[i] = new ArrayList<>();
     }
 
     // adds words to buckets based on the first letter
@@ -535,7 +535,7 @@ public int numMatchingSubseq(String s, String[] words) {
     int count = 0;
     for (char ch : s.toCharArray()) {
         List<Deque<Character>> list = buckets[ch - 'a'];
-        buckets[ch - 'a'] = new ArrayList();
+        buckets[ch - 'a'] = new ArrayList<>();
         for (Deque<Character> q : list) {
             // O(1) removes the first letter
             q.pollFirst();

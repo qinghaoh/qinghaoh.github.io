@@ -787,7 +787,7 @@ private int pathSumFromNode(TreeNode node, int sum) {
 
 {% highlight java %}
 public int pathSum(TreeNode root, int sum) {
-    Map<Integer, Integer> prefixSum = new HashMap();
+    Map<Integer, Integer> prefixSum = new HashMap<>();
     prefixSum.put(0,1);
     return dfs(root, 0, sum, prefixSum);
 }

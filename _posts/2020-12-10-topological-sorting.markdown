@@ -426,7 +426,7 @@ public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItem
 
 private List<Integer> sort(List<Integer>[] graph, int[] indegree, int count) {
     List <Integer> list = new ArrayList<>();
-    Queue <Integer> q = new LinkedList();
+    Queue <Integer> q = new LinkedList<>();
     for (int i = 0; i < graph.length; i++) {
         if (indegrees[i] == 0) {
             q.offer(i);

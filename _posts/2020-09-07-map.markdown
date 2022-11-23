@@ -222,7 +222,7 @@ public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
 
 {% highlight java %}
 public boolean canReorderDoubled(int[] arr) {
-    Map<Integer, Integer> count = new TreeMap();
+    Map<Integer, Integer> count = new TreeMap<>();
     for (int a : arr) {
         count.put(a, count.getOrDefault(a, 0) + 1);
     }
@@ -380,7 +380,7 @@ public boolean wordPattern(String pattern, String s) {
 
     // non generic map
     // <Object, Object>
-    Map map = new HashMap();
+    Map map = new HashMap<>();
     // the type of i must be Integer
     // since there's no auto boxing for non generic map integer values
     for (Integer i = 0; i < words.length; i++) {

@@ -1250,7 +1250,7 @@ public long goodTriplets(int[] nums1, int[] nums2) {
     // result = sum(less[i] * greater[i])
 
     // list of sorted indices (in nums2) of visited nums1 elements
-    List<Integer> list = new ArrayList();
+    List<Integer> list = new ArrayList<>();
     list.add(indices[nums1[0]]);
 
     long count = 0;

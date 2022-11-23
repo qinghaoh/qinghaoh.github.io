@@ -84,7 +84,7 @@ df.format("1.2345");  // "1.23"
 Deques can also be used as LIFO (Last-In-First-Out) stacks. This interface should be used in preference to the legacy `Stack` class. When a deque is used as a stack, elements are pushed and popped from the beginning of the deque.
 
 {% highlight java %}
-Deque<Integer> stack = new ArrayDeque<Integer>();
+Deque<Integer> stack = new ArrayDeque<>();
 {% endhighlight %}
 
 * [Iterator\<E\> descendingIterator()](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Deque.html#descendingIterator())
@@ -128,7 +128,7 @@ Doubly-linked list implementation of the `List` and `Deque` interfaces. Implemen
 
 Convert String List to String array:
 {% highlight java %}
-List<String> list = new ArrayList<String>();
+List<String> list = new ArrayList<>();
 list.add(0);
 String[] array = list.toArray(new String[0])
 {% endhighlight %}

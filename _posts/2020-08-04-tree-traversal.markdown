@@ -10,7 +10,7 @@ tags: tree
 ### Recursion
 {% highlight java %}
 public List<Integer> preorderTraversal(TreeNode root) {
-    List<Integer> list = new ArrayList<Integer>();
+    List<Integer> list = new ArrayList<>();
     helper(root, list);
     return list;
 }
@@ -92,7 +92,7 @@ public List<Integer> inorderTraversal(TreeNode root) {
 ### Recursion
 {% highlight java %}
 public List<Integer> postorderTraversal(TreeNode root) {
-    List<Integer> list = new ArrayList<Integer>();
+    List<Integer> list = new ArrayList<>();
     traverse(root, list);
     return list;
 }
@@ -196,7 +196,7 @@ public List<List<Integer>> verticalOrder(TreeNode root) {
         TreeNode node = q.poll();
         int col = cols.poll();
 
-        map.computeIfAbsent(col, k -> new ArrayList<Integer>()).add(node.val);
+        map.computeIfAbsent(col, k -> new ArrayList<>()).add(node.val);
 
         if (node.left != null) {
             q.add(node.left); 

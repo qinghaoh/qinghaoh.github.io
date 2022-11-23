@@ -7,7 +7,7 @@ usemathjax: true
 
 {% highlight java %}
 public String getPermutation(int n, int k) {
-    List<Integer> num = new ArrayList<Integer>();
+    List<Integer> num = new ArrayList<>();
     int fact = 1;
     for (int i = 1; i <= n; i++) {
         num.add(i);

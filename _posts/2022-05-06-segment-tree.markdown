@@ -204,7 +204,7 @@ public List<Integer> fallingSquares(int[][] positions) {
     SegmentTree st = new SegmentTree(map.size(), (a, b) -> Math.max(a, b));
     st.build();
 
-    List<Integer> list = new ArrayList();
+    List<Integer> list = new ArrayList<>();
     int max = 0;
     for (int[] p : positions) {
         int l = map.get(p[0]), r = map.get(p[0] + p[1]);
@@ -650,7 +650,7 @@ public List<Integer> fallingSquares(int[][] positions) {
     int n = map.size();
     SegmentTree st = new SegmentTree(n, (a, b) -> Math.max(a, b));
 
-    List<Integer> list = new ArrayList();
+    List<Integer> list = new ArrayList<>();
     int max = 0;
     for (int[] p : positions) {
         // one-based indexing

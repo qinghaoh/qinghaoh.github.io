@@ -32,7 +32,7 @@ public boolean canVisitAllRooms(List<List<Integer>> rooms) {
     Set<Integer> visited = new HashSet<>();
     set.add(0);
 
-    Deque<Integer> st = new ArrayDeque();
+    Deque<Integer> st = new ArrayDeque<>();
     st.push(0);
 
     while (!st.isEmpty()) {

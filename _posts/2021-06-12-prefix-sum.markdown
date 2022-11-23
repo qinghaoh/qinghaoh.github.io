@@ -146,7 +146,7 @@ public void add(int num) {
     if (num > 0) {
         p.add(p.get(p.size() - 1) * num);
     } else {
-        p = new ArrayList();
+        p = new ArrayList<>();
         p.add(1);
     }
 }

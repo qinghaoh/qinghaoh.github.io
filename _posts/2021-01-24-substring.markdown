@@ -44,7 +44,7 @@ public List<String> wordBreak(String s, List<String> wordDict) {
         return map.get(s);
     }
 
-    List<String> list = new ArrayList<String>();
+    List<String> list = new ArrayList<>();
     if (wordDict.contains(s)) {
         list.add(s);
     }
