@@ -351,28 +351,83 @@ public int findMaximumXOR(int[] nums) {
     TrieNode root = new TrieNode();
     int max = 0;
     for (int num : nums) {
-        TrieNode node = root, complement = root;
-        int value = 0;
+        // node: the iterator to find the optimal peer of num, which yields max num ^ peer
+        TrieNode node = root;
+        int xor = 0;
 
+        // searches for the optimal peer in the existing trie
         for (int i = 31; i >= 0; i--) {
-            // the i-th bit of num
-            int bit = (num >> i) & 1;
+            // num[i]: the i-th bit of num
+            int b = (num >> i) & 1;
 
-            if (node.children[bit] == null) {
-                node.children[bit] = new TrieNode();
-            }
-            node = node.children[bit];
-
-            if (complement.children[bit ^ 1] != null) {
-                // complement at the bit of this num exists
-                // so the xor at the bit is 1, and the max at this bit will be 1
-                complement = complement.children[bit ^ 1];
-                value += 1 << i;
+            if (node.children[b ^ 1] != null) {
+                // there exists an element in the trie whose i-th bit is 1 - num[i]
+                node = node.children[b ^ 1];
+                // xor[i] = 1
+                xor = (xor << 1) + 1;
+            } else if (node.children[b] != null) {
+                // there exists an element in the trie whose i-th bit is num[i]
+                node = node.children[b];
+                // xor[i] = 0
+                xor <<= 1;
             } else {
-                complement = complement.children[bit];
+                break;
             }
         }
-        max = Math.max(max, value);
+
+        // inserts the num into the trie
+        node = root;
+        for (int i = 31; i >= 0; i--) {
+            int b = (num >> i) & 1;
+            if (node.children[b] == null) {
+                node.children[b] = new TrieNode();
+            }
+            node = node.children[b];
+        }
+        max = Math.max(max, xor);
+    }
+    return max;
+}
+
+class TrieNode {
+    TrieNode[] children = new TrieNode[2];
+}
+{% endhighlight %}
+
+A more compact approach is as follows, which inserts the node and finds the optimal peer in one loop:
+
+{% highlight java %}
+public int findMaximumXOR(int[] nums) {
+    TrieNode root = new TrieNode();
+    int max = 0;
+    for (int num : nums) {
+        // peer: the iterator to find the optimal peer of num, which yields max num ^ peer
+        TrieNode node = root, peer = root;
+        int xor = 0;
+
+        for (int i = 31; i >= 0; i--) {
+            // num[i]: the i-th bit of num
+            int b = (num >> i) & 1;
+
+            // inserts node into the trie
+            if (node.children[b] == null) {
+                node.children[b] = new TrieNode();
+            }
+            node = node.children[b];
+
+            if (peer.children[b ^ 1] != null) {
+                // there exists an element in the trie whose i-th bit is 1 - num[i]
+                peer = peer.children[b ^ 1];
+                // xor[i] = 1
+                xor += 1 << i;
+            } else {
+                // otherwise, xor[i] = 0
+                // since the `node` is already inserted
+                // either peer.children[b ^ 1] == null or not, there is no other branch
+                peer = peer.children[b];
+            }
+        }
+        max = Math.max(max, xor);
     }
     return max;
 }

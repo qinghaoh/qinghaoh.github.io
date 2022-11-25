@@ -193,6 +193,88 @@ public int getKthAncestor(int node, int k) {
 }
 {% endhighlight %}
 
+# Non-overlapping Subtrees
+
+[Maximum XOR of Two Non-Overlapping Subtrees][maximum-xor-of-two-non-overlapping-subtrees]
+
+{% highlight java %}
+private List<Integer>[] tree;
+private long[] sums;
+private TrieNode root;
+private long max = 0;
+private int[] values;
+
+public long maxXor(int n, int[][] edges, int[] values) {
+    this.tree = new List[n];
+    for (int i = 0; i < n; i++) {
+        tree[i] = new ArrayList<>();
+    }
+    for (int[] e : edges) {
+        tree[e[0]].add(e[1]);
+        tree[e[1]].add(e[0]);
+    }
+
+    this.sums = new long[n];
+    this.values = values;
+    dfs(0, -1);
+
+    this.root = new TrieNode();
+    for (int child : tree[0]) {
+        dfs2(child, 0);
+    }
+    return max;
+}
+
+private long dfs(int node, int parent) {
+    sums[node] += values[node];
+    for (int child : tree[node]) {
+        if (child != parent) {
+            sums[node] += dfs(child, node);
+        }
+    }
+    return sums[node];
+}
+
+// 421. Maximum XOR of Two Numbers in an Array
+private void dfs2(int node, int parent) {
+    TrieNode curr = root;
+    long xor = 0;
+    for (int i = 63; i >= 0; i--) {
+        int b = (int)((sums[node] >> i) & 1);
+        if (curr.children[b ^ 1] != null) {
+            curr = curr.children[b ^ 1];
+            xor = (xor << 1) + 1;
+        } else if (curr.children[b] != null) {
+            curr = curr.children[b];
+            xor <<= 1;
+        } else {
+            break;
+        }
+    }
+    max = Math.max(max, xor);
+
+    for (int child : tree[node]) {
+        if (child != parent) {
+            dfs2(child, node);
+        }
+    }
+
+    // adds sums[node] at last (postorder) to make sure the subtrees are non-overlapping
+    curr = root;
+    for (int i = 63; i >= 0; i--) {
+        int b = (int)((sums[node] >> i) & 1);
+        if (curr.children[b] == null) {
+            curr.children[b] = new TrieNode();
+        }
+        curr = curr.children[b];
+    }
+}
+
+class TrieNode {
+    TrieNode[] children = new TrieNode[2];
+}
+{% endhighlight %}
+
 [find-distance-in-a-binary-tree]: https://leetcode.com/problems/find-distance-in-a-binary-tree/
 [kth-ancestor-of-a-tree-node]: https://leetcode.com/problems/kth-ancestor-of-a-tree-node/
 [intersection-of-two-linked-lists]: https://leetcode.com/problems/intersection-of-two-linked-lists/
@@ -200,5 +282,6 @@ public int getKthAncestor(int node, int k) {
 [lowest-common-ancestor-of-a-binary-tree-ii]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/
 [lowest-common-ancestor-of-a-binary-tree-iii]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/
 [lowest-common-ancestor-of-deepest-leaves]: https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/
+[maximum-xor-of-two-non-overlapping-subtrees]: https://leetcode.com/problems/maximum-xor-of-two-non-overlapping-subtrees/
 [step-by-step-directions-from-a-binary-tree-node-to-another]: https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another/
 [subtree-of-another-tree]: https://leetcode.com/problems/subtree-of-another-tree/

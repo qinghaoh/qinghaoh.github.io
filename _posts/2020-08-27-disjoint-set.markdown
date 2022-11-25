@@ -4,6 +4,10 @@ title:  "Disjoint Set"
 tags: union
 ---
 
+# Fundamentals
+
+[Disjoint set data structure](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) stores a collection of disjoint (non-overlapping) sets. Equivalently, it stores a partition of a set into disjoint subsets.
+
 Time Complexity:
 
 * find: `O(α(n))`
@@ -11,10 +15,10 @@ Time Complexity:
 
 where α(n) is the extremely slow-growing [inverse Ackermann function](https://en.wikipedia.org/wiki/Ackermann_function#Inverse).
 
-[Redundante Connection][redundant-connection]
+[Redundant Connection][redundant-connection]
 
 {% highlight java %}
-private int[] parent;
+private int[] parents;
 
 public int[] findRedundantConnection(int[][] edges) {
     parent = new int[edges.length + 1];
@@ -29,7 +33,7 @@ public int[] findRedundantConnection(int[][] edges) {
 }
 
 private int find(int u) {
-    return parent[u] == 0 ? u : find(parent[u]);
+    return parents[u] == 0 ? u : find(parents[u]);
 }
 
 private boolean union(int u, int v) {
@@ -39,12 +43,21 @@ private boolean union(int u, int v) {
         return false;
     }
 
-    parent[pu] = pv;
+    parents[pu] = pv;
     return true;
 }
 {% endhighlight %}
 
-[Redundante Connection II][redundant-connection-ii]
+A very useful technique is path compression, which flattens the structure when `find` is called.
+
+{% highlight java %}
+private int find(int u) {
+    // path compression
+    return parents[u] < 0 ? u : (parents[u] = find(parents[u]));
+}
+{% endhighlight %}
+
+[Redundant Connection II][redundant-connection-ii]
 
 {% highlight java %}
 public int[] findRedundantDirectedConnection(int[][] edges) {
@@ -140,8 +153,6 @@ public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
 }
 {% endhighlight %}
 
-# Path Compression
-
 [Checking Existence of Edge Length Limited Paths][checking-existence-of-edge-length-limited-paths]
 
 Offline queries:
@@ -151,13 +162,13 @@ private int[] parents;
 
 public boolean[] distanceLimitedPathsExist(int n, int[][] edgeList, int[][] queries) {
     int m = queries.length;
-    Integer[] index = new Integer[m];
+    Integer[] indices = new Integer[m];
     for (int i = 0; i < m; i++) {
-        index[i] = i;
+        indices[i] = i;
     }
 
     // sorts queries index by limit
-    Arrays.sort(index, Comparator.comparingInt(i -> queries[i][2]));
+    Arrays.sort(indices, Comparator.comparingInt(i -> queries[i][2]));
 
     // sorts edgeList by distance
     Arrays.sort(edgeList, Comparator.comparingInt(e -> e[2]));
@@ -169,7 +180,7 @@ public boolean[] distanceLimitedPathsExist(int n, int[][] edgeList, int[][] quer
     boolean[] answer = new boolean[m];
     int i = 0, j = 0;
     while (j < m) {
-        int[] q = queries[index[j]];
+        int[] q = queries[indices[j]];
         // unions all nodes whose edge distance < q[2]
         // when q is updated, the existing disjoint sets remain the same
         // we just need to add new edges to the proper set
@@ -180,7 +191,7 @@ public boolean[] distanceLimitedPathsExist(int n, int[][] edgeList, int[][] quer
 
         // true if q nodes are in the same set
         if (find(q[0]) == find(q[1])) {
-            answer[index[j]] = true;
+            answer[indices[j]] = true;
         }
 
         j++;
