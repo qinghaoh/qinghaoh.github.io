@@ -421,6 +421,46 @@ public int largestVariance(String s) {
 
 This problem can also be solved by [Kadane's Algorithm](../../../2020/10/03/kadanes.html).
 
+**Ordered Pair**
+
+[Count Palindromic Subsequences][count-palindromic-subsequences]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+
+public int countPalindromes(String s) {
+    int n = s.length();
+    int[][][] pp = prefixSum(s), ss = prefixSum(new StringBuilder(s).reverse().toString());
+
+    long count = 0;
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            for (int k = 2; k < n - 2; k++) {
+                count = (count + ((long)pp[i][j][k] * ss[i][j][n - k - 1]) % MOD) % MOD;
+            }
+        }
+    }
+    return (int)count;
+}
+
+private int[][][] prefixSum(String s) {
+    int n = s.length();
+    // p[i][j]: occurrences of 'i' in s.substring(0, j)
+    int[][] p = new int[10][n + 1];
+    // pp[i][j][k]: occurrences of ordered pair ('i', 'j') in s.substring(0, k)
+    int[][][] pp = new int[10][10][n + 1];
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < 10; i++) {
+            p[i][k + 1] = p[i][k] + (s.charAt(k) - '0' == i ? 1 : 0);
+            for (int j = 0; j < 10; j++) {
+                pp[i][j][k + 1] = (pp[i][j][k] + (s.charAt(k) - '0' == j ? p[i][k] : 0)) % MOD;
+            }
+        }
+    }
+    return pp;
+}
+{% endhighlight %}
+
 **Prefix Sum**
 
 [Sum of Total Strength of Wizards][sum-of-total-strength-of-wizards]
@@ -998,9 +1038,41 @@ public int findMinMoves(int[] machines) {
 }
 {% endhighlight %}
 
+# Expand Around Center
+
+[Count Subarrays With Median K][count-subarrays-with-median-k]
+
+{% highlight java %}
+public int countSubarrays(int[] nums, int k) {
+    int n = nums.length, kIndex = 0;
+    for (int i = 0; i < n; i++) {
+        if (nums[i] == k) {
+            kIndex = i;
+        }
+    }
+
+    int sum = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = kIndex; i >= 0; i--) {
+        sum += (int)Math.signum(nums[i] - k);
+        map.put(sum, map.getOrDefault(sum, 0) + 1);
+    }
+
+    sum = 0;
+    int count = 0;
+    for (int i = kIndex; i < n; i++) {
+        sum += (int)Math.signum(nums[i] - k);
+        count += map.getOrDefault(-sum, 0) + map.getOrDefault(-sum + 1, 0);
+    }
+    return count;
+}
+{% endhighlight %}
+
 [can-make-palindrome-from-substring]: https://leetcode.com/problems/can-make-palindrome-from-substring/
 [change-minimum-characters-to-satisfy-one-of-three-conditions]: https://leetcode.com/problems/change-minimum-characters-to-satisfy-one-of-three-conditions/
 [contiguous-array]: https://leetcode.com/problems/contiguous-array/
+[count-palindromic-subsequences]: https://leetcode.com/problems/count-palindromic-subsequences/
+[count-subarrays-with-median-k]: https://leetcode.com/problems/count-subarrays-with-median-k/
 [count-subarrays-with-more-ones-than-zeros]: https://leetcode.com/problems/count-subarrays-with-more-ones-than-zeros/
 [count-triplets-that-can-form-two-arrays-of-equal-xor]: https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/
 [find-good-days-to-rob-the-bank]: https://leetcode.com/problems/find-good-days-to-rob-the-bank/

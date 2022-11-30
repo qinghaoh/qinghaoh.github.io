@@ -285,19 +285,19 @@ private int updateEnd(String s, int i, int[][] intervals) {
 {% highlight java %}
 public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
     int n = startTime.length;
-    Integer[] index = new Integer[n];
+    Integer[] indices = new Integer[n];
     for (int i = 0; i < n; i++) {
-        index[i] = i;
+        indices[i] = i;
     }
 
     // sorts index by end time
-    Arrays.sort(index, Comparator.comparingInt(i -> endTime[i]));
+    Arrays.sort(indices, Comparator.comparingInt(i -> endTime[i]));
 
     // end time : max profit
     TreeMap<Integer, Integer> dp = new TreeMap<>();
     dp.put(0, 0);
 
-    for (int i : index) {
+    for (int i : indices) {
         // curr is the max profit if we pick the current job
         // binary searches in dp for the max profit we can make before startTime[i]
         int curr = dp.floorEntry(startTime[i]).getValue() + profit[i];

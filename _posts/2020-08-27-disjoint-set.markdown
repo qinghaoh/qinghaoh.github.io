@@ -6,7 +6,7 @@ tags: union
 
 # Fundamentals
 
-[Disjoint set data structure](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) stores a collection of disjoint (non-overlapping) sets. Equivalently, it stores a partition of a set into disjoint subsets.
+[Disjoint-set data structure](https://en.wikipedia.org/wiki/Disjoint-set_data_structure), also called union-find data structure, stores a collection of disjoint (non-overlapping) sets. Equivalently, it stores a partition of a set into disjoint subsets.
 
 Time Complexity:
 
@@ -48,12 +48,82 @@ private boolean union(int u, int v) {
 }
 {% endhighlight %}
 
-A very useful technique is path compression, which flattens the structure when `find` is called.
+A very useful technique is *path compression*, which flattens the structure when `find` is called.
 
 {% highlight java %}
 private int find(int u) {
     // path compression
-    return parents[u] < 0 ? u : (parents[u] = find(parents[u]));
+    return parents[u] == 0 ? u : (parents[u] = find(parents[u]));
+}
+{% endhighlight %}
+
+[Graph Connectivity With Threshold][graph-connectivity-with-threshold]
+
+{% highlight java %}
+public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
+    this.parents = new int[n + 1];
+
+    for (int z = threshold + 1; z < n; z++) {
+        // unions all multiples of z
+        for (int k = 2; k * z <= n; k++) {
+            union(z, k * z);
+        }
+    }
+
+    List<Boolean> answer = new ArrayList<>();
+    for (int[] q : queries) {
+        answer.add(find(q[0]) == find(q[1]));
+    }
+    return answer;
+}
+{% endhighlight %}
+
+Depending on the specific problem, `parents` elements can be initialized to `0`, `1`, `null`, etc.
+
+[Checking Existence of Edge Length Limited Paths][checking-existence-of-edge-length-limited-paths]
+
+Offline queries:
+
+{% highlight java %}
+private int[] parents;
+
+public boolean[] distanceLimitedPathsExist(int n, int[][] edgeList, int[][] queries) {
+    int m = queries.length;
+    Integer[] indices = new Integer[m];
+    for (int i = 0; i < m; i++) {
+        indices[i] = i;
+    }
+
+    // sorts queries index by limit
+    Arrays.sort(indices, Comparator.comparingInt(i -> queries[i][2]));
+
+    // sorts edgeList by distance
+    Arrays.sort(edgeList, Comparator.comparingInt(e -> e[2]));
+
+    // union-find
+    this.parents = new int[n];
+    Arrays.fill(parents, -1);
+
+    boolean[] answer = new boolean[m];
+    int i = 0, j = 0;
+    while (j < m) {
+        int[] q = queries[indices[j]];
+        // unions all nodes whose edge distance < q[2]
+        // when q is updated, the existing disjoint sets remain the same
+        // we just need to add new edges to the proper set
+        while (i < edgeList.length && edgeList[i][2] < q[2]) {
+            union(edgeList[i][0], edgeList[i][1]);
+            i++;
+        }
+
+        // true if q nodes are in the same set
+        if (find(q[0]) == find(q[1])) {
+            answer[indices[j]] = true;
+        }
+
+        j++;
+    }
+    return answer;
 }
 {% endhighlight %}
 
@@ -130,93 +200,13 @@ private boolean union(int[] parents, int u, int v) {
 }
 {% endhighlight %}
 
-[Graph Connectivity With Threshold][graph-connectivity-with-threshold]
-
-{% highlight java %}
-public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
-    this.parents = new int[n + 1];
-
-    int factor = threshold + 1;
-    while (factor < n) {
-        int k = 2;
-        while (k * factor <= n) {
-            union(factor, k++ * factor);
-        }
-        factor++;
-    }
-
-    List<Boolean> answer = new ArrayList<>();
-    for (int[] q : queries) {
-        answer.add(find(q[0]) == find(q[1]));
-    }
-    return answer;
-}
-{% endhighlight %}
-
-[Checking Existence of Edge Length Limited Paths][checking-existence-of-edge-length-limited-paths]
-
-Offline queries:
-
-{% highlight java %}
-private int[] parents;
-
-public boolean[] distanceLimitedPathsExist(int n, int[][] edgeList, int[][] queries) {
-    int m = queries.length;
-    Integer[] indices = new Integer[m];
-    for (int i = 0; i < m; i++) {
-        indices[i] = i;
-    }
-
-    // sorts queries index by limit
-    Arrays.sort(indices, Comparator.comparingInt(i -> queries[i][2]));
-
-    // sorts edgeList by distance
-    Arrays.sort(edgeList, Comparator.comparingInt(e -> e[2]));
-
-    // union-find
-    this.parents = new int[n];
-    Arrays.fill(parents, -1);
-
-    boolean[] answer = new boolean[m];
-    int i = 0, j = 0;
-    while (j < m) {
-        int[] q = queries[indices[j]];
-        // unions all nodes whose edge distance < q[2]
-        // when q is updated, the existing disjoint sets remain the same
-        // we just need to add new edges to the proper set
-        while (i < edgeList.length && edgeList[i][2] < q[2]) {
-            union(edgeList[i][0], edgeList[i][1]);
-            i++;
-        }
-
-        // true if q nodes are in the same set
-        if (find(q[0]) == find(q[1])) {
-            answer[indices[j]] = true;
-        }
-
-        j++;
-    }
-    return answer;
-}
-
-private int find(int u) {
-    // path compression
-    return parents[u] < 0 ? u : (parents[u] = find(parents[u]));
-}
-
-private void union(int u, int v) {
-    int pu = find(u), pv = find(v);
-    if (pu != pv) {
-        parents[pu] = pv;
-    }
-}
-{% endhighlight %}
+Sometimes, the `parents` sets shall be represented as a map:
 
 [Evaluate Division][evaluate-division]
 
 {% highlight java %}
-Map<String, String> parent = new HashMap<>();
-Map<String, Double> ratio = new HashMap<>();  // parent / node
+private Map<String, String> parents = new HashMap<>();
+private Map<String, Double> ratios = new HashMap<>();  // parent / node
 
 public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
     for (int i = 0; i < values.length; i++) {
@@ -224,25 +214,26 @@ public double[] calcEquation(List<List<String>> equations, double[] values, List
         union(e.get(0), e.get(1), values[i]);
     }
 
-    double[] result = new double[queries.size()];
-    for (int i = 0; i < queries.size(); i++) {
+    int m = queries.size();
+    double[] answers = new double[m];
+    for (int i = 0; i < m; i++) {
         List<String> q = queries.get(i);
-        result[i] = query(q.get(0), q.get(1));
+        answers[i] = query(q.get(0), q.get(1));
     }
-    return result;
+    return answers;
 }
 
 private String find(String u) {
-    if (!parent.containsKey(u)) {
-        ratio.put(u, 1.0);
+    if (!parents.containsKey(u)) {
+        ratios.put(u, 1.0);
         return u;
     }
 
     // path compression
-    String p = parent.get(u);
+    String p = parents.get(u);
     String gp = find(p);
     parent.put(u, gp);
-    ratio.put(u, ratio.get(u) * ratio.get(p));  // gp = p * ratio(p) = u * ratio(u) * ratio(p)
+    ratio.put(u, ratio.get(u) * ratios.get(p));  // gp = p * ratio(p) = u * ratio(u) * ratio(p)
     return gp;
 }
 
@@ -250,15 +241,15 @@ private String find(String u) {
 private void union(String u, String v, double value) {
     String pu = find(u), pv = find(v);
 
-    parent.put(pv, pu);
+    parents.put(pv, pu);
     // ratio = pu / pv
-    //   = u * ratio(u) / (v * ratio(v))
-    //   = value * ratio(u) / ratio(v)
-    ratio.put(pv, value * ratio.get(u) / ratio.get(v));
+    //   = u * ratios(u) / (v * ratios(v))
+    //   = value * ratios(u) / ratios(v)
+    ratio.put(pv, value * ratios.get(u) / ratios.get(v));
 }
 
 private double query(String s1, String s2) {
-    if (!ratio.containsKey(s1) || !ratio.containsKey(s2)) {
+    if (!ratios.containsKey(s1) || !ratios.containsKey(s2)) {
         return -1.0;
     }
 
@@ -267,11 +258,13 @@ private double query(String s1, String s2) {
         return -1.0;
     }
 
-    // s1 / s2 = p / ratio(s1) / (p / ratio(s2))
-    //   = ratio(s2) / ratio(s1)
-    return ratio.get(s2) / ratio.get(s1);
+    // s1 / s2 = p / ratios(s1) / (p / ratios(s2))
+    //   = ratios(s2) / ratios(s1)
+    return ratios.get(s2) / ratios.get(s1);
 }
 {% endhighlight %}
+
+Another solution is to BFS/DFS the weighted graph.
 
 [Checking Existence of Edge Length Limited Paths II][checking-existence-of-edge-length-limited-paths-ii]
 
