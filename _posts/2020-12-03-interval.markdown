@@ -555,16 +555,16 @@ public int[] minInterval(int[][] intervals, int[] queries) {
 
     // sorts queries index mapping array
     int n = intervals.length, m = queries.length;
-    Integer[] index = new Integer[m];
+    Integer[] indices = new Integer[m];
     for (int i = 0; i < m; i++) {
-        index[i] = i;
+        indices[i] = i;
     }
-    Arrays.sort(index, Comparator.comparingInt(i -> queries[i]));
+    Arrays.sort(indices, Comparator.comparingInt(i -> queries[i]));
 
     int j = 0;  // index of current interval
     int[] ans = new int[m];
     // scans through queries in order
-    for (int i : index) {
+    for (int i : indices) {
         // enqueues
         while (j < n && intervals[j][0] <= queries[i]) {
             map.put(intervals[j][1] - intervals[j][0] + 1, intervals[j][1]);
@@ -580,6 +580,8 @@ public int[] minInterval(int[][] intervals, int[] queries) {
     return ans;
 }
 {% endhighlight %}
+
+It's a useful trick to sort *offline* queries befre processing them.
 
 [Amount of New Area Painted Each Day][amount-of-new-area-painted-each-day]
 

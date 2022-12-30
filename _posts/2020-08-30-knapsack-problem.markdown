@@ -112,6 +112,47 @@ private int subsetSum(int[] nums, int target) {
 }
 {% endhighlight %}
 
+[Number of Great Partitions][number-of-great-partitions]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+
+public int countPartitions(int[] nums, int k) {
+    long sum = 0, count = 1;
+    long[] dp = new long[k];
+    dp[0] = 1;
+    for (int num : nums) {
+        for (int i = k - 1; i >= num; i--) {
+            dp[i] = (dp[i] + dp[i - num]) % MOD;
+        }
+
+        count = count * 2 % MOD;
+        sum += num;
+    }
+
+    // now count == 2 ^ n is the total number of distinct partitions
+    for (int i = 0; i < k; i++) {
+        // sa = sum(group_a) = i
+        // sb = sum(group_b) = sum - i
+        //
+        // inclusion–exclusion principle
+        // set A: sa < k
+        // set B: sb < k
+        // set A and B (intersection): sa < k && sb < k
+        // set A or B (union): total count
+        //
+        // if only one of the groups has sum < k, say sa = i < k
+        // its inverse pair (sa = sum - i, sb = i) also needs to be deducted from total
+        // so count -= 2 * dp[i]
+        //
+        // if both groups have sum < k, i.e. sa = i < k, sb = sum - i < k
+        // it's the intersection, so count -= dp[i]
+        count -= dp[i] * (sum - i < k ? 1 : 2);
+    }
+    return (int)((count % MOD + MOD) % MOD);
+}
+{% endhighlight %}
+
 [Split Array With Same Average][split-array-with-same-average]
 
 {% highlight java %}
@@ -172,6 +213,8 @@ public int lastStoneWeightII(int[] stones) {
 }
 {% endhighlight %}
 
+## Variants
+
 **Max**
 
 [Maximum Profit From Trading Stocks][maximum-profit-from-trading-stocks]
@@ -187,8 +230,6 @@ public int maximumProfit(int[] present, int[] future, int budget) {
     return dp[budget];
 }
 {% endhighlight %}
-
-## Variants
 
 **Probability**
 
@@ -544,6 +585,7 @@ public int coinChange(int[] coins, int amount) {
 [last-stone-weight-ii]: https://leetcode.com/problems/last-stone-weight-ii/
 [maximum-profit-from-trading-stocks]: https://leetcode.com/problems/maximum-profit-from-trading-stocks/
 [maximize-total-tastiness-of-purchased-fruits]: https://leetcode.com/problems/maximize-total-tastiness-of-purchased-fruits/
+[number-of-great-partitions]: https://leetcode.com/problems/number-of-great-partitions/
 [number-of-ways-to-build-house-of-cards]: https://leetcode.com/problems/number-of-ways-to-build-house-of-cards/
 [ones-and-zeroes]: https://leetcode.com/problems/ones-and-zeroes/
 [partition-equal-subset-sum]: https://leetcode.com/problems/partition-equal-subset-sum/

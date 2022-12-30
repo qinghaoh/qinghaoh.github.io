@@ -497,7 +497,7 @@ e.g. `[1, 3, 4, 0, 2, 5]`, there are 3 cycles:
 5 (-> 5 ...)
 ```
 
-The minimum swaps is \\(\sum_c{(T_c - 1)}\\). In the above example, the value is `2 + 1 + 0 = 3`.
+The minimum swaps is \\(\sum_c{(T_c - 1)}\\), where \\(T_c\\) is the period of cycle \\(c\\). In the above example, the value is `2 + 1 + 0 = 3`.
 
 [Array With Elements Not Equal to Average of Neighbors][array-with-elements-not-equal-to-average-of-neighbors]
 
@@ -737,17 +737,17 @@ public List<Integer> findDuplicates(int[] nums) {
 {% highlight java %}
 public int carFleet(int target, int[] position, int[] speed) {
     int n = position.length;
-    Integer[] index = new Integer[n];
+    Integer[] indices = new Integer[n];
     for (int i = 0; i < n; i++) {
-        index[i] = i;
+        indices[i] = i;
     }
 
-    Arrays.sort(index, Comparator.comparingInt(i -> -position[i]));
+    Arrays.sort(indices, Comparator.comparingInt(i -> -position[i]));
 
     int count = 0;
     // current largest time to reach target (slowest)
     double curr = 0;
-    for (int i : index) {
+    for (int i : indices) {
         double time = (double)(target - position[i]) / speed[i];
         if (time > curr) {
             curr = time;

@@ -483,13 +483,18 @@ Another solution is by disjoint set.
 
 # Bipartite
 
+[Bipartite graph](https://en.wikipedia.org/wiki/Bipartite_graph): a graph whose vertices can be divided into two disjoint and independent sets `U` and `V`, that is every edge connects a vertex in `U` to one in `V`.
+
 [Is Graph Bipartite][is-graph-bipartite]
 
 {% highlight java %}
 public boolean isBipartite(int[][] graph) {
-    int[] colors = new int[graph.length];
-    // checks all unvisited vertex since the graph might be disconnected
-    for (int i = 0; i < graph.length; i++) {
+    int n = graph.length;
+    // color[i] == 0: unvisited
+    // color[i] == 1 or -1: two valid colors
+    int[] colors = new int[n];
+    // checks all unvisited vertices since the graph might be disconnected
+    for (int i = 0; i < n; i++) {
         if (colors[i] == 0 && !dfs(graph, colors, i, 1)) {
             return false;
         }
@@ -497,14 +502,15 @@ public boolean isBipartite(int[][] graph) {
     return true;
 }
 
-private boolean dfs(int[][] graph, int[] colors, int index, int color) {
+private boolean dfs(int[][] graph, int[] colors, int index, int expectedColor) {
+    // checks if the color of the node at the index is expected or not
     if (colors[index] != 0) {
-        return colors[index] == color;
+        return colors[index] == expectedColor;
     }
 
-    colors[index] = color;
+    colors[index] = expectedColor;
     for (int neighbor : graph[index]) {
-        if (!dfs(graph, colors, neighbor, -color)) {
+        if (!dfs(graph, colors, neighbor, -expectedColor)) {
             return false;
         }
     }

@@ -89,6 +89,24 @@ If `n1 * n2 % k == 0`, then `gcd(n1, k) * gcd(n2, k) % k == 0`
 
 $$ {lcm} (a,b)={\frac {|a\cdot b|}{\gcd(a,b)}} $$
 
+[Minimize the Maximum of Two Arrays][minimize-the-maximum-of-two-arrays]
+
+{% highlight java %}
+public int minimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
+    long lcm = lcm(divisor1, divisor2);
+    int low = uniqueCnt1 + uniqueCnt2, high = Integer.MAX_VALUE;
+    while (low < high) {
+        int mid = (low + high) >>> 1;
+        if (mid - mid / divisor1 >= uniqueCnt1 && mid - mid / divisor2 >= uniqueCnt2 && mid - mid / lcm >= uniqueCnt1 + uniqueCnt2) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return low;
+}
+{% endhighlight %}
+
 [Lexicographically Smallest String After Applying Operations][lexicographically-smallest-string-after-applying-operations]
 
 {% highlight java %}
@@ -159,6 +177,7 @@ public int nthMagicalNumber(int n, int a, int b) {
 
 [greatest-common-divisor-of-strings]: https://leetcode.com/problems/greatest-common-divisor-of-strings/
 [lexicographically-smallest-string-after-applying-operations]: https://leetcode.com/problems/lexicographically-smallest-string-after-applying-operations/
+[minimize-the-maximum-of-two-arrays]: https://leetcode.com/problems/minimize-the-maximum-of-two-arrays/
 [nth-magical-number]: https://leetcode.com/problems/nth-magical-number/
 [number-of-different-subsequences-gcds]: https://leetcode.com/problems/number-of-different-subsequences-gcds/
 [x-of-a-kind-in-a-deck-of-cards]: https://leetcode.com/problems/x-of-a-kind-in-a-deck-of-cards/

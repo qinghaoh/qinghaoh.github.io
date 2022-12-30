@@ -78,14 +78,37 @@ private TreeNode dfs(TreeNode node, TreeNode p, TreeNode q) {
 public Node lowestCommonAncestor(Node p, Node q) {
     Node a = p, b = q;
     while (a != b) {
-        a = a == null? q : a.parent;
-        b = b == null? p : b.parent;    
+        a = a == null ? q : a.parent;
+        b = b == null ? p : b.parent;
     }
     return a;
 }
 {% endhighlight %}
 
-[Intersection of Two Linked Lists][intersection-of-two-linked-lists]
+This solution stems from [Intersection of Two Linked Lists][intersection-of-two-linked-lists].
+
+[Cycle Length Queries in a Tree][cycle-length-queries-in-a-tree]
+
+{% highlight java %}
+public int[] cycleLengthQueries(int n, int[][] queries) {
+    int m = queries.length;
+    int[] answer = new int[m];
+    for (int i = 0; i < m; i++) {
+        answer[i]++;
+        // finds lca
+        int a = queries[i][0], b = queries[i][1];
+        while (a != b) {
+            if (a > b) {
+                a /= 2;
+            } else {
+                b /= 2;
+            }
+            answer[i]++;
+        }
+    }
+    return answer;
+}
+{% endhighlight %}
 
 [Find Distance in a Binary Tree][find-distance-in-a-binary-tree]
 
@@ -275,6 +298,7 @@ class TrieNode {
 }
 {% endhighlight %}
 
+[cycle-length-queries-in-a-tree]: https://leetcode.com/problems/cycle-length-queries-in-a-tree/
 [find-distance-in-a-binary-tree]: https://leetcode.com/problems/find-distance-in-a-binary-tree/
 [kth-ancestor-of-a-tree-node]: https://leetcode.com/problems/kth-ancestor-of-a-tree-node/
 [intersection-of-two-linked-lists]: https://leetcode.com/problems/intersection-of-two-linked-lists/

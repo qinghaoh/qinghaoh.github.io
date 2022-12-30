@@ -786,8 +786,8 @@ public int maxDistance(int[] position, int m) {
  * @return true if number of balls can be places into baskets is no less than m, otherwise false
  */
 private boolean condition(int[] position, int d, int m) {
-    // Always place first object at position[0]
-    // This ensures we can place the most balls
+    // always place first object at position[0]
+    // this ensures we can place the most balls
     int count = 1, curr = position[0];
     for (int i = 1; i < position.length; i++) {
         if (position[i] - curr >= d) {
