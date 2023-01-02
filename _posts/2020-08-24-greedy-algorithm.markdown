@@ -3,6 +3,26 @@ layout: post
 title:  "Greedy Algorithm"
 tags: greedy
 ---
+
+[Frog Jump II][frog-jump-ii]
+
+{% highlight java %}
+public int maxJump(int[] stones) {
+    // it's optimal to use of all rocks
+    // it's not optimal to use two consecutive rocks
+    // because on the way back, stones[i + 2] - stones[i] > stones[i + 1] - stones[i]
+    int cost = stones[1] - stones[0], n = stones.length;
+    for (int i = 2; i < n; i++) {
+        cost = Math.max(cost, stones[i] - stones[i - 2]);
+    }
+    return cost;
+}
+{% endhighlight %}
+
+[Partition String Into Substrings With Values at Most K][partition-string-into-substrings-with-values-at-most-k]
+
+[Proof](https://leetcode.com/problems/partition-string-into-substrings-with-values-at-most-k/solutions/2982196/proof-of-correctness-of-greedy-algorithm/?orderBy=most_votes)
+
 [Flower Planting With No Adjacent][flower-planting-with-no-adjacent]
 
 No node has more than 3 neighbors, so there's always one possible color to pick.
@@ -509,6 +529,7 @@ private int helper(int[] nums, int sign) {
 [broken-calculator]: https://leetcode.com/problems/broken-calculator/
 [earliest-possible-day-of-full-bloom]: https://leetcode.com/problems/earliest-possible-day-of-full-bloom/
 [flower-planting-with-no-adjacent]: https://leetcode.com/problems/flower-planting-with-no-adjacent/
+[frog-jump-ii]: https://leetcode.com/problems/frog-jump-ii/
 [hand-of-straights]: https://leetcode.com/problems/hand-of-straights/
 [jump-game]: https://leetcode.com/problems/jump-game/
 [make-array-non-decreasing-or-non-increasing]: https://leetcode.com/problems/make-array-non-decreasing-or-non-increasing/
@@ -520,6 +541,7 @@ private int helper(int[] nums, int sign) {
 [minimum-initial-energy-to-finish-tasks]: https://leetcode.com/problems/minimum-initial-energy-to-finish-tasks/
 [minimum-number-of-days-to-eat-n-oranges]: https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/
 [minimum-number-of-people-to-teach]: https://leetcode.com/problems/minimum-number-of-people-to-teach/
+[partition-string-into-substrings-with-values-at-most-k]: https://leetcode.com/problems/partition-string-into-substrings-with-values-at-most-k/
 [put-boxes-into-the-warehouse-i]: https://leetcode.com/problems/put-boxes-into-the-warehouse-i/
 [split-array-into-consecutive-subsequences]: https://leetcode.com/problems/split-array-into-consecutive-subsequences/
 [strong-password-checker]: https://leetcode.com/problems/strong-password-checker/

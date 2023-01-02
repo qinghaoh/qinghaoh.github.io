@@ -485,6 +485,8 @@ Another solution is by disjoint set.
 
 [Bipartite graph](https://en.wikipedia.org/wiki/Bipartite_graph): a graph whose vertices can be divided into two disjoint and independent sets `U` and `V`, that is every edge connects a vertex in `U` to one in `V`.
 
+A graph is bipartite if and only if it does not contain an odd cycle.
+
 [Is Graph Bipartite][is-graph-bipartite]
 
 {% highlight java %}
@@ -515,6 +517,96 @@ private boolean dfs(int[][] graph, int[] colors, int index, int expectedColor) {
         }
     }
     return true;
+}
+{% endhighlight %}
+
+[Divide Nodes Into the Maximum Number of Groups][divide-nodes-into-the-maximum-number-of-groups]
+
+{% highlight java %}
+public int magnificentSets(int n, int[][] edges) {
+    List<Integer>[] graph = new List[n + 1];
+    for (int i = 1; i <= n; i++) {
+        graph[i] = new ArrayList<>();
+    }
+
+    for (int[] e : edges) {
+        graph[e[0]].add(e[1]);
+        graph[e[1]].add(e[0]);
+    }
+
+    // computes the shortest path between all pairs of nodes
+    int[][] dist = new int[n + 1][n + 1];
+    for (int i = 1; i <= n; i++) {
+        dist[i] = bfs(n, graph, i);
+    }
+
+    int[] colors = new int[n + 1];
+    // nodes in each component are connected
+    int[] components = new int[n + 1];
+    int componentId = 0, groups = 0;
+    for (int i = 1; i <= n; i++) {
+        if (colors[i] == 0) {
+            // the graph must be bipartite
+            // 785. Is Graph Bipartite?
+            if (!dfs(graph, colors, i, 1, components, ++componentId)) {
+                return -1;
+            }
+
+            // finds the max shortest path in the current component
+            int max = 0;
+            for (int j = 1; j <= n; j++) {
+                for (int k = 1; k <= n; k++) {
+                    if (components[j] == componentId && components[k] == componentId) {
+                        max = Math.max(max, dist[j][k]);
+                    }
+                }
+            }
+            groups += max;
+        }
+    }
+    return groups;
+}
+
+private boolean dfs(List<Integer>[] graph, int[] colors, int index, int expectedColor, int[] components, int componentId) {
+    // checks if the color of the node at the index is expected or not
+    if (colors[index] != 0) {
+        return colors[index] == expectedColor;
+    }
+
+    colors[index] = expectedColor;
+    components[index] = componentId;
+    for (int neighbor : graph[index]) {
+        if (!dfs(graph, colors, neighbor, -expectedColor, components, componentId)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+private int[] bfs(int n, List<Integer>[] graph, int src) {
+    // dist[i]: distance from src to vertex i
+    int[] dist = new int[n + 1];
+
+    Queue<Integer> q = new LinkedList<>();
+    Set<Integer> visited = new HashSet<>();
+    int curr = src, d = 1;
+    dist[curr] = d++;
+    q.offer(curr);
+    visited.add(curr);
+
+    while (!q.isEmpty()) {
+        for (int i = q.size(); i > 0; i--) {
+            curr = q.poll();
+            for (int neighbor : graph[curr]) {
+                if (visited.add(neighbor)) {
+                    q.offer(neighbor);
+                    dist[neighbor] = d;
+                }
+            }
+        }
+        d++;
+    }
+    return dist;
 }
 {% endhighlight %}
 
@@ -753,6 +845,7 @@ public List<Integer> mostSimilar(int n, int[][] roads, String[] names, String[] 
 {% endhighlight %}
 
 [critical-connections-in-a-network]: https://leetcode.com/problems/critical-connections-in-a-network/
+[divide-nodes-into-the-maximum-number-of-groups]: https://leetcode.com/problems/divide-nodes-into-the-maximum-number-of-groups/
 [evaluate-division]: https://leetcode.com/problems/evaluate-division/
 [find-the-celebrity]: https://leetcode.com/problems/find-the-celebrity/
 [find-the-shortest-superstring]: https://leetcode.com/problems/find-the-shortest-superstring/

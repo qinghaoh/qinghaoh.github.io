@@ -69,7 +69,7 @@ A common implementation with simple priority queue is as below:
  */
 public void dijkstra(int n, List<int[]>[] graph, int src) {
     // dist[i]: distance from src to vertex i
-    // initializes all elements in the array to 0
+    // initializes all elements in the array to inf
     int[] dist = new int[n];
     Arrays.fill(dist, Integer.MAX_VALUE);
 

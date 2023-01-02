@@ -561,6 +561,52 @@ public boolean canTransform(String start, String end) {
 }
 {% endhighlight %}
 
+[Minimum Total Cost to Make Arrays Unequal][minimum-total-cost-to-make-arrays-unequal]
+
+{% highlight java %}
+public long minimumTotalCost(int[] nums1, int[] nums2) {
+    int n = nums1.length;
+    long cost = 0;
+    int[] freqs = new int[n + 1];
+    int maxFreq = 0, maxFreqVal = 0, toDisplace = 0;
+
+    // index 0 is used as a "distribution center" to displace other elements
+    // e.g. [3, *, *, 1, *, 2]
+    //  swap #1: [1, *, *, 3, *, 2], cost += 0 + 2 = 2
+    //  swap #2: [2, *, *, 1, *, 3], cost += 0 + 5 = 5
+    //  notices 2 and 3 are not mutually swapped.
+    //  instead, neither of them are in its original position, and that's all we need
+    for (int i = 0; i < n; i++) {
+        // considers indices with equal values only
+        if (nums1[i] == nums2[i]) {
+            if (++freqs[nums1[i]] > maxFreq) {
+                maxFreqVal = nums1[i];
+            }
+            maxFreq = Math.max(maxFreq, freqs[nums1[i]]);
+            toDisplace++;
+            cost += i;
+        }
+    }
+
+    // if majority element exists, we can't move all to-displace elements to a position with different value
+    // e.g. [3, 3, 3, 1], 3 is a majority element
+    //  all permutations are
+    //  [1, 3, 3, 3]
+    //  [3, 1, 3, 3]
+    //  [3, 3, 1, 3]
+    //  in any case, there exists a position of value 3 whose original value was also 3
+    // therefore, we need additional distribution centers to make the element not majority anymore
+    // and we start from lowest index to minimize cost
+    for (int i = 0; i < n; i++) {
+        if (maxFreq > toDisplace / 2 && nums1[i] != nums2[i] && nums1[i] != maxFreqVal && nums2[i] != maxFreqVal) {
+            toDisplace++;
+            cost += i;
+        }
+    }
+    return maxFreq > toDisplace / 2 ? -1 : cost;
+}
+{% endhighlight %}
+
 ## Cyclic Swapping
 
 [Couples Holding Hands][couples-holding-hands]
@@ -819,6 +865,7 @@ public long largestEvenSum(int[] nums, int k) {
 [minimum-number-of-flips-to-make-the-binary-string-alternating]: https://leetcode.com/problems/minimum-number-of-flips-to-make-the-binary-string-alternating/
 [minimum-number-of-operations-to-reinitialize-a-permutation]: https://leetcode.com/problems/minimum-number-of-operations-to-reinitialize-a-permutation/
 [minimum-number-of-operations-to-sort-a-binary-tree-by-level]: https://leetcode.com/problems/minimum-number-of-operations-to-sort-a-binary-tree-by-level/
+[minimum-total-cost-to-make-arrays-unequal]: https://leetcode.com/problems/minimum-total-cost-to-make-arrays-unequal/
 [patching-array]: https://leetcode.com/problems/patching-array/
 [removing-minimum-number-of-magic-beans]: https://leetcode.com/problems/removing-minimum-number-of-magic-beans/
 [reverse-words-in-a-string-ii]: https://leetcode.com/problems/reverse-words-in-a-string-ii/
