@@ -759,47 +759,6 @@ private boolean condition(String s, String p, int[] removable, int k) {
 }
 {% endhighlight %}
 
-[Magnetic Force Between Two Balls][magnetic-force-between-two-balls]
-
-{% highlight java %}
-public int maxDistance(int[] position, int m) {
-    Arrays.sort(position);
-
-    int low = 0, high = position[position.length - 1] - position[0];
-    while (low < high) {
-        int mid = low + (high - low + 1) / 2;
-        if (condition(position, mid, m)) {
-            low = mid;
-        } else {
-            high = mid - 1;
-        }
-    }
-
-    return low;
-}
-
-/**
- * Counts the max number of balls can be placed into baskets with the given minimum distance.
- * This function is monotonically decreasing with respect to d.
- * @param position basket postitions
- * @param d minimum distance between any two balls
- * @return true if number of balls can be places into baskets is no less than m, otherwise false
- */
-private boolean condition(int[] position, int d, int m) {
-    // always place first object at position[0]
-    // this ensures we can place the most balls
-    int count = 1, curr = position[0];
-    for (int i = 1; i < position.length; i++) {
-        if (position[i] - curr >= d) {
-            count++;
-            curr = position[i];
-        }
-    }
-
-    return count >= m;
-}
-{% endhighlight %}
-
 [Divide Chocolate][divide-chocolate]
 
 {% highlight java %}
@@ -1295,6 +1254,100 @@ for (int i = 0; i < n - 1; i++) {
 return count;
 {% endhighlight %}
 
+# Indirect Condition
+
+[Magnetic Force Between Two Balls][magnetic-force-between-two-balls]
+
+{% highlight java %}
+public int maxDistance(int[] position, int m) {
+    Arrays.sort(position);
+
+    int low = 0, high = position[position.length - 1] - position[0];
+    while (low < high) {
+        int mid = (low + high + 1) >>> 1;
+        if (condition(position, mid, m)) {
+            low = mid;
+        } else {
+            high = mid - 1;
+        }
+    }
+
+    return low;
+}
+
+/**
+ * Counts the max number of balls can be placed into baskets with the given minimum distance.
+ * This function is monotonically decreasing with respect to d.
+ * @param position basket postitions
+ * @param d minimum distance between any two balls
+ * @return true if number of balls can be places into baskets is no less than m, otherwise false
+ */
+private boolean condition(int[] position, int d, int m) {
+    // always places the first ball at position[0]
+    // this ensures we can place the most balls
+    int count = 1, curr = position[0];
+    for (int i = 1; i < position.length; i++) {
+        if (position[i] - curr >= d) {
+            count++;
+            curr = position[i];
+        }
+    }
+
+    return count >= m;
+}
+{% endhighlight %}
+
+[Maximize the Minimum Powered City][maximize-the-minimum-powered-city]
+
+{% highlight java %}
+public long maxPower(int[] stations, int r, int k) {
+    long low = 0, high = Arrays.stream(stations).asLongStream().sum() + k;
+    System.out.println(high);
+    while (low < high) {
+        long mid = (low + high + 1) >>> 1;
+        System.out.println(mid);
+        if (condition(stations, r, k, mid)) {
+            low = mid;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return low;
+}
+
+private boolean condition(int[] stations, int r, int k, long m) {
+    // sum of powers in the sliding window [i - r, i + r]
+    // i.e. power of the i-th city
+    long power = Arrays.stream(stations).asLongStream().limit(r).sum();
+    int n = stations.length;
+    int[] additions = new int[n];
+    for (int i = 0; i < n; i++) {
+        if (i + r < n) {
+            power += stations[i + r];
+        }
+
+        if (power < m) {
+            // required stations to make current center city have at least m power
+            long delta = m - power;
+            if (delta > k) {
+                return false;
+            }
+            // builds the additional stations on the right end of the window
+            // to cover as many cities as possible
+            additions[Math.min(i + r, n - 1)] += delta;
+            power = m;
+            k -= delta;
+        }
+
+        // out of window
+        if (i - r >= 0) {
+            power -= stations[i - r] + additions[i - r];
+        }
+    }
+    return true;
+}
+{% endhighlight %}
+
 [binary-search]: https://leetcode.com/problems/binary-search/
 [count-good-triplets-in-an-array]: https://leetcode.com/problems/count-good-triplets-in-an-array/
 [count-of-smaller-numbers-after-self]: https://leetcode.com/problems/count-of-smaller-numbers-after-self/
@@ -1313,6 +1366,7 @@ return count;
 [k-th-smallest-prime-fraction]: https://leetcode.com/problems/k-th-smallest-prime-fraction/
 [last-day-where-you-can-still-cross]: https://leetcode.com/problems/last-day-where-you-can-still-cross/
 [magnetic-force-between-two-balls]: https://leetcode.com/problems/magnetic-force-between-two-balls/
+[maximize-the-minimum-powered-city]: https://leetcode.com/problems/maximize-the-minimum-powered-city/
 [maximum-average-subarray-ii]: https://leetcode.com/problems/maximum-average-subarray-ii/
 [maximum-font-to-fit-a-sentence-in-a-screen]: https://leetcode.com/problems/maximum-font-to-fit-a-sentence-in-a-screen/
 [maximum-number-of-removable-characters]: https://leetcode.com/problems/maximum-number-of-removable-characters/

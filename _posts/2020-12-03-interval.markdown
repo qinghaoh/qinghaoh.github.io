@@ -398,10 +398,6 @@ public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
 
 {% highlight java %}
 public int findMinArrowShots(int[][] points) {
-    if (points.length == 0) {
-        return 0;
-    }
-
     // sorts points by end coordinate
     Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
 

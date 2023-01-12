@@ -8,7 +8,7 @@ usemathjax: true
 
 Line sweep is an algorithm to solve problems like [The Skyline Problem][the-skyline-problem]. The key idea is to keep track of every change (delta) at each position, then linear scan and process the positions in the line. This delta is very similar to the pulses in [Discrete Time](https://en.wikipedia.org/wiki/Discrete_time_and_continuous_time#Discrete_time) Signal Processing.
 
-There are two basic forms of algorithm. The first form is to use a list to record the deltas of all position, then sort the list with regard to positions. For each position, there can be more than one list element, and we consolidate them during linear scan. For example:
+There are two basic forms of algorithm. The first form is to use a list to record the deltas of all position, then sort the list with regard to positions. For each position, there can be more than one list element, and we consolidate them with another linear scan. For example:
  
 [Average Height of Buildings in Each Segment][average-height-of-buildings-in-each-segment]
 

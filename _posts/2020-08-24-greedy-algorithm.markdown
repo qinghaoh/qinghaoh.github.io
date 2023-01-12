@@ -21,8 +21,6 @@ public int maxJump(int[] stones) {
 
 [Partition String Into Substrings With Values at Most K][partition-string-into-substrings-with-values-at-most-k]
 
-[Proof](https://leetcode.com/problems/partition-string-into-substrings-with-values-at-most-k/solutions/2982196/proof-of-correctness-of-greedy-algorithm/?orderBy=most_votes)
-
 [Flower Planting With No Adjacent][flower-planting-with-no-adjacent]
 
 No node has more than 3 neighbors, so there's always one possible color to pick.
