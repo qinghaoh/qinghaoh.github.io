@@ -194,6 +194,16 @@ public boolean isRectangleCover(int[][] rectangles) {
 }
 {% endhighlight %}
 
+# Comparator
+
+There are a few ways of using comparator as lamdba expression:
+
+{% highlight java %}
+Arrays.sort(pairs, (a, b) -> a[1] - b[1]);
+Arrays.sort(pairs, (a, b) -> Integer.compare(a[1], b[1]));
+Arrays.sort(pairs, Comparator.comparingInt(a -> a[1]);
+{% endhighlight %}
+
 [for]: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html
 [perfect-rectangle]: https://leetcode.com/problems/perfect-rectangle/
 [queue]: https://docs.oracle.com/javase/8/docs/api/java/util/Queue.html

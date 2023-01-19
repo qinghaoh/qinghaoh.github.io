@@ -363,6 +363,28 @@ private boolean condition(int[] nums, int distance, int k) {
 }
 {% endhighlight %}
 
+[Count the Number of Good Subarrays][count-the-number-of-good-subarrays]
+
+{% highlight java %}
+public long countGood(int[] nums, int k) {
+    long count = 0;
+    int i = 0, j = 0;
+    Map<Integer, Integer> freqs = new HashMap<>();
+    while (j < nums.length) {
+        k -= freqs.getOrDefault(nums[j], 0);
+        freqs.put(nums[j], freqs.getOrDefault(nums[j], 0) + 1);
+        j++;
+
+        while (k <= 0) {
+            freqs.put(nums[i], freqs.get(nums[i]) - 1);
+            k += freqs.get(nums[i++]);
+        }
+        count += i;
+    }
+    return count;
+}
+{% endhighlight %}
+
 ## Monotonically Decreasing Function
 
 \\(v = f(s, m)\\) is a monotonically decreasing function of \\(m\\), and \\(\min(v)\\) is constrained, e.g. "sum is **greater than or equal to** target".
@@ -1206,6 +1228,7 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 
 [count-number-of-nice-subarrays]: https://leetcode.com/problems/count-number-of-nice-subarrays/
 [count-subarrays-with-score-less-than-k]: https://leetcode.com/problems/count-subarrays-with-score-less-than-k/
+[count-the-number-of-good-subarrays]: https://leetcode.com/problems/count-the-number-of-good-subarrays/
 [count-vowel-substrings-of-a-string]: https://leetcode.com/problems/count-vowel-substrings-of-a-string/
 [delivering-boxes-from-storage-to-ports]: https://leetcode.com/problems/delivering-boxes-from-storage-to-ports/
 [find-all-anagrams-in-a-string]: https://leetcode.com/problems/find-all-anagrams-in-a-string/

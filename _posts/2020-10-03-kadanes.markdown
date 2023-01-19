@@ -23,6 +23,29 @@ public int maxSubArray(int[] nums) {
 
 This can be viewed as a simple/trivial example of dynamic programming.
 
+Similarly, we can apply the same method to find min subarrays:
+
+[Maximum Sum Circular Subarray][maximum-sum-circular-subarray]
+
+{% highlight java %}
+public int maxSubarraySumCircular(int[] nums) {
+    int sum = 0, maxSum = nums[0], minSum = nums[0], currMax = 0, currMin = 0;
+    for (int num : nums) {
+        currMax = Math.max(currMax + num, num);
+        maxSum = Math.max(maxSum, currMax);
+        currMin = Math.min(currMin + num, num);
+        minSum = Math.min(minSum, currMin);
+        sum += num;
+    }
+
+    // corner case: if all numbers are negative,
+    // maxSum == max(nums) and minSum = sum(nums), max(maxSum, total - minSum) == 0
+    // i.e. empty subarray.
+    // we need to return max(nums) instead
+    return maxSum > 0 ? Math.max(maxSum, sum - minSum) : maxSum;
+}
+{% endhighlight %}
+
 [Maximum Score Of Spliced Array][maximum-score-of-spliced-array]
 
 {% highlight java %}
@@ -316,6 +339,7 @@ public int maxSatisfaction(int[] satisfaction) {
 [maximum-subarray]: https://leetcode.com/problems/maximum-subarray/
 [maximum-subarray-sum-after-one-operation]: https://leetcode.com/problems/maximum-subarray-sum-after-one-operation/
 [maximum-subarray-sum-with-one-deletion]: https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/
+[maximum-sum-circular-subarray]: https://leetcode.com/problems/maximum-sum-circular-subarray/
 [number-of-subarrays-with-bounded-maximum]: https://leetcode.com/problems/number-of-subarrays-with-bounded-maximum/
 [reducing-dishes]: https://leetcode.com/problems/reducing-dishes/
 [substring-with-largest-variance]: https://leetcode.com/problems/substring-with-largest-variance/

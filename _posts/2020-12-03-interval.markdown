@@ -3,6 +3,34 @@ layout: post
 title:  "Interval"
 ---
 
+[Insert Interval][insert-interval]
+
+{% highlight java %}
+public int[][] insert(int[][] intervals, int[] newInterval) {
+    int n = intervals.length;
+    List<int[]> list = new LinkedList<>();
+    int i = 0;
+    while (i < n && intervals[i][1] < newInterval[0]) {
+        list.add(intervals[i++]);
+    }
+
+    // merges overlapping intervals
+    int start = newInterval[0], end = newInterval[1];
+    while (i < n && intervals[i][0] <= end) {
+        start = Math.min(start, intervals[i][0]);
+        end = Math.max(end, intervals[i][1]);
+        i++;
+    }
+    list.add(new int[]{start, end});
+
+    while (i < n) {
+        list.add(intervals[i++]);
+    }
+
+    return list.toArray(new int[list.size()][]);
+}
+{% endhighlight %}
+
 # TreeMap
 
 [Falling Squares][falling-squares]
@@ -139,47 +167,47 @@ public int minTaps(int n, int[] ranges) {
 [Video Stitching][video-stitching]
 
 {% highlight java %}
-public int videoStitching(int[][] clips, int T) {
+public int videoStitching(int[][] clips, int time) {
     Arrays.sort(clips, (a, b) -> a[0] - b[0]);
 
-    int i = 0, start = 0, end = 0, result = 0;
-    while (start < T) {
-        while (i < clips.length && clips[i][0] <= start) {
-            end = Math.max(end, clips[i++][1]);
+    // prev: [0, prev] are covered by previous levels
+    // curr: reach by intervals in this level
+    int index = 0, prev = 0, curr = 0, res = 0;
+    while (prev < time) {
+        while (index < clips.length && clips[index][0] <= prev) {
+            curr = Math.max(curr, clips[index++][1]);
         }
 
-        if (start == end) {
+        // this level didn't move forward
+        if (prev == curr) {
             return -1;
         }
 
-        start = end;
-        result++;
+        prev = curr;
+        res++;
     }
 
-    return result;
+    return res;
+}
+{% endhighlight %}
+
+{% highlight java %}
+public int videoStitching(int[][] clips, int time) {
+    int[] nums = new int[time + 1];
+    for (int[] clip : clips) {
+        if (clip[0] <= time) {
+            nums[clip[0]] = Math.max(nums[clip[0]], clip[1] - clip[0]);
+        }
+    }
+    return jump(nums);
+}
+
+// 45. Jump Game II
+private int jump(int[] nums) {
 }
 {% endhighlight %}
 
 # Greedy
-
-[Maximum Length of Pair Chain][maximum-length-of-pair-chain]
-
-{% highlight java %}
-public int findLongestChain(int[][] pairs) {
-    Arrays.sort(pairs, (a, b) -> a[1] - b[1]);
-
-    int tail = Integer.MIN_VALUE, max = 0;
-    for (int[] p: pairs) {
-        if (tail < p[0]) {
-            tail = p[1];
-            max++;
-        }
-    }
-    return max;
-}
-{% endhighlight %}
-
-Another solution is LIS DIP.
 
 [Divide Intervals Into Minimum Number of Groups][divide-intervals-into-minimum-number-of-groups]
 
@@ -203,7 +231,7 @@ public int minGroups(int[][] intervals) {
 
 ## Interval Scheduling Maximization Problem (ISMP)
 
-[ISMP](https://en.wikipedia.org/wiki/Interval_scheduling#Interval_Scheduling_Maximization): to find a largest compatible set - a set of non-overlapping intervals of maximum size. The goal here is to execute as many tasks as possible.
+[ISMP](https://en.wikipedia.org/wiki/Interval_scheduling#Interval_Scheduling_Maximization): find a largest compatible set - a set of non-overlapping intervals of maximum size. The goal here is to execute as many tasks as possible.
 
 ### Unweighted
 
@@ -211,12 +239,11 @@ public int minGroups(int[][] intervals) {
 
 {% highlight java %}
 public int eraseOverlapIntervals(int[][] intervals) {
-    if (intervals.length == 0) {
-        return 0;
-    }
-
+    // earliest deadline first (EDF) scheduling
+    // greedy
     Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
 
+    // count is the number of non-overlapping intervals
     int end = intervals[0][1], count = 1;
     for (int[] i : intervals) {
         if (i[0] >= end) {
@@ -710,26 +737,6 @@ public int videoStitching(int[][] clips, int T) {
 }
 {% endhighlight %}
 
-# BFS
-
-[Video Stitching][video-stitching]
-
-{% highlight java %}
-public int videoStitching(int[][] clips, int T) {
-    int[] nums = new int[T + 1];
-    for (int[] clip : clips) {
-        if (clip[0] <= T) {
-            nums[clip[0]] = Math.max(nums[clip[0]], clip[1] - clip[0]);
-        }
-    }
-    return jump(nums);
-}
-
-// 45. Jump Game II
-private int jump(int[] nums) {
-}
-{% endhighlight %}
-
 # Intersection
 
 [Meeting Scheduler][meeting-scheduler]
@@ -1002,9 +1009,9 @@ class Interval implements Comparable<Interval> {
 [divide-intervals-into-minimum-number-of-groups]: https://leetcode.com/problems/divide-intervals-into-minimum-number-of-groups/
 [exam-room]: https://leetcode.com/problems/exam-room/
 [falling-squares]: https://leetcode.com/problems/falling-squares/
+[insert-interval]: https://leetcode.com/problems/insert-interval/
 [interval-list-intersections]: https://leetcode.com/problems/interval-list-intersections/
 [maximum-distance-in-arrays]: https://leetcode.com/problems/maximum-distance-in-arrays/
-[maximum-length-of-pair-chain]: https://leetcode.com/problems/maximum-length-of-pair-chain/
 [maximum-number-of-eaten-apples]: https://leetcode.com/problems/maximum-number-of-eaten-apples/
 [maximum-number-of-events-that-can-be-attended]: https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/
 [maximum-number-of-events-that-can-be-attended-ii]: https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended-ii/
