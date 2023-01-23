@@ -115,25 +115,6 @@ class CountIntervals {
 }
 {% endhighlight %}
 
-[Check if All the Integers in a Range Are Covered][check-if-all-the-integers-in-a-range-are-covered]
-
-{% highlight java %}
-public boolean isCovered(int[][] ranges, int left, int right) {
-    Arrays.sort(ranges, Comparator.comparingInt(r -> r[0]));
-
-    for (int[] r : ranges) {
-        if (left >= r[0] && left <= r[1]) {
-            // [left, r[1]] is covered
-            left = r[1] + 1;
-
-            // now left is the first integer that's uncovered
-        }
-    }
-
-    return left > right;
-}
-{% endhighlight %}
-
 # BFS
 
 [Minimum Number of Taps to Open to Water a Garden][minimum-number-of-taps-to-open-to-water-a-garden]
@@ -191,6 +172,8 @@ public int videoStitching(int[][] clips, int time) {
 }
 {% endhighlight %}
 
+We can also bucket sort the input array to improve time complexity:
+
 {% highlight java %}
 public int videoStitching(int[][] clips, int time) {
     int[] nums = new int[time + 1];
@@ -207,7 +190,26 @@ private int jump(int[] nums) {
 }
 {% endhighlight %}
 
-# Greedy
+# Interval Covering
+
+[Check if All the Integers in a Range Are Covered][check-if-all-the-integers-in-a-range-are-covered]
+
+{% highlight java %}
+public boolean isCovered(int[][] ranges, int left, int right) {
+    Arrays.sort(ranges, Comparator.comparingInt(r -> r[0]));
+
+    for (int[] r : ranges) {
+        if (left >= r[0] && left <= r[1]) {
+            // [left, r[1]] is covered
+            left = r[1] + 1;
+
+            // now left is the first integer that's uncovered
+        }
+    }
+
+    return left > right;
+}
+{% endhighlight %}
 
 [Divide Intervals Into Minimum Number of Groups][divide-intervals-into-minimum-number-of-groups]
 
@@ -215,12 +217,16 @@ private int jump(int[] nums) {
 public int minGroups(int[][] intervals) {
     Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
 
-    // equivalent to the max number of intervals that overlap at some point
+    // stores the end of each group
     Queue<Integer> pq = new PriorityQueue<>();
     for (int[] i : intervals) {
         if (!pq.isEmpty() && pq.peek() < i[0]) {
+            // the current interval doesn't overlap the top group
+            // updates the end of the group
             pq.poll();
         }
+
+	// else, adds the current interval to represent a new group
         pq.offer(i[1]);
     }
     return pq.size();
@@ -317,7 +323,7 @@ public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
         indices[i] = i;
     }
 
-    // sorts index by end time
+    // sorts indices by end time
     Arrays.sort(indices, Comparator.comparingInt(i -> endTime[i]));
 
     // end time : max profit
@@ -334,7 +340,7 @@ public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
         if (curr > dp.lastEntry().getValue()) {
             // puts the job and its profit into the map
             // only if curr max profit is more than last time
-            // it guarantees the map value increases as endTime (keys) increases
+            // it guarantees the map value increases as endTime (map key) increases
             dp.put(endTime[i], curr);
         }
 
@@ -697,43 +703,22 @@ public int intersectionSizeTwo(int[][] intervals) {
 [Video Stitching][video-stitching]
 
 {% highlight java %}
-private int MAX_LENGTH = 100;
+private int MAX_NUM_CLIPS = 100;
 
-public int videoStitching(int[][] clips, int T) {
+public int videoStitching(int[][] clips, int time) {
     Arrays.sort(clips, (a, b) -> a[0] - b[0]);
 
-    int[] dp = new int[MAX_LENGTH + 1];
-    Arrays.fill(dp, MAX_LENGTH + 1);
+    int[] dp = new int[time + 1];
+    Arrays.fill(dp, MAX_NUM_CLIPS + 1);
     dp[0] = 0;
 
     for (int[] c : clips) {
-        for (int i = c[0] + 1; i <= c[1]; i++) {
+        for (int i = c[0] + 1; i <= Math.min(time, c[1]); i++) {
             dp[i] = Math.min(dp[i], dp[c[0]] + 1);
         }
     }
 
-    return dp[T] == MAX_LENGTH + 1 ? -1 : dp[T];
-}
-{% endhighlight %}
-
-{% highlight java %}
-public int videoStitching(int[][] clips, int T) {
-    int[] dp = new int[T + 1];
-    Arrays.fill(dp, T + 1);
-    dp[0] = 0;
-
-    // If dp[i - 1] >= T, we need at least T clips to cover the time (i - 1)
-    // then to cover time i, we need at least T + 1 clips
-    // The minimum length of each clip is 1, so it contradicts pigeonhole principle
-    for (int i = 1; i <= T && dp[i - 1] < T; i++) {
-        for (int[] c : clips) {
-            if (c[0] <= i && i <= c[1]) {
-                dp[i] = Math.min(dp[i], dp[c[0]] + 1);
-            }
-        }
-    }
-
-    return dp[T] == T + 1 ? -1 : dp[T];
+    return dp[time] == MAX_NUM_CLIPS + 1 ? -1 : dp[time];
 }
 {% endhighlight %}
 

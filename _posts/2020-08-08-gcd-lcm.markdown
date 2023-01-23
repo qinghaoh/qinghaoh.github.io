@@ -19,9 +19,7 @@ public int gcd(int a, int b) {
 }
 {% endhighlight %}
 
-[Bézout's identity](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity)
-
-Let $$ a $$ and $$ b $$ be integers with greatest common divisor $$ d $$. Then, there exist integers $$ x $$ and $$ y $$ such that $$ ax + by = d $$. More generally, the integers of the form $$ ax + by $$ are exactly the multiples of $$ d $$.
+## Variants
 
 [Greatest Common Divisor of Strings][greatest-common-divisor-of-strings]
 
@@ -84,6 +82,22 @@ public int countDifferentSubsequenceGCDs(int[] nums) {
 ## Properties
 
 If `n1 * n2 % k == 0`, then `gcd(n1, k) * gcd(n2, k) % k == 0`
+
+[Bézout's identity](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity)
+
+Let $$ a $$ and $$ b $$ be integers with greatest common divisor $$ d $$. Then, there exist integers $$ x $$ and $$ y $$ such that $$ ax + by = d $$. More generally, the integers of the form $$ ax + by $$ are exactly the multiples of $$ d $$.
+
+[Check if Point Is Reachable][check-if-point-is-reachable]
+
+{% highlight java %}
+public boolean isReachable(int targetX, int targetY) {
+    // - first two options: gcd(x, y) remains the same (Bezout's identity)
+    // - last two options: gcd(x, y) either remains the same or gets doubled
+    //
+    // gcd(1, 1) == 1, so the target is reachable iff gcd is a power of 2
+    return Integer.bitCount(gcd(targetX, targetY)) == 1;
+}
+{% endhighlight %}
 
 # Least Common Multiple
 
@@ -175,6 +189,7 @@ public int nthMagicalNumber(int n, int a, int b) {
 }
 {% endhighlight %}
 
+[check-if-point-is-reachable]: https://leetcode.com/problems/check-if-point-is-reachable/
 [greatest-common-divisor-of-strings]: https://leetcode.com/problems/greatest-common-divisor-of-strings/
 [lexicographically-smallest-string-after-applying-operations]: https://leetcode.com/problems/lexicographically-smallest-string-after-applying-operations/
 [minimize-the-maximum-of-two-arrays]: https://leetcode.com/problems/minimize-the-maximum-of-two-arrays/
