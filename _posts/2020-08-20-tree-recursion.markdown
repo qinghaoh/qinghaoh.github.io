@@ -455,6 +455,52 @@ private int[] dfs(TreeNode node) {
 }
 {% endhighlight %}
 
+[Difference Between Maximum and Minimum Price Sum][difference-between-maximum-and-minimum-price-sum]
+
+{% highlight java %}
+private long maxCost;
+
+public long maxOutput(int n, int[][] edges, int[] price) {
+    List<Integer>[] tree = new List[n];
+    for (int i = 0; i < n; i++) {
+        tree[i] = new ArrayList<>();
+    }
+    for (int[] e : edges) {
+        tree[e[0]].add(e[1]);
+        tree[e[1]].add(e[0]);
+    }
+
+    // roots the tree at node 0
+    dfs(tree, 0, -1, price);
+
+    // min price sum is always the node itself
+    // so for a particular node as root, its cost is the max of its child paths (excluding itself)
+    // also, to maximize the cost, the root node must be a leaf node of the tree (degree == 1)
+    return maxCost;
+}
+
+private long[] dfs(List<Integer>[] tree, int node, int parent, int[] price) {
+    // postorder
+    // curr[0]: max path sum from `node` to a leaf node
+    // curr[1]: max path sum from `node` to the parent of a leaf node
+    long[] curr = {price[node], 0};
+    for (int child : tree[node]) {
+        if (child != parent) {
+            long[] next = dfs(tree, child, node, price);
+            // to exclude the leaf node, there are two options:
+            // curr[0] + next[1]: max sum among all previous child paths from `node` + `child` path without a leaf
+            // curr[1] + next[0]: max sum among all previous child paths from `node` excluding leaves + `child` path with a leaf
+            maxCost = Math.max(maxCost, Math.max(curr[0] + next[1], curr[1] + next[0]));
+            curr[0] = Math.max(curr[0], next[0] + price[node]);
+            curr[1] = Math.max(curr[1], next[1] + price[node]);
+        }
+    }
+    return curr;
+}
+{% endhighlight %}
+
+A more complex but general approach is by [rerooting](../../../2020/08/06/subtree#rerooting).
+
 [Second Minimum Node in a Binary Tree][second-minimum-node-in-a-binary-tree]
 
 {% highlight java %}
@@ -1166,6 +1212,7 @@ public int checkWays(int[][] pairs) {
 [delete-nodes-and-return-forest]: https://leetcode.com/problems/delete-nodes-and-return-forest/
 [diameter-of-binary-tree]: https://leetcode.com/problems/diameter-of-binary-tree/
 [diameter-of-n-ary-tree]: https://leetcode.com/problems/diameter-of-n-ary-tree/
+[difference-between-maximum-and-minimum-price-sum]: https://leetcode.com/problems/difference-between-maximum-and-minimum-price-sum/
 [distribute-coins-in-binary-tree]: https://leetcode.com/problems/distribute-coins-in-binary-tree/
 [equal-tree-partition]: https://leetcode.com/problems/equal-tree-partition/
 [find-bottom-left-tree-value]: https://leetcode.com/problems/find-bottom-left-tree-value/

@@ -216,6 +216,82 @@ public int getKthAncestor(int node, int k) {
 }
 {% endhighlight %}
 
+# Rerooting
+
+[Difference Between Maximum and Minimum Price Sum][difference-between-maximum-and-minimum-price-sum]
+
+{% highlight java %}
+// maxPaths[i]: when the tree is rooted at node 0, max path sum of subtree of root node i
+private long[] maxPaths;
+private long maxCost;
+
+public long maxOutput(int n, int[][] edges, int[] price) {
+    List<Integer>[] tree = new List[n];
+    for (int i = 0; i < n; i++) {
+        tree[i] = new ArrayList<>();
+    }
+    for (int[] e : edges) {
+        tree[e[0]].add(e[1]);
+        tree[e[1]].add(e[0]);
+    }
+
+    this.maxPaths = new long[n];
+    // first, roots the tree at node 0
+    dfs(tree, 0, -1, price);
+    // then, use each node as tree root and computes the result
+    reroot(tree, 0, -1, price, 0);
+
+    // min price sum is always the node itself
+    // so for a particular node as root, its cost is the max of its child paths (excluding itself)
+    return maxCost;
+}
+
+private long dfs(List<Integer>[] tree, int node, int parent, int[] price) {
+    long max = 0;
+    for (int child: tree[node]) {
+        if (child != parent) {
+            max = Math.max(max, dfs(tree, child, node, price));
+        }
+    }
+    return maxPaths[node] = price[node] + max;
+}
+
+private void reroot(List<Integer>[] tree, int node, int parent, int[] price, long maxParentPath) {
+    int maxChild = -1;
+    // finds max two path sums among all children of `node`, when the tree root is at 0
+    long max1 = 0, max2 = 0;
+    for (int child : tree[node]) {
+        if (child != parent) {
+            if (maxPaths[child] > max1) {
+                max2 = max1;
+                max1 = maxPaths[child];
+                maxChild = child;
+            } else if (maxPaths[child] > max2) {
+                max2 = maxPaths[child];
+            }
+        }
+    }
+
+    // maxParentPath is the max of the paths of `parent` that `node` is not on
+    maxCost = Math.max(maxCost, Math.max(max1, maxParentPath));
+
+    for (int child: tree[node]) {
+        if (child != parent) {
+            // when `node` becomes parent, the new `maxParentPath` is the max of:
+            // 1. max child path that `child` is not on
+            //  - if `child` is not on `node`'s max path, it's `node`'s max path (max1)
+            //  - otherwise, it's `child` path's max sibling (max2)
+            // 2. `node`'s maxParentPath
+            reroot(tree, child, node, price, price[node] + Math.max(maxChild == child ? max2 : max1, maxParentPath)); 
+        }
+    }
+}
+{% endhighlight %}
+
+![Rerooting](/assets/difference_between_maximum_and_minimum_price_sum.png)
+
+Rerooting is a general algorithm that can be used in many cases. However, a smarter approach is to use a one-pass [DFS](../../../2020/08/20/tree-recursion.html).
+
 # Non-overlapping Subtrees
 
 [Maximum XOR of Two Non-Overlapping Subtrees][maximum-xor-of-two-non-overlapping-subtrees]
@@ -299,6 +375,7 @@ class TrieNode {
 {% endhighlight %}
 
 [cycle-length-queries-in-a-tree]: https://leetcode.com/problems/cycle-length-queries-in-a-tree/
+[difference-between-maximum-and-minimum-price-sum]: https://leetcode.com/problems/difference-between-maximum-and-minimum-price-sum/
 [find-distance-in-a-binary-tree]: https://leetcode.com/problems/find-distance-in-a-binary-tree/
 [kth-ancestor-of-a-tree-node]: https://leetcode.com/problems/kth-ancestor-of-a-tree-node/
 [intersection-of-two-linked-lists]: https://leetcode.com/problems/intersection-of-two-linked-lists/

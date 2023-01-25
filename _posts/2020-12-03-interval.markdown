@@ -326,7 +326,7 @@ public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
     // sorts indices by end time
     Arrays.sort(indices, Comparator.comparingInt(i -> endTime[i]));
 
-    // end time : max profit
+    // end time : max profit by the end time
     TreeMap<Integer, Integer> dp = new TreeMap<>();
     dp.put(0, 0);
 
