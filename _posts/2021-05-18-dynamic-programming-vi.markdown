@@ -8,24 +8,24 @@ tag: dynamic programming
 {% highlight java %}
 public int bestTeamScore(int[] scores, int[] ages) {
     int n = ages.length;
-    Integer[] index = new Integer[n];
+    Integer[] indices = new Integer[n];
     for (int i = 0; i < n; i++) {
-        index[i] = i;
+        indices[i] = i;
     }
 
-    Arrays.sort(index, (i, j) -> ages[i] == ages[j] ? scores[i] - scores[j] : ages[i] - ages[j]);
+    Arrays.sort(indices, (i, j) -> ages[i] == ages[j] ? scores[i] - scores[j] : ages[i] - ages[j]);
 
     // dp[i]: max score if the i-th player is chosen and all the other players are between 0 and (i - 1)
     int[] dp = new int[n];
-    int max = dp[0] = scores[index[0]];
+    int max = dp[0] = scores[indices[0]];
     for (int i = 1; i < n; i++) {
-       dp[i] = scores[index[i]];
+       dp[i] = scores[indices[i]];
        for (int j = 0; j < i; j++) {
-           // age[index[j]] <= age[index[i]],
+           // age[indices[j]] <= age[indices[i]],
            // so we can always choose the younger player
            // if s/he has a lower score
-           if (scores[index[j]] <= scores[index[i]]) {
-               dp[i] = Math.max(dp[i], scores[index[i]] + dp[j]);
+           if (scores[indices[j]] <= scores[indices[i]]) {
+               dp[i] = Math.max(dp[i], scores[indices[i]] + dp[j]);
            }  
        }
        max = Math.max(dp[i], max);
@@ -415,6 +415,34 @@ public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
     return min == MAX ? -1 : min;
 }
 {% endhighlight %}
+
+[Count Increasing Quadruplets][count-increasing-quadruplets]
+
+{% highlight java %}
+public long countQuadruplets(int[] nums) {
+    int n = nums.length;
+    // dp[j]: count of all valid triplets (i, j, k) so that i < j < k and nums[i] < nums[k] < nums[j]
+    long[] dp = new long[n];
+    long count = 0;
+    for (int l = 0; l < n; l++) {
+        // count of "l"s that can possibly be "k"s for newer "l"s
+        int kCandidates = 0;
+        for (int j = 0; j < l; j++) {
+            if (nums[l] > nums[j]) {
+                // "132" -> "1324": nums[j] => "3", nums[l] => "4"
+                count += dp[j];
+                kCandidates++;
+            } else if (nums[l] < nums[j]) {
+                // ("k candidate", j, l) becomes a valid triple
+                dp[j] += kCandidates;
+            }
+        }
+    }
+    return count;
+}
+{% endhighlight %}
+
+Another solution is by [prefix sum](../../../2021/06/12/prefix-sum.html).
 
 # Fractional DP
 
@@ -1052,6 +1080,7 @@ public int numberOfWays(int startPos, int endPos, int k) {
 [build-array-where-you-can-find-the-maximum-exactly-k-comparisons]: https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/
 [choose-numbers-from-two-arrays-in-range]: https://leetcode.com/problems/choose-numbers-from-two-arrays-in-range/
 [coin-path]: https://leetcode.com/problems/coin-path/
+[count-increasing-quadruplets]: https://leetcode.com/problems/count-increasing-quadruplets/
 [first-day-where-you-have-been-in-all-the-rooms]: https://leetcode.com/problems/first-day-where-you-have-been-in-all-the-rooms/
 [frog-jump]: https://leetcode.com/problems/frog-jump/
 [longest-string-chain]: https://leetcode.com/problems/longest-string-chain/

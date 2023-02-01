@@ -17,48 +17,39 @@ No complex data structure is used.
 
 {% highlight java %}
 public int jump(int[] nums) {
-    // implicit BFS
-    int jump = 0, reach = 0, currEnd = 0;
-    for (int i = 0; i < nums.length - 1; i++) {
-        reach = Math.max(reach, i + nums[i]);
-
-        // all the nodes on the current level are visited
-        if (i == currEnd) {
-            // increments level
-            // nodes on the next level can be reached with this number of jumps
-            jump++;
-            // gets next level size
-            currEnd = reach;
-        }
-    }
-    return jump;
-}
-{% endhighlight %}
-
-If it's not guaranteed to reach the last index:
-
-{% highlight java %}
-public int jump(int[] nums) {
-    // implicit BFS
-    int jumps = 0, reach = 0, currEnd = 0;
-    for (int i = 0; i < nums.length; i++) {
-        if (i > reach) {
+    int jumps = 0;
+    // curr: the farthest start index on the current level.
+    //   in other words, [0, curr] can already be reached by previous levels.
+    //   if start index is greater than `curr`, we should increment the level.
+    // next: the farthest end index where points on the current level can jump to.
+    for (int i = 0, curr = 0, next = 0; i < nums.length; i++) {
+        // if nums[n - 1] is not always reachable
+        // (can be commented out for this specific problem)
+        if (i > next) {
             return -1;
         }
 
-        reach = Math.max(reach, i + nums[i]);
-
-        // all the nodes on the current level are visited
-        if (i < nums.length - 1 && i == currEnd) {
-            // increments level
-            // nodes on the next level can be reached with this number of jumps
+        if (i > curr) {
             jumps++;
-            // gets next level size
-            currEnd = reach;
+            curr = next;
         }
+        next = Math.max(next, i + nums[i]);
     }
     return jumps;
 }
+{% endhighlight %}
+
+Depending on the definition of `nums[i]`, the code might need slight modification. e.g., if `nums[i]` means the farthest reach of each jump, then:
+
+
+{% highlight java %}
+next = Math.max(next, i + nums[i]);
+{% endhighlight %}
+
+should be changed to:
+
+{% highlight java %}
+next = Math.max(next, nums[i]);
 {% endhighlight %}
 
 **Priority Queue**

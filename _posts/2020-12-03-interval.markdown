@@ -117,62 +117,9 @@ class CountIntervals {
 
 # BFS
 
-[Minimum Number of Taps to Open to Water a Garden][minimum-number-of-taps-to-open-to-water-a-garden]
-
-{% highlight java %}
-public int minTaps(int n, int[] ranges) {
-    // arr[i]: rightmost end where i is the left of the interval
-    int[] arr = new int[n + 1];
-    for (int i = 0; i < ranges.length; i++) {
-        if (ranges[i] > 0) {
-            int left = Math.max(0, i - ranges[i]);
-            arr[left] = Math.max(arr[left], i + ranges[i]);
-        }
-    }
-
-    // bfs
-    int end = 0, reach = 0, count = 0;
-    for (int i = 0; i < n + 1 && end < n; end = reach) {
-        count++;
-        while (i < n + 1 && i <= end) {
-            reach = Math.max(reach, arr[i++]);
-        }
-        if (end == reach) {
-            return -1;
-        }
-    }
-    return count;
-}
-{% endhighlight %}
+The problems in this section have close connection with [Jump Game II][jump-game-ii] in [Implicit BFS](../../../2020/09/24/bfs.html).
 
 [Video Stitching][video-stitching]
-
-{% highlight java %}
-public int videoStitching(int[][] clips, int time) {
-    Arrays.sort(clips, (a, b) -> a[0] - b[0]);
-
-    // prev: [0, prev] are covered by previous levels
-    // curr: reach by intervals in this level
-    int index = 0, prev = 0, curr = 0, res = 0;
-    while (prev < time) {
-        while (index < clips.length && clips[index][0] <= prev) {
-            curr = Math.max(curr, clips[index++][1]);
-        }
-
-        // this level didn't move forward
-        if (prev == curr) {
-            return -1;
-        }
-
-        prev = curr;
-        res++;
-    }
-
-    return res;
-}
-{% endhighlight %}
-
-We can also bucket sort the input array to improve time complexity:
 
 {% highlight java %}
 public int videoStitching(int[][] clips, int time) {
@@ -182,6 +129,51 @@ public int videoStitching(int[][] clips, int time) {
             nums[clip[0]] = Math.max(nums[clip[0]], clip[1] - clip[0]);
         }
     }
+    return jump(nums);
+}
+
+// 45. Jump Game II
+private int jump(int[] nums) {
+}
+{% endhighlight %}
+
+Or, without the auxilliary array, we sort `clips` and rewrite the implicit BFS:
+
+{% highlight java %}
+public int videoStitching(int[][] clips, int time) {
+    Arrays.sort(clips, (a, b) -> a[0] - b[0]);
+
+    int index = 0, curr = 0, next = 0, res = 0;
+    while (curr < time) {
+        while (index < clips.length && clips[index][0] <= curr) {
+            next = Math.max(next, clips[index++][1]);
+        }
+
+        // this level didn't move forward
+        if (curr == next) {
+            return -1;
+        }
+
+        curr = next;
+        res++;
+    }
+
+    return res;
+}
+{% endhighlight %}
+
+[Minimum Number of Taps to Open to Water a Garden][minimum-number-of-taps-to-open-to-water-a-garden]
+
+{% highlight java %}
+public int minTaps(int n, int[] ranges) {
+    // uses j to denote the rightmost end of the area starting from i that can be watered by taps so far
+    // then arr[i] == j - i
+    int[] arr = new int[n + 1];
+    for (int i = 0; i <= n; i++) {
+        int left = Math.max(0, i - ranges[i]);
+        arr[left] = Math.max(arr[left], i + ranges[i] - left);
+    }
+
     return jump(nums);
 }
 
@@ -996,6 +988,7 @@ class Interval implements Comparable<Interval> {
 [falling-squares]: https://leetcode.com/problems/falling-squares/
 [insert-interval]: https://leetcode.com/problems/insert-interval/
 [interval-list-intersections]: https://leetcode.com/problems/interval-list-intersections/
+[jump-game-ii]: https://leetcode.com/problems/jump-game-ii/
 [maximum-distance-in-arrays]: https://leetcode.com/problems/maximum-distance-in-arrays/
 [maximum-number-of-eaten-apples]: https://leetcode.com/problems/maximum-number-of-eaten-apples/
 [maximum-number-of-events-that-can-be-attended]: https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/

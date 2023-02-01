@@ -306,6 +306,14 @@ public int[] minDifference(int[] nums, int[][] queries) {
 }
 {% endhighlight %}
 
+[Count Increasing Quadruplets][count-increasing-quadruplets]
+
+{% highlight java %}
+
+{% endhighlight %}
+
+Another solution is by [dynamic programming](../../../2021/05/18/dynamic-programming-vi.html).
+ 
 **Frequency**
 
 [Sum of Floored Pairs][sum-of-floored-pairs]
@@ -1071,6 +1079,7 @@ public int countSubarrays(int[] nums, int k) {
 [can-make-palindrome-from-substring]: https://leetcode.com/problems/can-make-palindrome-from-substring/
 [change-minimum-characters-to-satisfy-one-of-three-conditions]: https://leetcode.com/problems/change-minimum-characters-to-satisfy-one-of-three-conditions/
 [contiguous-array]: https://leetcode.com/problems/contiguous-array/
+[count-increasing-quadruplets]: https://leetcode.com/problems/count-increasing-quadruplets/
 [count-palindromic-subsequences]: https://leetcode.com/problems/count-palindromic-subsequences/
 [count-subarrays-with-median-k]: https://leetcode.com/problems/count-subarrays-with-median-k/
 [count-subarrays-with-more-ones-than-zeros]: https://leetcode.com/problems/count-subarrays-with-more-ones-than-zeros/
