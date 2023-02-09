@@ -1254,7 +1254,35 @@ for (int i = 0; i < n - 1; i++) {
 return count;
 {% endhighlight %}
 
-# Indirect Condition
+# Minimax
+
+[House Robber IV][house-robber-iv]
+
+{% highlight java %}
+public int minCapability(int[] nums, int k) {
+    int low = 1, high = Integer.MAX_VALUE;
+    while (low < high) {
+        int mid = (low + high) >>> 1;
+
+        // greedy
+        // if two adjacent houses are both <= mid, selecting the left house is no worse than the right one
+        int robbedHouses = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] <= mid) {
+                robbedHouses++;
+                i++;
+            }
+        }
+
+        if (robbedHouses >= k) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return low;
+}
+{% endhighlight %}
 
 [Magnetic Force Between Two Balls][magnetic-force-between-two-balls]
 
@@ -1360,6 +1388,7 @@ private boolean condition(int[] stations, int r, int k, long m) {
 [first-bad-version]: https://leetcode.com/problems/first-bad-version/
 [fixed-point]: https://leetcode.com/problems/fixed-point/
 [h-index-ii]: https://leetcode.com/problems/h-index-ii/
+[house-robber-iv]: https://leetcode.com/problems/house-robber-iv/
 [koko-eating-bananas]: https://leetcode.com/problems/koko-eating-bananas/
 [kth-missing-positive-number]: https://leetcode.com/problems/kth-missing-positive-number/
 [kth-smallest-element-in-a-sorted-matrix]: https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/

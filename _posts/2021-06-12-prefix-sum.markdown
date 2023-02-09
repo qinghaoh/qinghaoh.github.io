@@ -309,7 +309,32 @@ public int[] minDifference(int[] nums, int[][] queries) {
 [Count Increasing Quadruplets][count-increasing-quadruplets]
 
 {% highlight java %}
+public long countQuadruplets(int[] nums) {
+    int n = nums.length;
+    // p[i][j]: number of elements < i in the first j elements
+    // it won't exceed the array boundary since nums[i] < n
+    int[][] p = new int[n + 1][n + 1];
+    for (int j = 0; j < n; j++) {
+        for (int i = 0; i <= n; i++) {
+            p[i][j + 1] = p[i][j] + (nums[j] < i ? 1 : 0);
+        }
+    }
 
+    long count = 0;
+    for (int j = 0; j < n; j++) {
+        for (int k = j + 1; k < n; k++) {
+            if (nums[j] > nums[k]) {
+                // p[nums[k]][j + 1]: number of "i"s that i < j < k and nums[i] < nums[k] < nums[j]
+                // k - p[nums[j]][k + 1]: number of elements >= nums[j] in the first k elements
+                //   since all integers of nums are unique, >= nums[j] can be simplified as > nums[j]
+                // n - nums[j]: number of elements > nums[j], since nums is a permutation
+                // n - nums[j] - (k - p[nums[j]][k + 1]): number of "l"s that j < k < l and nums[k] < nums[j] < nums[l]
+                count += p[nums[k]][j + 1] * (n - nums[j] - (k - p[nums[j]][k + 1]));
+            }
+        }
+    }
+    return count;
+}
 {% endhighlight %}
 
 Another solution is by [dynamic programming](../../../2021/05/18/dynamic-programming-vi.html).

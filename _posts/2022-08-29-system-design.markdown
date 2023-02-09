@@ -390,7 +390,7 @@ Front-end
 * Server-side encryption
 * Caching
 * Rate limiting
-* Request dispatchign
+* Request dispatching
 * Request deduplication
 * Usage data collection
 

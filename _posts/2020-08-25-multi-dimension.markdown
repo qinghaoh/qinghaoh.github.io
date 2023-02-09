@@ -92,6 +92,35 @@ public int minDistance(String word1, String word2) {
 }
 {% endhighlight %}
 
+[Disconnect Path in a Binary Matrix by at Most One Flip][disconnect-path-in-a-binary-matrix-by-at-most-one-flip]
+
+{% highlight java %}
+public boolean isPossibleToCutPath(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    // rolling DP
+    boolean[] dp = new boolean[n + 1];
+    dp[1] = true;
+
+    // openings[i]: number of reachable cells (openings) on the i-th anti-diagonal
+    int[] openings = new int[m + n - 1];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            // checks if (i, j) is reachable from (0, 0)
+            dp[j + 1] = grid[i][j] == 1 && (dp[j + 1] || dp[j]);
+            openings[i + j] += dp[j + 1] ? 1 : 0;
+        }
+    }
+
+    // checks path count on each anti-diagnol layer
+    for (int i = 1; i < openings.length - 1; i++) {
+        if (openings[i] < 2) {
+            return true;
+        }
+    }
+    return false;
+}
+{% endhighlight %}
+
 # Projection
 
 [Smallest Rectangle Enclosing Black Pixels][smallest-rectangle-enclosing-black-pixels]
@@ -513,6 +542,7 @@ public int[][] restoreMatrix(int[] rowSum, int[] colSum) {
 {% endhighlight %}
 
 [diagonal-traverse-ii]: https://leetcode.com/problems/diagonal-traverse-ii/
+[disconnect-path-in-a-binary-matrix-by-at-most-one-flip]: https://leetcode.com/problems/disconnect-path-in-a-binary-matrix-by-at-most-one-flip/
 [edit-distance]: https://leetcode.com/problems/edit-distance/
 [find-positive-integer-solution-for-a-given-equation]: https://leetcode.com/problems/find-positive-integer-solution-for-a-given-equation/
 [find-valid-matrix-given-row-and-column-sums]: https://leetcode.com/problems/find-valid-matrix-given-row-and-column-sums/

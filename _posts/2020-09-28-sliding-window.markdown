@@ -57,16 +57,16 @@ public int longestOnes(int[] nums, int k) {
 [Fruit Into Baskets][fruit-into-baskets]
 
 {% highlight java %}
-public int totalFruit(int[] tree) {
-    int[] type = new int[tree.length];
-    int k = 2;
-    int i = 0, j = 0;
-    while (j < tree.length) {
-        if (type[tree[j++]]++ == 0) {
+public int totalFruit(int[] fruits) {
+    int n = fruits.length, i = 0, j = 0, k = 2;
+    // picks[i]: number of picked fruits of type i
+    int[] picks = new int[n];
+    while (j < n) {
+        if (picks[fruits[j++]]++ == 0) {
             k--;
         }
 
-        if (k < 0 && --type[tree[i++]] == 0) {
+        if (k < 0 && --picks[fruits[i++]] == 0) {
             k++;
         }
     }
@@ -1123,6 +1123,25 @@ private void slidingWindow(String s, int i) {
 
 # Dynamic Programming
 
+[Maximize Win From Two Segments][maximize-win-from-two-segments]
+
+{% highlight java %}
+public int maximizeWin(int[] prizePositions, int k) {
+    int n = prizePositions.length, max = 0;
+    // dp[i]: in the first i positions, the maximum number of prizes we can get from one segment
+    int[] dp = new int[n + 1];
+    for (int i = 0, j = 0; j < n; j++) {
+        while (prizePositions[i] + k < prizePositions[j]) {
+            i++;
+        }
+        // the prize at index j is either selected or not
+        dp[j + 1] = Math.max(dp[j], j - i + 1);
+        max = Math.max(max, j - i + 1 + dp[i]);
+    }
+    return max;
+}
+{% endhighlight %}
+
 [Jump Game VII][jump-game-vii]
 
 {% highlight java %}
@@ -1245,6 +1264,7 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 [longest-substring-with-at-least-k-repeating-characters]: https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/
 [longest-substring-with-at-most-k-distinct-characters]: https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
 [max-consecutive-ones-iii]: https://leetcode.com/problems/max-consecutive-ones-iii/
+[maximize-win-from-two-segments]: https://leetcode.com/problems/maximize-win-from-two-segments/
 [maximum-number-of-occurrences-of-a-substring]: https://leetcode.com/problems/maximum-number-of-occurrences-of-a-substring/
 [maximum-points-you-can-obtain-from-cards]: https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/
 [maximum-size-subarray-sum-equals-k]: https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
