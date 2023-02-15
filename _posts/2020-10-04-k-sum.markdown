@@ -18,6 +18,32 @@ Two pointers: `O(n)`
 
 [Two Sum Less Than K][two-sum-less-than-k]
 
+## Binary Search
+
+[Count the Number of Fair Pairs][count-the-number-of-fair-pairs]
+
+{% highlight java %}
+public long countFairPairs(int[] nums, int lower, int upper) {
+    Arrays.sort(nums);
+
+    return binarySearch(nums, upper) - binarySearch(nums, lower - 1);
+}
+
+private long binarySearch(int[] nums, int target) {
+    int low = 0, high = nums.length - 1;
+    long pairs = 0;
+    while (low < high) {
+        if (nums[low] + nums[high] <= target) {
+            // (low, high) is a valid pair
+            pairs += high - low++;
+        } else {
+            high--;
+        }
+    }
+    return pairs;
+}
+{% endhighlight %}
+
 # 3 Sum
 
 [3Sum][3sum]
@@ -227,6 +253,7 @@ private void backtrack(int[] nums, int start, int end, int sum, Set<Integer> sum
 [3sum-smaller]: https://leetcode.com/problems/3sum-smaller/
 [3sum-with-multiplicity]: https://leetcode.com/problems/3sum-with-multiplicity/
 [4sum-ii]: https://leetcode.com/problems/4sum-ii/
+[count-the-number-of-fair-pairs]: https://leetcode.com/problems/count-the-number-of-fair-pairs/
 [closest-subsequence-sum]: https://leetcode.com/problems/closest-subsequence-sum/
 [split-array-with-equal-sum]: https://leetcode.com/problems/split-array-with-equal-sum/
 [two-sum]: https://leetcode.com/problems/two-sum/

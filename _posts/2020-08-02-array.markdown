@@ -353,6 +353,29 @@ public int minFlips(String s) {
 }
 {% endhighlight %}
 
+# Split
+
+[Smallest Range II][smallest-range-ii]
+
+{% highlight java %}
+public int smallestRangeII(int[] nums, int k) {
+    Arrays.sort(nums);
+
+    // for each index, left elements +k and right elements -k
+    int n = nums.length, diff = nums[n - 1] - nums[0];
+    for (int i = 0; i < n - 1; i++) {
+        // nums[0] + k is the min element of the left subarray
+        // nums[i + 1] - k is the min element of the right subarray
+        // min of the entire array must be one of these two candidates
+        int min = Math.min(nums[0] + k, nums[i + 1] - k);
+        // similar
+        int max = Math.max(nums[n - 1] - k, nums[i] + k);
+        diff = Math.min(diff, max - min);
+    }
+    return diff;
+}
+{% endhighlight %}
+
 # Distance
 
 [Shortest Distance to a Character][shortest-distance-to-a-character]
@@ -919,6 +942,7 @@ public long largestEvenSum(int[] nums, int k) {
 [shift-2d-grid]: https://leetcode.com/problems/shift-2d-grid/
 [shortest-distance-to-a-character]: https://leetcode.com/problems/shortest-distance-to-a-character/
 [shortest-distance-to-target-color]: https://leetcode.com/problems/shortest-distance-to-target-color/
+[smallest-range-ii]: https://leetcode.com/problems/smallest-range-ii/
 [smallest-rotation-with-highest-score]: https://leetcode.com/problems/smallest-rotation-with-highest-score/
 [sort-array-by-moving-items-to-empty-space]: https://leetcode.com/problems/sort-array-by-moving-items-to-empty-space/
 [subsequence-of-size-k-with-the-largest-even-sum]: https://leetcode.com/problems/subsequence-of-size-k-with-the-largest-even-sum/

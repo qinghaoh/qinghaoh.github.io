@@ -36,22 +36,6 @@ public int shortestSequence(int[] rolls, int k) {
 
 ## Sort
 
-[Smallest Range II][smallest-range-ii]
-
-{% highlight java %}
-public int smallestRangeII(int[] A, int K) {
-    Arrays.sort(A);
-
-    int max = A[A.length - 1], min = A[0], diff = max - min;
-    for (int i = 0; i < A.length - 1; i++) {
-        max = Math.max(A[A.length - 1], A[i] + 2 * K);
-        min = Math.min(A[0] + 2 * K, A[i + 1]);
-        diff = Math.min(diff, max - min);
-    }
-    return diff;
-}
-{% endhighlight %}
-
 [Sum of Subsequence Widths][sum-of-subsequence-widths]
 
 {% highlight java %}
@@ -515,6 +499,46 @@ public int numberOfUniqueGoodSubsequences(String binary) {
 }
 {% endhighlight %}
 
+[Subsequence With the Minimum Score][subsequence-with-the-minimum-score]
+
+{% highlight java %}
+public int minimumScore(String s, String t) {
+    int n = s.length(), m = t.length(), index = m - 1;
+    // dp[i]: rightmost index of s so that t.substring(i) is a subsequence of s.substring(dp[i])
+    int[] dp = new int[m];
+    Arrays.fill(dp, -1);
+    for (int i = n - 1; i >= 0 && index >= 0; i--) {
+        if (s.charAt(i) == t.charAt(index)) {
+            dp[index--] = i;
+        }
+    }
+
+    // t is subsequence of s
+    if (index < 0) {
+        return 0;
+    }
+
+    // as per the dp, if we remove t.substring(0, index + 1), the remaining substring is a subsequence of s
+    // so the min score is no worse than (index + 1)
+    int min = index + 1;
+    // t' = t[:j] + t[k:]
+    for (int i = 0, j = 0, k = index + 1; i < n && j < m; i++) {
+        if (s.charAt(i) == t.charAt(j)) {
+            // as j moves forward, k either stays or moves forward - it nevers goes backward
+            // it can be proven by contradiction
+            //
+            // moves k until its rightmost index in s is greater than i
+            // which means t' is a subsequence of s
+            while (k < m && dp[k] <= i) {
+                k++;
+            }
+            min = Math.min(min, k - ++j);
+        }
+    }
+    return min;
+}
+{% endhighlight %}
+
 ## Buckets
 
 [Number of Matching Subsequences][number-of-matching-subsequences]
@@ -679,6 +703,6 @@ private void backtrack(int[] freq, int len, StringBuilder sb) {
 [russian-doll-envelopes]: https://leetcode.com/problems/russian-doll-envelopes/
 [shortest-common-subsequence]: https://leetcode.com/problems/shortest-common-subsequence/
 [shortest-impossible-sequence-of-rolls]: https://leetcode.com/problems/shortest-impossible-sequence-of-rolls/
-[smallest-range-ii]: https://leetcode.com/problems/smallest-range-ii/
+[subsequence-with-the-minimum-score]: https://leetcode.com/problems/subsequence-with-the-minimum-score/
 [sum-of-subsequence-widths]: https://leetcode.com/problems/sum-of-subsequence-widths/
 [shortest-common-supersequence]: https://leetcode.com/problems/shortest-common-supersequence/
