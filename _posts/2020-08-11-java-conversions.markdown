@@ -46,6 +46,12 @@ int[] a = {0, 1, 2};
 double[] b = IntStream.of(a).mapToDouble(i -> i).toArray();
 {% endhighlight %}
 
+# List -> Array:
+{% highlight java %}
+List<String> list = new ArrayList<>();
+String[] array = list.toArray(new String[0])
+{% endhighlight %}
+
 # Array -> Stream
 [public static \<T\> Stream\<T\> stream(T\[\] array, int startInclusive, int endExclusive)](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html#stream-T:A-int-int-)
 

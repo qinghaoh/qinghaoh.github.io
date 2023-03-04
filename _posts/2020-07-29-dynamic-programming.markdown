@@ -53,60 +53,61 @@ For example, `word1 = "newton", word2 = "einstein"`, then `dp` is:
 Notice `dp[i - 1][j - 1] <= dp[i][j - 1] + 1` and `dp[i - 1][j - 1] <= dp[i - 1][j] + 1`
 
 Rolling array optimization:
-* `dp[i - 1][j] -> pre[j]`
-* `dp[i][j] -> cur[j]`
+* `dp[i - 1][j] -> prev[j]`
+* `dp[i][j] -> curr[j]`
 
 {% highlight java %}
 public int minDistance(String word1, String word2) {
     int n1 = word1.length(), n2 = word2.length();
-    int[] pre = new int[n2 + 1], cur = new int[n2 + 1];
+    int[] prev = new int[n2 + 1], curr = new int[n2 + 1];
 
     for (int j = 1; j <= n2; j++) {
-        pre[j] = j;
+        prev[j] = j;
     }
 
     for (int i = 1; i <= n1; i++) {
-        cur[0] = i;
+        curr[0] = i;
         for (int j = 1; j <= n2; j++) {
             if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                cur[j] = pre[j - 1];
+                curr[j] = prev[j - 1];
             } else {
-                cur[j] = Math.min(pre[j - 1], Math.min(pre[j], cur[j - 1])) + 1;
+                curr[j] = Math.min(prev[j - 1], Math.min(prev[j], curr[j - 1])) + 1;
             }
         }
-        int[] tmp = pre;
-        pre = cur;
-        cur = tmp;
+        int[] tmp = prev;
+        prev = curr;
+        curr = tmp;
     }
-    return pre[n2];
+    return prev[n2];
 }
 {% endhighlight %}
 
-* `pre[j - 1] -> pre`
-* `pre[j] -> cur[j]`
+* `prev[j - 1] -> prev`
+* `prev[j] -> curr[j]`
+
 {% highlight java %}
 public int minDistance(String word1, String word2) {
-    int pre = 0, n1 = word1.length(), n2 = word2.length();
-    int[] cur = new int[n2 + 1];
+    int prev = 0, n1 = word1.length(), n2 = word2.length();
+    int[] curr = new int[n2 + 1];
 
     for (int j = 1; j <= n2; j++) {
-        cur[j] = j;
+        curr[j] = j;
     }
 
     for (int i = 1; i <= n1; i++) {
-        pre = cur[0];
-        cur[0] = i;
+        prev = curr[0];
+        curr[0] = i;
         for (int j = 1; j <= n2; j++) {
-            int tmp = cur[j];
+            int tmp = curr[j];
             if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                cur[j] = pre;
+                curr[j] = prev;
             } else {
-                cur[j] = Math.min(pre, Math.min(cur[j], cur[j - 1])) + 1;
+                curr[j] = Math.min(prev, Math.min(curr[j], curr[j - 1])) + 1;
             }
-            pre = tmp;
+            prev = tmp;
         }
     }
-    return cur[n2];
+    return curr[n2];
 }
 {% endhighlight %}
 

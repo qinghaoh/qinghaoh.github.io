@@ -584,56 +584,6 @@ private int dfs(int i, int[] rightMinCost, int mask) {
 }
 {% endhighlight %}
 
-# Bottom-up
-
-[Partition to K Equal Sum Subsets][partition-to-k-equal-sum-subsets]
-
-{% highlight java %}
-public boolean canPartitionKSubsets(int[] nums, int k) {
-    int sum = 0, max = 0;
-    for (int num : nums) {
-        sum += num;
-        max = Math.max(max, num);
-    }
-
-    int target = sum / k;
-    if (sum % k != 0 || max > target) {
-        return false;
-    }
-
-    // searches in reverse order, so that subset sizes decrease faster
-    Arrays.sort(nums);
-
-    int n = nums.length;
-
-    // dp[state] indicates whether state is a possible candidate
-    boolean[] dp = new boolean[1 << n];
-    dp[0] = true;
-    int[] total = new int[1 << n];
-
-    // bit mask
-    // the i-th bit in state represents the presence of nums[i]
-    for (int state = 0; state < (1 << n); state++) {
-        if (!dp[state]) {
-            continue;
-        }
-
-        for (int i = 0; i < n; i++) {
-            int next = state | (1 << i);  // next state
-            // state doesn't set the i-th position
-            // next state is not a possible candidate yet
-            // nums[i] fits into the current partial subset
-            if (state != next && !dp[next] && nums[i] + total[state] % target <= target) {
-                dp[next] = true;
-                total[next] = total[state] + nums[i];
-            }
-        }
-    }
-
-    return dp[(1 << n) - 1];
-}
-{% endhighlight %}
-
 [Minimum Time to Kill All Monsters][minimum-time-to-kill-all-monsters]
 
 {% highlight java %}
@@ -721,11 +671,64 @@ public int maxStudents(char[][] seats) {
 
 # DFS
 
+## Partitioning
+
+[Partition to K Equal Sum Subsets][partition-to-k-equal-sum-subsets]
+
+{% highlight java %}
+private boolean[] visited;
+
+public boolean canPartitionKSubsets(int[] nums, int k) {
+    int sum = 0, max = 0;
+    for (int num : nums) {
+        sum += num;
+        max = Math.max(max, num);
+    }
+
+    int target = sum / k;
+    if (sum % k != 0 || max > target) {
+        return false;
+    }
+
+    // searches in reverse order, so that subset sizes decrease faster
+    Arrays.sort(nums);
+
+    this.visited = new boolean[1 << nums.length];
+    return dfs(nums, 0, 0, target);
+}
+
+private boolean dfs(int[] nums, int mask, int subsetSum, int target) {
+    int n = nums.length;
+    if (mask == (1 << n) - 1) {
+        return true;
+    }
+
+    if (visited[mask]) {
+        return false;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if ((mask & (1 << i)) == 0) {
+            // assigns i-th bit
+            int next = mask | (1 << i);
+            if (nums[i] + subsetSum <= target) {
+                if (dfs(nums, next, (subsetSum + nums[i]) % target, target)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    visited[mask] = true;
+    return false;
+}
+{% endhighlight %}
+
 [Minimum Number of Work Sessions to Finish the Tasks][minimum-number-of-work-sessions-to-finish-the-tasks]
 
 {% highlight java %}
 private int sessionTime;
-// memo[mask][remaining session time]
+// memo[mask][remaining time in the current session]
 private Integer[][] memo = new Integer[1 << 14][15];
 
 public int minSessions(int[] tasks, int sessionTime) {
@@ -821,7 +824,7 @@ public int numberOfGoodSubsets(int[] nums) {
         freq[num]++;
     }
 
-    // computes `2 ^ fre[1]` with modulo
+    // computes `2 ^ freq[1]` with modulo
     // e.g. [1, 1, 2]: (2 ^ 2) * 1
     long ones = 1l;
     for (int i = 0; i < freq[1]; i++) {

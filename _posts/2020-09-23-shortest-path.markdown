@@ -91,7 +91,7 @@ public void dijkstra(int n, List<int[]>[] graph, int src) {
             continue;
         }
 
-        // checks all neighbors in the graph, whether they are still in the queue or not
+        // checks all neighbors in the graph whether they are still in the queue or not
         // then a vertex can be re-enqueued and thus its time complexity is more
         // compared to traditional Dijkstra (Fibonacci queue version)
         for (int[] next : graph[u]) {
@@ -435,6 +435,69 @@ public int trapRainWater(int[][] heightMap) {
 {% endhighlight %}
 
 This problem can be solved by [BFS](../../../2020/09/24/bfs.html) as well. We can see the intrinsic connection of the two approaches.
+
+**Additional Wait**
+
+[Minimum Time to Visit a Cell In a Grid][minimum-time-to-visit-a-cell-in-a-grid]
+
+{% highlight java %}
+{% raw %}
+private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+{% endraw %}
+public int minimumTime(int[][] grid) {
+    // it's the only condition when the bottom-right cell cannot be visited
+    // because at time > 0, you can always go back and forth between previous and current cell
+    // until the time is long enough to move on
+    if (grid[0][1] > 1 && grid[1][0] > 1) {
+        return -1;
+    }
+
+    int m = grid.length, n = grid[0].length;
+    int[][] dist = new int[m][n];
+    for (int[] row : dist) {
+        Arrays.fill(row, Integer.MAX_VALUE);
+    }
+
+    // {row, col, time}
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+    pq.offer(new int[]{0, 0, dist[0][0] = 0});
+
+    while (!pq.isEmpty()) {
+        int[] cell = pq.poll();
+        int row = cell[0], col = cell[1], time = cell[2];
+
+        if (row == m - 1 && col == n - 1) {
+            return time;
+        }
+
+        if (time > dist[row][col]) {
+            continue;
+        }
+
+        for (int[] d : DIRECTIONS) {
+            int r = row + d[0], c = col + d[1];
+            if (r >= 0 && r < m && c >= 0 && c < n) {
+                // if the neighbor cell has value > time + 1
+                // back-and-forth between previous and currnt cell to let time pass
+                // case 1
+                //   (grid[r][c] - time) is even
+                //   e.g. neighbor = 3, time = 1
+                //        then, 2 @ curr, 3 @ prev, 4 @ neighbor
+                // case 2
+                //   (grid[r][c] - time) is odd
+                //   e.g. neighbor = 4, time = 1
+                //        then, 2 @ curr, 3 @ prev, 4 @ neighbor
+                int wait = ((grid[r][c] - time) % 2) ^ 1;
+                int alt = Math.max(grid[r][c] + wait, time + 1);
+                if (alt < dist[r][c]) {
+                    pq.offer(new int[]{r, c, dist[r][c] = alt});
+                }
+            }
+        }
+    }
+    return -1;
+}
+{% endhighlight %}
 
 ## Composite Vertex
 
@@ -1168,6 +1231,7 @@ private int paint(int[][] grid, int i, int j, int color) {
 [minimum-cost-to-reach-destination-in-time]: https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/
 [minimum-number-of-days-to-disconnect-island]: https://leetcode.com/problems/minimum-number-of-days-to-disconnect-island/
 [minimum-obstacle-removal-to-reach-corner]: https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/
+[minimum-time-to-visit-a-cell-in-a-grid]: https://leetcode.com/problems/minimum-time-to-visit-a-cell-in-a-grid/
 [minimum-weighted-subgraph-with-the-required-paths]: https://leetcode.com/problems/minimum-weighted-subgraph-with-the-required-paths/
 [number-of-restricted-paths-from-first-to-last-node]: https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/
 [number-of-ways-to-arrive-at-destination]: https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/

@@ -119,7 +119,7 @@ class SegmentTree {
 
     public SegmentTree(int[] nums, BiFunction<Integer, Integer, Integer> f) {
         this(nums.length, f);
-        System.arraycopy(nums, 0, this.n, arr.length, this.n);
+        System.arraycopy(nums, 0, this.arr, this.n, this.n);
     }
 
     public void build() {

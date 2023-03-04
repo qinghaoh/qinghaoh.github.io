@@ -124,15 +124,6 @@ Doubly-linked list implementation of the `List` and `Deque` interfaces. Implemen
 * [void add(int index, E element)](https://docs.oracle.com/javase/8/docs/api/java/util/List.html#add-int-E-)
 * [List\<E\> subList(int fromIndex, int toIndex)](https://docs.oracle.com/javase/8/docs/api/java/util/List.html#subList-int-int-)
 
-[\<T\> T\[\] toArray(T\[\] a)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/List.html#toArray(T%5B%5D))
-
-Convert String List to String array:
-{% highlight java %}
-List<String> list = new ArrayList<>();
-list.add(0);
-String[] array = list.toArray(new String[0])
-{% endhighlight %}
-
 # Math
 * [public static double random()](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Math.html#random()): it internally uses `Random.nextDouble()`
 

@@ -11,9 +11,9 @@ n ^ n = 0
 
 n & -n 		// clears all but rightmost set bit
 n & (n - 1)		// zeros out rightmost set bit, Brian Kernighan's Algorithm
-n & (n - 1) == 0  	// power of 2
+(n & (n - 1)) == 0  	// power of 2
 
-// enumerate all submasks
+// enumerates all submasks
 for (int s = mask; s > 0; s = (s - 1) & mask)
 ```
 
@@ -71,6 +71,16 @@ public boolean hasAlternatingBits(int n) {
 {% endhighlight %}
 
 `(n & (n >> 1)) == 0` ensures no consecutive 1's.
+
+[Minimum Operations to Reduce an Integer to 0][minimum-operations-to-reduce-an-integer-to-0]
+
+{% highlight java %}
+public int minOperations(int n) {
+    // if number of consecutive 1's == 1, +1
+    // if number of consecutive 1's > 1, +2
+    return Integer.bitCount(n ^ (n * 3));
+}
+{% endhighlight %}
 
 [XOR Operation in an Array][xor-operation-in-an-array]
 
@@ -794,6 +804,7 @@ public boolean validUtf8(int[] data) {
 [maximum-genetic-difference-query]: https://leetcode.com/problems/maximum-genetic-difference-query/
 [maximum-xor-of-two-numbers-in-an-array]: https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/
 [minimum-one-bit-operations-to-make-integers-zero]: https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/
+[minimum-operations-to-reduce-an-integer-to-0]: https://leetcode.com/problems/minimum-operations-to-reduce-an-integer-to-0/
 [missing-number]: https://leetcode.com/problems/missing-number/
 [single-number]: https://leetcode.com/problems/single-number/
 [single-number-ii]: https://leetcode.com/problems/single-number-ii/
