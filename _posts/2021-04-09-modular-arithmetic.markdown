@@ -38,21 +38,21 @@ public int superPow(int a, int[] b) {
     if (p == 0) {
         p += 1440;
     }
-    return power(a, p, 1337);
+    return pow(a, p, 1337);
 }
 
 // 50. Pow(x, n)
-private int power(int a, int n, int mod) {
+private int pow(int a, int n, int mod) {
     a %= mod;
-    int result = 1;
+    long res = 1, al = a % mod;
     while (n != 0) {
         if (n % 2 == 1) {
-            result = result * a % mod;
+            res = res * al % mod;
         }
-        a = a * a % mod;
+        al = al * al % mod;
         n /= 2;
     }
-    return result;
+    return (int)res;
 }
 {% endhighlight %}
 
@@ -67,13 +67,13 @@ public int superPow(int a, int[] b) {
     final int mod = 1337;
     int res = 1;
     for (int i : b) {
-        res = power(res, 10, mod) * power(a, i, mod) % mod;
+        res = pow(res, 10, mod) * pow(a, i, mod) % mod;
     }
     return res;
 }
 
 // 50. Pow(x, n)
-private int power(int a, int n, int mod) {
+private int pow(int a, int n, int mod) {
 }
 {% endhighlight %}
 
@@ -128,7 +128,7 @@ class Fancy {
     public void append(int val) {
         // a[i] * m + inc = val
         // a[i] = (val - inc) / m
-        arr[size++] = (((val - inc + MOD) % MOD) * modPow(m, MOD - 2)) % MOD;
+        arr[size++] = (((val - inc + MOD) % MOD) * pow(m, MOD - 2, MOD)) % MOD;
     }
 
     public void addAll(int inc) {
@@ -146,16 +146,8 @@ class Fancy {
         return idx < size ? (int)((arr[idx] * m) % MOD + inc) % MOD : -1;
     }
 
-    private long modPow(long x, long y) {
-        long res = 1;
-        while (y > 0) {
-            if ((y & 1) == 1) {
-                res = res * x % MOD;
-            }
-            x = x * x % MOD;
-            y >>= 1;
-        }
-        return res;
+    // 50. Pow(x, n)
+    private int pow(long a, int n, int mod) {
     }
 }
 {% endhighlight %}

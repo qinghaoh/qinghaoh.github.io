@@ -115,7 +115,71 @@ class CountIntervals {
 }
 {% endhighlight %}
 
-# BFS
+# Interval Overlapping Problem
+
+**Grouping overlapping intervals**
+
+[Count Ways to Group Overlapping Ranges][count-ways-to-group-overlapping-ranges]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+
+public int countWays(int[][] ranges) {
+    Arrays.sort(ranges, Comparator.comparingInt(a -> a[0]));
+
+    int end = -1, ways = 1;
+    // greedily adds this range to the current group
+    for (int[] r : ranges) {
+        if (r[0] > end) {
+            // groups++;
+            ways = ways * 2 % MOD;
+        }
+        end = Math.max(end, r[1]);
+    }
+
+    return ways;
+}
+{% endhighlight %}
+
+[Check if All the Integers in a Range Are Covered][check-if-all-the-integers-in-a-range-are-covered]
+
+{% highlight java %}
+public boolean isCovered(int[][] ranges, int left, int right) {
+    Arrays.sort(ranges, Comparator.comparingInt(r -> r[0]));
+
+    for (int[] r : ranges) {
+        if (left >= r[0] && left <= r[1]) {
+            // [left, r[1]] is covered
+            left = r[1] + 1;
+
+            // now left is the first integer that's uncovered
+        }
+    }
+
+    return left > right;
+}
+{% endhighlight %}
+
+[Remove Covered Intervals][remove-covered-intervals]
+
+{% highlight java %}
+public int removeCoveredIntervals(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+
+    int remaining = 0, end = -1;
+    for (int[] i : intervals) {
+        // if i[1] <= end, then i is covered by the range [i'[0], end]
+        // where i' is the interval when `remaining` was last incremented
+        if (i[1] > end) {
+            remaining++;
+            end = i[1];
+        }
+    }
+    return remaining;
+}
+{% endhighlight %}
+
+## BFS
 
 The problems in this section have close connection with [Jump Game II][jump-game-ii] in [Implicit BFS](../../../2020/09/24/bfs.html).
 
@@ -182,49 +246,6 @@ private int jump(int[] nums) {
 }
 {% endhighlight %}
 
-# Interval Covering
-
-[Check if All the Integers in a Range Are Covered][check-if-all-the-integers-in-a-range-are-covered]
-
-{% highlight java %}
-public boolean isCovered(int[][] ranges, int left, int right) {
-    Arrays.sort(ranges, Comparator.comparingInt(r -> r[0]));
-
-    for (int[] r : ranges) {
-        if (left >= r[0] && left <= r[1]) {
-            // [left, r[1]] is covered
-            left = r[1] + 1;
-
-            // now left is the first integer that's uncovered
-        }
-    }
-
-    return left > right;
-}
-{% endhighlight %}
-
-[Divide Intervals Into Minimum Number of Groups][divide-intervals-into-minimum-number-of-groups]
-
-{% highlight java %}
-public int minGroups(int[][] intervals) {
-    Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
-
-    // stores the end of each group
-    Queue<Integer> pq = new PriorityQueue<>();
-    for (int[] i : intervals) {
-        if (!pq.isEmpty() && pq.peek() < i[0]) {
-            // the current interval doesn't overlap the top group
-            // updates the end of the group
-            pq.poll();
-        }
-
-	// else, adds the current interval to represent a new group
-        pq.offer(i[1]);
-    }
-    return pq.size();
-}
-{% endhighlight %}
-
 # Interval Scheduling
 
 ## Interval Scheduling Maximization Problem (ISMP)
@@ -241,15 +262,16 @@ public int eraseOverlapIntervals(int[][] intervals) {
     // greedy
     Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
 
-    // count is the number of non-overlapping intervals
-    int end = intervals[0][1], count = 1;
+    // iterates from left to right:
+    // if two intervals overlap, they belong to the same group
+    int end = intervals[0][1], groups = 1;
     for (int[] i : intervals) {
         if (i[0] >= end) {
             end = i[1];
-            count++;
+            groups++;
         }
     }
-    return intervals.length - count;
+    return intervals.length - groups;
 }
 {% endhighlight %}
 
@@ -466,6 +488,8 @@ public int minMeetingRooms(int[][] intervals) {
 Notice how similar it is to finding max length with upper bounded constraint by [Sliding window](../../../2020/09/28/sliding-window.html#max-length) - the window never shrinks.
 
 Another solution is Line weep. We consolidate the number of occupied rooms at each time and find the max.
+
+Same problem: [Divide Intervals Into Minimum Number of Groups][divide-intervals-into-minimum-number-of-groups]
 
 [Maximum Number of Events That Can Be Attended][maximum-number-of-events-that-can-be-attended]
 
@@ -744,25 +768,6 @@ public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int du
 }
 {% endhighlight %}
 
-# Cover
-
-[Remove Covered Intervals][remove-covered-intervals]
-
-{% highlight java %}
-public int removeCoveredIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
-
-    int remaining = 1, end = intervals[0][1];
-    for (int i = 1; i < intervals.length; i++) {
-        if (intervals[i][1] > end) {
-            remaining++;
-            end = intervals[i][1];
-        }
-    }
-    return remaining;
-}
-{% endhighlight %}
-
 # Data Structure
 
 [Seat Reservation Manager][seat-reservation-manager]
@@ -982,6 +987,7 @@ class Interval implements Comparable<Interval> {
 [amount-of-new-area-painted-each-day]: https://leetcode.com/problems/amount-of-new-area-painted-each-day/
 [check-if-all-the-integers-in-a-range-are-covered]: https://leetcode.com/problems/check-if-all-the-integers-in-a-range-are-covered/
 [count-integers-in-intervals]: https://leetcode.com/problems/count-integers-in-intervals/
+[count-ways-to-group-overlapping-ranges]: https://leetcode.com/problems/count-ways-to-group-overlapping-ranges/
 [course-schedule-iii]: https://leetcode.com/problems/course-schedule-iii/
 [divide-intervals-into-minimum-number-of-groups]: https://leetcode.com/problems/divide-intervals-into-minimum-number-of-groups/
 [exam-room]: https://leetcode.com/problems/exam-room/

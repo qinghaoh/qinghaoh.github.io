@@ -47,10 +47,11 @@ Proof: [Divergence of the Sum of the Reciprocals of the Primes](https://en.wikip
 
 {% highlight java %}
 public boolean gcdSort(int[] nums) {
-    int[] minPrime = sieve(Arrays.stream(nums).max().getAsInt() + 1);
+    // minPrims[i]: min prime factor of number i
+    int[] minPrimes = sieve(Arrays.stream(nums).max().getAsInt() + 1);
 
     for (int num : nums) {
-        for (int p : primeFactorization(num, minPrime)) {
+        for (int p : primeFactorization(num, minPrimes)) {
             union(num, p);
         }
     }
@@ -68,26 +69,26 @@ public boolean gcdSort(int[] nums) {
 }
 
 private int[] sieve(int n) {
-    int[] minPrime = IntStream.range(0, n).toArray();
+    int[] minPrimes = IntStream.range(0, n).toArray();
 
     for (int i = 2; i * i < n; i++) {
-        if (minPrime[i] == i) {
+        if (minPrimes[i] == i) {
             for (int j = i * i; j < n; j += i) {
-                if (minPrime[j] > i) {
-                    minPrime[j] = i;
+                if (minPrimes[j] > i) {
+                    minPrimes[j] = i;
                 }
             }
         }
     }
 
-    return minPrime;
+    return minPrimes;
 }
 
-private List<Integer> primeFactorization(int n, int[] minPrime) {
+private List<Integer> primeFactorization(int n, int[] minPrimes) {
     List<Integer> list = new ArrayList<>();
     while (n > 1) {
-        list.add(minPrime[n]);
-        n /= minPrime[n];
+        list.add(minPrimes[n]);
+        n /= minPrimes[n];
     }
     return list;
 }
