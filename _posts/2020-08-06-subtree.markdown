@@ -218,6 +218,61 @@ public int getKthAncestor(int node, int k) {
 
 # Rerooting
 
+[Count Number of Possible Root Nodes][count-number-of-possible-root-nodes]
+
+{% highlight java %}
+private List<Integer>[] tree;
+// if guesses contains [u, v], guessGraph[u] contains v
+private Set<Integer>[] guessGraph;
+// dp map while re-rooting
+// map[d]: number of nodes whose number of correct guesses is c0 + d, if the node is viewed as root
+private Map<Integer, Integer> map = new HashMap<>();
+// correct guesses when the root is at node 0
+private int c0 = 0;
+
+public int rootCount(int[][] edges, int[][] guesses, int k) {
+    int n = edges.length + 1;
+    this.tree = new List[n];
+    this.guessGraph = new Set[n];
+    for (int i = 0; i < n; i++) {
+        tree[i] = new ArrayList<>();
+        guessGraph[i] = new HashSet<>();
+    }
+    for (int[] e : edges) {
+        tree[e[0]].add(e[1]);
+        tree[e[1]].add(e[0]);
+    }
+
+    for (int[] g : guesses) {
+        guessGraph[g[0]].add(g[1]);
+    }
+
+    dfs(0, -1, 0);
+
+    int sum = 0;
+    for (var e : map.entrySet()) {
+        sum += e.getValue() * (c0 + e.getKey() >= k ? 1 : 0);
+    }
+    return sum;
+}
+
+// re-rooting
+// @param delta if the number of correct guesses is c when node is the root, then delta = c - c0
+private void dfs(int node, int parent, int delta) {
+    map.put(delta, map.getOrDefault(delta, 0) + 1);
+    for (int child : tree[node]) {
+        if (child != parent) {
+            c0 += guessGraph[node].contains(child) ? 1 : 0;
+            // when root changes from node to child
+            // the number of correct guesses changes by one at most
+            // i.e. guess [node, child] changes from true to false,
+            //      while guess [child, node] changes from false to true
+            dfs(child, node, delta + (guessGraph[child].contains(node) ? 1 : 0) - (guessGraph[node].contains(child) ? 1 : 0));
+        }
+    }
+}
+{% endhighlight %}
+
 [Difference Between Maximum and Minimum Price Sum][difference-between-maximum-and-minimum-price-sum]
 
 {% highlight java %}
@@ -374,6 +429,7 @@ class TrieNode {
 }
 {% endhighlight %}
 
+[count-number-of-possible-root-nodes]: https://leetcode.com/problems/count-number-of-possible-root-nodes/
 [cycle-length-queries-in-a-tree]: https://leetcode.com/problems/cycle-length-queries-in-a-tree/
 [difference-between-maximum-and-minimum-price-sum]: https://leetcode.com/problems/difference-between-maximum-and-minimum-price-sum/
 [find-distance-in-a-binary-tree]: https://leetcode.com/problems/find-distance-in-a-binary-tree/

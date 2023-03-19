@@ -7,13 +7,14 @@ tags: divide-and-conquer
 
 {% highlight java %}
 public ListNode mergeKLists(ListNode[] lists) {
-    if (lists.length == 0) {
+    int k = lists.length;
+    if (k == 0) {
         return null;
     }
 
     int interval = 1;
-    while (interval < lists.length) {
-        for (int i = 0; i + interval < lists.length; i += interval * 2) {
+    while (interval < k) {
+        for (int i = 0; i + interval < k; i += interval * 2) {
             lists[i] = mergeTwoLists(lists[i], lists[i + interval]);            
         }
         interval *= 2;

@@ -331,6 +331,29 @@ public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
 }
 {% endhighlight %}
 
+**Multi-layer**
+
+[Number of Ways to Earn Points][number-of-ways-to-earn-points]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+
+public int waysToReachTarget(int target, int[][] types) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;
+
+    for (int[] t : types) {
+        for (int j = target; j >= 0; j--) {
+            for (int k = 1; k <= t[0] && k * t[1] <= j; k++) {
+                dp[j] = (dp[j] + dp[j - k * t[1]]) % MOD;
+            }
+        }
+    }
+
+    return dp[target];
+}
+{% endhighlight %}
+
 ## Top-down
 
 [Maximize Total Tastiness of Purchased Fruits][maximize-total-tastiness-of-purchased-fruits]
@@ -586,6 +609,7 @@ public int coinChange(int[] coins, int amount) {
 [maximum-profit-from-trading-stocks]: https://leetcode.com/problems/maximum-profit-from-trading-stocks/
 [maximize-total-tastiness-of-purchased-fruits]: https://leetcode.com/problems/maximize-total-tastiness-of-purchased-fruits/
 [number-of-great-partitions]: https://leetcode.com/problems/number-of-great-partitions/
+[number-of-ways-to-earn-points]: https://leetcode.com/problems/number-of-ways-to-earn-points/
 [number-of-ways-to-build-house-of-cards]: https://leetcode.com/problems/number-of-ways-to-build-house-of-cards/
 [ones-and-zeroes]: https://leetcode.com/problems/ones-and-zeroes/
 [partition-equal-subset-sum]: https://leetcode.com/problems/partition-equal-subset-sum/

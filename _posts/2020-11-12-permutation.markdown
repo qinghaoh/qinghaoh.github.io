@@ -28,6 +28,26 @@ public String getPermutation(int n, int k) {
 
 # Lexicographically Sort
 
+[Maximize Greatness of an Array][maximize-greatness-of-an-array]
+
+{% highlight java %}
+public int maximizeGreatness(int[] nums) {
+    Arrays.sort(nums);
+
+    // two pointers
+    int count = 0;
+    for (int num : nums) {
+        // for each integer on its sorted position
+        // checks if the leftmost unused integer is less than it
+        // if not, continues
+        if (num > nums[count]) {
+            count++;
+        }
+    }
+    return count;
+}
+{% endhighlight %}
+
 ## Next Permutation
 
 [Next Permutation][next-permutation]
@@ -248,6 +268,7 @@ public int numPermsDISequence(String s) {
 {% endhighlight %}
 
 [construct-smallest-number-from-di-string]: https://leetcode.com/problems/construct-smallest-number-from-di-string/
+[maximize-greatness-of-an-array]: https://leetcode.com/problems/maximize-greatness-of-an-array/
 [minimum-number-of-operations-to-make-string-sorted]: https://leetcode.com/problems/minimum-number-of-operations-to-make-string-sorted/
 [next-permutation]: https://leetcode.com/problems/next-permutation/
 [numbers-with-repeated-digits]: https://leetcode.com/problems/numbers-with-repeated-digits/

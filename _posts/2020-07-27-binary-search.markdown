@@ -308,9 +308,8 @@ public int searchInsert(int[] nums, int target) {
 [Koko Eating Bananas][koko-eating-bananas]
 
 {% highlight java %}
-public int minEatingSpeed(int[] piles, int H) {
-    int target = H - piles.length;
-    int low = 1, high = 1_000_000_000;  // high can be max(piles)
+public int minEatingSpeed(int[] piles, int h) {
+    int low = 1, high = Arrays.stream(piles).max().getAsInt(), target = h - piles.length;
     while (low < high) {
         int mid = (low + high) >>> 1;
         int sum = 0;
