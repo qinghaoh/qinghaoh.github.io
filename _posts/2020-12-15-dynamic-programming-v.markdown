@@ -103,6 +103,67 @@ public int rob(int[] nums) {
 // --> Fibonacci
 {% endhighlight %}
 
+[The Number of Beautiful Subsets][the-number-of-beautiful-subsets]
+
+{% highlight java %}
+private Map<Integer, Integer> freqs = new HashMap<>();
+private Map<Integer, Integer> memo = new HashMap<>();
+private int k;
+
+public int beautifulSubsets(int[] nums, int k) {
+    this.k = k;
+
+    for (int num : nums) {
+        freqs.put(num, freqs.getOrDefault(num, 0) + 1);
+    }
+
+    int res = 1;
+    for (var e : freqs.entrySet()) {
+        int num = e.getKey();
+        if (!freqs.containsKey(num + k)) {
+            // +1 because of the empty set
+            res *= (dfs(num) + 1);
+        }
+    }
+
+    return res - 1;
+}
+
+private int dfs(int num) {
+    if (memo.containsKey(num)) {
+        return memo.get(num);
+    }
+
+    // the key set of the frequency map is deduped input set.
+    // we partition the key set into a few arithmetic sequences,
+    // and the difference in each sequence is k
+    // we process each sequence with house robber algorithm,
+    // and the final result is the product of the results of all sequences.
+
+    // house robber:
+    // denotes v = map[num], c = 2 ^ v - 1,
+    // where c is the count of all subsets of this "bucket", empty set excluded
+    // dp[num] = dpPick[num] * c + dpSkip[num]
+    //         = (dpSkip[num - k] + 1) * c + dp[num - k]    // +1 because of possible empty set before num
+    //         = dp[num - 2 * k] * c + dp[num - k] + c
+    int c = (int)Math.pow(2, freqs.get(num)) - 1;
+    int res = c;
+    if (!freqs.containsKey(num - k)) {
+        memo.put(num, res);
+        return res;
+    }
+
+    res += dfs(num - k);
+    if (freqs.containsKey(num - 2 * k)) {
+        res += dfs(num - 2 * k) * c;
+    }
+    memo.put(num, res);
+    return res;
+}
+{% endhighlight %}
+
+An alternative solution is backtracking, which is way slow than this `O(n)` solution.
+
 [Paint Fence][paint-fence]
 
 {% highlight java %}
@@ -662,4 +723,5 @@ public int minimumTime(String s) {
 [paint-house-ii]: https://leetcode.com/problems/paint-house-ii/
 [painting-a-grid-with-three-different-colors]: https://leetcode.com/problems/painting-a-grid-with-three-different-colors/
 [pizza-with-3n-slices]: https://leetcode.com/problems/pizza-with-3n-slices/
+[the-number-of-beautiful-subsets]: https://leetcode.com/problems/the-number-of-beautiful-subsets/
 [wiggle-subsequence]: https://leetcode.com/problems/wiggle-subsequence/

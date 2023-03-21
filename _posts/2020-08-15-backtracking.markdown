@@ -124,20 +124,6 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
 }
 {% endhighlight %}
 
-{% highlight java %}
-private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nums, int index) {
-    if (index == nums.length) {
-        list.add(new ArrayList<>(tmpList));
-        return;
-    }
-
-    backtrack(list, tmpList, nums, index + 1);
-    tmpList.add(nums[index]);
-    backtrack(list, tmpList, nums, index + 1);
-    tmpList.remove(tmpList.size() - 1);
-}
-{% endhighlight %}
-
 [Subsets II][subsets-ii]
 
 {% highlight java %}

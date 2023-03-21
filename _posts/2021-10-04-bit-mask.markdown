@@ -673,6 +673,8 @@ public int maxStudents(char[][] seats) {
 
 ## Partitioning
 
+Partition a dataset into groups. Each DFS level iterates the mask bits and tentatively adds each unused bit.
+
 [Partition to K Equal Sum Subsets][partition-to-k-equal-sum-subsets]
 
 {% highlight java %}

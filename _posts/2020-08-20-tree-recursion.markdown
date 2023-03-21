@@ -799,6 +799,36 @@ private void dfs(TreeNode node1, TreeNode node2, int level) {
 }
 {% endhighlight %}
 
+[Reorder Routes to Make All Paths Lead to the City Zero][reorder-routes-to-make-all-paths-lead-to-the-city-zero]
+
+{% highlight java %}
+private List<Integer>[] list;
+
+public int minReorder(int n, int[][] connections) {
+    this.list = new List[n];
+    for (int i = 0; i < n; i++) {
+        list[i] = new ArrayList<>();
+    }
+
+    for (int[] c : connections) {
+        list[c[0]].add(c[1]);
+        list[c[1]].add(-c[0]);
+    }
+    return dfs(0, 0);
+}
+
+private int dfs(int prev, int node) {
+    int sum = 0;
+    for (int next : list[node]) {
+        if (Math.abs(next) != prev) {
+            // next > 0 means the direction is node -> next
+            sum += dfs(node, Math.abs(next)) + (next > 0 ? 1 : 0);
+        }
+    }
+    return sum;
+}
+{% endhighlight %}
+
 # Nested DFS
 
 [Path Sum III][path-sum-iii]
@@ -1232,6 +1262,7 @@ public int checkWays(int[][] pairs) {
 [number-of-ways-to-reconstruct-a-tree]: https://leetcode.com/problems/number-of-ways-to-reconstruct-a-tree/
 [path-sum-iii]: https://leetcode.com/problems/path-sum-iii/
 [pseudo-palindromic-paths-in-a-binary-tree]: https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/
+[reorder-routes-to-make-all-paths-lead-to-the-city-zero]: https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/
 [reverse-odd-levels-of-binary-tree]: https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/
 [second-minimum-node-in-a-binary-tree]: https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/
 [smallest-missing-genetic-value-in-each-subtree]: https://leetcode.com/problems/smallest-missing-genetic-value-in-each-subtree/
