@@ -129,25 +129,26 @@ Count each element in an array `int[] a`.
 
 If `0 <= a[i] <= max`, where max is not too big, then we can use `int[] count = new int[max + 1]` as buckets, instead of `Map<Integer, Integer>` 
 
-# Rotation
+# Cycle
 
 [First Missing Positive][first-missing-positive]
 
 {% highlight java %}
 public int firstMissingPositive(int[] nums) {
+    int n = nums.length;
     // expected: nums[i] = i + 1
-    for (int i = 0; i < nums.length; i++) {
-        while (nums[i] > 0 && nums[i] <= nums.length && nums[i] != nums[nums[i] - 1]) {
+    for (int i = 0; i < n; i++) {
+        while (nums[i] > 0 && nums[i] <= n && nums[i] != nums[nums[i] - 1]) {
             swap(nums, i, nums[i] - 1);
         }
     }
 
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < n; i++) {
         if (nums[i] != i + 1) {
             return i + 1;
         }
     }
-    return nums.length + 1;
+    return n + 1;
 }
 {% endhighlight %}
 
@@ -171,6 +172,18 @@ public void rotate(int[] nums, int k) {
         start++;
     }
     return;
+}
+{% endhighlight %}
+
+[Make K-Subarray Sums Equal][make-k-subarray-sums-equal]
+
+{% highlight java %}
+for (int i = 0; i < n; i++) {
+    for (int j = i; arr[j] > 0; j = (j + k) % n) {
+        ...
+        arr[j] = 0;
+    }
+    ...
 }
 {% endhighlight %}
 
@@ -925,6 +938,7 @@ public long largestEvenSum(int[] nums, int k) {
 [first-missing-positive]: https://leetcode.com/problems/first-missing-positive/
 [gas-station]: https://leetcode.com/problems/gas-station/
 [longest-consecutive-sequence]: https://leetcode.com/problems/longest-consecutive-sequence/
+[make-k-subarray-sums-equal]: https://leetcode.com/problems/make-k-subarray-sums-equal/
 [max-chunks-to-make-sorted-ii]: https://leetcode.com/problems/max-chunks-to-make-sorted-ii/
 [maximum-matrix-sum]: https://leetcode.com/problems/maximum-matrix-sum/
 [maximum-building-height]: https://leetcode.com/problems/maximum-building-height/

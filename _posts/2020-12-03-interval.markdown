@@ -714,6 +714,59 @@ public int intersectionSizeTwo(int[][] intervals) {
 }
 {% endhighlight %}
 
+[Minimum Time to Complete All Tasks][minimum-time-to-complete-all-tasks]
+
+Credits to @Foxtail (see [here](https://leetcode.cn/problems/t3fKg1/solution/10xing-jie-jue-zhan-dou-by-foxtail-ke2e/)).
+
+{% highlight java %}
+// @Foxtail
+public int findMinimumTime(int[][] tasks) {
+    // it's optimal to start each task as late as possible
+    // in this way, it's most likely to overlap with the following tasks
+    //
+    // initially, the latest start time (LST) of task[i] = end_i - duration_i + 1
+    // among a few tasks, the task with smallest LST should start first
+    Arrays.sort(tasks, Comparator.comparingInt(t -> t[0]));
+
+    // stores running tasks
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+    // min time during which the computer should be turned on
+    int turnedOnTime = 0;
+    for (int i = 0; i <= tasks.length; i++) {
+        // tasks[i][0] is the current time instant
+        //
+        // if top[0] represents the k-th task
+        //   top[0] + turnedOnTime (at current time, i.e., `tasks[i][0]`)
+        // = lst(tasks[k]) + turnedOnTime at time tasks[k][0] + turnedOnTime at time tasks[i][0]
+        // = lst(tasks[k]) + increased turnedOnTime during [k, i]
+        //
+        // for top[0], this value represents its current time since enqueued
+        while (!pq.isEmpty() && (i == tasks.length || pq.peek()[0] + turnedOnTime < tasks[i][0])) {
+            int[] top = pq.peek();
+            if (top[0] + turnedOnTime > top[1]) {
+                // the task is completed
+                pq.poll();
+            } else {  // top[0] + turnedOnTime < top[1] + 1
+                // delta = current turnedOnTime - previous turnedOnTime
+                // delta = Math.min(top[1] + 1, tasks[i][0]) - (top[0] + turnedOnTime)
+                // turnedOnTime += delta
+                //
+                // if top[i] < tasks[i][0], after this turnedOnTime change, the top will be popped 
+                // otherwise, after this turnedOnTime change, exits the loop
+                turnedOnTime = Math.min(top[1] + 1, i == tasks.length ? Integer.MAX_VALUE : tasks[i][0]) - top[0];
+            }
+        }
+
+        if (i < tasks.length) {
+            // `- turnedOnTime` to "hide" this value at this time instant in the node
+            pq.offer(new int[]{tasks[i][1] - tasks[i][2] + 1 - turnedOnTime, tasks[i][1]});
+        }
+    }
+
+    return turnedOnTime;
+}
+{% endhighlight %}
+
 # Dynamic Programming
 
 [Video Stitching][video-stitching]
@@ -1007,6 +1060,7 @@ class Interval implements Comparable<Interval> {
 [minimum-interval-to-include-each-query]: https://leetcode.com/problems/minimum-interval-to-include-each-query/
 [minimum-number-of-arrows-to-burst-balloons]: https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
 [minimum-number-of-taps-to-open-to-water-a-garden]: https://leetcode.com/problems/minimum-number-of-taps-to-open-to-water-a-garden/
+[minimum-time-to-complete-all-tasks]: https://leetcode.com/problems/minimum-time-to-complete-all-tasks/
 [non-overlapping-intervals]: https://leetcode.com/problems/non-overlapping-intervals/
 [range-module]: https://leetcode.com/problems/range-module/
 [remove-covered-intervals]: https://leetcode.com/problems/remove-covered-intervals/
