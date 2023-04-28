@@ -106,6 +106,60 @@ public int trapRainWater(int[][] heightMap) {
 
 In fact, this problem can be solved with [Dijkstra's algorithm](../../../https://qinghaoh.github.io/2020/09/23/shortest-path.html#dijkstra), too.
 
+**Set**
+
+[Minimum Reverse Operations][minimum-reverse-operations]
+
+{% highlight java %}
+public int[] minReverseOperations(int n, int p, int[] banned, int k) {
+    int[] ans = new int[n];
+    Arrays.fill(ans, -1);
+    ans[p] = 0;
+
+    Set<Integer> banSet = Arrays.stream(banned).mapToObj(Integer::valueOf).collect(Collectors.toSet());
+    // sets of unvisited positions
+    TreeSet<Integer> even = new TreeSet<>(), odd = new TreeSet<>();
+    for (int i = 0; i < n; i++) {
+        if (i != p && !banSet.contains(i)) {
+            (i % 2 == 0 ? even : odd).add(i);
+        }
+    }
+
+    // BFS
+    Queue<Integer> q = new LinkedList<>();
+    q.offer(p);
+    while (!q.isEmpty()) {
+        int index = q.poll();
+
+        // given k, the parity of the next position of a specific index is certain
+        var set = (k ^ index) % 2 == 0 ? odd : even;
+
+        int[] range = getRange(n, index, k);
+        var sub = set.subSet(range[0], true, range[1], true);
+        for (var i : sub) {
+            ans[i] = ans[index] + 1;
+            q.offer(i);
+        }
+        sub.clear();
+    }
+    return ans;
+}
+
+private int[] getRange(int n, int index, int k) {
+    // left most candidate subarray
+    int l1 = Math.max(0, index - k + 1);
+    int r1 = l1 + k - 1;
+
+    // right most candidate subarray
+    int r2 = Math.min(n - 1, index + k - 1);
+    int l2 = r2 - k + 1;
+
+    // r[0] and index are symmetric about the center of [l1, l1]
+    // r[1] and index are symmetric about the center of [l2, l2]
+    return new int[]{l1 + r1 - index, l2 + r2 - index};
+}
+{% endhighlight %}
+
 # Composite Vertex
 
 [Minimum Jumps to Reach Home][minimum-jumps-to-reach-home]
@@ -912,6 +966,7 @@ public int shortestPathLength(int[][] graph) {
 [minimum-jumps-to-reach-home]: https://leetcode.com/problems/minimum-jumps-to-reach-home/
 [minimum-knight-moves]: https://leetcode.com/problems/minimum-knight-moves/
 [minimum-moves-to-reach-target-with-rotations]: https://leetcode.com/problems/minimum-moves-to-reach-target-with-rotations/
+[minimum-reverse-operations]: https://leetcode.com/problems/minimum-reverse-operations/
 [nested-list-weight-sum-ii]: https://leetcode.com/problems/nested-list-weight-sum-ii/
 [rotting-oranges]: https://leetcode.com/problems/rotting-oranges/
 [second-minimum-time-to-reach-destination]: https://leetcode.com/problems/second-minimum-time-to-reach-destination/
