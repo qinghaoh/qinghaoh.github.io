@@ -95,9 +95,9 @@ public boolean isSubsequence(String s, String t) {
 
 The above map pattern (character: list of indices) is very useful in many problems.
 
-## Dynamic Programming
+## LIS (Longest Increasing Subsequence)
 
-### LIS (Longest Increasing Subsequence)
+### Dynamic Programming
 
 [Longest Increasing Subsequence][longest-increasing-subsequence]
 
@@ -188,7 +188,7 @@ public int minDeletionSize(String[] strs) {
 
 [Russian Doll Envelopes][russian-doll-envelopes]: 2D
 
-#### Patience Sorting
+### Patience Sorting
 
 A quicker solution is [Patience sorting](https://en.wikipedia.org/wiki/Patience_sorting). [This](https://www.cs.princeton.edu/courses/archive/spring13/cos423/lectures/LongestIncreasingSubsequence.pdf) is a Princeton lecture for it.
 
@@ -237,7 +237,7 @@ public int lengthOfLIS(int[] nums) {
 }
 {% endhighlight %}
 
-#### Variants
+### Variants
 
 **Longest Non-Decreasing Sequence**
 
@@ -275,6 +275,35 @@ private int binarySearch(int[] piles, int end, int target) {
 {% endhighlight %}
 
 [Minimum Operations to Make the Array K-Increasing][minimum-operations-to-make-the-array-k-increasing]
+
+[Make Array Empty][make-array-empty]
+
+{% highlight java %}
+public long countOperationsToEmptyArray(int[] nums) {
+    int n = nums.length;
+    Integer[] indices = new Integer[n];
+    for (int i = 0; i < n; i++) {
+        indices[i] = i;
+    }
+
+    Arrays.sort(indices, Comparator.comparingInt(i -> nums[i]));
+
+    // without reordering, groups the elements into increasing subsequences
+    // e.g. [1, 2, 4, 3, 5, 0] has 3 groups (in sorted order)
+    //  - [0]
+    //  - [1, 2, 3]
+    //  - [4, 5]
+    long operations = n;
+    for (int i = 1; i < n; i++) {
+        if (indices[i] < indices[i - 1]) {
+            // the second operation occurs only at group transitions
+            // and its count is the count of the remaining elements
+            operations += n - i;
+        }
+    }
+    return operations;
+}
+{% endhighlight %}
 
 **Mountain Array**
 
@@ -331,6 +360,8 @@ public int minOperations(int[] target, int[] arr) {
     return n - lis;
 }
 {% endhighlight %}
+
+## Dynamic Programming
 
 [Shortest Common Supersequence][shortest-common-supersequence]
 
@@ -695,6 +726,7 @@ private void backtrack(int[] freq, int len, StringBuilder sb) {
 [longest-arithmetic-subsequence-of-given-difference]: https://leetcode.com/problems/longest-arithmetic-subsequence-of-given-difference/
 [longest-increasing-subsequence]: https://leetcode.com/problems/longest-increasing-subsequence/
 [longest-subsequence-repeated-k-times]: https://leetcode.com/problems/longest-subsequence-repeated-k-times/
+[make-array-empty]: https://leetcode.com/problems/make-array-empty/
 [minimum-number-of-removals-to-make-mountain-array]: https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/
 [minimum-operations-to-make-a-subsequence]: https://leetcode.com/problems/minimum-operations-to-make-a-subsequence/
 [minimum-operations-to-make-the-array-k-increasing]: https://leetcode.com/problems/minimum-operations-to-make-the-array-k-increasing/

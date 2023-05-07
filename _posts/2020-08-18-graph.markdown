@@ -4,6 +4,67 @@ title:  "Graph"
 tags: graph
 usemathjax: true
 ---
+# Representation
+
+Nodes from `0` to `n`:
+1. `Map<Integer, List<Integer>>`: unweighted
+2. `Map<Integer, Map<Integer, Integer>>`: weighted
+3. `List<Integer>[]`: unweighted
+4. `List<int[]>[]`: weighted
+
+Coordinates:
+1. `Map<String, List<String>>`: `x + "#" + y`
+2. `Map<List<>, List<List<>>>`: `Arrays.asList(x, y)`
+
+Implicit:
+
+[Minimum Cost of a Path With Special Roads][minimum-cost-of-a-path-with-special-roads]
+
+{% highlight java %}
+public int minimumCost(int[] start, int[] target, int[][] specialRoads) {
+    // considers only special roads that are cheaper than direct paths
+    List<int[]> roads = Arrays.stream(specialRoads)
+        .filter(r -> r[4] < getDistance(r[0], r[1], r[2], r[3]))
+        .collect(Collectors.toList());
+
+    // {road end, current min distance from src to the road end}
+    Map<List<Integer>, Integer> dist = new HashMap<>();
+    dist.put(Arrays.asList(start[0], start[1]), 0);
+
+    // {x, y, cost}
+    // the heap contains src and road ends
+    Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    pq.offer(new int[]{start[0], start[1], 0});
+    while (!pq.isEmpty()) {
+        int[] node = pq.poll();
+        for (int[] r : roads) {
+            // cost from current node to the road end
+            // = current cost + current node to the road start + road cost
+            int alt = node[2] + getDistance(node[0], node[1], r[0], r[1]) + r[4];
+            var k = Arrays.asList(r[2], r[3]);
+            if (alt < dist.getOrDefault(k, Integer.MAX_VALUE)) {
+                dist.put(k, alt);
+                pq.offer(new int[]{r[2], r[3], alt});
+            }
+        }
+    }
+
+    // completes the last mile - from road ends to the target
+    int min = getDistance(start[0], start[1], target[0], target[1]);
+    for (int[] r : roads) {
+        var k = Arrays.asList(r[2], r[3]);
+        if (dist.containsKey(k)) {
+            min = Math.min(min, dist.get(k) + getDistance(r[2], r[3], target[0], target[1]));
+        }
+    }
+    return min;
+}
+
+private int getDistance(int x1, int y1, int x2, int y2) {
+    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+}
+{% endhighlight %}
+
 # Connectivity
 
 ## Bridge
@@ -855,6 +916,7 @@ public List<Integer> mostSimilar(int n, int[][] roads, String[] names, String[] 
 [knight-dialer]: https://leetcode.com/problems/knight-dialer/
 [maximum-cost-of-trip-with-k-highways]: https://leetcode.com/problems/maximum-cost-of-trip-with-k-highways/
 [maximum-number-of-accepted-invitations]: https://leetcode.com/problems/maximum-number-of-accepted-invitations/
+[minimum-cost-of-a-path-with-special-roads]: https://leetcode.com/problems/minimum-cost-of-a-path-with-special-roads/
 [minimum-operations-to-remove-adjacent-ones-in-matrix]: https://leetcode.com/problems/minimum-operations-to-remove-adjacent-ones-in-matrix/
 [reconstruct-itinerary]: https://leetcode.com/problems/reconstruct-itinerary/
 [the-most-similar-path-in-a-graph]: https://leetcode.com/problems/the-most-similar-path-in-a-graph/

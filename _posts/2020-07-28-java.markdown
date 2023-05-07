@@ -140,7 +140,11 @@ Queue implementations generally do not allow insertion of ***null*** elements, a
 Generally speaking, we need an N-dimensional array to represent an N-dimensional point. There are a few ways of representing a point in Java.
 
 * `T[]`
+
+Arrays can't be used as map keys. Alternatively, the following can be used as map keys:
+
 * [Point](https://docs.oracle.com/en/java/javase/18/docs/api/java.desktop/java/awt/Point.html)
+* `List`
 * Special character delimited String, e.g. `(x, y)` can be represented as `x#y`, where `#` is the delimiter.
 
 [Perfect Rectangle][perfect-rectangle]
