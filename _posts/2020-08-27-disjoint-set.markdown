@@ -224,16 +224,15 @@ public double[] calcEquation(List<List<String>> equations, double[] values, List
 }
 
 private String find(String u) {
-    if (!parents.containsKey(u)) {
+    if (!parents.containsKey(u) || parents.get(u).equals(u)) {
         ratios.put(u, 1.0);
         return u;
     }
 
     // path compression
-    String p = parents.get(u);
-    String gp = find(p);
-    parent.put(u, gp);
-    ratio.put(u, ratio.get(u) * ratios.get(p));  // gp = p * ratio(p) = u * ratio(u) * ratio(p)
+    String p = parents.get(u), gp = find(p);
+    parents.put(u, gp);
+    ratios.put(u, ratios.get(u) * ratios.get(p));  // gp = p * ratio(p) = u * ratio(u) * ratio(p)
     return gp;
 }
 
@@ -245,7 +244,7 @@ private void union(String u, String v, double value) {
     // ratio = pu / pv
     //   = u * ratios(u) / (v * ratios(v))
     //   = value * ratios(u) / ratios(v)
-    ratio.put(pv, value * ratios.get(u) / ratios.get(v));
+    ratios.put(pv, value * ratios.get(u) / ratios.get(v));
 }
 
 private double query(String s1, String s2) {

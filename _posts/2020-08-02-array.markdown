@@ -366,6 +366,21 @@ public int minFlips(String s) {
 }
 {% endhighlight %}
 
+[Minimum Cost to Make All Characters Equal][minimum-cost-to-make-all-characters-equal]
+
+{% highlight java %}
+public long minimumCost(String s) {
+    long cost = 0;
+    int n = s.length();
+    for (int i = 1; i < n; i++) {
+        if (s.charAt(i) != s.charAt(i - 1)) {
+            cost += Math.min(i, n - i);
+        }
+    }
+    return cost;
+}
+{% endhighlight %}
+
 # Split
 
 [Smallest Range II][smallest-range-ii]
@@ -942,6 +957,7 @@ public long largestEvenSum(int[] nums, int k) {
 [max-chunks-to-make-sorted-ii]: https://leetcode.com/problems/max-chunks-to-make-sorted-ii/
 [maximum-matrix-sum]: https://leetcode.com/problems/maximum-matrix-sum/
 [maximum-building-height]: https://leetcode.com/problems/maximum-building-height/
+[minimum-cost-to-make-all-characters-equal]: https://leetcode.com/problems/minimum-cost-to-make-all-characters-equal/
 [minimum-deletions-to-make-array-beautiful]: https://leetcode.com/problems/minimum-deletions-to-make-array-beautiful/
 [minimum-money-required-before-transactions]: https://leetcode.com/problems/minimum-money-required-before-transactions/
 [minimum-number-of-flips-to-make-the-binary-string-alternating]: https://leetcode.com/problems/minimum-number-of-flips-to-make-the-binary-string-alternating/

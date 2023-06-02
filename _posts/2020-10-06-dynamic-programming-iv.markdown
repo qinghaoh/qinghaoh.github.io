@@ -665,6 +665,39 @@ public int cherryPickup(int[][] grid) {
 }
 {% endhighlight %}
 
+[Maximum Strictly Increasing Cells in a Matrix][maximum-strictly-increasing-cells-in-a-matrix]
+
+{% highlight java %}
+public int maxIncreasingCells(int[][] mat) {
+    int m = mat.length, n = mat[0].length;
+    Map<Integer, List<int[]>> map = new TreeMap<>();
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            map.computeIfAbsent(mat[i][j], k -> new ArrayList<int[]>()).add(new int[]{i, j});
+        }
+    }
+
+    // tmp[i][j]: the max number of cells that can be visited by starting from (i, j)
+    int[][] tmp = new int[m][n];
+    int[] dpRows = new int[m], dpCols = new int[n];
+    int max = 0;
+    // interates the cells in ascending order
+    for (var v : map.values()) {
+        for (int[] cell : v) {
+            int i = cell[0], j = cell[1];
+            tmp[i][j] = Math.max(dpRows[i], dpCols[j]) + 1;
+            max = Math.max(max, tmp[i][j]);
+        }
+        for (int[] cell : v) {
+            int i = cell[0], j = cell[1];
+            dpRows[i] = Math.max(dpRows[i], tmp[i][j]);
+            dpCols[j] = Math.max(dpCols[j], tmp[i][j]);
+        }
+    }
+    return max;
+}
+{% endhighlight %}
+
 [bomb-enemy]: https://leetcode.com/problems/bomb-enemy/
 [cherry-pickup]: https://leetcode.com/problems/cherry-pickup/
 [cherry-pickup-ii]: https://leetcode.com/problems/cherry-pickup-ii/
@@ -677,6 +710,7 @@ public int cherryPickup(int[][] grid) {
 [maximal-rectangle]: https://leetcode.com/problems/maximal-rectangle/
 [maximal-square]: https://leetcode.com/problems/maximal-square/
 [maximum-number-of-points-with-cost]: https://leetcode.com/problems/maximum-number-of-points-with-cost/
+[maximum-strictly-increasing-cells-in-a-matrix]: https://leetcode.com/problems/maximum-strictly-increasing-cells-in-a-matrix/
 [minimum-path-sum]: https://leetcode.com/problems/minimum-path-sum/
 [out-of-boundary-paths]: https://leetcode.com/problems/out-of-boundary-paths/
 [selling-pieces-of-wood]: https://leetcode.com/problems/selling-pieces-of-wood/
