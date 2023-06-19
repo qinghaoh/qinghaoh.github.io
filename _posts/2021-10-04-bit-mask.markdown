@@ -56,7 +56,7 @@ private int dfs(int mask) {
 }
 {% endhighlight %}
 
-# Iteration
+# Enumeration
 
 [Iterator for Combination][iterator-for-combination]
 
@@ -162,74 +162,6 @@ public int minimumLines(int[][] points) {
 }
 {% endhighlight %}
 
-[Minimum Incompatibility][minimum-incompatibility]
-
-{% highlight java %}
-public int minimumIncompatibility(int[] nums, int k) {
-    int n = nums.length;
-    int groupSize = n / k;
-    if (groupSize == 1) {
-        return 0;
-    }
-
-    // ensures inner-group elements are sorted
-    Arrays.sort(nums);
-
-    // dp[mask][j]: min incompatibility if j is the index of last picked number
-    // dp[mask][n]: min of dp[mask][0...(n - 1)]
-    int[][] dp = new int[1 << n][n + 1];
-    int max = nums[n - 1] * n;
-    for (int i = 0; i < dp.length; i++) {
-        Arrays.fill(dp[i], max);
-    }
-    dp[0][n] = 0;
-
-    for (int mask = 1; mask < (1 << n); mask++) {
-        int bitCount = Integer.bitCount(mask), min = max;
-
-        for (int i = 0; i < n; i++) {
-            // picks used bits only
-            if ((mask & (1 << i)) == 0) {
-                continue;
-            }
-
-            int prev = mask ^ (1 << i);
-
-            // i is the first number of the new group
-            // dp[prev][n] = min(dp[prev][0...(n - 1)])
-            // i.e. prev ends with any index
-            // nums[i] is the min of the new group, so "-" it
-            if (bitCount % groupSize == 1) {
-                dp[mask][i] = dp[prev][n] - nums[i];
-            } else {
-                // last element of prev (i.e. nums[j]) and mask (i.e. nums[i]) are in the same new group
-                // updates the min incompatibility in this new group so far
-                // nums is sorted so the old index j < i
-                for (int j = 0; j < i && nums[j] < nums[i]; j++) {
-                    min = Math.min(min, dp[prev][j]);
-                }
-
-                // i is the last number of the new group
-                // nums[i] is the max of the new group, so "+" it
-                // other than this case, all the dp[mask][*] are "intermediate" incompatibility (not real)
-                if (bitCount % groupSize == 0) {
-                    dp[mask][i] = min + nums[i];
-                }
-
-                // others
-                if (bitCount % groupSize > 1) {
-                    dp[mask][i] = min;
-                }
-            }
-
-            dp[mask][n] = Math.min(dp[mask][n], dp[mask][i]);
-        }
-    }
-
-    return dp[(1 << n) - 1][n] == max ? -1 : dp[(1 << n) - 1][n];
-}
-{% endhighlight %}
-
 [Partition Array Into Two Arrays to Minimize Sum Difference][partition-array-into-two-arrays-to-minimize-sum-difference]
 
 {% highlight java %}
@@ -244,7 +176,7 @@ public int minimumDifference(int[] nums) {
     //   = Math.abs(p1 - (sum - p1))
     //   = Math.abs(sum - 2 * p1)
     //
-    // to make d == 0, p1 == sum / 2
+    // to make d == 0, p1 = sum / 2
     int min = Integer.MAX_VALUE, sum = Arrays.stream(nums).sum();
     for (int i = 0; i <= n; i++) {
         for (int l : leftSums[i]) {
@@ -253,8 +185,7 @@ public int minimumDifference(int[] nums) {
             // p1 = l + r
             // r = p1 - l
             //   = sum / 2 - l
-            int target = sum / 2 - l;
-            int r = binarySearch(rightSums[n - i], target);
+            int r = binarySearch(rightSums[n - i], sum / 2 - l);
 
             min = Math.min(min, Math.abs(sum - 2 * (l + r)));
         }
@@ -274,14 +205,13 @@ private List<Integer>[] subsetSums(int[] nums, int start) {
 
     // computes the subset sum of each state
     for (int s = 0; s < (1 << n); s++) {
-        int len = Integer.bitCount(s);
         int sum = 0;
         for (int i = 0; i < n; i++) {
             if ((s & (1 << i)) > 0) {
                 sum += nums[start + i];
             }
         }
-        sums[len].add(sum);
+        sums[Integer.bitCount(s)].add(sum);
     }
 
     Arrays.stream(sums).forEach(Collections::sort);
@@ -669,11 +599,86 @@ public int maxStudents(char[][] seats) {
 }
 {% endhighlight %}
 
-# DFS
+# Partitioning
 
-## Partitioning
+Partition a dataset into groups.
 
-Partition a dataset into groups. Each DFS level iterates the mask bits and tentatively adds each unused bit.
+Generally, each mask represents a state where `k` groups are complete and at most one group is incomplete. If there exists one incomplete group, then the new bit of the next mask will land in this group; otherwise, the new bit of the next mask will start a new group.
+
+## Iteration
+
+[Minimum Incompatibility][minimum-incompatibility]
+
+{% highlight java %}
+public int minimumIncompatibility(int[] nums, int k) {
+    int n = nums.length, groupSize = n / k;
+    if (groupSize == 1) {
+        return 0;
+    }
+
+    // ensures inner-group elements are sorted
+    Arrays.sort(nums);
+
+    // dp[mask][i]: denotes b = Integer.bitCount(mask), r = b % groupSize, m = b / groupSize
+    //   - if r == 0, there are m complete arrays, and nums[i] is the last number of the new array.
+    //     dp[mask][i] is the min sum of incompatibilities of the m arrays where i is the index of the last picked number
+    //   - otherwise, there are m complete arrays and one incomplete array, and nums[i] is the last number of the incomplete array
+    //     dp[mask][i] is the min sum of incompatibilities of the m arrays, minus the minimum number of the incomplete array, where i is the index of the last picked number
+    //    
+    // dp[mask][n]: min of dp[mask][0...(n - 1)]
+    int[][] dp = new int[1 << n][n + 1];
+    int max = nums[n - 1] * n;
+    for (int i = 0; i < dp.length; i++) {
+        Arrays.fill(dp[i], max);
+    }
+    dp[0][n] = 0;
+
+    for (int mask = 1; mask < (1 << n); mask++) {
+        int bitCount = Integer.bitCount(mask), min = max;
+
+        for (int i = 0; i < n; i++) {
+            // picks set bits only so as to find the previous state
+            if ((mask & (1 << i)) == 0) {
+                continue;
+            }
+
+            int prev = mask ^ (1 << i);
+
+            if (bitCount % groupSize == 1) {
+                // nums[i] is the first and minimum number of the new group
+                // finds the min sum of incompatibilies of prev among all of its possible last elements
+                // since prev has complete groups only, any of its element could be the last element
+                // so the min sum of incompatibilites of prev is simply dp[prev][n]
+                dp[mask][i] = dp[prev][n] - nums[i];
+            } else {
+                // the last element of prev (i.e. nums[j]) and nums[i] are in the same incomplete group
+                // finds the min sum of incompatibilies of prev among all of its possible last elements
+                // nums is sorted, so only the elements with index j < i and nums[j] != nums[i] (i.e. nums[j] < nums[i]) could be the last elements
+                for (int j = 0; j < i && nums[j] != nums[i]; j++) {
+                    min = Math.min(min, dp[prev][j]);
+                }
+
+                // nums[i] is the last number of the new group
+                if (bitCount % groupSize == 0) {
+                    dp[mask][i] = min + nums[i];
+                }
+
+                if (bitCount % groupSize > 1) {
+                    dp[mask][i] = min;
+                }
+            }
+
+            dp[mask][n] = Math.min(dp[mask][n], dp[mask][i]);
+        }
+    }
+
+    return dp[(1 << n) - 1][n] == max ? -1 : dp[(1 << n) - 1][n];
+}
+{% endhighlight %}
+
+## DFS
+
+Each DFS level iterates the mask bits and tentatively adds each unused bit.
 
 [Partition to K Equal Sum Subsets][partition-to-k-equal-sum-subsets]
 

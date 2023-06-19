@@ -171,8 +171,13 @@ public long maxRunTime(int n, int[] batteries) {
 }
 {% endhighlight %}
 
+[Find a Good Subset of the Matrix][find-a-good-subset-of-the-matrix]
+
+See [this proof](https://leetcode.com/problems/find-a-good-subset-of-the-matrix/solutions/3622824/easy-o-n-simple-greedy-with-math-proof/) by @hero080
+
 [airplane-seat-assignment-probability]: https://leetcode.com/problems/airplane-seat-assignment-probability/
 [array-partition-i]: https://leetcode.com/problems/array-partition-i/
 [distant-barcodes]: https://leetcode.com/problems/distant-barcodes/
+[find-a-good-subset-of-the-matrix]: https://leetcode.com/problems/find-a-good-subset-of-the-matrix/
 [maximum-running-time-of-n-computers]: https://leetcode.com/problems/maximum-running-time-of-n-computers/
 [reorganize-string]: https://leetcode.com/problems/reorganize-string/

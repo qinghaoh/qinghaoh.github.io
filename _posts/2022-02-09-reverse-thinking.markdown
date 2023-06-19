@@ -117,5 +117,8 @@ For example, `n = 2, startPos = [1,1], s = "LURD"`
 
 We can see at each instruction, the virtual robot will eventually reach (0, 0) following the remaining instruction sequence.
 
+[Sum of Matrix After Queries][sum-of-matrix-after-queries]
+
 [execution-of-all-suffix-instructions-staying-in-a-grid]: https://leetcode.com/problems/execution-of-all-suffix-instructions-staying-in-a-grid/
 [maximum-segment-sum-after-removals]: https://leetcode.com/problems/maximum-segment-sum-after-removals/
+[sum-of-matrix-after-queries]: https://leetcode.com/problems/sum-of-matrix-after-queries/
