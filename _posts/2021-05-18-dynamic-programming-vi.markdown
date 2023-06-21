@@ -1076,11 +1076,71 @@ public int numberOfWays(int startPos, int endPos, int k) {
 }
 {% endhighlight %}
 
+# Digit Dynamic Programming
+
+[Count of Integers][count-of-integers]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+// memo[index][lowTight][highTight][sum]
+private Integer[][][][] memo;
+
+public int count(String num1, String num2, int min_sum, int max_sum) {
+    // makes num1 and num2 equal length
+    num1 = "0".repeat(num2.length() - num1.length()) + num1;
+
+    memo = new Integer[23][2][2][401];
+    int count1 = countStrings(0, max_sum, true, true, num1, num2);
+
+    memo = new Integer[23][2][2][401];
+    int count2 = countStrings(0, min_sum - 1, true, true, num1, num2);
+
+    return (count1 - count2 + MOD) % MOD;
+}
+
+/**
+    * Counts the number of integers in [num1, num2] whose sum of digits <= `sum`
+    * @param index: Index of the current index. Index 0 stands for the most significant digit.
+    * @param isLowTight: If all the selected digits so far are the lowest possible
+    * @param isHighTight: If all the selected digits so far are the highest possible
+    */
+private int countStrings(int index, int sum, boolean isLowTight, boolean isHighTight, String num1, String num2) {
+    if (sum < 0) {
+        return 0;
+    }
+
+    if (index == num2.length()) {
+        return 1;
+    }
+
+    int lowTight = isLowTight ? 1 : 0, highTight = isHighTight ? 1 : 0;
+    if (memo[index][lowTight][highTight][sum] != null) {
+        return memo[index][lowTight][highTight][sum];
+    }
+
+    int count = 0;
+    // e.g. num1 == 234, index == 1
+    //   if previous isLowTight is true, then the running number is 2**,
+    //     if we want to keep the current digit low tight, then it has to be 3.
+    //     any number lower than 3, e.g. 2, will yield 22* < 234
+    //   otherwise, the running number is more flexible, e.g. 3**
+    //     the current digit can be any number (as low as 0)
+    // same applies to isHighTight
+    int low = isLowTight ? num1.charAt(index) - '0' : 0;
+    int high = isHighTight ? num2.charAt(index) - '0' : 9;
+    for (int d = low; d <= high; d++) {
+        count = (count + countStrings(index + 1, sum - d, isLowTight && d == low, isHighTight && d == high, num1, num2) % MOD) % MOD;
+    }
+    return memo[index][lowTight][highTight][sum] = count;
+}
+{% endhighlight %}
+
 [best-team-with-no-conflicts]: https://leetcode.com/problems/best-team-with-no-conflicts/
 [build-array-where-you-can-find-the-maximum-exactly-k-comparisons]: https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/
 [choose-numbers-from-two-arrays-in-range]: https://leetcode.com/problems/choose-numbers-from-two-arrays-in-range/
 [coin-path]: https://leetcode.com/problems/coin-path/
 [count-increasing-quadruplets]: https://leetcode.com/problems/count-increasing-quadruplets/
+[count-of-integers]: https://leetcode.com/problems/count-of-integers/
 [first-day-where-you-have-been-in-all-the-rooms]: https://leetcode.com/problems/first-day-where-you-have-been-in-all-the-rooms/
 [frog-jump]: https://leetcode.com/problems/frog-jump/
 [longest-string-chain]: https://leetcode.com/problems/longest-string-chain/

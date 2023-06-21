@@ -398,11 +398,78 @@ public boolean wordPattern(String pattern, String s) {
 }
 {% endhighlight %}
 
+# Monotonic Map
+
+[Maximum Sum Queries][maximum-sum-queries]
+
+{% highlight java %}
+// {y: x + y}, ascending
+// candidates for the current query
+// monotonic map: keys are ascending, while values are descending
+private TreeMap<Integer, Integer> map = new TreeMap<>();
+
+public int[] maximumSumQueries(int[] nums1, int[] nums2, int[][] queries) {
+    int n = nums1.length, m = queries.length;
+    Integer[] numIndices = new Integer[n], queryIndices = new Integer[m];
+    for (int i = 0; i < n; i++) {
+        numIndices[i] = i;
+    }
+    for (int i = 0; i < m; i++) {
+        queryIndices[i] = i;
+    }
+
+    // iterates nums in descending order of x
+    // so we add candidate pairs to map as x decreases, rather than remove candiate pairs
+    Arrays.sort(numIndices, Comparator.comparingInt(i -> -nums1[i]));
+    Arrays.sort(queryIndices, Comparator.comparingInt(i -> -queries[i][0]));
+
+    int[] answer = new int[m];
+    for (int i = 0, j = 0; i < m; i++) {
+        int queryIndex = queryIndices[i];
+        // "nums1[j]" >= xi
+        while (j < n && nums1[numIndices[j]] >= queries[queryIndex][0]) {
+            int numIndex = numIndices[j];
+            update(nums2[numIndex], nums1[numIndex] + nums2[numIndex]);
+            j++;
+        }
+        // query(yi)
+        answer[queryIndices[i]] = query(queries[queryIndex][1]);
+    }
+    return answer;
+}
+
+private void update(int y, int xy) {
+    // if the candicates map already contains key y' >= y
+    // then x' + y' >= current x + y, as x is in descending order
+    // there is no need to put the current pair (y, x + y)
+    var e = map.ceilingEntry(y);
+    if (e != null && e.getValue() >= xy) {
+        return;
+    }
+
+    // maintains map values as monotically decreasing
+    // just like monotic stack
+    e = map.floorEntry(y);
+    while (e != null && e.getValue() <= xy) {
+        map.remove(e.getKey());
+        e = map.floorEntry(y);
+    }
+    map.put(y, xy);
+}
+
+// filters entries with key >= y only
+private int query(int y) {
+    var e = map.ceilingEntry(y);
+    return e == null ? -1 : e.getValue();
+}
+{% endhighlight %}
+
 [array-of-doubled-pairs]: https://leetcode.com/problems/array-of-doubled-pairs/
 [contains-duplicate-iii]: https://leetcode.com/problems/contains-duplicate-iii/
 [depth-of-bst-given-insertion-order]: https://leetcode.com/problems/depth-of-bst-given-insertion-order/
 [find-array-given-subset-sums]: https://leetcode.com/problems/find-array-given-subset-sums/
 [making-file-names-unique]: https://leetcode.com/problems/making-file-names-unique/
+[maximum-sum-queries]: https://leetcode.com/problems/maximum-sum-queries/
 [odd-even-jump]: https://leetcode.com/problems/odd-even-jump/
 [tuple-with-same-product]: https://leetcode.com/problems/tuple-with-same-product/
 [vowel-spellchecker]: https://leetcode.com/problems/vowel-spellchecker/
