@@ -112,8 +112,6 @@ Time Complexity:
 
 To skip visited vertices, we can use an array or set to mark them. See [reachable-nodes-in-subdivided-graph]. 
 
-A less efficient solution doesn't skip visited vertices, but the code is a bit concise, because we don't need to record the distance of a vertex when enqueued. An example is [Path with Maximum Probability][path-with-maximum-probability].
-
 ## Examples
 
 This section demos how to apply Dijkstra's algorithm to solve problems, along with some other steps (e.g. DFS).
@@ -270,7 +268,6 @@ Cost function is monotonically increasing/decreasing. The traditional cost funct
 
 {% highlight java %}
 public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
-    // builds graph
     List<int[]>[] graph = new List[n];
     for (int i = 0; i < n; i++) {
         graph[i] = new ArrayList<>();
@@ -284,28 +281,33 @@ public double maxProbability(int n, int[][] edges, double[] succProb, int start,
 
     // Dijkstra
     double[] p = new double[n];
-    p[start] = 1;
 
     // max heap
-    Queue<Integer> pq = new PriorityQueue<>(Comparator.comparingDouble(i -> -p[i]));
-    int curr = start;
+    Queue<Pair<Integer, Double>> pq = new PriorityQueue<>(Comparator.comparingDouble(a -> -a.getValue()));
+    Pair<Integer, Double> curr = new Pair<>(start, p[start] = 1);
     pq.offer(curr);
 
     while (!pq.isEmpty()) {
         curr = pq.poll();
-        if (curr == end) {
+        int u = curr.getKey();
+        double pu = curr.getValue();
+
+        if (u == end) {
             break;
         }
 
-        for (int[] next : graph[curr]) {
+        if (pu < p[u]) {
+            continue;
+        }
+
+        for (int[] next : graph[u]) {
             int neighbor = next[0], index = next[1];
-            if (p[curr] * succProb[index] > p[neighbor]) {
-                p[neighbor] = p[curr] * succProb[index];
-                pq.offer(neighbor);
+            double alt = p[u] * succProb[index];
+            if (alt > p[neighbor]) {
+                pq.offer(new Pair<>(neighbor, p[neighbor] = alt));
             }
         }
     }
-
     return p[end];
 }
 {% endhighlight %}

@@ -1227,8 +1227,12 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
     int i = 0, j = 0, max = 0, cover = 0;
     while (max < carpetLen && j < tiles.length) {
         if (i == j || tiles[i][0] + carpetLen > tiles[j][1]) {
-            // carpet fully covers tiles[j]
-            // moves tiles[j] into the window
+            // case 1: tiles[j] is the first tile (i == j)
+            //   carpet may be longer or shorter than this tile
+            //   so picks the min of the two as the covered length
+            // case 2: carpet fully covers tiles[j]
+            //
+            // in either case, moves tiles[j] into the window
             cover += Math.min(carpetLen, tiles[j][1] - tiles[j][0] + 1);
             max = Math.max(max, cover);
             j++;
@@ -1236,7 +1240,7 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
             // partial of tiles[j] is covered by the carpet
             int partial = Math.max(0, tiles[i][0] + carpetLen - tiles[j][0]);
             max = Math.max(max, cover + partial);
-            // moves tile[j] out of the window
+            // moves tile[i] out of the window
             cover -= tiles[i][1] - tiles[i][0] + 1;
             i++;
         }

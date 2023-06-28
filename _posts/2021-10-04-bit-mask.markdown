@@ -957,6 +957,45 @@ int dfs(List<Integer>[] h2p, int n, int hat, int mask, Integer[][] memo) {
 }
 {% endhighlight %}
 
+# Permutation
+
+The idea is similar to Partitioning problems: each DFS level iterates the mask bits and tentatively adds each unused bit.
+
+[Special Permutations][special-permutations]
+
+{% highlight java %}
+private static final int MOD = (int)1e9 + 7;
+private Integer[][] memo;
+
+public int specialPerm(int[] nums) {
+    int n = nums.length;
+    memo = new Integer[1 << n][n + 1];
+    return dfs(nums, 0, n);
+}
+
+private int dfs(int[] nums, int mask, int lastIndex) {
+    int n = nums.length;
+    if (mask == (1 << n) - 1) {
+        return 1;
+    }
+
+    if (memo[mask][lastIndex] != null) {
+        return memo[mask][lastIndex];
+    }
+
+    int perms = 0;
+    for (int i = 0; i < n; i++) {
+        if ((mask & (1 << i)) == 0) {
+            // assigns i-th bit
+            if (lastIndex == n || nums[i] % nums[lastIndex] == 0 || nums[lastIndex] % nums[i] == 0) {
+                perms = (perms + dfs(nums, mask | (1 << i), i)) % MOD;
+            }
+        }
+    }
+    return memo[mask][lastIndex] = perms;
+}
+{% endhighlight %}
+
 # Multi-dimension
 
 [Maximize Grid Happiness][maximize-grid-happiness]
@@ -1084,4 +1123,5 @@ private int dp(int[] nums, int numSlots, int index, int mask, int[] memo) {
 [partition-array-into-two-arrays-to-minimize-sum-difference]: https://leetcode.com/problems/partition-array-into-two-arrays-to-minimize-sum-difference/
 [partition-to-k-equal-sum-subsets]: https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
 [smallest-sufficient-team]: https://leetcode.com/problems/smallest-sufficient-team/
+[special-permutations]: https://leetcode.com/problems/special-permutations/
 [the-number-of-good-subsets]: https://leetcode.com/problems/the-number-of-good-subsets/

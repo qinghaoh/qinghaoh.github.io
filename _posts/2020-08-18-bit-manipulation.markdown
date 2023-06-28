@@ -265,6 +265,33 @@ public int[] singleNumber(int[] nums) {
 }
 {% endhighlight %}
 
+# Bit Count
+
+[Minimum Operations to Make the Integer Zero][minimum-operations-to-make-the-integer-zero]
+
+{% highlight java %}
+public int makeTheIntegerZero(int num1, int num2) {
+    long num = num1;
+    // num = num1 - k * num2 = 2 ^ i_1 + 2 ^ i_2 + ... + 2 ^ i_k
+    int k = 0;
+    while (true) {
+        // the operations to subtract powers of two from `num` is in the range
+        // [num.bitCount, num]: binary representation -> all ones
+        if (Long.bitCount(num) <= k && k <= num) {
+            return k;
+        }
+
+        // num >= 0 otherwise the msb will always be 1 and can't be removed
+        if (num2 > 0 && num < 0) {
+            return -1;
+        }
+
+        num -= num2;
+        k++;
+    }
+}
+{% endhighlight %}
+
 # And
 
 [Find a Value of a Mysterious Function Closest to Target][find-a-value-of-a-mysterious-function-closest-to-target]
@@ -804,6 +831,7 @@ public boolean validUtf8(int[] data) {
 [maximum-genetic-difference-query]: https://leetcode.com/problems/maximum-genetic-difference-query/
 [maximum-xor-of-two-numbers-in-an-array]: https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/
 [minimum-one-bit-operations-to-make-integers-zero]: https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/
+[minimum-operations-to-make-the-integer-zero]: https://leetcode.com/problems/minimum-operations-to-make-the-integer-zero/
 [minimum-operations-to-reduce-an-integer-to-0]: https://leetcode.com/problems/minimum-operations-to-reduce-an-integer-to-0/
 [missing-number]: https://leetcode.com/problems/missing-number/
 [single-number]: https://leetcode.com/problems/single-number/
