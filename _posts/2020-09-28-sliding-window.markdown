@@ -1249,10 +1249,47 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 }
 {% endhighlight %}
 
+# Dynamic Constraints
+
+In the following example, the constraints are "dynamic" - a series of fixed windows.
+
+[Count Zero Request Servers][count-zero-request-servers]
+
+{% highlight java %}
+public int[] countServers(int n, int[][] logs, int x, int[] queries) {
+    Arrays.sort(logs, Comparator.comparingInt(l -> l[1]));
+
+    int l = logs.length, m = queries.length;
+    Integer[] indices = new Integer[m];
+    for (int i = 0; i < m; i++) {
+        indices[i] = i;
+    }
+    Arrays.sort(indices, Comparator.comparingInt(i -> queries[i]));
+
+    int[] arr = new int[m];
+    int i = 0, j = 0, k = 0;
+    Map<Integer, Integer> freqs = new HashMap<>();
+    while (k < m) {
+        while (j < l && logs[j][1] <= queries[indices[k]]) {
+            freqs.put(logs[j][0], freqs.getOrDefault(logs[j][0], 0) + 1);
+            j++;
+        }
+        while (i < l && logs[i][1] < queries[indices[k]] - x) {
+            freqs.put(logs[i][0], freqs.get(logs[i][0]) - 1);
+            freqs.remove(logs[i][0], 0);
+            i++;
+        }
+        arr[indices[k++]] = n - freqs.size();
+    }
+    return arr;
+}
+{% endhighlight %}
+
 [count-number-of-nice-subarrays]: https://leetcode.com/problems/count-number-of-nice-subarrays/
 [count-subarrays-with-score-less-than-k]: https://leetcode.com/problems/count-subarrays-with-score-less-than-k/
 [count-the-number-of-good-subarrays]: https://leetcode.com/problems/count-the-number-of-good-subarrays/
 [count-vowel-substrings-of-a-string]: https://leetcode.com/problems/count-vowel-substrings-of-a-string/
+[count-zero-request-servers]: https://leetcode.com/problems/count-zero-request-servers/
 [delivering-boxes-from-storage-to-ports]: https://leetcode.com/problems/delivering-boxes-from-storage-to-ports/
 [find-all-anagrams-in-a-string]: https://leetcode.com/problems/find-all-anagrams-in-a-string/
 [find-k-th-smallest-pair-distance]: https://leetcode.com/problems/find-k-th-smallest-pair-distance/

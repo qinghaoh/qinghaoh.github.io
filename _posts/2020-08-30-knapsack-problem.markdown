@@ -16,6 +16,16 @@ maximize $$ \sum _{i=1}^{n}v_{i}x_{i} $$
 
 subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\in \{0,1\} $$
 
+## Template
+
+{% highlight java %}
+for (int elment : elements) {
+    for (int j = weight; j >= element; j--) {
+        dp[j] = Math.max(dp[j], dp[weight - element] + element);
+    }
+}
+{% endhighlight %}
+
 ## Subset Sum Problem
 
 The [subset sum problem (SSP)](https://en.wikipedia.org/wiki/Subset_sum_problem):  there is a multiset `S` of integers and a target-sum `T`, and the question is to decide whether any subset of the integers sum to precisely `T`. It's NP-complete.
@@ -41,6 +51,7 @@ public boolean canPartition(int[] nums) {
             if (j < nums[i]) {
                 dp[i + 1][j] = dp[i][j];
             } else {
+                // no picks || picks nums[i]
                 dp[i + 1][j] = dp[i][j] || dp[i][j - nums[i]];
             }
         }
@@ -153,69 +164,25 @@ public int countPartitions(int[] nums, int k) {
 }
 {% endhighlight %}
 
-[Split Array With Same Average][split-array-with-same-average]
+## Variants
 
-{% highlight java %}
-public boolean splitArraySameAverage(int[] nums) {
-    int n = nums.length, sum = Arrays.stream(nums).sum();
-
-    // dp[i][j]: whether it's possible to sum to i using j elements
-    boolean[][] dp = new boolean[sum + 1][n / 2 + 1];
-    dp[0][0] = true;
-
-    for (int num : nums) {
-        for (int i = sum; i >= num; i--) {
-            for (int j = 1; j <= n / 2; j++) {
-                dp[i][j] = dp[i][j] || dp[i - num][j - 1];
-            }
-        }
-    }
-
-    // if avg(A) = avg(B) = avg(nums)
-    // assumes size(A) <= size(B)
-    // sum(A) = avg(nums) * size(A)
-    //        = sum * size(A) / n
-    for (int i = 1; i <= n / 2; i++)  {
-        if (sum * i % n == 0 && dp[sum * i / n][i]) {
-            return true;
-        }
-    }
-    return false;
-}
-{% endhighlight %}
+**Max**
 
 [Last Stone Weight II][last-stone-weight-ii]
 
 {% highlight java %}
-private static final int MAX = 30 * 100;
-
 public int lastStoneWeightII(int[] stones) {
-    // dp[i]: in the smaller group, is it possible to sum to ii
-    // (with the first k stones, where the current stone s is the k-th stone)
-    boolean[] dp = new boolean[MAX / 2 + 1];
-    dp[0] = true;
-
-    int sum = 0;
-    for (int s : stones) {
-        sum += s;
-        // min to ensure smaller group
-        for (int i = Math.min(MAX / 2, sum); i >= s; i--) {
-            dp[i] |= dp[i - s];
+    int sum = Arrays.stream(stones).sum();
+    // max sum of the smaller group
+    int[] dp = new int[sum / 2 + 1];
+    for (int stone : stones) {
+        for (int j = sum / 2; j >= stone; j--) {
+            dp[j] = Math.max(dp[j], dp[j - stone] + stone);
         }
     }
-
-    for (int i = sum / 2; i >= 0; i--) {
-        if (dp[i]) {
-            return sum - 2 * i;
-        }
-    }
-    return 0;
+    return sum - 2 * dp[sum / 2];
 }
 {% endhighlight %}
-
-## Variants
-
-**Max**
 
 [Maximum Profit From Trading Stocks][maximum-profit-from-trading-stocks]
 
@@ -331,6 +298,41 @@ public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
 }
 {% endhighlight %}
 
+**Count of Selected Elements**
+
+[Split Array With Same Average][split-array-with-same-average]
+
+{% highlight java %}
+public boolean splitArraySameAverage(int[] nums) {
+int n = nums.length, sum = Arrays.stream(nums).sum();
+
+    // assumes size(A) <= size(B)
+    // dp[i][j]: whether it's possible to sum to i with j elements in array A
+    boolean[][] dp = new boolean[sum + 1][n / 2 + 1];
+    dp[0][0] = true;
+
+    for (int num : nums) {
+        for (int i = sum; i >= num; i--) {
+            // the second dimension is used to record the count of selected elements
+            for (int j = 1; j <= n / 2; j++) {
+                dp[i][j] = dp[i][j] || dp[i - num][j - 1];
+            }
+        }
+    }
+
+    // when avg(A) == avg(B) == avg(nums)
+    // sum(A) = avg(nums) * size(A)
+    //        = sum * size(A) / n
+    // iterates size(A) from 1 through n / 2
+    for (int i = 1; i <= n / 2; i++)  {
+        if (sum * i % n == 0 && dp[sum * i / n][i]) {
+            return true;
+        }
+    }
+    return false;
+}
+{% endhighlight %}
+
 **Multi-layer**
 
 [Number of Ways to Earn Points][number-of-ways-to-earn-points]
@@ -351,6 +353,32 @@ public int waysToReachTarget(int target, int[][] types) {
     }
 
     return dp[target];
+}
+{% endhighlight %}
+
+[Painting the Walls][painting-the-walls]
+
+{% highlight java %}
+private static final int MAX_COST = (int)5e8;
+
+public int paintWalls(int[] cost, int[] time) {
+    int n = cost.length;
+    // dp[i]: min amount of money required to paint i walls
+    int[] dp = new int[n + 1];
+    Arrays.fill(dp, MAX_COST);
+    dp[0] = 0;
+
+    for (int i = 0; i < n; i++) {
+        // j is the number of remaining walls
+        for (int j = n; j > 0; j--) {
+            // if a paid painter is selected for the current wall
+            // then in the time period time[i]:
+            // * 1 wall is painted by the paid painter
+            // * at most time[i] walls are painted by free painter
+            dp[j] = Math.min(dp[j], dp[Math.max(j - time[i] - 1, 0)] + cost[i]);
+        }
+    }
+    return dp[n];
 }
 {% endhighlight %}
 
@@ -612,6 +640,7 @@ public int coinChange(int[] coins, int amount) {
 [number-of-ways-to-earn-points]: https://leetcode.com/problems/number-of-ways-to-earn-points/
 [number-of-ways-to-build-house-of-cards]: https://leetcode.com/problems/number-of-ways-to-build-house-of-cards/
 [ones-and-zeroes]: https://leetcode.com/problems/ones-and-zeroes/
+[painting-the-walls]: https://leetcode.com/problems/painting-the-walls/
 [partition-equal-subset-sum]: https://leetcode.com/problems/partition-equal-subset-sum/
 [profitable-schemes]: https://leetcode.com/problems/profitable-schemes/
 [split-array-with-same-average]: https://leetcode.com/problems/split-array-with-same-average/
