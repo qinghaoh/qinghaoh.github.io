@@ -20,11 +20,15 @@ subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\in \{0,1\} $$
 
 {% highlight java %}
 for (int elment : elements) {
-    for (int j = weight; j >= element; j--) {
-        dp[j] = Math.max(dp[j], dp[weight - element] + element);
+    for (int i = weight; i >= element; i--) {
+        dp[i] = Math.max(dp[i], dp[weight - element] + element);
     }
 }
 {% endhighlight %}
+
+The problem [Parition Equal Subset Sum][partition-equal-subset-sum] below demonstrates how the template is derived. Mapping the template to the Knapsack model: `weight` is the upper bound of the picked element sum, and `dp[i]` is the optimal `value` when the weight sum is `i`.
+
+The key point of solving Knapsack Problem is to identify the meaning of `weight` and `value` under a specific condition and apply the template.
 
 ## Subset Sum Problem
 
@@ -173,11 +177,39 @@ public int countPartitions(int[] nums, int k) {
 {% highlight java %}
 public int lastStoneWeightII(int[] stones) {
     int sum = Arrays.stream(stones).sum();
-    // max sum of the smaller group
+    boolean[] dp = new boolean[sum / 2 + 1];
+    dp[0] = true;
+
+    for (int stone : stones) {
+        // considers smaller group only
+        for (int i = sum / 2; i >= stone; i--) {
+            dp[i] = dp[i] || dp[i - stone];
+        }
+    }
+
+    // smaller group
+    for (int i = sum / 2; i >= 0; i--) {
+        if (dp[i]) {
+            return sum - 2 * i;
+        }
+    }
+    return 0;
+}
+{% endhighlight %}
+
+{% highlight java %}
+public int lastStoneWeightII(int[] stones) {
+    int sum = Arrays.stream(stones).sum();
+    // dp[i]: weight sum of stones that is closest to i
+    //   it's possible that no group of stones can sum to i
+    //   e.g. stones = [1,2,5]
+    //   dp = [0, 1, 2, 3, 3]
+    //   dp[sum / 2] = dp[4] = 3, i.e. stone 1 and 2
     int[] dp = new int[sum / 2 + 1];
     for (int stone : stones) {
-        for (int j = sum / 2; j >= stone; j--) {
-            dp[j] = Math.max(dp[j], dp[j - stone] + stone);
+        // the smaller group has a sum no greater than sum / 2
+        for (int i = sum / 2; i >= stone; i--) {
+            dp[i] = Math.max(dp[i], dp[i - stone] + stone);
         }
     }
     return sum - 2 * dp[sum / 2];

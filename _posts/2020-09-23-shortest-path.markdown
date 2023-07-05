@@ -1224,6 +1224,126 @@ private int paint(int[][] grid, int i, int j, int color) {
 }
 {% endhighlight %}
 
+[Modify Graph Edge Weights][modify-graph-edge-weights]
+
+{% highlight java %}
+public int[][] modifiedGraphEdges(int n, int[][] edges, int source, int destination, int target) {
+    // {node, [neighbor, weight]}
+    List<int[]>[] g = new List[n];
+    for (int i = 0; i < n; i++) {
+        g[i] = new ArrayList<>();
+    }
+
+    List<int[]> list = new ArrayList<>();
+    // (node A, node B) : weight between A and B
+    // where node A < node B
+    int[][] weights = new int[n][n];
+    for (int[] e : edges) {
+        g[e[0]].add(new int[]{e[1], e[2]});
+        g[e[1]].add(new int[]{e[0], e[2]});
+
+        int a = Math.min(e[0], e[1]), b = Math.max(e[0], e[1]);
+        list.add(new int[]{a, b, weights[a][b] = e[2]});
+    }
+
+    // treats negative edges as disconnected
+    // calculates the shortest distances from destionation to all nodes
+    // if the shortest distance between source and destionation is alreay less than target
+    // modifying the negative edges will possible make the distance even shorter, so no solution
+    int[][] reverse = dijkstra(n, g, destination, true);
+    if (reverse[0][source] < target) {
+        return new int[0][];
+    }
+
+    // treats negative edges as weight 1
+    // the shortest distance is min of assigning positive values in [1, 2e9]
+    // the shortest distance must be no greater than the target
+    int[][] res = dijkstra(n, g, source, false);
+    if (res[0][destination] > target) {
+        return new int[0][];
+    }
+
+    // when all negative edges are 1
+    // constructs the shortest path from source to destionation
+    List<Integer> path = new LinkedList<>();
+    path.add(destination);
+    while (path.get(0) != source) {
+        path.add(0, res[1][path.get(0)]);
+    }
+
+    // adjusts each segment of the path if the original weight is negative
+    int d = 0, m = path.size();
+    for (int i = 0; i < m - 1; i++) {
+        int u = path.get(i), v = path.get(i + 1);
+        int a = Math.min(u, v), b = Math.max(u, v);
+        if (weights[a][b] == -1) {
+            // if there exists a postive weight value that makes the path total weight equal to target
+            // we can skip the remaining segments on the path
+            if ((weights[a][b] = Math.max(target - reverse[0][v] - d, 1)) > 1) {
+                break;
+            }
+        }
+        d += weights[a][b];
+    }
+
+    for (int[] e : list) {
+        // there's already a shortest path with targeted weight
+        // so the remaining negative edges can be assigned arbitrarily
+        if ((e[2] = weights[e[0]][e[1]]) == -1) {
+            e[2] = (int)2e9;
+        }
+    }
+    return list.toArray(new int[0][]);
+}
+
+private int[][] dijkstra(int n, List<int[]>[] graph, int src, boolean skipNegative) {
+    // dist[i]: distance from src to vertex i
+    // initializes all elements in the array to inf
+    int[] dist = new int[n], parents = new int[n];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+
+    // {vertex, dist[vertex] when enqueued}
+    Queue<int[]> q = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+
+    // initializes the queue to contain source only
+    int[] curr = {src, dist[src] = 0};
+    q.offer(curr);
+
+    while (!q.isEmpty()) {
+        // dequeues the best vertex
+        curr = q.poll();
+        int u = curr[0], du = curr[1];
+
+        // skips current if the vertex is visited
+        // (and hence already has a more optimal distance)
+        if (du > dist[u]) {
+            continue;
+        }
+
+        // checks all neighbors in the graph whether they are still in the queue or not
+        // then a vertex can be re-enqueued and thus its time complexity is more
+        // compared to traditional Dijkstra (Fibonacci queue version)
+        for (int[] next : graph[u]) {
+            int v = next[0], duv = next[1];
+            if (duv == -1) {
+                // if skip negative, negative edges are regarded as disconnected
+                if (skipNegative) {
+                    continue;
+                }
+                duv = 1;
+            }
+
+            int alt = du + duv;
+            if (alt < dist[v]) {
+                parents[v] = u;
+                q.offer(new int[]{v, dist[v] = alt});
+            }
+        }
+    }
+    return new int[][]{dist, parents};
+}
+{% endhighlight %}
+
 [campus-bikes-ii]: https://leetcode.com/problems/campus-bikes-ii/
 [count-subtrees-with-max-distance-between-cities]: https://leetcode.com/problems/count-subtrees-with-max-distance-between-cities/
 [course-schedule-iv]: https://leetcode.com/problems/course-schedule-iv/
@@ -1235,6 +1355,7 @@ private int paint(int[][] grid, int i, int j, int color) {
 [minimum-obstacle-removal-to-reach-corner]: https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/
 [minimum-time-to-visit-a-cell-in-a-grid]: https://leetcode.com/problems/minimum-time-to-visit-a-cell-in-a-grid/
 [minimum-weighted-subgraph-with-the-required-paths]: https://leetcode.com/problems/minimum-weighted-subgraph-with-the-required-paths/
+[modify-graph-edge-weights]: https://leetcode.com/problems/modify-graph-edge-weights/
 [number-of-restricted-paths-from-first-to-last-node]: https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/
 [number-of-ways-to-arrive-at-destination]: https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/
 [path-with-maximum-minimum-value]: https://leetcode.com/problems/path-with-maximum-minimum-value/

@@ -694,6 +694,38 @@ public int maxWidthRamp(int[] nums) {
 }
 {% endhighlight %}
 
+The following problem is not PGE or NGE, and the solution doesn't use stacks. But we can see some similarities.
+
+[Sum of Imbalance Numbers of All Subarrays][sum-of-imbalance-numbers-of-all-subarrays]
+
+{% highlight java %}
+public int sumImbalanceNumbers(int[] nums) {
+    int sum = 0, n = nums.length;
+    // lastIndices[i]: last index of the number `i`
+    // leftBounds[i]: left bound of the number `i`.
+    //   subarrays starts exclusively from leftBounds[i] up to i have non-zero imbalance numbers
+    int[] lastIndices = new int[n + 2], leftBounds = new int[n];
+
+    // for each num, considers num and num + 1 only - no need to consider num - 1
+    // otherwise the final result will include duplication
+    Arrays.fill(lastIndices, -1);
+    for (int i = 0; i < n; i++) {
+        leftBounds[i] = Math.max(lastIndices[nums[i] + 1], lastIndices[nums[i]]);
+        lastIndices[nums[i]] = i;
+    }
+
+    Arrays.fill(lastIndices, n);
+    for (int i = n - 1; i >= 0; i--) {
+        lastIndices[nums[i]] = i;
+        // again, considers num + 1 only - no need to consider num, in order to deduplicate
+        sum += (i - leftBounds[i]) * (lastIndices[nums[i] + 1] - i);
+    }
+
+    // subtracts the result for max(nums[i])
+    return sum - n * (n + 1) / 2;
+}
+{% endhighlight %}
+
 # Histogram
 
 The problem [Largest Rectangle in Histogram][largest-rectangle-in-histogram] deserves a closer look. The stack approach can be applied to many similar problems, like rectangle count/max area in a matrix.
@@ -1061,6 +1093,7 @@ public int calculate(String s) {
 [smallest-k-length-subsequence-with-occurrences-of-a-letter]: https://leetcode.com/problems/smallest-k-length-subsequence-with-occurrences-of-a-letter/
 [steps-to-make-array-non-decreasing]: https://leetcode.com/problems/steps-to-make-array-non-decreasing/
 [subarray-with-elements-greater-than-varying-threshold]: https://leetcode.com/problems/subarray-with-elements-greater-than-varying-threshold/
+[sum-of-imbalance-numbers-of-all-subarrays]: https://leetcode.com/problems/sum-of-imbalance-numbers-of-all-subarrays/
 [sum-of-subarray-minimums]: https://leetcode.com/problems/sum-of-subarray-minimums/
 [ternary-expression-parser]: https://leetcode.com/problems/ternary-expression-parser/
 [remove-k-digits]: https://leetcode.com/problems/remove-k-digits/
