@@ -403,14 +403,14 @@ The common steps to resolve the problems:
 [Minimum Size Subarray Sum][minimum-size-subarray-sum]
 
 {% highlight java %}
-public int minSubArrayLen(int s, int[] nums) {
+public int minSubArrayLen(int target, int[] nums) {
     int i = 0, j = 0, min = Integer.MAX_VALUE;
     while (j < nums.length) {
-        s -= nums[j++];
+        target -= nums[j++];
 
-        while (s <= 0) {
+        while (target <= 0) {
             min = Math.min(min, j - i);
-            s += nums[i++];
+            target += nums[i++];
         }
     }
 

@@ -58,12 +58,30 @@ $$p_{Y}(k) = \frac{\binom{m}{k}}{\binom{n}{k}} \frac{n-m}{n-k}, \quad k=0,1,\ldo
 
 数学期望为：
 
-$$\operatorname{E}(Y) = \sum_{k=0}^{m}kp_{Y}(k)
- = \sum_{k=1}^{m}\frac{k\binom{m}{k}}{\binom{n}{k}} \frac{n-m}{n-k} \\
- = (n-m) \sum_{k=1}^{m}\frac{m\binom{m-1}{k-1}}{\binom{n}{k}(n-k)}
- = m(n-m) \sum_{k=1}^{m}\frac{\binom{m-1}{k-1}}{n\binom{n-1}{k}} \\
+$$\operatorname{E}(Y) = \sum_{k=0}^{m}kp_{Y}(k) \\
+ = \sum_{k=1}^{m}\frac{k\binom{m}{k}}{\binom{n}{k}} \frac{n-m}{n-k}
+ = (n-m) \sum_{k=1}^{m}\frac{m\binom{m-1}{k-1}}{\binom{n}{k}(n-k)} \\
+ = m(n-m) \sum_{k=1}^{m}\frac{\binom{m-1}{k-1}}{n\binom{n-1}{k}}
+ = \frac{m(n-m)}{n} \sum_{k=1}^{m}\frac{\binom{m}{k}-\binom{m-1}{k}}{\binom{n-1}{k}} $$
+
+
+根据这篇博客[A Sum of Ratios of Binomial Coefficients](https://mikespivey.wordpress.com/2018/09/26/a-sum-of-ratios-of-binomial-coefficients/)，有引理：
+
+$$\sum_{k=0}^{m}\frac{\binom{m}{k}}{\binom{n}{k}} = \frac{n+1}{n+1-m}$$
+
+所以：
+
+$$\sum_{k=1}^{m}\frac{\binom{m}{k}}{\binom{n}{k}} = \frac{n+1}{n+1-m}-1 = \frac{m}{n+1-m}$$
+
+$$\sum_{k=1}^{m}\frac{\binom{m}{k}-\binom{m-1}{k}}{\binom{n-1}{k}}
+ = \frac{m}{n-m}-\frac{m-1}{n-m+1}
+ = \frac{n}{(n-m)(n-m+1)}$$
+
+$$\operatorname{E}(Y)
  = \frac{m(n-m)}{n}\frac{n}{(n-m)(n-m+1)}
  = \frac{m}{n-m+1}$$
+
+我们也可以通过[Stars and bars](https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics))的方法来直观地得到上述结果。
 
 如果我们假定\\(m = n/2\\)，那么：
 
@@ -76,3 +94,13 @@ $$\operatorname{E}(Y) = \frac{1}{1+\frac{2}{n}} < 1$$
 $$\overline{\operatorname{E}} = \operatorname{E}(Y) = \frac{1}{160} \sum_{n=1}^{160}\frac{1}{1+\frac{2}{n}} \approxeq 0.9479$$
 
 结论：在实际的军争篇游戏中，甄姬洛神的额外摸牌不稳定，而且其期望要小于周瑜和貂蝉。
+
+## 邓艾 屯田 & 凿险
+
+![邓艾](/assets/sgs/ai_deng.png)
+
+屯田：每次当你于回合外失去牌时，可进行一次判定，将非♥结果的判定牌置于你的武将牌上，称为“田”；每有一张田，你计算与其他角色的距离便-1。
+
+凿险：**觉醒技**，回合开始阶段，若田的数量达到3张或更多，你须减1点体力上限，并永久获得技能“急袭”（出牌阶段，你可以把任意一张田当【顺手牵羊】使用）。
+
+### 理想模型
