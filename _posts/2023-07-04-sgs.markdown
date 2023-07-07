@@ -14,6 +14,8 @@ usemathjax: true
 
 在此理想模型下，我们假设任意一个时刻，牌堆中的卡牌数量无限多，且有均匀分布的4种花色和13种点数。换言之，任何时刻牌堆顶的牌是某种花色的概率为常数\\(1/4\\)，是某种点数的概率为常数\\(1/13\\)。
 
+无限牌堆模型实际上意味着**有放回**抽样。
+
 ## 军争篇模型
 
 在实际的游戏中，卡牌数量是有限的。我们在此只考察军争篇的卡牌模型。军争篇卡牌共有160张，具体分布如下（引用自[萌娘百科](https://zh.moegirl.org.cn/zh-hans/%E4%B8%89%E5%9B%BD%E6%9D%80/%E7%89%8C%E5%A0%86%E7%BB%93%E6%9E%84)）：
@@ -22,37 +24,77 @@ usemathjax: true
 
 在此模型下，为了简化计算，我们排除宝物牌`木牛流马`。在此前提下，卡牌分为4种花色，每种花色40张，且在游戏中的任意一个时刻，我们可以认为牌堆中的牌的花色和点数都是均匀分布的。这种简化的合理性在于：场上的牌分布情况千差万别，我们无法对牌堆做精确计算。因此，我们只取统计意义上的近似结果。也正因如此，本文中所有的小数结果仅保留四位有效数字。
 
+军争篇模型实际上意味着**不放回**抽样。
+
+另外，我们假设游戏背景为军争篇八人场，且在整局游戏过程中，场上存活角色平均为4名，每名角色平均有手牌2张，装备牌2张；场上平均有1张判定牌。这样，牌堆中的牌数平均为：\\(160-4*(2+2)-1=143\\)。
+
 # 武将技能概率
 
 本章中，所有的讨论都是首先针对无限牌堆模型的理想情况，之后再尽量讨论军争篇模型。
+
+## 邓艾 屯田 & 凿险
+
+![邓艾](/assets/sgs/ai_deng.png)
+
+【屯田】：每次当你于回合外失去牌时，可进行一次判定，将非♥结果的判定牌置于你的武将牌上，称为“田”；每有一张田，你计算与其他角色的距离便-1。
+
+【凿险】：**觉醒技**，回合开始阶段，若田的数量达到3张或更多，你须减1点体力上限，并永久获得技能“急袭”（出牌阶段，你可以把任意一张田当【顺手牵羊】使用）。
+
+下面我们来研究可以发动觉醒技【凿险】时所需的【屯田】次数。
+
+### 理想模型
+
+定义发动觉醒技【凿险】时所需的【屯田】次数为\\(X\\)，并定义一次伯努利试验的“成功”为判定非♥，而“失败”为判定♥。由此可知，\\(X\\)为“成功”和“失败”次数之和。若定义“成功”次数为\\(r\\)，则\\(X\\)的概率分布符合负二项分布（[Negative binomial distribution](https://en.wikipedia.org/wiki/Negative_binomial_distribution))。
+
+PMF：
+
+$$p_{X}(n) = {\binom{n-1}{k}}p^{r}(1-p)^{k}, \quad n = k+r \enspace \text{and} \enspace k \in \mathbb{N}_0$$
+
+其中\\(p\\)为判定为♥的概率。在此模型下，\\(r=3, \enspace p=3/4\\)。
+
+数学期望和方差分别为：
+
+$$\operatorname{E}(X) = \frac{r}{p} = 4, \quad \operatorname{Var}(X) = \frac{r(1-p)}{p^{2}} = \frac{4}{3}$$
+
+这说明在理想情况下，发动觉醒技【凿险】时所需的【屯田】次数平均为4次。
+
+实际上，几何分布是负二项分布的特殊情况：
+
+$$\operatorname{Geom}(p) = \operatorname{NB}(1,p)$$
+
+我们由此可以发现甄姬【洛神】和邓艾【屯田】的内在联系。
 
 ## 甄姬 洛神
 
 ![甄姬](/assets/sgs/empress_zhen.png)
 
-洛神：回合开始阶段，你可以进行判定：若为♠或♣，立即获得此牌，并可以再次使用洛神——如此反复，直到出现♥或♦为止。
+【洛神】：回合开始阶段，你可以进行判定：若为♠或♣，立即获得此牌，并可以再次使用洛神——如此反复，直到出现♥或♦为止。
+
+下面我们来研究【洛神】所获得的牌数。
 
 ### 理想模型
 
-定义洛神获得的牌数为\\(Y\\)，并定义一次伯努利试验（[Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial)）的“成功”为判定红牌，而“失败”为判定黑牌。很显然，\\(Y\\)属于“失败”次数，且其概率分布符合几何分布（[Geometric distribution](https://en.wikipedia.org/wiki/Geometric_distribution)）的第二种形式，其中\\(p = 1/2\\)。
+定义【洛神】获得的牌数为\\(Y\\)，并定义一次伯努利试验（[Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial)）的“成功”为判定红牌，而“失败”为判定黑牌。很显然，\\(Y\\)属于“失败”次数，且其概率分布符合几何分布（[Geometric distribution](https://en.wikipedia.org/wiki/Geometric_distribution)）的第二种形式。
 
 概率质量函数（PMF, Probability mass function）:
 
-$$p_{Y}(k) = (1-p)^{k}p = (\frac{1}{2}) ^ {k+1}, \quad k \in \mathbb{N}_0$$
+$$p_{Y}(k) = (1-p)^{k}p, \quad k \in \mathbb{N}_0$$
+
+其中\\(p\\)为“失败”的概率，在此模型下\\(p = 1/2\\)。
 
 数学期望（Expected value）和方差（Variance）分别为：
 
-$$\operatorname{E}(Y) = {\frac{1-p}{p}} = 1,\qquad \operatorname{var}(Y)={\frac {1-p}{p^{2}}} = 2$$
+$$\operatorname{E}(Y) = {\frac{1-p}{p}} = 1,\qquad \operatorname{Var}(Y)={\frac {1-p}{p^{2}}} = 2$$
 
-这说明在理想情况下，洛神所得的牌数平均为1张。
+这说明在理想情况下，【洛神】所得的牌数平均为1张。
 
-接下来我们考察甄姬的战功“洛神赋”：使用甄姬一回合内发动洛神在不被改变判定牌的情况下连续判定黑色花色至少8次。
+接下来我们考察甄姬的战功“洛神赋”：使用甄姬一回合内发动【洛神】在不被改变判定牌的情况下连续判定黑色花色至少8次。
 
 $$p_{Y}(k \ge 8) = 1 - \sum_{k = 0}^7{p_Y(k)} = \frac{1}{256} \approxeq 0.003906$$
 
 ### 军争模型
 
-定义牌堆中的牌数为\\(n\\)，牌堆中黑色花色的牌数为\\(m\\) (\\(m < n\\))，则PMF为：
+定义牌堆中的牌数为\\(n\\)，牌堆中黑色花色的牌数为\\(m\\) (\\(m \le n\\))，则PMF为：
 
 $$p_{Y}(k) = \frac{\binom{m}{k}}{\binom{n}{k}} \frac{n-m}{n-k}, \quad k=0,1,\ldots,m$$
 
@@ -63,7 +105,6 @@ $$\operatorname{E}(Y) = \sum_{k=0}^{m}kp_{Y}(k) \\
  = (n-m) \sum_{k=1}^{m}\frac{m\binom{m-1}{k-1}}{\binom{n}{k}(n-k)} \\
  = m(n-m) \sum_{k=1}^{m}\frac{\binom{m-1}{k-1}}{n\binom{n-1}{k}}
  = \frac{m(n-m)}{n} \sum_{k=1}^{m}\frac{\binom{m}{k}-\binom{m-1}{k}}{\binom{n-1}{k}} $$
-
 
 根据这篇博客[A Sum of Ratios of Binomial Coefficients](https://mikespivey.wordpress.com/2018/09/26/a-sum-of-ratios-of-binomial-coefficients/)，有引理：
 
@@ -81,26 +122,58 @@ $$\operatorname{E}(Y)
  = \frac{m(n-m)}{n}\frac{n}{(n-m)(n-m+1)}
  = \frac{m}{n-m+1}$$
 
-我们也可以通过[Stars and bars](https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics))的方法来直观地得到上述结果。
+我们也可以通过[Stars and bars](https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics))的方法来直观地得到上述结果。设想有\\(n\\)个球，其中\\(m\\)个为黑色，那么红色球有\\(n-m\\)个。把这些红球看作隔板，它们把空间分成了\\(n-m+1\\)个区域。每个黑球在某一个区域的概率都相同，为\\(\frac{1}{n-m+1}\\)。因此，\\(m\\)个黑球在第一个区域的期望为\\(\frac{m}{n-m+1}\\)。
+
+用类似的推演方法，我们可以得出方差为：
+
+$$\operatorname{Var}(Y) = \operatorname{E}(Y^2)-(\operatorname{E}(Y))^2 \\
+ = \frac{m(m+n)}{(n-m+1)(n-m+2)}-(\frac{m}{n-m+1})^2
+ = \frac{m(n-m)(n+1)}{(n-m+1)(n-m+2)}$$
 
 如果我们假定\\(m = n/2\\)，那么：
 
 $$\operatorname{E}(Y) = \frac{1}{1+\frac{2}{n}} < 1$$
 
-可见，\\(\operatorname{E}(Y)\\)与\\(n\\)正相关，且小于理想模型下洛神牌的数学期望。
+$$\operatorname{Var}(Y) = \frac{n^2(n+1)}{(n+2)(n+4)}$$
+
+可见，\\(\operatorname{E}(Y)\\)与\\(n\\)正相关，且小于理想模型下【洛神】牌的数学期望。
 
 在军争篇模型中，共有160张牌。如果对所有可能的牌堆卡牌数取平均：
 
 $$\overline{\operatorname{E}} = \operatorname{E}(Y) = \frac{1}{160} \sum_{n=1}^{160}\frac{1}{1+\frac{2}{n}} \approxeq 0.9479$$
 
-结论：在实际的军争篇游戏中，甄姬洛神的额外摸牌不稳定，而且其期望要小于周瑜和貂蝉。
+结论：在实际的军争篇游戏中，甄姬【洛神】的额外摸牌不稳定，而且其期望要小于周瑜和貂蝉。
 
-## 邓艾 屯田 & 凿险
+### 军争模型
 
-![邓艾](/assets/sgs/ai_deng.png)
+## 马谡 心战
 
-屯田：每次当你于回合外失去牌时，可进行一次判定，将非♥结果的判定牌置于你的武将牌上，称为“田”；每有一张田，你计算与其他角色的距离便-1。
+![马谡](/assets/sgs/su_ma.png)
 
-凿险：**觉醒技**，回合开始阶段，若田的数量达到3张或更多，你须减1点体力上限，并永久获得技能“急袭”（出牌阶段，你可以把任意一张田当【顺手牵羊】使用）。
+【心战】：出牌阶段，若你的手牌数大于你的体力上限，你可以观看牌堆顶的三张牌，然后展示其中任意数量的♥牌并获得之，其余以任意顺序置于牌堆顶，每回合限一次。
+
+下面我们来研究【心战】获得的牌数。
 
 ### 理想模型
+
+定义【心战】获得的牌数为\\(X\\)，并定义一次伯努利试验的“成功”为判定♥，而“失败”为判定非♥。很显然，\\(X\\)属于“成功”次数，且其概率分布符合二项分布（[Binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution)）\\(X \sim \operatorname{B}(n,p)\\)。
+
+PMF：
+
+$$p_{X}(k) = {\binom{n}{k}}p^{k}(1-p)^{k-n}, \quad k=0,1,2,\ldots,n$$
+
+其中\\(n\\)为伯努利试验的次数，\\(p\\)为判定为♥的概率。在此模型下，\\(n=3, \enspace p=1/4\\)。
+
+数学期望和方差分别为：
+
+$$\operatorname{E}(X) = np = \frac{3}{4}, \quad \operatorname{Var}(X) = np(1-p) = \frac{9}{16}$$
+
+这说明在理想情况下，【心战】获得牌数平均为\\(\frac{3}{4}\\)张。
+
+### 军争模型
+
+定义牌堆中的牌数为\\(N\\)，牌堆中黑色花色的牌数为\\(K\\) (\\(K \le N\\))，在此模型下，伯努利试验是不放回的取样，此时“成功”次数符合超几何分布（[Hypergeometric distribution](https://en.wikipedia.org/wiki/Hypergeometric_distribution)） \\(X \sim Hypergeometric(N,K,n)\\)。
+
+PMF：
+
+$$p_{X}(k)=\frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}$$
