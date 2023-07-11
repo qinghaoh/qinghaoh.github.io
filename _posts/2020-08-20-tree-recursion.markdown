@@ -893,9 +893,9 @@ private Map<TreeNode, Integer> map = new HashMap<>();
 private TreeNode target;
 private int k;
 
-public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
     this.target = target;
-    this.k = K;
+    this.k = k;
 
     distance(root);
     dfs(root, map.get(root));

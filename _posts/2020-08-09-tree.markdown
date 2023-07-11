@@ -157,15 +157,6 @@ public int minBuildTime(int[] blocks, int split) {
 }
 {% endhighlight %}
 
-# Conversion
-
-[All Nodes Distance K in Binary Tree][all-nodes-distance-k-in-binary-tree]
-
-{% highlight java %}
-TreeNode -> Map<TreeNode, List<TreeNode>>
-{% endhighlight %}
-
-[all-nodes-distance-k-in-binary-tree]: https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
 [count-complete-tree-nodes]: https://leetcode.com/problems/count-complete-tree-nodes/
 [height-of-binary-tree-after-subtree-removal-queries]: https://leetcode.com/problems/height-of-binary-tree-after-subtree-removal-queries/
 [maximum-binary-tree]: https://leetcode.com/problems/maximum-binary-tree/
