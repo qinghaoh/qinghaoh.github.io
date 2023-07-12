@@ -93,7 +93,7 @@ $$\operatorname{Var}(X) = \frac{rK(N+1)(N-K-r+1)}{(N-K+1)^{2}(N-K+2)} = \frac{3K
 
 如果我们假定\\(K = N/4\\)，那么：
 
-$$\operatorname{E}(X) = 4-\frac{4}{3N+4} < 4$$
+$$\operatorname{E}(X) = 4-\frac{4}{3N+4} \lt 4$$
 
 $$\operatorname{Var}(X) = \frac{12N(N+1)(3N-8)}{(3N+4)^{2}(3N+8)}$$
 
@@ -116,6 +116,10 @@ PMF：
 $$p_{Y}(k) = (1-p)^{k}p, \quad k \in \mathbb{N}_0$$
 
 其中\\(p\\)为“失败”的概率，在此模型下\\(p = 1/2\\)。
+
+其概率曲线为：
+
+![洛神概率](/assets/sgs/luoshen.png)
 
 数学期望和方差分别为：
 
@@ -147,7 +151,7 @@ $$\operatorname{Var}(X) = \frac{rK(N+1)(N-K-r+1)}{(N-K+1)^{2}(N-K+2)} = \frac{K(
 
 如果我们假定\\(K = N/2\\)，那么：
 
-$$\operatorname{E}(X) = \frac{1}{1+\frac{2}{N}} < 1$$
+$$\operatorname{E}(X) = \frac{1}{1+\frac{2}{N}} \lt 1$$
 
 $$\operatorname{Var}(X) = \frac{N^2(N+1)}{(N+2)(N+4)}$$
 
@@ -205,7 +209,7 @@ $$\operatorname{Var}(X) = \frac{np(1-p)(N-n)}{N-1} = \frac{3p(1-p)(N-3)}{N-1}$$
 
 $$\operatorname{E}(X) = \frac{3}{4}$$
 
-$$\operatorname{Var}(X) = \frac{9}{16}\frac{N-3}{N-1} < \frac{9}{16}$$
+$$\operatorname{Var}(X) = \frac{9}{16}\frac{N-3}{N-1} \lt \frac{9}{16}$$
 
 实际上，超几何分布和负超几何分布有以下联系：
 
@@ -251,9 +255,9 @@ $$\operatorname{E}(P) = \operatorname{E}(C)+R\operatorname{E}(H) = \frac{3X}{4}(
 
 如果不发动**再起**，摸牌阶段会获得\\(2\\)张牌。若要使发动**再起**的收益优于不发动，那么：
 
-$$\operatorname{E}(P) > 2$$
+$$\operatorname{E}(P) \gt 2$$
 
-$$X > \frac{4}{3(1+R)}$$
+$$X \gt \frac{4}{3(1+R)}$$
 
 一般认为，\\(R \approxeq 2\\)，即“一血=两牌”理论。该理论起源于黄盖的**苦肉**技能，并经过大量游戏实践验证而一度在玩家中非常流行。当然，不少玩家对此理论也持不同观点，所以\\(R\\)值究竟是多少仍有待商榷。
 
@@ -279,10 +283,10 @@ $$p_{X}(k) = \frac{k!}{r^{n}}\binom{r}{k}\begin{Bmatrix}n\\k\end{Bmatrix}$$
 
 数学期望和方差分别为：
 
-$$\operatorname{E}(X) = , \quad \operatorname{Var}(X) = $$
+$$\operatorname{E}(X) = \frac{781}{265} \approxeq 3.0508, \quad \operatorname{Var}(X) = \frac{27735}{65536} \approxeq 0.4232$$
 
-这说明在理想情况下，**涉猎**获得牌数平均为\\(3.0508\\)张。这比周瑜的**英姿**和貂蝉的**闭月**要强，更高于甄姬的**洛神**。但是**涉猎**的缺点也显而易见：
-1. 不稳定，有可能只摸一张，也可能四张，不像**英姿**和**闭月**那么稳定；
+这说明在理想情况下，**涉猎**获得牌数平均约为\\(3.0508\\)张。这比周瑜的**英姿**和貂蝉的**闭月**要强，更高于甄姬的**洛神**。但是**涉猎**的缺点也显而易见：
+1. **涉猎**所获得牌有非零方差，这意味着它不像**英姿**和**闭月**那样可以稳定额外获得一张牌；
 2. **涉猎**所获得的牌是亮出的，导致手牌对其他玩家不再完全保密。
 
 #### 军争模型
@@ -305,9 +309,13 @@ $$\operatorname{E}(X) = , \quad \operatorname{Var}(X) = $$
 
 PMF：
 
-$$p_{X}(k) = \frac{M!(k-1)}{M^{k}(M-k+1)}$$
+$$p_{X}(k) = \frac{M!(k-1)}{M^{k}(M-k+1)!}$$
 
 在此模型下，\\(M=13\\)。
+
+其概率散点图为：
+
+![不屈概率](/assets/sgs/buqu.png)
 
 数学期望为：
 
@@ -403,6 +411,8 @@ $$p_{X}(k = \frac{N}{2}) = \frac{e_{N}^{4}}{4^N}$$
 
 $$p_{X}(k = \frac{N}{2}-2) = \frac{o_{N}^{4}}{4^{N}} = \frac{1}{4}-\frac{e_{N}^{4}}{4^N}$$
 
+另一种解法：$$p_{X}(k = \frac{N}{2}-2) = \frac{\#(k = \frac{(N-1)-3}{2})}{4^N} = \frac{1}{4}-\frac{e_{N}^{4}}{4^N}$$
+
 $$p_{X}(k = \frac{N}{2}-1) = 1-p_{X}(k = \frac{N}{2})-p_{X}(k = \frac{N}{2}-1) = \frac{3}{4}$$ 
 
 其数学期望：
@@ -413,6 +423,10 @@ $$\operatorname{E}(X) = \frac{1}{2^{N}}+\frac{N}{2}-1, \quad N \in \mathbb{N}_e$
 
 $$\operatorname{E}(X) = \frac{1}{2^{N}}+\frac{N}{2}-1, \quad N \in \mathbb{N}_0$$
 
+该期望曲线为：
+
+![乱击期望](/assets/sgs/luanji.png)
+
 ### 曹冲（新一将成名2013）
 
 ![曹冲](/assets/sgs/chong_cao.png)
@@ -421,10 +435,43 @@ $$\operatorname{E}(X) = \frac{1}{2^{N}}+\frac{N}{2}-1, \quad N \in \mathbb{N}_0$
 
 下面我们来研究**称象**获得的牌数。
 
-用\\(\mathbf{X} = \begin{pmatrix}
-x1 & x2 & x3 & x4
-\end{pmatrix}^{T}\\)表示亮出的四张牌的点数，其中\\(x_i \in \mathbb{Z}_{>0}\\)则该问题可分为以下情况：
+用\\(\mathbf{A} = \begin{pmatrix}
+a1 & a2 & a3 & a4
+\end{pmatrix}^{T}\\)表示亮出的四张牌的点数，其中\\(a_i \in \mathbb{Z}_{\gt 0}\\)。定义**称象**获得的牌数为\\(X\\)，则：
 
-$$\mathbf{J}_{1,4}\mathbf{X} <= 13$$
+当\\(X = 4\\)时：
 
-运用Stars and bars法，可知上式的解为\\(\binom{13}{4} = 715\\)。
+$$\mathbf{J}_{1,4}\mathbf{A} \le 13$$
+
+运用Stars and bars法，可知上式的整数解组数为\\(\binom{13}{4} = 715\\)。
+
+当\\(X = 3\\)时：
+
+$$\begin{pmatrix}
+-1 & -1 & -1 & -1 \\
+1 & 1 & 1 & 0 \\
+1 & 1 & 0 & 1 \\
+1 & 0 & 1 & 1 \\
+0 & 1 & 1 & 1 \\
+-1 & 0 & 0 & 0 \\
+0 & -1 & 0 & 0 \\
+0 & 0 & -1 & 0 \\
+0 & 0 & 0 & -1
+\end{pmatrix}\mathbf{A} \le \begin{pmatrix}
+-14 \\ 13 \\ 13 \\ 13 \\ 13 \\ -1 \\ -1 \\ -1 \\ -1
+\end{pmatrix}
+$$
+
+上式的整数解组数为\\(7885\\)。
+
+当\\(X = 2\\)时：
+
+上式的整数解组数为\\(15796\\)。
+
+当\\(X = 1\\)时：
+
+上式的整数解组数为\\(4165\\)。
+
+数学期望和方差分别为：
+
+$$\operatorname{E}(X) = \frac{62272}{28561} \approxeq 2.1803, \quad \operatorname{Var}(X) = \frac{399322010}{815730721} \approxeq 0.4895$$
