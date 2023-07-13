@@ -69,6 +69,10 @@ $$p_{X}(n) = {\binom{n-1}{k}}p^{r}(1-p)^{k}, \quad n = k+r \enspace \text{and} \
 
 其中\\(p\\)为判定为♥的概率。在此模型下，\\(r=3, \enspace p=3/4\\)。
 
+其概率曲线为：
+
+![屯田概率](/assets/sgs/tuntian.png)
+
 数学期望（Expected value）和方差（Variance）分别为：
 
 $$\operatorname{E}(X) = \frac{r}{p} = 4, \quad \operatorname{Var}(X) = \frac{r(1-p)}{p^{2}} = \frac{4}{3}$$
@@ -159,7 +163,7 @@ $$\operatorname{Var}(X) = \frac{N^2(N+1)}{(N+2)(N+4)}$$
 
 前文对军争篇模型的介绍中已经提到，我们假设某一时刻，牌堆平均有143张牌。那么：
 
-$$\overline{\operatorname{E}} = frac{1}{1+\frac{2}{143}} \approxeq 0.9862$$
+$$\overline{\operatorname{E}} = \frac{1}{1+\frac{2}{143}} \approxeq 0.9862$$
 
 结论：在实际的军争篇游戏中，甄姬**洛神**的额外摸牌不稳定，而且其期望要小于周瑜和貂蝉。
 
@@ -177,9 +181,13 @@ $$\overline{\operatorname{E}} = frac{1}{1+\frac{2}{143}} \approxeq 0.9862$$
 
 PMF：
 
-$$p_{X}(k) = {\binom{n}{k}}p^{k}(1-p)^{k-n}, \quad k=0,1,2,\ldots,n$$
+$$p_{X}(k) = {\binom{n}{k}}p^{k}(1-p)^{n-k}, \quad k \in \mathbb{N} \enspace \text{and} \enspace k=0,1,2,\ldots,n$$
 
 其中\\(n\\)为伯努利试验的次数，\\(p\\)为判定为♥的概率。在此模型下，\\(n=3, \enspace p=1/4\\)。
+
+其概率散点图为：
+
+![心战概率](/assets/sgs/xinzhan.png)
 
 数学期望和方差分别为：
 
@@ -251,17 +259,21 @@ $$\operatorname{E}(C) = \frac{3X}{4}, \quad \operatorname{Var}(C) = np(1-p) = \f
 
 $$P = C + HR$$
 
-$$\operatorname{E}(P) = \operatorname{E}(C)+R\operatorname{E}(H) = \frac{3X}{4}(1+R)$$
+$$\operatorname{E}(P) = \operatorname{E}(C)+R\operatorname{E}(H) = \frac{X}{4}(3+R)$$
+
+一般认为，\\(R \approxeq 2\\)，即“一血=两牌”理论。该理论起源于黄盖的**苦肉**技能，并经过大量游戏实践验证而一度在玩家中非常流行。当然，不少玩家对此理论也持不同观点，因此我们要讨论在**再起**技能的情况下，\\(R\\)值的合理范围。
 
 如果不发动**再起**，摸牌阶段会获得\\(2\\)张牌。若要使发动**再起**的收益优于不发动，那么：
 
 $$\operatorname{E}(P) \gt 2$$
 
-$$X \gt \frac{4}{3(1+R)}$$
+$$X = \lceil \frac{8}{3+R} \rceil$$
 
-一般认为，\\(R \approxeq 2\\)，即“一血=两牌”理论。该理论起源于黄盖的**苦肉**技能，并经过大量游戏实践验证而一度在玩家中非常流行。当然，不少玩家对此理论也持不同观点，所以\\(R\\)值究竟是多少仍有待商榷。
+上述曲线图如下：
 
-如果取\\(R=2\\)，可得当\\(X \ge 2\\)时发动**再起**即可获得正收益。这个结论比较反直觉，因为大部分玩家倾向于\\(X \ge 3\\)时才发动**再起**。所以，我认为“一血=两牌”的理论中，血量的价值被高估。
+![再起R值](/assets/sgs/zaiqi.png)
+
+可见，在**再起**的背景下，\\(0 \lt R \le 2\\)。
 
 ### 神吕蒙（神话再临·风）
 
@@ -277,9 +289,13 @@ $$X \gt \frac{4}{3(1+R)}$$
 
 PMF：
 
-$$p_{X}(k) = \frac{k!}{r^{n}}\binom{r}{k}\begin{Bmatrix}n\\k\end{Bmatrix}$$
+$$p_{X}(k) = \frac{k!}{M^{N}}\binom{M}{k}\begin{Bmatrix}N\\k\end{Bmatrix}$$
 
-其中\\(n\\)为亮出的牌数，\\(r\\)为一副牌中不同的花色数。在此模型下，\\(n=5, \enspace r=4\\)。
+其中\\(N\\)为亮出的牌数，\\(M\\)为一副牌中不同的花色数。在此模型下，\\(N=5, \enspace M=4\\)。
+
+其概率散点图为：
+
+![涉猎概率](/assets/sgs/shelie.png)
 
 数学期望和方差分别为：
 
@@ -309,7 +325,7 @@ $$\operatorname{E}(X) = \frac{781}{265} \approxeq 3.0508, \quad \operatorname{Va
 
 PMF：
 
-$$p_{X}(k) = \frac{M!(k-1)}{M^{k}(M-k+1)!}$$
+$$p_{X}(k) = \frac{M!(k-1)}{M^{k}(M-k+1)!}, \quad k \in \mathbb{Z} \enspace \text{and} \enspace 1 \le k \le M + 1$$
 
 在此模型下，\\(M=13\\)。
 
@@ -349,13 +365,17 @@ $$\operatorname{E}(X) \approxeq 5.2065$$
 
 #### 理想模型
 
-定义手牌数为\\(n\\)，一副牌中不同的花色数为\\(M\\)。可以发动**乱击**的概率可用生日问题的[另一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Probability_of_a_shared_birthday_(collision))来表示。
+定义手牌数为\\(X\\)，一副牌中不同的花色数为\\(M\\)。可以发动**乱击**的概率可用生日问题的[另一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Probability_of_a_shared_birthday_(collision))来表示。
 
 PMF：
 
-$$p(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{k}{M}}\right) \enspace n \leq M$$
+$$p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, M)}{M}}\right)$$
 
 在此模型下，\\(M=4\\)。
+
+其概率散点图为：
+
+![乱击1概率](/assets/sgs/luanji1.png)
 
 #### 军争模型
 
@@ -425,7 +445,7 @@ $$\operatorname{E}(X) = \frac{1}{2^{N}}+\frac{N}{2}-1, \quad N \in \mathbb{N}_0$
 
 该期望曲线为：
 
-![乱击期望](/assets/sgs/luanji.png)
+![乱击2期望](/assets/sgs/luanji2.png)
 
 ### 曹冲（新一将成名2013）
 
@@ -435,17 +455,17 @@ $$\operatorname{E}(X) = \frac{1}{2^{N}}+\frac{N}{2}-1, \quad N \in \mathbb{N}_0$
 
 下面我们来研究**称象**获得的牌数。
 
-用\\(\mathbf{A} = \begin{pmatrix}
-a1 & a2 & a3 & a4
-\end{pmatrix}^{T}\\)表示亮出的四张牌的点数，其中\\(a_i \in \mathbb{Z}_{\gt 0}\\)。定义**称象**获得的牌数为\\(X\\)，则：
+用\\(\mathbf{x} = \begin{pmatrix}
+x1 & x2 & x3 & x4
+\end{pmatrix}^{T}\\)表示亮出的四张牌的点数，其中\\(x_i \in \mathbb{Z}_{\gt 0}\\)。定义**称象**获得的牌数为\\(K\\)，则：
 
-当\\(X = 4\\)时：
+当\\(K = 4\\)时：
 
-$$\mathbf{J}_{1,4}\mathbf{A} \le 13$$
+$$\mathbf{J}_{1,4}\mathbf{x} \le 13$$
 
 运用Stars and bars法，可知上式的整数解组数为\\(\binom{13}{4} = 715\\)。
 
-当\\(X = 3\\)时：
+当\\(K = 3\\)时：
 
 $$\begin{pmatrix}
 -1 & -1 & -1 & -1 \\
@@ -457,21 +477,47 @@ $$\begin{pmatrix}
 0 & -1 & 0 & 0 \\
 0 & 0 & -1 & 0 \\
 0 & 0 & 0 & -1
-\end{pmatrix}\mathbf{A} \le \begin{pmatrix}
+\end{pmatrix}\mathbf{x} \le \begin{pmatrix}
 -14 \\ 13 \\ 13 \\ 13 \\ 13 \\ -1 \\ -1 \\ -1 \\ -1
 \end{pmatrix}
 $$
 
 上式的整数解组数为\\(7885\\)。
 
-当\\(X = 2\\)时：
+当\\(K = 2\\)时：
+
+$$\begin{pmatrix}
+-1 & -1 & -1 & 0 \\
+-1 & -1 & 0 & -1 \\
+-1 & 0 & -1 & -1 \\
+0 & -1 & -1 & -1 \\
+1 & 1 & 0 & 0 \\
+1 & 0 & 1 & 0 \\
+1 & 0 & 0 & 1 \\
+0 & 1 & 1 & 0 \\
+0 & 1 & 0 & 1 \\
+0 & 0 & 1 & 1 \\
+-1 & 0 & 0 & 0 \\
+0 & -1 & 0 & 0 \\
+0 & 0 & -1 & 0 \\
+0 & 0 & 0 & -1
+\end{pmatrix}\mathbf{x} \le \begin{pmatrix}
+-14 \\ -14 \\ -14 \\ -14 \\ 13 \\ 13 \\ 13 \\ 13 \\ 13 \\ 13 \\ -1 \\ -1 \\ -1 \\ -1
+\end{pmatrix}
+$$
 
 上式的整数解组数为\\(15796\\)。
 
-当\\(X = 1\\)时：
+当\\(K = 1\\)时：
 
-上式的整数解组数为\\(4165\\)。
+上式的整数解组数为$$13^4-\#(K=4)-\#(K=3)-\#(K=2)=4165$$。
+$$13^4-\#(K=4)-\#(K=3)-\#(K=2)=4165$$
+
+其概率散点图为：
+
+![称象概率](/assets/sgs/chengxiang.png)
 
 数学期望和方差分别为：
 
-$$\operatorname{E}(X) = \frac{62272}{28561} \approxeq 2.1803, \quad \operatorname{Var}(X) = \frac{399322010}{815730721} \approxeq 0.4895$$
+$$\operatorname{E}(K) = \frac{62272}{28561} \approxeq 2.1803, \quad \operatorname{Var}(K) = \frac{399322010}{815730721} \approxeq 0.4895$$
+
