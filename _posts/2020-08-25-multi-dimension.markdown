@@ -292,6 +292,42 @@ for (int i = 0; i < m; i++) {
 }
 {% endhighlight %}
 
+# Count
+
+Stick to one orientation so the final result won't duplicate.
+
+[Number of Black Blocks][number-of-black-blocks]
+
+{% highlight java %}
+public long[] countBlackBlocks(int m, int n, int[][] coordinates) {
+    Map<List<Integer>, Integer> map = new HashMap<>();
+    for (var c : coordinates) {
+        incrementVal(map, c[0], c[1]);
+        incrementVal(map, c[0] - 1, c[1]);
+        incrementVal(map, c[0], c[1] - 1);
+        incrementVal(map, c[0] - 1, c[1] - 1);
+    }
+
+    long[] arr = new long[5];
+    for (var e : map.entrySet()) {
+        var k = e.getKey();
+        int r = k.get(0), c = k.get(1);
+        if (r >= 0 && r < m - 1 && c >= 0 && c < n - 1) {
+            arr[e.getValue()]++;
+        }
+    }
+
+    long sum = Arrays.stream(arr).sum();
+    arr[0] = ((long)m - 1) * (n - 1) - sum;
+    return arr;
+}
+
+private void incrementVal(Map<List<Integer>, Integer> map, int r, int c) {
+    var k = Arrays.asList(r, c);
+    map.put(k, map.getOrDefault(k, 0) + 1);
+}
+{% endhighlight %}
+
 # Traversal
 
 [Diagonal Traverse II][diagonal-traverse-ii]
@@ -551,6 +587,7 @@ public int[][] restoreMatrix(int[] rowSum, int[] colSum) {
 [lonely-pixel-i]: https://leetcode.com/problems/lonely-pixel-i/
 [matrix-block-sum]: https://leetcode.com/problems/matrix-block-sum/
 [maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold]: https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/
+[number-of-black-blocks]: https://leetcode.com/problems/number-of-black-blocks/
 [number-of-enclaves]: https://leetcode.com/problems/number-of-enclaves/
 [number-of-submatrices-that-sum-to-target]: https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/
 [remove-all-ones-with-row-and-column-flips]: https://leetcode.com/problems/remove-all-ones-with-row-and-column-flips/

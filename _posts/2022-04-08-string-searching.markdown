@@ -4,6 +4,33 @@ title:  "String Searching"
 tags: string
 usemathjax: true
 ---
+# Iteration
+
+[Length of the Longest Valid Substring][length-of-the-longest-valid-substring]
+
+{% highlight java %}
+private static final int MAX_FORBIDDEN_LEN = 10;
+
+public int longestValidSubstring(String word, List<String> forbidden) {
+    Set<String> set = new HashSet(forbidden);
+    int max = 0, n = word.length(), i = n - 1, j = n;
+    while (i >= 0) {
+        // if word.substring(i + 1, j) is valid
+        // finds the longest k' where word.substring(i, k') is not forbidden
+        // then word.substring(i, k' + 1) is valid
+        for (int k = i; k < Math.min(i + MAX_FORBIDDEN_LEN, j); k++) {
+            if (set.contains(word.substring(i, k + 1))) {
+                j = k;
+                break;
+            }
+        }
+        max = Math.max(max, j - i--);
+        // now word.substring(i + 1, j) is valid
+    }
+    return max;
+}
+{% endhighlight %}
+
 # KMP
 
 [Knuth–Morris–Pratt (KMP) algorithm](https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm)
@@ -568,6 +595,7 @@ private void insert(TrieNode root, String word) {
 {% endhighlight %}
 
 [find-all-good-strings]: https://leetcode.com/problems/find-all-good-strings/
+[length-of-the-longest-valid-substring]: https://leetcode.com/problems/length-of-the-longest-valid-substring/
 [longest-common-subpath]: https://leetcode.com/problems/longest-common-subpath/
 [longest-duplicate-substring]: https://leetcode.com/problems/longest-duplicate-substring/
 [longest-happy-prefix]: https://leetcode.com/problems/longest-happy-prefix/
