@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Line Sweep"
 tags: math
-usemathjax: true
 ---
 # Fundamentals
 
@@ -244,7 +242,7 @@ public List<List<Long>> splitPainting(int[][] segments) {
 
 [Maximum Number of Darts Inside of a Circular Dartboard][maximum-number-of-darts-inside-of-a-circular-dartboard]
 
-![Arc sweep (created by https://www.geogebra.org/)](/assets/maximum_number_of_darts_inside_of_a_circular_dartboard.png)
+![Arc sweep (created by https://www.geogebra.org/)](/assets/img/algorithm/maximum_number_of_darts_inside_of_a_circular_dartboard.png)
 
 {% highlight java %}
 public int numPoints(int[][] points, int r) {

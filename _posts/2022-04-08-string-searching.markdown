@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "String Searching"
 tags: string
-usemathjax: true
 ---
 # Iteration
 
@@ -268,7 +266,7 @@ private int getKey(int n, int m, boolean b1, boolean b2) {
 
 For example, `n = 2, s1 = "aa", s2 = "da", evil = "b"`
 
-![Good strings](/assets/find_all_good_strings.png)
+![Good strings](/assets/img/algorithm/find_all_good_strings.png)
 
 # Z Function
 

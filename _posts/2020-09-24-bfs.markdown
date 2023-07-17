@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "BFS"
 tags: bfs
 ---
@@ -213,7 +212,7 @@ public int minimumJumps(int[] forbidden, int a, int b, int x) {
 
 The proof of the max boundary can be found at [here](https://leetcode-cn.com/problems/minimum-jumps-to-reach-home/solution/dao-jia-de-zui-shao-tiao-yue-ci-shu-zui-duan-lu-zh/). Credits to @newhar.
 
-![proof](/assets/minimum_jumps_to_home.png)
+![proof](/assets/img/algorithm/minimum_jumps_to_home.png)
 
 [Minimum Moves to Reach Target with Rotations][minimum-moves-to-reach-target-with-rotations]
 
@@ -856,7 +855,7 @@ public int maximumMinutes(int[][] grid) {
 }
 {% endhighlight %}
 
-![Edge cases](/assets/escaping_the_spreading_fire.png)
+![Edge cases](/assets/img/algorithm/escaping_the_spreading_fire.png)
 
 Another solution is to compute `fireMinutes`, and binary searches the max wait time so that you can reach the safehouse.
 

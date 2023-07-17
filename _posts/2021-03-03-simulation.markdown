@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Simulation"
 ---
 [Pour Water][pour-water]

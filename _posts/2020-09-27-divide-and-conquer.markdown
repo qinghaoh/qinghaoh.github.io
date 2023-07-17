@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Divide and Conquer"
 tags: divide-and-conquer
 ---

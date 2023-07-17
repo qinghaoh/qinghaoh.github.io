@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Java Stream"
 tags: java
 ---

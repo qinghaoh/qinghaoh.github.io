@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Shortest Path"
 tags: graph
-usemathjax: true
 ---
 # Dijkstra
 

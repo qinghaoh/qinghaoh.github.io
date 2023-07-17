@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Repeated Element"
 tags: array
 ---

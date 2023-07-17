@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Bit Mask"
 tags: math
-usemathjax: true
 ---
 # Tricks
 

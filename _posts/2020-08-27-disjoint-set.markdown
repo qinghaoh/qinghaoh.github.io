@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Disjoint Set"
 tags: union
 ---

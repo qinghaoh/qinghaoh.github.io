@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Information Theory"
 tags: math
-usemathjax: true
 ---
 [Poor Pigs][poor-pigs]
 

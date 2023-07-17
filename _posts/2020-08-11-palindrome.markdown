@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Palindrome"
 tags: string
 ---

@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Subtree"
 tags: tree
 ---
@@ -343,7 +342,7 @@ private void reroot(List<Integer>[] tree, int node, int parent, int[] price, lon
 }
 {% endhighlight %}
 
-![Rerooting](/assets/difference_between_maximum_and_minimum_price_sum.png)
+![Rerooting](/assets/img/algorithm/difference_between_maximum_and_minimum_price_sum.png)
 
 Rerooting is a general algorithm that can be used in many cases. However, a smarter approach is to use a one-pass [DFS](../../../2020/08/20/tree-recursion.html).
 

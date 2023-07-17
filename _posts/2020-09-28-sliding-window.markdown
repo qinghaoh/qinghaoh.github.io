@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Sliding Window"
 tags: array
-usemathjax: true
 ---
 # Elastic-size Window
 

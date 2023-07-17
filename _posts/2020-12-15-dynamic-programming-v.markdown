@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Dynamic Programming (Linear Scan)"
 tag: dynamic programming
 ---

@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Stack"
 tags: stack
 ---
@@ -799,7 +798,7 @@ public int numSubmat(int[][] mat) {
 }
 {% endhighlight %}
 
-![Stack](/assets/count_submatrices_with_all_ones.png)
+![Stack](/assets/img/algorithm/count_submatrices_with_all_ones.png)
 
 Instead of maining an extra array `int[] sums`, we can use `{index, sum}` as the compound stack element.
 

@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Modular Arithmetic"
 tags: math
-usemathjax: true
 ---
 # Theorem
 

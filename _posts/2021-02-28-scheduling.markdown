@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Scheduling"
 ---
 # Greedy
@@ -59,7 +58,7 @@ private String helper(int a, int b, int c, String sa, String sb, String sc) {
 
 [Task Scheduler][task-scheduler]
 
-![Schedule](/assets/task_scheduler.png)
+![Schedule](/assets/img/algorithm/task_scheduler.png)
 
 {% highlight java %}
 public int leastInterval(char[] tasks, int n) {

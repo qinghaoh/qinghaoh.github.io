@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "String"
 tags: string
-usemathjax: true
 ---
 # Transformation
 

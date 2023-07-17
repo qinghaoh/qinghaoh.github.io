@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Trie"
 tag: trie
 ---
@@ -172,7 +171,7 @@ class TrieNode {
 
 [K-th Smallest in Lexicographical Order][k-th-smallest-in-lexicographical-order]
 
-![Trie](/assets/k_th_smallest_in_lexicographical_order.png)
+![Trie](/assets/img/algorithm/k_th_smallest_in_lexicographical_order.png)
 
 {% highlight java %}
 public int findKthNumber(int n, int k) {

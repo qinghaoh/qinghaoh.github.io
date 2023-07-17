@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "OO Design"
 tags: math
-usemathjax: true
 ---
 [Basic Calculator IV][basic-calculator-iv]
 

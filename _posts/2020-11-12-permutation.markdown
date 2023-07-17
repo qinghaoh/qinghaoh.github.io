@@ -1,7 +1,5 @@
 ---
-layout: post
 title:  "Permutation"
-usemathjax: true
 ---
 [Permutation Sequence][permutation-sequence]
 

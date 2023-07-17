@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Dynamic Programming III"
 tag: dynamic programming
 ---
@@ -187,7 +186,7 @@ public int strangePrinter(String s) {
 
 [Dice Roll Simulation][dice-roll-simulation]
 
-![Reduction](/assets/dice_roll_simulation.png)
+![Reduction](/assets/img/algorithm/dice_roll_simulation.png)
 
 {% highlight java %}
 private final int MOD = (int)1e9 + 7;

@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Probability Theory"
 tags: math
-usemathjax: true
 ---
 [Guess the Word][guess-the-word]
 

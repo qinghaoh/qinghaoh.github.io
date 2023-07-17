@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "GCD/LCM"
 tags: math
-usemathjax: true
 ---
 # Greatest Common Divisor
 

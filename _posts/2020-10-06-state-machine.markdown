@@ -1,10 +1,9 @@
 ---
-layout: post
 title:  "State Machine"
 ---
 [Best Time to Buy and Sell Stock with Transaction Fee][best-time-to-buy-and-sell-stock-with-transaction-fee]
 
-![state machine](/assets/best_time_to_buy_and_sell_stock_with_transaction_fee.png)
+![state machine](/assets/img/algorithm/best_time_to_buy_and_sell_stock_with_transaction_fee.png)
 
 {% highlight java %}
 public int maxProfit(int[] prices, int fee) {
@@ -68,7 +67,7 @@ public int maxProfit(int[] prices, int fee) {
 
 [Best Time to Buy and Sell Stock with Cooldown][best-time-to-buy-and-sell-stock-with-cooldown]
 
-![state machine](/assets/best_time_to_buy_and_sell_stock_with_cooldown.png)
+![state machine](/assets/img/algorithm/best_time_to_buy_and_sell_stock_with_cooldown.png)
 
 {% highlight java %}
 public int maxProfit(int[] prices) {
@@ -138,7 +137,7 @@ public int minSwap(int[] A, int[] B) {
 
 [Valid Number][valid-number]
 
-![DFA](/assets/valid_number.png)
+![DFA](/assets/img/algorithm/valid_number.png)
 
 {% highlight java %}
 private static final List<Map<String, Integer>> dfa = List.of(

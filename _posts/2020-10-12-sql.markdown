@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "SQL"
 tag: sql
 ---

@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Dynamic Programming VI"
 tag: dynamic programming
 ---

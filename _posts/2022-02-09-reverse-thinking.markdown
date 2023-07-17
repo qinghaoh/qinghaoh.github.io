@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Reverse Thinking"
 ---
 [Maximum Segment Sum After Removals][maximum-segment-sum-after-removals]
@@ -113,7 +112,7 @@ public int[] executeInstructions(int n, int[] startPos, String s) {
 
 For example, `n = 2, startPos = [1,1], s = "LURD"`
 
-![Steps](/assets/execution_of_all_suffix_instructions_staying_in_a_grid.png)
+![Steps](/assets/img/algorithm/execution_of_all_suffix_instructions_staying_in_a_grid.png)
 
 We can see at each instruction, the virtual robot will eventually reach (0, 0) following the remaining instruction sequence.
 

@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Binary Search"
 ---
 # Template
@@ -1184,7 +1183,7 @@ public long maximumBeauty(int[] flowers, long newFlowers, int target, int full, 
 
 The key is to understand the computation of `cost[i]`:
 
-![cost array](/assets/maximum_total_beauty_of_gardens.png)
+![cost array](/assets/img/algorithm/maximum_total_beauty_of_gardens.png)
 
 ## Collections
 

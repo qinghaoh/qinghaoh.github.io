@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Segment Tree"
 tags: tree
-usemathjax: true
 ---
 # Fundamentals
 

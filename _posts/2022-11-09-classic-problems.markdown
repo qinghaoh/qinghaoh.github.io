@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Classic Problems"
 ---
 [Number of Sets of K Non-Overlapping Line Segments][number-of-sets-of-k-non-overlapping-line-segments]

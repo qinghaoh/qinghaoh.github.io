@@ -1,7 +1,5 @@
 ---
-layout: post
 title:  "Brain Teaser"
-usemathjax: true
 ---
 [Minimum Amount of Time to Fill Cups][minimum-amount-of-time-to-fill-cups]
 

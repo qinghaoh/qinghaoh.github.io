@@ -1,8 +1,7 @@
 ---
-layout: post
 title:  "三国杀武将技能概率"
-data: 2023-07-04
-usemathjax: true
+category: math
+tag: sgs
 ---
 # 前言
 
@@ -33,7 +32,7 @@ usemathjax: true
 
 在理想模型之外，我们只研究军争篇八人场这一种游戏模式。在此模式下，军争篇卡牌共有160张，具体分布如下（引用自[萌娘百科](https://zh.moegirl.org.cn/zh-hans/%E4%B8%89%E5%9B%BD%E6%9D%80/%E7%89%8C%E5%A0%86%E7%BB%93%E6%9E%84)）：
 
-![军争篇卡牌分布](/assets/sgs/junzheng.png)
+![军争篇卡牌分布](/assets/img/sgs/junzheng.png)
 
 为了简化计算，我们排除宝物牌`木牛流马`，且认为卡牌分为4种花色，每种花色40张，且在游戏中的任意一个时刻，我们可以认为牌堆中的牌的花色和点数都是均匀分布的<sup>[1](#footnote1)</sup>。这种简化的合理性在于：场上的牌分布情况千差万别，我们无法对牌堆做精确计算。因此，我们只取统计意义上的近似结果。也正因如此，本文中所有的小数结果仅保留四位有效数字。
 
@@ -49,7 +48,7 @@ usemathjax: true
 
 ### 邓艾（神话再临·山）
 
-![邓艾](/assets/sgs/ai_deng.png)
+![邓艾](/assets/img/sgs/ai_deng.png)
 
 **屯田**：每次当你于回合外失去牌时，可进行一次判定，将非♥结果的判定牌置于你的武将牌上，称为“田”；每有一张田，你计算与其他角色的距离便-1。
 
@@ -69,7 +68,7 @@ $$p_{X}(n) = {\binom{n-1}{k}}p^{r}(1-p)^{k}, \quad n = k+r \enspace \text{and} \
 
 其概率曲线为：
 
-![屯田概率](/assets/sgs/tuntian.png)
+![屯田概率](/assets/img/sgs/tuntian.png)
 
 数学期望（Expected value）和方差（Variance）分别为：
 
@@ -103,7 +102,7 @@ $$\operatorname{Var}(X) = \frac{12N(N+1)(3N-8)}{(3N+4)^{2}(3N+8)}$$
 
 ### 甄姬（标准版）
 
-![甄姬](/assets/sgs/empress_zhen.png)
+![甄姬](/assets/img/sgs/empress_zhen.png)
 
 **洛神**：回合开始阶段，你可以进行判定：若为♠或♣，立即获得此牌，并可以再次使用洛神——如此反复，直到出现♥或♦为止。
 
@@ -121,7 +120,7 @@ $$p_{Y}(k) = (1-p)^{k}p, \quad k \in \mathbb{N}_0$$
 
 其概率曲线为：
 
-![洛神概率](/assets/sgs/luoshen.png)
+![洛神概率](/assets/img/sgs/luoshen.png)
 
 数学期望和方差分别为：
 
@@ -165,7 +164,7 @@ $$\overline{\operatorname{E}} = \frac{1}{1+\frac{2}{143}} \approxeq 0.9862$$
 
 ### 马谡（一将成名2011）
 
-![马谡](/assets/sgs/su_ma.png)
+![马谡](/assets/img/sgs/su_ma.png)
 
 **心战**：出牌阶段，若你的手牌数大于你的体力上限，你可以观看牌堆顶的三张牌，然后展示其中任意数量的♥牌并获得之，其余以任意顺序置于牌堆顶，每回合限一次。
 
@@ -183,7 +182,7 @@ $$p_{X}(k) = {\binom{n}{k}}p^{k}(1-p)^{n-k}, \quad k \in \mathbb{N} \enspace \te
 
 其概率散点图为：
 
-![心战概率](/assets/sgs/xinzhan.png)
+![心战概率](/assets/img/sgs/xinzhan.png)
 
 数学期望和方差分别为：
 
@@ -233,7 +232,7 @@ $$NHG_{N,K,r}(k)=1-HG_{N,N-K,k+r}(r-1)$$
 
 ### 孟获（神话再临·林）
 
-![孟获](/assets/sgs/huo_meng.png)
+![孟获](/assets/img/sgs/huo_meng.png)
 
 **再起**：摸牌阶段，若你已受伤，你可以放弃摸牌并展示牌堆顶的X张牌，X为你已损失的体力值，其中每有一张♥牌，你回复1点体力，然后弃掉这些♥牌，将其余的牌收入手牌。
 
@@ -267,7 +266,7 @@ $$X = \lceil \frac{8}{3+R} \rceil$$
 
 上述曲线图如下：
 
-![再起R值](/assets/sgs/zaiqi.png)
+![再起R值](/assets/img/sgs/zaiqi.png)
 
 可见，在**再起**的背景下，\\(0 \lt R \le 2\\)。
 
@@ -275,7 +274,7 @@ $$X = \lceil \frac{8}{3+R} \rceil$$
 
 ### 神吕蒙（神话再临·风）
 
-![神吕蒙](/assets/sgs/shen_meng_lv.png)
+![神吕蒙](/assets/img/sgs/shen_meng_lv.png)
 
 **涉猎**：摸牌阶段，你可选择采取以下行动来取代摸牌：从牌堆顶亮出五张牌，拿走不同花色的牌各一张，弃掉其余的。
 
@@ -293,7 +292,7 @@ $$p_{X}(k) = \frac{k!}{M^{N}}\binom{M}{k}\begin{Bmatrix}N\\k\end{Bmatrix}$$
 
 其概率散点图为：
 
-![涉猎概率](/assets/sgs/shelie.png)
+![涉猎概率](/assets/img/sgs/shelie.png)
 
 数学期望和方差分别为：
 
@@ -307,7 +306,7 @@ $$\operatorname{E}(X) = \frac{781}{265} \approxeq 3.0508, \quad \operatorname{Va
 
 ### 周泰（神话再临·风）
 
-![周泰](/assets/sgs/tai_zhou.png)
+![周泰](/assets/img/sgs/tai_zhou.png)
 
 **不屈**：任何时候，当你的体力被扣减到0或更低时，每扣减1点体力：从牌堆翻开一张牌放在你的角色牌上，若该牌的点数与你角色牌上已有的任何一张牌都不同，你不会死去。
 
@@ -325,7 +324,7 @@ $$p_{X}(k) = \frac{M!(k-1)}{M^{k}(M-k+1)!}, \quad k \in \mathbb{Z} \enspace \tex
 
 其概率散点图为：
 
-![不屈概率](/assets/sgs/buqu.png)
+![不屈概率](/assets/img/sgs/buqu.png)
 
 数学期望为：
 
@@ -351,7 +350,7 @@ $$\operatorname{E}(X) \approxeq 5.2065$$
 
 ### 袁绍（神话再临·火）
 
-![袁绍](/assets/sgs/shao_yuan.png)
+![袁绍](/assets/img/sgs/shao_yuan.png)
 
 **乱击**：出牌阶段，你可以将任意两张相同花色的手牌当【万箭齐发】使用。
 
@@ -369,7 +368,7 @@ $$p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, M)}{M}}\right)$$
 
 其概率散点图为：
 
-![乱击1概率](/assets/sgs/luanji1.png)
+![乱击1概率](/assets/img/sgs/luanji1.png)
 
 #### 军争模型
 
@@ -439,7 +438,7 @@ $$\operatorname{E}(X) = \frac{1}{2^{N}}+\frac{N}{2}-1, \quad N \in \mathbb{N}_0$
 
 该期望曲线为：
 
-![乱击2期望](/assets/sgs/luanji2.png)
+![乱击2期望](/assets/img/sgs/luanji2.png)
 
 #### 军争模型
 
@@ -449,7 +448,7 @@ $$\operatorname{E}(X) = \frac{1}{2^{N}}+\frac{N}{2}-1, \quad N \in \mathbb{N}_0$
 
 ### 曹冲（新一将成名2013）
 
-![曹冲](/assets/sgs/chong_cao.png){: width="400" }
+![曹冲](/assets/img/sgs/chong_cao.png){: width="400" }
 
 **称象**：当你受到伤害后，你可以亮出牌堆顶的四张牌，然后你获得其中的任意张点数之和不大于13的牌。
 
@@ -617,7 +616,7 @@ polytope > print $p4->N_LATTICE_POINTS;
 
 其概率散点图为：
 
-![称象概率](/assets/sgs/chengxiang.png)
+![称象概率](/assets/img/sgs/chengxiang.png)
 
 数学期望和方差分别为：
 

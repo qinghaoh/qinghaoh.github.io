@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Dynamic Programming (Edit Distance)"
 tag: dynamic programming
 ---

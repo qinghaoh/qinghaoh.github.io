@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Substring"
 tags: string
-usemathjax: true
 ---
 # Index Map
 

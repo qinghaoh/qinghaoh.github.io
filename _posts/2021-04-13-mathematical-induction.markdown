@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Mathematical Induction"
 tags: math
-usemathjax: true
 ---
 # Arrangement
 

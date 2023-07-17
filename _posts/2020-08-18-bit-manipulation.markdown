@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Bit Manipulation"
 tags: bit
 ---
@@ -224,7 +223,7 @@ Solution II: [Karnaugh map](https://en.wikipedia.org/wiki/Karnaugh_map)
 
 To cover `k` counts, we require `2 ^ n >= k`, where `n` is the total number of bits. Therefore, `n >= log(k)`. In this problem, `k == 3`, so the complete transition loop of the counter is `00 -> 01 -> 10 -> 00 -> ...`.
 
-![Karnaugh map](/assets/karnaugh_map.png)
+![Karnaugh map](/assets/img/algorithm/karnaugh_map.png)
 
 [Karnaugh map tool](https://www.charlie-coleman.com/experiments/kmap/)
 

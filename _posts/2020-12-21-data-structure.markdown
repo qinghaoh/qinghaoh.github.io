@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Data Structure"
 tag: data structure
-usemathjax: true
 ---
 [Min Stack][min-stack]
 

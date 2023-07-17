@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Subarray"
 tags: array
 ---
@@ -50,7 +49,7 @@ Credit to @coder206
 
 e.g. `[3,1,5,4,2]`
 
-![Wall bricks](/assets/minimum_number_of_increments_on_subarrays_to_form_a_target_array.png)
+![Wall bricks](/assets/img/algorithm/minimum_number_of_increments_on_subarrays_to_form_a_target_array.png)
 
 {% highlight java %}
 public int minNumberOperations(int[] target) {

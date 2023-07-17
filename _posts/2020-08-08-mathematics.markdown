@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Mathematics"
 tags: math
-usemathjax: true
 ---
 # Theorem
 
@@ -352,7 +350,7 @@ If we write \\(n\\) in binary as \\(b_{k}\cdots b_{0}\\), then this is equivalen
 
 [Pow(x, n)][powx-n]
 
-![Exponentiation by squaring](/assets/powx_n.png)
+![Exponentiation by squaring](/assets/img/algorithm/powx_n.png)
 
 Iterative:
 
@@ -636,7 +634,7 @@ private int maxDiff(int[] c) {
 
 [Reverse Subarray To Maximize Array Value][reverse-subarray-to-maximize-array-value]
 
-![(abs(a-c)+abs(b-d)) - (abs(a-b)+abs(c-d))](/assets/reverse_subarray_to_maximize_array_value.png)
+![(abs(a-c)+abs(b-d)) - (abs(a-b)+abs(c-d))](/assets/img/algorithm/reverse_subarray_to_maximize_array_value.png)
 
 {% highlight java %}
 public int maxValueAfterReverse(int[] nums) {

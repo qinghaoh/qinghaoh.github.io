@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "DFS"
 tags: dfs
 ---
@@ -239,7 +238,7 @@ for (int k = 0; k < DIRECTIONS.length; k++) {
 pattern.append('#');
 {% endhighlight %}
 
-![Patterns](/assets/number_of_distinct_islands.png)
+![Patterns](/assets/img/algorithm/number_of_distinct_islands.png)
 
 ```
 #0#1##
@@ -336,7 +335,7 @@ private void dfs(int l, int r, int n, int round) {
 }
 {% endhighlight %}
 
-![Transition](/assets/the_earliest_and_latest_rounds_where_players_compete.png)
+![Transition](/assets/img/algorithm/the_earliest_and_latest_rounds_where_players_compete.png)
 
 # Reverse
 

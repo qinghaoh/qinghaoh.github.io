@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Topological Sorting"
 tags: graph
-usemathjax: true
 ---
 # Fundamentals
 
@@ -226,7 +224,7 @@ Iff a Hamiltonian path exists, the topological sort order is unique; no other or
 
 If a topological sort does not form a Hamiltonian path, it is always possible to form a second valid ordering by swapping two consecutive vertices that are not connected by an edge to each other.
 
-![Hamilton Path](/assets/hamilton_path.png)
+![Hamilton Path](/assets/img/algorithm/hamilton_path.png)
 
 [Sequence Reconstruction][sequence-reconstruction]
 

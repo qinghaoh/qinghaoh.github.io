@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Arrangement"
 tags: math
-usemathjax: true
 ---
 # Arrangement
 

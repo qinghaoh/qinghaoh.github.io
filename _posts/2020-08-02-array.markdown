@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Array"
 tags: array
-usemathjax: true
 ---
 
 [Minimum Money Required Before Transactions][minimum-money-required-before-transactions]
@@ -154,7 +152,7 @@ public int firstMissingPositive(int[] nums) {
 
 [Rotate Array][rotate-array]
 
-![Example](/assets/rotate_array.png)
+![Example](/assets/img/algorithm/rotate_array.png)
 
 {% highlight java %}
 public void rotate(int[] nums, int k) {

@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Random"
 tag: random
-usemathjax: true
 ---
 ## Shuffle
 
@@ -246,7 +244,7 @@ public int rand10() {
 
 [Generate Random Point in a Circle][generate-random-point-in-a-circle]
 
-![Random point in a circle](/assets/generate_random_point_in_a_circle_rejection_sampling.png)
+![Random point in a circle](/assets/img/algorithm/generate_random_point_in_a_circle_rejection_sampling.png)
 
 {% highlight java %}
 private double r, x, y;

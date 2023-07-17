@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Dynamic Programming (Top-down)"
 tag: dynamic programming
 ---

@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Best First Search"
 tags: graph
 ---

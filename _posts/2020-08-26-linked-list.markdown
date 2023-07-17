@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Linked List"
 tags: array
 ---
@@ -73,7 +72,7 @@ private ListNode merge(ListNode left, ListNode right, ListNode prev) {
 
 [Floyd's Tortoise and Hare](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_Tortoise_and_Hare)
 
-![Floyd's Tortoise and Hare](/assets/floyds_tortoise_and_hare.png)
+![Floyd's Tortoise and Hare](/assets/img/algorithm/floyds_tortoise_and_hare.png)
 
 [Linked List Cycle II][linked-list-cycle-ii]
 

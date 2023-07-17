@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Greedy Algorithm"
 tags: greedy
 ---
@@ -260,7 +259,7 @@ public String maximumBinaryString(String binary) {
 
 [Maximum Number of Ones][maximum-number-of-ones]
 
-![2D](/assets/maximum_number_of_ones.png)
+![2D](/assets/img/algorithm/maximum_number_of_ones.png)
 
 {% highlight java %}
 public int maximumNumberOfOnes(int width, int height, int sideLength, int maxOnes) {

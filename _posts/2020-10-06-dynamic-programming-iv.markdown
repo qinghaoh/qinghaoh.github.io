@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Dynamic Programming (Multi-dimension)"
 tag: dynamic programming
 ---

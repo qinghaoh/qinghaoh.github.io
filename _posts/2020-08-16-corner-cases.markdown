@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Corner Cases"
 ---
 [Reverse Integer][reverse-integer]
@@ -107,7 +106,7 @@ public int findRadius(int[] houses, int[] heaters) {
 }
 {% endhighlight %}
 
-![Heaters](/assets/heaters.png)
+![Heaters](/assets/img/algorithm/heaters.png)
 
 [Sum of All Odd Length Subarrays][sum-of-all-odd-length-subarrays]
 

@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Fenwick Tree"
 tags: tree
 ---

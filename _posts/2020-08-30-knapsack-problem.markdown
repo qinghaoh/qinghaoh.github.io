@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Knapsack Problem"
 tag: dynamic programming
-usemathjax: true
 ---
 # Fundamentals
 
@@ -74,7 +72,7 @@ For example, `nums = [1,2,5,1]`, then `dp` is:
 [true,true,true,true,true,true]
 ```
 
-![2D](/assets/knapsack_partition_equal_subset_sum_2d.png)
+![2D](/assets/img/algorithm/knapsack_partition_equal_subset_sum_2d.png)
 
 {% highlight java %}
 public boolean canPartition(int[] nums) {
@@ -100,7 +98,7 @@ public boolean canPartition(int[] nums) {
 
 In 2D, `dp[i + 1][j] = dp[i][j] || dp[i][j - nums[i]]`. The reverse iteration ensures `dp[i][j - nums[i]]` is not updated to `dp[i + 1][j - nums[i]]` before we update `dp[i][j]` to `dp[i + 1][j]`.
 
-![1D](/assets/knapsack_partition_equal_subset_sum_1d.png)
+![1D](/assets/img/algorithm/knapsack_partition_equal_subset_sum_1d.png)
 
 [Target Sum][target-sum]
 
@@ -493,7 +491,7 @@ For example, `amount = 5, coins = [1, 2, 5]`, then `dp` is:
 [1,1,2,2,3,4]
 ```
 
-![2D](/assets/knapsack_coin_change_2_2d.png)
+![2D](/assets/img/algorithm/knapsack_coin_change_2_2d.png)
 
 {% highlight java %}
 public int change(int amount, int[] coins) {
@@ -511,7 +509,7 @@ public int change(int amount, int[] coins) {
 
 In 2D, `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - nums[i]]`. The natural iteration ensures `dp[i][j - nums[i]]` is updated to `dp[i + 1][j - nums[i]]` before we update `dp[i][j]` to `dp[i + 1][j]`.
 
-![1D](/assets/knapsack_coin_change_2_1d.png)
+![1D](/assets/img/algorithm/knapsack_coin_change_2_1d.png)
 
 [Number of Ways to Build House of Cards][number-of-ways-to-build-house-of-cards]
 

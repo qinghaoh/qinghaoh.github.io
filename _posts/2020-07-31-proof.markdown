@@ -1,7 +1,5 @@
 ---
-layout: post
 title:  "Proof"
-usemathjax: true
 ---
 [Distant Barcodes][distant-barcodes]
 

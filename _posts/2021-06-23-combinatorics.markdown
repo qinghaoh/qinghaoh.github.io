@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "Combinatorics"
 tags: math
-usemathjax: true
 ---
 # Permutations
 
@@ -145,7 +143,7 @@ Equivalent to: `n + k - 1` points, `k` segments, not allowed to share endpoints.
 
 For example, `n = 4, k = 2`
 
-![conversion](/assets/number_of_sets_of_k_non_overlapping_line_segments.png)
+![conversion](/assets/img/algorithm/number_of_sets_of_k_non_overlapping_line_segments.png)
 
 ## Number of k-combinations
 

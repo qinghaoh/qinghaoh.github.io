@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Priority Queue"
 tags: queue
 ---

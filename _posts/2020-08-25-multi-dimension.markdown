@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Multi-dimension"
 tags: array
 ---
@@ -64,7 +63,7 @@ public int minDistance(String word1, String word2) {
 
 Rolling array optimization:
 
-![Rolling Array](/assets/dp_dimension_reduction_1.png)
+![Rolling Array](/assets/img/algorithm/dp_dimension_reduction_1.png)
 
 {% highlight java %}
 public int minDistance(String word1, String word2) {

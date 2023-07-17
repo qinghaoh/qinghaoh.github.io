@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Missing or Repeating"
 tags: array
 ---

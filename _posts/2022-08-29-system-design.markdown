@@ -1,12 +1,11 @@
 ---
-layout: post
 title:  "System Design"
-usemathjax: true
+category: "system design"
 ---
 
 ## Redis
 
-<img src="/assets/redis_logo.svg" width="150">
+<img src="/assets/img/system_design/redis_logo.svg" width="150">
 
 * [Documentation](https://redis.io/docs/)
 * [Interview questions](https://gist.github.com/aershov24/16f4e369a93182de3f235a9a154a6b4a)
@@ -106,7 +105,7 @@ Rollback is not supported
 
 ## Apache Kafka
 
-<img src="/assets/apache_kafka.png" width="150">
+<img src="/assets/img/system_design/apache_kafka.png" width="150">
 
 * [Documentation](https://kafka.apache.org/documentation/)
 * [Interview questions](https://www.interviewbit.com/kafka-interview-questions/)
@@ -168,13 +167,13 @@ Kafka Schema Registry: ensures the (Avro) schema used by the consumer and the pr
 
 ## RabbitMQ
 
-<img src="/assets/rabbitmq.png" width="150">
+<img src="/assets/img/system_design/rabbitmq.png" width="150">
 
 # Database
 
 ## Apache Cassandra
 
-<img src="/assets/apache_cassandra.jpg" width="250">
+<img src="/assets/img/system_design/apache_cassandra.jpg" width="250">
 
 * [Basics](https://cassandra.apache.org/_/cassandra-basics.html)
 * [Documentation](https://cassandra.apache.org/doc/latest/)
@@ -234,7 +233,7 @@ Incremental scale-out on commodity hardware
 
 ## MongoDB
 
-<img src="/assets/mongodb_logo.svg" width="150">
+<img src="/assets/img/system_design/mongodb_logo.svg" width="150">
 
 ## Apache HBase
 Wide column. Time series data
@@ -322,7 +321,7 @@ MapReduce
 
 ## Apache ZooKeeper
 
-![Apache ZooKeeper](/assets/zookeeper_small.gif)
+![Apache ZooKeeper](/assets/img/system_design/zookeeper_small.gif)
 
 [Apache ZooKeeper](https://zookeeper.apache.org/): high performace, high availability, strictly ordered access.
 
