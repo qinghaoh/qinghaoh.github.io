@@ -1,5 +1,6 @@
 ---
 title:  "Interval"
+category: algorithm
 ---
 
 [Insert Interval][insert-interval]
@@ -68,7 +69,7 @@ public List<Integer> fallingSquares(int[][] positions) {
 }
 {% endhighlight %}
 
-We can also leverage Segment Tree to solve the problem. See [Segment Tree](../../../2022/05/06/segment-tree.html).
+We can also leverage Segment Tree to solve the problem. See [Segment Tree](../segment-tree).
 
 [Count Integers in Intervals][count-integers-in-intervals]
 
@@ -180,7 +181,7 @@ public int removeCoveredIntervals(int[][] intervals) {
 
 ## BFS
 
-The problems in this section have close connection with [Jump Game II][jump-game-ii] in [Implicit BFS](../../../2020/09/24/bfs.html).
+The problems in this section have close connection with [Jump Game II][jump-game-ii] in [Implicit BFS](../bfs).
 
 [Video Stitching][video-stitching]
 
@@ -484,7 +485,7 @@ public int minMeetingRooms(int[][] intervals) {
 }
 {% endhighlight %}
 
-Notice how similar it is to finding max length with upper bounded constraint by [Sliding window](../../../2020/09/28/sliding-window.html#max-length) - the window never shrinks.
+Notice how similar it is to finding max length with upper bounded constraint by [Sliding window](../sliding-window/#max-length) - the window never shrinks.
 
 Another solution is Line weep. We consolidate the number of occupied rooms at each time and find the max.
 

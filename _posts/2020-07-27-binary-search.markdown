@@ -1,5 +1,6 @@
 ---
 title:  "Binary Search"
+category: algorithm
 ---
 # Template
 
@@ -1239,7 +1240,7 @@ i = 2, list = [0, 1, 2], insertionPoint = 1
 i = 3, list = [0, 1, 2, 3], insertionPoint = 3
 ```
 
-This problem is similar to [Count of Smaller Numbers After Self](count-of-smaller-numbers-after-self), so we can find this `insertionPoint` (i.e. number of less elements on the left) dynamically by merge sort or Fenwick Tree:
+This problem is similar to [Count of Smaller Numbers After Self][count-of-smaller-numbers-after-self], so we can find this `insertionPoint` (i.e. number of less elements on the left) dynamically by merge sort or Fenwick Tree:
 
 {% highlight java %}
 FenwickTree ft = new FenwickTree(n);

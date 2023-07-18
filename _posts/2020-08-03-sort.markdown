@@ -1,5 +1,6 @@
 ---
 title:  "Sort"
+category: algorithm
 tags: sort
 ---
 [Sort an Array][sort-an-array]
@@ -215,7 +216,7 @@ indices: [1,0,3,2] -> [3,1,0,2]
 counts: [1,0,1,0] -> [2,1,1,0]
 ```
 
-We can also leverage Fenwick Tree to solve the problem. See [Fenwick Tree](../../../2022/10/01/fenwick-tree.html).
+We can also leverage Fenwick Tree to solve the problem. See [Fenwick Tree](../fenwick-tree).
 
 [Reverse Pairs][reverse-pairs]
 

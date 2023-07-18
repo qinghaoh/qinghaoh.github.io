@@ -103,7 +103,7 @@ public int trapRainWater(int[][] heightMap) {
 }
 {% endhighlight %}
 
-In fact, this problem can be solved with [Dijkstra's algorithm](../../../https://qinghaoh.github.io/2020/09/23/shortest-path.html#dijkstra), too.
+In fact, this problem can be solved with [Dijkstra's algorithm](../shortest-path/#dijkstra), too.
 
 **Set**
 

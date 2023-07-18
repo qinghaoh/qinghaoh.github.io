@@ -1,5 +1,6 @@
 ---
 title:  "Shortest Path"
+category: algorithm
 tags: graph
 ---
 # Dijkstra
@@ -434,7 +435,7 @@ public int trapRainWater(int[][] heightMap) {
 }
 {% endhighlight %}
 
-This problem can be solved by [BFS](../../../2020/09/24/bfs.html) as well. We can see the intrinsic connection of the two approaches.
+This problem can be solved by [BFS](../bfs) as well. We can see the intrinsic connection of the two approaches.
 
 **Additional Wait**
 
@@ -770,7 +771,7 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
 
 For example, `n = 9, flights = [[0,1,1],[1,2,1],[2,3,1],[3,7,1],[0,4,3],[4,5,3],[5,7,3],[0,6,5],[6,7,100],[7,8,1]], src = 0, dst = 8, k = 3`.
 
-![Example](\assets\cheapest_flights_within_k_stops.png)
+![Example](/assets/img/algorithm/cheapest_flights_within_k_stops.png)
 
 If in `else if (s + 1 < stops[neighbor])`, the statement is `pq.offer(new int[]{neighbor, alt, stops[neighbor] = s + 1});`, then the path `0 -> 6 -> 7` would set `stops[7] = 2` and exclude the correct path `0 -> 4 -> 5 -> 7` (because its `stops == 3`).
 

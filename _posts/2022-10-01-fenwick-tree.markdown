@@ -1,5 +1,6 @@
 ---
 title:  "Fenwick Tree"
+category: algorithm
 tags: tree
 ---
 
@@ -86,7 +87,7 @@ public List<Integer> countSmaller(int[] nums) {
 }
 {% endhighlight %}
 
-This problem can be solved by [Merge Sort](../../../2020/08/03/sort.html#merge-sort), too.
+This problem can be solved by [Merge Sort](../sort/#merge-sort), too.
 
 Similar problem:
 
@@ -137,7 +138,7 @@ private int binarySearch(List<Integer> list, int target) {
 }
 {% endhighlight %}
 
-This problem can be solved by [Merge Sort](../../../2020/08/03/sort.html#merge-sort), too.
+This problem can be solved by [Merge Sort](../sort/#merge-sort), too.
 
 [Count Number of Teams][count-number-of-teams]
 
@@ -167,7 +168,7 @@ public int numTeams(int[] rating) {
 
 [Queries on a Permutation With Key][queries-on-a-permutation-with-key]
 
-![Queries](/assets/queries_on_a_permutation_with_key.png)
+![Queries](/assets/img/algorithm/queries_on_a_permutation_with_key.png)
 
 {% highlight java %}
 public int[] processQueries(int[] queries, int m) {

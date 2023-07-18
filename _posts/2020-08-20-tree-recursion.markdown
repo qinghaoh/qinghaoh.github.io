@@ -1,5 +1,6 @@
 ---
 title:  "Tree Recursion"
+category: algorithm
 tags: tree
 ---
 # Fundamentals
@@ -498,7 +499,7 @@ private long[] dfs(List<Integer>[] tree, int node, int parent, int[] price) {
 }
 {% endhighlight %}
 
-A more complex but general approach is by [rerooting](../../../2020/08/06/subtree#rerooting).
+A more complex but general approach is by [rerooting](../subtree/#rerooting).
 
 [Second Minimum Node in a Binary Tree][second-minimum-node-in-a-binary-tree]
 

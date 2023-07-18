@@ -1,5 +1,6 @@
 ---
 title:  "Prefix Sum"
+category: algorithm
 ---
 # Fundamentals
 
@@ -336,7 +337,7 @@ public long countQuadruplets(int[] nums) {
 }
 {% endhighlight %}
 
-Another solution is by [dynamic programming](../../../2021/05/18/dynamic-programming-vi.html).
+Another solution is by [dynamic programming](../dynamic-programming-vi).
  
 **Frequency**
 
@@ -451,7 +452,7 @@ public int largestVariance(String s) {
 }
 {% endhighlight %}
 
-This problem can also be solved by [Kadane's Algorithm](../../../2020/10/03/kadanes.html).
+This problem can also be solved by [Kadane's Algorithm](../kadanes).
 
 **Ordered Pair**
 

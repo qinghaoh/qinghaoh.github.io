@@ -1,5 +1,6 @@
 ---
 title:  "Kadane's Algorithm"
+category: algorithm
 tag: subarray
 ---
 [Kadane's algorithm](https://en.wikipedia.org/wiki/Maximum_subarray_problem#Kadane's_algorithm)
@@ -285,7 +286,7 @@ public int largestVariance(String s) {
 }
 {% endhighlight %}
 
-This problem has a more intuitive [prefix sum](../../../2021/06/12/prefix-sum.html) solution.
+This problem has a more intuitive [prefix sum](../prefix-sum) solution.
 
 # 2D
 

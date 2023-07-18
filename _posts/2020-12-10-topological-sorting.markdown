@@ -1,5 +1,6 @@
 ---
 title:  "Topological Sorting"
+category: algorithm
 tags: graph
 ---
 # Fundamentals
@@ -218,7 +219,7 @@ A topological ordering is possible iff the graph has no directed cycles, that is
 
 If a topological sort has the property that *all* pairs of *consecutive vertices* in the sorted order are connected by edges, then these edges form a directed Hamiltonian path in the DAG.
 
-A [Hamiltonian path](sort-items-by-groups-respecting-dependencies) (or traceable path) is a path in an undirected or directed graph that visits each vertex exactly once.
+A [Hamiltonian path](https://en.wikipedia.org/wiki/Hamiltonian_path) (or traceable path) is a path in an undirected or directed graph that visits each vertex exactly once.
 
 Iff a Hamiltonian path exists, the topological sort order is unique; no other order respects the edges of the path.
 

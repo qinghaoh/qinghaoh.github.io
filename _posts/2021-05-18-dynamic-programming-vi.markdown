@@ -1,5 +1,6 @@
 ---
 title:  "Dynamic Programming VI"
+category: algorithm
 tag: dynamic programming
 ---
 [Best Team With No Conflicts][best-team-with-no-conflicts]
@@ -441,7 +442,7 @@ public long countQuadruplets(int[] nums) {
 }
 {% endhighlight %}
 
-Another solution is by [prefix sum](../../../2021/06/12/prefix-sum.html).
+Another solution is by [prefix sum](../prefix-sum).
 
 # Fractional DP
 
