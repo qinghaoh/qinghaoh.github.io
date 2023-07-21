@@ -1,5 +1,7 @@
 ---
 title:  "Dynamic Programming (Rolling)"
+category: algorithm
+tags: dynamic programming
 ---
 [Check if There is a Valid Partition For The Array][check-if-there-is-a-valid-partition-for-the-array]
 

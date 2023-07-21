@@ -1,5 +1,6 @@
 ---
 title:  "String Searching"
+category: algorithm
 tags: string
 ---
 # Iteration

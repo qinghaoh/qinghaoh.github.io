@@ -1,5 +1,6 @@
 ---
 title:  "Reverse Thinking"
+category: algorithm
 ---
 [Maximum Segment Sum After Removals][maximum-segment-sum-after-removals]
 

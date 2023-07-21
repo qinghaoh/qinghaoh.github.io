@@ -1,5 +1,6 @@
 ---
 title:  "Brain Teaser"
+category: algorithm
 ---
 [Minimum Amount of Time to Fill Cups][minimum-amount-of-time-to-fill-cups]
 

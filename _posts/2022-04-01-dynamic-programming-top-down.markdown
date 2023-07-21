@@ -1,5 +1,6 @@
 ---
 title:  "Dynamic Programming (Top-down)"
+category: algorithm
 tag: dynamic programming
 ---
 

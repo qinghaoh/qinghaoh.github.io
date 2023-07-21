@@ -1,5 +1,6 @@
 ---
 title:  "Parentheses"
+category: algorithm
 ---
 
 [Reverse Substrings Between Each Pair of Parentheses][reverse-substrings-between-each-pair-of-parentheses]

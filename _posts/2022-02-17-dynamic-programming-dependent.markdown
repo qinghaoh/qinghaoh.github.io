@@ -1,5 +1,6 @@
 ---
 title:  "Dynamic Programming (Dependent)"
+category: algorithm
 tag: dynamic programming
 ---
 

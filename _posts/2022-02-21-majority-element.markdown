@@ -1,5 +1,6 @@
 ---
 title:  "Majority Element"
+category: algorithm
 ---
 
 Majority element: an element that occurs repeatedly for more than half of the elements of the input.

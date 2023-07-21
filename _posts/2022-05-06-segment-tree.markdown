@@ -1,5 +1,6 @@
 ---
 title:  "Segment Tree"
+category: algorithm
 tags: tree
 ---
 # Fundamentals

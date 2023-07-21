@@ -1,5 +1,7 @@
 ---
 title:  "Graph Cycle"
+category: algorithm
+tags: graph
 ---
 
 Common graph cycle problems:
