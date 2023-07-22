@@ -34,7 +34,7 @@ tag: sgs
 
 ![军争篇卡牌分布](/assets/img/sgs/junzheng.png)
 
-为了简化计算，我们排除宝物牌`木牛流马`，且认为卡牌分为4种花色，每种花色40张，且在游戏中的任意一个时刻，我们可以认为牌堆中的牌的花色和点数都是均匀分布的<sup>[1](#footnote1)</sup>。这种简化的合理性在于：场上的牌分布情况千差万别，我们无法对牌堆做精确计算。因此，我们只取统计意义上的近似结果。也正因如此，本文中所有的小数结果仅保留四位有效数字。
+为了简化计算，我们排除宝物牌`木牛流马`，且认为卡牌分为4种花色，每种花色40张，且在游戏中的任意一个时刻，我们可以认为牌堆中的牌的花色和点数都是均匀分布的[^footnote1]。这种简化的合理性在于：场上的牌分布情况千差万别，我们无法对牌堆做精确计算。因此，我们只取统计意义上的近似结果。也正因如此，本文中所有的小数结果仅保留四位有效数字。
 
 军争篇模型实际上意味着**不放回**抽样。
 
@@ -426,7 +426,7 @@ $$p_{X}(k = \frac{N}{2}-2) = \frac{o_{N}^{4}}{4^{N}} = \frac{1}{4}-\frac{e_{N}^{
 
 另一种解法：$$p_{X}(k = \frac{N}{2}-2) = \frac{\#(k = \frac{(N-1)-3}{2})}{4^N} = \frac{1}{4}-\frac{e_{N}^{4}}{4^N}$$
 
-$$p_{X}(k = \frac{N}{2}-1) = 1-p_{X}(k = \frac{N}{2})-p_{X}(k = \frac{N}{2}-1) = \frac{3}{4}$$ 
+$$p_{X}(k = \frac{N}{2}-1) = 1-p_{X}(k = \frac{N}{2})-p_{X}(k = \frac{N}{2}-2) = \frac{3}{4}$$ 
 
 其数学期望：
 
@@ -485,7 +485,7 @@ $$\begin{pmatrix}
 -14 \\ -14 \\ -14 \\ -14 \\ -14 \\ -14 \\ 13 \\ 13 \\ 13 \\ 13 \\ -1 \\ -1 \\ -1 \\ -1
 \end{pmatrix}$$
 
-要求解满足以上不等式组的整数解的个数，等价于求解四维凸多胞形（[Convex polytope](https://en.wikipedia.org/wiki/Convex_polytope)）中的整数点（晶格点）的个数。以上矩阵不等式为该四维凸多胞形的半空间表示（Half-space representation）。利用开源软件[polymake](https://polymake.org/doku.php/start)，我们可以得知该凸多胞形为整多胞形（[Integral polytope](https://en.wikipedia.org/wiki/Integral_polytope)），进而可得到其Ehrhart多项式（[Ehrhart polynomial](https://en.wikipedia.org/wiki/Ehrhart_polynomial)）
+要求解满足以上不等式组的整数解的个数，等价于求解四维凸多胞形（[Convex polytope](https://en.wikipedia.org/wiki/Convex_polytope)）中的整数点（晶格点）的个数。以上矩阵不等式为该四维凸多胞形的半空间表示（Half-space representation）。利用开源软件[polymake](https://polymake.org/doku.php/start)，我们可以得知该凸多胞形为整多胞形（[Integral polytope](https://en.wikipedia.org/wiki/Integral_polytope)），进而可得到其Ehrhart多项式（[Ehrhart polynomial](https://en.wikipedia.org/wiki/Ehrhart_polynomial)）：
 
 {% highlight perl %}
 polytope > $p = new Polytope(INEQUALITIES=>[[-14,1,1,0,0],[-14,1,0,1,0],[-14,1,0,0,1],[-14,0,1,1,0],[-14,0,1,0,1],[-14,0,0,1,1],[-1,1,0,0,0],[-1,0,1,0,0],[-1,0,0,1,0],[-1,0,0,0,1],[13,-1,0,0,0],[13,0,-1,0,0],[13,0,0,-1,0],[13,0,0,0,-1]]);
@@ -558,7 +558,7 @@ $$\begin{pmatrix}
 
 根据对称性，以上每种情况所得的结果应乘以重复系数，该系数分别为：\\(\binom{4}{4} = 1\\)、\\(\binom{4}{3} = 4\\)、\\(\binom{4}{2} = 6\\)和\\(\binom{4}{1} = 4\\)。
 
-再次利用polymake的计算可知，以上四种情况对应的四个凸多胞形均为有理多胞形（Rational polytope）而非整多胞形。因此，只能通过求解其Ehrhart准多项式（[Ehrhart quasi-polynomial](https://en.wikipedia.org/wiki/Ehrhart_polynomial#Ehrhart_quasi-polynomials)）来求解其所包含的晶格点。
+再次利用polymake的计算可知，以上四种情况对应的四个凸多胞形均为有理多胞形（Rational polytope）而非整多胞形。因此，只能通过求解其Ehrhart准多项式（[Ehrhart quasi-polynomial](https://en.wikipedia.org/wiki/Ehrhart_polynomial#Ehrhart_quasi-polynomials)）来求解其所包含的晶格点：
 
 {% highlight perl %}
 polytope > $p1 = new Polytope(INEQUALITIES=>[[-14,1,1,1,1],[13,-1,-1,-1,0],[13,-1,-1,0,-1],[13,-1,0,-1,-1],[13,0,-1,-1,-1],[-1,1,0,0,0],[-1,0,1,0,0],[-1,0,0,1,0],[-1,0,0,0,1]]);
@@ -656,5 +656,6 @@ $$\operatorname{E}(K) = \frac{62272}{28561} \approxeq 2.1803, \quad \operatornam
  
 以上几个同类技能各有优劣，可见设计是比较均衡的。
 
-<a name="footnote1">1</a>: 实际上，卡牌的点数并非均匀分布。【2】和【Q】这两种点数的概率为\\(7/80\\)，而其它的点数概率为\\(3/40\\)。由于这种差异对计算结果的影响可以忽略不记，我们还是认为所有卡牌点数是均匀分布的。
+# 脚注
 
+[^footnote1]: 实际上，卡牌的点数并非均匀分布。【2】和【Q】这两种点数的概率为\\(7/80\\)，而其它的点数概率为\\(3/40\\)。由于这种差异对计算结果的影响可以忽略不记，我们还是认为所有卡牌点数是均匀分布的。

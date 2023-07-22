@@ -1,5 +1,6 @@
 ---
 title:  "Probability Theory"
+category: algorithm
 tags: math
 ---
 [Guess the Word][guess-the-word]

@@ -1,5 +1,6 @@
 ---
 title:  "Recursion"
+category: algorithm
 tags: recursion
 ---
 

@@ -1,6 +1,7 @@
 ---
 title:  "System Design"
 category: "system design"
+tags: design
 ---
 
 ## Redis

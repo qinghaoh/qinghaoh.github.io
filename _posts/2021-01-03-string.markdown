@@ -1,5 +1,6 @@
 ---
 title:  "String"
+category: algorithm
 tags: string
 ---
 # Transformation

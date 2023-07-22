@@ -1,6 +1,7 @@
 ---
 title:  "OO Design"
-tags: math
+category: algorithm
+tags: design
 ---
 [Basic Calculator IV][basic-calculator-iv]
 

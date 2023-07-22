@@ -1,5 +1,6 @@
 ---
 title:  "Arrangement"
+category: algorithm
 tags: math
 ---
 # Arrangement

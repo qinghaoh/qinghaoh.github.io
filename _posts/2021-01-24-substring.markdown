@@ -1,5 +1,6 @@
 ---
 title:  "Substring"
+category: algorithm
 tags: string
 ---
 # Index Map

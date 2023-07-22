@@ -1,5 +1,6 @@
 ---
 title:  "Combinatorics"
+category: algorithm
 tags: math
 ---
 # Permutations

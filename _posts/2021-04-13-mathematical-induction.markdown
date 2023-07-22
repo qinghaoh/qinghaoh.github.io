@@ -1,5 +1,6 @@
 ---
 title:  "Mathematical Induction"
+category: algorithm
 tags: math
 ---
 # Arrangement

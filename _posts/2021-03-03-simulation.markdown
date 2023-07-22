@@ -1,5 +1,6 @@
 ---
 title:  "Simulation"
+category: algorithm
 ---
 [Pour Water][pour-water]
 

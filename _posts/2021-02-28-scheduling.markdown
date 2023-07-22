@@ -1,5 +1,6 @@
 ---
 title:  "Scheduling"
+category: algorithm
 ---
 # Greedy
 

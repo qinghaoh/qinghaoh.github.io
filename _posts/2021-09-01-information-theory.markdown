@@ -1,5 +1,6 @@
 ---
 title:  "Information Theory"
+category: algorithm
 tags: math
 ---
 [Poor Pigs][poor-pigs]

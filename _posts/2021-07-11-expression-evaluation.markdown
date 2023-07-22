@@ -1,5 +1,6 @@
 ---
 title:  "Expression Evaluation"
+category: algorithm
 ---
 # Fundamentals
 

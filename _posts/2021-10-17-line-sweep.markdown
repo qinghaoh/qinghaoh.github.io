@@ -1,6 +1,6 @@
 ---
 title:  "Line Sweep"
-tags: math
+category: algorithm
 ---
 # Fundamentals
 

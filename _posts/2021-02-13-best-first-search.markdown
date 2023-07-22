@@ -1,5 +1,6 @@
 ---
 title:  "Best First Search"
+category: algorithm
 tags: graph
 ---
 # A\* Search

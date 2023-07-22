@@ -1,5 +1,6 @@
 ---
 title:  "Modular Arithmetic"
+category: algorithm
 tags: math
 ---
 # Theorem
