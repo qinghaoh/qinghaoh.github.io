@@ -19,7 +19,7 @@ In summary, the possibilities are:
 
 A necessary and sufficient condition is: `Math.abs(A[i] - i) <= 1`. So we check this for every i.
 
-{% highlight java %}
+```java
 public boolean isIdealPermutation(int[] A) {
     for (int i = 0; i < A.length; i++) {
         if (Math.abs(A[i] - i) > 1) {
@@ -28,7 +28,7 @@ public boolean isIdealPermutation(int[] A) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Maximum Height by Stacking Cuboids][maximum-height-by-stacking-cuboids]
 

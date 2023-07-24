@@ -8,7 +8,7 @@ tag: random
 
 [Shuffle an Array][shuffle-an-array]
 
-{% highlight java %}
+```java
 private int[] arr;
 private int[] oldArr;
 
@@ -37,11 +37,11 @@ private void swap(int i, int j) {
     arr[i] = arr[j];
     arr[j] = tmp;
 }
-{% endhighlight %}
+```
 
 [Random Flip Matrix][random-flip-matrix]
 
-{% highlight java %}
+```java
 private Map<Integer, Integer> map;  // index : real index
 private Random rand;
 private int rows, cols, count;
@@ -69,7 +69,7 @@ public void reset() {
     // no need to clear the map
     count = rows * cols;
 }
-{% endhighlight %}
+```
 
 ## Remapping
 
@@ -79,7 +79,7 @@ Map + List
 
 [Random Pick with Blacklist][random-pick-with-blacklist]
 
-{% highlight java %}
+```java
 private Map<Integer, Integer> map = new HashMap<>();
 private Random rand = new Random();
 private int whitelistSize;  // number of integers in whitelist
@@ -111,11 +111,11 @@ public int pick() {
     int num = rand.nextInt(whitelistSize);
     return map.getOrDefault(num, num);
 }
-{% endhighlight %}
+```
 
 The above problem can be solved by binary search, too. But the time complexity will be higher:
 
-{% highlight java %}
+```java
 private int[] blacklist;
 private Random rand = new Random();
 private int whitelistSize;  // number of integers in whitelist
@@ -148,13 +148,13 @@ public int pick() {
     }
     return num + low;
 }
-{% endhighlight %}
+```
 
 ## Cumulative Probability
 
 [Random Pick with Weight][random-pick-with-weight]
 
-{% highlight java %}
+```java
 private int[] p;  // cumulative sum
 private Random rand = new Random();
 
@@ -171,13 +171,13 @@ public int pickIndex() {
     // w starts from p[1], therefore index - 1
     return (index < 0 ? ~index : index) - 1;
 }
-{% endhighlight %}
+```
 
 **Multi-dimension**
 
 [Random Point in Non-overlapping Rectangles][random-point-in-non-overlapping-rectangles]
 
-{% highlight java %}
+```java
 private int[][] rects;
 private int[] p;
 private Random rand = new Random();
@@ -204,7 +204,7 @@ public int[] pick() {
     int y = bottom + (p[index] - points) / (right - left + 1);
     return new int[]{x, y};
 }
-{% endhighlight %}
+```
 
 # Sampling
 ## Rejection Sampling
@@ -230,7 +230,7 @@ The algorithm will take an average of $$ M $$ iterations to obtain a sample.
 
 (from https://leetcode.com/problems/implement-rand10-using-rand7/Figures/470/rejectionSamplingTable.png)
 
-{% highlight java %}
+```java
 public int rand10() {
     int row, col, index;
     do {
@@ -240,13 +240,13 @@ public int rand10() {
     } while (index > 40);
     return 1 + index % 10;
 }
-{% endhighlight %}
+```
 
 [Generate Random Point in a Circle][generate-random-point-in-a-circle]
 
 ![Random point in a circle](/assets/img/algorithm/generate_random_point_in_a_circle_rejection_sampling.png)
 
-{% highlight java %}
+```java
 private double r, x, y;
 
 public Solution(double radius, double x_center, double y_center) {
@@ -267,7 +267,7 @@ public double[] randPoint() {
         }
     }
 }
-{% endhighlight %}
+```
 
 ## Inverse Transform Sampling
 
@@ -279,7 +279,7 @@ public double[] randPoint() {
 
 [Generate Random Point in a Circle][generate-random-point-in-a-circle]
 
-{% highlight java %}
+```java
 private double r, x, y;
 
 public Solution(double radius, double x_center, double y_center) {
@@ -297,7 +297,7 @@ public double[] randPoint() {
 
     return new double[]{x + d * Math.cos(theta), y + d * Math.sin(theta)};
 }
-{% endhighlight %}
+```
 
 ## Reservoir Sampling
 
@@ -307,7 +307,7 @@ Choosing a simple random sample, without replacement, of `k` items from a popula
 
 Algorithm R:
 
-{% highlight java %}
+```java
 /**
  * Reservoir sampling with Algorithm R.
  * @param nums input array
@@ -328,11 +328,11 @@ public int[] reservoirSample(int[] nums, int k) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Random Pick Index][random-pick-index]
 
-{% highlight java %}
+```java
 private int[] nums;
 private Random rand;
 
@@ -352,13 +352,13 @@ public int pick(int target) {
 
     return index;
 }
-{% endhighlight %}
+```
 
 [Linked List Random Node][linked-list-random-node]
 
 [Online Majority Element In Subarray][online-majority-element-in-subarray]
 
-{% highlight java %}
+```java
 private Map<Integer, List<Integer>> map = new HashMap<>();
 private int[] arr;
 private Random rand = new Random();
@@ -404,7 +404,7 @@ public int query(int left, int right, int threshold) {
     }
     return -1;
 }
-{% endhighlight %}
+```
 
 [implement-rand10-using-rand7]: https://leetcode.com/problems/implement-rand10-using-rand7/
 [insert-delete-getrandom-o1]: https://leetcode.com/problems/insert-delete-getrandom-o1/

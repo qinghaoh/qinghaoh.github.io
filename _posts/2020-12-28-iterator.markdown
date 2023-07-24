@@ -4,7 +4,7 @@ title:  "Iterator"
 
 [Zigzag Iterator][zigzag-iterator]
 
-{% highlight java %}
+```java
 public class ZigzagIterator {
     private Queue<Iterator<Integer>> q;
 
@@ -34,6 +34,6 @@ public class ZigzagIterator {
         return !q.isEmpty();
     }
 }
-{% endhighlight %}
+```
 
 [zigzag-iterator]: https://leetcode.com/problems/zigzag-iterator/

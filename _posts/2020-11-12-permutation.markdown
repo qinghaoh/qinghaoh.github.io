@@ -3,7 +3,7 @@ title:  "Permutation"
 ---
 [Permutation Sequence][permutation-sequence]
 
-{% highlight java %}
+```java
 public String getPermutation(int n, int k) {
     List<Integer> num = new ArrayList<>();
     int fact = 1;
@@ -22,13 +22,13 @@ public String getPermutation(int n, int k) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 # Lexicographically Sort
 
 [Maximize Greatness of an Array][maximize-greatness-of-an-array]
 
-{% highlight java %}
+```java
 public int maximizeGreatness(int[] nums) {
     Arrays.sort(nums);
 
@@ -44,7 +44,7 @@ public int maximizeGreatness(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 ## Next Permutation
 
@@ -52,7 +52,7 @@ public int maximizeGreatness(int[] nums) {
 
 Algorithm: [Generation in lexicographic order](https://en.wikipedia.org/wiki/Permutation#Generation_in_lexicographic_order)
 
-{% highlight java %}
+```java
 public void nextPermutation(int[] nums) {
     // Narayana Pandita
     // finds the largest index k such that a[k] < a[k + 1]
@@ -86,7 +86,7 @@ private void swap(int[] nums, int i, int j) {
     nums[i] = nums[j];
     nums[j] = tmp;
 }
-{% endhighlight %}
+```
 
 ## Previous Permutation
 
@@ -98,7 +98,7 @@ where \\(n\\) is the number of characters, and \\(\mathbf{card}(c)\\) is the cou
 
 https://www.geeksforgeeks.org/lexicographic-rank-string-duplicate-characters/
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 private static final int MAX_LENGTH = 3000;
 
@@ -141,11 +141,11 @@ private long modPow(long x, long y) {
     }
     return res;
 }
-{% endhighlight %}
+```
 
 [Construct Smallest Number From DI String][construct-smallest-number-from-di-string]
 
-{% highlight java %}
+```java
 public String smallestNumber(String pattern) {
     // 1 2 3 4 5 6 7 8 9
     // D D I D D I D D
@@ -160,11 +160,11 @@ public String smallestNumber(String pattern) {
     }
     return res.toString();
 }
-{% endhighlight %}
+```
 
 [Numbers With Repeated Digits][numbers-with-repeated-digits]
 
-{% highlight java %}
+```java
 public int numDupDigitsAtMostN(int n) {
     List<Integer> nums = new ArrayList<>();
     int tmp = n + 1;
@@ -219,13 +219,13 @@ private int permutation(int n, int m) {
     }
     return p;
 }
-{% endhighlight %}
+```
 
 # Dynamic Programming
 
 [Valid Permutations for DI Sequence][valid-permutations-for-di-sequence]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numPermsDISequence(String s) {
@@ -263,7 +263,7 @@ public int numPermsDISequence(String s) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [construct-smallest-number-from-di-string]: https://leetcode.com/problems/construct-smallest-number-from-di-string/
 [maximize-greatness-of-an-array]: https://leetcode.com/problems/maximize-greatness-of-an-array/

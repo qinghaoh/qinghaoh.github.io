@@ -14,7 +14,7 @@ The Euclid–Euler theorem is a theorem in mathematics that relates perfect numb
 
 [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
 
-{% highlight java %}
+```java
 public int countPrimes(int n) {
     boolean[] notPrime = new boolean[n];
     int count = 0;
@@ -28,7 +28,7 @@ public int countPrimes(int n) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 * Time complexity: `O(nlog(log(n)))`
 * Space compolexity: `O(n)`
@@ -43,7 +43,7 @@ Proof: [Divergence of the Sum of the Reciprocals of the Primes](https://en.wikip
 
 [GCD Sort of an Array][gcd-sort-of-an-array]
 
-{% highlight java %}
+```java
 public boolean gcdSort(int[] nums) {
     // minPrims[i]: min prime factor of number i
     int[] minPrimes = sieve(Arrays.stream(nums).max().getAsInt() + 1);
@@ -90,11 +90,11 @@ private List<Integer> primeFactorization(int n, int[] minPrimes) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [2 Keys Keyboard][2-keys-keyboard]
 
-{% highlight java %}
+```java
 public int minSteps(int n) {
     int s = 0;
     for (int d = 2; d <= n; d++) {
@@ -105,11 +105,11 @@ public int minSteps(int n) {
     }
     return s;
 }
-{% endhighlight %}
+```
 
 [Integer Break][integer-break]
 
-{% highlight java %}
+```java
 public int integerBreak(int n) {
     if (n < 4) {
         return n - 1;
@@ -130,11 +130,11 @@ public int integerBreak(int n) {
     }
     return prod * n;
 }
-{% endhighlight %}
+```
 
 [Consecutive Numbers Sum][consecutive-numbers-sum]
 
-{% highlight java %}
+```java
 public int consecutiveNumbersSum(int n) {
     // (a + a + (k - 1)) * k / 2 = n
     // a = n / k - (k - 1) / 2
@@ -173,7 +173,7 @@ public int consecutiveNumbersSum(int n) {
     //     - n (n') is the last prime factor and it's not counted yet
     return n == 1 ? count : count * 2;
 }
-{% endhighlight %}
+```
 
 [2-keys-keyboard]: https://leetcode.com/problems/2-keys-keyboard/
 [consecutive-numbers-sum]: https://leetcode.com/problems/consecutive-numbers-sum/

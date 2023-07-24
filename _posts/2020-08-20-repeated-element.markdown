@@ -10,7 +10,7 @@ Find the minimum size `m`, so that there exists at least one subarray with size 
 
 In this example, the size is `2N / N + 1 = 3`.
 
-{% highlight java %}
+```java
 public int repeatedNTimes(int[] A) {
     for (int i = 0; i < A.length; i++) {
         for (int j = 1; j <= 3 && i + j < A.length; j++) {
@@ -21,11 +21,11 @@ public int repeatedNTimes(int[] A) {
     }
     return 0;
 }
-{% endhighlight %}
+```
 
 Or equivalently,
 
-{% highlight java %}
+```java
 public int repeatedNTimes(int[] A) {
     for (int i = 2; i < A.length; i++) {
         if (A[i] == A[i - 1] || A[i] == A[i - 2]) {
@@ -34,13 +34,13 @@ public int repeatedNTimes(int[] A) {
     }
     return A[0];
 }
-{% endhighlight %}
+```
 
 We can of course expand this subarray window to, for example, 4.
 
 [Guess the Majority in a Hidden Array][guess-the-majority-in-a-hidden-array]
 
-{% highlight java %}
+```java
 public int guessMajority(ArrayReader reader) {
     int n = reader.length();
     int groupEqualsNum3 = 1;  // initially nums[3] is in this group
@@ -78,13 +78,13 @@ public int guessMajority(ArrayReader reader) {
 
     return groupEqualsNum3 == groupNotEqualsNum3 ? -1 : (groupEqualsNum3 > groupNotEqualsNum3 ? indexA : indexB);
 }
-{% endhighlight %}
+```
 
 ## Sliding window
 
 [Detect Pattern of Length M Repeated K or More Times][detect-pattern-of-length-m-repeated-k-or-more-times]
 
-{% highlight java %}
+```java
 public boolean containsPattern(int[] arr, int m, int k) {
     for (int i = 0, count = 0; i + m < arr.length; i++) {
         if (arr[i] != arr[i + m]) {
@@ -95,7 +95,7 @@ public boolean containsPattern(int[] arr, int m, int k) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
 [detect-pattern-of-length-m-repeated-k-or-more-times]: https://leetcode.com/problems/detect-pattern-of-length-m-repeated-k-or-more-times/
 [guess-the-majority-in-a-hidden-array]: https://leetcode.com/problems/guess-the-majority-in-a-hidden-array/

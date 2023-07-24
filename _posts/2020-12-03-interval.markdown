@@ -5,7 +5,7 @@ category: algorithm
 
 [Insert Interval][insert-interval]
 
-{% highlight java %}
+```java
 public int[][] insert(int[][] intervals, int[] newInterval) {
     int n = intervals.length;
     List<int[]> list = new LinkedList<>();
@@ -29,13 +29,13 @@ public int[][] insert(int[][] intervals, int[] newInterval) {
 
     return list.toArray(new int[list.size()][]);
 }
-{% endhighlight %}
+```
 
 # TreeMap
 
 [Falling Squares][falling-squares]
 
-{% highlight java %}
+```java
 public List<Integer> fallingSquares(int[][] positions) {
     // start : height
     TreeMap<Integer, Integer> map = new TreeMap<>();
@@ -67,13 +67,13 @@ public List<Integer> fallingSquares(int[][] positions) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 We can also leverage Segment Tree to solve the problem. See [Segment Tree](../segment-tree).
 
 [Count Integers in Intervals][count-integers-in-intervals]
 
-{% highlight java %}
+```java
 class CountIntervals {
     // {start : end}
     private TreeMap<Integer, Integer> map = new TreeMap<>();
@@ -113,7 +113,7 @@ class CountIntervals {
         return count;
     }
 }
-{% endhighlight %}
+```
 
 # Interval Overlapping Problem
 
@@ -121,7 +121,7 @@ class CountIntervals {
 
 [Count Ways to Group Overlapping Ranges][count-ways-to-group-overlapping-ranges]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int countWays(int[][] ranges) {
@@ -139,11 +139,11 @@ public int countWays(int[][] ranges) {
 
     return ways;
 }
-{% endhighlight %}
+```
 
 [Check if All the Integers in a Range Are Covered][check-if-all-the-integers-in-a-range-are-covered]
 
-{% highlight java %}
+```java
 public boolean isCovered(int[][] ranges, int left, int right) {
     Arrays.sort(ranges, Comparator.comparingInt(r -> r[0]));
 
@@ -158,11 +158,11 @@ public boolean isCovered(int[][] ranges, int left, int right) {
 
     return left > right;
 }
-{% endhighlight %}
+```
 
 [Remove Covered Intervals][remove-covered-intervals]
 
-{% highlight java %}
+```java
 public int removeCoveredIntervals(int[][] intervals) {
     Arrays.sort(intervals, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
 
@@ -177,7 +177,7 @@ public int removeCoveredIntervals(int[][] intervals) {
     }
     return remaining;
 }
-{% endhighlight %}
+```
 
 ## BFS
 
@@ -185,7 +185,7 @@ The problems in this section have close connection with [Jump Game II][jump-game
 
 [Video Stitching][video-stitching]
 
-{% highlight java %}
+```java
 public int videoStitching(int[][] clips, int time) {
     int[] nums = new int[time + 1];
     for (int[] clip : clips) {
@@ -199,11 +199,11 @@ public int videoStitching(int[][] clips, int time) {
 // 45. Jump Game II
 private int jump(int[] nums) {
 }
-{% endhighlight %}
+```
 
 Or, without the auxilliary array, we sort `clips` and rewrite the implicit BFS:
 
-{% highlight java %}
+```java
 public int videoStitching(int[][] clips, int time) {
     Arrays.sort(clips, (a, b) -> a[0] - b[0]);
 
@@ -224,11 +224,11 @@ public int videoStitching(int[][] clips, int time) {
 
     return res;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Taps to Open to Water a Garden][minimum-number-of-taps-to-open-to-water-a-garden]
 
-{% highlight java %}
+```java
 public int minTaps(int n, int[] ranges) {
     // uses j to denote the rightmost end of the area starting from i that can be watered by taps so far
     // then arr[i] == j - i
@@ -244,7 +244,7 @@ public int minTaps(int n, int[] ranges) {
 // 45. Jump Game II
 private int jump(int[] nums) {
 }
-{% endhighlight %}
+```
 
 # Interval Scheduling
 
@@ -256,7 +256,7 @@ private int jump(int[] nums) {
 
 [Non-overlapping Intervals][non-overlapping-intervals]
 
-{% highlight java %}
+```java
 public int eraseOverlapIntervals(int[][] intervals) {
     // earliest deadline first (EDF) scheduling
     // greedy
@@ -273,11 +273,11 @@ public int eraseOverlapIntervals(int[][] intervals) {
     }
     return intervals.length - groups;
 }
-{% endhighlight %}
+```
 
 [Maximum Number of Non-Overlapping Substrings][maximum-number-of-non-overlapping-substrings]
 
-{% highlight java %}
+```java
 public List<String> maxNumOfSubstrings(String s) {
     int n = s.length();
     // {start, end}, n
@@ -323,13 +323,13 @@ private int updateEnd(String s, int i, int[][] intervals) {
     }
     return end;
 }
-{% endhighlight %}
+```
 
 ### Weighted
 
 [Maximum Profit in Job Scheduling][maximum-profit-in-job-scheduling]
 
-{% highlight java %}
+```java
 public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
     int n = startTime.length;
     Integer[] indices = new Integer[n];
@@ -362,11 +362,11 @@ public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
     }
     return dp.lastEntry().getValue();
 }
-{% endhighlight %}
+```
 
 [Maximum Number of Events That Can Be Attended II][maximum-number-of-events-that-can-be-attended-ii]
 
-{% highlight java %}
+```java
 public int maxValue(int[][] events, int k) {
     // sorts events by end day
     Arrays.sort(events, Comparator.comparingInt(e -> e[1]));
@@ -394,11 +394,11 @@ public int maxValue(int[][] events, int k) {
 
     return dp1.lastEntry().getValue();
 }
-{% endhighlight %}
+```
 
 [Merge Intervals][merge-intervals]
 
-{% highlight java %}
+```java
 public int[][] merge(int[][] intervals) {
     Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 
@@ -413,11 +413,11 @@ public int[][] merge(int[][] intervals) {
 
     return list.toArray(new int[0][]);
 }
-{% endhighlight %}
+```
 
 [Interval List Intersections][interval-list-intersections]
 
-{% highlight java %}
+```java
 public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
     List<int[]> list = new ArrayList<>();
     int i = 0, j = 0;
@@ -439,11 +439,11 @@ public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
     }
     return list.toArray(new int[0][]);
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Arrows to Burst Balloons][minimum-number-of-arrows-to-burst-balloons]
 
-{% highlight java %}
+```java
 public int findMinArrowShots(int[][] points) {
     // sorts points by end coordinate
     Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
@@ -457,13 +457,13 @@ public int findMinArrowShots(int[][] points) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 The typical approach of this type of problem is to use a Priority Queue to record the current state at each timestamp. As time flows, the Priority Queue removes or adds elements. The idea is very similar to Sliding window.
 
 [Meeting Rooms II][meeting-rooms-ii]
 
-{% highlight java %}
+```java
 public int minMeetingRooms(int[][] intervals) {
     // sorts invervals by start time
     Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
@@ -483,7 +483,7 @@ public int minMeetingRooms(int[][] intervals) {
     // queue size is monotonically increasing
     return pq.size();
 }
-{% endhighlight %}
+```
 
 Notice how similar it is to finding max length with upper bounded constraint by [Sliding window](../sliding-window/#max-length) - the window never shrinks.
 
@@ -493,7 +493,7 @@ Same problem: [Divide Intervals Into Minimum Number of Groups][divide-intervals-
 
 [Maximum Number of Events That Can Be Attended][maximum-number-of-events-that-can-be-attended]
 
-{% highlight java %}
+```java
 public int maxEvents(int[][] events) {
     // sorts events by start day
     Arrays.sort(events, (a, b) -> Integer.compare(a[0], b[0]));
@@ -526,11 +526,11 @@ public int maxEvents(int[][] events) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 [Maximum Number of Eaten Apples][maximum-number-of-eaten-apples]
 
-{% highlight java %}
+```java
 public int eatenApples(int[] apples, int[] days) {        
     // apple, end day
     Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));  
@@ -557,11 +557,11 @@ public int eatenApples(int[] apples, int[] days) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Course Schedule III][course-schedule-iii]
 
-{% highlight java %}
+```java
 public int scheduleCourse(int[][] courses) {
     // sorts by deadlines (greedy)
     Arrays.sort(courses, (a, b) -> a[1] - b[1]);
@@ -585,11 +585,11 @@ public int scheduleCourse(int[][] courses) {
 
     return pq.size();
 }
-{% endhighlight %}
+```
 
 [Minimum Interval to Include Each Query][minimum-interval-to-include-each-query]
 
-{% highlight java %}
+```java
 public int[] minInterval(int[][] intervals, int[] queries) {
     // {size, end}
     // we can use priority queue as well
@@ -624,13 +624,13 @@ public int[] minInterval(int[][] intervals, int[] queries) {
     }
     return ans;
 }
-{% endhighlight %}
+```
 
 It's a useful trick to sort *offline* queries befre processing them.
 
 [Amount of New Area Painted Each Day][amount-of-new-area-painted-each-day]
 
-{% highlight java %}
+```java
 public int[] amountPainted(int[][] paint) {
     int n = paint.length;
     int max = Arrays.stream(paint).mapToInt(p -> p[1]).max().getAsInt();
@@ -661,11 +661,11 @@ public int[] amountPainted(int[][] paint) {
     }
     return worklog;
 }
-{% endhighlight %}
+```
 
 [Maximum Distance in Arrays][maximum-distance-in-arrays]
 
-{% highlight java %}
+```java
 public int maxDistance(List<List<Integer>> arrays) {
     int distance = 0, max = arrays.get(0).get(arrays.get(0).size() - 1), min = arrays.get(0).get(0);
 
@@ -677,11 +677,11 @@ public int maxDistance(List<List<Integer>> arrays) {
 
     return distance;
 }
-{% endhighlight %}
+```
 
 [Set Intersection Size At Least Two][set-intersection-size-at-least-two]
 
-{% highlight java %}
+```java
 public int intersectionSizeTwo(int[][] intervals) {
     Arrays.sort(intervals, (a, b) -> a[1] == b[1] ? b[0] - a[0] : a[1] - b[1]);
 
@@ -712,13 +712,13 @@ public int intersectionSizeTwo(int[][] intervals) {
     }
     return size;
 }
-{% endhighlight %}
+```
 
 [Minimum Time to Complete All Tasks][minimum-time-to-complete-all-tasks]
 
 Credits to @Foxtail (see [here](https://leetcode.cn/problems/t3fKg1/solution/10xing-jie-jue-zhan-dou-by-foxtail-ke2e/)).
 
-{% highlight java %}
+```java
 // @Foxtail
 public int findMinimumTime(int[][] tasks) {
     // it's optimal to start each task as late as possible
@@ -765,13 +765,13 @@ public int findMinimumTime(int[][] tasks) {
 
     return turnedOnTime;
 }
-{% endhighlight %}
+```
 
 # Dynamic Programming
 
 [Video Stitching][video-stitching]
 
-{% highlight java %}
+```java
 private int MAX_NUM_CLIPS = 100;
 
 public int videoStitching(int[][] clips, int time) {
@@ -789,13 +789,13 @@ public int videoStitching(int[][] clips, int time) {
 
     return dp[time] == MAX_NUM_CLIPS + 1 ? -1 : dp[time];
 }
-{% endhighlight %}
+```
 
 # Intersection
 
 [Meeting Scheduler][meeting-scheduler]
 
-{% highlight java %}
+```java
 public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
     Arrays.sort(slots1, (a, b) -> a[0] - b[0]);
     Arrays.sort(slots2, (a, b) -> a[0] - b[0]);
@@ -819,13 +819,13 @@ public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int du
     }
     return Collections.EMPTY_LIST;
 }
-{% endhighlight %}
+```
 
 # Data Structure
 
 [Seat Reservation Manager][seat-reservation-manager]
 
-{% highlight java %}
+```java
 private Queue<Integer> unreserved = new PriorityQueue<>();
 private int maxReserved = 0;
 
@@ -839,11 +839,11 @@ public int reserve() {
 public void unreserve(int seatNumber) {
     unreserved.offer(seatNumber);
 }
-{% endhighlight %}
+```
 
 [Range Module][range-module]
 
-{% highlight java %}
+```java
 class RangeModule {
     private TreeMap<Integer, Integer> intervals = new TreeMap<>();  // [left, right)
 
@@ -896,13 +896,13 @@ class RangeModule {
         intervals.subMap(left, true, right, false).clear();
     }
 }
-{% endhighlight %}
+```
 
 [Exam Room][exam-room]
 
 PriorityQueue:
 
-{% highlight java %}
+```java
 // {start, end, priority, isValid}
 // isValid is for lazy deletion
 Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a[2]));
@@ -910,11 +910,11 @@ Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a[2]));
 // start: interval
 // end: interval
 Map<Integer, int[]> startMap, endMap;
-{% endhighlight %}
+```
 
 TreeMap (no lazy deletion):
 
-{% highlight java %}
+```java
 private TreeSet<Interval> intervals = new TreeSet<>();
 // start: end
 // end: start
@@ -1035,7 +1035,7 @@ class Interval implements Comparable<Interval> {
         return Objects.hash(start, end, n);
     }
 }
-{% endhighlight %}
+```
 
 [amount-of-new-area-painted-each-day]: https://leetcode.com/problems/amount-of-new-area-painted-each-day/
 [check-if-all-the-integers-in-a-range-are-covered]: https://leetcode.com/problems/check-if-all-the-integers-in-a-range-are-covered/

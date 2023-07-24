@@ -41,7 +41,7 @@ The ordering imposed by a comparator `c` on a set of elements `S` is said to be 
 
 ### Ascending
 
-{% highlight java %}
+```java
 Map<String, Integer> unSortedMap = getUnSortedMap();
 LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
  
@@ -49,11 +49,11 @@ unSortedMap.entrySet()
     .stream()
     .sorted(Map.Entry.comparingByValue())
     .forEachOrdered(e -> sortedMap.put(e.getKey(), e.getValue()));
-{% endhighlight %}
+```
 
 ### Descending
 
-{% highlight java %}
+```java
 Map<String, Integer> unSortedMap = getUnSortedMap();
 LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
  
@@ -61,43 +61,43 @@ unSortedMap.entrySet()
     .stream()
     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
     .forEachOrdered(e -> sortedMap.put(e.getKey(), e.getValue()));
-{% endhighlight %}
+```
 
 ## Sort Map by Values then Keys
 
-{% highlight java %}
+```java
     .sorted(Comparator.comparing(Map.Entry<String, Integer>::getValue)
             .thenComparing(Comparator.comparing(Map.Entry<String, Integer>::getKey)))
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
     .sorted(Map.Entry.<String, Integer>comparingByValue()
             .thenComparing(Map.Entry.comparingByKey()))
-{% endhighlight %}
+```
 
 ## Key with the max value in a map
-{% highlight java %}
+```java
 Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
-{% endhighlight %}
+```
 
 * [default V computeIfAbsent(K key, Function\<? super K, ? extends V\> mappingFunction)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Map.html#computeIfAbsent(K,java.util.function.Function))
 * [default boolean remove(Object key, Object value)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Map.html#remove(java.lang.Object,java.lang.Object))
 * [V put(K key, V value)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Map.html#put(K,V))
   * Returns the previous value associated with key, or null if there was no mapping for key.
 * [default V replace(K key, V value)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Map.html#replace(K,V))
-{% highlight java %}
+```java
  if (map.containsKey(key)) {
      return map.put(key, value);
  } else
      return null;
-{% endhighlight %}
+```
 
 # Map.Entry
 * [static \<K,V extends Comparable\<? super V\>\> Comparator\<Map.Entry\<K,V\>\> comparingByValue()](https://docs.oracle.com/javase/8/docs/api/java/util/Map.Entry.html#comparingByValue--)
 
 [Making File Names Unique][making-file-names-unique]
 
-{% highlight java %}
+```java
 public String[] getFolderNames(String[] names) {
     String[] folders = new String[names.length];
     // name: smallest valid integer
@@ -114,11 +114,11 @@ public String[] getFolderNames(String[] names) {
     }
     return folders;
 }
-{% endhighlight %}
+```
 
 [Vowel Spellchecker][vowel-spellchecker]
 
-{% highlight java %}
+```java
 public String[] spellchecker(String[] wordlist, String[] queries) {
     Set<String> words = new HashSet<>();
     Map<String, String> cap = new HashMap<>(), vowel = new HashMap<>();
@@ -153,11 +153,11 @@ public String[] spellchecker(String[] wordlist, String[] queries) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Tuple with Same Product][tuple-with-same-product]
 
-{% highlight java %}
+```java
 public int tupleSameProduct(int[] nums) {
     Map<Integer, Integer> map = new HashMap<>();
     int count = 0;
@@ -172,13 +172,13 @@ public int tupleSameProduct(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 # Buckets
 
 [Contains Duplicate III][contains-duplicate-iii]
 
-{% highlight java %}
+```java
 public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
     Map<Long, Long> buckets = new HashMap<>();
     // capacity of each bucket
@@ -211,7 +211,7 @@ public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
 
     return false;
 }
-{% endhighlight %}
+```
 
 # TreeMap
 
@@ -219,7 +219,7 @@ public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
 
 [Array of Doubled Pairs][array-of-doubled-pairs]
 
-{% highlight java %}
+```java
 public boolean canReorderDoubled(int[] arr) {
     Map<Integer, Integer> count = new TreeMap<>();
     for (int a : arr) {
@@ -243,11 +243,11 @@ public boolean canReorderDoubled(int[] arr) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Find Array Given Subset Sums][find-array-given-subset-sums]
 
-{% highlight java %}
+```java
 public int[] recoverArray(int n, int[] sums) {
     Arrays.sort(sums);
 
@@ -324,13 +324,13 @@ private List<Integer> recover(int[] sums) {
 
     return arr;
 }
-{% endhighlight %}
+```
 
 ## Dynamic Programming
 
 [Odd Even Jump][odd-even-jump]
 
-{% highlight java %}
+```java
 public int oddEvenJumps(int[] arr) {
     int n  = arr.length;
     // whether has higher or lower later elements
@@ -361,7 +361,7 @@ public int oddEvenJumps(int[] arr) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 Another solution is using Stack (next greater/less element).
 
@@ -369,7 +369,7 @@ Another solution is using Stack (next greater/less element).
 
 [Word Pattern][word-pattern]
 
-{% highlight java %}
+```java
 public boolean wordPattern(String pattern, String s) {
     String[] words = s.split(" ");
 
@@ -395,13 +395,13 @@ public boolean wordPattern(String pattern, String s) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 # Monotonic Map
 
 [Maximum Sum Queries][maximum-sum-queries]
 
-{% highlight java %}
+```java
 // {y: x + y}, ascending
 // candidates for the current query
 // monotonic map: keys are ascending, while values are descending
@@ -461,7 +461,7 @@ private int query(int y) {
     var e = map.ceilingEntry(y);
     return e == null ? -1 : e.getValue();
 }
-{% endhighlight %}
+```
 
 [array-of-doubled-pairs]: https://leetcode.com/problems/array-of-doubled-pairs/
 [contains-duplicate-iii]: https://leetcode.com/problems/contains-duplicate-iii/

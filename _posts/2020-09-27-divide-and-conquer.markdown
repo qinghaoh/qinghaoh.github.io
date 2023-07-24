@@ -4,7 +4,7 @@ tags: divide-and-conquer
 ---
 [Merge K Sorted Lists][merge-k-sorted-lists]
 
-{% highlight java %}
+```java
 public ListNode mergeKLists(ListNode[] lists) {
     int k = lists.length;
     if (k == 0) {
@@ -37,13 +37,13 @@ private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
     curr.next = l1 == null ? l2 : l1;
     return head.next;
 }
-{% endhighlight %}
+```
 
 Another solution is to add all nodes to a min heap.
 
 [Super Ugly Number][super-ugly-number]
 
-{% highlight java %}
+```java
 public int nthSuperUglyNumber(int n, int[] primes) {
     long[] ugly = new long[n];
     ugly[0] = 1;
@@ -66,13 +66,13 @@ public int nthSuperUglyNumber(int n, int[] primes) {
 
     return (int)ugly[n - 1];
 }
-{% endhighlight %}
+```
 
 To find the minimum of `ugly[indices[j]] * primes[j]`, we can also use Priority Queue for less time complexity.
 
 [Longest Nice Substring][longest-nice-substring]
 
-{% highlight java %}
+```java
 public String longestNiceSubstring(String s) {
     if (s.length() < 2) {
         return "";
@@ -93,11 +93,11 @@ public String longestNiceSubstring(String s) {
     }
     return s; 
 }
-{% endhighlight %}
+```
 
 [Beautiful Array][beautiful-array]
 
-{% highlight java %}
+```java
 public int[] beautifulArray(int n) {
     List<Integer> list = new ArrayList<>();
     list.add(1);
@@ -125,7 +125,7 @@ public int[] beautifulArray(int n) {
     }
     return list.stream().mapToInt(i -> i).toArray();
 }
-{% endhighlight %}
+```
 
 ```
 n = 10

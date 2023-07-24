@@ -10,7 +10,7 @@ The most commonly way of DFS is to call a helper function recursively. Due to th
 
 **Recursion**
 
-{% highlight java %}
+```java
 public boolean canVisitAllRooms(List<List<Integer>> rooms) {
     Set<Integer> visited = new HashSet<>();
     dfs(rooms, 0, visited);
@@ -22,11 +22,11 @@ private void dfs(List<List<Integer>> rooms, int label, Set<Integer> visited) {
         rooms.get(label).forEach(k -> dfs(rooms, k, visited));
     }
 }
-{% endhighlight %}
+```
 
 **Stack**
 
-{% highlight java %}
+```java
 public boolean canVisitAllRooms(List<List<Integer>> rooms) {
     Set<Integer> visited = new HashSet<>();
     set.add(0);
@@ -45,7 +45,7 @@ public boolean canVisitAllRooms(List<List<Integer>> rooms) {
 
     return visited.size() == rooms.size();
 }
-{% endhighlight %}
+```
 
 **For-loop**
 
@@ -53,7 +53,7 @@ This is for a special case where every node in the directed graph has at most on
 
 [Longest Cycle in a Graph][longest-cycle-in-a-graph]
 
-{% highlight java %}
+```java
 for (int i = 0; i < n; i++) {
     // dfs until no destination node
     for (int j = i, dist = 0; j >= 0; j = edges[i]) {
@@ -63,13 +63,13 @@ for (int i = 0; i < n; i++) {
         }
     }
 }
-{% endhighlight %}
+```
 
 Again, because of the recursive nature, recursion problems can be solved by DFS:
 
 [Clone Graph][clone-graph]
 
-{% highlight java %}
+```java
 private Map<Integer, Node> map = new HashMap<>();
 
 public Node cloneGraph(Node node) {
@@ -90,11 +90,11 @@ private Node dfs(Node node) {
     node.neighbors.forEach(n -> copy.neighbors.add(dfs(n)));
     return copy;
 }
-{% endhighlight %}
+```
 
 [Pyramid Transition Matrix][pyramid-transition-matrix]
 
-{% highlight java %}
+```java
 private Map<String, Set<Character>> map;
 
 public boolean pyramidTransition(String bottom, List<String> allowed) {
@@ -126,13 +126,13 @@ private boolean dfs(String row, String nextRow, int index) {
 
     return false;
 }
-{% endhighlight %}
+```
 
 # Bottom-up
 
 [Time Needed to Inform All Employees][time-needed-to-inform-all-employees]
 
-{% highlight java %}
+```java
 public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
     int minutes = 0;
     for (int i = 0; i < n; i++) {
@@ -150,19 +150,19 @@ public int dfs(int i, int[] manager, int[] informTime) {
     }
     return informTime[i];
 }
-{% endhighlight %}
+```
 
 # Tree
 
 DFS a tree usually follow the pattern:
 
-{% highlight java %}
+```java
 int dfs(List<Integer>[] tree, int node, int parent, ...)
-{% endhighlight %}
+```
 
 [Create Components With Same Value][create-components-with-same-value]
 
-{% highlight java %}
+```java
 private List<Integer>[] tree;
 
 public int componentValue(int[] nums, int[][] edges) {
@@ -223,20 +223,20 @@ private int dfs(int node, int parent, int[] nums, int componentSum) {
     // if sum == componentSum, the component is complete
     return sum % componentSum;
 }
-{% endhighlight %}
+```
 
 # Pattern Signature
 
 [Number of Distinct Islands][number-of-distinct-islands]
 
-{% highlight java %}
+```java
 pattern.append(index);
 for (int k = 0; k < DIRECTIONS.length; k++) {
     int[] d = DIRECTIONS[k];
     dfs(i + d[0], j + d[1], (char)('0' + k), pattern);
 }
 pattern.append('#');
-{% endhighlight %}
+```
 
 ![Patterns](/assets/img/algorithm/number_of_distinct_islands.png)
 
@@ -249,7 +249,7 @@ pattern.append('#');
 
 [Lexicographically Smallest String After Applying Operations][lexicographically-smallest-string-after-applying-operations]
 
-{% highlight java %}
+```java
 private String min;
 private int a, b;
 private Set<String> visited = new HashSet<>();
@@ -286,7 +286,7 @@ privat String rotate(String s) {
     int n = s.length();
     return s.substring(n - b) + s.substring(0, n - b);
 }
-{% endhighlight %}
+```
 
 This solution includes all possibilities, and uses a Set as termination condition.
 
@@ -296,7 +296,7 @@ This solution includes all possibilities, and uses a Set as termination conditio
 
 [The Earliest and Latest Rounds Where Players Compete][the-earliest-and-latest-rounds-where-players-compete]
 
-{% highlight java %}
+```java
 private int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
 
 public int[] earliestAndLatest(int n, int firstPlayer, int secondPlayer) {
@@ -333,7 +333,7 @@ private void dfs(int l, int r, int n, int round) {
         }
     }
 }
-{% endhighlight %}
+```
 
 ![Transition](/assets/img/algorithm/the_earliest_and_latest_rounds_where_players_compete.png)
 
@@ -341,7 +341,7 @@ private void dfs(int l, int r, int n, int round) {
 
 [Bricks Falling When Hit][bricks-falling-when-hit]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 {% endraw %}
@@ -405,13 +405,13 @@ private boolean isStable(int i, int j) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
 # + BFS
 
 [Shortest Path in a Hidden Grid][shortest-path-in-a-hidden-grid]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 {% endraw %}
@@ -490,11 +490,11 @@ private void dfs(int i, int j, GridMaster master, Cell[][] grid) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Contain Virus][contain-virus]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 {% endraw %}
@@ -579,13 +579,13 @@ class Region {
         neighbors = new HashSet<>();
     }
 }
-{% endhighlight %}
+```
 
 # Multi-dimension
 
 [Number of Valid Move Combinations On Chessboard][number-of-valid-move-combinations-on-chessboard]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, -1}, {-1, 1}};
 {% endraw %}
@@ -646,7 +646,7 @@ public int dfs(String[] pieces, int[][] positions, int p) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [bricks-falling-when-hit]: https://leetcode.com/problems/bricks-falling-when-hit/
 [clone-graph]: https://leetcode.com/problems/clone-graph/

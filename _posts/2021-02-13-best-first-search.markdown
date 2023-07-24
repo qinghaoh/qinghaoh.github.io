@@ -19,7 +19,7 @@ where
 
 [Shortest Path in Binary Matrix][shortest-path-in-binary-matrix]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
 {% endraw %}
@@ -67,11 +67,11 @@ public int shortestPathBinaryMatrix(int[][] grid) {
 
     return -1;
 }
-{% endhighlight %}
+```
 
 [Minimum Moves to Move a Box to Their Target Location][minimum-moves-to-move-a-box-to-their-target-location]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
 {% endraw %}
@@ -145,7 +145,7 @@ private boolean isBlocked(char[][] grid, int i, int j, int m, int n) {
 private int h(int box0, int box1, int[] target) {
     return Math.abs(box0 - target[0]) + Math.abs(box1 - target[1]);
 }
-{% endhighlight %}
+```
 
 [minimum-moves-to-move-a-box-to-their-target-location]: https://leetcode.com/problems/minimum-moves-to-move-a-box-to-their-target-location/
 [shortest-path-in-binary-matrix]: https://leetcode.com/problems/shortest-path-in-binary-matrix/

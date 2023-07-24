@@ -4,7 +4,7 @@ category: algorithm
 ---
 [Number of Sets of K Non-Overlapping Line Segments][number-of-sets-of-k-non-overlapping-line-segments]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numberOfSets(int n, int k) {
@@ -24,9 +24,9 @@ public int numberOfSets(int n, int k) {
     }
     return (int)dp[n - 1][k];
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numberOfSets(int n, int k) {
@@ -46,6 +46,6 @@ public int numberOfSets(int n, int k) {
     }
     return (dp[0][k][0] + dp[0][k][1]) % MOD;
 }
-{% endhighlight %}
+```
 
 [number-of-sets-of-k-non-overlapping-line-segments]: https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/

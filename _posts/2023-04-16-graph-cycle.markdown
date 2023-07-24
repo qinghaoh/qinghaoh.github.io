@@ -12,7 +12,7 @@ Common graph cycle problems:
 
 [Course Schedule II][course-schedule-ii]
 
-{% highlight java %}
+```java
 private List<Integer>[] graph;
 private Color[] color;
 private List<Integer> order = new ArrayList<>();
@@ -68,7 +68,7 @@ private boolean dfs(int node) {
     order.add(node);
     return true;
 }
-{% endhighlight %}
+```
 
 Similar problem in grid: [Detect Cycles in 2D Grid][detect-cycles-in-2d-grid]
 
@@ -76,7 +76,7 @@ To complete DFS in grid to simulate directed graph, in each DFS path we don't vi
 
 [Critical Connections in a Network][critical-connections-in-a-network]
 
-{% highlight java %}
+```java
 private List<List<Integer>> graph;
 private Set<List<Integer>> set;
 
@@ -130,7 +130,7 @@ private int dfs(int[] rank, int node, int depth) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 This algorithm is very similar to Tarjan's Algorithm. The meaning of `rank` and `dfn/low` is slightly different, but in essence they are closely related.
 
@@ -179,7 +179,7 @@ rank: 0,1,2,2
 
 [Shortest Cycle in a Graph][shortest-cycle-in-a-graph]
 
-{% highlight java %}
+```java
 private static final int MAX_LEN = 1000;
 
 public int findShortestCycle(int n, int[][] edges) {
@@ -223,7 +223,7 @@ private int bfs(List<Integer>[] graph, int node) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 # Topological Sorting
 
@@ -231,7 +231,7 @@ A topological sorting is possible iff the graph is a DAG.
 
 [Maximum Employees to Be Invited to a Meeting][maximum-employees-to-be-invited-to-a-meeting]
 
-{% highlight java %}
+```java
 public int maximumInvitations(int[] favorite) {
     int n = favorite.length;
     // for every index i, there is a directed edge from i to favorite[i]
@@ -291,7 +291,7 @@ public int maximumInvitations(int[] favorite) {
     }
     return Math.max(count1, count2);
 }
-{% endhighlight %}
+```
 
 [course-schedule-ii]: https://leetcode.com/problems/course-schedule-ii/
 [critical-connections-in-a-network]: https://leetcode.com/problems/critical-connections-in-a-network/

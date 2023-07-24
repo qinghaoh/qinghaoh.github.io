@@ -5,7 +5,7 @@ tags: array
 
 [Minimum Money Required Before Transactions][minimum-money-required-before-transactions]
 
-{% highlight java %}
+```java
 public long minimumMoney(int[][] transactions) {
     // the worst order is all losing transcations (cost > cashback) are before winning transactions
     // (cost <= cashback)
@@ -18,11 +18,11 @@ public long minimumMoney(int[][] transactions) {
     }
     return lost + extra;
 }
-{% endhighlight %}
+```
 
 To understand the above solution, see the unfolded version:
 
-{% highlight java %}
+```java
 public long minimumMoney(int[][] transactions) {
     // the worst order is all losing transcations (cost > cashback) are before winning transactions
     // (cost <= cashback)
@@ -47,11 +47,11 @@ public long minimumMoney(int[][] transactions) {
     // = lost + Math.max(i, j)
     // = loat + Math.max(min(t[0], t[1]))
 }
-{% endhighlight %}
+```
 
 [Patching Array][patching-array]
 
-{% highlight java %}
+```java
 public int minPatches(int[] nums, int n) {
     int patches = 0, i = 0;
     // miss is the smallest missing number
@@ -74,7 +74,7 @@ public int minPatches(int[] nums, int n) {
     }
     return patches;
 }
-{% endhighlight %}
+```
 
 # Circular
 
@@ -82,7 +82,7 @@ public int minPatches(int[] nums, int n) {
 
 [Find the Winner of the Circular Game][find-the-winner-of-the-circular-game]
 
-{% highlight java %}
+```java
 public int findTheWinner(int n, int k) {
     // Josephus Problem
     // f(n, k) = (f(n - 1, k) + k) % n
@@ -93,13 +93,13 @@ public int findTheWinner(int n, int k) {
     }
     return res + 1;
 }
-{% endhighlight %}
+```
 
 # Brute Force
 
 [Count The Repetitions][count-the-repetitions]
 
-{% highlight java %}
+```java
 public int getMaxRepetitions(String s1, int n1, String s2, int n2) {
     char[] array1 = s1.toCharArray(), array2 = s2.toCharArray();
     int count1 = 0, count2 = 0, i = 0, j = 0;
@@ -119,7 +119,7 @@ public int getMaxRepetitions(String s1, int n1, String s2, int n2) {
 
     return count2 / n2;
 }
-{% endhighlight %}
+```
 
 # Buckets
 
@@ -131,7 +131,7 @@ If `0 <= a[i] <= max`, where max is not too big, then we can use `int[] count = 
 
 [First Missing Positive][first-missing-positive]
 
-{% highlight java %}
+```java
 public int firstMissingPositive(int[] nums) {
     int n = nums.length;
     // expected: nums[i] = i + 1
@@ -148,13 +148,13 @@ public int firstMissingPositive(int[] nums) {
     }
     return n + 1;
 }
-{% endhighlight %}
+```
 
 [Rotate Array][rotate-array]
 
 ![Example](/assets/img/algorithm/rotate_array.png)
 
-{% highlight java %}
+```java
 public void rotate(int[] nums, int k) {
     k %= nums.length;
     int start = 0, count = 0;
@@ -171,11 +171,11 @@ public void rotate(int[] nums, int k) {
     }
     return;
 }
-{% endhighlight %}
+```
 
 [Make K-Subarray Sums Equal][make-k-subarray-sums-equal]
 
-{% highlight java %}
+```java
 for (int i = 0; i < n; i++) {
     for (int j = i; arr[j] > 0; j = (j + k) % n) {
         ...
@@ -183,13 +183,13 @@ for (int i = 0; i < n; i++) {
     }
     ...
 }
-{% endhighlight %}
+```
 
 [Shift 2D Grid][shift-2d-grid]
 
 [Smallest Rotation with Highest Score][smallest-rotation-with-highest-score]
 
-{% highlight java %}
+```java
 public int arrayNesting(int[] nums) {
     int max = 0;
     for (int i = 0; i < nums.length; i++) {
@@ -206,11 +206,11 @@ public int arrayNesting(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Array Nesting][array-nesting]
 
-{% highlight java %}
+```java
 public int arrayNesting(int[] nums) {
     int max = 0;
     for (int i = 0; i < nums.length; i++) {
@@ -227,11 +227,11 @@ public int arrayNesting(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Reverse Words in a String II][reverse-words-in-a-string-ii]
 
-{% highlight java %}
+```java
 public void reverseWords(char[] s) {
     reverse(s, 0, s.length);
 
@@ -254,11 +254,11 @@ private void reverse(char[] s, int start, int end) {
         s[j--] = tmp;
     }
 }
-{% endhighlight %}
+```
 
 [Sort Array by Moving Items to Empty Space][sort-array-by-moving-items-to-empty-space]
 
-{% highlight java %}
+```java
 public int sortArray(int[] nums) {
     return Math.min(sortArray(nums, 0), sortArray(nums, 1));
 }
@@ -292,13 +292,13 @@ private int sortArray(int[] nums, int s) {
         count++;
     }
 }
-{% endhighlight %}
+```
 
 # Greedy
 
 [Gas Station][gas-station]
 
-{% highlight java %}
+```java
 public int canCompleteCircuit(int[] gas, int[] cost) {
     int n = gas.length, tank = 0, minIndex = 0, min = Integer.MAX_VALUE;
     // finds the station where the tank contains least gas,
@@ -314,7 +314,7 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 
     return tank < 0 ? -1 : (minIndex + 1) % n;
 }
-{% endhighlight %}
+```
 
 # Flips
 
@@ -326,7 +326,7 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 
 [Minimum Number of Flips to Make the Binary String Alternating][minimum-number-of-flips-to-make-the-binary-string-alternating]
 
-{% highlight java %}
+```java
 public int minFlips(String s) {
     int n = s.length();
     // [parity][binary char]
@@ -362,11 +362,11 @@ public int minFlips(String s) {
     }
     return flips;
 }
-{% endhighlight %}
+```
 
 [Minimum Cost to Make All Characters Equal][minimum-cost-to-make-all-characters-equal]
 
-{% highlight java %}
+```java
 public long minimumCost(String s) {
     long cost = 0;
     int n = s.length();
@@ -377,13 +377,13 @@ public long minimumCost(String s) {
     }
     return cost;
 }
-{% endhighlight %}
+```
 
 # Split
 
 [Smallest Range II][smallest-range-ii]
 
-{% highlight java %}
+```java
 public int smallestRangeII(int[] nums, int k) {
     Arrays.sort(nums);
 
@@ -400,13 +400,13 @@ public int smallestRangeII(int[] nums, int k) {
     }
     return diff;
 }
-{% endhighlight %}
+```
 
 # Distance
 
 [Shortest Distance to a Character][shortest-distance-to-a-character]
 
-{% highlight java %}
+```java
 public int[] shortestToChar(String s, char c) {
     int n = s.length(), index = -n;
     int[] d = new int[n];
@@ -426,7 +426,7 @@ public int[] shortestToChar(String s, char c) {
     }
     return d;
 }
-{% endhighlight %}
+```
 
 ### Pre-computed
 
@@ -434,7 +434,7 @@ public int[] shortestToChar(String s, char c) {
 
 [Max Chunks To Make Sorted II][max-chunks-to-make-sorted-ii]
 
-{% highlight java %}
+```java
 public int maxChunksToSorted(int[] arr) {
     int n = arr.length;
 
@@ -454,11 +454,11 @@ public int maxChunksToSorted(int[] arr) {
     }
     return chunks + 1;
 }
-{% endhighlight %}
+```
 
 [Removing Minimum Number of Magic Beans][removing-minimum-number-of-magic-beans]
 
-{% highlight java %}
+```java
 public long minimumRemoval(int[] beans) {
     long min = Long.MAX_VALUE, sum = Arrays.stream(beans).mapToLong(Long::valueOf).sum();
 
@@ -470,13 +470,13 @@ public long minimumRemoval(int[] beans) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 # Shift
 
 [Minimum Number of Operations to Reinitialize a Permutation][minimum-number-of-operations-to-reinitialize-a-permutation]
 
-{% highlight java %}
+```java
 public int reinitializePermutation(int n) {
     // tracks 1's index
     int operations = 0, index = 1;
@@ -486,11 +486,11 @@ public int reinitializePermutation(int n) {
     }
     return operations;
 }
-{% endhighlight %}
+```
 
 [Minimum Deletions to Make Array Beautiful][minimum-deletions-to-make-array-beautiful]
 
-{% highlight java %}
+```java
 public int minDeletion(int[] nums) {
     int n = nums.length, deletions = 0;
     for (int i = 0; i < n - 1; i++) {
@@ -500,25 +500,25 @@ public int minDeletion(int[] nums) {
     }
     return deletions + (n - deletions) % 2;
 }
-{% endhighlight %}
+```
 
 # Swapping
 
 Swap two elements in an array:
 
-{% highlight java %}
+```java
 public void swap(int[] nums, int i, int j) {
     int tmp = nums[i];
     nums[i] = nums[j];
     nums[j] = tmp;
 }
-{% endhighlight %}
+```
 
 Minimum number of swaps to make an array sorted:
 
 [Minimum Number of Operations to Sort a Binary Tree by Level][minimum-number-of-operations-to-sort-a-binary-tree-by-level]
 
-{% highlight java %}
+```java
     // greedy solution with a index array
     int m = level.size();
     Integer[] indices = new Integer[m];
@@ -534,7 +534,7 @@ Minimum number of swaps to make an array sorted:
             swap(indices, i, indices[i]);
         }
     }
-{% endhighlight %}
+```
 
 The second approach is to find all the "cycles" in the array. The definition of a cycle is: start with an element `nums[i]`, find the next element `nums[nums[i]]`... repeat until it forms a periodic cycle.
 
@@ -550,7 +550,7 @@ The minimum swaps is \\(\sum_c{(T_c - 1)}\\), where \\(T_c\\) is the period of c
 
 [Array With Elements Not Equal to Average of Neighbors][array-with-elements-not-equal-to-average-of-neighbors]
 
-{% highlight java %}
+```java
 public int[] rearrangeArray(int[] nums) {
     int n = nums.length;
     int[] result = Arrays.copyOf(nums, n);
@@ -565,11 +565,11 @@ public int[] rearrangeArray(int[] nums) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Swap Adjacent in LR String][swap-adjacent-in-lr-string]
 
-{% highlight java %}
+```java
 public boolean canTransform(String start, String end) {
     int n = start.length();
     // indexes of 'L' or 'R';
@@ -608,11 +608,11 @@ public boolean canTransform(String start, String end) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Minimum Total Cost to Make Arrays Unequal][minimum-total-cost-to-make-arrays-unequal]
 
-{% highlight java %}
+```java
 public long minimumTotalCost(int[] nums1, int[] nums2) {
     int n = nums1.length;
     long cost = 0;
@@ -654,11 +654,11 @@ public long minimumTotalCost(int[] nums1, int[] nums2) {
     }
     return maxFreq > toDisplace / 2 ? -1 : cost;
 }
-{% endhighlight %}
+```
 
 [Rearranging Fruits][rearranging-fruits]
 
-{% highlight java %}
+```java
 public long minCost(int[] basket1, int[] basket2) {
     int minFruit = Integer.MAX_VALUE;
     // basket1[i] - basket2[i]
@@ -699,13 +699,13 @@ public long minCost(int[] basket1, int[] basket2) {
     }
     return cost;
 }
-{% endhighlight %}
+```
 
 ## Cyclic Swapping
 
 [Couples Holding Hands][couples-holding-hands]
 
-{% highlight java %}
+```java
 public int minSwapsCouples(int[] row) {
     int n = row.length, min = 0;
     int[] seat = new int[n];
@@ -732,13 +732,13 @@ public int minSwapsCouples(int[] row) {
 private int partner(int p) {
     return p ^ 1;
 }
-{% endhighlight %}
+```
 
 # Set
 
 [Longest Consecutive Sequence][longest-consecutive-sequence]
 
-{% highlight java %}
+```java
 public int longestConsecutive(int[] nums) {
     Set<Integer> set = new HashSet<>();
     for (int num : nums) {
@@ -758,13 +758,13 @@ public int longestConsecutive(int[] nums) {
     }
     return length;
 }
-{% endhighlight %}
+```
 
 # Division
 
 [Divide Array Into Increasing Sequences][divide-array-into-increasing-sequences]
 
-{% highlight java %}
+```java
 public boolean canDivideIntoSubsequences(int[] nums, int k) {
     // m = the maximum frequency of any element in the array
     // then number of sequences >= m
@@ -779,13 +779,13 @@ public boolean canDivideIntoSubsequences(int[] nums, int k) {
     }
     return nums.length >= k * groups;
 }
-{% endhighlight %}
+```
 
 # Two Passes
 
 [Candy][candy]
 
-{% highlight java %}
+```java
 public int candy(int[] ratings) {
     int n = ratings.length;
     int[] candies = new int[n];
@@ -809,11 +809,11 @@ public int candy(int[] ratings) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 [Maximum Building Height][maximum-building-height]
 
-{% highlight java %}
+```java
 public int maxBuilding(int n, int[][] restrictions) {
     Arrays.sort(restrictions, Comparator.comparingInt(a -> a[0]));
 
@@ -847,13 +847,13 @@ public int maxBuilding(int n, int[][] restrictions) {
     }
     return Math.max(max, (n - left + lastHeight + height) / 2);
 }
-{% endhighlight %}
+```
 
 # Marking
 
 [Find All Duplicates in an Array][find-all-duplicates-in-an-array]
 
-{% highlight java %}
+```java
 public List<Integer> findDuplicates(int[] nums) {
     List<Integer> list = new ArrayList<>();
     for (int num : nums) {
@@ -868,13 +868,13 @@ public List<Integer> findDuplicates(int[] nums) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 # Sort
 
 [Car Fleet][car-fleet]
 
-{% highlight java %}
+```java
 public int carFleet(int target, int[] position, int[] speed) {
     int n = position.length;
     Integer[] indices = new Integer[n];
@@ -896,13 +896,13 @@ public int carFleet(int target, int[] position, int[] speed) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 # Parity
 
 [Subsequence of Size K With the Largest Even Sum][subsequence-of-size-k-with-the-largest-even-sum]
 
-{% highlight java %}
+```java
 public long largestEvenSum(int[] nums, int k) {
     int n = nums.length;
     // or quick select k largest elements, O(n)
@@ -937,7 +937,7 @@ public long largestEvenSum(int[] nums, int k) {
     }
     return updatedSum;
 }
-{% endhighlight %}
+```
 
 [array-nesting]: https://leetcode.com/problems/array-nesting/
 [array-with-elements-not-equal-to-average-of-neighbors]: https://leetcode.com/problems/array-with-elements-not-equal-to-average-of-neighbors/

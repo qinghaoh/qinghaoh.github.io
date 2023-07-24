@@ -1,10 +1,11 @@
 ---
 title:  "Dynamic Programming (Edit Distance)"
+category: algorithm
 tag: dynamic programming
 ---
 [Edit Distance][edit-distance]
 
-{% highlight java %}
+```java
 public int minDistance(String word1, String word2) {
     int n1 = word1.length(), n2 = word2.length();
 
@@ -34,7 +35,7 @@ public int minDistance(String word1, String word2) {
     }
     return dp[n1][n2];
 }
-{% endhighlight %}
+```
 
 Visually, we initialize boarder cells.
 
@@ -55,7 +56,7 @@ Rolling array optimization:
 * `dp[i - 1][j] -> prev[j]`
 * `dp[i][j] -> curr[j]`
 
-{% highlight java %}
+```java
 public int minDistance(String word1, String word2) {
     int n1 = word1.length(), n2 = word2.length();
     int[] prev = new int[n2 + 1], curr = new int[n2 + 1];
@@ -79,12 +80,12 @@ public int minDistance(String word1, String word2) {
     }
     return prev[n2];
 }
-{% endhighlight %}
+```
 
 * `prev[j - 1] -> prev`
 * `prev[j] -> curr[j]`
 
-{% highlight java %}
+```java
 public int minDistance(String word1, String word2) {
     int prev = 0, n1 = word1.length(), n2 = word2.length();
     int[] curr = new int[n2 + 1];
@@ -108,32 +109,32 @@ public int minDistance(String word1, String word2) {
     }
     return curr[n2];
 }
-{% endhighlight %}
+```
 
 Similar problem: [Delete Operation for Two Strings][delete-operation-for-two-strings]
 
 [Minimum ASCII Delete Sum for Two Strings][minimum-ascii-delete-sum-for-two-strings]
 
-{% highlight java %}
+```java
 char c1 = s1.charAt(i - 1), c2 = s2.charAt(j - 1);
 if (c1 == c2) {
     dp[i][j] = dp[i - 1][j - 1];
 } else {
     dp[i][j] = Math.min(dp[i][j - 1] + c2, dp[i - 1][j] + c1);
 }
-{% endhighlight %}
+```
 
 **Longest Common Subsequence**
 
 [Longest Common Subsequence][longest-common-subsequence]
 
-{% highlight java %}
+```java
 if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
     dp[i][j] = dp[i - 1][j - 1] + 1;
 } else {
     dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
 }
-{% endhighlight %}
+```
 
 [Uncrossed Lines][uncrossed-lines] can be transformed to [Longest Common Subsequence][longest-common-subsequence]!
 
@@ -141,7 +142,7 @@ if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
 
 [Maximum Length of Repeated Subarray][maximum-length-of-repeated-subarray]
 
-{% highlight java %}
+```java
 // dp[i][j]: max length of repeated subarray ending with nums1[i - 1] and nums2[j - 1]
 int[][] dp = new int[n1 + 1][n2 + 1];
 for (int i = 1; i <= n1; i++) {
@@ -151,11 +152,11 @@ for (int i = 1; i <= n1; i++) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Distinct Subsequences][distinct-subsequences]
 
-{% highlight java %}
+```java
 // t == ""
 for (int i = 0; i <= m; i++) {
     dp[i][0] = 1;
@@ -170,11 +171,11 @@ for (int i = 0; i < m; i++) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Minimum Window Subsequence][minimum-window-subsequence]
 
-{% highlight java %}
+```java
 public String minWindow(String s1, String s2) {
     int n1 = s1.length(), n2 = s2.length();
     // dp[i][j] = k: (k - 1) is the start index of the shortest postfix of s1.substring(0, i)
@@ -213,13 +214,13 @@ public String minWindow(String s1, String s2) {
     }
     return s1.substring(start, start + (len > n1 ? 0 : len));
 }
-{% endhighlight %}
+```
 
 The space complex can be optimized to `O(n)`.
 
 [Interleaving String][interleaving-string]
 
-{% highlight java %}
+```java
 public boolean isInterleave(String s1, String s2, String s3) {
     int n1 = s1.length(), n2 = s2.length();
     if (s3.length() != n1 + n2) {
@@ -246,11 +247,11 @@ public boolean isInterleave(String s1, String s2, String s3) {
 
     return dp[n1][n2];
 }
-{% endhighlight %}
+```
 
 Reduced to 1D:
 
-{% highlight java %}
+```java
 boolean dp[] = new boolean[n2 + 1];
 dp[0] = true;
 
@@ -268,11 +269,11 @@ for (int i = 0; i < n1; i++) {
 }
 
 return dp[n2];
-{% endhighlight %}
+```
 
 [Freedom Trail][freedom-trail]
 
-{% highlight java %}
+```java
 // O(mn^2)
 public int findRotateSteps(String ring, String key) {
     // dp[i][j]: key.substring(i) and ring.substring(j)
@@ -298,11 +299,11 @@ public int findRotateSteps(String ring, String key) {
     // there could be multiple indefinite final states dp[i][j]
     return dp[0][0] + m;
 }
-{% endhighlight %}
+```
 
 Precomputation:
 
-{% highlight java %}
+```java
 // O(mn)
 public int findRotateSteps(String ring, String key) {
     int n = ring.length(), m = key.length();
@@ -350,7 +351,7 @@ private int[][] preProcess(String r, int orientation) {
     }
     return lastIndex;
 }
-{% endhighlight %}
+```
 
 [delete-operation-for-two-strings]: https://leetcode.com/problems/delete-operation-for-two-strings/
 [distinct-subsequences]: https://leetcode.com/problems/distinct-subsequences/

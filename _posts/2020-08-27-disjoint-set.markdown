@@ -16,7 +16,7 @@ where α(n) is the extremely slow-growing [inverse Ackermann function](https://e
 
 [Redundant Connection][redundant-connection]
 
-{% highlight java %}
+```java
 private int[] parents;
 
 public int[] findRedundantConnection(int[][] edges) {
@@ -45,20 +45,20 @@ private boolean union(int u, int v) {
     parents[pu] = pv;
     return true;
 }
-{% endhighlight %}
+```
 
 A very useful technique is *path compression*, which flattens the structure when `find` is called.
 
-{% highlight java %}
+```java
 private int find(int u) {
     // path compression
     return parents[u] == 0 ? u : (parents[u] = find(parents[u]));
 }
-{% endhighlight %}
+```
 
 [Graph Connectivity With Threshold][graph-connectivity-with-threshold]
 
-{% highlight java %}
+```java
 public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
     this.parents = new int[n + 1];
 
@@ -75,7 +75,7 @@ public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 Depending on the specific problem, `parents` elements can be initialized to `0`, `1`, `null`, etc.
 
@@ -83,7 +83,7 @@ Depending on the specific problem, `parents` elements can be initialized to `0`,
 
 Offline queries:
 
-{% highlight java %}
+```java
 private int[] parents;
 
 public boolean[] distanceLimitedPathsExist(int n, int[][] edgeList, int[][] queries) {
@@ -124,11 +124,11 @@ public boolean[] distanceLimitedPathsExist(int n, int[][] edgeList, int[][] quer
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 [Redundant Connection II][redundant-connection-ii]
 
-{% highlight java %}
+```java
 public int[] findRedundantDirectedConnection(int[][] edges) {
     // there are two cases where the graph is invalid
     // - a node has two parents
@@ -197,13 +197,13 @@ private boolean union(int[] parents, int u, int v) {
     parents[pu] = pv;
     return true;
 }
-{% endhighlight %}
+```
 
 Sometimes, the `parents` sets shall be represented as a map:
 
 [Evaluate Division][evaluate-division]
 
-{% highlight java %}
+```java
 private Map<String, String> parents = new HashMap<>();
 private Map<String, Double> ratios = new HashMap<>();  // parent / node
 
@@ -260,7 +260,7 @@ private double query(String s1, String s2) {
     //   = ratios(s2) / ratios(s1)
     return ratios.get(s2) / ratios.get(s1);
 }
-{% endhighlight %}
+```
 
 Another solution is to BFS/DFS the weighted graph.
 
@@ -268,7 +268,7 @@ Another solution is to BFS/DFS the weighted graph.
 
 Online queries:
 
-{% highlight java %}
+```java
 // snapshost[i]: for the i-th element, {snapId, val}
 private List<int[]>[] snapshots;
 private List<Integer> snapTime = new ArrayList<>();
@@ -354,13 +354,13 @@ public boolean query(int p, int q, int limit) {
     }
     return find(p, id) == find(q, id);
 }
-{% endhighlight %}
+```
 
 # Number of Connected Componenets
 
 [Number of Connected Components in an Undirected Graph][number-of-connected-components-in-an-undirected-graph]
 
-{% highlight java %}
+```java
 public int countComponents(int n, int[][] edges) {
     this.parent = new int[n];
     Arrays.fill(this.parent, -1);
@@ -373,11 +373,11 @@ public int countComponents(int n, int[][] edges) {
 
     return n;
 }
-{% endhighlight %}
+```
 
 [Most Stones Removed with Same Row or Column][most-stones-removed-with-same-row-or-column]
 
-{% highlight java %}
+```java
 private Map<Integer, Integer> parent = new HashMap<>();
 private int count = 0;
 
@@ -411,11 +411,11 @@ private void union(int u, int v) {
         count--;
     }
 }
-{% endhighlight %}
+```
 
 [Remove Max Number of Edges to Keep Graph Fully Traversable][remove-max-number-of-edges-to-keep-graph-fully-traversable]
 
-{% highlight java %}
+```java
 public int maxNumEdgesToRemove(int n, int[][] edges) {
     // prioritizes Type 3
     Arrays.sort(edges, Comparator.comparingInt(e -> -e[0]));
@@ -484,11 +484,11 @@ class UnionFind {
         return components == 1;
     }
 }
-{% endhighlight %}
+```
 
 [Rank Transform of a Matrix][rank-transform-of-a-matrix]
 
-{% highlight java %}
+```java
 public int[][] matrixRankTransform(int[][] matrix) {
     int m = matrix.length, n = matrix[0].length;
 
@@ -556,11 +556,11 @@ class DisjointSet {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Regions Cut By Slashes][regions-cut-by-slashes]
 
-{% highlight java %}
+```java
 private int[] parent;
 private int regions, n;
 
@@ -626,13 +626,13 @@ private void union(int u, int v) {
 private int indexOf(int i, int j, Triangle t) {
     return (i * n + j) * 4 + t.ordinal();
 }
-{% endhighlight %}
+```
 
 # Size of Each Set
 
 [Minimize Malware Spread][minimize-malware-spread]
 
-{% highlight java %}
+```java
 private int[] parents;
 
 public int minMalwareSpread(int[][] graph, int[] initial) {
@@ -653,11 +653,11 @@ private void union(int u, int v) {
         parents[pu] = pv;
     }
 }
-{% endhighlight %}
+```
 
 [Minimize Malware Spread II][minimize-malware-spread-ii]
 
-{% highlight java %}
+```java
 public int minMalwareSpread(int[][] graph, int[] initial) {
     int n = graph.length;
     this.parents = new int[n];
@@ -714,13 +714,13 @@ public int minMalwareSpread(int[][] graph, int[] initial) {
     }
     return index >= 0 ? index : Arrays.stream(initial).min().getAsInt();
 }
-{% endhighlight %}
+```
 
 # Disconnected Components
 
 [Process Restricted Friend Requests][process-restricted-friend-requests]
 
-{% highlight java %}
+```java
 public boolean[] friendRequests(int n, int[][] restrictions, int[][] requests) {
     this.parents = new Integer[n];
 
@@ -747,11 +747,11 @@ public boolean[] friendRequests(int n, int[][] restrictions, int[][] requests) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Find All People With Secret][find-all-people-with-secret]
 
-{% highlight java %}
+```java
 public List<Integer> findAllPeople(int n, int[][] meetings, int firstPerson) {
     this.parents = new Integer[n];
 
@@ -790,11 +790,11 @@ public List<Integer> findAllPeople(int n, int[][] meetings, int firstPerson) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [Number of Good Paths][number-of-good-paths]
 
-{% highlight java %}
+```java
 private int[] parents, vals;
 // maxCounts[i]: {max, count of max} in the root i
 private int[][] maxCounts;
@@ -843,7 +843,7 @@ private int union(int u, int v) {
     // combinatorics multiplication principle
     return cu * cv;
 }
-{% endhighlight %}
+```
 
 [checking-existence-of-edge-length-limited-paths]: https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/
 [checking-existence-of-edge-length-limited-paths-ii]: https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths-ii/

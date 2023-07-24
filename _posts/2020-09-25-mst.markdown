@@ -20,7 +20,7 @@ Time complexity (heap + adjacent list): `O(E log V)`
 
 [Min Cost to Connect All Points][min-cost-to-connect-all-points]
 
-{% highlight java %}
+```java
 // Prim's
 public int minCostConnectPoints(int[][] points) {
     boolean[] mst = new boolean[points.length];
@@ -50,11 +50,11 @@ public int minCostConnectPoints(int[][] points) {
 
     return cost;
 }
-{% endhighlight %}
+```
 
 For complete graph, the number edges is much more than point. Therefore, we can keep track of min distance of each point instead.
 
-{% highlight java %}
+```java
 private static final int MAX = 4_000_001;
 
 // Prim's (complete graph)
@@ -86,7 +86,7 @@ public int minCostConnectPoints(int[][] points) {
 
     return cost;
 }
-{% endhighlight %}
+```
 
 ### Kruskal's
 
@@ -100,7 +100,7 @@ public int minCostConnectPoints(int[][] points) {
 
 Time complexity: `O(E log E)` = `O(E log V)`
 
-{% highlight java %}
+```java
 private int[] forest;
 
 // Kruskal's
@@ -144,11 +144,11 @@ private boolean union(int u, int v) {
     forest[uset] = vset;
     return true;
 }
-{% endhighlight %}
+```
 
 [Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree][find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree]
 
-{% highlight java %}
+```java
 private int[] forest;
 private int[][] edges;
 
@@ -229,11 +229,11 @@ private boolean union(int u, int v) {
     forest[uset] = vset;
     return true;
 }
-{% endhighlight %}
+```
 
 [Optimize Water Distribution in a Village][optimize-water-distribution-in-a-village]
 
-{% highlight java %}
+```java
 private int[] forest;
 
 // Imagine there's a House 0 with a 0-weight well
@@ -273,7 +273,7 @@ public int minCostToSupplyWater(int n, int[] wells, int[][] pipes) {
 private int find(int u) {
     return forest[u] == u ? u : find(forest[u]);
 }
-{% endhighlight %}
+```
 
 [find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree]: https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/
 [min-cost-to-connect-all-points]: https://leetcode.com/problems/min-cost-to-connect-all-points/

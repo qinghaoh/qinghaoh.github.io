@@ -1,5 +1,6 @@
 ---
 title:  "Concurrency"
+category: algorithm
 tags: concurrency
 ---
 # Semaphore
@@ -15,7 +16,7 @@ Semaphores are often used to restrict the number of threads than can access some
 
 [Print in order][print_in_order]
 
-{% highlight java %}
+```java
 private Semaphore run2 = new Semaphore(0), run3 = new Semaphore(0);
 
 public Foo() {
@@ -43,7 +44,7 @@ public void third(Runnable printThird) throws InterruptedException {
     // printThird.run() outputs "third". Do not change or remove this line.
     printThird.run();
 }
-{% endhighlight %}
+```
 
 ## Fairness
 
@@ -51,7 +52,7 @@ The constructor for this class optionally accepts a *fairness* parameter. When s
 
 [Building H2O][building-h2o]
 
-{% highlight java %}
+```java
 class H2O {
     // fairness guarantees that all the threads from one molecule bond
     // before any other threads from the next molecule do
@@ -79,7 +80,7 @@ class H2O {
         h.release(2);
     }
 }
-{% endhighlight %}
+```
 
 # Mutex
 
@@ -107,7 +108,7 @@ A thread can acquire a lock that it already owns. Allowing a thread to acquire t
 
 [Fizz Buzz Multithreaded][fizz-buzz-multithreaded]
 
-{% highlight java %}
+```java
 private int n, curr = 1;
 
 public FizzBuzz(int n) {
@@ -165,13 +166,13 @@ public synchronized void number(IntConsumer printNumber) throws InterruptedExcep
         notifyAll();
     }
 }
-{% endhighlight %}
+```
 
 ### Synchronized Statements
 
 [Traffic Light Controlled Intersection][traffic-light-controlled-intersection]
 
-{% highlight java %}
+```java
 class TrafficLight {
     private final Signal signal;
 
@@ -200,7 +201,7 @@ class TrafficLight {
         int greenRoad = 1;  // road ID that's green
     }
 }
-{% endhighlight %}
+```
 
 [ReentrantLock](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/concurrent/locks/ReentrantLock.html)
 
@@ -208,7 +209,7 @@ A reentrant mutual exclusion Lock with the same basic behavior and semantics as 
 
 In computing, a computer program or subroutine is called reentrant if multiple invocations can safely run concurrently on a single processor system, where a reentrant procedure can be interrupted in the middle of its execution and then safely be called again ("re-entered") before its previous invocations complete execution.
 
-{% highlight java %}
+```java
 Lock l = ...;
 l.lock();
 try {
@@ -216,13 +217,13 @@ try {
 } finally {
     l.unlock();
 }
-{% endhighlight %}
+```
 
 [The Dining Philosophers][the-dining-philosophers]
 
 [Dining philosophers problem](https://en.wikipedia.org/wiki/Dining_philosophers_problem)
 
-{% highlight java %}
+```java
 private int NUM_FORKS = 5;
 private Lock forks[] = new Lock[NUM_FORKS];
 // the number of philosophers who can take action is at most (NUM_FORKS - 1)
@@ -263,13 +264,13 @@ public void wantsToEat(int philosopher,
 
     semaphore.release();
 }
-{% endhighlight %}
+```
 
 # Parallel Stream
 
 [Web Crawler Multithreaded][web-crawler-multithreaded]
 
-{% highlight java %}
+```java
 public List<String> crawl(String startUrl, HtmlParser htmlParser) {
     int index = startUrl.indexOf('/', 7);  // skips http://
     String hostname = index < 0 ? startUrl : startUrl.substring(0, index);  // hostname with protocol
@@ -290,7 +291,7 @@ private Stream<String> crawl(String startUrl, HtmlParser parser, Set<String> vis
 
     return Stream.concat(Stream.of(startUrl), stream);
 }
-{% endhighlight %}
+```
 
 [building-h2o]: https://leetcode.com/problems/building-h2o/
 [fizz-buzz-multithreaded]: https://leetcode.com/problems/fizz-buzz-multithreaded/

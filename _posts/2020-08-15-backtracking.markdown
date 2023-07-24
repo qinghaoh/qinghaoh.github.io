@@ -6,17 +6,17 @@ tags: dfs
 
 Backtracking = DFS + pruning
 
-{% highlight java %}
+```java
 private void backtrack(var i) {
     for (var i : space) {
         backtrack();
     }
 }
-{% endhighlight %}
+```
 
 [Permutations][permutations]
 
-{% highlight java %}
+```java
 public List<List<Integer>> permute(int[] nums) {
     List<List<Integer>> list = new ArrayList<>();
     backtrack(list, new ArrayList<>(), nums);
@@ -39,9 +39,9 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
         }
     }
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public List<List<Integer>> permute(int[] nums) {
     List<List<Integer>> list = new ArrayList<>();
     backtrack(list, Arrays.stream(nums).boxed().collect(Collectors.toList()), 0);
@@ -61,11 +61,11 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int inde
         Collections.swap(tmpList, index, i);
     }
 }
-{% endhighlight %}
+```
 
 [Permutations II][permutations-ii]
 
-{% highlight java %}
+```java
 public List<List<Integer>> permuteUnique(int[] nums) {
     List<List<Integer>> list = new ArrayList<>();
     Arrays.sort(nums);
@@ -95,7 +95,7 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
         tmpList.remove(tmpList.size() - 1);
     }
 }
-{% endhighlight %}
+```
 
 [Palindrome Permutation II][palindrome-permutation-ii]
 
@@ -103,7 +103,7 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
 
 [Subsets][subsets]
 
-{% highlight java %}
+```java
 public List<List<Integer>> subsets(int[] nums) {
     List<List<Integer>> list = new ArrayList<>();
     backtrack(list, new ArrayList<>(), nums, 0);
@@ -121,11 +121,11 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
     backtrack(list, tmpList, nums, index + 1);
     tmpList.remove(tmpList.size() - 1);
 }
-{% endhighlight %}
+```
 
 [Subsets II][subsets-ii]
 
-{% highlight java %}
+```java
 public List<List<Integer>> subsetsWithDup(int[] nums) {
     List<List<Integer>> list = new ArrayList<>();
     Arrays.sort(nums);
@@ -146,11 +146,11 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
         tmpList.remove(tmpList.size() - 1);
     }
 }
-{% endhighlight %}
+```
 
 [Closest Dessert Cost][closest-dessert-cost]
 
-{% highlight java %}
+```java
 private int diff = 10001;
 
 public int closestCost(int[] baseCosts, int[] toppingCosts, int target) {
@@ -173,11 +173,11 @@ private void backtrack(int[] nums, int index, int t) {
     backtrack(nums, index + 1, t - nums[index]);
     backtrack(nums, index + 1, t - 2 * nums[index]);
 }
-{% endhighlight %}
+```
 
 [Letter Tile Possibilities][letter-tile-possibilities]
 
-{% highlight java %}
+```java
 public int numTilePossibilities(String tiles) {
     int[] count = new int[26];
     for (char c : tiles.toCharArray()) {
@@ -199,11 +199,11 @@ private int backtrack(int[] count) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 [Maximum Score Words Formed by Letters][maximum-score-words-formed-by-letters]
 
-{% highlight java %}
+```java
 public int maxScoreWords(String[] words, char[] letters, int[] score) {
     int[] count = new int[score.length];
     for (char c : letters) {
@@ -236,11 +236,11 @@ private int backtrack(String[] words, int[] count, int[] score, int index) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Combination Sum][combination-sum]
 
-{% highlight java %}
+```java
 public List<List<Integer>> combinationSum(int[] candidates, int target) {
     List<List<Integer>> list = new ArrayList<>();
     backtrack(list, new ArrayList<>(), candidates, 0, target);
@@ -261,11 +261,11 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
         } 
     }
 }
-{% endhighlight %}
+```
 
 [Combination Sum II][combination-sum-ii]
 
-{% highlight java %}
+```java
 public List<List<Integer>> combinationSum2(int[] candidates, int target) {
     List<List<Integer>> list = new ArrayList<>();
     Arrays.sort(candidates);
@@ -291,11 +291,11 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int[] nu
         } 
     }
 }
-{% endhighlight %}
+```
 
 [Combination Sum III][combination-sum-iii]
 
-{% highlight java %}
+```java
 private final int max = 9;
 
 public List<List<Integer>> combinationSum3(int k, int n) {
@@ -322,11 +322,11 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int star
         } 
     }
 }
-{% endhighlight %}
+```
 
 [Factor Combinations][factor-combinations]
 
-{% highlight java %}
+```java
 public List<List<Integer>> getFactors(int n) {
     List<List<Integer>> list = new ArrayList<>();
     backtrack(list, new ArrayList<>(), 2, n);
@@ -349,11 +349,11 @@ private void backtrack(List<List<Integer>> list, List<Integer> tmpList, int inde
         }
     }
 }
-{% endhighlight %}
+```
 
 [Palindrome Partitioning][palindrome-partitioning]
 
-{% highlight java %}
+```java
 public List<List<String>> partition(String s) {
     List<List<String>> list = new ArrayList<>();
     backtrack(list, new ArrayList<>(), s, 0);
@@ -378,11 +378,11 @@ private void backtrack(List<List<String>> list, List<String> tmpList, String s, 
 private boolean isPalindrome(String s) {
     ...
 }
-{% endhighlight %}
+```
 
 [Partition Equal Subset Sum][partition-equal-subset-sum]
 
-{% highlight java %}
+```java
 public boolean canPartition(int[] nums) {
     int sum = 0;
     for (int i = 0; i < nums.length; i++) {
@@ -414,11 +414,11 @@ private boolean backtrack(int[] nums, int index, int target) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
 [Construct the Lexicographically Largest Valid Sequence][construct-the-lexicographically-largest-valid-sequence]
 
-{% highlight java %}
+```java
 public int[] constructDistancedSequence(int n) {
     int[] seq = new int[n * 2 - 1];
     backtrack(seq, 0, new boolean[n]);
@@ -462,11 +462,11 @@ private boolean backtrack(int[] seq, int index, boolean[] visited) {
 
     return false;
 }
-{% endhighlight %}
+```
 
 [Generalized Abbreviation][generalized-abbreviation]
 
-{% highlight java %}
+```java
 private String word;
 
 public List<String> generateAbbreviations(String word) {
@@ -502,7 +502,7 @@ private void backtrack(List<String> list, StringBuilder sb, int index, int k) {
     backtrack(list, sb, index + 1, 0);
     sb.setLength(length);
 }
-{% endhighlight %}
+```
 
 # Subset Sum Problem
 
@@ -510,7 +510,7 @@ private void backtrack(List<String> list, StringBuilder sb, int index, int k) {
 
 [Partition to K Equal Sum Subsets][partition-to-k-equal-sum-subsets]
 
-{% highlight java %}
+```java
 public boolean canPartitionKSubsets(int[] nums, int k) {
     int sum = 0, max = 0;
     for (int num : nums) {
@@ -553,9 +553,9 @@ private boolean backtrack(int[] nums, int target, int index, int[] subsets) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public boolean canPartitionKSubsets(int[] nums, int k) {
     int sum = 0, max = 0;
     for (int num : nums) {
@@ -593,11 +593,11 @@ private boolean backtrack(int[] nums, int index, boolean[] visited, int k, int s
 
     return false;
 }
-{% endhighlight %}
+```
 
 [Fair Distribution of Cookies][fair-distribution-of-cookies]
 
-{% highlight java %}
+```java
 public int distributeCookies(int[] cookies, int k) {
     return backtrack(cookies, new int[k], 0);
 }
@@ -619,13 +619,13 @@ private int backtrack(int[] cookies, int[] children, int index) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [Matchsticks to Square][matchsticks-to-square]
 
 [Android Unlock Patterns][android-unlock-patterns]
 
-{% highlight java %}
+```java
 private int[][] skip;
 private int m, n;
 
@@ -669,13 +669,13 @@ private int backtrack(int num, int level, boolean[] visited) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Robot Room Cleaner][robot-room-cleaner]
 
 [Wall follower](https://en.wikipedia.org/wiki/Maze-solving_algorithm#Wall_follower): If the maze is simply connected, that is, all its walls are connected together or to the maze's outer boundary, then by keeping one hand in contact with one wall of the maze the solver is guaranteed not to get lost and will reach a different exit if there is one; otherwise, the algorithm will return to the entrance having traversed every corridor next to that connected section of walls at least once. (DFS)
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -716,11 +716,11 @@ private void goBack() {
     robot.turnRight();
     robot.turnRight();
 }
-{% endhighlight %}
+```
 
 [24 Game][24-game]
 
-{% highlight java %}
+```java
 private static final double TARGET = 24d;
 private static final double EPS = 0.001;
 
@@ -760,13 +760,13 @@ private boolean backtrack(double[] nums, int length) {
 
     return false;
 }
-{% endhighlight %}
+```
 
 # Parsing
 
 [Expression Add Operators][expression-add-operators]
 
-{% highlight java %}
+```java
 private int target;
 
 public List<String> addOperators(String num, int target) {
@@ -812,13 +812,13 @@ public void backtrack(List<String> list, StringBuilder sb, String num, int index
         }
     }
 }
-{% endhighlight %}
+```
 
 # NP Complete
 
 [Optimal Account Balancing][optimal-account-balancing]
 
-{% highlight java %}
+```java
 // NP-complete
 public int minTransfers(int[][] transactions) {
     Map<Integer, Integer> g = new HashMap<>();
@@ -850,11 +850,11 @@ private int backtrack(int index, int[] debt) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [Find Minimum Time to Finish All Jobs][find-minimum-time-to-finish-all-jobs]
 
-{% highlight java %}
+```java
 private int min = Integer.MAX_VALUE;
 
 public int minimumTimeRequired(int[] jobs, int k) {
@@ -879,13 +879,13 @@ private void backtrack(int[] jobs, int index, int[] workers, int max) {
         }
     }
 }
-{% endhighlight %}
+```
 
 # NP-hard
 
 [Maximum Number of Groups Getting Fresh Donuts][maximum-number-of-groups-getting-fresh-donuts]
 
-{% highlight java %}
+```java
 private Map<List<Integer>, Integer> memo = new HashMap<>();
 
 // NP-hard
@@ -934,13 +934,13 @@ private int backtrack(List<Integer> list, int diff) {
     memo.put(new ArrayList<>(list), max);
     return max;
 }
-{% endhighlight %}
+```
 
 # Memoization
 
 [Zuma Game][zuma-game]
 
-{% highlight java %}
+```java
 public int findMinStep(String board, String hand) {
     int[] freq = new int[26];
     for (char c : hand.toCharArray()) {
@@ -1008,7 +1008,7 @@ private String serialize(int[] freq) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 # Choices & Decision Space
 
@@ -1016,7 +1016,7 @@ Backtracking explores all the branches of a solution space.
 
 [Maximum Number of Achievable Transfer Requests][maximum-number-of-achievable-transfer-requests]
 
-{% highlight java %}
+```java
 private int max = 0;
 
 public int maximumRequests(int n, int[][] requests) {
@@ -1047,11 +1047,11 @@ private void helper(int[][] requests, int index, int[] count, int num) {
     // not achieves this request
     helper(requests, index + 1, count, num);
 }
-{% endhighlight %}
+```
 
 [Shopping Offers][shopping-offers]
 
-{% highlight java %}
+```java
 public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
     return backtrack(price, special, needs);
 }
@@ -1085,11 +1085,11 @@ private boolean isValid(List<Integer> offer, List<Integer> needs) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Verbal Arithmetic Puzzle][verbal-arithmetic-puzzle]
 
-{% highlight java %}
+```java
 private static final int[] POW_10 = new int[]{1, 10, 100, 1000, 10000, 100000, 1000000};
 private boolean[] notZero = new boolean[26];
 private int[] weight = new int[26];
@@ -1140,11 +1140,11 @@ private boolean backtrack(boolean[] used, List<Character> charList, int index, i
     }
     return false;
 }
-{% endhighlight %}
+```
 
 [Remove All Ones With Row and Column Flips II][remove-all-ones-with-row-and-column-flips-ii]
 
-{% highlight java %}
+```java
 public int removeOnes(int[][] grid) {
     int m = grid.length, n = grid[0].length, min = Integer.MAX_VALUE;
     int[] row = new int[n], col = new int[m];
@@ -1169,11 +1169,11 @@ public int removeOnes(int[][] grid) {
     }
     return min == Integer.MAX_VALUE ? 0 : min;
 }
-{% endhighlight %}
+```
 
 [Maximum Points in an Archery Competition][maximum-points-in-an-archery-competition]
 
-{% highlight java %}
+```java
 private int maxScore = 0;
 private int[] aliceArrows, bestBobArrows;
 
@@ -1212,11 +1212,11 @@ private void backtrack(int k, int remainingArrows, int score, int[] bobArrows) {
         bobArrows[k] = tmp;
     }
 }
-{% endhighlight %}
+```
 
 [Find the K-Sum of an Array][find-the-k-sum-of-an-array]
 
-{% highlight java %}
+```java
 public long kSum(int[] nums, int k) {
     int n = nums.length;
     long maxSum = 0;
@@ -1254,7 +1254,7 @@ public long kSum(int[] nums, int k) {
 
     return maxSum - (k == 1 ? 0 : subtrahends.get(k - 2));
 }
-{% endhighlight %}
+```
 
 [24-game]: https://leetcode.com/problems/24-game/
 [android-unlock-patterns]: https://leetcode.com/problems/android-unlock-patterns/

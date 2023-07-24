@@ -11,7 +11,7 @@ tags: math
 
 [Probability of a Two Boxes Having The Same Number of Distinct Balls][probability-of-a-two-boxes-having-the-same-number-of-distinct-balls]
 
-{% highlight java %}
+```java
 private int n;
 private long[] f;
 
@@ -61,7 +61,7 @@ private long permutation(int[] arr) {
         .reduce(1, (a, b) -> a * b);
     return f[n] / prod;
 }
-{% endhighlight %}
+```
 
 ## De Bruijn Sequence
 
@@ -71,7 +71,7 @@ The de Bruijn sequences can be constructed by taking a Hamiltonian path of an `n
 
 [Cracking the Safe][cracking-the-safe]
 
-{% highlight java %}
+```java
 public String crackSafe(int n, int k) {
     StringBuilder sb = new StringBuilder("0".repeat(n));
 
@@ -104,11 +104,11 @@ private boolean backtrack(StringBuilder sb, Set<String> visited, int target, int
 
     return false;
 }
-{% endhighlight %}
+```
 
 [Total Appeal of A String][total-appeal-of-a-string]
 
-{% highlight java %}
+```java
 public long appealSum(String s) {
     int[] last = new int[26];
     Arrays.fill(last, -1);
@@ -123,18 +123,18 @@ public long appealSum(String s) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 # Combinations
 
 [Count Sorted Vowel Strings][count-sorted-vowel-strings]
 
-{% highlight java %}
+```java
 public int countVowelStrings(int n) {
     // comb(n + 4, 4)
     return (n + 4) * (n + 3) * (n + 2) * (n + 1) / 24;
 }
-{% endhighlight %}
+```
 
 [Number of Sets of K Non-Overlapping Line Segments][number-of-sets-of-k-non-overlapping-line-segments]
 
@@ -150,7 +150,7 @@ For example, `n = 4, k = 2`
 
 \\[{\binom {n}{k}}={\binom {n-1}{k-1}}+{\binom {n-1}{k}}\\]
 
-{% highlight java %}
+```java
 long[][] choose = new long[n][k];
 for (int i = 0; i < choose.length; i++) {
     choose[i][0] = 1;
@@ -161,11 +161,11 @@ for (int i = 1; i < choose.length; i++) {
         choose[i][j] = (choose[i - 1][j - 1] + choose[i - 1][j]) % mod;
     }
 }
-{% endhighlight %}
+```
 
 [Kth Smallest Instructions][kth-smallest-instructions]
 
-{% highlight java %}
+```java
 public String kthSmallestPath(int[] destination, int k) {
     int row = destination[0], col = destination[1];
     StringBuilder sb = new StringBuilder();
@@ -185,7 +185,7 @@ public String kthSmallestPath(int[] destination, int k) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 ## Indistinguishable Objects, Distinguishable Bins
 
@@ -201,7 +201,7 @@ Positivity: Place \\(n\\) objects into \\(k\\) bins, such that all bins contain 
 
 [Count the Number of Ideal Arrays][count-the-number-of-ideal-arrays]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 // the max length of each array is 14, since 2 ^ 14 = 16384 > 10 ^ 4 (see comments for dp)
 private static final int MAX_NUM_UNIQUE = 14;
@@ -261,7 +261,7 @@ public int idealArrays(int n, int maxValue) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 #### Theorem two
 
@@ -279,7 +279,7 @@ Non-negativity: Place \\(n\\) objects into \\(k\\) bins. Some bins can be empty.
 
 [Count Ways to Distribute Candies][count-ways-to-distribute-candies]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int waysToDistribute(int n, int k) {
@@ -294,7 +294,7 @@ public int waysToDistribute(int n, int k) {
 
     return (int)dp[k][n];
 }
-{% endhighlight %}
+```
 
 [count-sorted-vowel-strings]: https://leetcode.com/problems/count-sorted-vowel-strings/
 [count-the-number-of-ideal-arrays]: https://leetcode.com/problems/count-the-number-of-ideal-arrays/

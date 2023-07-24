@@ -7,7 +7,7 @@ tags: math
 
 [Beautiful Arrangement II][beautiful-arrangement-ii]
 
-{% highlight java %}
+```java
 public int[] constructArray(int n, int k) {
     int[] list = new int[n];
     // max(k) == n - 1
@@ -16,7 +16,7 @@ public int[] constructArray(int n, int k) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 ```
 n = 9, k = 8

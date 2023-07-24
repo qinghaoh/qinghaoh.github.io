@@ -14,7 +14,7 @@ No complex data structure is used.
 
 [Jump Game II][jump-game-ii]
 
-{% highlight java %}
+```java
 public int jump(int[] nums) {
     int jumps = 0;
     // curr: the farthest start index on the current level.
@@ -36,26 +36,26 @@ public int jump(int[] nums) {
     }
     return jumps;
 }
-{% endhighlight %}
+```
 
 Depending on the definition of `nums[i]`, the code might need slight modification. e.g., if `nums[i]` means the farthest reach of each jump, then:
 
 
-{% highlight java %}
+```java
 next = Math.max(next, i + nums[i]);
-{% endhighlight %}
+```
 
 should be changed to:
 
-{% highlight java %}
+```java
 next = Math.max(next, nums[i]);
-{% endhighlight %}
+```
 
 **Priority Queue**
 
 [Trapping Rain Water II][trapping-rain-water-ii]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -101,7 +101,7 @@ public int trapRainWater(int[][] heightMap) {
     }
     return volume;
 }
-{% endhighlight %}
+```
 
 In fact, this problem can be solved with [Dijkstra's algorithm](../shortest-path/#dijkstra), too.
 
@@ -109,7 +109,7 @@ In fact, this problem can be solved with [Dijkstra's algorithm](../shortest-path
 
 [Minimum Reverse Operations][minimum-reverse-operations]
 
-{% highlight java %}
+```java
 public int[] minReverseOperations(int n, int p, int[] banned, int k) {
     int[] ans = new int[n];
     Arrays.fill(ans, -1);
@@ -157,13 +157,13 @@ private int[] getRange(int n, int index, int k) {
     // r[1] and index are symmetric about the center of [l2, l2]
     return new int[]{l1 + r1 - index, l2 + r2 - index};
 }
-{% endhighlight %}
+```
 
 # Composite Vertex
 
 [Minimum Jumps to Reach Home][minimum-jumps-to-reach-home]
 
-{% highlight java %}
+```java
 public int minimumJumps(int[] forbidden, int a, int b, int x) {
     // as per Bezout's Identity
     // if the bug can reach a position, it must be a multiple of gcd(a, b)
@@ -208,7 +208,7 @@ public int minimumJumps(int[] forbidden, int a, int b, int x) {
     }
     return -1;
 }
-{% endhighlight %}
+```
 
 The proof of the max boundary can be found at [here](https://leetcode-cn.com/problems/minimum-jumps-to-reach-home/solution/dao-jia-de-zui-shao-tiao-yue-ci-shu-zui-duan-lu-zh/). Credits to @newhar.
 
@@ -216,7 +216,7 @@ The proof of the max boundary can be found at [here](https://leetcode-cn.com/pro
 
 [Minimum Moves to Reach Target with Rotations][minimum-moves-to-reach-target-with-rotations]
 
-{% highlight java %}
+```java
 // {i, j, orientation (horizontal: 0, vertical: 1)}
 Queue<int[]> q = new LinkedList<>();
 int[] node = {0, 0, 0};
@@ -224,11 +224,11 @@ q.offer(node);
 
 boolean[][][] visited = new boolean[n][n][2];
 visited[0][0][0] = true;
-{% endhighlight %}
+```
 
 [Shortest Path in a Grid with Obstacles Elimination][shortest-path-in-a-grid-with-obstacles-elimination]
 
-{% highlight java %}
+```java
 // {i, j, number of eliminated obstacles}
 Queue<int[]> q = new LinkedList<>();
 int[] node = new int[]{0, 0, 0};
@@ -236,13 +236,13 @@ q.offer(node);
 
 boolean[][][] visited = new boolean[m][n][k + 1];
 visited[0][0][0] = true;
-{% endhighlight %}
+```
 
 [Shortest Path to Get All Keys][shortest-path-to-get-all-keys]
 
-{% highlight java %}
+```java
 // {i, j, key mask}
-{% endhighlight %}
+```
 
 Encode the layout as a String.
 
@@ -250,7 +250,7 @@ Encode the layout as a String.
 
 [Nested List Weight Sum II][nested-list-weight-sum-ii]
 
-{% highlight java %}
+```java
 public int depthSumInverse(List<NestedInteger> nestedList) {
     Queue<NestedInteger> q = new LinkedList<>(nestedList);
     int runningSum = 0, sum = 0;
@@ -267,13 +267,13 @@ public int depthSumInverse(List<NestedInteger> nestedList) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 # Memoization
 
 [Shortest Path with Alternating Colors][shortest-path-with-alternating-colors]
 
-{% highlight java %}
+```java
 public int[] shortestAlternatingPaths(int n, int[][] redEdges, int[][] blueEdges) {
     // red: 0, blue: 1
     List<List<Integer>>[] graph = new ArrayList[2];
@@ -330,7 +330,7 @@ public int[] shortestAlternatingPaths(int n, int[][] redEdges, int[][] blueEdges
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 # Variants
 
@@ -338,7 +338,7 @@ In the following "maze" model, the neighbors of a node is not adjacent to it.
 
 [The Maze][the-maze]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -377,13 +377,13 @@ public boolean hasPath(int[][] maze, int[] start, int[] destination) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
 [The Maze II][the-maze-ii]
 
-{% highlight java %}
+```java
 boolean[][] visited -> int[][] distance
-{% endhighlight %}
+```
 
 # Pruning
 
@@ -393,7 +393,7 @@ Symmetry: `x -> |x|, y -> |y|`
 
 [K-Similar Strings][k-similar-strings]
 
-{% highlight java %}
+```java
 private List<String> getNeighbors(String source, String target) {
     // finds an index i where source[i] != target[i]
     char[] arr = source.toCharArray();
@@ -417,7 +417,7 @@ private List<String> getNeighbors(String source, String target) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 # Multi-source BFS
 
@@ -425,7 +425,7 @@ Vertex values are updated layer by layer from sources (Expanding)
 
 [Rotting Oranges][rotting-oranges]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -471,11 +471,11 @@ private int rot(int[][] grid, int i, int j, int time) {
     grid[i][j] = time + 3;
     return 1;
 }
-{% endhighlight %}
+```
 
 [Map of Highest Peak][map-of-highest-peak]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -508,13 +508,13 @@ public int[][] highestPeak(int[][] isWater) {
     }
     return height;
 }
-{% endhighlight %}
+```
 
 In the following two problems, BFS starts from gates/buildings/... to empty places. In most cases, it's optimal because we can use memoization.
 
 [Walls and Gates][walls-and-gates]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -544,11 +544,11 @@ public void wallsAndGates(int[][] rooms) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Shortest Distance from All Buildings][shortest-distance-from-all-buildings]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 {% endraw %}
@@ -611,13 +611,13 @@ public int shortestDistance(int[][] grid) {
 
     return min == Integer.MAX_VALUE ? -1 : min;
 }
-{% endhighlight %}
+```
 
 # Bidirectional BFS
 
 [Word Ladder][word-ladder]
 
-{% highlight java %}
+```java
 public int ladderLength(String beginWord, String endWord, List<String> wordList) {
     if (!wordList.contains(endWord)) {
         return 0;
@@ -670,7 +670,7 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 
     return 0;
 }
-{% endhighlight %}
+```
 
 # + Algorithms/Data Structures
 
@@ -682,7 +682,7 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 
 [Second Minimum Time to Reach Destination][second-minimum-time-to-reach-destination]
 
-{% highlight java %}
+```java
 private static final int MAX_NUM_NODES = (int)1e4;
 
 public int secondMinimum(int n, int[][] edges, int time, int change) {
@@ -754,11 +754,11 @@ private int calculateTime(int steps, int time, int change) {
     }
     return total;
 }
-{% endhighlight %}
+```
 
 [Escape the Spreading Fire][escape-the-spreading-fire]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 {% endraw %}
@@ -853,7 +853,7 @@ public int maximumMinutes(int[][] grid) {
        (fireMinutes[m - 2][n - 1] - personMinutes[m - 2][n - 1] > diff ||
        fireMinutes[m - 1][n - 2] - personMinutes[m - 1][n - 2] > diff) ? diff : diff - 1;
 }
-{% endhighlight %}
+```
 
 ![Edge cases](/assets/img/algorithm/escaping_the_spreading_fire.png)
 
@@ -863,7 +863,7 @@ Another solution is to compute `fireMinutes`, and binary searches the max wait t
 
 [Minimum Cost to Make at Least One Valid Path in a Grid][minimum-cost-to-make-at-least-one-valid-path-in-a-grid]
 
-{% highlight java %}
+```java
 {% raw %}
 // index = grid[i][j] - 1
 private static final int[][] DIRECTIONS = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
@@ -917,13 +917,13 @@ private void dfs(int[][] grid, int[][] costs, int r, int c, int cost, Queue<int[
     int[] d = DIRECTIONS[grid[r][c] - 1];
     dfs(grid, costs, r + d[0], c + d[1], cost, q);
 }
-{% endhighlight %}
+```
 
 # Bit Mask
 
 [Shortest Path Visiting All Nodes][shortest-path-visiting-all-nodes]
 
-{% highlight java %}
+```java
 public int shortestPathLength(int[][] graph) {
     int n = graph.length;
     Set<String> visited = new HashSet<>();
@@ -954,7 +954,7 @@ public int shortestPathLength(int[][] graph) {
     }
     return level;
 }
-{% endhighlight %}
+```
 
 [cut-off-trees-for-golf-event]: https://leetcode.com/problems/cut-off-trees-for-golf-event/
 [escape-the-spreading-fire]: https://leetcode.com/problems/escape-the-spreading-fire/

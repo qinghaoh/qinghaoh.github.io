@@ -522,7 +522,7 @@ Service + Daemon
 
 maxmemory: write commands starts to fail or evict keys
 
-{% highlight java %}
-{% endhighlight %}
+```java
+```
 
 [number-of-distinct-roll-sequences]: https://leetcode.com/problems/number-of-distinct-roll-sequences/

@@ -5,7 +5,7 @@ tags: math
 ---
 [Guess the Word][guess-the-word]
 
-{% highlight java %}
+```java
 public void findSecretWord(String[] wordlist, Master master) {
     int n = wordlist.length;
     // 10 guesses are allowed at most
@@ -59,13 +59,13 @@ private int getMatches(String a, String b) {
     }
     return matches;
 }
-{% endhighlight %}
+```
 
 # Dynamic Programming 
 
 [New 21 Game][new-21-game]
 
-{% highlight java %}
+```java
 private static final double MAX_ERROR = 1e-5;
 
 public double new21Game(int n, int k, int maxPts) {
@@ -97,7 +97,7 @@ public double new21Game(int n, int k, int maxPts) {
     }
     return p;
 }
-{% endhighlight %}
+```
 
 [guess-the-word]: https://leetcode.com/problems/guess-the-word/
 [new-21-game]: https://leetcode.com/problems/new-21-game/

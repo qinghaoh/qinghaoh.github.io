@@ -12,13 +12,13 @@ stack and minStack
 * Double linked list + TreeMap<Node>
 * Stack + Heap + Set
 
-{% highlight java %}
+```java
 private Deque<int[]> st = new LinkedList<>();
 // {element, id of the element}
 private Queue<int[]> pq = new PriorityQueue<>((a, b) -> b[0] == a[0] ? b[1] - a[1] : b[0] - a[0]);
 private Set<Integer> removed = new HashSet<>();
 private int id = 0;
-{% endhighlight %}
+```
 
 [LRU Cache][lru-cache]
 
@@ -31,10 +31,10 @@ Two stacks
 
 [Snapshot Array][snapshot-array]
 
-{% highlight java %}
+```java
 List<int[]>[] record;
 // + binary search
-{% endhighlight %}
+```
 
 [Sequentially Ordinal Rank Tracker][sequentially-ordinal-rank-tracker]
 
@@ -48,16 +48,16 @@ Map + TreeMap
 
 [Implement Magic Dictionary][implement-magic-dictionary]
 
-{% highlight java %}
+```java
 // {length : words}
 private Map<Integer, List<String>> map = new HashMap<>();
-{% endhighlight %}
+```
 
 [Design Bitset][design-bitset]
 
-{% highlight java %}
+```java
 private Set<Integer> ones = new HashSet<>(), zeros = new HashSet<>();
-{% endhighlight %}
+```
 
 [All O`one Data Structure][all-oone-data-structure]
 
@@ -72,7 +72,7 @@ Doubly linked list (buckets)
 
 [Find Median from Data Stream][find-median-from-data-stream]
 
-{% highlight java %}
+```java
 // two heaps
 if (left.size() == right.size()) {
     right.offer(num);
@@ -81,30 +81,30 @@ if (left.size() == right.size()) {
     left.offer(num);
     right.offer(left.poll());
 }
-{% endhighlight %}
+```
 
 [Find Servers That Handled Most Number of Requests][find-servers-that-handled-most-number-of-requests]
 
-{% highlight java %}
+```java
 TreeSet<Integer> availableServers = new TreeSet<>();
 // {busy server, available time}
 Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] == b[1] ? a[0] - b[0] : a[1] - b[1]);
-{% endhighlight %}
+```
 
 [Sliding Window Median][sliding-window-median]
 
-{% highlight java %}
+```java
 // two TreeSets
 // stores index
 Comparator<Integer> comparator = (a, b) -> nums[a] == nums[b] ? a - b : Integer.compare(nums[a], nums[b]);
 TreeSet<Integer> left = new TreeSet<>(comparator), right = new TreeSet<>(comparator);
-{% endhighlight %}
+```
 
 # ID Reuse Model
 
 [Smallest Number in Infinite Set][smallest-number-in-infinite-set]
 
-{% highlight java %}
+```java
 private TreeSet<Integer> addedBackSet = new TreeSet<>();
 private int currMin = 1;
 
@@ -120,11 +120,11 @@ public void addBack(int num) {
         addedBackSet.add(num);
     }
 }
-{% endhighlight %}
+```
 
 [Design Phone Directory][design-phone-directory]
 
-{% highlight java %}
+```java
 class PhoneDirectory {
     private int max;
     private Set<Integer> used = new HashSet<>();
@@ -162,11 +162,11 @@ class PhoneDirectory {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Maximum Frequency Stack][maximum-frequency-stack]
 
-{% highlight java %}
+```java
 class FreqStack {
     Map<Integer, Integer> freq = new HashMap<>();
     Map<Integer, Deque<Integer>> map = new HashMap<>();  // f : stack
@@ -192,11 +192,11 @@ class FreqStack {
         return x;
     }
 }
-{% endhighlight %}
+```
 
 [Design HashMap][design-hashmap]
 
-{% highlight java %}
+```java
 private static final int MAX_OPS = 10000;
 private static final double LOAD_FACTOR = 0.75;
 private List<List<int[]>> map = new ArrayList<>();
@@ -247,11 +247,11 @@ public void remove(int key) {
 private int hashCode(int key) {
     return Integer.hashCode(key) % size;
 }
-{% endhighlight %}
+```
 
 [Design a Stack With Increment Operation][design-a-stack-with-increment-operation]
 
-{% highlight java %}
+```java
 private Deque<Integer> stack = new ArrayDeque<>();
 private int[] inc;
 private int maxSize = 0;
@@ -290,13 +290,13 @@ public void increment(int k, int val) {
         inc[i] += val;
     }
 }
-{% endhighlight %}
+```
 
 [Design Movie Rental System][design-movie-rental-system]
 
 Map/Set of array, with self-define comparator:
 
-{% highlight java %}
+```java
 class MovieRentingSystem {
     // {price, shop, movie}
     private static final Comparator<int[]> CMP = (a, b) -> a[0] == b[0] ? (a[1] == b[1] ? a[2] - b[2] : a[1] - b[1]) : a[0] - b[0];
@@ -340,11 +340,11 @@ class MovieRentingSystem {
             .collect(Collectors.toList());
     }
 }
-{% endhighlight %}
+```
 
 [LFU Cache][lfu-cache]
 
-{% highlight java %}
+```java
 private HashMap<Integer, Node> keyMap = new HashMap<>();
 private HashMap<Integer, DoubleLinkedList> freqMap = new HashMap<>();
 private int capacity;
@@ -455,7 +455,7 @@ class DoubleLinkedList {
         return node;
     }
 }
-{% endhighlight %}
+```
 
 # Skip List
 
@@ -463,7 +463,7 @@ class DoubleLinkedList {
 
 [Design Skiplist][design-skiplist]
 
-{% highlight java %}
+```java
 class Skiplist {
     class Node {
         private int val;
@@ -562,18 +562,18 @@ class Skiplist {
         return Math.random() < 0.5;
     }
 }
-{% endhighlight %}
+```
 
 ## Multisets
 
 [Finding MK Average][finding-mk-average]
 
-{% highlight java %}
+```java
 // {element: count}
 private TreeMap<Integer, Integer> left = new TreeMap<>(), middle = new TreeMap<>(), right = new TreeMap<>();
 // circular array
 private int[] arr;
-{% endhighlight %}
+```
 
 [all-oone-data-structure]: https://leetcode.com/problems/all-oone-data-structure/
 [design-a-leaderboard]: https://leetcode.com/problems/design-a-leaderboard/

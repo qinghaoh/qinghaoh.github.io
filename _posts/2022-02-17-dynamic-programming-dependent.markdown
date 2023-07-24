@@ -8,7 +8,7 @@ The dynamic programming problems are not self-contained, i.e. external informati
 
 [Burst Balloons][burst-balloons]
 
-{% highlight java %}
+```java
 public int maxCoins(int[] nums) {
     int n = nums.length;
 
@@ -34,11 +34,11 @@ public int maxCoins(int[] nums) {
 
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
 [Remove Boxes][remove-boxes]
 
-{% highlight java %}
+```java
 public int removeBoxes(int[] boxes) {
     int n = boxes.length;
     // dp[i][j][k]: the maximum points by removing the boxes of subarray boxes[i...j]
@@ -73,11 +73,11 @@ public int removeBoxes(int[] boxes) {
 
     return dp[0][n - 1][0];
 }
-{% endhighlight %}
+```
 
 [Minimum Cost to Merge Stones][minimum-cost-to-merge-stones]
 
-{% highlight java %}
+```java
 public int mergeStones(int[] stones, int k) {
     int n = stones.length;
 
@@ -117,11 +117,11 @@ public int mergeStones(int[] stones, int k) {
 
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
 [Minimum Cost to Cut a Stick][minimum-cost-to-cut-a-stick]
 
-{% highlight java %}
+```java
 public int minCost(int n, int[] cuts) {
     List<Integer> list = new ArrayList<>();
     Arrays.stream(cuts).forEach(list::add);
@@ -141,7 +141,7 @@ public int minCost(int n, int[] cuts) {
     }
     return dp[0][m - 1];
 }
-{% endhighlight %}
+```
 
 [burst-balloons]: https://leetcode.com/problems/burst-balloons/
 [minimum-cost-to-cut-a-stick]: https://leetcode.com/problems/minimum-cost-to-cut-a-stick/

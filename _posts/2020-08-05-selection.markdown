@@ -8,7 +8,7 @@ tags: array
 
 [Kth Largest Element in an Array][kth-largest-element-in-an-array]
 
-{% highlight java %}
+```java
 public int findKthLargest(int[] nums, int k) {
     // min heap
     Queue<Integer> pq = new PriorityQueue<>();
@@ -21,13 +21,13 @@ public int findKthLargest(int[] nums, int k) {
     }
     return pq.peek();
 }
-{% endhighlight %}
+```
 
 # Bucket Sort
 
 [Top K Frequent Elements][top-k-frequent-elements]
 
-{% highlight java %}
+```java
 public int[] topKFrequent(int[] nums, int k) {
     Map<Integer, Integer> count = new HashMap<>();
     for (int num : nums) {
@@ -56,7 +56,7 @@ public int[] topKFrequent(int[] nums, int k) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 # Quickselect
 
@@ -69,7 +69,7 @@ Time complexity:
 
 [Kth Largest Element in an Array][kth-largest-element-in-an-array]
 
-{% highlight java %}
+```java
 public int findKthLargest(int[] nums, int k) {
     return quickSelect(nums, 0, nums.length - 1, k);
 }
@@ -98,7 +98,7 @@ private int partition(int[] nums, int low, int high) {
     swap(nums, i, high);
     return i;
 }
-{% endhighlight %}
+```
 
 [Kth Largest Element in a Stream][kth-largest-element-in-a-stream]
 
@@ -106,7 +106,7 @@ Iterative:
 
 [K Closest Points to Origin][k-closest-points-to-origin]
 
-{% highlight java %}
+```java
 public int[][] kClosest(int[][] points, int k) {
     int low = 0, high = points.length - 1;
     while (low <= high) {
@@ -142,7 +142,7 @@ private int partition(int[][] points, int low, int high) {
 private int compare(int[] p1, int[] p2) {
     return p1[0] * p1[0] + p1[1] * p1[1] - p2[0] * p2[0] - p2[1] * p2[1];
 }
-{% endhighlight %}
+```
 
 # Median of Medians
 
@@ -156,7 +156,7 @@ Time complexity:
 
 [Kth Smallest Product of Two Sorted Arrays][kth-smallest-product-of-two-sorted-arrays]
 
-{% highlight java %}
+```java
 public long kthSmallestProduct(int[] nums1, int[] nums2, long k) {
     long low = (long)-10e10, high = (long)10e10;
     while (low < high) {
@@ -199,7 +199,7 @@ private int countPairs(int[] nums2, long num1, long target) {
     }
     return num1 < 0 ? nums2.length - low : low;
 }
-{% endhighlight %}
+```
 
 [k-closest-points-to-origin]: https://leetcode.com/problems/k-closest-points-to-origin/
 [kth-largest-element-in-a-stream]: https://leetcode.com/problems/kth-largest-element-in-a-stream/

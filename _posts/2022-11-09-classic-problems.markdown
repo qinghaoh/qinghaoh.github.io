@@ -31,8 +31,8 @@ Solutions:
 * BinarySearch + BFS/DFS
 * Union-Find
 
-{% highlight java %}
-{% endhighlight %}
+```java
+```
 
 [count-of-smaller-numbers-after-self]: https://leetcode.com/problems/count-of-smaller-numbers-after-self/
 [number-of-pairs-satisfying-inequality]: https://leetcode.com/problems/number-of-pairs-satisfying-inequality/

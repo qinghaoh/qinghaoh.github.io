@@ -6,7 +6,7 @@ tags: array
 
 [Sort List][sort-list]
 
-{% highlight java %}
+```java
 public ListNode sortList(ListNode head) {
     ListNode dummy = new ListNode();
     dummy.next = head;
@@ -66,7 +66,7 @@ private ListNode merge(ListNode left, ListNode right, ListNode prev) {
     }
     return curr;
 }
-{% endhighlight %}
+```
 
 # Cycle Detection
 
@@ -76,7 +76,7 @@ private ListNode merge(ListNode left, ListNode right, ListNode prev) {
 
 [Linked List Cycle II][linked-list-cycle-ii]
 
-{% highlight java %}
+```java
 public ListNode detectCycle(ListNode head) {
     ListNode tortoise = head, hare = head;
 
@@ -98,13 +98,13 @@ public ListNode detectCycle(ListNode head) {
 
     return null;
 }
-{% endhighlight %}
+```
 
 This algorithm can be used to detect duplicate elements in an array, too.
 
 [Find the Duplicate Number][find-the-duplicate-number]
 
-{% highlight java %}
+```java
 public int findDuplicate(int[] nums) {
     // finds the first meeting point
     int tortoise = nums[0], hare = nums[0];
@@ -122,13 +122,13 @@ public int findDuplicate(int[] nums) {
 
     return hare;
 }
-{% endhighlight %}
+```
 
 A hidden condition is `nums[0] != 0`, otherwise the tortoise and hare will stay at `0` forever.
  
 [Happy Number][happy-number]
 
-{% highlight java %}
+```java
 public boolean isHappy(int n) {
     // finds meeting point
     int tortoise = n, hare = getNext(n);
@@ -147,13 +147,13 @@ private int getNext(int n) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 # Reverse
 
 [Palindrome Linked List][palindrome-linked-list]
 
-{% highlight java %}
+```java
 public boolean isPalindrome(ListNode head) {
     ListNode fast = head, slow = head;
     while (fast != null && fast.next != null) {
@@ -192,11 +192,11 @@ private ListNode reverse(ListNode head) {
     }
     return prev;
 }
-{% endhighlight %}
+```
 
 [Add Two Numbers II][add-two-numbers-ii]
 
-{% highlight java %}
+```java
 public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
     return addTwoNumbers(l1, l2, size(l1), size(l2));
 }
@@ -255,13 +255,13 @@ private int size(ListNode l) {
     }
     return s;
 }
-{% endhighlight %}
+```
 
 # Clone
 
 [Copy List with Random Pointer][copy-list-with-random-pointer]
 
-{% highlight java %}
+```java
 public Node copyRandomList(Node head) {
     Node curr = head, next = null;
 
@@ -301,13 +301,13 @@ public Node copyRandomList(Node head) {
 
     return dummyCopyHead.next;
 }
-{% endhighlight %}
+```
 
 # Tree
 
 [Populating Next Right Pointers in Each Node][populating-next-right-pointers-in-each-node]
 
-{% highlight java %}
+```java
 public Node connect(Node root) {
     if (root == null) {
         return root;
@@ -335,13 +335,13 @@ public Node connect(Node root) {
     }
     return root;
 }
-{% endhighlight %}
+```
 
 Generalizing it with an arbitrary binary tree:
 
 [Populating Next Right Pointers in Each Node II][populating-next-right-pointers-in-each-node-ii]
 
-{% highlight java %}
+```java
 // the previous node on the next level
 // we're about to connect a new node as its next
 private Node prev = null;
@@ -381,7 +381,7 @@ private void helper(Node node) {
         prev = node; 
     }
 }
-{% endhighlight %}
+```
 
 # Double Linked List
 
@@ -389,7 +389,7 @@ private void helper(Node node) {
 
 [Design Most Recently Used Queue][design-most-recently-used-queue]
 
-{% highlight java %}
+```java
 // sqrt decomposition
 // seats are split to buckets
 // nodes are items
@@ -453,7 +453,7 @@ class Node {
         return next = prev = this;
     }
 }
-{% endhighlight %}
+```
 
 [add-two-numbers-ii]: https://leetcode.com/problems/add-two-numbers-ii/
 [copy-list-with-random-pointer]: https://leetcode.com/problems/copy-list-with-random-pointer/

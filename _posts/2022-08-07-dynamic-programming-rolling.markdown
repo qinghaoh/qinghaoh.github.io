@@ -5,7 +5,7 @@ tags: dynamic programming
 ---
 [Check if There is a Valid Partition For The Array][check-if-there-is-a-valid-partition-for-the-array]
 
-{% highlight java %}
+```java
 public boolean validPartition(int[] nums) {
     boolean[] dp = {true, false, nums[0] == nums[1], false};
     int n = nums.length;
@@ -18,11 +18,11 @@ public boolean validPartition(int[] nums) {
     }
     return dp[n % 4];
 }
-{% endhighlight %}
+```
 
 [Number of People Aware of a Secret][number-of-people-aware-of-a-secret]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int peopleAwareOfSecret(int n, int delay, int forget) {
@@ -43,11 +43,11 @@ public int peopleAwareOfSecret(int n, int delay, int forget) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 [Number of Distinct Roll Sequences][number-of-distinct-roll-sequences]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int distinctSequences(int n) {
@@ -97,7 +97,7 @@ public int distinctSequences(int n) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 [check-if-there-is-a-valid-partition-for-the-array]: https://leetcode.com/problems/check-if-there-is-a-valid-partition-for-the-array/
 [number-of-distinct-roll-sequences]: https://leetcode.com/problems/number-of-distinct-roll-sequences/

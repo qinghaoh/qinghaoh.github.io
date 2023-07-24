@@ -8,7 +8,7 @@ Divide and conquer + Memoization.
 
 [Maximum Value of K Coins From Piles][maximum-value-of-k-coins-from-piles]
 
-{% highlight java %}
+```java
 private Integer[][] memo;
 
 public int maxValueOfCoins(List<List<Integer>> piles, int k) {
@@ -32,11 +32,11 @@ private int dfs(List<List<Integer>> piles, int i, int k) {
     }
     return memo[i][k] = max;
 }
-{% endhighlight %}
+```
 
 [Largest Sum of Averages][largest-sum-of-averages]
 
-{% highlight java %}
+```java
 private double[][] memo;
 private double[] sum;
 
@@ -72,20 +72,20 @@ private double largestSumOfAverages(int[] nums, int end, int k) {
     memo[end][k] = max;
     return max;
 }
-{% endhighlight %}
+```
 
 The result of each loop can be written to `memo` directly:
 
-{% highlight java %}
+```java
 for (int i = end - 1; i >= k - 1; i--) {
     memo[end][k] = Math.max(memo[end][k], (sum[end] - sum[i]) / (end - i) + largestSumOfAverages(nums, i, k - 1));
 }
 return memo[end][k];
-{% endhighlight %}
+```
 
 Bottom-up DP can be derived in the following way:
 
-{% highlight java %}
+```java
 public double largestSumOfAverages(int[] nums, int k) {
     int n = nums.length;
 
@@ -109,7 +109,7 @@ public double largestSumOfAverages(int[] nums, int k) {
 
     return dp[n][k];
 }
-{% endhighlight %}
+```
 
 ```
 [0.0,0.0,0.0,0.0]
@@ -122,7 +122,7 @@ public double largestSumOfAverages(int[] nums, int k) {
 
 1D:
 
-{% highlight java %}
+```java
 public double largestSumOfAverages(int[] nums, int k) {
     int n = nums.length;
 
@@ -146,13 +146,13 @@ public double largestSumOfAverages(int[] nums, int k) {
 
     return dp[n];
 }
-{% endhighlight %}
+```
 
 DP scans array from right to left:
 
 [Maximum Score from Performing Multiplication Operations][maximum-score-from-performing-multiplication-operations]
 
-{% highlight java %}
+```java
 public int maximumScore(int[] nums, int[] multipliers) {
     int n = nums.length, m = multipliers.length;
     // dp[i][j]: left of array elements has index i, and j is the index of multipliers 
@@ -171,11 +171,11 @@ public int maximumScore(int[] nums, int[] multipliers) {
     }
     return dp[0][0];
 }
-{% endhighlight %}
+```
 
 [Minimum Score Triangulation of Polygon][minimum-score-triangulation-of-polygon]
 
-{% highlight java %}
+```java
 private int[][] memo;
 
 public int minScoreTriangulation(int[] values) {
@@ -202,9 +202,9 @@ private int minScore(int[] values, int start, int end) {
     }
     return memo[start][end] = min;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int minScoreTriangulation(int[] values) {
     int n = values.length;
     int[][] dp = new int[n][n];
@@ -218,19 +218,19 @@ public int minScoreTriangulation(int[] values) {
     }
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
     for (int j = 2; j < n; j++) {
         for (int i = j - 2; i >= 0; i--) {
 
         }
     }
-{% endhighlight %}
+```
 
 [Minimum Total Distance Traveled][minimum-total-distance-traveled]
 
-{% highlight java %}
+```java
 private Long[][][] memo;
 
 public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
@@ -272,9 +272,9 @@ public long helper(List<Integer> robot, int[][] factory, int i, int j, int k) {
     }
     return memo[i][j][k] = Math.min(res1, res2);
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
     int n = robot.size(), m = factory.length;
     long[] dp = new long[n + 1];
@@ -296,7 +296,7 @@ public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
     }
     return dp[0];
 }
-{% endhighlight %}
+```
 
 [largest-sum-of-averages]: https://leetcode.com/problems/largest-sum-of-averages/
 [maximum-score-from-performing-multiplication-operations]: https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations/

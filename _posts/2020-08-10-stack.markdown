@@ -8,7 +8,7 @@ tags: stack
 
 Use StringBuilder as a stack.
 
-{% highlight java %}
+```java
 public String removeKdigits(String num, int k) {
     StringBuilder sb = new StringBuilder();
     for (char c : num.toCharArray()) {
@@ -30,13 +30,13 @@ public String removeKdigits(String num, int k) {
     }
     return sb.length() == 0 ? "0" : sb.toString();
 }
-{% endhighlight %}
+```
 
 [Find the Most Competitive Subsequence][find-the-most-competitive-subsequence]
 
 Use array as a stack.
 
-{% highlight java %}
+```java
 public int[] mostCompetitive(int[] nums, int k) {
     int[] stack = new int[k];
     // j is stack size
@@ -51,11 +51,11 @@ public int[] mostCompetitive(int[] nums, int k) {
     }
     return stack;
 }
-{% endhighlight %}
+```
 
 [Binary Searchable Numbers in an Unsorted Array][binary-searchable-numbers-in-an-unsorted-array]
 
-{% highlight java %}
+```java
 public int binarySearchableNumbers(int[] nums) {
     int n = nums.length;
     // for an element to be found,
@@ -79,11 +79,11 @@ public int binarySearchableNumbers(int[] nums) {
     }
     return st.size();
 }
-{% endhighlight %}
+```
 
 [Create Maximum Number][create-maximum-number]
 
-{% highlight java %}
+```java
 public int[] maxNumber(int[] nums1, int[] nums2, int k) {
     int n1 = nums1.length, n2 = nums2.length;
     int[] result = new int[k];
@@ -148,11 +148,11 @@ private int[] maxArray(int[] nums, int k) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 Use array as a stack:
 
-{% highlight java %}
+```java
 private int[] maxArray(int[] nums, int k) {
     int n = nums.length;
     // this array is used as a stack, too
@@ -168,11 +168,11 @@ private int[] maxArray(int[] nums, int k) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Number of Valid Subarrays][number-of-valid-subarrays]
 
-{% highlight java %}
+```java
 public int validSubarrays(int[] nums) {
     int count = 0;
     Deque<Integer> st = new ArrayDeque<>();
@@ -185,13 +185,13 @@ public int validSubarrays(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Jump Game V][jump-game-v]
 
 It's easy to come up with an `O(nd)` top-down DP solution.
 
-{% highlight java %}
+```java
 // O(n)
 public int maxJumps(int[] arr, int d) {
     int n = arr.length;
@@ -236,11 +236,11 @@ public int maxJumps(int[] arr, int d) {
 
     return Arrays.stream(dp).max().getAsInt();
 }
-{% endhighlight %}
+```
 
 [Car Fleet II][car-fleet-ii]
 
-{% highlight java %}
+```java
 public double[] getCollisionTimes(int[][] cars) {
     int n = cars.length;
     // monotonically decreasing stack wrt the collision time
@@ -275,13 +275,13 @@ public double[] getCollisionTimes(int[][] cars) {
 private double computeTime(int[][] cars, int i, int j) {
     return (double)(cars[j][0] - cars[i][0]) / (cars[i][1] - cars[j][1]);
 }
-{% endhighlight %}
+```
 
 In the problem below, the monotonicity of the stack is not straightforward:
 
 [Maximum Number of Books You Can Take][maximum-number-of-books-you-can-take]
 
-{% highlight java %}
+```java
 public long maximumBooks(int[] books) {
     Deque<Integer> st = new ArrayDeque<>();
     // pushes a virtual index to makes formula simple
@@ -313,7 +313,7 @@ private long sum(long an, int n) {
     long a1 = Math.max(0, an - n + 1);
     return (a1 + an) * (an - a1 + 1) / 2;
 }
-{% endhighlight %}
+```
 
 ## PLE/PGE/NLE/NGE
 
@@ -326,7 +326,7 @@ The requested element can be strictly or non-strictly less/greater.
 
 ### Template
 
-{% highlight java %}
+```java
 Deque<Integer> st = new ArrayDeque<>();
 int[] prev = new int[n], next = new int[n];
 Arrays.fill(next, -1);
@@ -340,7 +340,7 @@ for (int i = 0; i < n; i++) {
     prev[i] = st.isEmpty() ? -1 : st.peek();
     st.push(i);
 }
-{% endhighlight %}
+```
 
 |                | Previous < | Previous <= |  Next <  |  Next <=  | 
 |----------------|------------|-------------|----------|-----------|
@@ -350,7 +350,7 @@ for (int i = 0; i < n; i++) {
 
 [Final Prices With a Special Discount in a Shop][final-prices-with-a-special-discount-in-a-shop]
 
-{% highlight java %}
+```java
 public int[] finalPrices(int[] prices) {
     int n = prices.length;
     int[] result = Arrays.copyOf(prices, n);
@@ -365,11 +365,11 @@ public int[] finalPrices(int[] prices) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Next Greater Element IV][next-greater-element-iv]
 
-{% highlight java %}
+```java
 public int[] secondGreaterElement(int[] nums) {
     int n = nums.length;
     int[] next = new int[n];
@@ -397,7 +397,7 @@ public int[] secondGreaterElement(int[] nums) {
     }
     return next;
 }
-{% endhighlight %}
+```
 
 ### Subarray Min/Max
 
@@ -405,7 +405,7 @@ public int[] secondGreaterElement(int[] nums) {
 
 The basic idea is to find both the previous and next less elements of each array element with two stacks. This can be simplified to one stack:
 
-{% highlight java %}
+```java
 private int MOD = (int)1e9 + 7;
 
 public int sumSubarrayMins(int[] arr) {
@@ -425,21 +425,21 @@ public int sumSubarrayMins(int[] arr) {
     }
     return (int)result;
 }
-{% endhighlight %}
+```
 
 [Subarray With Elements Greater Than Varying Threshold][subarray-with-elements-greater-than-varying-threshold]
 
-{% highlight java %}
+```java
 if ((i - k - 1) * nums[j] > threshold) {
     return i - k - 1;
 }
-{% endhighlight %}
+```
 
 With this perspective, the solution of the following *Histogram* problem is much easier to understand:
 
 [Largest Rectangle in Histogram][largest-rectangle-in-histogram]
 
-{% highlight java %}
+```java
 public int largestRectangleArea(int[] heights) {
     // index of non-descreasing heights
     Deque<Integer> st = new ArrayDeque<>();
@@ -461,7 +461,7 @@ public int largestRectangleArea(int[] heights) {
     }
     return area;
 }
-{% endhighlight %}
+```
 
 ```
 [2,1,5,6,2,3]
@@ -482,7 +482,7 @@ i = 6	[6]				area = 10
 
 [Maximum of Minimum Values in All Subarrays][maximum-of-minimum-values-in-all-subarrays]
 
-{% highlight java %}
+```java
 public int[] findMaximums(int[] nums) {
     int n = nums.length;
     int[] ans = new int[n];
@@ -508,7 +508,7 @@ public int[] findMaximums(int[] nums) {
     }
     return ans;
 }
-{% endhighlight %}
+```
 
 Similarly, with Monotonically Decreasing Stack, we can get Previous Greater Element or Next Greater Element.
 
@@ -520,7 +520,7 @@ Similarly, with Monotonically Decreasing Stack, we can get Previous Greater Elem
 
 [Steps to Make Array Non-decreasing][steps-to-make-array-non-decreasing]
 
-{% highlight java %}
+```java
 public int totalSteps(int[] nums) {
     Deque<int[]> st = new ArrayDeque<>();
     // {number, count of preceding elements to remove before reaching PGE(>)}
@@ -544,7 +544,7 @@ public int totalSteps(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 ### Summary
 
@@ -561,7 +561,7 @@ public int totalSteps(int[] nums) {
 
 [Online Stock Span][online-stock-span]
 
-{% highlight java %}
+```java
 private Deque<int[]> st;
 
 public StockSpanner() {
@@ -576,11 +576,11 @@ public int next(int price) {
     st.push(new int[]{price, count});
     return count;
 }
-{% endhighlight %}
+```
 
 [Minimum Cost Tree From Leaf Values][minimum-cost-tree-from-leaf-values]
 
-{% highlight java %}
+```java
 public int mctFromLeafValues(int[] arr) {
     Deque<Integer> st = new ArrayDeque<>();
     st.push(Integer.MAX_VALUE);
@@ -601,11 +601,11 @@ public int mctFromLeafValues(int[] arr) {
 
     return sum;
 }
-{% endhighlight %}
+```
 
 [Number of Visible People in a Queue][number-of-visible-people-in-a-queue]
 
-{% highlight java %}
+```java
 public int[] canSeePersonsCount(int[] heights) {
     int n = heights.length;
     int[] answer = new int[n];
@@ -629,13 +629,13 @@ public int[] canSeePersonsCount(int[] heights) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 Similar: [Number of People That Can Be Seen in a Grid][number-of-people-that-can-be-seen-in-a-grid]
 
 In this problem, elements are not necessarily distinct. Therefore, we need to make a slight change to the code:
 
-{% highlight java %}
+```java
 public int[] canSeePersonsCount(int[] heights) {
     int n = heights.length;
     int[] answer = new int[n];
@@ -667,11 +667,11 @@ public int[] canSeePersonsCount(int[] heights) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 [Maximum Width Ramp][maximum-width-ramp]
 
-{% highlight java %}
+```java
 public int maxWidthRamp(int[] nums) {
     // decreasing stack
     Deque<Integer> st = new ArrayDeque<>();
@@ -691,13 +691,13 @@ public int maxWidthRamp(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 The following problem is not PGE or NGE, and the solution doesn't use stacks. But we can see some similarities.
 
 [Sum of Imbalance Numbers of All Subarrays][sum-of-imbalance-numbers-of-all-subarrays]
 
-{% highlight java %}
+```java
 public int sumImbalanceNumbers(int[] nums) {
     int sum = 0, n = nums.length;
     // lastIndices[i]: last index of the number `i`
@@ -723,7 +723,7 @@ public int sumImbalanceNumbers(int[] nums) {
     // subtracts the result for max(nums[i])
     return sum - n * (n + 1) / 2;
 }
-{% endhighlight %}
+```
 
 # Histogram
 
@@ -731,7 +731,7 @@ The problem [Largest Rectangle in Histogram][largest-rectangle-in-histogram] des
 
 [Maximal Rectangle][maximal-rectangle]
 
-{% highlight java %}
+```java
 public int maximalRectangle(char[][] matrix) {
     int m = matrix.length, n = matrix[0].length;
     int area = 0;
@@ -759,11 +759,11 @@ public int maximalRectangle(char[][] matrix) {
 
     return area;
 }
-{% endhighlight %}
+```
 
 [Count Submatrices With All Ones][count-submatrices-with-all-ones]
 
-{% highlight java %}
+```java
 public int numSubmat(int[][] mat) {
     int m = mat.length, n = mat[0].length, count = 0;
     // sums[i]: count of all-one submatrices with i as the right side
@@ -796,7 +796,7 @@ public int numSubmat(int[][] mat) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 ![Stack](/assets/img/algorithm/count_submatrices_with_all_ones.png)
 
@@ -804,7 +804,7 @@ Instead of maining an extra array `int[] sums`, we can use `{index, sum}` as the
 
 The final result is a culumative sum. The following solution gets rid of the extra array `int[] sums` and keeps using the single `index` stack element:
 
-{% highlight java %}
+```java
 public int numSubmat(int[][] mat) {
     int m = mat.length, n = mat[0].length, count = 0;
     int[] heights = new int[n];
@@ -835,7 +835,7 @@ public int numSubmat(int[][] mat) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 # Lookahead
 
@@ -843,7 +843,7 @@ Use an auxiliary array to check the occurrences of certain elements in later inp
 
 [Remove Duplicate Letters][remove-duplicate-letters]
 
-{% highlight java %}
+```java
 public String removeDuplicateLetters(String s) {
     // last index
     int[] last = new int[26];
@@ -873,11 +873,11 @@ public String removeDuplicateLetters(String s) {
     }
     return sb.reverse().toString();
 }
-{% endhighlight %}
+```
 
 [Using a Robot to Print the Lexicographically Smallest String][using-a-robot-to-print-the-lexicographically-smallest-string]
 
-{% highlight java %}
+```java
 public String robotWithString(String s) {
     int[] count = new int[26];
     for (char ch : s.toCharArray()) {
@@ -904,11 +904,11 @@ public String robotWithString(String s) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 [Smallest K-Length Subsequence With Occurrences of a Letter][smallest-k-length-subsequence-with-occurrences-of-a-letter]
 
-{% highlight java %}
+```java
 public String smallestSubsequence(String s, int k, char letter, int repetition) {
     // count of `letter`
     int count = (int)s.chars().filter(ch -> ch == letter).count();
@@ -947,11 +947,11 @@ public String smallestSubsequence(String s, int k, char letter, int repetition) 
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 [132 Pattern][132-pattern]
 
-{% highlight java %}
+```java
 public boolean find132pattern(int[] nums) {
     Deque<Integer> st = new ArrayDeque<>();
     int mid = Integer.MIN_VALUE;
@@ -969,11 +969,11 @@ public boolean find132pattern(int[] nums) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
 [Flatten Nested List Iterator][flatten-nested-list-iterator]
 
-{% highlight java %}
+```java
 private Deque<NestedInteger> st;
 
 public NestedIterator(List<NestedInteger> nestedList) {
@@ -1003,11 +1003,11 @@ private void pushToStack(List<NestedInteger> nestedList) {
         st.push(nestedList.get(i));
     }
 }
-{% endhighlight %}
+```
 
 [Ternary Expression Parser][ternary-expression-parser]
 
-{% highlight java %}
+```java
 public String parseTernary(String expression) {
     Deque<Character> st = new ArrayDeque<>();
     char op = ' ';
@@ -1026,13 +1026,13 @@ public String parseTernary(String expression) {
     }
     return String.valueOf(st.peek());
 }
-{% endhighlight %}
+```
 
 # Parsing
 
 [Basic Calculator][basic-calculator]
 
-{% highlight java %}
+```java
 public int calculate(String s) {
     // stores operands and signs alternatively
     Deque<Integer> stack = new ArrayDeque<>();
@@ -1062,7 +1062,7 @@ public int calculate(String s) {
     // + sign * operand at '+', '-', ')' or end of s
     return result + sign * operand;
 }
-{% endhighlight %}
+```
 
 [132-pattern]: https://leetcode.com/problems/132-pattern/
 [basic-calculator]: https://leetcode.com/problems/basic-calculator/

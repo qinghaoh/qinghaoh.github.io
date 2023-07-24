@@ -6,28 +6,28 @@ tag: sql
 
 [Swap Salary][swap-salary]
 
-{% highlight sql %}
+```sql
 UPDATE salary
 SET
     sex = CASE sex
         WHEN 'm' THEN 'f'
         ELSE 'm'
     END;
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 UPDATE salary
 SET sex = IF(sex='m', 'f', 'm');
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 UPDATE salary
 SET sex = CHAR(ASCII('f') ^ ASCII('m') ^ ASCII(sex));
-{% endhighlight %}
+```
 
 [Percentage of Users Attended a Contest][percentage-of-users-attended-a-contest]
 
-{% highlight sql %}
+```sql
 SELECT
     contest_id,
     ROUND(COUNT(DISTINCT user_id) / (SELECT COUNT(*) FROM Users) * 100, 2) AS percentage
@@ -39,11 +39,11 @@ ORDER BY
     percentage DESC,
     contest_id
 ;
-{% endhighlight %}
+```
 
 [Classes More Than 5 Students][classes-more-than-5-students]
 
-{% highlight sql %}
+```sql
 SELECT
     class
 FROM
@@ -55,11 +55,11 @@ FROM
 WHERE
     num >= 5
 ;
-{% endhighlight %}
+```
 
 [Rising Temprature][rising-temperature]
 
-{% highlight sql %}
+```sql
 SELECT
     weather.id AS 'Id'
 FROM
@@ -69,11 +69,11 @@ JOIN
     ON DATEDIFF(weather.recordDate, w.recordDate) = 1
         AND weather.Temperature > w.Temperature
 ;
-{% endhighlight %}
+```
 
 [Second Highest Salary][second-highest-salary]
 
-{% highlight sql %}
+```sql
 SELECT
     (SELECT DISTINCT
             Salary
@@ -83,9 +83,9 @@ SELECT
             Salary DESC
         LIMIT 1 OFFSET 1) AS SecondHighestSalary
 ;
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 SELECT
     IFNULL(
       (SELECT DISTINCT
@@ -97,9 +97,9 @@ SELECT
           LIMIT 1 OFFSET 1),
     NULL) AS SecondHighestSalary
 ;
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 SELECT
     MAX(Salary) AS SecondHighestSalary
 FROM
@@ -107,24 +107,24 @@ FROM
 WHERE
     Salary < (SELECT MAX(Salary) FROM Employee)
 ;
-{% endhighlight %}
+```
 
 [Employees Earning More Than Their Managers][employees-earning-more-than-their-managers]
 
-{% highlight sql %}
+```sql
 SELECT
      a.NAME AS Employee
 FROM Employee AS a JOIN Employee AS b
      ON a.ManagerId = b.Id
      AND a.Salary > b.Salary
 ;
-{% endhighlight %}
+```
 
 # IN
 
 [Highest Grade For Each Student][highest-grade-for-each-student]
 
-{% highlight sql %}
+```sql
 SELECT
     student_id,
     MIN(course_id) AS course_id,
@@ -146,11 +146,11 @@ GROUP BY
 ORDER BY
     student_id
 ;
-{% endhighlight %}
+```
 
 [Customers Who Bought Products A and B but Not C][customers-who-bought-products-a-and-b-but-not-c]
 
-{% highlight sql %}
+```sql
 SELECT
     customer_id,
     customer_name
@@ -182,7 +182,7 @@ WHERE
             product_name = 'C'
         )
 ;
-{% endhighlight %}
+```
 
 # GROUP BY
 
@@ -190,7 +190,7 @@ Multiple levels:
 
 [Active Businesses][active-businesses]
 
-{% highlight sql %}
+```sql
 SELECT
     business_id
 FROM
@@ -211,13 +211,13 @@ GROUP BY
 HAVING
     COUNT(DISTINCT t.event_type) > 1
 ;
-{% endhighlight %}
+```
 
 # CASE Statement
 
 [Reformat Department Table][reformat-department-table]
 
-{% highlight sql %}
+```sql
 SELECT id, 
 	SUM(CASE WHEN month = 'Jan' THEN revenue ELSE NULL END) AS Jan_Revenue,
 	SUM(CASE WHEN month = 'Feb' THEN revenue ELSE NULL END) AS Feb_Revenue,
@@ -235,11 +235,11 @@ FROM department
 GROUP BY id
 ORDER BY id
 ;
-{% endhighlight %}
+```
 
 [Evaluate Boolean Expression][evaluate-boolean-expression]
 
-{% highlight sql %}
+```sql
 SELECT
     e.left_operand,
     e.operator,
@@ -263,11 +263,11 @@ JOIN
 ON
     e.right_operand = v2.name
 ;
-{% endhighlight %}
+```
 
 [Team Scores in Football Tournament][team-scores-in-football-tournament]
 
-{% highlight sql %}
+```sql
 SELECT
     team_id,
     team_name,
@@ -289,11 +289,11 @@ ORDER BY
     num_points DESC,
     team_id
 ;
-{% endhighlight %}
+```
 
 [League Statistics][league-statistics]
 
-{% highlight sql %}
+```sql
 SELECT
     team_name,
     COUNT(*) AS matches_played,
@@ -329,11 +329,11 @@ ORDER BY
     goal_diff DESC,
     team_name
 ;
-{% endhighlight %}
+```
 
 [Exchange Seats][exchange-seats]
 
-{% highlight sql %}
+```sql
 SELECT
     CASE
         WHEN seat.id % 2 <> 0 AND seat.id = (SELECT COUNT(*) FROM seat) THEN seat.id
@@ -347,11 +347,11 @@ FROM
 ORDER BY
     id
 ;
-{% endhighlight %}
+```
 
 [Game Play Analysis I][game-play-analysis-i]
 
-{% highlight sql %}
+```sql
 SELECT
     player_id,
     MIN(event_date) AS first_login
@@ -360,11 +360,11 @@ FROM
 GROUP BY
     player_id
 ;
-{% endhighlight %}
+```
 
 [Game Play Analysis II][game-play-analysis-ii]
 
-{% highlight sql %}
+```sql
 SELECT
     player_id,
     device_id
@@ -379,11 +379,11 @@ WHERE
          GROUP BY
              player_id)
 ;
-{% endhighlight %}
+```
 
 [Game Play Analysis III][game-play-analysis-iii]
 
-{% highlight sql %}
+```sql
 SELECT a1.player_id,
     a1.event_date,
     SUM(a2.games_played) AS games_played_so_far
@@ -394,7 +394,7 @@ JOIN Activity a2
 GROUP BY
     a1.player_id, a1.event_date
 ;
-{% endhighlight %}
+```
 
 MySQL uses three-valued logic -- TRUE, FALSE and UNKNOWN. Anything compared to NULL evaluates to the third value: UNKNOWN. That “anything” includes NULL itself! That’s why MySQL provides the IS NULL and IS NOT NULL operators to specifically check for NULL.
 
@@ -402,7 +402,7 @@ MySQL uses three-valued logic -- TRUE, FALSE and UNKNOWN. Anything compared to N
 
 [The Most Recent Orders for Each Product][the-most-recent-orders-for-each-product]
 
-{% highlight sql %}
+```sql
 SELECT
     product_name,
     p.product_id,
@@ -427,7 +427,7 @@ ORDER BY
     product_id,
     order_id
 ;
-{% endhighlight %}
+```
 
 # HAVING
 
@@ -435,7 +435,7 @@ value = max
 
 [Customer Placing the Largest Number of Orders][customer-placing-the-largest-number-of-orders]
 
-{% highlight sql %}
+```sql
 SELECT
     customer_number
 FROM
@@ -455,11 +455,11 @@ HAVING
         LIMIT 1
 )
 ;
-{% endhighlight %}
+```
 
 [Sales Analysis I][sales-analysis-i]
 
-{% highlight sql %}
+```sql
 SELECT
     seller_id
 FROM
@@ -474,11 +474,11 @@ GROUP BY
         GROUP BY
             seller_id)
 ;
-{% endhighlight %}
+```
 
 [Sales Analysis II][sales-analysis-ii]
 
-{% highlight sql %}
+```sql
 SELECT
     s.buyer_id
 FROM
@@ -492,11 +492,11 @@ GROUP BY
     HAVING
         SUM(p.product_name = 'S8') > 0 AND SUM(p.product_name = 'iPhone') = 0;
 ;
-{% endhighlight %}
+```
 
 [Customer Order Frequency][customer-order-frequency]
 
-{% highlight sql %}
+```sql
 SELECT
     customer_id,
     name
@@ -514,11 +514,11 @@ GROUP BY
         SUM(IF(LEFT(order_date, 7) = '2020-06', quantity, 0) * price) >= 100
         AND SUM(IF(LEFT(order_date, 7) = '2020-07', quantity, 0) * price) >= 100
 ;
-{% endhighlight %}
+```
 
 [Investments in 2016][investments-in-2016]
 
-{% highlight sql %}
+```sql
 SELECT
     SUM(insurance.TIV_2016) AS TIV_2016
 FROM
@@ -545,13 +545,13 @@ WHERE
             HAVING COUNT(*) = 1
     )
 ;
-{% endhighlight %}
+```
 
 **Consecutive Rows model**
 
 [Customers With Strictly Increasing Purchases][customers-with-strictly-increasing-purchases]
 
-{% highlight sql %}
+```sql
 WITH cte AS (
     SELECT
         customer_id,
@@ -575,11 +575,11 @@ GROUP BY
     -- the last year contains NULL next year
     HAVING COUNT(*) - 1 = COUNT(t2.customer_id)
 ;
-{% endhighlight %}
+```
 
 [Consecutive Available Seats][consecutive-available-seats]
 
-{% highlight sql %}
+```sql
 SELECT
     DISTINCT c1.seat_id
 FROM
@@ -591,13 +591,13 @@ JOIN
 ORDER BY
     c1.seat_id;
 ;
-{% endhighlight %}
+```
 
 # EXISTS
 
 [Leetcodify Friends Recommendations][leetcodify-friends-recommendations]
 
-{% highlight sql %}
+```sql
 WITH allRecs AS (
     SELECT DISTINCT
         l1.user_id AS user1_id,
@@ -637,11 +637,11 @@ SELECT
 FROM
     allRecs
 ;
-{% endhighlight %}
+```
 
 [Friend Requests I: Overall Acceptance Rate][friend-requests-i-overall-acceptance-rate]
 
-{% highlight sql %}
+```sql
 SELECT
 ROUND(
     IFNULL(
@@ -659,11 +659,11 @@ ROUND(
         0),
     2) AS accept_rate
 ;
-{% endhighlight %}
+```
 
 [Sales Person][sales-person]
 
-{% highlight sql %}
+```sql
 SELECT s.name
 FROM orders o
 JOIN company c
@@ -673,11 +673,11 @@ RIGHT JOIN salesperson s
     ON s.sales_id = o.sales_id
 WHERE o.sales_id IS NULL
 ;
-{% endhighlight %}
+```
 
 [Actors and Directors Who Cooperated At Least Three Times][actors-and-directors-who-cooperated-at-least-three-times]
 
-{% highlight sql %}
+```sql
 SELECT
     actor_id,
     director_id
@@ -687,11 +687,11 @@ GROUP BY
     actor_id, director_id
     HAVING COUNT(actor_id) >= 3
 ;
-{% endhighlight %}
+```
 
 [Game Play Analysis IV][game-play-analysis-iv]
 
-{% highlight sql %}
+```sql
 SELECT
     ROUND(COUNT(t2.player_id) / COUNT(t1.player_id), 2) AS fraction
 FROM
@@ -705,11 +705,11 @@ LEFT JOIN
     Activity t2
     ON t1.player_id = t2.player_id AND t1.first_login = t2.event_date - 1
 ;
-{% endhighlight %}
+```
 
 [Get Highest Answer Rate Question][get-highest-answer-rate-question]
 
-{% highlight sql %}
+```sql
 SELECT question_id as survey_log
 FROM
     (SELECT
@@ -722,11 +722,11 @@ FROM
 ORDER BY (num_answer / num_show) DESC
 LIMIT 1
 ;
-{% endhighlight %}
+```
 
 [Customers Who Bought All Products][customers-who-bought-all-products]
 
-{% highlight sql %}
+```sql
 SELECT customer_id
 FROM customer c
 GROUP BY customer_id
@@ -734,11 +734,11 @@ HAVING COUNT(DISTINCT product_key) =
     (SELECT COUNT(DISTINCT product_key)
      FROM product)
 ;
-{% endhighlight %}
+```
 
 [Tree Node][tree-node]
 
-{% highlight sql %}
+```sql
 SELECT
     id,
     CASE WHEN p_id IS NULL THEN 'Root'
@@ -750,7 +750,7 @@ FROM
 ORDER BY
     id
 ;
-{% endhighlight %}
+```
 
 # Aggregate Functions
 
@@ -758,7 +758,7 @@ ORDER BY
 
 [Ads Performance][ads-performance]
 
-{% highlight sql %}
+```sql
 SELECT
     ad_id,
     IFNULL(
@@ -777,7 +777,7 @@ GROUP BY
 ORDER BY
     ctr DESC, ad_id
 ;
-{% endhighlight %}
+```
 
 ### OVER Clause
 
@@ -785,7 +785,7 @@ ORDER BY
 
 [Hopper Company Queries III][hopper-company-queries-iii]
 
-{% highlight sql %}
+```sql
 WITH RECURSIVE cte AS (
     SELECT
         1 AS month
@@ -825,22 +825,22 @@ ORDER BY
 LIMIT
     10
 ;
-{% endhighlight %}
+```
 
 ## GROUP_CONCAT
 
-{% highlight sql %}
+```sql
 GROUP_CONCAT([DISTINCT] expr [,expr ...]
              [ORDER BY {unsigned_integer | col_name | expr}
                  [ASC | DESC] [,col_name ...]]
              [SEPARATOR str_val])
-{% endhighlight %}
+```
 
 The default separator between values in a group is comma (,)
 
 [Group Sold Products By The Date][group-sold-products-by-the-date]
 
-{% highlight sql %}
+```sql
 SELECT
     sell_date,
     COUNT(DISTINCT product) AS num_sold,
@@ -852,11 +852,11 @@ GROUP BY
 ORDER BY
     sell_date
 ;
-{% endhighlight %}
+```
 
 [Build the Equation][build-the-equation]
 
-{% highlight sql %}
+```sql
 SELECT
     CONCAT(GROUP_CONCAT(term ORDER BY power DESC SEPARATOR ''), '=0') AS equation
 FROM (
@@ -873,13 +873,13 @@ FROM (
     ORDER BY
         power DESC) t
 ;
-{% endhighlight %}
+```
 
 # OVER
 
 [Calculate Salaries][calculate-salaries]
 
-{% highlight sql %}
+```sql
 SELECT
     company_id,
     employee_id,
@@ -894,13 +894,13 @@ FROM
      FROM
         Salaries s) m
 ;
-{% endhighlight %}
+```
 
 If **PARTITION BY** is not specified, the function treats all rows of the query result set as a single partition.
 
 [Nth Highest Salary][nth-highest-salary]
 
-{% highlight sql %}
+```sql
 CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
 BEGIN
   DECLARE M INT;
@@ -913,11 +913,11 @@ BEGIN
       LIMIT M, 1
   );
 END
-{% endhighlight %}
+```
 
 [Leetflex Banned Accounts][leetflex-banned-accounts]
 
-{% highlight sql %}
+```sql
 SELECT
     DISTINCT a.account_id
 FROM
@@ -928,11 +928,11 @@ WHERE
     AND a.account_id = b.account_id
     AND a.ip_address != b.ip_address
 ;
-{% endhighlight %}
+```
 
 [Immediate Food Delivery II][immediate-food-delivery-ii]
 
-{% highlight sql %}
+```sql
 SELECT
     ROUND(100 * SUM(
         CASE order_date
@@ -952,11 +952,11 @@ IN
         customer_id
     )
 ;
-{% endhighlight %}
+```
 
 [Countries You Can Safely Invest In][countries-you-can-safely-invest-in]
 
-{% highlight sql %}
+```sql
 SELECT
     co.name AS country
 FROM
@@ -972,13 +972,13 @@ GROUP BY
 HAVING
     AVG(duration) > (SELECT AVG(duration) FROM Calls)
 ;
-{% endhighlight %}
+```
 
 # UNION
 
 [Rearrange Products Table][rearrange-products-table]
 
-{% highlight sql %}
+```sql
 SELECT
     product_id,
     'store1' AS store,
@@ -1010,11 +1010,11 @@ FROM
 WHERE
     store3 IS NOT NULL
 ;
-{% endhighlight %}
+```
 
 [Product Price at a Given Date][product-price-at-a-given-date]
 
-{% highlight sql %}
+```sql
 SELECT
     DISTINCT product_id,
     10 AS price
@@ -1043,11 +1043,11 @@ IN
     GROUP BY
         product_id)
 ;
-{% endhighlight %}
+```
 
 [Get the Second Most Recent Activity][get-the-second-most-recent-activity]
 
-{% highlight sql %}
+```sql
 SELECT
     *
 FROM
@@ -1072,7 +1072,7 @@ HAVING
 -- second most recent
     COUNT(u2.endDate) = 1
 ;
-{% endhighlight %}
+```
 
 ## UNION ALL
 
@@ -1081,7 +1081,7 @@ HAVING
 
 [Monthly Transactions II][monthly-transactions-ii]
 
-{% highlight sql %}
+```sql
 SELECT
     month,
     country,
@@ -1118,11 +1118,11 @@ FROM
 GROUP BY
     month, country
 ;
-{% endhighlight %}
+```
 
 [Last Person to Fit in the Elevator][last-person-to-fit-in-the-elevator]
 
-{% highlight sql %}
+```sql
 SELECT
     q1.person_name
 FROM
@@ -1138,13 +1138,13 @@ ORDER BY
     q1.turn DESC
 LIMIT 1
 ;
-{% endhighlight %}
+```
 
 ## Median
 
 [Find Median Given Frequency of Numbers][find-median-given-frequency-of-numbers]
 
-{% highlight sql %}
+```sql
 SELECT
     AVG(Number) AS median
 FROM
@@ -1169,13 +1169,13 @@ WHERE
             Numbers
          WHERE
             Number >= n.Number))
-{% endhighlight %}
+```
 
 # Common Table Expressions (CTE)
 
 [Create a Session Bar Chart][create-a-session-bar-chart]
 
-{% highlight sql %}
+```sql
 WITH cte AS (
     SELECT
         '[0-5>' AS bin,
@@ -1210,13 +1210,13 @@ LEFT JOIN
 GROUP BY
     cte.bin
 ;
-{% endhighlight %}
+```
 
 A temporary named result set.
 
 [Restaurant Growth][restaurant-growth]
 
-{% highlight sql %}
+```sql
 WITH Day AS(
     SELECT visited_on, SUM(amount) AS day_sum
     FROM Customer
@@ -1235,11 +1235,11 @@ GROUP BY
 HAVING
     COUNT(b.visited_on) = 7
 ;
-{% endhighlight %}
+```
 
 [Suspicious Bank Accounts][suspicious-bank-accounts]
 
-{% highlight sql %}
+```sql
 WITH income AS(
     SELECT
         a.account_id,
@@ -1274,11 +1274,11 @@ GROUP BY
 ORDER BY
     t1.account_id
 ;
-{% endhighlight %}
+```
 
 [Find the Quiet Students in All Exams][find-the-quiet-students-in-all-exams]
 
-{% highlight sql %}
+```sql
 WITH cte AS(
     SELECT
         exam_id,
@@ -1311,11 +1311,11 @@ WHERE
 ORDER BY
     student_id
 ;
-{% endhighlight %}
+```
 
 [Number of Transactions per Visit][number-of-transactions-per-visit]
 
-{% highlight sql %}
+```sql
 -- transactions per user per visist date
 WITH vt AS(
     SELECT
@@ -1360,11 +1360,11 @@ GROUP BY
 ORDER BY
     rn
 ;
-{% endhighlight %}
+```
 
 ## Recursive CTE
 
-{% highlight sql %}
+```sql
 WITH RECURSIVE expression_name (column_list)
 AS
 (
@@ -1377,7 +1377,7 @@ AS
 -- references expression name
 SELECT *
 FROM   expression_name
-{% endhighlight %}
+```
 
 ![Flow chart](https://www.sqlservertutorial.net/wp-content/uploads/SQL-Server-Recursive-CTE-execution-flow.png)
 
@@ -1385,7 +1385,7 @@ Ref: https://www.sqlservertutorial.net/sql-server-basics/sql-server-recursive-ct
 
 [Find the Missing IDs][find-the-missing-ids]
 
-{% highlight sql %}
+```sql
 WITH RECURSIVE Seq AS (
     SELECT
         1 AS ids
@@ -1413,11 +1413,11 @@ WHERE
         FROM
             Customers)
 ;
-{% endhighlight %}
+```
 
 [Total Sales Amount by Year][total-sales-amount-by-year]
 
-{% highlight sql %}
+```sql
 WITH RECURSIVE dates as (
     SELECT
         MIN(period_start) AS start_date,
@@ -1452,11 +1452,11 @@ GROUP BY
 ORDER BY
     1, 3
 ;
-{% endhighlight %}
+```
 
 [Find the Subtasks That Did Not Execute][find-the-subtasks-that-did-not-execute]
 
-{% highlight sql %}
+```sql
 WITH RECURSIVE cte AS (
     SELECT
         task_id,
@@ -1481,11 +1481,11 @@ FROM
 WHERE
     (task_id, subtasks_count) NOT IN (SELECT * FROM Executed)
 ;
-{% endhighlight %}
+```
 
 [All People Report to the Given Manager][all-people-report-to-the-given-manager]
 
-{% highlight sql %}
+```sql
 WITH RECURSIVE cte AS (
     SELECT
         employee_id
@@ -1508,13 +1508,13 @@ SELECT
 FROM
     cte
 ;
-{% endhighlight %}
+```
 
 # JOIN
 
 [Grand Slam Titles][grand-slam-titles]
 
-{% highlight sql %}
+```sql
 SELECT
     player_id,
     player_name,
@@ -1527,11 +1527,11 @@ JOIN
 GROUP BY
     player_id
 ;
-{% endhighlight %}
+```
 
 ## LEFT JOIN
 
-{% highlight sql %}
+```sql
 WITH Friends AS (
     SELECT
         user1_id,
@@ -1566,7 +1566,7 @@ GROUP BY
     user_id,
     page_id
 ;
-{% endhighlight %}
+```
 
 ## CROSS JOIN
 
@@ -1574,7 +1574,7 @@ Cartesian Product
 
 [All Valid Triplets That Can Represent a Country][all-valid-triplets-that-can-represent-a-country]
 
-{% highlight sql %}
+```sql
 SELECT
     sa.student_name AS member_a,
     sb.student_name AS member_b,
@@ -1593,13 +1593,13 @@ WHERE
     AND sb.student_id != sc.student_id
     AND sa.student_id != sb.student_id
 ;
-{% endhighlight %}
+```
 
 ## Multiple JOINs
 
 [Number of Trusted Contacts of a Customer][number-of-trusted-contacts-of-a-customer]
 
-{% highlight sql %}
+```sql
 SELECT
     i.invoice_id,
     cu.customer_name,
@@ -1622,11 +1622,11 @@ GROUP BY
 ORDER BY
     i.invoice_id
 ;
-{% endhighlight %}
+```
 
 [The Most Recent Three Orders][the-most-recent-three-orders]
 
-{% highlight sql %}
+```sql
 SELECT
     c.name AS customer_name,
     o1.customer_id,
@@ -1653,13 +1653,13 @@ ORDER BY
     customer_id,
     order_date DESC
 ;
-{% endhighlight %}
+```
 
 ## Implicit Join (= Cross Join)
 
 [Strong Friendship][strong-friendship]
 
-{% highlight sql %}
+```sql
 WITH Friends AS (
     SELECT
         user1_id,
@@ -1692,11 +1692,11 @@ JOIN friends f2
 GROUP BY
     1, 2
     HAVING COUNT(3) >= 3
-{% endhighlight %}
+```
 
 [Consecutive Numbers][consecutive-numbers]
 
-{% highlight sql %}
+```sql
 SELECT DISTINCT
     l1.Num AS ConsecutiveNums
 FROM
@@ -1709,11 +1709,11 @@ WHERE
     AND l1.Num = l2.Num
     AND l2.Num = l3.Num
 ;
-{% endhighlight %}
+```
 
 [Leetcodify Similar Friends][leetcodify-similar-friends]
 
-{% highlight sql %}
+```sql
 SELECT DISTINCT
     l1.user_id AS user1_id,
     l2.user_id AS user2_id
@@ -1729,53 +1729,53 @@ GROUP BY
     1, 2, l1.day
     HAVING COUNT(DISTINCT l1.song_id) >= 3
 ;
-{% endhighlight %}
+```
 
 # String Functions
 
-{% highlight sql %}
+```sql
 CONCAT(str1,str2,...)
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 LEFT(str,len)
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 LOWER(str)
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 SUBSTR(str,pos)
 SUBSTR(str FROM pos)
 SUBSTR(str,pos,len)
 SUBSTR(str FROM pos FOR len)
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 TRIM(str)
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 CHAR_LENGTH(str)
-{% endhighlight %}
+```
 
 Returns the length of the string str, measured in characters. A multibyte character counts as a single character. This means that for a string containing five 2-byte characters, `LENGTH()` returns 10, whereas `CHAR_LENGTH()` returns 5.
 
 # Date and Time Functions
 
-{% highlight sql %}
+```sql
 DATE_FORMAT(date,format)
-{% endhighlight %}
+```
 [format](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)
 
-{% highlight sql %}
+```sql
 YEAR(date)
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 TIMESTAMPDIFF(unit,datetime_expr1,datetime_expr2)
-{% endhighlight %}
+```
 
 [Comparison Operators](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html)
 
@@ -1783,7 +1783,7 @@ Comparison operations result in a value of 1 (TRUE), 0 (FALSE), or NULL.
 
 [Number of Calls Between Two Persons][number-of-calls-between-two-persons]
 
-{% highlight sql %}
+```sql
 SELECT
     LEAST(from_id,to_id) AS person1,
     GREATEST(from_id,to_id) AS person2,
@@ -1794,11 +1794,11 @@ FROM
 GROUP BY
     person1, person2
 ;
-{% endhighlight %}
+```
 
-{% highlight sql %}
+```sql
 COUNT(DISTINCT *)
-{% endhighlight %}
+```
 
 Specifies that `COUNT` returns the number of unique ***nonnull*** values.
 
@@ -1810,7 +1810,7 @@ Cumulative sum.
 
 [The Number of Seniors and Juniors to Join the Company][the-number-of-seniors-and-juniors-to-join-the-company]
 
-{% highlight sql %}
+```sql
 WITH cte AS (
     SELECT
         employee_id,
@@ -1843,13 +1843,13 @@ WHERE
         WHERE
             experience = 'Senior'
             AND total_salary < 70000)
-{% endhighlight %}
+```
 
 ## RANK
 
 [Tournament Winners][tournament-winners]
 
-{% highlight sql %}
+```sql
 WITH c1 AS (
     SELECT
         player_id,
@@ -1892,11 +1892,11 @@ FROM
 WHERE
     rk = 1
 ;
-{% endhighlight %}
+```
 
 [The Most Frequently Ordered Products for Each Customer][the-most-frequently-ordered-products-for-each-customer]
 
-{% highlight sql %}
+```sql
 SELECT
     customer_id,
     product_id,
@@ -1919,11 +1919,11 @@ WHERE
 ORDER BY
     customer_id, product_id
 ;
-{% endhighlight %}
+```
 
 [Report Contiguous Dates][report-contiguous-dates]
 
-{% highlight sql %}
+```sql
 SELECT
     stats AS period_state,
     MIN(day) AS start_date,
@@ -1959,7 +1959,7 @@ GROUP BY
 ORDER BY
     start_date
 ;
-{% endhighlight %}
+```
 
 For example:
 
@@ -1980,7 +1980,7 @@ day   | overall_ranking| stats | rk | inv
 
 [Arrange Table by Gender][arrange-table-by-gender]
 
-{% highlight sql %}
+```sql
 WITH cte AS(
     SELECT *,
         RANK() OVER(PARTITION BY gender ORDER BY user_id) AS rnk,
@@ -1997,11 +1997,11 @@ ORDER BY
     rnk,
     rnk2
 ;
-{% endhighlight %}
+```
 
 [Compute the Rank as a Percentage][compute-the-rank-as-a-percentage]
 
-{% highlight sql %}
+```sql
 SELECT
     student_id,
     department_id,
@@ -2019,26 +2019,26 @@ SELECT
 FROM
     Students s1
 ;
-{% endhighlight %}
+```
 
 ## DENSE_RANK
 
 [Rank Scores][rank-scores]
 
-{% highlight sql %}
+```sql
 SELECT
     score,
     DENSE_RANK() OVER (ORDER BY score DESC) AS `rank`
 FROM
     scores
 ;
-{% endhighlight %}
+```
 
 Find max/min
 
 [Group Employees of the Same Salary][group-employees-of-the-same-salary]
 
-{% highlight sql %}
+```sql
 SELECT
     *,
     DENSE_RANK() OVER(ORDER BY salary) AS team_id
@@ -2057,11 +2057,11 @@ ORDER BY
     team_id,
     employee_id
 ;
-{% endhighlight %}
+```
 
 [First and Last Call On the Same Day][first-and-last-call-on-the-same-day]
 
-{% highlight sql %}
+```sql
 WITH cte AS (
     SELECT
         caller_id AS user_id,
@@ -2098,7 +2098,7 @@ GROUP BY
     day
     HAVING COUNT(DISTINCT recipient_id) = 1
 ;
-{% endhighlight %}
+```
 
 ## LEAD
 
@@ -2110,7 +2110,7 @@ LEAD(expr [, N[, default]]) [null_treatment] over_clause
 
 Returns the value of expr from the row that leads (follows) the current row by `N` rows within its partition. If there is no such row, the return value is default. If `N` is not specified, the default is 1.
 
-{% highlight sql %}
+```sql
 SELECT
     user_id,
     MAX(diff) AS biggest_window
@@ -2125,13 +2125,13 @@ GROUP BY
 ORDER BY
     user_id
 ;
-{% endhighlight %}
+```
 
 ## LAG
 
 [Consecutive Numbers][consecutive-numbers]
 
-{% highlight sql %}
+```sql
 SELECT
     DISTINCT Num AS ConsecutiveNums
 FROM
@@ -2144,11 +2144,11 @@ FROM
 WHERE
     Num = lead_num AND Num = lag_num
 ;
-{% endhighlight %}
+```
 
 [Find Interview Candidates][find-interview-candidates]
 
-{% highlight sql %}
+```sql
 WITH cte AS (
     SELECT
         user_id,
@@ -2177,7 +2177,7 @@ GROUP BY
     -- so whenever the lag difference is 2, there must be 3 consecutive wins
     HAVING SUM(gold) >= 3 OR SUM(contest_id - lagged_contest_id = 2) >= 1
 ;
-{% endhighlight %}
+```
 
 ## ROW_NUMBER
 
@@ -2185,7 +2185,7 @@ GROUP BY
 
 `ROW_NUMBER` numbers all rows sequentially (for example 1, 2, 3, 4, 5).
 
-{% highlight sql %}
+```sql
 SELECT
     MIN(log_id) AS start_id,
     MAX(log_id) AS end_id
@@ -2198,7 +2198,7 @@ FROM
 GROUP BY
     log_id - num
 ;
-{% endhighlight %}
+```
 
 ```
 log_id, num, difference
@@ -2212,7 +2212,7 @@ log_id, num, difference
 
 [Longest Winning Streak][longest-winning-streak]
 
-{% highlight sql %}
+```sql
 WITH cte AS (
     SELECT
         player_id,
@@ -2255,11 +2255,11 @@ LEFT JOIN
 GROUP BY
     1
 ;
-{% endhighlight %}
+```
 
 [he Change in Global Rankings][the-change-in-global-rankings]
 
-{% highlight sql %}
+```sql
 SELECT
     t.team_id,
     t.name,
@@ -2271,11 +2271,11 @@ JOIN
     PointsChange p
     ON t.team_id = p.team_id
 ;
-{% endhighlight %}
+```
 
 [Median Employee Salary][median-employee-salary]
 
-{% highlight sql %}
+```sql
 SELECT
     Id,
     Company,
@@ -2290,11 +2290,11 @@ FROM
 WHERE
     rank_asc BETWEEN rank_desc - 1 AND rank_desc + 1
 ;
-{% endhighlight %}
+```
 
 [Students Report By Geography][students-report-by-geography]
 
-{% highlight sql %}
+```sql
 SELECT
     -- MAX considers only non-null values
     MAX(CASE WHEN continent = 'America' THEN name END) AS America,
@@ -2308,13 +2308,13 @@ FROM
 GROUP BY
     row_id
 ;
-{% endhighlight %}
+```
 
 ## FIRST_VALUE
 
 [Change Null Values in a Table to the Previous Value][change-null-values-in-a-table-to-the-previous-value]
 
-{% highlight sql %}
+```sql
 WITH cte AS (
     SELECT
         id,
@@ -2343,13 +2343,13 @@ FROM
 ORDER BY
     rn
 ;
-{% endhighlight %}
+```
 
 # Regular Expressions
 
 [Find Users With Valid E-Mails][find-users-with-valid-e-mails]
 
-{% highlight sql %}
+```sql
 SELECT
     user_id,
     name,
@@ -2359,13 +2359,13 @@ FROM
 WHERE
     REGEXP_LIKE(mail, '^[A-Za-z]+[A-Za-z0-9\_\.\-]*@leetcode\.com')
 ;
-{% endhighlight %}
+```
 
 # User-defined Variables
 
 [The Number of Passengers in Each Bus II][the-number-of-passengers-in-each-bus-ii/]
 
-{% highlight sql %}
+```sql
 -- accumulated number of passengers arrive before each bus
 WITH cte AS (
     SELECT
@@ -2404,7 +2404,7 @@ FROM
 ORDER BY
     bus_id
 ;
-{% endhighlight %}
+```
 
 # Prepared Statements
 
@@ -2418,7 +2418,7 @@ ORDER BY
 
 [Dynamic Pivoting of a Table][dynamic-pivoting-of-a-table]
 
-{% highlight sql %}
+```sql
 CREATE PROCEDURE PivotProducts()
 BEGIN
     -- overrides GROUP_CONCAT default length (= 1024 characters)
@@ -2437,7 +2437,7 @@ BEGIN
     EXECUTE sql_query;
     DEALLOCATE PREPARE sql_query;
 END
-{% endhighlight %}
+```
 
 # INFORMATION_SCHEMA
 
@@ -2445,7 +2445,7 @@ END
 
 [Dynamic Unpivoting of a Table][dynamic-unpivoting-of-a-table]
 
-{% highlight sql %}
+```sql
 CREATE PROCEDURE UnpivotProducts()
 BEGIN
     SET SESSION group_concat_max_len = 1000000;
@@ -2465,7 +2465,7 @@ BEGIN
     EXECUTE sql_query;
     DEALLOCATE PREPARE sql_query;
 END
-{% endhighlight %}
+```
 
 [active-businesses]: https://leetcode.com/problems/active-businesses/
 [actors-and-directors-who-cooperated-at-least-three-times]: https://leetcode.com/problems/actors-and-directors-who-cooperated-at-least-three-times/

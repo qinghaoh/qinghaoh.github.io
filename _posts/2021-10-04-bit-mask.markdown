@@ -11,7 +11,7 @@ tags: bit
 
 [Groups of Strings][groups-of-strings]
 
-{% highlight java %}
+```java
 private Map<Integer, Integer> map = new HashMap<>();
 private Set<Integer> visited = new HashSet<>();
 
@@ -53,13 +53,13 @@ private int dfs(int mask) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 # Enumeration
 
 [Iterator for Combination][iterator-for-combination]
 
-{% highlight java %}
+```java
 class CombinationIterator {
     private int bitmask = 0, n = 0, k = 0;
     private String characters;
@@ -97,11 +97,11 @@ class CombinationIterator {
         return bitmask > 0;
     }
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Lines to Cover Points][minimum-number-of-lines-to-cover-points]
 
-{% highlight java %}
+```java
 public int minimumLines(int[][] points) {
     int n = points.length;
     if (n < 3) {
@@ -159,11 +159,11 @@ public int minimumLines(int[][] points) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [Partition Array Into Two Arrays to Minimize Sum Difference][partition-array-into-two-arrays-to-minimize-sum-difference]
 
-{% highlight java %}
+```java
 public int minimumDifference(int[] nums) {
     int n = nums.length / 2;
     List<Integer>[] leftSums = subsetSums(nums, 0), rightSums = subsetSums(nums, n);
@@ -230,11 +230,11 @@ private int binarySearch(List<Integer> list, int target) {
     }
     return list.get(low);
 }
-{% endhighlight %}
+```
 
 [Number of Ways to Build Sturdy Brick Wall][number-of-ways-to-build-sturdy-brick-wall]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 private static final int MAX_BRICK_LENGTH = 10;
 
@@ -295,7 +295,7 @@ private void backtrack(int width, int[] bricks, List<Integer> ways, int mask, in
         }
     }
 }
-{% endhighlight %}
+```
 
 # Set Cover Problem
 
@@ -303,7 +303,7 @@ private void backtrack(int width, int[] bricks, List<Integer> ways, int mask, in
 
 [Smallest Sufficient Team][smallest-sufficient-team]
 
-{% highlight java %}
+```java
 public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> people) {
     Map<String, Integer> map = new HashMap<>();
     int index = 0;
@@ -350,13 +350,13 @@ public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> peop
     }
     return dp[m - 1].stream().mapToInt(i -> i).toArray();
 }
-{% endhighlight %}
+```
 
 # Subsets of Mask
 
 [Distribute Repeating Integers][distribute-repeating-integers]
 
-{% highlight java %}
+```java
 public boolean canDistribute(int[] nums, int[] quantity) {
     // frequency map
     List<Long> freq = new ArrayList<>(Arrays.stream(nums).boxed()
@@ -463,11 +463,11 @@ private boolean dfs(int index, int mask, List<Long> freq, List<Integer> quantity
     }
     return memo[index][mask] = false;
 }
-{% endhighlight %}
+```
 
 [Minimum Cost to Connect Two Groups of Points][minimum-cost-to-connect-two-groups-of-points]
 
-{% highlight java %}
+```java
 private List<List<Integer>> cost;
 private int[][] memo;
 
@@ -511,11 +511,11 @@ private int dfs(int i, int[] rightMinCost, int mask) {
     }
     return memo[i][mask] = min;
 }
-{% endhighlight %}
+```
 
 [Minimum Time to Kill All Monsters][minimum-time-to-kill-all-monsters]
 
-{% highlight java %}
+```java
 public long minimumTime(int[] power) {
     int n = power.length;
     long[] dp = new long[1 << n];
@@ -551,11 +551,11 @@ public long minimumTime(int[] power) {
     }
     return dp[(1 << n) - 1];
 }
-{% endhighlight %}
+```
 
 [Maximum Students Taking Exam][maximum-students-taking-exam]
 
-{% highlight java %}
+```java
 public int maxStudents(char[][] seats) {
     int m = seats.length, n = seats[0].length;
     int[] rowMasks = new int[m];
@@ -596,7 +596,7 @@ public int maxStudents(char[][] seats) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 # Partitioning
 
@@ -608,7 +608,7 @@ Generally, each mask represents a state where `k` groups are complete and at mos
 
 [Minimum Incompatibility][minimum-incompatibility]
 
-{% highlight java %}
+```java
 public int minimumIncompatibility(int[] nums, int k) {
     int n = nums.length, groupSize = n / k;
     if (groupSize == 1) {
@@ -673,7 +673,7 @@ public int minimumIncompatibility(int[] nums, int k) {
 
     return dp[(1 << n) - 1][n] == max ? -1 : dp[(1 << n) - 1][n];
 }
-{% endhighlight %}
+```
 
 ## DFS
 
@@ -681,7 +681,7 @@ Each DFS level iterates the mask bits and tentatively adds each unused bit.
 
 [Partition to K Equal Sum Subsets][partition-to-k-equal-sum-subsets]
 
-{% highlight java %}
+```java
 private boolean[] visited;
 
 public boolean canPartitionKSubsets(int[] nums, int k) {
@@ -726,11 +726,11 @@ private boolean dfs(int[] nums, int mask, int subsetSum, int target) {
     visited[mask] = true;
     return false;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Work Sessions to Finish the Tasks][minimum-number-of-work-sessions-to-finish-the-tasks]
 
-{% highlight java %}
+```java
 private int sessionTime;
 // memo[mask][remaining time in the current session]
 private Integer[][] memo = new Integer[1 << 14][15];
@@ -764,11 +764,11 @@ private int dfs(int[] tasks, int mask, int remainTime) {
     }
     return memo[mask][remainTime] = min;
 }
-{% endhighlight %}
+```
 
 [Maximize Score After N Operations][maximize-score-after-n-operations]
 
-{% highlight java %}
+```java
 private int[][] memo;
 
 public int maxScore(int[] nums) {
@@ -797,11 +797,11 @@ private int dfs(int[] nums, int k, int mask) {
     }
     return memo[k][mask] = max;
 }
-{% endhighlight %}
+```
 
 [The Number of Good Subsets][the-number-of-good-subsets]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7, MAX = 30;
 private static final int[] PRIMES = new int[]{2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 // a bad number has a least one prime factor that appears at least twice
@@ -863,11 +863,11 @@ private long dfs(int mask, int num) {
     }
     return memo[mask][num] = count % MOD;
 }
-{% endhighlight %}
+```
 
 [Minimum XOR Sum of Two Arrays][minimum-xor-sum-of-two-arrays]
 
-{% highlight java %}
+```java
 private int[] memo;
 
 public int minimumXORSum(int[] nums1, int[] nums2) {
@@ -894,11 +894,11 @@ private int dfs(int[] nums1, int[] nums2, int i, int mask) {
     }
     return memo[mask];
 }
-{% endhighlight %}
+```
 
 [Number of Ways to Wear Different Hats to Each Other][number-of-ways-to-wear-different-hats-to-each-other]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 private static final int NUM_HATS = 40;
 
@@ -954,7 +954,7 @@ int dfs(List<Integer>[] h2p, int n, int hat, int mask, Integer[][] memo) {
     }
     return memo[hat][mask] = count;
 }
-{% endhighlight %}
+```
 
 # Permutation
 
@@ -962,7 +962,7 @@ The idea is similar to Partitioning problems: each DFS level iterates the mask b
 
 [Special Permutations][special-permutations]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 private Integer[][] memo;
 
@@ -993,13 +993,13 @@ private int dfs(int[] nums, int mask, int lastIndex) {
     }
     return memo[mask][lastIndex] = perms;
 }
-{% endhighlight %}
+```
 
 # Multi-dimension
 
 [Maximize Grid Happiness][maximize-grid-happiness]
 
-{% highlight java %}
+```java
 private Integer[][][][][] dp;
 
 public int getMaxGridHappiness(int m, int n, int introvertsCount, int extrovertsCount) {
@@ -1072,13 +1072,13 @@ private int dfs(int m, int n, int p, int in, int ex, int inMask, int exMask) {
 
     return dp[p][in][ex][inMask][exMask] = max;
 }
-{% endhighlight %}
+```
 
 # Radix
 
 [Maximum AND Sum of Array][maximum-and-sum-of-array]
 
-{% highlight java %}
+```java
 public int maximumANDSum(int[] nums, int numSlots) {
     // base-3 bit mask
     int mask = (int)Math.pow(3, numSlots) - 1;
@@ -1102,7 +1102,7 @@ private int dp(int[] nums, int numSlots, int index, int mask, int[] memo) {
     }
     return memo[mask] = max;
 }
-{% endhighlight %}
+```
 
 [distribute-repeating-integers]: https://leetcode.com/problems/distribute-repeating-integers/
 [groups-of-strings]: https://leetcode.com/problems/groups-of-strings/

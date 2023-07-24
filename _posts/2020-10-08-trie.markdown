@@ -6,7 +6,7 @@ tag: trie
 
 [Index Pairs of a String][index-pairs-of-a-string]
 
-{% highlight java %}
+```java
 public int[][] indexPairs(String text, String[] words) {
     TrieNode root = new TrieNode();
     for (String w : words) {
@@ -49,11 +49,11 @@ private void insert(TrieNode root, String word) {
     }
     node.end = true;
 }
-{% endhighlight %}
+```
 
 [Prefix and Suffix Search][prefix-and-suffix-search]
 
-{% highlight java %}
+```java
 private TrieNode root = new TrieNode();
 
 public WordFilter(String[] words) {
@@ -98,11 +98,11 @@ private void insert(TrieNode root, String word, int index) {
         node.index = index;
     }
 }
-{% endhighlight %}
+```
 
 [Implement Trie II (Prefix Tree)][implement-trie-ii-prefix-tree]
 
-{% highlight java %}
+```java
 class TrieNode {
     TrieNode[] children;
     int prefixCount;
@@ -114,13 +114,13 @@ class TrieNode {
         wordCount = -1;
     }
 }
-{% endhighlight %}
+```
 
 # Prefix Sum
 
 [Map Sum Pairs][map-sum-pairs]
 
-{% highlight java %}
+```java
 // key : val
 private Map<String, Integer> map = new HashMap<>();
 private TrieNode root = new TrieNode();
@@ -165,7 +165,7 @@ class TrieNode {
         sum = 0;
     }
 }
-{% endhighlight %}
+```
 
 # Virtual Trie
 
@@ -173,7 +173,7 @@ class TrieNode {
 
 ![Trie](/assets/img/algorithm/k_th_smallest_in_lexicographical_order.png)
 
-{% highlight java %}
+```java
 public int findKthNumber(int n, int k) {
     int curr = 1;
     while (k > 1) {
@@ -210,13 +210,13 @@ public int countNodes(int n, long node1, long node2) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 # Traversal
 
 [Delete Duplicate Folders in System][delete-duplicate-folders-in-system]
 
-{% highlight java %}
+```java
 private List<List<String>> ans = new ArrayList<>();
 
 public List<List<String>> deleteDuplicateFolder(List<List<String>> paths) {
@@ -284,7 +284,7 @@ private String deDupe(TrieNode root) {
     // "()" ensures unique serialization
     return "("  + root.name + subfolders + ")";
 }
-{% endhighlight %}
+```
 
 [delete-duplicate-folders-in-system]: https://leetcode.com/problems/delete-duplicate-folders-in-system/
 [implement-trie-ii-prefix-tree]: https://leetcode.com/problems/implement-trie-ii-prefix-tree/

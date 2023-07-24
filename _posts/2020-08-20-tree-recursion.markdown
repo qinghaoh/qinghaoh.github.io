@@ -7,7 +7,7 @@ tags: tree
 
 The usual pattern of Tree DFS (or recursion) is:
 
-{% highlight java %}
+```java
 private T1 global;
 
 public T2 processTree(TreeNode root) {
@@ -17,16 +17,18 @@ public T2 processTree(TreeNode root) {
 private T4 dfs(TreeNode node, T3 local) {
     // call dfs(node.left) and dfs(node.right)
 } 
-{% endhighlight %}
+```
 
 There are 3 core components:
 1. Global variable (`T1 global`)
 1. DFS parameter (`T3 local`)
 1. DFS return value (`T4`)
 
+# Global Variable
+
 [Flatten Binary Tree to Linked List][flatten-binary-tree-to-linked-list]
 
-{% highlight java %}
+```java
 // the last node of the already formed linked list
 private TreeNode last = null;
 
@@ -46,11 +48,35 @@ public void flatten(TreeNode root) {
     flatten(root.left);
     flatten(right);
 }
-{% endhighlight %}
+```
+
+[Flatten a Multilevel Doubly Linked List][flatten-a-multilevel-doubly-linked-list]
+
+```java
+private Node tail = null;
+
+public Node flatten(Node head) {
+    if (head == null) {
+        return null;
+    }
+
+    head.prev = tail;
+    tail = head;
+
+    Node next = head.next;
+
+    head.next = flatten(head.child);
+    head.child = null;
+
+    tail.next = flatten(next);
+
+    return head;
+}
+```
 
 [Convert BST to Greater Tree][convert-bst-to-greater-tree]
 
-{% highlight java %}
+```java
 private int sum = 0;
 
 public TreeNode convertBST(TreeNode root) {
@@ -62,11 +88,11 @@ public TreeNode convertBST(TreeNode root) {
     }
     return root;
 }
-{% endhighlight %}
+```
 
 [Distribute Coins in Binary Tree][distribute-coins-in-binary-tree]
 
-{% highlight java %}
+```java
 private int move = 0;
 
 public int distributeCoins(TreeNode root) {
@@ -84,11 +110,11 @@ private int dfs(TreeNode node) {
     move += Math.abs(left) + Math.abs(right);
     return left + right + node.val - 1;
 }
-{% endhighlight %}
+```
 
 [Diameter of Binary Tree][diameter-of-binary-tree]
 
-{% highlight java %}
+```java
 private int diameter = 0;
 
 public int diameterOfBinaryTree(TreeNode root) {
@@ -105,13 +131,13 @@ private int height(TreeNode node) {
     diameter = Math.max(diameter, left + right);
     return Math.max(left, right) + 1;
 }
-{% endhighlight %}
+```
 
 Similar problem: [Diameter of N-Ary Tree][diameter-of-n-ary-tree]
 
 [Binary Tree Maximum Path Sum][binary-tree-maximum-path-sum]
 
-{% highlight java %}
+```java
 private int sum = Integer.MIN_VALUE;
 
 public int maxPathSum(TreeNode root) {
@@ -134,11 +160,11 @@ private int dfs(TreeNode node) {
     sum = Math.max(sum, node.val + left + right);
     return node.val + Math.max(left, right);
 }
-{% endhighlight %}
+```
 
 [Longest Univalue Path][longest-univalue-path]
 
-{% highlight java %}
+```java
 private int path = 0;
 
 public int longestUnivaluePath(TreeNode root) {
@@ -171,11 +197,11 @@ private int length(TreeNode node) {
     path = Math.max(path, leftPath + rightPath);
     return Math.max(leftPath, rightPath);
 }
-{% endhighlight %}
+```
 
 [Minimum Absolute Difference in BST][minimum-absolute-difference-in-bst]
 
-{% highlight java %}
+```java
 private int d = Integer.MAX_VALUE;
 private TreeNode prev = null;
 
@@ -196,35 +222,11 @@ public int getMinimumDifference(TreeNode root) {
 
     return d;
 }
-{% endhighlight %}
-
-[Flatten a Multilevel Doubly Linked List][flatten-a-multilevel-doubly-linked-list]
-
-{% highlight java %}
-private Node tail = null;
-
-public Node flatten(Node head) {
-    if (head == null) {
-        return null;
-    }
-
-    head.prev = tail;
-    tail = head;
-
-    Node next = head.next;
-
-    head.next = flatten(head.child);
-    head.child = null;
-
-    tail.next = flatten(next);
-
-    return head;
-}
-{% endhighlight %}
+```
 
 [Equal Tree Partition][equal-tree-partition]
 
-{% highlight java %}
+```java
 private Set<Integer> set = new HashSet<>();
 
 public boolean checkEqualTree(TreeNode root) {
@@ -244,11 +246,11 @@ private int dfs(TreeNode node) {
     set.add(sum);
     return sum;
 }
-{% endhighlight %}
+```
 
 [Split BST][split-bst]
 
-{% highlight java %}
+```java
 public TreeNode[] splitBST(TreeNode root, int V) {
     TreeNode[] result = new TreeNode[2];
     if (root != null) {
@@ -264,11 +266,11 @@ public TreeNode[] splitBST(TreeNode root, int V) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Find Bottom Left Tree Value][find-bottom-left-tree-value]
 
-{% highlight java %}
+```java
 private int bottomLeft = 0;
 private int depth = -1;
 
@@ -292,13 +294,13 @@ private void dfs(TreeNode node, int d) {
 
     return;
 }
-{% endhighlight %}
+```
 
 Another solution is right-to-left-BFS.
 
 [Maximum Width of Binary Tree][maximum-width-of-binary-tree]
 
-{% highlight java %}
+```java
 public int widthOfBinaryTree(TreeNode root) {
     return dfs(root, 0, 0, new ArrayList<>());
 }
@@ -318,13 +320,56 @@ private int dfs(TreeNode node, int level, int index, List<Integer> starts) {
     int right = dfs(node.right, level + 1, index * 2 + 2, starts);
     return Math.max(curr, Math.max(left, right));
 }
-{% endhighlight %}
+```
 
-# Return Value of DFS
+# DFS Parameter
+
+[Count Paths That Can Form a Palindrome in a Tree][count-paths-that-can-form-a-palindrome-in-a-tree]
+
+```java
+private List<Integer>[] tree;
+private String s;
+
+public long countPalindromePaths(List<Integer> parent, String s) {
+    int n = parent.size();
+    tree = new List[n];
+    for (int i = 0; i < n; i++) {
+        tree[i] = new ArrayList<>();
+    }
+    for (int i = 1; i < n; i++) {
+        tree[parent.get(i)].add(i);
+    }
+    this.s = s;
+
+    Map<Integer, Long> freqs = new HashMap<>();
+    freqs.put(0, 1l);
+    return dfs(0, freqs, 0);
+}
+
+private long dfs(int node, Map<Integer, Long> freqs, int mask) {
+    long c = 0;
+    if (node > 0) {
+        mask ^= (1 << (s.charAt(node) - 'a'));
+        for (int i = 0; i < 26; i++) {
+            c += freqs.getOrDefault(mask ^ (1 << i), 0l);
+        }
+        long v = freqs.getOrDefault(mask, 0l);
+        freqs.put(mask, v + 1);
+        c += v;
+    }
+
+    for (int child : tree[node]) {
+        c += dfs(child, freqs, mask);
+    }
+    return c;
+}
+```
+
+# DFS Return Value
 
 [House Robber III][house-robber-iii]
 
-{% highlight java %}
+```java
 public int rob(TreeNode root) {
     int[] dp = dfs(root);
     return Math.max(dp[0], dp[1]);
@@ -344,11 +389,11 @@ private int[] dfs(TreeNode root) {
 
     return dp;
 }
-{% endhighlight %}
+```
 
 [Largest BST Subtree][largest-bst-subtree]
 
-{% highlight java %}
+```java
 public int largestBSTSubtree(TreeNode root) {
     return dfs(root)[0];
 }
@@ -374,11 +419,11 @@ private int[] dfs(TreeNode node) {
         // assign min and max in this way so no node can be a valid parent of it to form a BST
         new int[]{Math.max(left[0], right[0]), Integer.MIN_VALUE, Integer.MAX_VALUE};
 }
-{% endhighlight %}
+```
 
 [Longest ZigZag Path in a Binary Tree][longest-zigzag-path-in-a-binary-tree]
 
-{% highlight java %}
+```java
 public int longestZigZag(TreeNode root) {
     return dfs(root)[2];
 }
@@ -400,11 +445,11 @@ private int[] dfs(TreeNode node) {
 
     return new int[]{left[1] + 1, right[0] + 1, path};
 }
-{% endhighlight %}
+```
 
 [Number of Good Leaf Nodes Pairs][number-of-good-leaf-nodes-pairs]
 
-{% highlight java %}
+```java
 private int distance = 0;
 private int pairs = 0;
 
@@ -453,11 +498,11 @@ private int[] dfs(TreeNode node) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 [Difference Between Maximum and Minimum Price Sum][difference-between-maximum-and-minimum-price-sum]
 
-{% highlight java %}
+```java
 private long maxCost;
 
 public long maxOutput(int n, int[][] edges, int[] price) {
@@ -497,13 +542,13 @@ private long[] dfs(List<Integer>[] tree, int node, int parent, int[] price) {
     }
     return curr;
 }
-{% endhighlight %}
+```
 
 A more complex but general approach is by [rerooting](../subtree/#rerooting).
 
 [Second Minimum Node in a Binary Tree][second-minimum-node-in-a-binary-tree]
 
-{% highlight java %}
+```java
 private int min;
 private long secondMin = Long.MAX_VALUE;
 
@@ -526,9 +571,9 @@ private void dfs(TreeNode node) {
         dfs(node.right);
     }
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int findSecondMinimumValue(TreeNode root) {
     // tree leaf
     if (root.left == null) {
@@ -545,13 +590,13 @@ public int findSecondMinimumValue(TreeNode root) {
     // else returns the lesser of the two second minimum values
     return left == -1 || right == -1 ? Math.max(left, right) : Math.min(left, right);
 }
-{% endhighlight %}
+```
 
 # Level Order Traversal
 
 The most intuitive way is BFS:
 
-{% highlight java %}
+```java
 List<Integer> currLevel = new ArrayList<>();
 for (int i = q.size(); i > 0; i--) {
     Node node = q.poll();
@@ -560,13 +605,13 @@ for (int i = q.size(); i > 0; i--) {
         q.offer(child);
     }
 }
-{% endhighlight %}
+```
 
 However, it can be implemented with DFS as well:
 
 [N-ary Tree Level Order Traversal][n-ary-tree-level-order-traversal]
 
-{% highlight java %}
+```java
 private List<List<Integer>> list;
 
 public List<List<Integer>> levelOrder(Node root) {
@@ -589,11 +634,11 @@ private void dfs(Node node, int level) {
         dfs(child, level + 1);
     }
 }
-{% endhighlight %}
+```
 
 [Find Leaves of Binary Tree][find-leaves-of-binary-tree]
 
-{% highlight java %}
+```java
 private List<List<Integer>> leaves = new ArrayList<>();
 
 public List<List<Integer>> findLeaves(TreeNode root) {
@@ -615,11 +660,11 @@ private int height(TreeNode node) {
 
     return h;
 }
-{% endhighlight %}
+```
 
 [Binary Tree Right Side View][binary-tree-right-side-view]
 
-{% highlight java %}
+```java
 private List<Integer> rightside = new ArrayList<>();
 
 public List<Integer> rightSideView(TreeNode root) {
@@ -641,11 +686,11 @@ public void dfs(TreeNode node, int level) {
     dfs(node.right, level + 1);
     dfs(node.left, level + 1);
 }
-{% endhighlight %}
+```
 
 [Increasing Order Search Tree][increasing-order-search-tree]
 
-{% highlight java %}
+```java
 private TreeNode curr;  // current node of the list
 
 public TreeNode increasingBST(TreeNode root) {
@@ -666,9 +711,9 @@ private void inorder(TreeNode node) {
     curr = node;
     inorder(node.right);
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public TreeNode increasingBST(TreeNode root) {
     return inorder(root, null);
 }
@@ -693,13 +738,13 @@ public TreeNode inorder(TreeNode node, TreeNode next) {
     node.right = inorder(node.right, next);
     return left;
 }
-{% endhighlight %}
+```
 
 # Top-down Local State
 
 [Count Good Nodes in Binary Tree][count-good-nodes-in-binary-tree]
 
-{% highlight java %}
+```java
 public int goodNodes(TreeNode root) {
     return dfs(root, root.val);
 }
@@ -717,11 +762,11 @@ private int dfs(TreeNode node, int max) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 [Maximum Difference Between Node and Ancestor][maximum-difference-between-node-and-ancestor]
 
-{% highlight java %}
+```java
 private int diff = 0;
 
 public int maxAncestorDiff(TreeNode root) {
@@ -741,11 +786,11 @@ private void dfs(TreeNode node, int min, int max) {
     dfs(node.left, min, max);
     dfs(node.right, min, max);
 }
-{% endhighlight %}
+```
 
 [Pseudo-Palindromic Paths in a Binary Tree][pseudo-palindromic-paths-in-a-binary-tree]
 
-{% highlight java %}
+```java
 public int pseudoPalindromicPaths (TreeNode root) {
     return dfs(root, 0);
 }
@@ -772,11 +817,11 @@ private int dfs(TreeNode node, int vector) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 [Reverse Odd Levels of Binary Tree][reverse-odd-levels-of-binary-tree]
 
-{% highlight java %}
+```java
 public TreeNode reverseOddLevels(TreeNode root) {
     dfs(root.left, root.right, 0);
     return root;
@@ -797,11 +842,11 @@ private void dfs(TreeNode node1, TreeNode node2, int level) {
     dfs(node1.left, node2.right, level + 1);
     dfs(node1.right, node2.left, level + 1);
 }
-{% endhighlight %}
+```
 
 [Reorder Routes to Make All Paths Lead to the City Zero][reorder-routes-to-make-all-paths-lead-to-the-city-zero]
 
-{% highlight java %}
+```java
 private List<Integer>[] list;
 
 public int minReorder(int n, int[][] connections) {
@@ -827,13 +872,13 @@ private int dfs(int prev, int node) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 # Nested DFS
 
 [Path Sum III][path-sum-iii]
 
-{% highlight java %}
+```java
 public int pathSum(TreeNode root, int sum) {
     if (root == null) {
         return 0;
@@ -855,13 +900,13 @@ private int pathSumFromNode(TreeNode node, int sum) {
 
     return (sum == node.val ? 1 : 0) + pathSumFromNode(node.left, sum - node.val) + pathSumFromNode(node.right, sum - node.val);
 }
-{% endhighlight %}
+```
 
 # Backtracking
 
 [Path Sum III][path-sum-iii]
 
-{% highlight java %}
+```java
 public int pathSum(TreeNode root, int sum) {
     Map<Integer, Integer> prefixSum = new HashMap<>();
     prefixSum.put(0,1);
@@ -883,11 +928,11 @@ public int dfs(TreeNode node, int currSum, int target, Map<Integer, Integer> pre
 
     return count;
 }
-{% endhighlight %}
+```
 
 [All Nodes Distance K in Binary Tree][all-nodes-distance-k-in-binary-tree]
 
-{% highlight java %}
+```java
 private List<Integer> list = new ArrayList<>();
 private Map<TreeNode, Integer> map = new HashMap<>();
 private TreeNode target;
@@ -948,13 +993,13 @@ private void dfs(TreeNode node, int d) {
     dfs(node.left, d + 1);
     dfs(node.right, d + 1);
 }
-{% endhighlight %}
+```
 
 # Multiple DFS
 
 [Sum of Distances in Tree][sum-of-distances-in-tree]
 
-{% highlight java %}
+```java
 private List<List<Integer>> tree = new ArrayList<>();
 // count[i]: count of all nodes in the subtree i
 private int[] answer, count;
@@ -1007,7 +1052,7 @@ private void dfs2(int node, int parent) {
         dfs2(child, node);
     }
 }
-{% endhighlight %}
+```
 
 # Postorder
 
@@ -1015,7 +1060,7 @@ In postorder, we don't have to pass parent node as a parameter of dfs().
 
 [Delete Nodes And Return Forest][delete-nodes-and-return-forest]
 
-{% highlight java %}
+```java
 private List<TreeNode> list = new ArrayList<>();
 private Set<Integer> set = new HashSet<>();
 
@@ -1053,13 +1098,13 @@ private TreeNode dfs(TreeNode node) {
 
     return node;
 }
-{% endhighlight %}
+```
 
 # Greedy
 
 [Binary Tree Cameras][binary-tree-cameras]
 
-{% highlight java %}
+```java
 private int count = 0;
 
 private enum Camera {
@@ -1097,11 +1142,11 @@ public Camera dfs(TreeNode root) {
 
     return left == Camera.HAS_CAMERA || right == Camera.HAS_CAMERA ? Camera.MONITORED : Camera.NOT_MONITORED;
 }
-{% endhighlight %}
+```
 
 [Smallest Missing Genetic Value in Each Subtree][smallest-missing-genetic-value-in-each-subtree]
 
-{% highlight java %}
+```java
 private Map<Integer, List<Integer>> tree = new HashMap<>();
 private Set<Integer> set = new HashSet<>();
 
@@ -1162,11 +1207,11 @@ private void dfs(int[] nums, int node) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Number Of Ways To Reconstruct A Tree][number-of-ways-to-reconstruct-a-tree]
 
-{% highlight java %}
+```java
 public int checkWays(int[][] pairs) {
     // builds graph
     Map<Integer, Set<Integer>> graph = new HashMap<>();
@@ -1231,7 +1276,7 @@ public int checkWays(int[][] pairs) {
 
     return isMultiple ? 2 : 1;
 }
-{% endhighlight %}
+```
 
 [all-nodes-distance-k-in-binary-tree]: https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
 [binary-tree-cameras]: https://leetcode.com/problems/binary-tree-cameras/
@@ -1239,6 +1284,7 @@ public int checkWays(int[][] pairs) {
 [binary-tree-right-side-view]: https://leetcode.com/problems/binary-tree-right-side-view/
 [convert-bst-to-greater-tree]: https://leetcode.com/problems/convert-bst-to-greater-tree/
 [count-good-nodes-in-binary-tree]: https://leetcode.com/problems/count-good-nodes-in-binary-tree/
+[count-paths-that-can-form-a-palindrome-in-a-tree]: https://leetcode.com/problems/count-paths-that-can-form-a-palindrome-in-a-tree/
 [delete-nodes-and-return-forest]: https://leetcode.com/problems/delete-nodes-and-return-forest/
 [diameter-of-binary-tree]: https://leetcode.com/problems/diameter-of-binary-tree/
 [diameter-of-n-ary-tree]: https://leetcode.com/problems/diameter-of-n-ary-tree/

@@ -6,7 +6,7 @@ category: algorithm
 
 [Minimum Swaps to Make Strings Equal][minimum-swaps-to-make-strings-equal]
 
-{% highlight java %}
+```java
 public int minimumSwap(String s1, String s2) {
     int[] count = new int[2];
     for (int i = 0; i < s1.length(); i++) {
@@ -26,11 +26,11 @@ public int minimumSwap(String s1, String s2) {
     // case2: "xy" "yx" - 2 swaps
     return count[0] / 2 + count[1] / 2 + count[0] % 2 * 2;
 }
-{% endhighlight %}
+```
 
 [Longest Happy String][longest-happy-string]
 
-{% highlight java %}
+```java
 public String longestDiverseString(int a, int b, int c) {
     return helper(a, b, c, "a", "b", "c");
 }
@@ -53,7 +53,7 @@ private String helper(int a, int b, int c, String sa, String sb, String sc) {
     int aUsed = Math.min(a, 2), bUsed = a - aUsed >= b ? 1 : 0; 
     return sa.repeat(aUsed) + sb.repeat(bUsed) + helper(a - aUsed, b - bUsed, c, sa, sb, sc);
 }
-{% endhighlight %}
+```
 
 [String Without AAA or BBB][string-without-aaa-or-bbb]
 
@@ -61,7 +61,7 @@ private String helper(int a, int b, int c, String sa, String sb, String sc) {
 
 ![Schedule](/assets/img/algorithm/task_scheduler.png)
 
-{% highlight java %}
+```java
 public int leastInterval(char[] tasks, int n) {
     int[] count = new int[26];
     int maxFreq = 0, maxFreqCount = 0;  // count of the most frequent tasks
@@ -78,11 +78,11 @@ public int leastInterval(char[] tasks, int n) {
     // no idle vs has idle
     return Math.max(tasks.length, (maxFreq - 1) * (n + 1) + maxFreqCount);
 }
-{% endhighlight %}
+```
 
 [Maximum Number of Weeks for Which You Can Work][maximum-number-of-weeks-for-which-you-can-work]
 
-{% highlight java %}
+```java
 public long numberOfWeeks(int[] milestones) {
     long sum = 0;
     int max = 0;
@@ -117,7 +117,7 @@ public long numberOfWeeks(int[] milestones) {
     // -> [1, 0] +1
     return (sum - max) < max ? 2 * (sum - max) + 1 : sum;
 }
-{% endhighlight %}
+```
 
 # EDF
 
@@ -125,7 +125,7 @@ public long numberOfWeeks(int[] milestones) {
 
 [Rearrange String k Distance Apart][rearrange-string-k-distance-apart]
 
-{% highlight java %}
+```java
 public String rearrangeString(String s, int k) {
     if (k == 0) {
         return s;
@@ -165,13 +165,13 @@ public String rearrangeString(String s, int k) {
     }
     return sb.length() == s.length() ? sb.toString() : "";
 }
-{% endhighlight %}
+```
 
 # NP-Complete
 
 [Parallel Courses II][parallel-courses-ii]
 
-{% highlight java %}
+```java
 // NP-complete
 // O(3 ^ n)
 public int minNumberOfSemesters(int n, int[][] dependencies, int k) {
@@ -209,7 +209,7 @@ public int minNumberOfSemesters(int n, int[][] dependencies, int k) {
     }
     return dp[(1 << n) - 1];
 }
-{% endhighlight %}
+```
 
 [flower-planting-with-no-adjacent]: https://leetcode.com/problems/flower-planting-with-no-adjacent/
 [longest-happy-string]: https://leetcode.com/problems/longest-happy-string/

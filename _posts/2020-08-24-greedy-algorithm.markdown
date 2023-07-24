@@ -5,7 +5,7 @@ tags: greedy
 
 [Frog Jump II][frog-jump-ii]
 
-{% highlight java %}
+```java
 public int maxJump(int[] stones) {
     // it's optimal to use of all rocks
     // it's not optimal to use two consecutive rocks
@@ -16,7 +16,7 @@ public int maxJump(int[] stones) {
     }
     return cost;
 }
-{% endhighlight %}
+```
 
 [Partition String Into Substrings With Values at Most K][partition-string-into-substrings-with-values-at-most-k]
 
@@ -24,7 +24,7 @@ public int maxJump(int[] stones) {
 
 No node has more than 3 neighbors, so there's always one possible color to pick.
 
-{% highlight java %}
+```java
 private final int numFlowers = 4;
 
 public int[] gardenNoAdj(int N, int[][] paths) {
@@ -60,11 +60,11 @@ public int[] gardenNoAdj(int N, int[][] paths) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Jump Game][jump-game]
 
-{% highlight java %}
+```java
 public boolean canJump(int[] nums) {
     int i = 0;
     for (int reach = 0; i <= reach && i < nums.length; i++) {
@@ -72,11 +72,11 @@ public boolean canJump(int[] nums) {
     }
     return i == nums.length;
 }
-{% endhighlight %}
+```
 
 [Video Stitching][video-stitching]
 
-{% highlight java %}
+```java
 public int videoStitching(int[][] clips, int T) {
     Arrays.sort(clips, (a, b) -> a[0] - b[0]);
 
@@ -96,11 +96,11 @@ public int videoStitching(int[][] clips, int T) {
 
     return result;
 }
-{% endhighlight %}
+```
 
 [Broken Calculator][broken-calculator]
 
-{% highlight java %}
+```java
 public int brokenCalc(int startValue, int target) {
     int s = 0;
     while (target > startValue) {
@@ -109,11 +109,11 @@ public int brokenCalc(int startValue, int target) {
     }
     return s + startValue - target;
 }
-{% endhighlight %}
+```
 
 [Split Array into Consecutive Subsequences][split-array-into-consecutive-subsequences]
 
-{% highlight java %}
+```java
 public boolean isPossible(int[] nums) {
     int prev = Integer.MIN_VALUE, curr = 0;
     // count of consecutive subsequences with size i, ending at prev/curr
@@ -146,11 +146,11 @@ public boolean isPossible(int[] nums) {
 
     return p1 == 0 && p2 == 0;
 }
-{% endhighlight %}
+```
 
 [Hand of Straights][hand-of-straights]
 
-{% highlight java %}
+```java
 public boolean isNStraightHand(int[] hand, int W) {
     Map<Integer, Integer> count = new TreeMap<>();
     for (int h : hand) {
@@ -176,11 +176,11 @@ public boolean isNStraightHand(int[] hand, int W) {
     }
     return opened == 0;
 }
-{% endhighlight %}
+```
 
 [Wiggle Sort][wiggle-sort]
 
-{% highlight java %}
+```java
 public void wiggleSort(int[] nums) {
     for (int i = 0; i < nums.length - 1; i++) {
         if ((i % 2 == 0) == (nums[i] > nums[i + 1])) {
@@ -194,11 +194,11 @@ private void swap(int[] A, int i, int j) {
     A[i] = A[j];
     A[j] = tmp;
 }
-{% endhighlight %}
+```
 
 [Minimum Factorization][minimum-factorization]
 
-{% highlight java %}
+```java
 public int smallestFactorization(int a) {
     if (a < 10) {
         return a;
@@ -214,11 +214,11 @@ public int smallestFactorization(int a) {
     }
     return a == 1 && b <= Integer.MAX_VALUE ? (int)b : 0;
 }
-{% endhighlight %}
+```
 
 [Put Boxes Into the Warehouse I][put-boxes-into-the-warehouse-i]
 
-{% highlight java %}
+```java
 public int maxBoxesInWarehouse(int[] boxes, int[] warehouse) {
     Arrays.sort(boxes);
 
@@ -233,11 +233,11 @@ public int maxBoxesInWarehouse(int[] boxes, int[] warehouse) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Maximum Binary String After Change][maximum-binary-string-after-change]
 
-{% highlight java %}
+```java
 public String maximumBinaryString(String binary) {
     // we can always make the string contain at most one '0'
     int ones = 0, zeros = 0, n = binary.length();
@@ -255,13 +255,13 @@ public String maximumBinaryString(String binary) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 [Maximum Number of Ones][maximum-number-of-ones]
 
 ![2D](/assets/img/algorithm/maximum_number_of_ones.png)
 
-{% highlight java %}
+```java
 public int maximumNumberOfOnes(int width, int height, int sideLength, int maxOnes) {
     // greedy - translation of a single sub-matrix
     // considers all positions in the sub-matrix
@@ -284,11 +284,11 @@ public int maximumNumberOfOnes(int width, int height, int sideLength, int maxOne
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 [Strong Password Checker][strong-password-checker]
 
-{% highlight java %}
+```java
 public int strongPasswordChecker(String s) {
     int missingTypes = 3;
     for (char c : s.toCharArray()) {
@@ -363,11 +363,11 @@ public int strongPasswordChecker(String s) {
     replacements -= Math.max(deletes - mod0 - mod1 * 2, 0) / 3;
     return deletes + Math.max(replacements, missingTypes);
 }
-{% endhighlight %}
+```
 
 [Minimum Adjacent Swaps to Reach the Kth Smallest Number][minimum-adjacent-swaps-to-reach-the-kth-smallest-number]
 
-{% highlight java %}
+```java
 public int getMinSwaps(String num, int k) {
     char[] chars = num.toCharArray();
     for (int i = 0; i < k; i++) {
@@ -388,11 +388,11 @@ public int getMinSwaps(String num, int k) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Minimum Initial Energy to Finish Tasks][minimum-initial-energy-to-finish-tasks]
 
-{% highlight java %}
+```java
 public int minimumEffort(int[][] tasks) {
     // sorts to maximize running energy
     Arrays.sort(tasks, Comparator.comparingInt(a -> a[0] - a[1]));
@@ -408,11 +408,11 @@ public int minimumEffort(int[][] tasks) {
     }
     return initial;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Days to Eat N Oranges][minimum-number-of-days-to-eat-n-oranges]
 
-{% highlight java %}
+```java
 private Map<Integer, Integer> memo = new HashMap<>();
 
 public int minDays(int n) {
@@ -429,11 +429,11 @@ public int minDays(int n) {
 
     return days;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of People to Teach][minimum-number-of-people-to-teach]
 
-{% highlight java %}
+```java
 public int minimumTeachings(int n, int[][] languages, int[][] friendships) {
     int m = languages.length;
     // language set for each user
@@ -465,22 +465,22 @@ public int minimumTeachings(int n, int[][] languages, int[][] friendships) {
     // finds the language that most people know
     return set.size() - Arrays.stream(userCount).max().getAsInt();
 }
-{% endhighlight %}
+```
 
 [Maximum Score From Removing Substrings][maximum-score-from-removing-substrings]
 
-{% highlight java %}
+```java
 public int maximumGain(String s, int x, int y) {
     StringBuilder sb = new StringBuilder(s);
     // greedily removes the pattern with greater points, then remove the other pattern
     // intuition: the total number of deletions is a fixed value, no matter which pattern is deleted first
     return x > y ? remove(sb, "ab", x) + remove(sb, "ba", y) : remove(sb, "ba", y) + remove(sb, "ab", x);
 }
-{% endhighlight %}
+```
 
 [Earliest Possible Day of Full Bloom][earliest-possible-day-of-full-bloom]
 
-{% highlight java %}
+```java
 public int earliestFullBloom(int[] plantTime, int[] growTime) {
     int n = plantTime.length;
     Integer[] index = new Integer[n];
@@ -500,11 +500,11 @@ public int earliestFullBloom(int[] plantTime, int[] growTime) {
     }
     return end;
 }
-{% endhighlight %}
+```
 
 [Make Array Non-decreasing or Non-increasing][make-array-non-decreasing-or-non-increasing]
 
-{% highlight java %}
+```java
 public int convertArray(int[] nums) {
     return Math.min(helper(nums, 1), helper(nums, -1));
 }
@@ -521,7 +521,7 @@ private int helper(int[] nums, int sign) {
     }
     return cost;
 }
-{% endhighlight %}
+```
 
 [broken-calculator]: https://leetcode.com/problems/broken-calculator/
 [earliest-possible-day-of-full-bloom]: https://leetcode.com/problems/earliest-possible-day-of-full-bloom/

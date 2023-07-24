@@ -8,7 +8,7 @@ tags: tree
 
 A Fenwick tree or binary indexed tree is a data structure that can efficiently update elements and calculate prefix sums in a table of numbers.
 
-{% highlight java %}
+```java
 public class FenwickTree {
     private int[] nums;
     private int size;
@@ -51,13 +51,13 @@ public class FenwickTree {
         return i & (-i);
     }
 }
-{% endhighlight %}
+```
 
 [Range Sum Query - Mutable][range-sum-query-mutable]
 
 [Count of Smaller Numbers After Self][count-of-smaller-numbers-after-self]
 
-{% highlight java %}
+```java
 public List<Integer> countSmaller(int[] nums) {
     // deduplication
     // if i != j && nums[i] == nums[j]
@@ -85,7 +85,7 @@ public List<Integer> countSmaller(int[] nums) {
     }
     return counts;
 }
-{% endhighlight %}
+```
 
 This problem can be solved by [Merge Sort](../sort/#merge-sort), too.
 
@@ -93,7 +93,7 @@ Similar problem:
 
 [Reverse Pairs][reverse-pairs]
 
-{% highlight java %}
+```java
 public int reversePairs(int[] nums) {
     // deduplication
     // if i != j && nums[i] == nums[j]
@@ -136,13 +136,13 @@ private int binarySearch(List<Integer> list, int target) {
     }
     return 2l * list.get(low) < target ? low : -1;
 }
-{% endhighlight %}
+```
 
 This problem can be solved by [Merge Sort](../sort/#merge-sort), too.
 
 [Count Number of Teams][count-number-of-teams]
 
-{% highlight java %}
+```java
 private int MAX_RATING = (int)1e5;
 
 public int numTeams(int[] rating) {
@@ -164,13 +164,13 @@ public int numTeams(int[] rating) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 [Queries on a Permutation With Key][queries-on-a-permutation-with-key]
 
 ![Queries](/assets/img/algorithm/queries_on_a_permutation_with_key.png)
 
-{% highlight java %}
+```java
 public int[] processQueries(int[] queries, int m) {
     int n = queries.length;
     FenwickTree ft = new FenwickTree(n + m);
@@ -199,11 +199,11 @@ public int[] processQueries(int[] queries, int m) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Create Sorted Array through Instructions][create-sorted-array-through-instructions]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int createSortedArray(int[] instructions) {
@@ -215,11 +215,11 @@ public int createSortedArray(int[] instructions) {
     }
     return cost;
 }
-{% endhighlight %}
+```
 
 [Minimum Possible Integer After at Most K Adjacent Swaps On Digits][minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits]
 
-{% highlight java %}
+```java
 public String minInteger(String num, int k) {
     // index of each digit
     List<Queue<Integer>> list = new ArrayList<>(10);
@@ -263,13 +263,13 @@ public String minInteger(String num, int k) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 ## 2D
 
 [Range Sum Query 2D - Mutable][range-sum-query-2d-mutable]
 
-{% highlight java %}
+```java
 private FenwickTree ft;
 private int[][] nums;
 
@@ -333,7 +333,7 @@ public class FenwickTree {
         return i & (-i);
     }
 }
-{% endhighlight %}
+```
 
 [create-sorted-array-through-instructions]: https://leetcode.com/problems/create-sorted-array-through-instructions/
 [count-number-of-teams]: https://leetcode.com/problems/count-number-of-teams/

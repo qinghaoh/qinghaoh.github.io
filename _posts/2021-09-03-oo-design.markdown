@@ -5,7 +5,7 @@ tags: design
 ---
 [Basic Calculator IV][basic-calculator-iv]
 
-{% highlight java %}
+```java
 // evaluation map
 private Map<String, Integer> map = new HashMap<>();
 
@@ -219,6 +219,6 @@ public List<String> basicCalculatorIV(String expression, String[] evalvars, int[
 
     return stack.peek().toList();
 }
-{% endhighlight %}
+```
 
 [basic-calculator-iv]: https://leetcode.com/problems/basic-calculator-iv/

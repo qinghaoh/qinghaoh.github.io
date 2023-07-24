@@ -5,7 +5,7 @@ category: algorithm
 
 [Reverse Substrings Between Each Pair of Parentheses][reverse-substrings-between-each-pair-of-parentheses]
 
-{% highlight java %}
+```java
 public String reverseParentheses(String s) {
     Deque<Integer> st = new ArrayDeque<>();
     int[] pairs = new int[s.length()];
@@ -31,13 +31,13 @@ public String reverseParentheses(String s) {
 
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 # Regress to Counter
 
 [Remove Outermost Parentheses][remove-outermost-parentheses]
 
-{% highlight java %}
+```java
 public string removeouterparentheses(string s) {
     stringbuilder sb = new stringbuilder();
     int open = 0;
@@ -48,11 +48,11 @@ public string removeouterparentheses(string s) {
     }
     return sb.tostring();
 }
-{% endhighlight %}
+```
 
 [Minimum Add to Make Parentheses Valid][minimum-add-to-make-parentheses-valid]
 
-{% highlight java %}
+```java
 public int minAddToMakeValid(String S) {
     int notOpened = 0;  // '(' needed to make the String balanced
     int notClosed = 0;  // ')' needed to make the String balanced
@@ -68,11 +68,11 @@ public int minAddToMakeValid(String S) {
 
     return notOpened + notClosed;
 }
-{% endhighlight %}
+```
 
 [Minimum Insertions to Balance a Parentheses String][minimum-insertions-to-balance-a-parentheses-string]
 
-{% highlight java %}
+```java
 public int minInsertions(String s) {
     int count = 0;
     int notClosed = 0;  // ')' needed to make the String balanced
@@ -94,11 +94,11 @@ public int minInsertions(String s) {
 
     return count + notClosed;
 }
-{% endhighlight %}
+```
 
 [Maximum Nesting Depth of Two Valid Parentheses Strings][maximum-nesting-depth-of-two-valid-parentheses-strings]
 
-{% highlight java %}
+```java
 public int[] maxDepthAfterSplit(String seq) {
     int[] result = new int[seq.length()];
     int opened = 0;
@@ -116,11 +116,11 @@ public int[] maxDepthAfterSplit(String seq) {
 
     return result;
 }
-{% endhighlight %}
+```
 
 [Score of Parentheses][score-of-parentheses]
 
-{% highlight java %}
+```java
 public int scoreOfParentheses(String S) {
     Deque<Integer> st = new ArrayDeque<>();
     int curr = 0;
@@ -134,9 +134,9 @@ public int scoreOfParentheses(String S) {
     }
     return curr;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int scoreOfParentheses(String s) {
     int score = 0, opened = 0;
     for (int i = 0; i < s.length(); i++) {
@@ -152,11 +152,11 @@ public int scoreOfParentheses(String s) {
     }
     return score;
 }
-{% endhighlight %}
+```
 
 [Longest Valid Parentheses][longest-valid-parentheses]
 
-{% highlight java %}
+```java
 public int longestValidParentheses(String s) {
     Deque<Integer> st = new ArrayDeque<>();
     st.push(-1);  // imagine there's a ')' at index -1
@@ -177,11 +177,11 @@ public int longestValidParentheses(String s) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 This problem can also be solved by two string scans with better space complexity:
 
-{% highlight java %}
+```java
 public int longestValidParentheses(String s) {
     return Math.max(longestValidParentheses(s, true), longestValidParentheses(s, false));
 }
@@ -206,11 +206,11 @@ private int longestValidParentheses(String s, boolean isForward) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Valid Parenthesis String][valid-parenthesis-string]
 
-{% highlight java %}
+```java
 public boolean checkValidString(String s) {
     // number of open parenthses is in [min, max];
     int min = 0, max = 0;
@@ -235,19 +235,19 @@ public boolean checkValidString(String s) {
     }
     return min == 0;
 }
-{% endhighlight %}
+```
 
 Similar: [Check if a Parentheses String Can Be Valid][check-if-a-parentheses-string-can-be-valid]
 
-{% highlight java %}
+```java
 public boolean canBeValid(String s, String locked) {
     return s.length() % 2 == 0 && checkValidString(s, locked);
 }
-{% endhighlight %}
+```
 
 [Minimum Remove to Make Valid Parentheses][minimum-remove-to-make-valid-parentheses]
 
-{% highlight java %}
+```java
 public String minRemoveToMakeValid(String s) {
     StringBuilder sb = new StringBuilder(s);
     Deque<Integer> st = new ArrayDeque<>();
@@ -269,9 +269,9 @@ public String minRemoveToMakeValid(String s) {
     }
     return sb.toString().replaceAll("\\*", "");
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public String minRemoveToMakeValid(String s) {
     StringBuilder sb = new StringBuilder(s);
     Deque<Integer> st = new ArrayDeque<>();
@@ -293,7 +293,7 @@ public String minRemoveToMakeValid(String s) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 [check-if-a-parentheses-string-can-be-valid]: https://leetcode.com/problems/check-if-a-parentheses-string-can-be-valid/
 [longest-valid-parentheses]: https://leetcode.com/problems/longest-valid-parentheses/

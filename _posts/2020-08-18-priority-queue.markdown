@@ -7,7 +7,7 @@ Time complexity:
 
 [Maximize Sum Of Array After K Negations][maximize-sum-of-array-after-k-negations]
 
-{% highlight java %}
+```java
 public int largestSumAfterKNegations(int[] A, int K) {
     Queue<Integer> pq = new PriorityQueue<>();
     Arrays.stream(A).forEach(pq::offer);
@@ -17,13 +17,13 @@ public int largestSumAfterKNegations(int[] A, int K) {
     }
     return pq.stream().reduce(0, Integer::sum);
 }
-{% endhighlight %}
+```
 
 # K-th
 
 [Kth Smallest Element in a Sorted Matrix][kth-smallest-element-in-a-sorted-matrix]
 
-{% highlight java %}
+```java
 public int kthSmallest(int[][] matrix, int k) {
     Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> matrix[a[0]][a[1]]));
     for (int i = 0; i < matrix.length; i++) {
@@ -39,11 +39,11 @@ public int kthSmallest(int[][] matrix, int k) {
     }
     return matrix[pq.peek()[0]][pq.peek()[1]];
 }
-{% endhighlight %}
+```
 
 [Find K Pairs with Smallest Sums][find-k-pairs-with-smallest-sums]
 
-{% highlight java %}
+```java
 public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
     // {nums1 index, nums2 index}
     Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> nums1[a[0]] + nums2[a[1]]));
@@ -62,13 +62,13 @@ public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [Kth Smallest Prime Fraction][k-th-smallest-prime-fraction]
 
 [Minimize Deviation in Array][minimize-deviation-in-array]
 
-{% highlight java %}
+```java
 public int minimumDeviation(int[] nums) {
     // max heap
     Queue<Integer> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a));
@@ -90,11 +90,11 @@ public int minimumDeviation(int[] nums) {
     }
     return Math.min(d, pq.peek() - min);
 }
-{% endhighlight %}
+```
 
 [Furthest Building You Can Reach][furthest-building-you-can-reach]
 
-{% highlight java %}
+```java
 public int furthestBuilding(int[] heights, int bricks, int ladders) {
     Queue<Integer> pq = new PriorityQueue<>();
     for (int i = 0; i < heights.length - 1; i++) {
@@ -114,11 +114,11 @@ public int furthestBuilding(int[] heights, int bricks, int ladders) {
     }
     return heights.length - 1;
 }
-{% endhighlight %}
+```
 
 [Range Sum of Sorted Subarray Sums][range-sum-of-sorted-subarray-sums]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int rangeSum(int[] nums, int n, int left, int right) {
@@ -146,11 +146,11 @@ public int rangeSum(int[] nums, int n, int left, int right) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 [Smallest Range Covering Elements from K Lists][smallest-range-covering-elements-from-k-lists]
 
-{% highlight java %}
+```java
 public int[] smallestRange(List<List<Integer>> nums) {
     int[] range = new int[]{-(int)1e5, (int)1e5};
     int end = -(int)1e5;
@@ -182,11 +182,11 @@ public int[] smallestRange(List<List<Integer>> nums) {
 
     return range;
 }
-{% endhighlight %}
+```
 
 [Construct Target Array With Multiple Sums][construct-target-array-with-multiple-sums]
 
-{% highlight java %}
+```java
 public boolean isPossible(int[] target) {
     if (target.length == 1) {
         return target[0] == 1;
@@ -228,11 +228,11 @@ public boolean isPossible(int[] target) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Minimum Cost to Hire K Workers][minimum-cost-to-hire-k-workers]
 
-{% highlight java %}
+```java
 public double mincostToHireWorkers(int[] quality, int[] wage, int k) {
     int n = quality.length;
     Integer[] index = new Integer[n];
@@ -269,13 +269,13 @@ public double mincostToHireWorkers(int[] quality, int[] wage, int k) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 # Greedy
 
 [Maximum Performance of a Team][maximum-performance-of-a-team]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
@@ -301,13 +301,13 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
 
     return (int)(max % MOD);
 }
-{% endhighlight %}
+```
 
 # "BFS"
 
 [Minimum Number of Refueling Stops][minimum-number-of-refueling-stops]
 
-{% highlight java %}
+```java
 public int minRefuelStops(int target, int startFuel, int[][] stations) {
     // max heap of gas station liters
     Queue<Integer> pq = new PriorityQueue(Collections.reverseOrder());
@@ -331,13 +331,13 @@ public int minRefuelStops(int target, int startFuel, int[][] stations) {
 
     return stops;
 }
-{% endhighlight %}
+```
 
 # Multiple Priority Queues
 
 [IPO][ipo]
 
-{% highlight java %}
+```java
 public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
     Queue<Integer> pqCapital = new PriorityQueue<>(Comparator.comparingInt(i -> capital[i]));
     Queue<Integer> pqProfit = new PriorityQueue<>(Comparator.comparingInt(i -> -profits[i]));
@@ -360,7 +360,7 @@ public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
     }
     return w;
 }
-{% endhighlight %}
+```
 
 [construct-target-array-with-multiple-sums]: https://leetcode.com/problems/construct-target-array-with-multiple-sums/
 [find-k-pairs-with-smallest-sums]: https://leetcode.com/problems/find-k-pairs-with-smallest-sums/

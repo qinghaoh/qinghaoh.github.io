@@ -5,7 +5,7 @@ tag: dynamic programming
 ---
 [Best Team With No Conflicts][best-team-with-no-conflicts]
 
-{% highlight java %}
+```java
 public int bestTeamScore(int[] scores, int[] ages) {
     int n = ages.length;
     Integer[] indices = new Integer[n];
@@ -32,11 +32,11 @@ public int bestTeamScore(int[] scores, int[] ages) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 Alternative representation:
 
-{% highlight java %}
+```java
 int[][] candidate = new int[n][2];
        
 for (int i = 0; i < n; i++) {
@@ -45,11 +45,11 @@ for (int i = 0; i < n; i++) {
 }
 
 Arrays.sort(candidate, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
-{% endhighlight %}
+```
 
 [Maximum Height by Stacking Cuboids][maximum-height-by-stacking-cuboids]
 
-{% highlight java %}
+```java
 nt n = cuboids.length, max = 0;
 int[] dp = new int[n];
 for (int j = 0; j < n; j++) {
@@ -61,11 +61,11 @@ for (int j = 0; j < n; j++) {
     }
     max = Math.max(max, dp[j]);
 }
-{% endhighlight %}
+```
 
 [Build Array Where You Can Find The Maximum Exactly K Comparisons][build-array-where-you-can-find-the-maximum-exactly-k-comparisons]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numOfArrays(int n, int m, int k) {
@@ -104,11 +104,11 @@ public int numOfArrays(int n, int m, int k) {
 
     return (int)count;
 }
-{% endhighlight %}
+```
 
 Prefix sum:
 
-{% highlight java %}
+```java
 // dp[a][b][c]: max element == b
 long[][][] dp = new long[n + 1][m + 1][k + 1];
 // prefix sum
@@ -138,11 +138,11 @@ for (int a = 1; a <= n; a++) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Number of Ways to Rearrange Sticks With K Sticks Visible][number-of-ways-to-rearrange-sticks-with-k-sticks-visible]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int rearrangeSticks(int n, int k) {
@@ -158,11 +158,11 @@ public int rearrangeSticks(int n, int k) {
     }
     return (int)dp[n][k];
 }
-{% endhighlight %}
+```
 
 [Number of Music Playlists][number-of-music-playlists]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numMusicPlaylists(int n, int goal, int k) {
@@ -183,11 +183,11 @@ public int numMusicPlaylists(int n, int goal, int k) {
     }
     return (int)dp[goal][n];
 }
-{% endhighlight %}
+```
 
 [Frog Jump][frog-jump]
 
-{% highlight java %}
+```java
 public boolean canCross(int[] stones) {
     // stone : set of jump sizes which lead to the stone
     HashMap<Integer, Set<Integer>> map = new HashMap<>();
@@ -208,11 +208,11 @@ public boolean canCross(int[] stones) {
     }
     return !map.get(stones[stones.length - 1]).isEmpty();
 }
-{% endhighlight %}
+```
 
 [Stone Game V][stone-game-v]
 
-{% highlight java %}
+```java
 // O(n ^ 3)
 public int stoneGameV(int[] stoneValue) {
     int n = stoneValue.length;
@@ -243,9 +243,9 @@ public int stoneGameV(int[] stoneValue) {
     }
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 // O(n ^ 2)
 public int stoneGameV(int[] stoneValue) {
     int n = stoneValue.length;
@@ -293,9 +293,9 @@ public int stoneGameV(int[] stoneValue) {
     }
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 // matrix[i][j] can be replaced by two arrays instead
 left[i][j] = max(sum[i][k] + dp[i][k])
 right[i][j] = max(sum[k][j] + dp[k][j])
@@ -304,11 +304,11 @@ left[i][j] = max(left[i][j-1], sum[i][j] + dp[i][j])
 right[i][j] = max(right[i+1][j], sum[i][j] + dp[i][j])
 
 dp[i][j] = max(left[i][mid], right[mid + 1][j])
-{% endhighlight %}
+```
 
 [Paint House III][paint-house-iii]
 
-{% highlight java %}
+```java
 private static final int MAX = (int)1e6 + 1;
 
 public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
@@ -359,11 +359,11 @@ public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
 
     return min == MAX ? -1 : min;
 }
-{% endhighlight %}
+```
 
 [Make the XOR of All Segments Equal to Zero][make-the-xor-of-all-segments-equal-to-zero]
 
-{% highlight java %}
+```java
 private static final int MAX = (int)1e6 + 1;
 
 public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
@@ -414,11 +414,11 @@ public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
 
     return min == MAX ? -1 : min;
 }
-{% endhighlight %}
+```
 
 [Count Increasing Quadruplets][count-increasing-quadruplets]
 
-{% highlight java %}
+```java
 public long countQuadruplets(int[] nums) {
     int n = nums.length;
     // dp[j]: count of all valid triplets (i, j, k) so that i < j < k and nums[i] < nums[k] < nums[j]
@@ -440,7 +440,7 @@ public long countQuadruplets(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 Another solution is by [prefix sum](../prefix-sum).
 
@@ -448,7 +448,7 @@ Another solution is by [prefix sum](../prefix-sum).
 
 [Minimum Skips to Arrive at Meeting On Time][minimum-skips-to-arrive-at-meeting-on-time]
 
-{% highlight java %}
+```java
 public int minSkips(int[] dist, int speed, int hoursBefore) {
     int n = dist.length;
     // dp[i][j]: minimum arriving time * speed when we have travelled i roads and skipped j rests
@@ -472,13 +472,13 @@ public int minSkips(int[] dist, int speed, int hoursBefore) {
     }
     return -1;
 }
-{% endhighlight %}
+```
 
 # Stack
 
 [Minimum Difficulty of a Job Schedule][minimum-difficulty-of-a-job-schedule]
 
-{% highlight java %}
+```java
 public int minDifficulty(int[] jobDifficulty, int d) {
     int n = jobDifficulty.length;
     if (n < d) {
@@ -508,11 +508,11 @@ public int minDifficulty(int[] jobDifficulty, int d) {
 
     return dp[d - 1][n - 1];
 }
-{% endhighlight %}
+```
 
 Reduced to 1D:
 
-{% highlight java %}
+```java
 public int minDifficulty(int[] jobDifficulty, int d) {
     int n = jobDifficulty.length;
     if (n < d) {
@@ -540,11 +540,11 @@ public int minDifficulty(int[] jobDifficulty, int d) {
 
     return dp[n - 1];
 }
-{% endhighlight %}
+```
 
 Stack:
 
-{% highlight java %}
+```java
 private static final int MAX_JOB_DIFFICULTY = 1000;
 
 // O(nd)
@@ -614,13 +614,13 @@ public int minDifficulty(int[] jobDifficulty, int d) {
     }
     return dp[n - 1];
 }
-{% endhighlight %}
+```
 
 # Map
 
 [Tallest Billboard][tallest-billboard]
 
-{% highlight java %}
+```java
 public int tallestBillboard(int[] rods) {
     // dp[i]: pair (a, b) with max a and b - a == i > 0
     Map<Integer, Integer> dp = new HashMap<>(), tmp;
@@ -651,11 +651,11 @@ public int tallestBillboard(int[] rods) {
     }
     return dp.get(0);
 }
-{% endhighlight %}
+```
 
 [Stickers to Spell Word][stickers-to-spell-word]
 
-{% highlight java %}
+```java
 private Map<String, Integer> memo = new HashMap<>();
 private int[][] countMap;
 
@@ -708,11 +708,11 @@ private int dfs(String target) {
     memo.put(target, min);
     return min;
 }
-{% endhighlight %}
+```
 
 [Minimum Distance to Type a Word Using Two Fingers][minimum-distance-to-type-a-word-using-two-fingers]
 
-{% highlight java %}
+```java
 public int minimumDistance(String word) {
     // distance is the total distance we get with right finger
     int distance = 0, save = 0;
@@ -736,11 +736,11 @@ public int minimumDistance(String word) {
 private int cost(int a, int b) {
     return Math.abs(a / 6 - b / 6) + Math.abs(a % 6 - b % 6);
 }
-{% endhighlight %}
+```
 
 [First Day Where You Have Been in All the Rooms][first-day-where-you-have-been-in-all-the-rooms]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int firstDayBeenInAllRooms(int[] nextVisit) {
@@ -755,11 +755,11 @@ public int firstDayBeenInAllRooms(int[] nextVisit) {
     }
     return (int)dp[n - 1];
 }
-{% endhighlight %}
+```
 
 [Choose Numbers From Two Arrays in Range][choose-numbers-from-two-arrays-in-range]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int countSubranges(int[] nums1, int[] nums2) {
@@ -787,11 +787,11 @@ public int countSubranges(int[] nums1, int[] nums2) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Minimum Total Space Wasted With K Resizing Operations][minimum-total-space-wasted-with-k-resizing-operations]
 
-{% highlight java %}
+```java
 public int minSpaceWastedKResizing(int[] nums, int k) {
     int n = nums.length, max = 0, sum = 0;
     int[][] dp = new int[n][k + 1];
@@ -817,11 +817,11 @@ public int minSpaceWastedKResizing(int[] nums, int k) {
     }
     return dp[0][k];
 }
-{% endhighlight %}
+```
 
 [Minimum White Tiles After Covering With Carpets][minimum-white-tiles-after-covering-with-carpets]
 
-{% highlight java %}
+```java
 private static final int MAX_LENGTH = 1000;
 
 public int minimumWhiteTiles(String floor, int numCarpets, int carpetLen) {
@@ -837,11 +837,11 @@ public int minimumWhiteTiles(String floor, int numCarpets, int carpetLen) {
     }
     return dp[n][numCarpets];
 }
-{% endhighlight %}
+```
 
 [Minimum Time to Finish the Race][minimum-time-to-finish-the-race]
 
-{% highlight java %}
+```java
 // f * r ^ (x - 1) >= changeTime
 // if f == 1 and r == 2 (minimum)
 // x >= 18
@@ -905,13 +905,13 @@ public int minimumFinishTime(int[][] tires, int changeTime, int numLaps) {
 
     return dp[numLaps];
 }
-{% endhighlight %}
+```
 
 The previous states of elements is stored in a map.
 
 [Longest String Chain][longest-string-chain]
 
-{% highlight java %}
+```java
 public int longestStrChain(String[] words) {
     Arrays.sort(words, Comparator.comparingInt(s -> s.length()));
 
@@ -928,11 +928,11 @@ public int longestStrChain(String[] words) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Make Array Strictly Increasing][make-array-strictly-increasing]
 
-{% highlight java %}
+```java
 public int makeArrayIncreasing(int[] arr1, int[] arr2) {
     Arrays.sort(arr2);
 
@@ -968,13 +968,13 @@ public int makeArrayIncreasing(int[] arr1, int[] arr2) {
 
     return dp.isEmpty() ? -1 : Collections.min(dp.values());
 }
-{% endhighlight %}
+```
 
 # Reverse
 
 [Coin Path][coin-path]
 
-{% highlight java %}
+```java
 public List<Integer> cheapestJump(int[] coins, int maxJump) {
     int n = coins.length;
     List<Integer> path = new ArrayList<>();
@@ -1015,11 +1015,11 @@ public List<Integer> cheapestJump(int[] coins, int maxJump) {
     }
     return path;
 }
-{% endhighlight %}
+```
 
 [Race Car][race-car]
 
-{% highlight java %}
+```java
 public int racecar(int target) {
     // dp[i]: the length of the shortest sequence of instructions from initial speed 1 to target i
     int[] dp = new int[target + 1];
@@ -1051,13 +1051,13 @@ public int racecar(int target) {
 
     return dp[target];
 }
-{% endhighlight %}
+```
 
 # Precompute
 
 [Number of Ways to Reach a Position After Exactly k Steps][number-of-ways-to-reach-a-position-after-exactly-k-steps]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 private static final int MAX_POS = 1000;
 
@@ -1074,13 +1074,13 @@ public int numberOfWays(int startPos, int endPos, int k) {
 
     return dp[k][Math.abs(startPos - endPos)];
 }
-{% endhighlight %}
+```
 
 # Digit Dynamic Programming
 
 [Count of Integers][count-of-integers]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 // memo[index][lowTight][highTight][sum]
 private Integer[][][][] memo;
@@ -1133,7 +1133,7 @@ private int countStrings(int index, int sum, boolean isLowTight, boolean isHighT
     }
     return memo[index][lowTight][highTight][sum] = count;
 }
-{% endhighlight %}
+```
 
 [best-team-with-no-conflicts]: https://leetcode.com/problems/best-team-with-no-conflicts/
 [build-array-where-you-can-find-the-maximum-exactly-k-comparisons]: https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/

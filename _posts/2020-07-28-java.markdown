@@ -1,25 +1,26 @@
 ---
 title:  "Java"
+category: java
 tags: java
 ---
 [Underscores in Numeric Literals][underscores-literals]
 
 In Java SE 7 and later, any number of underscore characters (_) can appear anywhere between digits in a numerical literal. This feature enables you, for example, to separate groups of digits in numeric literals, which can improve the readability of your code.
 
-{% highlight java %}
+```java
 private static int MOD = 1_000_000_007
-{% endhighlight %}
+```
 
 [Enhanced For][for]
 
 The for statement also has another form designed for iteration through *Collections* and *arrays* This form is sometimes referred to as the enhanced for statement, and can be used to make your loops more compact and easy to read.
 
 ## Multidimensional Array
-{% highlight java %}
+```java
 int[][] matrix = new int[r][c];
 // r == matrix.length
 // c == matrix[0].length
-{% endhighlight %}
+```
 
 [Remainder Operator %][remainder-operator]
 
@@ -30,17 +31,17 @@ In C and C++, the remainder operator accepts only integral operands, but in the 
 1. The remainder operation can be negative only if the dividend is negative, and can be positive only if the dividend is positive.
 2. The magnitude of the result is always less than the magnitude of the divisor.
 
-{% highlight java %}
+```java
 (a / b) * b + (a % b) == a
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 dividend / divisor
 result = Math.abs(dividend) / Math.abs(divisor)  // towards 0
 remainder = Integer.signum(dividend) * (Math.abs(dividend) % Math.abs(divisor))
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 int a = 5 % 3;  // 2
 int b = 5 / 3;  // 1
 
@@ -52,7 +53,7 @@ int f = (-5) / 3;  // -1
 
 int g = (-5) % (-3);  // -2
 int h = (-5) / (-3);  // 1
-{% endhighlight %}
+```
 
 [floorDiv](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Math.html#floorDiv(int,int))
 
@@ -60,47 +61,47 @@ Returns the largest (closest to positive infinity) int value that is less than o
 
 Special case:
 
-{% highlight java %}
+```java
 floorDiv(Integer.MIN_VALUE, -1) == Integer.MIN_VALUE
-{% endhighlight %}
+```
 
 Examples:
 
-{% highlight java %}
+```java
 floorDiv(4, 3) == 1
 floorDiv(-4, 3) == -2
-{% endhighlight %}
+```
 
 [floorMod](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Math.html#floorMod(int,int))
 
-{% highlight java %}
+```java
 floorDiv(x, y) * y + floorMod(x, y) == x
-{% endhighlight %}
+```
 
 The difference in values between floorMod and the % operator is due to the difference between floorDiv that returns the integer less than or equal to the quotient and the / operator that returns the integer closest to zero.
 
 Examples:
 If the signs of the arguments are the same, the results of floorMod and the % operator are the same.
 
-{% highlight java %}
+```java
 floorMod(+4, +3) == +1;   and (+4 % +3) == +1
 floorMod(-4, -3) == -1;   and (-4 % -3) == -1
-{% endhighlight %}
+```
 
 If the signs of the arguments are different, the results differ from the % operator.
 
-{% highlight java %}
+```java
 floorMod(+4, -3) == -2;   and (+4 % -3) == +1
 floorMod(-4, +3) == +2;   and (-4 % +3) == -1
-{% endhighlight %}
+```
 
 # Division
 
 **Ceil**
 
-{% highlight java %}
+```java
 Math.ceil(a / (double)b) = (a + b - 1) / b
-{% endhighlight %}
+```
 
 **By Zero**
 
@@ -111,7 +112,7 @@ Math.ceil(a / (double)b) = (a + b - 1) / b
 
 The Java programming language defines % on floating-point operations to behave in a manner analogous to that of the integer remainder operator.
 
-{% highlight java %}
+```java
 double a = 5.0 % 3.0;  // 2.0
 
 double b = 5.0 % (-3.0);  // 2.0
@@ -119,7 +120,7 @@ double b = 5.0 % (-3.0);  // 2.0
 double c = (-5.0) % 3.0;  // -2.0
 
 double d = (-5.0) % (-3.0);  // -2.0
-{% endhighlight %}
+```
 
 # Queue
 [Queue][queue]
@@ -148,7 +149,7 @@ Arrays can't be used as map keys. Alternatively, the following can be used as ma
 
 [Perfect Rectangle][perfect-rectangle]
 
-{% highlight java %}
+```java
 public boolean isRectangleCover(int[][] rectangles) {
     Set<String> set = new HashSet<String>();
     int x1 = Integer.MAX_VALUE, x2 = Integer.MIN_VALUE, y1 = Integer.MAX_VALUE, y2 = Integer.MIN_VALUE;
@@ -195,17 +196,17 @@ public boolean isRectangleCover(int[][] rectangles) {
 
     return area == (x2-x1) * (y2-y1);
 }
-{% endhighlight %}
+```
 
 # Comparator
 
 There are a few ways of using comparator as lamdba expression:
 
-{% highlight java %}
+```java
 Arrays.sort(pairs, (a, b) -> a[1] - b[1]);
 Arrays.sort(pairs, (a, b) -> Integer.compare(a[1], b[1]));
 Arrays.sort(pairs, Comparator.comparingInt(a -> a[1]);
-{% endhighlight %}
+```
 
 [for]: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html
 [perfect-rectangle]: https://leetcode.com/problems/perfect-rectangle/

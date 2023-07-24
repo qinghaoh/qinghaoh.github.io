@@ -4,7 +4,7 @@ category: algorithm
 ---
 [Maximum Segment Sum After Removals][maximum-segment-sum-after-removals]
 
-{% highlight java %}
+```java
 private long[] parents;
 
 public long[] maximumSegmentSum(int[] nums, int[] removeQueries) {
@@ -44,13 +44,13 @@ private void union(int u, int v) {
     parents[pv] += parents[pu];
     parents[pu] = pv;
 }
-{% endhighlight %}
+```
 
 This problem can also be resolved by TreeMap of intervals.
 
 [Execution of All Suffix Instructions Staying in a Grid][execution-of-all-suffix-instructions-staying-in-a-grid]
 
-{% highlight java %}
+```java
 // notice the direction is opposition to the instruction
 // because we will process the instructions in reverse order
 private static final Map<Character, int[]> DIRECTIONS = Map.of(
@@ -109,7 +109,7 @@ public int[] executeInstructions(int n, int[] startPos, String s) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 For example, `n = 2, startPos = [1,1], s = "LURD"`
 

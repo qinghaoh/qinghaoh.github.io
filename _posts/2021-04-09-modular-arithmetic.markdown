@@ -23,7 +23,7 @@ Multiplicative: if \\(\gcd(m, n) = 1\\), then \\(\varphi (m) \varphi (n) = \varp
 
 [Super Pow][super-pow]
 
-{% highlight java %}
+```java
 public int superPow(int a, int[] b) {
     // 1337 = 7 * 191
     // phi(1337) = phi(7) * phi(191) = 6 * 190 = 1140
@@ -53,7 +53,7 @@ private int pow(int a, int n, int mod) {
     }
     return (int)res;
 }
-{% endhighlight %}
+```
 
 $$a^b \equiv a^{b \pmod{\varphi} + \varphi} \pmod{c}$$
 
@@ -61,7 +61,7 @@ where \\(b>\varphi = \varphi(c)\\)
 
 A more straightforward solution:
 
-{% highlight java %}
+```java
 public int superPow(int a, int[] b) {
     final int mod = 1337;
     int res = 1;
@@ -74,7 +74,7 @@ public int superPow(int a, int[] b) {
 // 50. Pow(x, n)
 private int pow(int a, int n, int mod) {
 }
-{% endhighlight %}
+```
 
 # Pigeonhole Principle
 
@@ -91,7 +91,7 @@ Evaluate these remainders:
 
 In the second case, if \\(a_{i} \bmod k\\) has a duplicate \\(a_{j} \bmod k\\), since \\(a_{i + 1} = 10a_{i} + 1\\), \\(a_{i + 1} \bmod k = a_{j + 1} \bmod k\\). Therefore, we will never see remainder = 0.
 
-{% highlight java %}
+```java
 public int smallestRepunitDivByK(int k) {
     if (k % 2 == 0 || k % 5 == 0) {
         return -1;
@@ -106,13 +106,13 @@ public int smallestRepunitDivByK(int k) {
     }
     return -1;
 }
-{% endhighlight %}
+```
 
 # Modular Inverse
 
 [Fancy Sequence][fancy-sequence]
 
-{% highlight java %}
+```java
 class Fancy {
     private static final int MOD = (int)1e9 + 7;
     private long[] arr = new long[100001];
@@ -149,7 +149,7 @@ class Fancy {
     private int pow(long a, int n, int mod) {
     }
 }
-{% endhighlight %}
+```
 
 [fancy-sequence]: https://leetcode.com/problems/fancy-sequence/
 [smallest-integer-divisible-by-k]: https://leetcode.com/problems/smallest-integer-divisible-by-k/

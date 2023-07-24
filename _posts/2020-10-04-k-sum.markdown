@@ -21,7 +21,7 @@ Two pointers: `O(n)`
 
 [Count the Number of Fair Pairs][count-the-number-of-fair-pairs]
 
-{% highlight java %}
+```java
 public long countFairPairs(int[] nums, int lower, int upper) {
     Arrays.sort(nums);
 
@@ -41,7 +41,7 @@ private long binarySearch(int[] nums, int target) {
     }
     return pairs;
 }
-{% endhighlight %}
+```
 
 # 3 Sum
 
@@ -49,7 +49,7 @@ private long binarySearch(int[] nums, int target) {
 
 Sort + O(n) * Two pointers: `O(n ^ 2)`
 
-{% highlight java %}
+```java
 public List<List<Integer>> threeSum(int[] nums) {
     Arrays.sort(nums);
 
@@ -87,7 +87,7 @@ public List<List<Integer>> threeSum(int[] nums) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [3Sum Smaller][3sum-smaller]
 
@@ -97,7 +97,7 @@ Two pointers
 
 [3Sum With Multiplicity][3sum-with-multiplicity]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int threeSumMulti(int[] arr, int target) {
@@ -125,7 +125,7 @@ public int threeSumMulti(int[] arr, int target) {
     }
     return (int)(num % MOD);
 }
-{% endhighlight %}
+```
 
 [Valid Triangle Number][valid-triangle-number]
 
@@ -136,7 +136,7 @@ public int threeSumMulti(int[] arr, int target) {
 * Sort + O(n ^ (k - 2)) * Two pointers
 * O(n ^ (k - 2)) * Set/Map
 
-{% highlight java %}
+```java
 public List<List<Integer>> kSum(int[] nums, int target, int start, int k) {
     int n = nums.length;
     List<List<Integer>> list = new ArrayList<>();
@@ -159,13 +159,13 @@ public List<List<Integer>> kSum(int[] nums, int target, int start, int k) {
 
     return list;
 }
-{% endhighlight %}
+```
 
 [4Sum II][4sum-ii]
 
 `O(n ^ 2)`
 
-{% highlight java %}
+```java
 public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
     Map<Integer, Integer> map = new HashMap<>();
     for (int c : C) {
@@ -182,7 +182,7 @@ public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Split Array with Equal Sum][split-array-with-equal-sum]
 
@@ -194,7 +194,7 @@ public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
 
 [Closest Subsequence Sum][closest-subsequence-sum]
 
-{% highlight java %}
+```java
 public int minAbsDifference(int[] nums, int goal) {
     int n = nums.length;
     Set<Integer> set1 = new HashSet<>(), set2 = new HashSet<>();
@@ -245,7 +245,7 @@ private void backtrack(int[] nums, int start, int end, int sum, Set<Integer> sum
     backtrack(nums, start + 1, end, sum, sums);
     backtrack(nums, start + 1, end, sum + nums[start], sums);
 }
-{% endhighlight %}
+```
 
 [3sum]: https://leetcode.com/problems/3sum/
 [3sum-closest]: https://leetcode.com/problems/3sum-closest/

@@ -4,7 +4,7 @@ tags: string
 ---
 # Palindrome String
 
-{% highlight java %}
+```java
 public boolean isPalindrome(String s) {
     int left = 0, right = s.length() - 1;
     while (left < right) {
@@ -14,13 +14,13 @@ public boolean isPalindrome(String s) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 # Palindrome Number
 
 [Palindrome Number][palindrome-number]
 
-{% highlight java %}
+```java
 public boolean isPalindrome(int x) {
     if (x < 0 || (x % 10 == 0 && x != 0)) {
         return false;
@@ -34,7 +34,7 @@ public boolean isPalindrome(int x) {
     }
     return x == reverted || x == reverted / 10;
 }
-{% endhighlight %}
+```
 
 # Construction
 
@@ -42,7 +42,7 @@ public boolean isPalindrome(int x) {
 
 A positive integer (in decimal notation) is divisible by 11 iff the difference of the sum of the digits in even-numbered positions and the sum of digits in odd-numbered positions is divisible by 11.
 
-{% highlight java %}
+```java
 public int primePalindrome(int N) {
     if (N >= 8 && N <= 11) {
         return 11;
@@ -73,11 +73,11 @@ private boolean isPrime(int x) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Super Palindromes][super-palindromes]
 
-{% highlight java %}
+```java
 public int superpalindromesInRange(String left, String right) {
     List<Long> palindromes = new ArrayList<>();
     for (long i = 1; i <= 9; i++) {
@@ -112,11 +112,11 @@ public int superpalindromesInRange(String left, String right) {
 
 private boolean isPalindrome(String s) {
 }
-{% endhighlight %}
+```
 
 [Sum of k-Mirror Numbers][sum-of-k-mirror-numbers]
 
-{% highlight java %}
+```java
 private List<Long> prev = new ArrayList<>(), curr = new ArrayList<>();
 private int[] arr = new int[64];
 
@@ -177,13 +177,13 @@ private boolean isMirror(long num, int base) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 # Trie
 
 [Palindrome Pairs][palindrome-pairs]
 
-{% highlight java %}
+```java
 public List<List<Integer>> palindromePairs(String[] words) {
     TrieNode root = new TrieNode();
 
@@ -256,11 +256,11 @@ private boolean isPalindrome(String s, int start, int end) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Find the Closest Palindrome][find-the-closest-palindrome]
 
-{% highlight java %}
+```java
 public String nearestPalindromic(String n) {
     int len = n.length();
     if (len == 1) {
@@ -307,13 +307,13 @@ public String nearestPalindromic(String n) {
 private long palindrome(String root, int len) {
     return Long.valueOf(root + new StringBuilder(root.substring(0, len)).reverse().toString());
 }
-{% endhighlight %}
+```
 
 # Greedy
 
 [Construct K Palindrome Strings][construct-k-palindrome-strings]
 
-{% highlight java %}
+```java
 public boolean canConstruct(String s, int k) {
     // bit vector
     int odd = 0;
@@ -324,11 +324,11 @@ public boolean canConstruct(String s, int k) {
     // if a bit is 1, it must be the center of a palindrome
     return s.length() >= k && Integer.bitCount(odd) <= k;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Moves to Make Palindrome][minimum-number-of-moves-to-make-palindrome]
 
-{% highlight java %}
+```java
 public int minMovesToMakePalindrome(String s) {
     int count = 0;
     while (s.length() > 0) {
@@ -347,13 +347,13 @@ public int minMovesToMakePalindrome(String s) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 # Expand Around Center
 
 [Palindromic Substring][palindromic-substring]
 
-{% highlight java %}
+```java
 public int countSubstrings(String s) {
     int n = s.length(), count = 0;
     for (int center = 0; center < 2 * n; center++) {
@@ -366,11 +366,11 @@ public int countSubstrings(String s) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Longest Palindromic Substring][longest-palindromic-substring]
 
-{% highlight java %}
+```java
 // O(n ^ 2)
 public String longestPalindrome(String s) {
     String result = "";
@@ -389,11 +389,11 @@ public String longestPalindrome(String s) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Maximum Number of Non-overlapping Palindrome Substrings][maximum-number-of-non-overlapping-palindrome-substrings]
 
-{% highlight java %}
+```java
 public int maxPalindromes(String s, int k) {
     int n = s.length(), count = 0, start = 0;
     for (int center = 0; center < 2 * n; center++) {
@@ -411,11 +411,11 @@ public int maxPalindromes(String s, int k) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Palindrome Partitioning II][palindrome-partitioning-ii]
 
-{% highlight java %}
+```java
 public int minCut(String s) {
     int n = s.length();
     // dp[i]: min cut of s.substring(0, i + 1)
@@ -437,7 +437,7 @@ public int minCut(String s) {
     }
     return dp[n - 1];
 }
-{% endhighlight %}
+```
 
 # Manacher's Algorithm
 
@@ -445,7 +445,7 @@ public int minCut(String s) {
 
 [Longest Palindromic Substring][longest-palindromic-substring]
 
-{% highlight java %}
+```java
 // O(n)
 public String longestPalindrome(String s) {
     // string ms = s with a bogus character (eg. '#') inserted between each character
@@ -497,11 +497,11 @@ public String longestPalindrome(String s) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 [Maximum Product of the Length of Two Palindromic Substrings][maximum-product-of-the-length-of-two-palindromic-substrings]
 
-{% highlight java %}
+```java
 public long maxProduct(String s) {
     // Manacher's Algorithm (https://cp-algorithms.com/string/manacher.html)
     int n = s.length();
@@ -550,20 +550,20 @@ public long maxProduct(String s) {
     }
     return product;
 }
-{% endhighlight %}
+```
 
 # Dynamic Programming
 
 Iteration pattern:
 
-{% highlight java %}
+```java
 for (int i = n - 1; i >= 0; i--) {
     for (int j = i; j < n; j++) {
-{% endhighlight %}
+```
 
 [Palindrome Partitioning IV][palindrome-partitioning-iv]
 
-{% highlight java %}
+```java
 public boolean checkPartitioning(String s) {
     int n = s.length();
     // dp[i][j]: s.substring(i, j + 1)
@@ -588,11 +588,11 @@ public boolean checkPartitioning(String s) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
 [Longest Palindromic Subsequence][longest-palindromic-subsequence]
 
-{% highlight java %}
+```java
 public int longestPalindromeSubseq(String s) {
     int n = s.length();
     // dp[i][j]: s.substring(i, j + 1)
@@ -611,11 +611,11 @@ public int longestPalindromeSubseq(String s) {
 
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
 [Palindrome Removal][palindrome-removal]
 
-{% highlight java %}
+```java
 public int minimumMoves(int[] arr) {
     int n = arr.length;
     // dp[i][j]: minimum number of moves for arr[i...j]
@@ -644,11 +644,11 @@ public int minimumMoves(int[] arr) {
 
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
 [Maximum Product of the Length of Two Palindromic Subsequences][maximum-product-of-the-length-of-two-palindromic-subsequences]
 
-{% highlight java %}
+```java
 public int maxProduct(String s) {
     int n = s.length(), max = 0;
     // iterates all masks
@@ -661,13 +661,13 @@ public int maxProduct(String s) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 This problem can be solved by backtracking, too. It reflects the close connection between bitmask and backtracking.
 
 [Palindrome Partitioning III][palindrome-partitioning-iii]
 
-{% highlight java %}
+```java
 public int palindromePartition(String s, int k) {
     int n = s.length();
 
@@ -698,11 +698,11 @@ public int palindromePartition(String s, int k) {
     }
     return dp2[n][k];
 }
-{% endhighlight %}
+```
 
 [Maximize Palindrome Length From Subsequences][maximize-palindrome-length-from-subsequences]
 
-{% highlight java %}
+```java
 public int longestPalindrome(String word1, String word2) {
     String s = word1 + word2;
     int n = s.length(), n1 = word1.length();
@@ -725,11 +725,11 @@ public int longestPalindrome(String word1, String word2) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Count Different Palindromic Subsequences][count-different-palindromic-subsequences]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7, NUM = 4;
 
 public int countPalindromicSubsequences(String S) {
@@ -777,7 +777,7 @@ public int countPalindromicSubsequences(String S) {
     }
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
 [construct-k-palindrome-strings]: https://leetcode.com/problems/construct-k-palindrome-strings/
 [count-different-palindromic-subsequences]: https://leetcode.com/problems/count-different-palindromic-subsequences/

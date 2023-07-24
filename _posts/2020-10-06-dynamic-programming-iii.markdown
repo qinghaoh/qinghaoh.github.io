@@ -8,7 +8,7 @@ tag: dynamic programming
 dp[k][i] = max(dp[k][i - 1], prices[i] - prices[j] + dp[k - 1][j - 1]), j = [0, 1, ..., i - 1]
 ```
 
-{% highlight java %}
+```java
 public int maxProfit(int k, int[] prices) {
     int n = prices.length;
 
@@ -35,11 +35,11 @@ public int maxProfit(int k, int[] prices) {
     }
     return dp[k][n - 1];
 }
-{% endhighlight %}
+```
 
 Reduces the repetitive calculation of min:
 
-{% highlight java %}
+```java
 for (int m = 1; m <= k; m++) {
     int min = prices[0];
     for (int i = 1; i < n; i++) {
@@ -47,11 +47,11 @@ for (int m = 1; m <= k; m++) {
 	dp[m][i] = Math.max(dp[m][i - 1], prices[i] - min);
     }
 }
-{% endhighlight %}
+```
 
 Swaps the two for-loops. `min` becomes an array to store min of each transaction.
 
-{% highlight java %}
+```java
 int[] min = new int[k + 1];
 Arrays.fill(min, prices[0]);      
 for (int i = 1; i < n; i++) {
@@ -60,11 +60,11 @@ for (int i = 1; i < n; i++) {
 	dp[j][i] = Math.max(dp[j][i - 1], prices[i] - min[j]);
     }
 }
-{% endhighlight %}
+```
 
 Reduces to 1D:
 
-{% highlight java %}
+```java
 int[] dp = new int[k + 1], min = new int[k + 1];
 Arrays.fill(min, prices[0]);      
 
@@ -75,13 +75,13 @@ for (int i = 1; i < prices.length; i++) {
     }
 }        
 return dp[k];
-{% endhighlight %}
+```
 
 [Best Time to Buy and Sell Stock III][best-time-to-buy-and-sell-stock-iii]
 
 In the last solution of [Best Time to Buy and Sell Stock IV][best-time-to-buy-and-sell-stock-iv], replaces `k` with `2`:
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices) {
     int buy1 = Integer.MAX_VALUE, buy2 = Integer.MAX_VALUE;
     int sell1 = 0, sell2 = 0;
@@ -93,7 +93,7 @@ public int maxProfit(int[] prices) {
     }
     return sell2;
 }
-{% endhighlight %}
+```
 
 [Best Time to Buy and Sell Stock with Cooldown][best-time-to-buy-and-sell-stock-with-cooldown]
 
@@ -101,7 +101,7 @@ public int maxProfit(int[] prices) {
 dp[i] = max(dp[i - 1], prices[i] - prices[j] + dp[j - 2]), j = [0, 1, ..., i - 1]
 ```
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices) {
     if (prices.length < 2) {
         return 0;
@@ -115,11 +115,11 @@ public int maxProfit(int[] prices) {
     }
     return dp[prices.length];
 }
-{% endhighlight %}
+```
 
 Reduced to 0D:
 
-{% highlight java %}
+```java
 int prev = 0, curr = 0;
 int min = prices[0];
 for (int i = 1; i < prices.length; i++) {
@@ -128,11 +128,11 @@ for (int i = 1; i < prices.length; i++) {
     curr = Math.max(curr, prices[i] - min);
 }
 return curr;
-{% endhighlight %}
+```
 
 [Number of Dice Rolls With Target Sum][number-of-dice-rolls-with-target-sum]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numRollsToTarget(int d, int f, int target) {
@@ -149,11 +149,11 @@ public int numRollsToTarget(int d, int f, int target) {
     }
     return dp[0][target];
 }
-{% endhighlight %}
+```
 
 [Strange Printer][strange-printer]
 
-{% highlight java %}
+```java
 public int strangePrinter(String s) {
     int n = s.length();
     int[][] dp = new int[n][n];
@@ -180,7 +180,7 @@ public int strangePrinter(String s) {
 
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
 # Cumulative Sum
 
@@ -188,7 +188,7 @@ public int strangePrinter(String s) {
 
 ![Reduction](/assets/img/algorithm/dice_roll_simulation.png)
 
-{% highlight java %}
+```java
 private final int MOD = (int)1e9 + 7;
 
 public int dieSimulator(int n, int[] rollMax) {
@@ -218,11 +218,11 @@ public int dieSimulator(int n, int[] rollMax) {
 
     return dp[n][6];
 }
-{% endhighlight %}
+```
 
 [K Inverse Pairs Array][k-inverse-pairs-array]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int kInversePairs(int n, int k) {
@@ -253,7 +253,7 @@ public int kInversePairs(int n, int k) {
     }
     return dp[n][k];
 }
-{% endhighlight %}
+```
 
 If `j >= i - 1`,
 ```
@@ -269,7 +269,7 @@ dp[i][j] - dp[i][j - 1] = dp[i - 1][j] - dp[i - 1][j - i]
 dp[i][j] = dp[i][j - 1] + dp[i - 1][j] - dp[i - 1][j - i]
 ```
 
-{% highlight java %}
+```java
 int[][] dp = new int[n + 1][k + 1];
 dp[0][0] = 1;
 for (int i = 1; i <= n; i++) {
@@ -283,7 +283,7 @@ for (int i = 1; i <= n; i++) {
     }
 }
 return dp[n][k];
-{% endhighlight %}
+```
 
 [best-time-to-buy-and-sell-stock-iii]: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
 [best-time-to-buy-and-sell-stock-iv]: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/

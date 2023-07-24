@@ -15,7 +15,7 @@ Efficient range query, while array modification is flexible.
 
 The [standard (recursive, top-down) Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html) requires \\(4n\\) vertices for working on an array of size \\(n\\).
 
-{% highlight java %}
+```java
 class SegmentTree {
     private int n;
     // one-based indexing, i.e. root is at index 1
@@ -91,13 +91,13 @@ class SegmentTree {
         return f.apply(query(v * 2, tl, tm, l, Math.min(r, tm)), query(v * 2 + 1, tm + 1, tr, Math.max(l, tm + 1), r));
     }
 }
-{% endhighlight %}
+```
 
 ### Iterative
 
 The iterative (bottom-up) implementation below is based on Al.Cash's blog [Efficient and easy segment trees](https://codeforces.com/blog/entry/18051).
 
-{% highlight java %}
+```java
 class SegmentTree {
     private int n;
     private int[] arr;
@@ -149,7 +149,7 @@ class SegmentTree {
         return res;
     }
 }
-{% endhighlight %}
+```
 
 ### Commutative
 
@@ -164,7 +164,7 @@ Examples of commutative bi-functions:
 
 [Longest Increasing Subsequence II][longest-increasing-subsequence-ii]
 
-{% highlight java %}
+```java
 public int lengthOfLIS(int[] nums, int k) {
     SegmentTree st = new SegmentTree(Arrays.stream(nums).max().getAsInt() + 1, (a, b) -> Math.max(a, b));
     st.build();
@@ -180,11 +180,11 @@ public int lengthOfLIS(int[] nums, int k) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Falling Squares][falling-squares]
 
-{% highlight java %}
+```java
 public List<Integer> fallingSquares(int[][] positions) {
     // coordinate compression
     Set<Integer> coords = new TreeSet();
@@ -215,11 +215,11 @@ public List<Integer> fallingSquares(int[][] positions) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [Booking Concert Tickets in Groups][booking-concert-tickets-in-groups]
 
-{% highlight java %}
+```java
 public class BookMyShow {
     private int m, n;
     private int[] rows;
@@ -332,7 +332,7 @@ public class BookMyShow {
         }
     }
 }
-{% endhighlight %}
+```
 
 With recursive segment tree implementation, the binary search will take \\(O(\log n)\\) time, because we can check the parent node value `node[1] >= k` (\\(O(1)\\)) in each level top-down, instead of calling `query` function (\\(O(\log n)\\)) in each loop iteration bottom-up.
 
@@ -340,7 +340,7 @@ With recursive segment tree implementation, the binary search will take \\(O(\lo
 
 [Longest Substring of One Repeating Character][longest-substring-of-one-repeating-character]
 
-{% highlight java %}
+```java
 public int[] longestRepeating(String s, String queryCharacters, int[] queryIndices) {
     int n = s.length();
     Node[] nodes = new Node[n];
@@ -453,11 +453,11 @@ class SegmentTree {
         return f.apply(resl, resr);
     }
 }
-{% endhighlight %}
+```
 
 [Rectangle Area II][rectangle-area-ii]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int rectangleArea(int[][] rectangles) {
@@ -528,11 +528,11 @@ public int rectangleArea(int[][] rectangles) {
     }
     return (int)area;
 }
-{% endhighlight %}
+```
 
 Segment Tree:
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int rectangleArea(int[][] rectangles) {
@@ -631,7 +631,7 @@ class SegmentTreeNode {
         return sum = count > 0 ? list.get(end) - list.get(start) : l.sum + r.sum;
     }
 }
-{% endhighlight %}
+```
 
 # Range Updates (Lazy Propagation)
 
@@ -641,7 +641,7 @@ It's more straightforward to implement lazy propagation with recursive segment t
 
 [Falling Squares][falling-squares]
 
-{% highlight java %}
+```java
 public List<Integer> fallingSquares(int[][] positions) {
     // coordinate compression
     ...
@@ -719,7 +719,7 @@ class SegmentTree {
         return f.apply(query(v * 2, tl, tm, l, Math.min(r, tm)), query(v * 2 + 1, tm + 1, tr, Math.max(l, tm + 1), r));
     }
 }
-{% endhighlight %}
+```
 
 [booking-concert-tickets-in-groups]: https://leetcode.com/problems/booking-concert-tickets-in-groups/
 [falling-squares]: https://leetcode.com/problems/falling-squares/

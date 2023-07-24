@@ -6,7 +6,7 @@ category: algorithm
 
 [Binary Search][binary-search]
 
-{% highlight java %}
+```java
 public int search(int[] nums, int target) {
     int low = 0, high = nums.length - 1;
     while (low <= high) {
@@ -22,9 +22,9 @@ public int search(int[] nums, int target) {
     }
     return -1;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int search(int[] nums, int target) {
     int low = 0, high = nums.length - 1;
     while (low < high) {
@@ -37,9 +37,9 @@ public int search(int[] nums, int target) {
     }
     return nums[low] == target ? low : -1;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int search(int[] nums, int target) {
     int low = 0, high = nums.length - 1;
     while (low < high) {
@@ -52,7 +52,7 @@ public int search(int[] nums, int target) {
     }
     return nums[low] == target ? low : -1;
 }
-{% endhighlight %}
+```
 
 There can be variants of this template. For example: [First Bad Version][first-bad-version], [The K Weakest Rows in a Matrix][the-k-weakest-rows-in-a-matrix]
 
@@ -75,10 +75,10 @@ The initial boundary `[low, high]` should include ***all*** possible answers. Wh
 
 ## Mid
 
-{% highlight java %}
+```java
 mid = low + (high - low) / 2;  // lower mid
 mid = low + (high - low + 1) / 2;  // upper mid
-{% endhighlight %}
+```
 
 To avoid infinite loop, here's a rule of thumb:
 
@@ -89,21 +89,21 @@ To avoid infinite loop, here's a rule of thumb:
 
 Rule of thumb: always use a logic that you can exclude `mid`.
 
-{% highlight java %}
+```java
 if (nums[mid] > target) {
     high = mid - 1;
 } else {
     low = mid;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 if (nums[mid] < target) {
     low = mid + 1;
 } else {
     high = mid;
 }
-{% endhighlight %}
+```
 
 To understand the corner cases, test your code with these examples: `[0]`, `[0, 1]`, `[0, 1, 2]` and `[0, 1, 2, 3]`.
 
@@ -111,7 +111,7 @@ To understand the corner cases, test your code with these examples: `[0]`, `[0, 
 
 [Find Minimum in Rotated Sorted Array][find-minimum-in-rotated-sorted-array]
 
-{% highlight java %}
+```java
 public int findMin(int[] nums) {
     int low = 0, high = nums.length - 1;
     while (low < high) {
@@ -124,11 +124,11 @@ public int findMin(int[] nums) {
     }
     return nums[low];
 }
-{% endhighlight %}
+```
 
 [Single Element in a Sorted Array][single-element-in-a-sorted-array]
 
-{% highlight java %}
+```java
 public int singleNonDuplicate(int[] nums) {
     int low = 0, high = nums.length - 1;
     while (low < high) {
@@ -146,11 +146,11 @@ public int singleNonDuplicate(int[] nums) {
     }
     return nums[low];
 }
-{% endhighlight %}
+```
 
 [Find Minimum in Rotated Sorted Array II][find-minimum-in-rotated-sorted-array-ii]
 
-{% highlight java %}
+```java
 public int findMin(int[] nums) {
     int low = 0, high = nums.length - 1;
     while (low < high) {
@@ -170,11 +170,11 @@ public int findMin(int[] nums) {
     }
     return nums[low];
 }
-{% endhighlight %}
+```
 
 [Search in Rotated Sorted Array][search-in-rotated-sorted-array]
 
-{% highlight java %}
+```java
 public int search(int[] nums, int target) {
     int minIndex = findMinIndex(nums);
     if (target == nums[minIndex]) {
@@ -205,7 +205,7 @@ private int findMinIndex(int[] nums) {
     }
     return low;
 }
-{% endhighlight %}
+```
 
 [Search in Rotated Sorted Array II][search-in-rotated-sorted-array-ii]
 
@@ -213,7 +213,7 @@ private int findMinIndex(int[] nums) {
 
 [Find Peak Element][find-peak-element]
 
-{% highlight java %}
+```java
 public int findPeakElement(int[] nums) {
     int low = 0, high = nums.length - 1;
     while (low < high) {
@@ -226,11 +226,11 @@ public int findPeakElement(int[] nums) {
     }
     return low;
 }
-{% endhighlight %}
+```
 
 [Find a Peak Element II][find-a-peak-element-ii]
 
-{% highlight java %}
+```java
 public int[] findPeakGrid(int[][] mat) {
     // binary search on columns
     int low = 0, high = mat[0].length - 1;
@@ -258,7 +258,7 @@ private int findMaxRow(int[][] mat, int col) {
     }
     return row;
 }
-{% endhighlight %}
+```
 
 # Generalization
 
@@ -266,7 +266,7 @@ private int findMaxRow(int[][] mat, int col) {
 
 Minimize `x`, s.t. `condition(x) == true`
 
-{% highlight java %}
+```java
 public int binarySearch(int[] arr) {
     int low = min(searchSpace), high = max(searchSpace);
     while (low < high) {
@@ -284,11 +284,11 @@ public int binarySearch(int[] arr) {
 private boolean condition(int x) {
     return f(x) >= 0;
 }
-{% endhighlight %}
+```
 
 [Search Insert Position][search-insert-position]
 
-{% highlight java %}
+```java
 public int searchInsert(int[] nums, int target) {
     int low = 0, high = nums.length;
     while (low < high) {
@@ -301,13 +301,13 @@ public int searchInsert(int[] nums, int target) {
     }
     return low;
 }
-{% endhighlight %}
+```
 
 [Fixed Point][fixed-point]
 
 [Koko Eating Bananas][koko-eating-bananas]
 
-{% highlight java %}
+```java
 public int minEatingSpeed(int[] piles, int h) {
     int low = 1, high = Arrays.stream(piles).max().getAsInt(), target = h - piles.length;
     while (low < high) {
@@ -330,11 +330,11 @@ public int minEatingSpeed(int[] piles, int h) {
 
     return low;
 }
-{% endhighlight %}
+```
 
 [Kth Smallest Element in a Sorted Matrix][kth-smallest-element-in-a-sorted-matrix]
 
-{% highlight java %}
+```java
 // O(n * log(max - min))
 public int kthSmallest(int[][] matrix, int k) {
     int low = matrix[0][0], high = matrix[matrix.length - 1][matrix[0].length - 1];
@@ -362,13 +362,13 @@ private boolean condition(int[][] matrix, int value, int k) {
     }
     return count >= k;
 }
-{% endhighlight %}
+```
 
 Variant:
 
 [Kth Smallest Prime Fraction][k-th-smallest-prime-fraction]
 
-{% highlight java %}
+```java
 public int[] kthSmallestPrimeFraction(int[] A, int K) {
     double low = 0, high = 1;
     int p = 0, q = 1;
@@ -405,11 +405,11 @@ public int[] kthSmallestPrimeFraction(int[] A, int K) {
 
     return new int[]{p, q};
 }
-{% endhighlight %}
+```
 
 [Kth Missing Positive Number][kth-missing-positive-number]
 
-{% highlight java %}
+```java
 public int findKthPositive(int[] arr, int k) {
     int low = 0, high = arr.length;
     while (low < high) {
@@ -432,13 +432,13 @@ public int findKthPositive(int[] arr, int k) {
     // kth -> +k
     return low + k;
 }
-{% endhighlight %}
+```
 
 [Missing Element in Sorted Array][missing-element-in-sorted-array]
 
 [Missing Number In Arithmetic Progression][missing-number-in-arithmetic-progression]
 
-{% highlight java %}
+```java
 public int missingNumber(int[] arr) {
     int n = arr.length, d = (arr[n - 1] - arr[0]) / n, low = 0, high = n;
 
@@ -458,11 +458,11 @@ public int missingNumber(int[] arr) {
 
     return arr[0] + d * low;
 }
-{% endhighlight %}
+```
 
 [H-Index II][h-index-ii]
 
-{% highlight java %}
+```java
 public int hIndex(int[] citations) {
     int low = 0, high = citations.length;
     while (low < high) {
@@ -499,11 +499,11 @@ private boolean condition(int[] citations, int lower) {
     //  citations[N - h - 1] = citations[lower - 1] <= citations[lower] == h
     return citations[lower] >= citations.length - lower;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Days to Make m Bouquets][minimum-number-of-days-to-make-m-bouquets]
 
-{% highlight java %}
+```java
 public int minDays(int[] bloomDay, int m, int k) {
     int max = 0;
     for (int d : bloomDay) {
@@ -540,11 +540,11 @@ private boolean condition(int[] bloomDay, int m, int k, int day) {
     }
     return bouquet >= m;
 }
-{% endhighlight %}
+```
 
 [Split Array Largest Sum][split-array-largest-sum]
 
-{% highlight java %}
+```java
 public int splitArray(int[] nums, int m) {
     int sum = 0, max = 0;
     for (int num : nums) {
@@ -585,11 +585,11 @@ private boolean condition(int[] nums, int s, int m) {
     // and the sum of each subarray is no more than s
     return count <= m;
 }
-{% endhighlight %}
+```
 
 [Search Suggestions System][search-suggestions-system]
 
-{% highlight java %}
+```java
 public List<List<String>> suggestedProducts(String[] products, String searchWord) {
     Arrays.sort(products);
 
@@ -621,13 +621,13 @@ public List<List<String>> suggestedProducts(String[] products, String searchWord
 private boolean condition(String[] products, int index, String prefix) {
     return products[index].compareTo(prefix) >= 0;
 }
-{% endhighlight %}
+```
 
 [Find K Closest Elements][find-k-closest-elements]
 
 Search for the first index from which the `k`-element sliding window starts.
 
-{% highlight java %}
+```java
 public List<Integer> findClosestElements(int[] arr, int k, int x) {
     int low = 0, high = arr.length - k;
     while (low < high) {
@@ -640,11 +640,11 @@ public List<Integer> findClosestElements(int[] arr, int k, int x) {
     }
     return Arrays.stream(arr, low, low + k).boxed().collect(Collectors.toList());
 }
-{% endhighlight %}
+```
 
 [Minimum Limit of Balls in a Bag][minimum-limit-of-balls-in-a-bag]
 
-{% highlight java %}
+```java
 public int minimumSize(int[] nums, int maxOperations) {
     int low = 1, high = Integer.MAX_VALUE;
     while (low < high) {
@@ -667,13 +667,13 @@ private boolean condition(int[] nums, int penalty, int maxOperations) {
     // (maxOperations - operations) is monotonically increasing with respect to penalty
     return operations <= maxOperations;
 }
-{% endhighlight %}
+```
 
 Similarly,
 
 Maximize `x`, s.t. `condition(x) == true`
 
-{% highlight java %}
+```java
 public int binarySearch(int[] arr) {
     int low = min(searchSpace), high = max(searchSpace);
     while (low < high) {
@@ -691,11 +691,11 @@ public int binarySearch(int[] arr) {
 private boolean condition(int x) {
     return f(x) >= 0;
 }
-{% endhighlight %}
+```
 
 [Maximum Value at a Given Index in a Bounded Array][maximum-value-at-a-given-index-in-a-bounded-array]
 
-{% highlight java %}
+```java
 public int maxValue(int n, int index, int maxSum) {
     int low = 0, high = maxSum;
     while (low < high) {
@@ -723,11 +723,11 @@ private long f(int x, int n) {
     // x < n: 1,1,1,2,3
     return x > n ? (long)(x + (x - n + 1)) * n / 2 : (long)(1 + x) * x / 2 + (n - x);
 }
-{% endhighlight %}
+```
 
 [Maximum Number of Removable Characters][maximum-number-of-removable-characters]
 
-{% highlight java %}
+```java
 public int maximumRemovals(String s, String p, int[] removable) {
     int low = 0, high = removable.length;
     while (low < high) {
@@ -756,11 +756,11 @@ private boolean condition(String s, String p, int[] removable, int k) {
     }
     return j == p.length();
 }
-{% endhighlight %}
+```
 
 [Divide Chocolate][divide-chocolate]
 
-{% highlight java %}
+```java
 public int maximizeSweetness(int[] sweetness, int k) {
     int low = 1, high = (int)1e9 / (k + 1);
     while (low < high) {
@@ -784,11 +784,11 @@ private boolean condition(int[] sweetness, int minTotal, int k) {
     }
     return pieces - k - 1 >= 0;
 }
-{% endhighlight %}
+```
 
 [Maximum Font to Fit a Sentence in a Screen][maximum-font-to-fit-a-sentence-in-a-screen]
 
-{% highlight java %}
+```java
 public int maxFont(String text, int w, int h, int[] fonts, FontInfo fontInfo) {
     int low = 0, high = fonts.length - 1;
     while (low < high) {
@@ -813,11 +813,11 @@ private boolean condition(String text, int w, int h, int[] fonts, int index, Fon
     }
     return sum <= w;
 }
-{% endhighlight %}
+```
 
 [Maximum Width Ramp][maximum-width-ramp]
 
-{% highlight java %}
+```java
 public int maxWidthRamp(int[] A) {
     // decreasing list
     List<Integer> list = new ArrayList<>();
@@ -843,7 +843,7 @@ public int maxWidthRamp(int[] A) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Last Day Where You Can Still Cross][last-day-where-you-can-still-cross]
 
@@ -853,7 +853,7 @@ Binary Search + BFS/DFS
 
 [Maximum Average Subarray II][maximum-average-subarray-ii]
 
-{% highlight java %}
+```java
 private static final double MAX_ERROR = 1e-5;
 
 public double findMaxAverage(int[] nums, int k) {
@@ -915,11 +915,11 @@ private boolean hasAvgAbove(int[] nums, int k, double target) {
 
     return sum >= 0;
 }
-{% endhighlight %}
+```
 
 [Minimize Max Distance to Gas Station][minimize-max-distance-to-gas-station]
 
-{% highlight java %}
+```java
 private static final double MAX_ERROR = 1e-6;
 
 public double minmaxGasDist(int[] stations, int k) {
@@ -946,13 +946,13 @@ private boolean condition(int[] stations, int k, double penalty) {
     // (k - count) is monitonically increasing wrt penalty
     return count <= k;
 }
-{% endhighlight %}
+```
 
 ## Geometry
 
 [Minimum Time For K Virus Variants to Spread][minimum-time-for-k-virus-variants-to-spread]
 
-{% highlight java %}
+```java
 private static final int MAX_POINT = 100;
 
 public int minDayskVariants(int[][] points, int k) {
@@ -985,11 +985,11 @@ private boolean condition(int[][] points, int days, int k) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
 [Pour Water Between Buckets to Make Water Levels Equal][pour-water-between-buckets-to-make-water-levels-equal]
 
-{% highlight java %}
+```java
 private boolean condition(int[] buckets, int loss, double w) {
     double in = 0, out = 0;
     for (int b : buckets) {
@@ -1001,13 +1001,13 @@ private boolean condition(int[] buckets, int loss, double w) {
     }
     return out * (1 - loss / 100d) >= in;
 }
-{% endhighlight %}
+```
 
 ## Greedy
 
 [Maximum Number of Tasks You Can Assign][maximum-number-of-tasks-you-can-assign]
 
-{% highlight java %}
+```java
 public int maxTaskAssign(int[] tasks, int[] workers, int pills, int strength) {
     Arrays.sort(tasks);
     Arrays.sort(workers);
@@ -1063,7 +1063,7 @@ private boolean condition(int[] tasks, int[] workers, int pills, int strength, i
     }
     return true;
 }
-{% endhighlight %}
+```
 
 ## Combination
 
@@ -1073,7 +1073,7 @@ private boolean condition(int[] tasks, int[] workers, int pills, int strength, i
 
 [Median of a Row Wise Sorted Matrix][median-of-a-row-wise-sorted-matrix]
 
-{% highlight java %}
+```java
 public int matrixMedian(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     int low = 1, high = (int)1e6, k = m * n / 2 + 1;
@@ -1112,7 +1112,7 @@ private int binarySearch(int[] nums, int target) {
     }
     return nums[low] >= target ? low : n;
 }
-{% endhighlight %}
+```
 
 # Java
 
@@ -1126,16 +1126,16 @@ If the range contains multiple elements equal to the specified object, there is 
 
 index of the search key, if it is contained in the array within the specified range; otherwise, (-(insertion point) - 1). The *insertion point* is defined as the point at which the key would be inserted into the array: the index of the first element in the range **greater** than the key, or toIndex if all elements in the range are less than the specified key.
 
-{% highlight java %}
+```java
 if (insertionPoint < 0) {
     insertionPoint = ~insertionPoint;
 }
 // now 0 <= insertionPoint <= toIndex
-{% endhighlight %}
+```
 
 [Maximum Total Beauty of the Gardens][maximum-total-beauty-of-the-gardens]
 
-{% highlight java %}
+```java
 public long maximumBeauty(int[] flowers, long newFlowers, int target, int full, int partial) {
     Arrays.sort(flowers);
 
@@ -1180,7 +1180,7 @@ public long maximumBeauty(int[] flowers, long newFlowers, int target, int full, 
     }
     return max;
 }
-{% endhighlight %}
+```
 
 The key is to understand the computation of `cost[i]`:
 
@@ -1192,7 +1192,7 @@ The key is to understand the computation of `cost[i]`:
 
 [Count Good Triplets in an Array][count-good-triplets-in-an-array]
 
-{% highlight java %}
+```java
 public long goodTriplets(int[] nums1, int[] nums2) {
     int n = nums1.length;
 
@@ -1228,7 +1228,7 @@ public long goodTriplets(int[] nums1, int[] nums2) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 For example, `nums1 = [2,0,1,3], nums2 = [0,1,2,3]`
 
@@ -1242,7 +1242,7 @@ i = 3, list = [0, 1, 2, 3], insertionPoint = 3
 
 This problem is similar to [Count of Smaller Numbers After Self][count-of-smaller-numbers-after-self], so we can find this `insertionPoint` (i.e. number of less elements on the left) dynamically by merge sort or Fenwick Tree:
 
-{% highlight java %}
+```java
 FenwickTree ft = new FenwickTree(n);
 long count = 0;
 for (int i = 0; i < n - 1; i++) {
@@ -1251,13 +1251,13 @@ for (int i = 0; i < n - 1; i++) {
     ft.add(indices[nums1[i]] + 1, 1);
 }
 return count;
-{% endhighlight %}
+```
 
 # Minimax
 
 [House Robber IV][house-robber-iv]
 
-{% highlight java %}
+```java
 public int minCapability(int[] nums, int k) {
     int low = 1, high = Integer.MAX_VALUE;
     while (low < high) {
@@ -1281,11 +1281,11 @@ public int minCapability(int[] nums, int k) {
     }
     return low;
 }
-{% endhighlight %}
+```
 
 [Magnetic Force Between Two Balls][magnetic-force-between-two-balls]
 
-{% highlight java %}
+```java
 public int maxDistance(int[] position, int m) {
     Arrays.sort(position);
 
@@ -1322,11 +1322,11 @@ private boolean condition(int[] position, int d, int m) {
 
     return count >= m;
 }
-{% endhighlight %}
+```
 
 [Maximize the Minimum Powered City][maximize-the-minimum-powered-city]
 
-{% highlight java %}
+```java
 public long maxPower(int[] stations, int r, int k) {
     long low = 0, high = Arrays.stream(stations).asLongStream().sum() + k;
     System.out.println(high);
@@ -1373,7 +1373,7 @@ private boolean condition(int[] stations, int r, int k, long m) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [binary-search]: https://leetcode.com/problems/binary-search/
 [count-good-triplets-in-an-array]: https://leetcode.com/problems/count-good-triplets-in-an-array/

@@ -19,7 +19,7 @@ In a normed vector space $$ V $$, one of the defining properties of the norm is 
 
 [Escape The Ghosts][escape-the-ghosts]
 
-{% highlight java %}
+```java
 public boolean escapeGhosts(int[][] ghosts, int[] target) {
     // Manhattan distance
     int d = Math.abs(target[0]) + Math.abs(target[1]);
@@ -30,7 +30,7 @@ public boolean escapeGhosts(int[][] ghosts, int[] target) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Graham scan](https://en.wikipedia.org/wiki/Graham_scan)
 
@@ -42,7 +42,7 @@ For three points \\(P_{1}=(x_{1},y_{1})\\), \\(P_{2}=(x_{2},y_{2})\\) and \\(P_{
 
 [Circle and Rectangle Overlapping][circle-and-rectangle-overlapping]
 
-{% highlight java %}
+```java
 public boolean checkOverlap(int radius, int x_center, int y_center, int x1, int y1, int x2, int y2) {
     // finds the closest point of the rectangle to the center.
     // if the center is in the rectangle, the center itself is the point
@@ -58,13 +58,13 @@ public boolean checkOverlap(int radius, int x_center, int y_center, int x1, int 
 private int closest(int value, int min, int max) {
     return Math.max(min, Math.min(max, value));
 }
-{% endhighlight %}
+```
 
 # Area
 
 [Minimum Area Rectangle][minimum-area-rectangle]
 
-{% highlight java %}
+```java
 public int minAreaRect(int[][] points) {
     Map<Integer, Set<Integer>> map = new HashMap<>();
     for (int[] p : points) {
@@ -95,11 +95,11 @@ public int minAreaRect(int[][] points) {
     }
     return min == Integer.MAX_VALUE ? 0 : min;
 }
-{% endhighlight %}
+```
 
 [Minimum Area Rectangle II][minimum-area-rectangle-ii]
 
-{% highlight java %}
+```java
 public int minAreaRect(int[][] points) {
     Map<Integer, Set<Integer>> map = new HashMap<>();
     for (int[] p : points) {
@@ -129,7 +129,7 @@ public int minAreaRect(int[][] points) {
     }
     return min == Integer.MAX_VALUE ? 0 : min;
 }
-{% endhighlight %}
+```
 
 # Dihedral Group
 
@@ -137,7 +137,7 @@ public int minAreaRect(int[][] points) {
 
 [Number of Distinct Islands II][number-of-distinct-islands-ii]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 private static final int[][] TRANSFORMATIONS = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
@@ -208,7 +208,7 @@ private String getKey(List<int[]> cells) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 # Manhattan Distance
 
@@ -218,7 +218,7 @@ Taxicab metric = \\(l_1\\) distance = \\(l_1\\) norm = Manhattan distance
 
 [Maximum of Absolute Value Expression][maximum-of-absolute-value-expression]
 
-{% highlight java %}
+```java
 public int maxAbsValExpr(int[] arr1, int[] arr2) {
     int max = 0, n = arr1.length;
     int[] coefficients = {-1, 1};
@@ -240,7 +240,7 @@ public int maxAbsValExpr(int[] arr1, int[] arr2) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 # Geometric Median
 
@@ -273,7 +273,7 @@ Circumradius:
 
 [Erect the Fence II][erect-the-fence-ii]
 
-{% highlight java %}
+```java
 public double[] outerTrees(int[][] trees) {
     return welzl(trees, new ArrayList<>(), 0);
 }
@@ -376,7 +376,7 @@ private double det(double[][] a) {
 
     return a[0][0] * x - a[0][1] * y + a[0][2] * z;
 }
-{% endhighlight %}
+```
 
 # Rectangle
 
@@ -384,7 +384,7 @@ private double det(double[][] a) {
 
 Find the indexes of four edges.
 
-{% highlight java %}
+```java
 // {up, left, down, right}
 Map<Integer, int[]> edges = new HashMap<>();
 
@@ -398,7 +398,7 @@ for (int i = 0; i < m; i++) {
         p[3] = Math.max(p[3], j);
     }
 }
-{% endhighlight %}
+```
 
 # Convex Hull
 
@@ -412,7 +412,7 @@ $$\det(O)=(x_{B}-x_{A})(y_{C}-y_{A})-(x_{C}-x_{A})(y_{B}-y_{A})$$
 
 [Erect the Fence][erect-the-fence]
 
-{% highlight java %}
+```java
 // Convex Hull
 // Monotone Chain
 public int[][] outerTrees(int[][] points) {
@@ -461,7 +461,7 @@ public int[][] outerTrees(int[][] points) {
 private boolean clockwise(int[] a, int[] b, int[] c) {
     return (b[1] - a[1]) * (c[0] - b[0])  - (b[0] - a[0]) * (c[1] - b[1]) > 0;
 }
-{% endhighlight %}
+```
 
 # 3-D
 
@@ -473,7 +473,7 @@ To build the extra boxes:
 
 ![Building Boxes](https://assets.leetcode.com/users/images/801a52cc-d98e-49f5-81a2-3a1c7af3f263_1611461140.1280658.png)
 
-{% highlight java %}
+```java
 public int minimumBoxes(int n) {
     // sum = 1 + (1 + 2) + (1 + 2 + 3) + ... + (1 + 2 + ... + j)
     int sum = 0, i = 0, j = 0;
@@ -496,7 +496,7 @@ public int minimumBoxes(int n) {
 
     return i + j;
 }
-{% endhighlight %}
+```
 
 [building-boxes]: https://leetcode.com/problems/building-boxes/
 [circle-and-rectangle-overlapping]: https://leetcode.com/problems/circle-and-rectangle-overlapping/

@@ -5,7 +5,7 @@ title:  "State Machine"
 
 ![state machine](/assets/img/algorithm/best_time_to_buy_and_sell_stock_with_transaction_fee.png)
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices, int fee) {
     int[] s0 = new int[prices.length];  // cash
     int[] s1 = new int[prices.length];  // hold
@@ -20,11 +20,11 @@ public int maxProfit(int[] prices, int fee) {
 
     return s0[prices.length - 1];
 }
-{% endhighlight %}
+```
 
 Reduced to 0D:
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices, int fee) {
     int hold = -prices[0], cash = 0;
     for (int price : prices) {
@@ -34,11 +34,11 @@ public int maxProfit(int[] prices, int fee) {
     }
     return Math.max(cash, hold);
 }
-{% endhighlight %}
+```
 
 It can be simplified as:
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices, int fee) {
     int hold = -prices[0], cash = 0;
     for (int price : prices) {
@@ -63,13 +63,13 @@ public int maxProfit(int[] prices, int fee) {
     // The profit after selling is higher than holding
     return cash;
 }
-{% endhighlight %}
+```
 
 [Best Time to Buy and Sell Stock with Cooldown][best-time-to-buy-and-sell-stock-with-cooldown]
 
 ![state machine](/assets/img/algorithm/best_time_to_buy_and_sell_stock_with_cooldown.png)
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices) {
     if (prices.length == 0) {
         return 0;
@@ -91,11 +91,11 @@ public int maxProfit(int[] prices) {
 
     return Math.max(s0[prices.length - 1], s2[prices.length - 1]);
 }
-{% endhighlight %}
+```
 
 Reduced to 0D:
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices) {
     int cash = 0, hold = Integer.MIN_VALUE, sold = 0;
     for (int price : prices) {
@@ -106,11 +106,11 @@ public int maxProfit(int[] prices) {
     }
     return Math.max(sold, cash);
 }
-{% endhighlight %}
+```
 
 [Minimum Swaps To Make Sequences Increasing][minimum-swaps-to-make-sequences-increasing]
 
-{% highlight java %}
+```java
 public int minSwap(int[] A, int[] B) {
     int s1 = 0, s2 = 1;  // same, swap
     for (int i = 1; i < A.length; i++) {
@@ -129,7 +129,7 @@ public int minSwap(int[] A, int[] B) {
     }
     return Math.min(s1, s2);
 }
-{% endhighlight %}
+```
 
 # Deterministic Finite Automation
 
@@ -139,7 +139,7 @@ public int minSwap(int[] A, int[] B) {
 
 ![DFA](/assets/img/algorithm/valid_number.png)
 
-{% highlight java %}
+```java
 private static final List<Map<String, Integer>> dfa = List.of(
     Map.of("digit", 1, "sign", 2, "dot", 3),
     Map.of("digit", 1, "dot", 4, "exponent", 5),
@@ -179,7 +179,7 @@ public boolean isNumber(String s) {
 
     return validFinalStates.contains(currState);
 }
-{% endhighlight %}
+```
 
 [best-time-to-buy-and-sell-stock-with-cooldown]: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
 [best-time-to-buy-and-sell-stock-with-transaction-fee]: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/

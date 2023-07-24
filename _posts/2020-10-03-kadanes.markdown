@@ -9,7 +9,7 @@ tag: subarray
 
 [Maximum Subarray][maximum-subarray]
 
-{% highlight java %}
+```java
 public int maxSubArray(int[] nums) {
     int max = nums[0], currSum = nums[0];
     for (int i = 1; i < nums.length; i++) {
@@ -19,7 +19,7 @@ public int maxSubArray(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 This can be viewed as a simple/trivial example of dynamic programming.
 
@@ -27,7 +27,7 @@ Similarly, we can apply the same method to find min subarrays:
 
 [Maximum Sum Circular Subarray][maximum-sum-circular-subarray]
 
-{% highlight java %}
+```java
 public int maxSubarraySumCircular(int[] nums) {
     int sum = 0, maxSum = nums[0], minSum = nums[0], currMax = 0, currMin = 0;
     for (int num : nums) {
@@ -44,11 +44,11 @@ public int maxSubarraySumCircular(int[] nums) {
     // we need to return max(nums) instead
     return maxSum > 0 ? Math.max(maxSum, sum - minSum) : maxSum;
 }
-{% endhighlight %}
+```
 
 [Maximum Score Of Spliced Array][maximum-score-of-spliced-array]
 
-{% highlight java %}
+```java
 public int maximumsSplicedArray(int[] nums1, int[] nums2) {
     // finds the maximum subarray of nums2 - nums1 into nums1
     // or nums1 - nums2 into nums2
@@ -65,11 +65,11 @@ public int maximumsSplicedArray(int[] nums1, int[] nums2) {
     }
     return Math.max(sum1 + max1, sum2 + max2);
 }
-{% endhighlight %}
+```
 
 [Maximum Product Subarray][maximum-product-subarray]
 
-{% highlight java %}
+```java
 public int maxProduct(int[] nums) {
     int max = nums[0], min = nums[0];
     int product = max;
@@ -89,11 +89,11 @@ public int maxProduct(int[] nums) {
 
     return product;
 }
-{% endhighlight %}
+```
 
 [Maximum Alternating Subarray Sum][maximum-alternating-subarray-sum]
 
-{% highlight java %}
+```java
 public long maximumAlternatingSubarraySum(int[] nums) {
     long max = nums[0], neg = 0, pos = nums[0];
     for (int i = 1; i < nums.length; i++) {
@@ -104,11 +104,11 @@ public long maximumAlternatingSubarraySum(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Maximum Subarray Sum After One Operation][maximum-subarray-sum-after-one-operation]
 
-{% highlight java %}
+```java
 public int maxSumAfterOperation(int[] nums) {
     int n = nums.length;
     int[][] dp = new int[n + 1][2];
@@ -121,11 +121,11 @@ public int maxSumAfterOperation(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 Reduced to 1D:
 
-{% highlight java %}
+```java
 public int maxSumAfterOperation(int[] nums) {
     int op = 0, noop = 0, max = 0;
     for (int num : nums) {
@@ -135,11 +135,11 @@ public int maxSumAfterOperation(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Maximum Subarray Sum with One Deletion][maximum-subarray-sum-with-one-deletion]
 
-{% highlight java %}
+```java
 public int maximumSum(int[] arr) {
     int n = arr.length;
     int oneDelete = 0, noDelete = arr[0], max = arr[0];
@@ -150,11 +150,11 @@ public int maximumSum(int[] arr) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Best Time to Buy and Sell Stock][best-time-to-buy-and-sell-stock]
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices) {
     int max = 0, curr = 0;
     for (int i = 1; i < prices.length; i++) {
@@ -163,9 +163,9 @@ public int maxProfit(int[] prices) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices) {
     int minPrice = Integer.MAX_VALUE, profit = 0;
     for (int p : prices) {
@@ -174,11 +174,11 @@ public int maxProfit(int[] prices) {
     }
     return profit;
 }
-{% endhighlight %}
+```
 
 [Best Sightseeing Pair][best-sightseeing-pair]
 
-{% highlight java %}
+```java
 public int maxScoreSightseeingPair(int[] A) {
     int max = 0, curr = 0;
     for (int i = 0; i < A.length; i++) {
@@ -187,9 +187,9 @@ public int maxScoreSightseeingPair(int[] A) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int maxScoreSightseeingPair(int[] A) {
     int max = 0, curr = 0;
     for (int a : A) {
@@ -200,11 +200,11 @@ public int maxScoreSightseeingPair(int[] A) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Number of Subarrays with Bounded Maximum][number-of-subarrays-with-bounded-maximum]
 
-{% highlight java %}
+```java
 public int numSubarrayBoundedMax(int[] nums, int left, int right) {
     int count = 0;
     int dp = 0;  // number of valid subarrays ending at nums[i]
@@ -225,11 +225,11 @@ public int numSubarrayBoundedMax(int[] nums, int left, int right) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Time Needed to Rearrange a Binary String][time-needed-to-rearrange-a-binary-string]
 
-{% highlight java %}
+```java
 public int secondsToRemoveOccurrences(String s) {
     int zeros = 0, seconds = 0;
     for (char ch : s.toCharArray()) {
@@ -241,11 +241,11 @@ public int secondsToRemoveOccurrences(String s) {
     }
     return seconds;
 }
-{% endhighlight %}
+```
 
 [Substring With Largest Variance][substring-with-largest-variance]
 
-{% highlight java %}
+```java
 public int largestVariance(String s) {
     Set<Character> chars = s.chars().mapToObj(ch -> (char)ch).collect(Collectors.toSet());
     int max = 0;
@@ -284,7 +284,7 @@ public int largestVariance(String s) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 This problem has a more intuitive [prefix sum](../prefix-sum) solution.
 
@@ -292,7 +292,7 @@ This problem has a more intuitive [prefix sum](../prefix-sum) solution.
 
 [Max Dot Product of Two Subsequences][max-dot-product-of-two-subsequences]
 
-{% highlight java %}
+```java
 private static final int MIN_DOT_PRODUCT = -(int)5e8;
 
 public int maxDotProduct(int[] nums1, int[] nums2) {
@@ -311,13 +311,13 @@ public int maxDotProduct(int[] nums1, int[] nums2) {
     }
     return dp[n1][n2];
 }
-{% endhighlight %}
+```
 
 # Cumulative
 
 [Reducing Dishes][reducing-dishes]
 
-{% highlight java %}
+```java
 public int maxSatisfaction(int[] satisfaction) {
     Arrays.sort(satisfaction);
 
@@ -328,7 +328,7 @@ public int maxSatisfaction(int[] satisfaction) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [best-sightseeing-pair]: https://leetcode.com/problems/best-sightseeing-pair/
 [best-time-to-buy-and-sell-stock]: https://leetcode.com/problems/best-time-to-buy-and-sell-stock/

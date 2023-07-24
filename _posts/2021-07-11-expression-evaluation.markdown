@@ -18,7 +18,7 @@ category: algorithm
 
 [Build Binary Expression Tree From Infix Expression][build-binary-expression-tree-from-infix-expression]
 
-{% highlight java %}
+```java
 public Node expTree(String s) {
     // converts infix to postfix
     StringBuilder postfix = new StringBuilder();
@@ -64,11 +64,11 @@ public Node expTree(String s) {
     }
     return operandStack.pop();
 }
-{% endhighlight %}
+```
 
 [Basic Calculator III][basic-calculator-iii]
 
-{% highlight java %}
+```java
 private static final Map<Character, Integer> PRECEDENCE = new HashMap<>();
 
 static {
@@ -132,13 +132,13 @@ private int operate(Deque<Integer> operands, Deque<Character> operators) {
         default: return 0;
     }
 }
-{% endhighlight %}
+```
 
 # Dynamic Programming
 
 [The Score of Students Solving Math Expression][the-score-of-students-solving-math-expression]
 
-{% highlight java %}
+```java
 private static final int MAX_ANSWER = 1000;
 
 public int scoreOfStudents(String s, int[] answers) {
@@ -205,7 +205,7 @@ private int evaluate(String s) {
     }
     return st.stream().mapToInt(Integer::intValue).sum();
 }
-{% endhighlight %}
+```
 
 [basic-calculator-iii]: https://leetcode.com/problems/basic-calculator-iii/
 [build-binary-expression-tree-from-infix-expression]: https://leetcode.com/problems/build-binary-expression-tree-from-infix-expression/

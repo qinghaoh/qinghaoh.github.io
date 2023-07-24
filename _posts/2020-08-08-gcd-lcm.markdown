@@ -6,7 +6,7 @@ tags: math
 
 [Euclidean algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm)
 
-{% highlight java %}
+```java
 public int gcd(int a, int b) {
     while (b != 0) {
         int tmp = b;
@@ -15,13 +15,13 @@ public int gcd(int a, int b) {
     }
     return a;
 }
-{% endhighlight %}
+```
 
 ## Variants
 
 [Greatest Common Divisor of Strings][greatest-common-divisor-of-strings]
 
-{% highlight java %}
+```java
 public String gcdOfStrings(String str1, String str2) {
     if (str1.length() < str2.length()) {
         return gcdOfStrings(str2, str1);
@@ -37,13 +37,13 @@ public String gcdOfStrings(String str1, String str2) {
 
     return gcdOfStrings(str1.substring(str2.length()), str2);
 }
-{% endhighlight %}
+```
 
 [X of a Kind in a Deck of Cards][x-of-a-kind-in-a-deck-of-cards]
 
 [Number of Different Subsequences GCDs][number-of-different-subsequences-gcds]
 
-{% highlight java %}
+```java
 private static final int MAX = (int)2e5;
 
 public int countDifferentSubsequenceGCDs(int[] nums) {
@@ -75,7 +75,7 @@ public int countDifferentSubsequenceGCDs(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 ## Properties
 
@@ -87,7 +87,7 @@ Let $$ a $$ and $$ b $$ be integers with greatest common divisor $$ d $$. Then, 
 
 [Check if Point Is Reachable][check-if-point-is-reachable]
 
-{% highlight java %}
+```java
 public boolean isReachable(int targetX, int targetY) {
     // - first two options: gcd(x, y) remains the same (Bezout's identity)
     // - last two options: gcd(x, y) either remains the same or gets doubled
@@ -95,7 +95,7 @@ public boolean isReachable(int targetX, int targetY) {
     // gcd(1, 1) == 1, so the target is reachable iff gcd is a power of 2
     return Integer.bitCount(gcd(targetX, targetY)) == 1;
 }
-{% endhighlight %}
+```
 
 # Least Common Multiple
 
@@ -103,7 +103,7 @@ $$ {lcm} (a,b)={\frac {|a\cdot b|}{\gcd(a,b)}} $$
 
 [Minimize the Maximum of Two Arrays][minimize-the-maximum-of-two-arrays]
 
-{% highlight java %}
+```java
 public int minimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
     long lcm = lcm(divisor1, divisor2);
     int low = uniqueCnt1 + uniqueCnt2, high = Integer.MAX_VALUE;
@@ -117,11 +117,11 @@ public int minimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt
     }
     return low;
 }
-{% endhighlight %}
+```
 
 [Lexicographically Smallest String After Applying Operations][lexicographically-smallest-string-after-applying-operations]
 
-{% highlight java %}
+```java
 public String findLexSmallestString(String s, int a, int b) {
     int n = s.length();
     String min = s, curr = s;
@@ -165,11 +165,11 @@ private String rotate(String s, int b) {
     int n = s.length();
     return s.substring(n - b) + s.substring(0, n - b);
 }
-{% endhighlight %}
+```
 
 [Nth Magical Number][nth-magical-number]
 
-{% highlight java %}
+```java
 public int nthMagicalNumber(int n, int a, int b) {
     int lcm = a * b / gcd(a, b);
 
@@ -185,7 +185,7 @@ public int nthMagicalNumber(int n, int a, int b) {
 
     return (int)(low % MOD);
 }
-{% endhighlight %}
+```
 
 [check-if-point-is-reachable]: https://leetcode.com/problems/check-if-point-is-reachable/
 [greatest-common-divisor-of-strings]: https://leetcode.com/problems/greatest-common-divisor-of-strings/

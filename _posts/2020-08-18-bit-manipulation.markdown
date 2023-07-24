@@ -20,7 +20,7 @@ for (int s = mask; s > 0; s = (s - 1) & mask)
 
 [Counting Bits][counting-bits]
 
-{% highlight java %}
+```java
 public int[] countBits(int num) {
     int[] result = new int[num + 1];
     for (int i = 1; i <= num; i++) {
@@ -28,11 +28,11 @@ public int[] countBits(int num) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Bitwise AND of Numbers Range][bitwise-and-of-numbers-range]
 
-{% highlight java %}
+```java
 public int rangeBitwiseAnd(int left, int right) {
     while (right > left) {
         right &= (right - 1);
@@ -40,11 +40,11 @@ public int rangeBitwiseAnd(int left, int right) {
 
     return right;
 }
-{% endhighlight %}
+```
 
 [Concatenation of Consecutive Binary Numbers][concatenation-of-consecutive-binary-numbers]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int concatenatedBinary(int n) {
@@ -59,31 +59,31 @@ public int concatenatedBinary(int n) {
     }
     return (int)sum;
 }
-{% endhighlight %}
+```
 
 [Binary Number with Alternating Bits][binary-number-with-alternating-bits]
 
-{% highlight java %}
+```java
 public boolean hasAlternatingBits(int n) {
     return (n & (n >> 1)) == 0 && (n | (n >> 2)) == n;
 }
-{% endhighlight %}
+```
 
 `(n & (n >> 1)) == 0` ensures no consecutive 1's.
 
 [Minimum Operations to Reduce an Integer to 0][minimum-operations-to-reduce-an-integer-to-0]
 
-{% highlight java %}
+```java
 public int minOperations(int n) {
     // if number of consecutive 1's == 1, +1
     // if number of consecutive 1's > 1, +2
     return Integer.bitCount(n ^ (n * 3));
 }
-{% endhighlight %}
+```
 
 [XOR Operation in an Array][xor-operation-in-an-array]
 
-{% highlight java %}
+```java
 public int xorOperation(int n, int start) {
     // nums[i] = start + 2 * i
     //  right shift each element
@@ -134,11 +134,11 @@ private int xorEvenStart(int n, int start) {
     //      a_(n - 1) == nums[i] == start + n - 1
     return n % 2 == 0 ? (n / 2) & 1 : ((n / 2) & 1) ^ (start + n - 1);
 }
-{% endhighlight %}
+```
 
 [Total Hamming Distance][total-hamming-distance]
 
-{% highlight java %}
+```java
 public int totalHammingDistance(int[] nums) {
     int count = 0;
     for (int i = 0; i < 31; i++) {
@@ -152,11 +152,11 @@ public int totalHammingDistance(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [K-th Symbol in Grammar][k-th-symbol-in-grammar]
 
-{% highlight java %}
+```java
 public int kthGrammar(int N, int K) {
     // K is in [1, 2 ^ (N - 1)], so we can ignore N
     //
@@ -177,11 +177,11 @@ public int kthGrammar(int N, int K) {
     //   = 1 ^ 0 ^ 1 ^ 1 ^ 0
     return Integer.bitCount(K - 1) & 1;
 }
-{% endhighlight %}
+```
 
 [Single Number][single-number]
 
-{% highlight java %}
+```java
 public int singleNumber(int[] nums) {
     int a = 0;
     for (int num : nums) {
@@ -189,7 +189,7 @@ public int singleNumber(int[] nums) {
     }
     return a;
 }
-{% endhighlight %}
+```
 
 [Single Number II][single-number-ii]
 
@@ -197,7 +197,7 @@ Generalization: every element appears `k (k > 1)` times except for one.
 
 Solution I:
 
-{% highlight java %}
+```java
 public int singleNumber(int[] nums) {
     return singleNumber(nums, 3);
 }
@@ -215,7 +215,7 @@ private int singleNumber(int[] nums, int k) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 @fun4LeetCode has a great [article](https://leetcode.com/problems/single-number-ii/discuss/43295/Detailed-explanation-and-generalization-of-the-bitwise-operation-method-for-single-numbers) about a futhur generaliztion, where the excepted number appears `m` times (`m > 0` and `m % k > 0`). That's a bit over complicated, so I'm just archiving the link here.
 
@@ -227,7 +227,7 @@ To cover `k` counts, we require `2 ^ n >= k`, where `n` is the total number of b
 
 [Karnaugh map tool](https://www.charlie-coleman.com/experiments/kmap/)
 
-{% highlight java %}
+```java
 public int singleNumber(int[] nums) {
     int n0 = 0, n1 = 0;
     for (int num : nums) {
@@ -237,11 +237,11 @@ public int singleNumber(int[] nums) {
     }
     return n0;
 }
-{% endhighlight %}
+```
 
 [Single Number III][single-number-iii]
 
-{% highlight java %}
+```java
 public int[] singleNumber(int[] nums) {
     int lsb = 0;
     for (int num : nums) {
@@ -262,13 +262,13 @@ public int[] singleNumber(int[] nums) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 # Bit Count
 
 [Minimum Operations to Make the Integer Zero][minimum-operations-to-make-the-integer-zero]
 
-{% highlight java %}
+```java
 public int makeTheIntegerZero(int num1, int num2) {
     long num = num1;
     // num = num1 - k * num2 = 2 ^ i_1 + 2 ^ i_2 + ... + 2 ^ i_k
@@ -289,13 +289,13 @@ public int makeTheIntegerZero(int num1, int num2) {
         k++;
     }
 }
-{% endhighlight %}
+```
 
 # And
 
 [Find a Value of a Mysterious Function Closest to Target][find-a-value-of-a-mysterious-function-closest-to-target]
 
-{% highlight java %}
+```java
 public int closestToTarget(int[] arr, int target) {
     int n = arr.length, min = Integer.MAX_VALUE;
 
@@ -324,7 +324,7 @@ public int closestToTarget(int[] arr, int target) {
 
     return min;
 }
-{% endhighlight %}
+```
 
 # Exclusive Or
 
@@ -343,7 +343,7 @@ Process the numbres bit by bit from msb to lsb.
 
 [Maximum XOR of Two Numbers in an Array][maximum-xor-of-two-numbers-in-an-array]
 
-{% highlight java %}
+```java
 public int findMaximumXOR(int[] nums) {
     int max = 0, mask = 0;
     for (int i = 31; i >= 0; i--) {
@@ -374,7 +374,7 @@ public int findMaximumXOR(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 ## Trie
 
@@ -382,7 +382,7 @@ It's a more intuitive way to process the numbers bit by bit.
 
 [Maximum XOR of Two Numbers in an Array][maximum-xor-of-two-numbers-in-an-array]
 
-{% highlight java %}
+```java
 public int findMaximumXOR(int[] nums) {
     TrieNode root = new TrieNode();
     int max = 0;
@@ -428,11 +428,11 @@ public int findMaximumXOR(int[] nums) {
 class TrieNode {
     TrieNode[] children = new TrieNode[2];
 }
-{% endhighlight %}
+```
 
 A more compact approach is as follows, which inserts the node and finds the optimal peer in one loop:
 
-{% highlight java %}
+```java
 public int findMaximumXOR(int[] nums) {
     TrieNode root = new TrieNode();
     int max = 0;
@@ -471,11 +471,11 @@ public int findMaximumXOR(int[] nums) {
 class TrieNode {
     TrieNode[] children = new TrieNode[2];
 }
-{% endhighlight %}
+```
 
 [Count Pairs With XOR in a Range][count-pairs-with-xor-in-a-range]
 
-{% highlight java %}
+```java
 private static final int NUM_BITS = 15;
 
 public int countPairs(int[] nums, int low, int high) {
@@ -534,11 +534,11 @@ private void insert(TrieNode root, int num) {
         node.count++;
     }
 }
-{% endhighlight %}
+```
 
 Simplied version: no Trie, but similarly, level-traverse all the numbers
 
-{% highlight java %}
+```java
 public int countPairs(int[] nums, int low, int high) {
     return countSmallerPairs(nums, high + 1) - countSmallerPairs(nums, low);
 }
@@ -577,13 +577,13 @@ private int countSmallerPairs(int[] nums, int x) {
     // i < j
     return pairs / 2;
 }
-{% endhighlight %}
+```
 
 ### Backtracking/DFS
 
 [Maximum Genetic Difference Query][maximum-genetic-difference-query]
 
-{% highlight java %}
+```java
 private static final int NUM_BITS = 17;  // 10 ^ 5
 private TrieNode trieRoot = new TrieNode();
 private List<Integer>[] tree, queryIndexes;
@@ -665,7 +665,7 @@ class TrieNode {
         return ans;
     }
 }
-{% endhighlight %}
+```
 
 # Gray Code
 
@@ -673,15 +673,15 @@ class TrieNode {
 
 Formula:
 
-{% highlight java %}
+```java
 int g(int n) {
     return n ^ (n >> 1);
 }
-{% endhighlight %}
+```
 
 [Circular Permutation in Binary Representation][circular-permutation-in-binary-representation]
 
-{% highlight java %}
+```java
 public List<Integer> circularPermutation(int n, int start) {
     List<Integer> list = new ArrayList<>();
     for (int i = 0; i < (1 << n); i++) {
@@ -689,13 +689,13 @@ public List<Integer> circularPermutation(int n, int start) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 ## Inverse Gray Code
 
 [Minimum One Bit Operations to Make Integers Zero][minimum-one-bit-operations-to-make-integers-zero]
 
-{% highlight java %}
+```java
 public int minimumOneBitOperations(int n) {
     // oeis A006068
     // inverse Gray code
@@ -706,11 +706,11 @@ public int minimumOneBitOperations(int n) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Flip Columns For Maximum Number of Equal Rows][flip-columns-for-maximum-number-of-equal-rows]
 
-{% highlight java %}
+```java
 public int maxEqualRowsAfterFlips(int[][] matrix) {
     Map<String, Integer> map = new HashMap<>();
     for (int[] row : matrix) {
@@ -727,11 +727,11 @@ public int maxEqualRowsAfterFlips(int[][] matrix) {
     }
     return Collections.max(map.values());
 }
-{% endhighlight %}
+```
 
 [Find Root of N-Ary Tree][find-root-of-n-ary-tree]
 
-{% highlight java %}
+```java
 public Node findRoot(List<Node> tree) {
     // visits all nodes
     // the root node would be the only node that is visited once
@@ -751,11 +751,11 @@ public Node findRoot(List<Node> tree) {
     }
     return null;
 }
-{% endhighlight %}
+```
 
 [Integer Replacement][integer-replacement]
 
-{% highlight java %}
+```java
 public int integerReplacement(int n) {
     int count = 0;
     // not n > 1, because of Integer.MAX_VALUE
@@ -774,11 +774,11 @@ public int integerReplacement(int n) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Missing Number][missing-number]
 
-{% highlight java %}
+```java
 public int missingNumber(int[] nums) {
     int missing = nums.length;
     for (int i = 0; i < nums.length; i++) {
@@ -786,11 +786,11 @@ public int missingNumber(int[] nums) {
     }
     return missing;
 }
-{% endhighlight %}
+```
 
 [UTF-8 Validation][utf-8-validation]
 
-{% highlight java %}
+```java
 public boolean validUtf8(int[] data) {
     int count = 0;
     for (int d : data) {
@@ -814,7 +814,7 @@ public boolean validUtf8(int[] data) {
     }
     return count == 0;
 }
-{% endhighlight %}
+```
 
 [binary-number-with-alternating-bits]: https://leetcode.com/problems/binary-number-with-alternating-bits/
 [bitwise-and-of-numbers-range]: https://leetcode.com/problems/bitwise-and-of-numbers-range/

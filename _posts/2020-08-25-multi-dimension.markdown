@@ -12,7 +12,7 @@ tags: array
 
 [Find Positive Integer Solution for a Given Equation][find-positive-integer-solution-for-a-given-equation]
 
-{% highlight java %}
+```java
 public List<List<Integer>> findSolution(CustomFunction customfunction, int z) {
     List<List<Integer>> result = new ArrayList<>();
     // starts from bottom-right
@@ -29,13 +29,13 @@ public List<List<Integer>> findSolution(CustomFunction customfunction, int z) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 # Dimension Reduction
 
 [Edit Distance][edit-distance]
 
-{% highlight java %}
+```java
 public int minDistance(String word1, String word2) {
     int n1 = word1.length(), n2 = word2.length();
     int[][] dp = new int[n1 + 1][n2 + 1];
@@ -59,13 +59,13 @@ public int minDistance(String word1, String word2) {
     }
     return dp[n1][n2];
 }
-{% endhighlight %}
+```
 
 Rolling array optimization:
 
 ![Rolling Array](/assets/img/algorithm/dp_dimension_reduction_1.png)
 
-{% highlight java %}
+```java
 public int minDistance(String word1, String word2) {
     int prev = 0, n1 = word1.length(), n2 = word2.length();
     int[] dp = new int[word2.length() + 1];
@@ -89,11 +89,11 @@ public int minDistance(String word1, String word2) {
     }
     return dp[n2];
 }
-{% endhighlight %}
+```
 
 [Disconnect Path in a Binary Matrix by at Most One Flip][disconnect-path-in-a-binary-matrix-by-at-most-one-flip]
 
-{% highlight java %}
+```java
 public boolean isPossibleToCutPath(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     // rolling DP
@@ -118,13 +118,13 @@ public boolean isPossibleToCutPath(int[][] grid) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
 # Projection
 
 [Smallest Rectangle Enclosing Black Pixels][smallest-rectangle-enclosing-black-pixels]
 
-{% highlight java %}
+```java
 public int minArea(char[][] image, int x, int y) {
     int m = image.length, n = image[0].length;
     // there's only one black region,
@@ -157,13 +157,13 @@ private int binarySearch(char[][] image, int low, int high, int min, int max, bo
     }
     return low;
 }
-{% endhighlight %}
+```
 
 # Range Sum
 
 [Matrix Block Sum][matrix-block-sum]
 
-{% highlight java %}
+```java
 public int[][] matrixBlockSum(int[][] mat, int K) {
     int m = mat.length, n = mat[0].length;
     int[][] rangeSum = new int[m + 1][n + 1];
@@ -184,13 +184,13 @@ public int[][] matrixBlockSum(int[][] mat, int K) {
     }  
     return sum;
 }
-{% endhighlight %}
+```
 
 [Lonely Pixel I][lonely-pixel-i]
 
 [Maximum Side Length of a Square with Sum Less than or Equal to Threshold][maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold]
 
-{% highlight java %}
+```java
 public int maxSideLength(int[][] mat, int threshold) {
     int m = mat.length, n = mat[0].length;
     int[][] p = new int[m + 1][n + 1];  // prefix sum
@@ -210,11 +210,11 @@ public int maxSideLength(int[][] mat, int threshold) {
 private int squareSum(int[][] p, int i, int j, int k) {
     return p[i + 1][j + 1] - p[i + 1][j + 1 - k] - p[i + 1 - k][j + 1] + p[i + 1 - k][j + 1 - k];
 }
-{% endhighlight %}
+```
 
 [Stamping the Grid][stamping-the-grid]
 
-{% highlight java %}
+```java
 public boolean possibleToStamp(int[][] grid, int stampHeight, int stampWidth) {
     int m = grid.length, n = grid[0].length;
     // stamp[i][j]: whether it's possible to fit the bottom right corner of a stamp at (i, j)
@@ -253,7 +253,7 @@ private int[][] initRangeSum(int[][] matrix) {
 private int sum(int[][] p, int r1, int c1, int r2, int c2) {
     return p[r2 + 1][c2 + 1] - p[r2 + 1][c1] - p[r1][c2 + 1] + p[r1][c1];
 }
-{% endhighlight %}
+```
 
 # 2D Prefix Sum
 
@@ -261,7 +261,7 @@ private int sum(int[][] p, int r1, int c1, int r2, int c2) {
 
 [Number of Submatrices That Sum to Target][number-of-submatrices-that-sum-to-target]
 
-{% highlight java %}
+```java
 int[][] p = new int[m + 1][n];
 
 // calculates prefix sum for each column 
@@ -278,18 +278,18 @@ for (int r1 = 0; r1 < m; r1++) {
         count += subarraySum(p, r1, r2, target);
     }
 }
-{% endhighlight %}
+```
 
 Alternatively,
 
-{% highlight java %}
+```java
 // calculates prefix sum for row
 for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
         p[i][j + 1] = p[i][j] + matrix[i][j];
     }
 }
-{% endhighlight %}
+```
 
 # Count
 
@@ -297,7 +297,7 @@ Stick to one orientation so the final result won't duplicate.
 
 [Number of Black Blocks][number-of-black-blocks]
 
-{% highlight java %}
+```java
 public long[] countBlackBlocks(int m, int n, int[][] coordinates) {
     Map<List<Integer>, Integer> map = new HashMap<>();
     for (var c : coordinates) {
@@ -325,13 +325,13 @@ private void incrementVal(Map<List<Integer>, Integer> map, int r, int c) {
     var k = Arrays.asList(r, c);
     map.put(k, map.getOrDefault(k, 0) + 1);
 }
-{% endhighlight %}
+```
 
 # Traversal
 
 [Diagonal Traverse II][diagonal-traverse-ii]
 
-{% highlight java %}
+```java
 public int[] findDiagonalOrder(List<List<Integer>> nums) {
     List<Deque<Integer>> diags = new ArrayList<>();
     int n = 0;
@@ -354,7 +354,7 @@ public int[] findDiagonalOrder(List<List<Integer>> nums) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 # Flood Fill
 
@@ -362,7 +362,7 @@ public int[] findDiagonalOrder(List<List<Integer>> nums) {
 
 [Number of Enclaves][number-of-enclaves]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -403,7 +403,7 @@ private void fill(int i, int j) {
         fill(i + d[0], j + d[1]);
     }
 }
-{% endhighlight %}
+```
 
 Regular DFS/BFS would also work.
 
@@ -417,7 +417,7 @@ Regular DFS/BFS would also work.
 
 [Transform to Chessboard][transform-to-chessboard]
 
-{% highlight java %}
+```java
 public int movesToChessboard(int[][] board) {
     int n = board.length;
     for (int i = 0; i < n; i++) {
@@ -499,13 +499,13 @@ public int movesToChessboard(int[][] board) {
     // one swap fixes two misplaced elements
     return (colMisplaced + rowMisplaced) / 2;
 }
-{% endhighlight %}
+```
 
 # Flip
 
 [Remove All Ones With Row and Column Flips][remove-all-ones-with-row-and-column-flips]
 
-{% highlight java %}
+```java
 public boolean removeOnes(int[][] grid) {
     // order of flips doesn't matter
     // e.g. r1 -> c1 is equivalant to c1 -> r1
@@ -524,13 +524,13 @@ public boolean removeOnes(int[][] grid) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 # Linear Transformation
 
 [Image Overlap][image-overlap]
 
-{% highlight java %}
+```java
 public int largestOverlap(int[][] img1, int[][] img2) {
     int n = img1.length;
     int count = 0;
@@ -555,13 +555,13 @@ public int largestOverlap(int[][] img1, int[][] img2) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 # Greedy
 
 [Find Valid Matrix Given Row and Column Sums][find-valid-matrix-given-row-and-column-sums]
 
-{% highlight java %}
+```java
 public int[][] restoreMatrix(int[] rowSum, int[] colSum) {
     int m = rowSum.length, n = colSum.length;
     int[][] matrix = new int[m][n];
@@ -574,7 +574,7 @@ public int[][] restoreMatrix(int[] rowSum, int[] colSum) {
     }
     return matrix;
 }
-{% endhighlight %}
+```
 
 [diagonal-traverse-ii]: https://leetcode.com/problems/diagonal-traverse-ii/
 [disconnect-path-in-a-binary-matrix-by-at-most-one-flip]: https://leetcode.com/problems/disconnect-path-in-a-binary-matrix-by-at-most-one-flip/

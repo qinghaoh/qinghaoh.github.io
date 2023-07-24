@@ -11,7 +11,7 @@ tags: tree
 
 [Lowest Common Ancestor of a Binary Tree][lowest-common-ancestor-of-a-binary-tree]
 
-{% highlight java %}
+```java
 private TreeNode lca = null;
 
 // Relax the condition so the problem can be solved recursively:
@@ -35,11 +35,11 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
     return left == null ? right : left;
 }
-{% endhighlight %}
+```
 
 [Lowest Common Ancestor of a Binary Tree II][lowest-common-ancestor-of-a-binary-tree-ii]
 
-{% highlight java %}
+```java
 private int count = 0;
 
 public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
@@ -70,11 +70,11 @@ private TreeNode dfs(TreeNode node, TreeNode p, TreeNode q) {
 
     return left == null ? right : left;
 }
-{% endhighlight %}
+```
 
 [Lowest Common Ancestor of a Binary Tree III][lowest-common-ancestor-of-a-binary-tree-iii]
 
-{% highlight java %}
+```java
 public Node lowestCommonAncestor(Node p, Node q) {
     Node a = p, b = q;
     while (a != b) {
@@ -83,13 +83,13 @@ public Node lowestCommonAncestor(Node p, Node q) {
     }
     return a;
 }
-{% endhighlight %}
+```
 
 This solution stems from [Intersection of Two Linked Lists][intersection-of-two-linked-lists].
 
 [Cycle Length Queries in a Tree][cycle-length-queries-in-a-tree]
 
-{% highlight java %}
+```java
 public int[] cycleLengthQueries(int n, int[][] queries) {
     int m = queries.length;
     int[] answer = new int[m];
@@ -108,11 +108,11 @@ public int[] cycleLengthQueries(int n, int[][] queries) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 [Find Distance in a Binary Tree][find-distance-in-a-binary-tree]
 
-{% highlight java %}
+```java
 private int d = -1;
 
 public int findDistance(TreeNode root, int p, int q) {
@@ -145,11 +145,11 @@ private int dfs(TreeNode node, int p, int q) {
 
     return -1;
 }
-{% endhighlight %}
+```
 
 [Lowest Common Ancestor of Deepest Leaves][lowest-common-ancestor-of-deepest-leaves]
 
-{% highlight java %}
+```java
 public TreeNode lcaDeepestLeaves(TreeNode root) {
     return dfs(root).getValue();
 }
@@ -165,7 +165,7 @@ private Pair<Integer, TreeNode> dfs(TreeNode node) {
     int d1 = l.getKey(), d2 = r.getKey();
     return new Pair(Math.max(d1, d2) + 1, d1 == d2 ? node : d1 > d2 ? l.getValue() : r.getValue());
 }
-{% endhighlight %}
+```
 
 [Step-By-Step Directions From a Binary Tree Node to Another][step-by-step-directions-from-a-binary-tree-node-to-another]
 
@@ -175,7 +175,7 @@ The shortest path between any two nodes in a tree must pass through their Lowest
 
 [Kth Ancestor of a Tree Node][kth-ancestor-of-a-tree-node]
 
-{% highlight java %}
+```java
 // dp[i][j] = j-th node's 2^(i)th ancestor in the path
 private int[][] dp;
 private int maxPow;
@@ -214,13 +214,13 @@ public int getKthAncestor(int node, int k) {
     }
     return node;
 }
-{% endhighlight %}
+```
 
 # Rerooting
 
 [Count Number of Possible Root Nodes][count-number-of-possible-root-nodes]
 
-{% highlight java %}
+```java
 private List<Integer>[] tree;
 // if guesses contains [u, v], guessGraph[u] contains v
 private Set<Integer>[] guessGraph;
@@ -271,11 +271,11 @@ private void dfs(int node, int parent, int delta) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Difference Between Maximum and Minimum Price Sum][difference-between-maximum-and-minimum-price-sum]
 
-{% highlight java %}
+```java
 // maxPaths[i]: when the tree is rooted at node 0, max path sum of subtree of root node i
 private long[] maxPaths;
 private long maxCost;
@@ -341,7 +341,7 @@ private void reroot(List<Integer>[] tree, int node, int parent, int[] price, lon
         }
     }
 }
-{% endhighlight %}
+```
 
 ![Rerooting](/assets/img/algorithm/difference_between_maximum_and_minimum_price_sum.png)
 
@@ -351,7 +351,7 @@ Rerooting is a general algorithm that can be used in many cases. However, a smar
 
 [Maximum XOR of Two Non-Overlapping Subtrees][maximum-xor-of-two-non-overlapping-subtrees]
 
-{% highlight java %}
+```java
 private List<Integer>[] tree;
 private long[] sums;
 private TrieNode root;
@@ -427,7 +427,7 @@ private void dfs2(int node, int parent) {
 class TrieNode {
     TrieNode[] children = new TrieNode[2];
 }
-{% endhighlight %}
+```
 
 [count-number-of-possible-root-nodes]: https://leetcode.com/problems/count-number-of-possible-root-nodes/
 [cycle-length-queries-in-a-tree]: https://leetcode.com/problems/cycle-length-queries-in-a-tree/

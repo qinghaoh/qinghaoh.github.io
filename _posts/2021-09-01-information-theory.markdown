@@ -5,7 +5,7 @@ tags: math
 ---
 [Poor Pigs][poor-pigs]
 
-{% highlight java %}
+```java
 public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
     // the number of available states for a pig
     // e.g. minutesToTest / minutesToDie == 2
@@ -21,7 +21,7 @@ public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
     // finds min p that s ^ p >= buckets
     return (int)Math.ceil(Math.log(buckets) / Math.log(states));
 }
-{% endhighlight %}
+```
 
 Another way of explanation (credit to @StefanPochmann):
 

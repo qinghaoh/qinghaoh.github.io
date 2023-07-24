@@ -11,7 +11,7 @@ tags: string
 
 [Word Break][word-break]
 
-{% highlight java %}
+```java
 public boolean wordBreak(String s, List<String> wordDict) {
     Set<String> dict = new HashSet<>(wordDict);
     int n = s.length();
@@ -29,13 +29,13 @@ public boolean wordBreak(String s, List<String> wordDict) {
     }
     return dp[n];
 }
-{% endhighlight %}
+```
 
 [Word Break II][word-break-ii]
 
 Recursion + Memoization:
 
-{% highlight java %}
+```java
 private Map<String, List<String>> map = new HashMap<>();
 
 public List<String> wordBreak(String s, List<String> wordDict) {
@@ -59,11 +59,11 @@ public List<String> wordBreak(String s, List<String> wordDict) {
     map.put(s, list);
     return list;
 }
-{% endhighlight %}
+```
 
 [Longest Repeating Substring][longest-repeating-substring]
 
-{% highlight java %}
+```java
 // O(n ^ 2)
 public int longestRepeatingSubstring(String S) {
     int n = S.length();
@@ -80,11 +80,11 @@ public int longestRepeatingSubstring(String S) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Encode String with Shortest Length][encode-string-with-shortest-length]
 
-{% highlight java %}
+```java
 // O(n ^ 4)
 public String encode(String s) {
     int n = s.length();
@@ -129,13 +129,13 @@ public String encode(String s) {
 
     return dp[0][n - 1];
 }
-{% endhighlight %}
+```
 
 # Sliding Window
 
 [Distinct Echo Substrings][distinct-echo-substrings]
 
-{% highlight java %}
+```java
 public int distinctEchoSubstrings(String text) {
     Set<String> set = new HashSet<>();
     int n = text.length();
@@ -155,13 +155,13 @@ public int distinctEchoSubstrings(String text) {
     }
     return set.size();
 }
-{% endhighlight %}
+```
 
 # Greedy
 
 [Stamping The Sequence][stamping-the-sequence]
 
-{% highlight java %}
+```java
 private int questions = 0;  // count of wildcard '?'
 private String stamp;
 private char[] t;
@@ -212,13 +212,13 @@ private void doStamp(int pos) {
         }
     }
 }
-{% endhighlight %}
+```
 
 # Two Pointer
 
 [Last Substring in Lexicographical Order][last-substring-in-lexicographical-order]
 
-{% highlight java %}
+```java
 public String lastSubstring(String s) {
     // finds the start index of a suffix, such that s[start:] is the largest substring
     int i = 0, j = 1, k = 0;
@@ -251,7 +251,7 @@ public String lastSubstring(String s) {
     }
     return s.substring(i);
 }
-{% endhighlight %}
+```
 
 [distinct-echo-substrings]: https://leetcode.com/problems/distinct-echo-substrings/
 [encode-string-with-shortest-length]: https://leetcode.com/problems/encode-string-with-shortest-length/

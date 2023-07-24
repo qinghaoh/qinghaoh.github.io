@@ -3,7 +3,7 @@ title:  "Corner Cases"
 ---
 [Reverse Integer][reverse-integer]
 
-{% highlight java %}
+```java
 public int reverse(int x) {
     int res = 0;
     while (x != 0) {
@@ -18,11 +18,11 @@ public int reverse(int x) {
     }
     return res;
 }
-{% endhighlight %}
+```
 
 [Minimum Time Difference][minimum-time-difference]
 
-{% highlight java %}
+```java
 public int findMinDifference(List<String> timePoints) {
     int[] minutes = timePoints.stream()
         .mapToInt(this::convert)
@@ -43,11 +43,11 @@ private int convert(String t) {
     String[] s = t.split(":");
     return Integer.valueOf(s[0]) * 60 + Integer.valueOf(s[1]);
 }
-{% endhighlight %}
+```
 
 [Most Visited Sector in a Circular Track][most-visited-sector-in-a-circular-track]
 
-{% highlight java %}
+```java
 public List<Integer> mostVisited(int n, int[] rounds) {
     List<Integer> result = new ArrayList<>();
 
@@ -68,11 +68,11 @@ public List<Integer> mostVisited(int n, int[] rounds) {
 
     return result;
 }
-{% endhighlight %}
+```
 
 [Rabbits in Forest][rabbits-in-forest]
 
-{% highlight java %}
+```java
 public int numRabbits(int[] answers) {
     int[] c = new int[1000];
     int count = 0;
@@ -86,11 +86,11 @@ public int numRabbits(int[] answers) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 [Heaters][heaters]
 
-{% highlight java %}
+```java
 public int findRadius(int[] houses, int[] heaters) {
     Arrays.sort(houses);
     Arrays.sort(heaters);
@@ -104,13 +104,13 @@ public int findRadius(int[] houses, int[] heaters) {
     }
     return radius;
 }
-{% endhighlight %}
+```
 
 ![Heaters](/assets/img/algorithm/heaters.png)
 
 [Sum of All Odd Length Subarrays][sum-of-all-odd-length-subarrays]
 
-{% highlight java %}
+```java
 public int sumOddLengthSubarrays(int[] arr) {
     int sum = 0;
     for (int i = 0; i < arr.length; i++) {
@@ -121,11 +121,11 @@ public int sumOddLengthSubarrays(int[] arr) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 [Sum of Mutated Array Closest to Target][sum-of-mutated-array-closest-to-target]
 
-{% highlight java %}
+```java
 public int findBestValue(int[] arr, int target) {
     Arrays.sort(arr);
 
@@ -152,11 +152,11 @@ public int findBestValue(int[] arr, int target) {
 
     return value;
 }
-{% endhighlight %}
+```
 
 [Swap for Longest Repeated Character Substring][swap-for-longest-repeated-character-substring]
 
-{% highlight java %}
+```java
 public int maxRepOpt1(String text) {
     // char : list of indexes
     Map<Character, List<Integer>> map = new HashMap<>();
@@ -183,11 +183,11 @@ public int maxRepOpt1(String text) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Number of Steps to Reduce a Number in Binary Representation to One][number-of-steps-to-reduce-a-number-in-binary-representation-to-one]
 
-{% highlight java %}
+```java
 public int numSteps(String s) {
     int step = 0, carry = 0;
     for (int i = s.length() - 1; i > 0; i--) {
@@ -203,11 +203,11 @@ public int numSteps(String s) {
     }
     return step + carry;
 }
-{% endhighlight %}
+```
 
 [Maximum Length of a Concatenated String with Unique Characters][maximum-length-of-a-concatenated-string-with-unique-characters]
 
-{% highlight java %}
+```java
 public int maxLength(List<String> arr) {
     List<Integer> list = new ArrayList<>();
     list.add(0);
@@ -233,11 +233,11 @@ public int maxLength(List<String> arr) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Count Number of Teams][count-number-of-teams]
 
-{% highlight java %}
+```java
 public int numTeams(int[] rating) {
     int count = 0;
     // i is the middle soldier
@@ -257,20 +257,20 @@ public int numTeams(int[] rating) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Count of Matches in Tournaments][count-of-matches-in-tournament]
 
-{% highlight java %}
+```java
 public int numberOfMatches(int n) {
     // one champion; each of the other teams lost one game
     return n - 1;
 }
-{% endhighlight %}
+```
 
 [Similar RGB Color][similar-rgb-color]
 
-{% highlight java %}
+```java
 public String similarRGB(String color) {
     return "#" + getClosest(color.substring(1, 3)) + getClosest(color.substring(3, 5)) + getClosest(color.substring(5));
 }
@@ -283,11 +283,11 @@ private String getClosest(String s) {
     q = q / 17 + (q % 17 > 8 ? 1 : 0);
     return String.format("%02x", 17 * q);
 }
-{% endhighlight %}
+```
 
 [Number of Students Unable to Eat Lunch][number-of-students-unable-to-eat-lunch]
 
-{% highlight java %}
+```java
 public int countStudents(int[] students, int[] sandwiches) {
     int[] count = {0, 0};
     for (int s: students) {
@@ -301,20 +301,20 @@ public int countStudents(int[] students, int[] sandwiches) {
 
     return students.length - eaten;
 }
-{% endhighlight %}
+```
 
 [Maximum Score From Removing Stones][maximum-score-from-removing-stones]
 
-{% highlight java %}
+```java
 public int maximumScore(int a, int b, int c) {
     // in the end, 3 0's or 2 0's
     return Math.min((a + b + c) / 2, a + b + c - Math.max(a, Math.max(b, c)));
 }
-{% endhighlight %}
+```
 
 [Nth Digit][nth-digit]
 
-{% highlight java %}
+```java
 public int findNthDigit(int n) {
     long count = 9;
     int len = 1;
@@ -327,11 +327,11 @@ public int findNthDigit(int n) {
 
     return Character.getNumericValue(Integer.toString((int)(count / 9) + (n - 1) / len).charAt((n - 1) % len));
 }
-{% endhighlight %}
+```
 
 [Convert Integer to the Sum of Two No-Zero Integers][convert-integer-to-the-sum-of-two-no-zero-integers]
 
-{% highlight java %}
+```java
 public int[] getNoZeroIntegers(int n) {
     int a = 0, b = 0, step = 1;
 
@@ -357,11 +357,11 @@ public int[] getNoZeroIntegers(int n) {
 
     return new int[]{a, b};
 }
-{% endhighlight %}
+```
 
 [Remove Comments][remove-comments]
 
-{% highlight java %}
+```java
 public List<String> removeComments(String[] source) {
     List<String> list = new ArrayList<>();
     StringBuilder sb = new StringBuilder();     
@@ -401,7 +401,7 @@ public List<String> removeComments(String[] source) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [convert-integer-to-the-sum-of-two-no-zero-integers]: https://leetcode.com/problems/convert-integer-to-the-sum-of-two-no-zero-integers/
 [count-number-of-teams]: https://leetcode.com/problems/count-number-of-teams/

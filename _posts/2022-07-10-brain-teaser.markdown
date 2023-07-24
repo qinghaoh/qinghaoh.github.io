@@ -4,7 +4,7 @@ category: algorithm
 ---
 [Minimum Amount of Time to Fill Cups][minimum-amount-of-time-to-fill-cups]
 
-{% highlight java %}
+```java
 public int fillCups(int[] amount) {
     int max = 0, sum = 0;
     for (int a : amount) {
@@ -21,6 +21,6 @@ public int fillCups(int[] amount) {
     // e.g. [3, 4, 4] -> [0, 4 + 1, 4 + 2]: ceil(sum / 2) = 6
     return Math.max(max, (sum + 1) / 2);
 }
-{% endhighlight %}
+```
 
 [minimum-amount-of-time-to-fill-cups]: https://leetcode.com/problems/minimum-amount-of-time-to-fill-cups/

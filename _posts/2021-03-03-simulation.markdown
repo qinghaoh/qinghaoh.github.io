@@ -4,7 +4,7 @@ category: algorithm
 ---
 [Pour Water][pour-water]
 
-{% highlight java %}
+```java
 public int[] pourWater(int[] heights, int V, int K) {
     while (V > 0) {
         int i = K;
@@ -22,11 +22,11 @@ public int[] pourWater(int[] heights, int V, int K) {
     }
     return heights;
 }
-{% endhighlight %}
+```
 
 [Champagne Tower][champagne-tower]
 
-{% highlight java %}
+```java
 public double champagneTower(int poured, int query_row, int query_glass) {
     double[][] glass = new double[query_row + 2][query_row + 2];
     glass[0][0] = poured;
@@ -43,11 +43,11 @@ public double champagneTower(int poured, int query_row, int query_glass) {
 
     return Math.min(glass[query_row][query_glass], 1);
 }
-{% endhighlight %}
+```
 
 Reduced to 1D:
 
-{% highlight java %}
+```java
 public double champagneTower(int poured, int query_row, int query_glass) {
     double[] glass = new double[query_row + 2];
     glass[0] = poured;
@@ -62,11 +62,11 @@ public double champagneTower(int poured, int query_row, int query_glass) {
 
     return Math.min(glass[query_glass], 1);
 }
-{% endhighlight %}
+```
 
 [Dota2 Senate][dota2-senate]
 
-{% highlight java %}
+```java
 public String predictPartyVictory(String senate) {
     Queue<Integer> r = new LinkedList<>(), d = new LinkedList<>();
     int n = senate.length();
@@ -88,11 +88,11 @@ public String predictPartyVictory(String senate) {
     }
     return r.size() > d.size() ? "Radiant" : "Dire";
 }
-{% endhighlight %}
+```
 
 [Where Will the Ball Fall][where-will-the-ball-fall]
 
-{% highlight java %}
+```java
 public int[] findBall(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     int[] answer = new int[n];
@@ -116,7 +116,7 @@ public int[] findBall(int[][] grid) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 [Number of Spaces Cleaning Robot Cleaned][number-of-spaces-cleaning-robot-cleaned]
 
@@ -124,7 +124,7 @@ When the robot reaches a space that it has already cleaned and is facing the sam
 
 [Reveal Cards In Increasing Order][reveal-cards-in-increasing-order]
 
-{% highlight java %}
+```java
 public int[] deckRevealedIncreasing(int[] deck) {
     Arrays.sort(deck);
     int n = deck.length;
@@ -141,11 +141,11 @@ public int[] deckRevealedIncreasing(int[] deck) {
     }
     return order;
 }
-{% endhighlight %}
+```
 
 [Find Latest Group of Size M][find-latest-group-of-size-m]
 
-{% highlight java %}
+```java
 public int findLatestStep(int[] arr, int m) {
     int n = arr.length;
     if (n == m) {
@@ -164,7 +164,7 @@ public int findLatestStep(int[] arr, int m) {
     }
     return step;
 }
-{% endhighlight %}
+```
 
 [champagne-tower]: https://leetcode.com/problems/champagne-tower/
 [dota2-senate]: https://leetcode.com/problems/dota2-senate/

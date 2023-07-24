@@ -34,7 +34,7 @@ tag: map
 
 [Distribute Candies][distribute-candies]
 
-{% highlight java %}
+```java
 private static final int MAX_NUM_TYPES = 2 * (int)1e5 + 1;
 
 public int distributeCandies(int[] candyType) {
@@ -44,11 +44,11 @@ public int distributeCandies(int[] candyType) {
     }
     return Math.min(candyType.length / 2, bitset.cardinality());
 }
-{% endhighlight %}
+```
 
 [Closest Room][closest-room]
 
-{% highlight java %}
+```java
 public int[] closestRoom(int[][] rooms, int[][] queries) {
     Arrays.sort(rooms, Comparator.comparingInt(r -> -r[1]));
 
@@ -80,7 +80,7 @@ public int[] closestRoom(int[][] rooms, int[][] queries) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 [closest-room]:https://leetcode.com/problems/closest-room/
 [distribute-candies]:https://leetcode.com/problems/distribute-candies/

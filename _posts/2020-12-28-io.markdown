@@ -5,7 +5,7 @@ tag: io
 
 [Read N Characters Given Read4 II - Call multiple times][read-n-characters-given-read4-ii-call-multiple-times]
 
-{% highlight java %}
+```java
 public class Solution extends Reader4 {
     private char[] buff = new char[4];
     private int p = 0;
@@ -38,6 +38,6 @@ public class Solution extends Reader4 {
         return index;
     }
 }
-{% endhighlight %}
+```
 
 [read-n-characters-given-read4-ii-call-multiple-times]: https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times/

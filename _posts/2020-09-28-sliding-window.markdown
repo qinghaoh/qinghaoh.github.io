@@ -29,7 +29,7 @@ The common steps to resolve the problems:
 
 [Max Consecutive Ones III][max-consecutive-ones-iii]
 
-{% highlight java %}
+```java
 public int longestOnes(int[] nums, int k) {
     int i = 0, j = 0;
     // the sliding window never shrinks
@@ -50,11 +50,11 @@ public int longestOnes(int[] nums, int k) {
     // its span memorizes the max range so far
     return j - i;
 }
-{% endhighlight %}
+```
 
 [Fruit Into Baskets][fruit-into-baskets]
 
-{% highlight java %}
+```java
 public int totalFruit(int[] fruits) {
     int n = fruits.length, i = 0, j = 0, k = 2;
     // picks[i]: number of picked fruits of type i
@@ -70,11 +70,11 @@ public int totalFruit(int[] fruits) {
     }
     return j - i;
 }
-{% endhighlight %}
+```
 
 [Get Equal Substrings Within Budget][get-equal-substrings-within-budget]
 
-{% highlight java %}
+```java
 public int equalSubstring(String s, String t, int maxCost) {
     int i = 0, j = 0, cost = 0;
     while (j < s.length()) {
@@ -88,11 +88,11 @@ public int equalSubstring(String s, String t, int maxCost) {
     }
     return j - i;
 }
-{% endhighlight %}
+```
 
 [Longest Repeating Character Replacement][longest-repeating-character-replacement]
 
-{% highlight java %}
+```java
 public int characterReplacement(String s, int k) {
     int[] count = new int[26];
     int i = 0, j = 0, max = 0;
@@ -118,11 +118,11 @@ public int characterReplacement(String s, int k) {
     }
     return j - i;
 }
-{% endhighlight %}
+```
 
 [Frequency of the Most Frequent Element][frequency-of-the-most-frequent-element]
 
-{% highlight java %}
+```java
 public int maxFrequency(int[] nums, int k) {
     Arrays.sort(nums);
 
@@ -138,13 +138,13 @@ public int maxFrequency(int[] nums, int k) {
     }
     return j - i;
 }
-{% endhighlight %}
+```
 
 [Longest Substring with At Most K Distinct Characters][longest-substring-with-at-most-k-distinct-characters]
 
 [Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit][longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit]
 
-{% highlight java %}
+```java
 public int longestSubarray(int[] nums, int limit) {
     Deque<Integer> maxd = new ArrayDeque<>(), mind = new ArrayDeque<>();
     int i = 0, j = 0;
@@ -173,7 +173,7 @@ public int longestSubarray(int[] nums, int limit) {
     }
     return j - i;
 }
-{% endhighlight %}
+```
 
 ### Count of Subarrays
 
@@ -189,7 +189,7 @@ The common steps to resolve the problems:
 
 [Subarrays with K Different Integers][subarrays-with-k-different-integers]
 
-{% highlight java %}
+```java
 public int subarraysWithKDistinct(int[] nums, int k) {
     return atMost(nums, k) - atMost(nums, k - 1);
 }
@@ -219,11 +219,11 @@ private int atMost(int[] nums, int k) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Count Number of Nice Subarrays][count-number-of-nice-subarrays]
 
-{% highlight java %}
+```java
 public int numberOfSubarrays(int[] nums, int k) {
     return atMost(nums, k) - atMost(nums, k - 1);
 }
@@ -241,13 +241,13 @@ private int atMost(int[] nums, int k) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 If we apply `nums[i] -> nums[i] % 2`, the problem becomes [Subarray Sum Equals K][subarray-sum-equals-k]
 
 [Count Subarrays With Score Less Than K][count-subarrays-with-score-less-than-k]
 
-{% highlight java %}
+```java
 public long countSubarrays(int[] nums, long k) {
     long sum = 0, count = 0;
     int i = 0, j = 0;
@@ -260,11 +260,11 @@ public long countSubarrays(int[] nums, long k) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Count Vowel Substrings of a String][count-vowel-substrings-of-a-string]
 
-{% highlight java %}
+```java
 public int countVowelSubstrings(String word) {
     return atMost(word, 5) - atMost(word, 4);
 }
@@ -291,11 +291,11 @@ private int atMost(String word, int k) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Subarray Product Less Than K][subarray-product-less-than-k]
 
-{% highlight java %}
+```java
 public int numSubarrayProductLessThanK(int[] nums, int k) {
     if (k <= 1) {
         return 0;
@@ -311,11 +311,11 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Kth Smallest Subarray Sum][kth-smallest-subarray-sum]
 
-{% highlight java %}
+```java
 private boolean condition(int[] nums, int upper, int k) {
     int i = 0, j = 0, sum = 0, count = 0;
     while (j < nums.length) {
@@ -327,11 +327,11 @@ private boolean condition(int[] nums, int upper, int k) {
     }
     return count >= k;
 }
-{% endhighlight %}
+```
 
 [Find K-th Smallest Pair Distance][find-k-th-smallest-pair-distance]
 
-{% highlight java %}
+```java
 public int smallestDistancePair(int[] nums, int k) {
     Arrays.sort(nums);
 
@@ -359,11 +359,11 @@ private boolean condition(int[] nums, int distance, int k) {
     }
     return count >= k;
 }
-{% endhighlight %}
+```
 
 [Count the Number of Good Subarrays][count-the-number-of-good-subarrays]
 
-{% highlight java %}
+```java
 public long countGood(int[] nums, int k) {
     long count = 0;
     int i = 0, j = 0;
@@ -381,7 +381,7 @@ public long countGood(int[] nums, int k) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 ## Monotonically Decreasing Function
 
@@ -400,7 +400,7 @@ The common steps to resolve the problems:
 
 [Minimum Size Subarray Sum][minimum-size-subarray-sum]
 
-{% highlight java %}
+```java
 public int minSubArrayLen(int target, int[] nums) {
     int i = 0, j = 0, min = Integer.MAX_VALUE;
     while (j < nums.length) {
@@ -414,11 +414,11 @@ public int minSubArrayLen(int target, int[] nums) {
 
     return min == Integer.MAX_VALUE ? 0 : min;
 }
-{% endhighlight %}
+```
 
 [Replace the Substring for Balanced String][replace-the-substring-for-balanced-string]
 
-{% highlight java %}
+```java
 public int balancedString(String s) {
     int[] freq = new int[26];
     for (char ch : s.toCharArray()) {
@@ -438,11 +438,11 @@ public int balancedString(String s) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [Minimum Window Substring][minimum-window-substring]
 
-{% highlight java %}
+```java
 public String minWindow(String s, String t) {
     int[] freq = new int[256];
     for (char ch : t.toCharArray()) {
@@ -474,11 +474,11 @@ public String minWindow(String s, String t) {
     }
     return window;
 }
-{% endhighlight %}
+```
 
 [Minimum Window Subsequence][minimum-window-subsequence]
 
-{% highlight java %}
+```java
 public String minWindow(String s1, String s2) {
     String window = "";
     int i1 = 0, i2 = 0, min = Integer.MAX_VALUE;
@@ -509,7 +509,7 @@ public String minWindow(String s1, String s2) {
     }
     return window;
 }
-{% endhighlight %}
+```
 
 **Count of Subarrays** 
 
@@ -517,7 +517,7 @@ public String minWindow(String s1, String s2) {
 
 This problem is very similar to [Minimum Window Substring][minimum-window-substring]:
 
-{% highlight java %}
+```java
 public int numberOfSubstrings(String s) {
     int k = 3;
     int[] count = new int[k];
@@ -536,7 +536,7 @@ public int numberOfSubstrings(String s) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 ## Non-monotonic Function
 
@@ -544,7 +544,7 @@ public int numberOfSubstrings(String s) {
 
 [Longest Substring with At Least K Repeating Characters][longest-substring-with-at-least-k-repeating-characters]
 
-{% highlight java %}
+```java
 public int longestSubstring(String s, int k) {
     int max = 0;
     // introduces a new constraint `uniqueCharsTarget` so that in sliding window function
@@ -586,13 +586,13 @@ private int slidingWindow(String s, int k, int uniqueCharsTarget) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 ## Exact-value Constraints
 
 [Minimum Operations to Reduce X to Zero][minimum-operations-to-reduce-x-to-zero]
 
-{% highlight java %}
+```java
 public int minOperations(int[] nums, int x) {
     int i = 0, j = 0, n = nums.length, sum = Arrays.stream(nums).sum(), min = Integer.MAX_VALUE;
     while (j < nums.length) {
@@ -609,7 +609,7 @@ public int minOperations(int[] nums, int x) {
     }
     return min == Integer.MAX_VALUE ? -1 : min;
 }
-{% endhighlight %}
+```
 
 Similar to: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equals-k]
 
@@ -617,7 +617,7 @@ Similar to: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equal
 
 [Longest Nice Subarray][longest-nice-subarray]
 
-{% highlight java %}
+```java
 public int longestNiceSubarray(int[] nums) {
     int mask = 0, i = 0, j = 0, max = 0;
     while (j < nums.length) {
@@ -632,13 +632,13 @@ public int longestNiceSubarray(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 We can't use "Upper Bound Constraints, Max Length" model, otherwise if a bit of the mask is set, it's possible more than one element in the window have that bit set. Therefore, we don't know what the new mask is like after moving `nums[i++]` out of the window.
 
 [Moving Stones Until Consecutive II][moving-stones-until-consecutive-ii]
 
-{% highlight java %}
+```java
 public int[] numMovesStonesII(int[] stones) {
     Arrays.sort(stones);
 
@@ -679,11 +679,11 @@ public int[] numMovesStonesII(int[] stones) {
 
     return new int[]{min, max};
 }
-{% endhighlight %}
+```
 
 [Delivering Boxes from Storage to Ports][delivering-boxes-from-storage-to-ports]
 
-{% highlight java %}
+```java
 private static final int MAX_TRIPS = (int)2e5;
 
 public int boxDelivering(int[][] boxes, int portsCount, int maxBoxes, int maxWeight) {
@@ -727,7 +727,7 @@ public int boxDelivering(int[][] boxes, int portsCount, int maxBoxes, int maxWei
     }
     return dp[n];
 }
-{% endhighlight %}
+```
 
 # Fixed-size Window
 
@@ -752,7 +752,7 @@ If a substring occurs `n` times, any of its substring occurs at least `n` times.
 
 [Minimum Swaps to Group All 1's Together][minimum-swaps-to-group-all-1s-together]
 
-{% highlight java %}
+```java
 public int minSwaps(int[] data) {
     int i = 0, j = 0, sum = Arrays.stream(data).sum(), count = 0, min = sum;
     while (j < data.length) {
@@ -764,11 +764,11 @@ public int minSwaps(int[] data) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [Find All Anagrams in a String][find-all-anagrams-in-a-string]
 
-{% highlight java %}
+```java
 public List<Integer> findAnagrams(String s, String p) {
     int[] count = new int[26];
     for (char ch : p.toCharArray()) {
@@ -793,13 +793,13 @@ public List<Integer> findAnagrams(String s, String p) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 The above problem is similar to [Minimum Window Substring][minimum-window-substring], but when moving left pointer, we use `if` rather than `while`. That's because the window size is fixed to be the length of `p`, and for a particular `j` we move `i` at most once.
 
 [Number of Equal Count Substrings][number-of-equal-count-substrings]
 
-{% highlight java %}
+```java
 public int equalCountSubstrings(String s, int count) {
     int result = 0;
     int unique = s.chars().mapToObj(i -> (char)i).collect(Collectors.toSet()).size();
@@ -822,11 +822,11 @@ public int equalCountSubstrings(String s, int count) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Maximum Sum of Distinct Subarrays With Length K][maximum-sum-of-distinct-subarrays-with-length-k]
 
-{% highlight java %}
+```java
 public long maximumSubarraySum(int[] nums, int k) {
     // the index of the last duplicate element in the window
     int lastDup = -1;
@@ -854,11 +854,11 @@ public long maximumSubarraySum(int[] nums, int k) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of K Consecutive Bit Flips][minimum-number-of-k-consecutive-bit-flips]
 
-{% highlight java %}
+```java
 public int minKBitFlips(int[] nums, int k) {
     // accumulated is the number of flips contributed by the preceding window nums[i - k + 1, ..., i - 1]
     // flipping the windows starting with these indices will also flip nums[i]
@@ -884,11 +884,11 @@ public int minKBitFlips(int[] nums, int k) {
     }
     return flips;
 }
-{% endhighlight %}
+```
 
 [Minimum Adjacent Swaps for K Consecutive Ones][minimum-adjacent-swaps-for-k-consecutive-ones]
 
-{% highlight java %}
+```java
 public int minMoves(int[] nums, int k) {
     if (k == 1) {
         return 0;
@@ -944,11 +944,11 @@ public int minMoves(int[] nums, int k) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Operations to Make Array Continuous][minimum-number-of-operations-to-make-array-continuous]
 
-{% highlight java %}
+```java
 public int minOperations(int[] nums) {
     Arrays.sort(nums);
 
@@ -977,11 +977,11 @@ public int minOperations(int[] nums) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [K Empty Slots][k-empty-slots]
 
-{% highlight java %}
+```java
 public int kEmptySlots(int[] bulbs, int k) {
     int n = bulbs.length;
     // days[i]: the day when bulbs[i] is turned on (1-indexed)
@@ -1013,11 +1013,11 @@ public int kEmptySlots(int[] bulbs, int k) {
     }
     return min == Integer.MAX_VALUE ? -1 : min;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Flips to Make the Binary String Alternating][minimum-number-of-flips-to-make-the-binary-string-alternating]
 
-{% highlight java %}
+```java
 public int minFlips(String s) {
     // sliding window
     // cyclic problem: s += s
@@ -1053,11 +1053,11 @@ public int minFlips(String s) {
     }
     return flips;
 }
-{% endhighlight %}
+```
 
 [Substring with Concatenation of All Words][substring-with-concatenation-of-all-words]
 
-{% highlight java %}
+```java
 private int k = 0, len = 0;
 private Map<String, Integer> map = new HashMap<>();
 private List<Integer> list = new ArrayList<>();
@@ -1117,13 +1117,13 @@ private void slidingWindow(String s, int i) {
         }
     }
 }
-{% endhighlight %}
+```
 
 # Dynamic Programming
 
 [Maximize Win From Two Segments][maximize-win-from-two-segments]
 
-{% highlight java %}
+```java
 public int maximizeWin(int[] prizePositions, int k) {
     int n = prizePositions.length, max = 0;
     // dp[i]: in the first i positions, the maximum number of prizes we can get from one segment
@@ -1138,11 +1138,11 @@ public int maximizeWin(int[] prizePositions, int k) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Jump Game VII][jump-game-vii]
 
-{% highlight java %}
+```java
 public boolean canReach(String s, int minJump, int maxJump) {
     // prev is the number of previous positions that we can jump from
     int n = s.length(), prev = 0;
@@ -1161,13 +1161,13 @@ public boolean canReach(String s, int minJump, int maxJump) {
     }
     return dp[n - 1];
 }
-{% endhighlight %}
+```
 
 # Variants
 
 [permutation in string][permutation-in-string]
 
-{% highlight java %}
+```java
 public boolean checkInclusion(String s1, String s2) {
     int n1 = s1.length(), n2 = s2.length();
     if (n1 > n2) {
@@ -1209,14 +1209,14 @@ public boolean checkInclusion(String s1, String s2) {
     }
     return count == 26;
 }
-{% endhighlight %}
+```
 
 
 # In Batch
 
 [Maximum White Tiles Covered by a Carpet][maximum-white-tiles-covered-by-a-carpet]
 
-{% highlight java %}
+```java
 public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
     Arrays.sort(tiles, Comparator.comparingInt(t -> t[0]));
 
@@ -1245,7 +1245,7 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 # Dynamic Constraints
 
@@ -1253,7 +1253,7 @@ In the following example, the constraints are "dynamic" - a series of fixed wind
 
 [Count Zero Request Servers][count-zero-request-servers]
 
-{% highlight java %}
+```java
 public int[] countServers(int n, int[][] logs, int x, int[] queries) {
     Arrays.sort(logs, Comparator.comparingInt(l -> l[1]));
 
@@ -1281,7 +1281,7 @@ public int[] countServers(int n, int[][] logs, int x, int[] queries) {
     }
     return arr;
 }
-{% endhighlight %}
+```
 
 [count-number-of-nice-subarrays]: https://leetcode.com/problems/count-number-of-nice-subarrays/
 [count-subarrays-with-score-less-than-k]: https://leetcode.com/problems/count-subarrays-with-score-less-than-k/

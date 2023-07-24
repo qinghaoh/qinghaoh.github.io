@@ -4,7 +4,7 @@ tags: array
 ---
 [Number of Zero-Filled Subarrays][number-of-zero-filled-subarrays]
 
-{% highlight java %}
+```java
 public long zeroFilledSubarray(int[] nums) {
     long count = 0;
     for (int i = 0, j = 0; j < nums.length; j++) {
@@ -16,11 +16,11 @@ public long zeroFilledSubarray(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Remove All Adjacent Duplicates in String II][remove-all-adjacent-duplicates-in-string-ii]
 
-{% highlight java %}
+```java
 public String removeDuplicates(String s, int k) {
     int n = s.length();
     // count[i]: number of duplicates ending at i
@@ -43,7 +43,7 @@ public String removeDuplicates(String s, int k) {
 
     return new String(c, 0, i);
 }
-{% endhighlight %}
+```
 
 Another solution is to use stack.
 
@@ -51,7 +51,7 @@ Another solution is to use stack.
 
 Scan from the end of the Strings.
 
-{% highlight java %}
+```java
 public boolean backspaceCompare(String S, String T) {
     int i = S.length() - 1, j = T.length() - 1;
     int back = 0;
@@ -75,11 +75,11 @@ public boolean backspaceCompare(String S, String T) {
     }
     return i == -1 && j == -1;
 }
-{% endhighlight %}
+```
 
 [Maximum Number of People That Can Be Caught in Tag][maximum-number-of-people-that-can-be-caught-in-tag]
 
-{% highlight java %}
+```java
 public int catchMaximumAmountofPeople(int[] team, int dist) {
     int n = team.length, count = 0;
     // i: it
@@ -105,11 +105,11 @@ public int catchMaximumAmountofPeople(int[] team, int dist) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Trapping Rain Water][trapping-rain-water]
 
-{% highlight java %}
+```java
 public int trap(int[] height) {
     int water = 0, leftMax = 0, rightMax = 0;
     int left = 0, right = height.length - 1;
@@ -128,11 +128,11 @@ public int trap(int[] height) {
 
     return water;
 }
-{% endhighlight %}
+```
 
 [Container With Most Water][container-with-most-water]
 
-{% highlight java %}
+```java
 public int maxArea(int[] height) {
     int area = 0, left = 0, right = height.length - 1;
     while (left < right) {
@@ -145,13 +145,13 @@ public int maxArea(int[] height) {
     }
     return area;
 }
-{% endhighlight %}
+```
 
 [Number of Subsequences That Satisfy the Given Sum Condition][number-of-subsequences-that-satisfy-the-given-sum-condition]
 
 [Modular arithmetic properties](https://en.wikipedia.org/wiki/Modular_arithmetic#Properties)
 
-{% highlight java %}
+```java
 private int MOD = (int)1e9 + 7;
 
 public int numSubseq(int[] nums, int target) {
@@ -175,11 +175,11 @@ public int numSubseq(int[] nums, int target) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Shortest Word Distance II][shortest-word-distance-ii]
 
-{% highlight java %}
+```java
 private Map<String, List<Integer>> map;
 
 public WordDistance(String[] words) {
@@ -203,11 +203,11 @@ public int shortest(String word1, String word2) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [The Latest Time to Catch a Bus][the-latest-time-to-catch-a-bus]
 
-{% highlight java %}
+```java
 public int latestTimeCatchTheBus(int[] buses, int[] passengers, int capacity) {
     Arrays.sort(buses);
     Arrays.sort(passengers);
@@ -238,13 +238,13 @@ public int latestTimeCatchTheBus(int[] buses, int[] passengers, int capacity) {
     }
     return -1;
 }
-{% endhighlight %}
+```
 
 # Unique Characters
 
 [Count Unique Characters of All Substrings of a Given String][count-unique-characters-of-all-substrings-of-a-given-string]
 
-{% highlight java %}
+```java
 private final int MOD = (int)1e9 + 7;
 
 public int uniqueLetterString(String s) {
@@ -269,11 +269,11 @@ public int uniqueLetterString(String s) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 [Count Substrings That Differ by One Character][count-substrings-that-differ-by-one-character]
 
-{% highlight java %}
+```java
 public int countSubstrings(String s, String t) {
     int count = 0 ;
     // each unmatched pair (i, j) is counted once and only once
@@ -307,13 +307,13 @@ private int helper(String s, String t, int i, int j) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Sort Transformed Array][sort-transformed-array]
 
 [One Edit Distance][one-edit-distance]
 
-{% highlight java %}
+```java
 public boolean isOneEditDistance(String s, String t) {
     if (s.equals(t) || Math.abs(s.length() - t.length()) > 1) {
         return false;
@@ -338,11 +338,11 @@ public boolean isOneEditDistance(String s, String t) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Maximum Score of a Good Subarray][maximum-score-of-a-good-subarray]
 
-{% highlight java %}
+```java
 public int maximumScore(int[] nums, int k) {
     int n = nums.length, i = k, j = k;
     int score = nums[k], min = nums[k];
@@ -364,13 +364,13 @@ public int maximumScore(int[] nums, int k) {
     }
     return score;
 }
-{% endhighlight %}
+```
 
 # Two Passes
 
 [Push Dominoes][push-dominoes]
 
-{% highlight java %}
+```java
 public String pushDominoes(String dominoes) {
     char[] chars = dominoes.toCharArray();
     int n = chars.length;
@@ -406,7 +406,7 @@ public String pushDominoes(String dominoes) {
     }
     return new String(chars);
 }
-{% endhighlight %}
+```
 
 ```
 .L.R...LR..L..
@@ -421,7 +421,7 @@ LL.RR.LLRRLL..
 
 [Count Collisions on a Road][count-collisions-on-a-road]
 
-{% highlight java %}
+```java
 public int countCollisions(String directions) {
     int n = directions.length(), left = 0, right = n - 1;
 
@@ -444,11 +444,11 @@ public int countCollisions(String directions) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Get the Maximum Score][get-the-maximum-score]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int maxSum(int[] nums1, int[] nums2) {
@@ -470,13 +470,13 @@ public int maxSum(int[] nums1, int[] nums2) {
     }
     return (int)(Math.max(dp1, dp2) % MOD);
 }
-{% endhighlight %}
+```
 
 # K Pointers
 
 [Intersection of Three Sorted Arrays][intersection-of-three-sorted-arrays]
 
-{% highlight java %}
+```java
 if (arr1[p1] == arr2[p2] && arr2[p2] == arr3[p3]) {
     list.add(arr1[p1]);
     p1++;
@@ -491,11 +491,11 @@ if (arr1[p1] == arr2[p2] && arr2[p2] == arr3[p3]) {
         p3++;
     }
 }
-{% endhighlight %}
+```
 
 [Longest Chunked Palindrome Decomposition][longest-chunked-palindrome-decomposition]
 
-{% highlight java %}
+```java
 public int longestDecomposition(String text) {
     // greedy
     int n = text.length(), count = 0;
@@ -516,11 +516,11 @@ public int longestDecomposition(String text) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Count Subarrays With Fixed Bounds][count-subarrays-with-fixed-bounds]
 
-{% highlight java %}
+```java
 public long countSubarrays(int[] nums, int minK, int maxK) {
     int n = nums.length, pOut = -1, pMin = -1, pMax = -1;
     long count = 0;
@@ -542,13 +542,13 @@ public long countSubarrays(int[] nums, int minK, int maxK) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 # DFS
 
 [Check if an Original String Exists Given Two Encoded Strings][check-if-an-original-string-exists-given-two-encoded-strings]
 
-{% highlight java %}
+```java
 private static final int MAX_DIFF = 1000;
 private Boolean[][][] memo;
 
@@ -608,7 +608,7 @@ private boolean dfs(String s1, String s2, int i, int j, int diff) {
 
     return memo[i][j][diff + MAX_DIFF] = false;
 }
-{% endhighlight %}
+```
 
 [backspace-string-compare]: https://leetcode.com/problems/backspace-string-compare/
 [check-if-an-original-string-exists-given-two-encoded-strings]: https://leetcode.com/problems/check-if-an-original-string-exists-given-two-encoded-strings/

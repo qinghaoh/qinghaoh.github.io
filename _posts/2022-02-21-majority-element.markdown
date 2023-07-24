@@ -11,7 +11,7 @@ Majority element: an element that occurs repeatedly for more than half of the el
 
 [Majority Element][majority-element]
 
-{% highlight java %}
+```java
 public int majorityElement(int[] nums) {
     int count = 0;
     Integer candidate = null;
@@ -25,6 +25,6 @@ public int majorityElement(int[] nums) {
 
     return candidate;
 }
-{% endhighlight %}
+```
 
 [majority-element]: https://leetcode.com/problems/majority-element/

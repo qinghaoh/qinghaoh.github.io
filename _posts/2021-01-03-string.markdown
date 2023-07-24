@@ -7,7 +7,7 @@ tags: string
 
 [String Transforms Into Another String][string-transforms-into-another-string]
 
-{% highlight java %}
+```java
 public boolean canConvert(String str1, String str2) {
     if (str1.equals(str2)) {
         return true;
@@ -26,7 +26,7 @@ public boolean canConvert(String str1, String str2) {
     // checks if there's an available temporary char
     return new HashSet<Character>(map.values()).size() < 26;
 }
-{% endhighlight %}
+```
 
 Case 1:
 
@@ -70,7 +70,7 @@ A [Lyndon word](https://en.wikipedia.org/wiki/Lyndon_word) is a nonempty string 
 
 [Orderly Queue][orderly-queue]
 
-{% highlight java %}
+```java
 public String orderlyQueue(String s, int k) {
     // bubble sort - swaps adjacent pairs
     if (k > 1) {
@@ -107,11 +107,11 @@ private String lyndonWord(String s) {
     }
     return s.substring(index, index + n / 2);
 }
-{% endhighlight %}
+```
 
 [Sentence Screen Fitting][sentence-screen-fitting]
 
-{% highlight java %}
+```java
 public int wordsTyping(String[] sentence, int rows, int cols) {
     String s = String.join(" ", sentence) + " ";
 
@@ -135,11 +135,11 @@ public int wordsTyping(String[] sentence, int rows, int cols) {
 
     return start / n;
 }
-{% endhighlight %}
+```
 
 We can preprocess the adjustment of every possible start:
 
-{% highlight java %}
+```java
 public int wordsTyping(String[] sentence, int rows, int cols) {
     String s = String.join(" ", sentence) + " ";
     int start = 0, n = s.length();
@@ -161,11 +161,11 @@ public int wordsTyping(String[] sentence, int rows, int cols) {
 
     return start / n;
 }
-{% endhighlight %}
+```
 
 [Decoded String at Index][decoded-string-at-index]
 
-{% highlight java %}
+```java
 public String decodeAtIndex(String S, int K) {
     long len = 0;
     int n = S.length();
@@ -203,7 +203,7 @@ public String decodeAtIndex(String S, int K) {
 
     return "";
 }
-{% endhighlight %}
+```
 
 For example, `s = "leet2code3", k = 10`
 
@@ -211,7 +211,7 @@ For example, `s = "leet2code3", k = 10`
 
 [Check If String Is Transformable With Substring Sort Operations][check-if-string-is-transformable-with-substring-sort-operations]
 
-{% highlight java %}
+```java
 public boolean isTransformable(String s, String t) {
     // we can move a char freely to the left until it hits a smaller char
     // e.g. "0231" > "0213" > "0123"
@@ -245,7 +245,7 @@ public boolean isTransformable(String s, String t) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [check-if-string-is-transformable-with-substring-sort-operations]: https://leetcode.com/problems/check-if-string-is-transformable-with-substring-sort-operations/
 [decoded-string-at-index]: https://leetcode.com/problems/decoded-string-at-index/

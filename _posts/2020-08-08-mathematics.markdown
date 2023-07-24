@@ -43,7 +43,7 @@ Gregorian calendar:
 
 [4 Keys Keyboard][4-keys-keyboard]
 
-{% highlight java %}
+```java
 public int maxA(int N) {
     // https://oeis.org/A178715
     int[] dp = new int[N + 1];
@@ -57,7 +57,7 @@ public int maxA(int N) {
     }
     return dp[N];
 }
-{% endhighlight %}
+```
 
 [Fibonacci number](https://en.wikipedia.org/wiki/Fibonacci_number#Sequence_properties)
 
@@ -67,7 +67,7 @@ public int maxA(int N) {
 
 [Sparse Matrix Multiplication][sparse-matrix-multiplication]
 
-{% highlight java %}
+```java
 public int[][] multiply(int[][] A, int[][] B) {
     int m = A.length, n = B[0].length;
     int[][] result = new int[m][n];
@@ -84,11 +84,11 @@ public int[][] multiply(int[][] A, int[][] B) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 [Non-negative Integers without Consecutive Ones][non-negative-integers-without-consecutive-ones]
 
-{% highlight java %}
+```java
 public int findIntegers(int n) {
     // Fibonacci
     // f[i]: the number of integers whose binary representation is not more than i bits
@@ -132,7 +132,7 @@ public int findIntegers(int n) {
     // adds extra 1 if there are no consecutive ones in n
     return sum + 1;
 }
-{% endhighlight %}
+```
 
 ```
 1011010
@@ -152,7 +152,7 @@ anything greater than 1010111 will not be allowed
 * Median minimizes total distance for absolute deviation: \\[D_{i}=\|x_{i}-m(X)\|\\]
 * Mode minimizes distance for indicator function
 
-{% highlight java %}
+```java
 public int minTotalDistance(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     List<Integer> x = new ArrayList<>(), y = new ArrayList<>();    
@@ -180,11 +180,11 @@ private int minDistance1D(List<Integer> points) {
     }
     return d;
 }
-{% endhighlight %}
+```
 
 [Allocate Mailboxes][allocate-mailboxes]
 
-{% highlight java %}
+```java
 private static final int MAX = 100 * 10000;
 
 public int minDistance(int[] houses, int k) {
@@ -228,11 +228,11 @@ public int minDistance(int[] houses, int k) {
 
     return dp[k][0];
 }
-{% endhighlight %}
+```
 
 Another way to calculate the distance matrix:
 
-{% highlight java %}
+```java
 for (int i = n - 1; i >= 0; i--) {
     for (int j = i; j < n; j++) {
         distance[i][j] = houses[j] - houses[i];
@@ -245,11 +245,11 @@ for (int i = n - 1; i >= 0; i--) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Median of Two Sorted Arrays][median-of-two-sorted-arrays]
 
-{% highlight java %}
+```java
 public double findMedianSortedArrays(int[] nums1, int[] nums2) {
     int m = nums1.length, n = nums2.length;
 
@@ -294,7 +294,7 @@ public double findMedianSortedArrays(int[] nums1, int[] nums2) {
     }
     return -1;
 }
-{% endhighlight %}
+```
 
 ## Catalan Number
 
@@ -316,7 +316,7 @@ C_{0}=1\quad {\text{and}}\quad C_{n+1}={\frac {2(2n+1)}{n+2}}C_{n}
 dp[n + 1] = dp[0] * dp[n] + dp[1] * dp[n - 1] + ... + dp[n] * dp[0]
 ```
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numberOfWays(int num_people) {
@@ -332,7 +332,7 @@ public int numberOfWays(int num_people) {
     }
     return (int)dp[n];
 }
-{% endhighlight %}
+```
 
 # Exponentiation
 
@@ -354,7 +354,7 @@ If we write \\(n\\) in binary as \\(b_{k}\cdots b_{0}\\), then this is equivalen
 
 Iterative:
 
-{% highlight java %}
+```java
 public double myPow(double x, int n) {
     // if n == Integer.MIN_VALUE, -n would overflow
     // so n is converted to long
@@ -375,11 +375,11 @@ public double myPow(double x, int n) {
     }
     return r;
 }
-{% endhighlight %}
+```
 
 Recursive:
 
-{% highlight java %}
+```java
 public double myPow(double x, int n) {
     return fastPow(x, (long)n);
 }
@@ -400,28 +400,28 @@ private double fastPow(double x, long n) {
 
     return n % 2 == 0 ? fastPow(x * x, n / 2) : x * fastPow(x * x, (n - 1) / 2);
 }
-{% endhighlight %}
+```
 
 Another way of the last return is:
 
-{% highlight java %}
+```java
 double half = fastPow(x, n / 2);
 return half * half * (n % 2 == 0 ? 1 : x);
-{% endhighlight %}
+```
 
 # Radix
 
 [Remove 9][remove-9]
 
-{% highlight java %}
+```java
 public int newInteger(int n) {
     return Integer.parseInt(Integer.toString(n, 9));
 }
-{% endhighlight %}
+```
 
 [Check if Number is a Sum of Powers of Three][check-if-number-is-a-sum-of-powers-of-three]
 
-{% highlight java %}
+```java
 public boolean checkPowersOfThree(int n) {
     while (n > 0) {
         if (n % 3 == 2) {
@@ -433,11 +433,11 @@ public boolean checkPowersOfThree(int n) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 [Adding Two Negabinary Numbers][adding-two-negabinary-numbers]
 
-{% highlight java %}
+```java
 public int[] addNegabinary(int[] arr1, int[] arr2) {
     int carry = 0, i = arr1.length - 1, j = arr2.length - 1;
     Deque<Integer> st = new ArrayDeque<>();
@@ -461,11 +461,11 @@ public int[] addNegabinary(int[] arr1, int[] arr2) {
 
     return st.stream().mapToInt(a -> a).toArray();
 }
-{% endhighlight %}
+```
 
 [Divide Two Integers][divide-two-integers]
 
-{% highlight java %}
+```java
 public int divide(int dividend, int divisor) {
     if (dividend == Integer.MIN_VALUE && divisor == -1) {
         return Integer.MAX_VALUE;
@@ -482,7 +482,7 @@ public int divide(int dividend, int divisor) {
 
     return (dividend ^ divisor) >= 0 ? result : -result;
 }
-{% endhighlight %}
+```
 
 [Smallest Good Base][smallest-good-base]
 
@@ -537,7 +537,7 @@ k < \sqrt[m]{n} < k + 1
 k = \left \lfloor{\sqrt[m]{n}}\right \rfloor 
 \\]
 
-{% highlight java %}
+```java
 
 public String smallestGoodBase(String n) {
     long num = Long.valueOf(n);
@@ -560,7 +560,7 @@ public String smallestGoodBase(String n) {
     }
     return String.valueOf(num - 1);
 }
-{% endhighlight %}
+```
 
 # Dyanmical Systems
 
@@ -568,7 +568,7 @@ public String smallestGoodBase(String n) {
 
 [Robot Bounded In Circle][robot-bounded-in-circle]
 
-{% highlight java %}
+```java
 public boolean isRobotBounded(String instructions) {
     // N, E, S, W
     {% raw %}
@@ -589,24 +589,24 @@ public boolean isRobotBounded(String instructions) {
     // after at most 4 cycles, the limit cycle trajectory returns to the initial point
     return (x == 0 && y == 0) || d != 0;
 }
-{% endhighlight %}
+```
 
 # Logarithm
 
 [Power of Three][power-of-three]
 
-{% highlight java %}
+```java
 public boolean isPowerOfThree(int n) {
     // takes the decimal part
     return (Math.log10(n) / Math.log10(3)) % 1 == 0;
 }
-{% endhighlight %}
+```
 
 # Absolute Value
 
 [Maximum of Absolute Value Expression][maximum-of-absolute-value-expression]
 
-{% highlight java %}
+```java
 public int maxAbsValExpr(int[] arr1, int[] arr2) {
     int n = arr1.length;
     // linear combinations
@@ -630,13 +630,13 @@ private int maxDiff(int[] c) {
     Arrays.sort(c);
     return c[c.length - 1] - c[0];
 }
-{% endhighlight %}
+```
 
 [Reverse Subarray To Maximize Array Value][reverse-subarray-to-maximize-array-value]
 
 ![(abs(a-c)+abs(b-d)) - (abs(a-b)+abs(c-d))](/assets/img/algorithm/reverse_subarray_to_maximize_array_value.png)
 
-{% highlight java %}
+```java
 public int maxValueAfterReverse(int[] nums) {
     int n = nums.length;
     int value = 0;
@@ -665,13 +665,13 @@ public int maxValueAfterReverse(int[] nums) {
 
     return value + gain;
 }
-{% endhighlight %}
+```
 
 # Minimax
 
 [Egg Drop With 2 Eggs and N Floors][egg-drop-with-2-eggs-and-n-floors]
 
-{% highlight java %}
+```java
 public int twoEggDrop(int n) {
     // minimax
     //
@@ -682,11 +682,11 @@ public int twoEggDrop(int n) {
     // 1 + 2 + ... + x >= n
     return (int) Math.ceil((Math.sqrt(1 + 8 * n) - 1) / 2);
 }
-{% endhighlight %}
+```
 
 Another solution is recursion:
 
-{% highlight java %}
+```java
 private int[][] memo;
 
 public int twoEggDrop(int n) {
@@ -713,13 +713,13 @@ private int drop(int n, int eggs) {
 
     return memo[n][eggs] = min;
 }
-{% endhighlight %}
+```
 
 Generalization:
 
 [Super Egg Drop][super-egg-drop]
 
-{% highlight java %}
+```java
 public int superEggDrop(int k, int n) {
     int low = 1, high = n;
     while (low < high) {
@@ -743,11 +743,11 @@ public int f(int x, int k, int n) {
     }
     return sum;
 }
-{% endhighlight %}
+```
 
 Dynamic Programming:
 
-{% highlight java %}
+```java
 public int superEggDrop(int k, int n) {
     // dp[i][j]: max number of floor that we can test with i moves and j eggs
     int[][] dp = new int[n + 1][k + 1];
@@ -763,13 +763,13 @@ public int superEggDrop(int k, int n) {
     }
     return moves;
 }
-{% endhighlight %}
+```
 
 # Sequence
 
 [Reach a Number][reach-a-number]
 
-{% highlight java %}
+```java
 public int reachNumber(int target) {
     // puts + and - signs on 1, 2, ..., k so that the sum == target
     // symmetry
@@ -790,7 +790,7 @@ public int reachNumber(int target) {
 
     return step;
 }
-{% endhighlight %}
+```
 
 # Set Theory
 
@@ -798,7 +798,7 @@ public int reachNumber(int target) {
 
 [Find Unique Binary String][find-unique-binary-string]
 
-{% highlight java %}
+```java
 public String findDifferentBinaryString(String[] nums) {
     StringBuilder sb= new StringBuilder();
     for (int i = 0; i < nums.length; i++) {
@@ -806,13 +806,13 @@ public String findDifferentBinaryString(String[] nums) {
     }
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 # Dynamic Programming
 
 [Perfect Squares][perfect-squares]
 
-{% highlight java %}
+```java
 public int numSquares(int n) {
     int dp[] = new int[n + 1];
     Arrays.fill(dp, Integer.MAX_VALUE);
@@ -833,7 +833,7 @@ public int numSquares(int n) {
     }
     return dp[n];
 }
-{% endhighlight %}
+```
 
 [4-keys-keyboard]: https://leetcode.com/problems/4-keys-keyboard/
 [adding-two-negabinary-numbers]: https://leetcode.com/problems/adding-two-negabinary-numbers/

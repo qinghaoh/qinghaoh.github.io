@@ -6,7 +6,7 @@ tags: recursion
 
 [Special Binary String][special-binary-string]
 
-{% highlight java %}
+```java
 public String makeLargestSpecial(String s) {
     List<String> list = new ArrayList<>();
     int count = 0, i = 0, j = 0;
@@ -32,11 +32,11 @@ public String makeLargestSpecial(String s) {
     Collections.sort(list, Collections.reverseOrder());
     return String.join("", list);
 }
-{% endhighlight %}
+```
 
 [Strobogrammatic Number II][strobogrammatic-number-ii]
 
-{% highlight java %}
+```java
 public List<String> findStrobogrammatic(int n) {
     return findStrobogrammatic(n, n);
 }
@@ -62,11 +62,11 @@ private List<String> findStrobogrammatic(int n, int initialN) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [Strobogrammatic Number III][strobogrammatic-number-iii]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final char[][] PAIRS = {{'0', '0'}, {'1', '1'}, {'6', '9'}, {'8', '8'}, {'9', '6'}};
 {% endraw %}
@@ -109,11 +109,11 @@ private int helper(char[] ch, int left, int right) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Largest Merge Of Two Strings][largest-merge-of-two-strings]
 
-{% highlight java %}
+```java
 public String largestMerge(String word1, String word2) {
     if (word1.length() == 0  || word2.length() == 0) {
         return word1 + word2;
@@ -122,11 +122,11 @@ public String largestMerge(String word1, String word2) {
     return word1.compareTo(word2) > 0 ?
         word1.charAt(0) + largestMerge(word1.substring(1), word2) : word2.charAt(0) + largestMerge(word1, word2.substring(1));
 }
-{% endhighlight %}
+```
 
 [Remove Invalid Parentheses][remove-invalid-parentheses]
 
-{% highlight java %}
+```java
 public List<String> removeInvalidParentheses(String s) {
     List<String> list = new ArrayList<>();
     dfs(s, 0, 0, '(', ')', list);
@@ -168,11 +168,11 @@ public void dfs(String s, int iStart, int jStart, char c1, char c2, List<String>
         list.add(reversed);
     }
 }
-{% endhighlight %}
+```
 
 [Minimum Cost to Change the Final Value of Expression][minimum-cost-to-change-the-final-value-of-expression]
 
-{% highlight java %}
+```java
 // index of matching '('
 private Map<Integer, Integer> map = new HashMap<>();
 
@@ -237,11 +237,11 @@ private int[] evaluate(String expression, int i, int j) {
         return new int[]{0, Math.min(left[1], right[1])};
     }
 }
-{% endhighlight %}
+```
 
 [Self Crossing][self-crossing]
 
-{% highlight java %}
+```java
 public boolean isSelfCrossing(int[] x) {
     for (int i = 3; i < x.length; i++) {
         //    i-2
@@ -279,11 +279,11 @@ public boolean isSelfCrossing(int[] x) {
     }
     return false;
 }
-{% endhighlight %}
+```
 
 [Least Operators to Express Number][least-operators-to-express-number]
 
-{% highlight java %}
+```java
 private Map<Integer, Integer> memo = new HashMap<>();
 
 public int leastOpsExpressTarget(int x, int target) {
@@ -335,13 +335,13 @@ public int leastOpsExpressTarget(int x, int target) {
     memo.put(target, min);
     return min;
 }
-{% endhighlight %}
+```
 
 # Parse
 
 [Brace Expansion II][brace-expansion-ii]
 
-{% highlight java %}
+```java
 public List<String> braceExpansionII(String expression) {
     List<List<String>> groups = new ArrayList<>();
     Set<String> set = new TreeSet<>();
@@ -383,13 +383,13 @@ private List<String> combine(List<List<String>> groups) {
     }
     return prev;
 }
-{% endhighlight %}
+```
 
 # Mutual Recursion
 
 [Elimination Game][elimination-game]
 
-{% highlight java %}
+```java
 public int lastRemaining(int n) {
     boolean fromLeftToRight = true;
     int remaining = n, step = 1, head = 1;
@@ -406,9 +406,9 @@ public int lastRemaining(int n) {
     }
     return head;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int lastRemaining(int n) {
     return leftToRight(n);
 }
@@ -427,15 +427,15 @@ private static int rightToLeft(int n) {
 
     return n % 2 == 1 ? 2 * leftToRight(n / 2) : 2 * leftToRight(n / 2) - 1;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int lastRemaining(int n) {
     // mirroring:
     // l(n) + r(n) == 1 + n
     return n == 1 ? 1 : 2 * (1 + n / 2 - lastRemaining(n / 2));
 }
-{% endhighlight %}
+```
 
 [brace-expansion-ii]: https://leetcode.com/problems/brace-expansion-ii/
 [elimination-game]: https://leetcode.com/problems/elimination-game/

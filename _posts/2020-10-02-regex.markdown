@@ -8,7 +8,7 @@ tags: regex
 
 [Validate IP Address][validate-ip-address]
 
-{% highlight java %}
+```java
 public String validIPAddress(String IP) {
     if (IP.matches("^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$")) {
         return "IPv4";
@@ -19,22 +19,22 @@ public String validIPAddress(String IP) {
     }
     return "Neither";
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Buckets Required to Collect Rainwater from Houses][minimum-number-of-buckets-required-to-collect-rainwater-from-houses]
 
-{% highlight java %}
+```java
 public int minimumBuckets(String street) {
     // s.equals("H") || s.startsWith("HH") || s.endsWith("HH") || s.contains("HHH")
     // each house H needs one bucket: s.count('H')
     // each 'H.H' can save one bucket by sharing one in the middle: s.count('H.H')
     return street.matches("(.*H)?H(H.*)?") ? -1 : street.replace("H.H", "  ").length() - street.replace("H", "").length();
 }
-{% endhighlight %}
+```
 
 Another solution: greedy
 
-{% highlight java %}
+```java
 public int minimumBuckets(String street) {
     int n = street.length();
     char[] s = street.toCharArray();
@@ -58,7 +58,7 @@ public int minimumBuckets(String street) {
 
     return (int)new String(s).chars().filter(c -> c == 'B').count();
 }
-{% endhighlight %}
+```
 
 # Quantifiers
 
@@ -70,7 +70,7 @@ The reluctant quantifiers, however, take the opposite approach: They start at th
 
 [Tag Validator][tag-validator]
 
-{% highlight java %}
+```java
 public boolean isValid(String code) {
     if (code.equals("t")) {
         return false;
@@ -88,7 +88,7 @@ public boolean isValid(String code) {
 
     return code.equals("t");
 }
-{% endhighlight %}
+```
 
 # Matcher
 
@@ -96,7 +96,7 @@ public boolean isValid(String code) {
 
 [Number of Atoms][number-of-atoms]
 
-{% highlight java %}
+```java
 public String countOfAtoms(String formula) {
     Deque<Map<String, Integer>> st = new LinkedList<>();
     st.push(new TreeMap<>());
@@ -140,7 +140,7 @@ public String countOfAtoms(String formula) {
 private int getCount(String s, int start) {
     return start < s.length() ? Integer.parseInt(s.substring(start)) : 1;
 }
-{% endhighlight %}
+```
 
 [minimum-number-of-buckets-required-to-collect-rainwater-from-houses]: https://leetcode.com/problems/minimum-number-of-buckets-required-to-collect-rainwater-from-houses/
 [number-of-atoms]: https://leetcode.com/problems/number-of-atoms/

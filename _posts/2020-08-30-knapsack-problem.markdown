@@ -16,13 +16,13 @@ subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\in \{0,1\} $$
 
 ## Template
 
-{% highlight java %}
+```java
 for (int elment : elements) {
     for (int i = weight; i >= element; i--) {
         dp[i] = Math.max(dp[i], dp[weight - element] + element);
     }
 }
-{% endhighlight %}
+```
 
 The problem [Parition Equal Subset Sum][partition-equal-subset-sum] below demonstrates how the template is derived. Mapping the template to the Knapsack model: `weight` is the upper bound of the picked element sum, and `dp[i]` is the optimal `value` when the weight sum is `i`.
 
@@ -36,7 +36,7 @@ The [subset sum problem (SSP)](https://en.wikipedia.org/wiki/Subset_sum_problem)
 
 With full dimensionality (no reduction), we can backtrace.
 
-{% highlight java %}
+```java
 public boolean canPartition(int[] nums) {
     int n = nums.length, sum = Arrays.stream(nums).sum();
 
@@ -60,7 +60,7 @@ public boolean canPartition(int[] nums) {
     }
     return dp[n][sum / 2];
 }
-{% endhighlight %}
+```
 
 For example, `nums = [1,2,5,1]`, then `dp` is:
 
@@ -74,7 +74,7 @@ For example, `nums = [1,2,5,1]`, then `dp` is:
 
 ![2D](/assets/img/algorithm/knapsack_partition_equal_subset_sum_2d.png)
 
-{% highlight java %}
+```java
 public boolean canPartition(int[] nums) {
     int sum = Arrays.stream(nums).sum();
 
@@ -94,7 +94,7 @@ public boolean canPartition(int[] nums) {
     }
     return dp[sum / 2];
 }
-{% endhighlight %}
+```
 
 In 2D, `dp[i + 1][j] = dp[i][j] || dp[i][j - nums[i]]`. The reverse iteration ensures `dp[i][j - nums[i]]` is not updated to `dp[i + 1][j - nums[i]]` before we update `dp[i][j]` to `dp[i + 1][j]`.
 
@@ -102,7 +102,7 @@ In 2D, `dp[i + 1][j] = dp[i][j] || dp[i][j - nums[i]]`. The reverse iteration en
 
 [Target Sum][target-sum]
 
-{% highlight java %}
+```java
 public int findTargetSumWays(int[] nums, int target) {
     int sum = Arrays.stream(nums).sum();
 
@@ -123,11 +123,11 @@ private int subsetSum(int[] nums, int target) {
     }
     return dp[target];
 }
-{% endhighlight %}
+```
 
 [Number of Great Partitions][number-of-great-partitions]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int countPartitions(int[] nums, int k) {
@@ -164,7 +164,7 @@ public int countPartitions(int[] nums, int k) {
     }
     return (int)((count % MOD + MOD) % MOD);
 }
-{% endhighlight %}
+```
 
 ## Variants
 
@@ -172,7 +172,7 @@ public int countPartitions(int[] nums, int k) {
 
 [Last Stone Weight II][last-stone-weight-ii]
 
-{% highlight java %}
+```java
 public int lastStoneWeightII(int[] stones) {
     int sum = Arrays.stream(stones).sum();
     boolean[] dp = new boolean[sum / 2 + 1];
@@ -193,9 +193,9 @@ public int lastStoneWeightII(int[] stones) {
     }
     return 0;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int lastStoneWeightII(int[] stones) {
     int sum = Arrays.stream(stones).sum();
     // dp[i]: weight sum of stones that is closest to i
@@ -212,11 +212,11 @@ public int lastStoneWeightII(int[] stones) {
     }
     return sum - 2 * dp[sum / 2];
 }
-{% endhighlight %}
+```
 
 [Maximum Profit From Trading Stocks][maximum-profit-from-trading-stocks]
 
-{% highlight java %}
+```java
 public int maximumProfit(int[] present, int[] future, int budget) {
     int[] dp = new int[budget + 1];
     for (int i = 0; i < present.length; i++) {
@@ -226,13 +226,13 @@ public int maximumProfit(int[] present, int[] future, int budget) {
     }
     return dp[budget];
 }
-{% endhighlight %}
+```
 
 **Probability**
 
 [Toss Strange Coins][toss-strange-coins]
 
-{% highlight java %}
+```java
 public double probabilityOfHeads(double[] prob, int target) {
     int n = prob.length;
 
@@ -251,13 +251,13 @@ public double probabilityOfHeads(double[] prob, int target) {
     }
     return dp[n][target];
 }
-{% endhighlight %}
+```
 
 **3D**
 
 [Ones and Zeroes][ones-and-zeroes]
 
-{% highlight java %}
+```java
 public int findMaxForm(String[] strs, int m, int n) {
     int len = strs.length;
     int[][][] dp = new int[len + 1][m + 1][n + 1];
@@ -279,11 +279,11 @@ public int findMaxForm(String[] strs, int m, int n) {
 
     return dp[len][m][n];
 }
-{% endhighlight %}
+```
 
 2D:
 
-{% highlight java %}
+```java
 public int findMaxForm(String[] strs, int m, int n) {
     int[][] dp = new int[m + 1][n + 1];
 
@@ -300,11 +300,11 @@ public int findMaxForm(String[] strs, int m, int n) {
 
     return dp[m][n];
 }
-{% endhighlight %}
+```
 
 [Profitable Schemes][profitable-schemes]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
@@ -326,13 +326,13 @@ public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 **Count of Selected Elements**
 
 [Split Array With Same Average][split-array-with-same-average]
 
-{% highlight java %}
+```java
 public boolean splitArraySameAverage(int[] nums) {
 int n = nums.length, sum = Arrays.stream(nums).sum();
 
@@ -361,13 +361,13 @@ int n = nums.length, sum = Arrays.stream(nums).sum();
     }
     return false;
 }
-{% endhighlight %}
+```
 
 **Multi-layer**
 
 [Number of Ways to Earn Points][number-of-ways-to-earn-points]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int waysToReachTarget(int target, int[][] types) {
@@ -384,11 +384,11 @@ public int waysToReachTarget(int target, int[][] types) {
 
     return dp[target];
 }
-{% endhighlight %}
+```
 
 [Painting the Walls][painting-the-walls]
 
-{% highlight java %}
+```java
 private static final int MAX_COST = (int)5e8;
 
 public int paintWalls(int[] cost, int[] time) {
@@ -410,13 +410,13 @@ public int paintWalls(int[] cost, int[] time) {
     }
     return dp[n];
 }
-{% endhighlight %}
+```
 
 ## Top-down
 
 [Maximize Total Tastiness of Purchased Fruits][maximize-total-tastiness-of-purchased-fruits]
 
-{% highlight java %}
+```java
 private int[] price, tastiness;
 private int maxAmount, maxCoupons;
 private Integer[][][] memo;
@@ -451,7 +451,7 @@ private int dfs(int i, int amount, int coupon) {
 
     return memo[i][amount][coupon] = max;
 }
-{% endhighlight %}
+```
 
 # Unbounded Knapsack Problem (UKP)
 
@@ -461,7 +461,7 @@ subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\geq 0,\ x_{i}\in \
 
 [Coin Change 2][coin-change-2]
 
-{% highlight java %}
+```java
 public int change(int amount, int[] coins) {
     int n = coins.length;
 
@@ -480,7 +480,7 @@ public int change(int amount, int[] coins) {
     }
     return dp[n][amount];
 }
-{% endhighlight %}
+```
 
 For example, `amount = 5, coins = [1, 2, 5]`, then `dp` is:
 
@@ -493,7 +493,7 @@ For example, `amount = 5, coins = [1, 2, 5]`, then `dp` is:
 
 ![2D](/assets/img/algorithm/knapsack_coin_change_2_2d.png)
 
-{% highlight java %}
+```java
 public int change(int amount, int[] coins) {
     int[] dp = new int[amount + 1];
     dp[0] = 1;
@@ -505,7 +505,7 @@ public int change(int amount, int[] coins) {
     }
     return dp[amount];
 }
-{% endhighlight %}
+```
 
 In 2D, `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - nums[i]]`. The natural iteration ensures `dp[i][j - nums[i]]` is updated to `dp[i + 1][j - nums[i]]` before we update `dp[i][j]` to `dp[i + 1][j]`.
 
@@ -513,7 +513,7 @@ In 2D, `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - nums[i]]`. The natural iteration
 
 [Number of Ways to Build House of Cards][number-of-ways-to-build-house-of-cards]
 
-{% highlight java %}
+```java
 public int houseOfCards(int n) {
     int[] dp = new int[n + 1];
     dp[0] = 1;
@@ -526,11 +526,11 @@ public int houseOfCards(int n) {
     }
     return dp[n];
 }
-{% endhighlight %}
+```
 
 [Form Largest Integer With Digits That Add up to Target][form-largest-integer-with-digits-that-add-up-to-target]
 
-{% highlight java %}
+```java
 public String largestNumber(int[] cost, int target) {
     int n = 9;
 
@@ -557,7 +557,7 @@ private String max(String a, String b) {
         (a.compareTo(b) > 0 ? a : b) :
         (a.length() > b.length() ? a : b));
 }
-{% endhighlight %}
+```
 
 ## Permutation Sum
 
@@ -565,7 +565,7 @@ The below permutation sum (yes it's permutation, ignore the wrong problem name) 
 
 [Combination Sum IV][combination-sum-iv]
 
-{% highlight java %}
+```java
 public int combinationSum4(int[] nums, int target) {
     int[] dp = new int[target + 1];
     dp[0] = 1;
@@ -579,13 +579,13 @@ public int combinationSum4(int[] nums, int target) {
     }
     return dp[target];
 }
-{% endhighlight %}
+```
 
 In essence, it's bottom-up DP.
 
 Similar problem: [Count Ways To Build Good Strings][count-ways-to-build-good-strings]
 
-{% highlight java %}
+```java
     int sum = 0;
     for (int i = 0; i <= high; i++) {
         for (int num : new int[]{zero, one}) {
@@ -597,7 +597,7 @@ Similar problem: [Count Ways To Build Good Strings][count-ways-to-build-good-str
             sum = (sum + dp[i]) % MOD;
         }
     }
-{% endhighlight %}
+```
 
 Even if `zero` and `one` are equal, they represent different base values. This is a bit different from the requirement of [Combination Sum IV][combination-sum-iv] that all base numbers are distinct.
 
@@ -611,7 +611,7 @@ subject to $$ \sum _{j=1}^{n}w_{j}x_{j}=W $$
 
 [Coin Change][coin-change]
 
-{% highlight java %}
+```java
 public int coinChange(int[] coins, int amount) {
     int n = coins.length;
 
@@ -634,9 +634,9 @@ public int coinChange(int[] coins, int amount) {
     }
     return dp[n][amount] > amount ? -1 : dp[n][amount];
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int coinChange(int[] coins, int amount) {
     int[] dp = new int[amount + 1];
     Arrays.fill(dp, amount + 1);
@@ -649,7 +649,7 @@ public int coinChange(int[] coins, int amount) {
     }
     return dp[amount] > amount ? -1 : dp[amount];
 }
-{% endhighlight %}
+```
 
 # Summary
 

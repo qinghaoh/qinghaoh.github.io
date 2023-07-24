@@ -4,22 +4,22 @@ tag: bash
 ---
 [Tenth Line][tenth-line]
 
-{% highlight bash %}
+```bash
 i=0
 while (( i++ < 10 ))
 do
   read line
 done < file.txt
 echo $line
-{% endhighlight %}
+```
 
-{% highlight bash %}
+```bash
 tail -n +10 file.txt | head -1
-{% endhighlight %}
+```
 
-{% highlight bash %}
+```bash
 sed -n 10p file.txt
-{% endhighlight %}
+```
 
 # AWK
 
@@ -33,19 +33,19 @@ awk divides the input into records and fields.
 
 [Tenth Line][tenth-line]
 
-{% highlight bash %}
+```bash
 awk 'NR == 10 {print; exit}' file.txt
-{% endhighlight %}
+```
 
-{% highlight bash %}
+```bash
 awk 'FNR == 10 {print; exit}' file.txt
-{% endhighlight %}
+```
 
 `END` rule is executed once only, after all the input is read. Cleanup actions.
 
 [Transpose File][transpose-file]
 
-{% highlight bash %}
+```bash
 awk '
 {
     for (i = 1; i <= NF; i++) {
@@ -61,15 +61,15 @@ END {
         print s[i];
     }
 }' file.txt
-{% endhighlight %}
+```
 
 ## Print
 
 [Word Frequency][word-frequency]
 
-{% highlight bash %}
+```bash
 cat words.txt | tr -s ' ' '\n' | sort | uniq -c | sort -r | awk '{ print $2, $1 }'
-{% endhighlight %}
+```
 
 [tenth-line]: https://leetcode.com/problems/tenth-line/
 [transpose-file]: https://leetcode.com/problems/transpose-file/

@@ -9,7 +9,7 @@ In this type of problem, we linear scan the elements one by one, and use `dp[i]`
 
 [Min Cost Climbing Stairs][min-cost-climbing-stairs]
 
-{% highlight java %}
+```java
 public int minCostClimbingStairs(int[] cost) {
     int[] dp = new int[cost.length];
     dp[0] = cost[0];
@@ -20,9 +20,9 @@ public int minCostClimbingStairs(int[] cost) {
     }
     return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 public int minCostClimbingStairs(int[] cost) {
     int dp0 = cost[0], dp1 = cost[1];
 
@@ -33,13 +33,13 @@ public int minCostClimbingStairs(int[] cost) {
     }
     return Math.min(dp0, dp1);
 }
-{% endhighlight %}
+```
 
 [Greatest Sum Divisible by Three][greatest-sum-divisible-by-three]
 
 This problem can be generalized to "Divisible by k":
 
-{% highlight java %}
+```java
 public int maxSumDivThree(int[] nums) {
     int k = 3;
     int[] dp = new int[k];
@@ -53,7 +53,7 @@ public int maxSumDivThree(int[] nums) {
     }
     return dp[0];
 }
-{% endhighlight %}
+```
 
 ## Adjacency Model (House Robber)
 
@@ -63,7 +63,7 @@ In this model, at each position there are multiple choices (e.g. to skip or rob)
 
 [House Robber][house-robber]
 
-{% highlight java %}
+```java
 public int rob(int[] nums) {
     int n = nums.length;
     int[] dp = new int[n + 1];
@@ -77,11 +77,11 @@ public int rob(int[] nums) {
     }
     return dp[n];
 }
-{% endhighlight %}
+```
 
 Reduced to 0D:
 
-{% highlight java %}
+```java
 public int rob(int[] nums) {
     int prev = 0, curr = 0;
     for (int num : nums) {
@@ -91,20 +91,20 @@ public int rob(int[] nums) {
     }
     return curr;
 }
-{% endhighlight %}
+```
 
 [Count Number of Ways to Place Houses][count-number-of-ways-to-place-houses]
 
-{% highlight java %}
+```java
 // dp[i] = dpPick[i] + dpSkip[i]
 //       = dpSkip[i - 1] + dp[i - 1]
 //       = dp[i - 2] + dp[i - 1]
 // --> Fibonacci
-{% endhighlight %}
+```
 
 [The Number of Beautiful Subsets][the-number-of-beautiful-subsets]
 
-{% highlight java %}
+```java
 private Map<Integer, Integer> freqs = new HashMap<>();
 private Map<Integer, Integer> memo = new HashMap<>();
 private int k;
@@ -159,13 +159,13 @@ private int dfs(int num) {
     memo.put(num, res);
     return res;
 }
-{% endhighlight %}
+```
 
 An alternative solution is backtracking, which is way slow than this `O(n)` solution.
 
 [Paint Fence][paint-fence]
 
-{% highlight java %}
+```java
 public int numWays(int n, int k) {
     if (n == 0) {
         return 0;
@@ -187,11 +187,11 @@ public int numWays(int n, int k) {
     }
     return dp[n];
 }
-{% endhighlight %}
+```
 
 Reduced to 0D:
 
-{% highlight java %}
+```java
 public int numWays(int n, int k) {
     if (n == 0) {
         return 0;
@@ -208,13 +208,13 @@ public int numWays(int n, int k) {
     }
     return prev;
 }
-{% endhighlight %}
+```
 
 Two dimensional fence painting problem:
 
 [Number of Ways to Paint N × 3 Grid][number-of-ways-to-paint-n-3-grid]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numOfWays(int n) {
@@ -232,11 +232,11 @@ public int numOfWays(int n) {
     }
     return (int)((prev1 + prev2) % MOD);
 }
-{% endhighlight %}
+```
 
 [Decode Ways][decode-ways]
 
-{% highlight java %}
+```java
 public int numDecodings(String s) {
     int n = s.length();
     // dp[i]: number of ways ending at s[i]
@@ -258,11 +258,11 @@ public int numDecodings(String s) {
 
     return dp[n - 1];
 }
-{% endhighlight %}
+```
 
 Reduced to 1D:
 
-{% highlight java %}
+```java
 public int numDecodings(String s) {
     if (s.charAt(0) == '0') {
         return 0;
@@ -285,13 +285,13 @@ public int numDecodings(String s) {
     }
     return oneBack;
 }
-{% endhighlight %}
+```
 
 **2D**
 
 [Number of Ways to Stay in the Same Place After Some Steps][number-of-ways-to-stay-in-the-same-place-after-some-steps]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numWays(int steps, int arrLen) {
@@ -316,10 +316,10 @@ public int numWays(int steps, int arrLen) {
     }
     return dp[0][steps];
 }
-{% endhighlight %}
+```
 
 Reduced to 1D
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numWays(int steps, int arrLen) {
@@ -344,13 +344,13 @@ public int numWays(int steps, int arrLen) {
     }
     return dp[0];
 }
-{% endhighlight %}
+```
 
 ### Circular
 
 [House Robber II][house-robber-ii]
 
-{% highlight java %}
+```java
 public int rob(int[] nums) {
     int n = nums.length;
     if (n == 1) {
@@ -373,13 +373,13 @@ private int rob(int[] nums, int start, int end) {
     }
     return curr;
 }
-{% endhighlight %}
+```
 
 **2D**
 
 [Pizza With 3n Slices][pizza-with-3n-slices]
 
-{% highlight java %}
+```java
 public int maxSizeSlices(int[] slices) {
     int m = slices.length;
 
@@ -409,13 +409,13 @@ private int maxSizeSlices(int[] slices, int start, int end) {
     }
     return dp[end - 1][n];
 }
-{% endhighlight %}
+```
 
 ### Tree
 
 [Choose Edges to Maximize Score in a Tree][choose-edges-to-maximize-score-in-a-tree]
 
-{% highlight java %}
+```java
 public long maxScore(int[][] edges) {
     int n = edges.length;
     // {child, weight}
@@ -451,7 +451,7 @@ private long[] dfs(int node , List<int[]>[] tree) {
     curr[1] += curr[0];
     return curr;
 }
-{% endhighlight %}
+```
 
 # Multiple DP Variables
 
@@ -459,7 +459,7 @@ In this model, there are multiple choices at the current position, and we assign
 
 [Wiggle Subsequence][wiggle-subsequence]
 
-{% highlight java %}
+```java
 public int wiggleMaxLength(int[] nums) {
     // max wiggle sequence length so far at index i
     int up = 1, down = 1;
@@ -472,11 +472,11 @@ public int wiggleMaxLength(int[] nums) {
     }
     return Math.max(up, down);
 }
-{% endhighlight %}
+```
 
 [Flip String to Monotone Increasing][flip-string-to-monotone-increasing]
 
-{% highlight java %}
+```java
 public int minFlipsMonoIncr(String s) {
     // count of 1's and flips so far
     // to make [0...i] monotone increasing
@@ -493,13 +493,13 @@ public int minFlipsMonoIncr(String s) {
     }
     return flips;
 }
-{% endhighlight %}
+```
 
 Similar: [Minimum Deletions to Make String Balanced][minimum-deletions-to-make-string-balanced]
 
 [Delete and Earn][delete-and-earn]
 
-{% highlight java %}
+```java
 private static final int MAX_NUM = (int)1e4;
 
 public int deleteAndEarn(int[] nums) {
@@ -517,11 +517,11 @@ public int deleteAndEarn(int[] nums) {
     }
     return Math.max(take, skip);
 }
-{% endhighlight %}
+```
 
 [Painting a Grid With Three Different Colors][painting-a-grid-with-three-different-colors]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 private int m, n;
 // memo[j][mask]: the number of ways in the j-th column,
@@ -583,11 +583,11 @@ private int getColor(int mask, int pos) {
 private int setColor(int mask, int pos, int color) {
     return mask | (color << (pos * 2));
 }
-{% endhighlight %}
+```
 
 [Paint House II][paint-house-ii]
 
-{% highlight java %}
+```java
 public int minCostII(int[][] costs) {
     int n = costs.length, k = costs[0].length;
     // min1: 1st smallest cost so far
@@ -622,20 +622,20 @@ public int minCostII(int[][] costs) {
 
     return min1;
 }
-{% endhighlight %}
+```
 
 [Number of Ways to Form a Target String Given a Dictionary][number-of-ways-to-form-a-target-string-given-a-dictionary]
 
 2D:
 
-{% highlight java %}
+```java
 // dp[i][j]: number of ways to form target[0...j - 1] with words by the i-th index
 long[][] dp = new long[m + 1][n + 1];
-{% endhighlight %}
+```
 
 Reduced to 1D:
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numWays(String[] words, String target) {
@@ -658,13 +658,13 @@ public int numWays(String[] words, String target) {
     }
     return (int)dp[n];
 }
-{% endhighlight %}
+```
 
 # By i
 
 [Maximum Earnings From Taxi][maximum-earnings-from-taxi]
 
-{% highlight java %}
+```java
 public long maxTaxiEarnings(int n, int[][] rides) {
     // we can use treemap to find the previous dp value, too
     long[] dp = new long[n + 1];
@@ -680,11 +680,11 @@ public long maxTaxiEarnings(int n, int[][] rides) {
     }
     return dp[prev];
 }
-{% endhighlight %}
+```
 
 [Minimum Time to Remove All Cars Containing Illegal Goods][minimum-time-to-remove-all-cars-containing-illegal-goods]
 
-{% highlight java %}
+```java
 public int minimumTime(String s) {
     // implicit DP
     // left: number of cars in s[0...i] that contain illegal goods
@@ -701,7 +701,7 @@ public int minimumTime(String s) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [choose-edges-to-maximize-score-in-a-tree]: https://leetcode.com/problems/choose-edges-to-maximize-score-in-a-tree/
 [count-number-of-ways-to-place-houses]: https://leetcode.com/problems/count-number-of-ways-to-place-houses/

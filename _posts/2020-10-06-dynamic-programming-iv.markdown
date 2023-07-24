@@ -4,7 +4,7 @@ tag: dynamic programming
 ---
 [Minimum Path Sum][minimum-path-sum]
 
-{% highlight java %}
+```java
 public int minPathSum(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     int[][] dp = new int[m][n];
@@ -27,11 +27,11 @@ public int minPathSum(int[][] grid) {
 
     return dp[0][0];
 }
-{% endhighlight %}
+```
 
 Reduce to 1D:
 
-{% highlight java %}
+```java
 int[] dp = new int[n];
 
 dp[n - 1] = grid[m - 1][n - 1];
@@ -51,11 +51,11 @@ for (int i = m - 2; i >= 0; i--) {
 }
 
 return dp[0];
-{% endhighlight %}
+```
 
 [Unique Paths II][unique-paths-ii]
 
-{% highlight java %}
+```java
 public int uniquePathsWithObstacles(int[][] obstacleGrid) {
     int m = obstacleGrid.length, n = obstacleGrid[0].length;
     int[][] dp = new int[m][n];
@@ -84,11 +84,11 @@ public int uniquePathsWithObstacles(int[][] obstacleGrid) {
 
     return dp[m - 1][n - 1];
 }
-{% endhighlight %}
+```
 
 Reduced to 1D:
 
-{% highlight java %}
+```java
 public int uniquePathsWithObstacles(int[][] obstacleGrid) {
     int n = obstacleGrid[0].length;
     int[] dp = new int[n];
@@ -105,13 +105,13 @@ public int uniquePathsWithObstacles(int[][] obstacleGrid) {
     }
     return dp[n - 1];
 }
-{% endhighlight %}
+```
 
 [Maximum Number of Points with Cost][maximum-number-of-points-with-cost]
 
 The most straight forward formula:
 
-{% highlight java %}
+```java
 for (int i = 1; i < m; i++) {
     long[] next = new long[n];
     for (int j = 0; j < n; j++) {
@@ -126,11 +126,11 @@ for (int i = 1; i < m; i++) {
     }
     dp = next;
 }
-{% endhighlight %}
+```
 
 To eliminate the duplicate computations:
 
-{% highlight java %}
+```java
 public long maxPoints(int[][] points) {
     int m = points.length, n = points[0].length;
     long[] dp = new long[n];
@@ -167,11 +167,11 @@ public long maxPoints(int[][] points) {
 
     return Arrays.stream(dp).max().getAsLong();
 }
-{% endhighlight %}
+```
 
 [Dungeon Game][dungeon-game]
 
-{% highlight java %}
+```java
 public int calculateMinimumHP(int[][] dungeon) {
     int m = dungeon.length, n = dungeon[0].length;
 
@@ -198,11 +198,11 @@ public int calculateMinimumHP(int[][] dungeon) {
 
     return dp[0][0];
 }
-{% endhighlight %}
+```
 
 [Triangle][triangle]
 
-{% highlight java %}
+```java
 public int minimumTotal(List<List<Integer>> triangle) {
     int n = triangle.size();
     // bottom level
@@ -217,11 +217,11 @@ public int minimumTotal(List<List<Integer>> triangle) {
 
     return dp[0];
 }
-{% endhighlight %}
+```
 
 [Cherry Pickup II][cherry-pickup-ii]
 
-{% highlight java %}
+```java
 public int cherryPickup(int[][] grid) {
     int m = grid.length, n = grid[0].length;
     int dp[][][] = new int[m][n][n];
@@ -255,11 +255,11 @@ public int cherryPickup(int[][] grid) {
     }
     return dp[0][0][n - 1];
 }
-{% endhighlight %}
+```
 
 [Count Submatrices With All Ones][count-submatrices-with-all-ones]
 
-{% highlight java %}
+```java
 // O(n ^ 3)
 public int numSubmat(int[][] mat) {
     int m = mat.length, n = mat[0].length;
@@ -286,11 +286,11 @@ public int numSubmat(int[][] mat) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Maximal Square][maximal-square]
 
-{% highlight java %}
+```java
 public int maximalSquare(char[][] matrix) {
     int m = matrix.length, n = matrix[0].length;
     // dp[i][j]: side length of the max square whose bottom-right is at (i - 1, j - 1)
@@ -306,7 +306,7 @@ public int maximalSquare(char[][] matrix) {
     }
     return maxLen * maxLen;
 }
-{% endhighlight %}
+```
 
 For example:
 
@@ -330,7 +330,7 @@ dp[][]:
 
 Reduced to 1D:
 
-{% highlight java %}
+```java
 public int maximalSquare(char[][] matrix) {
     int m = matrix.length, n = matrix[0].length;
     int[] dp = new int[n + 1];
@@ -349,11 +349,11 @@ public int maximalSquare(char[][] matrix) {
     }
     return maxLen * maxLen;
 }
-{% endhighlight %}
+```
 
 Similar: [Count Square Submatrices with All Ones][count-square-submatrices-with-all-ones]
 
-{% highlight java %}
+```java
 for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
         if (matrix[i][j] == 1) {
@@ -364,11 +364,11 @@ for (int i = 0; i < m; i++) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Maximal Rectangle][maximal-rectangle]
 
-{% highlight java %}
+```java
 public int maximalRectangle(char[][] matrix) {
     int m = matrix.length, n = matrix[0].length;
     int area = 0;
@@ -416,7 +416,7 @@ public int maximalRectangle(char[][] matrix) {
 
     return area;
 }
-{% endhighlight %}
+```
 
 For example:
 
@@ -456,7 +456,7 @@ right[]:
 
 [Count Fertile Pyramids in a Land][count-fertile-pyramids-in-a-land]
 
-{% highlight java %}
+```java
 public int countPyramids(int[][] grid) {
     return helper(inverse(grid)) + helper(grid);
 }
@@ -487,11 +487,11 @@ public int[][] inverse(int[][] grid) {
     }
     return g;
 }
-{% endhighlight %}
+```
 
 [Selling Pieces of Wood][selling-pieces-of-wood]
 
-{% highlight java %}
+```java
 public long sellingWood(int m, int n, int[][] prices) {
     long[][] dp = new long[m + 1][n + 1];
     for (int[] p : prices) {
@@ -510,11 +510,11 @@ public long sellingWood(int m, int n, int[][] prices) {
     }
     return dp[m][n];
 }
-{% endhighlight %}
+```
 
 [Largest Plus Sign][largest-plus-sign]
 
-{% highlight java %}
+```java
 for (int i = 0; i < N; i++) {
     // left
     count = 0;
@@ -547,11 +547,11 @@ for (int j = 0; j < N; j++) {
 	ans = Math.max(ans, dp[i][j]);
     }
 }
-{% endhighlight %}
+```
 
 [Bomb Enemy][bomb-enemy]
 
-{% highlight java %}
+```java
 public int maxKilledEnemies(char[][] grid) {
     int m = grid.length, n = m == 0 ? 0 : grid[0].length;
     int count = 0, rowhits = 0;
@@ -581,13 +581,13 @@ public int maxKilledEnemies(char[][] grid) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Longest Line of Consecutive One in Matrix][longest-line-of-consecutive-one-in-matrix]
 
 [Out of Boundary Paths][out-of-boundary-paths]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -616,11 +616,11 @@ public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Cherry Pickup][cherry-pickup]
 
-{% highlight java %}
+```java
 public int cherryPickup(int[][] grid) {
     // greedy (maximizing each pass) doesn't work
     // because the second pass depends on the path choice of the first pass
@@ -662,11 +662,11 @@ public int cherryPickup(int[][] grid) {
     }
     return Math.max(0, dp[n - 1][n - 1]);
 }
-{% endhighlight %}
+```
 
 [Maximum Strictly Increasing Cells in a Matrix][maximum-strictly-increasing-cells-in-a-matrix]
 
-{% highlight java %}
+```java
 public int maxIncreasingCells(int[][] mat) {
     int m = mat.length, n = mat[0].length;
     Map<Integer, List<int[]>> map = new TreeMap<>();
@@ -695,7 +695,7 @@ public int maxIncreasingCells(int[][] mat) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [bomb-enemy]: https://leetcode.com/problems/bomb-enemy/
 [cherry-pickup]: https://leetcode.com/problems/cherry-pickup/

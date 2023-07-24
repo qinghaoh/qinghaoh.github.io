@@ -13,7 +13,7 @@ tags: graph
 
 [Course Schedule II][course-schedule-ii]
 
-{% highlight java %}
+```java
 // Kahn's algorithm
 public int[] findOrder(int numCourses, int[][] prerequisites) {
     List<Integer>[] graph = new List[numCourses];
@@ -49,11 +49,11 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 
     return count == numCourses ? order : new int[0];
 }
-{% endhighlight %}
+```
 
 [Find All Possible Recipes from Given Supplies][find-all-possible-recipes-from-given-supplies]
 
-{% highlight java %}
+```java
 public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
     int n = recipes.length;
     // {ingredient : recipe index}
@@ -95,7 +95,7 @@ public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredie
     }
     return list;
 }
-{% endhighlight %}
+```
 
 **Undirected Graph**
 
@@ -103,7 +103,7 @@ For undirected graphs, leaves are nodes with `indegree == 1`.
 
 [Distance to a Cycle in Undirected Graph][distance-to-a-cycle-in-undirected-graph]
 
-{% highlight java %}
+```java
 public int[] distanceToCycle(int n, int[][] edges) {
     int[] indegree = new int[n];
     List<Integer>[] graph = new List[n];
@@ -170,7 +170,7 @@ public int[] distanceToCycle(int n, int[][] edges) {
 
     return answer;
 }
-{% endhighlight %}
+```
 
 # Path Length
 
@@ -178,7 +178,7 @@ Longest path in a DAG can be solved by topological sorting.
 
 [Longest Increasing Path in a Matrix][longest-increasing-path-in-a-matrix]
 
-{% highlight java %}
+```java
 // pads the grid with zero as boundaries
 int[][] matrix = new int[m + 2][n + 2];
 for (int i = 0; i < m; i++) {
@@ -195,7 +195,7 @@ for (int i = 1; i <= m; i++) {
         }
     }
 }
-{% endhighlight %}
+```
 
 Another solution is DFS + memoization
 
@@ -229,7 +229,7 @@ If a topological sort does not form a Hamiltonian path, it is always possible to
 
 [Sequence Reconstruction][sequence-reconstruction]
 
-{% highlight java %}
+```java
 public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences) {
     int n = nums.length;
     // index[i]: index of element nums[i] in nums
@@ -266,7 +266,7 @@ public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences)
 
     return true;
 }
-{% endhighlight %}
+```
 
 A more intuitive solution is to reconstruct the topological sort from `sequences` and check if it's unique and equal to `nums`.
 
@@ -274,7 +274,7 @@ A more intuitive solution is to reconstruct the topological sort from `sequences
 
 [Sort Items by Groups Respecting Dependencies][sort-items-by-groups-respecting-dependencies]
 
-{% highlight java %}
+```java
 private List<Integer>[] groupGraph, itemGraph;
 private int[] groupsIndegree, itemsIndegree;
 
@@ -370,11 +370,11 @@ private List<Integer> sort(List<Integer>[] graph, int[] indegree, int count) {
     }
     return count == 0 ? list : Collections.EMPTY_LIST;
 }
-{% endhighlight %}
+```
 
 Another solution is by DFS:
 
-{% highlight java %}
+```java
 private List<Integer>[] graph;
 private int[] indegree;
 private int n;
@@ -473,7 +473,7 @@ private void dfs(int curr, List<Integer> list) {
         }
     }
 }
-{% endhighlight %}
+```
 
 # Centroids
 
@@ -481,7 +481,7 @@ private void dfs(int curr, List<Integer> list) {
 
 Any connected graph without simple cycles is a tree. The number of centroids of a tree is no more than 2.
 
-{% highlight java %}
+```java
 public List<Integer> findMinHeightTrees(int n, int[][] edges) {
     if (n == 1) {
         return Collections.singletonList(0);
@@ -520,7 +520,7 @@ public List<Integer> findMinHeightTrees(int n, int[][] edges) {
     }
     return new ArrayList<>(q);
 }
-{% endhighlight %}
+```
 
 **Diameter**
 
@@ -540,7 +540,7 @@ public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 
 [Parallel Courses III][parallel-courses-iii]
 
-{% highlight java %}
+```java
 public int minimumTime(int n, int[][] relations, int[] time) {
     List<Integer>[] graph = new List[n + 1];
     for (int i = 1; i <= n; i++) {
@@ -574,13 +574,13 @@ public int minimumTime(int n, int[][] relations, int[] time) {
     }
     return Arrays.stream(cost).max().getAsInt();
 }
-{% endhighlight %}
+```
 
 **Highest Frequency**
 
 [Largest Color Value in a Directed Graph][largest-color-value-in-a-directed-graph]
 
-{% highlight java %}
+```java
 public int largestPathValue(String colors, int[][] edges) {
     int n = colors.length();
     List<Integer>[] graph = new List[n];
@@ -628,7 +628,7 @@ public int largestPathValue(String colors, int[][] edges) {
     }
     return count == n ? max : -1;
 }
-{% endhighlight %}
+```
 
 [count-subtrees-with-max-distance-between-cities]: https://leetcode.com/problems/count-subtrees-with-max-distance-between-cities/
 [count-ways-to-build-rooms-in-an-ant-colony]: https://leetcode.com/problems/count-ways-to-build-rooms-in-an-ant-colony/

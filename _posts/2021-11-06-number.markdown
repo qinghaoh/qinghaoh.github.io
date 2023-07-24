@@ -7,7 +7,7 @@ tags: math
 
 [Numbers At Most N Given Digit Set][numbers-at-most-n-given-digit-set]
 
-{% highlight java %}
+```java
 public int atMostNGivenDigitSet(String[] digits, int n) {
     String s = Integer.toString(n);
     int nLength = s.length(), m = digits.length, count = 0;
@@ -42,13 +42,13 @@ public int atMostNGivenDigitSet(String[] digits, int n) {
     // n can be constructed by digits, adds one
     return count + 1;
 }
-{% endhighlight %}
+```
 
 # Iteration per Digit
 
 [Digit Count in Range][digit-count-in-range]
 
-{% highlight java %}
+```java
 public int atMostNGivenDigitSet(String[] digits, int n) {
     String s = Integer.toString(n);
     int nLength = s.length(), m = digits.length, count = 0;
@@ -83,7 +83,7 @@ public int atMostNGivenDigitSet(String[] digits, int n) {
     // n can be constructed by digits, adds one
     return count + 1;
 }
-{% endhighlight %}
+```
 
 # Factor
 
@@ -91,7 +91,7 @@ public int atMostNGivenDigitSet(String[] digits, int n) {
 
 Binary Search:
 
-{% highlight java %}
+```java
 public int preimageSizeFZF(int k) {
     // x / 5 <= f(x) <= x
     long low = k, high = 5l * k + 1;
@@ -123,9 +123,9 @@ public long f(long x) {
 
     return x / 5 + f(x / 5);
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 private static final int MAX_POWER = 13; // 5 ^ 13 > 10 ^ 9
 
 public int preimageSizeFZF(int k) {
@@ -149,11 +149,11 @@ public int preimageSizeFZF(int k) {
     }
     return 5;
 }
-{% endhighlight %}
+```
 
 Iterative:
 
-{% highlight java %}
+```java
 public int preimageSizeFZF(int k) {
     int last = 1;
     while (last < k) {
@@ -169,7 +169,7 @@ public int preimageSizeFZF(int k) {
     }
     return 5;
 }
-{% endhighlight %}
+```
 
 [digit-count-in-range]: https://leetcode.com/problems/digit-count-in-range/
 [numbers-at-most-n-given-digit-set]: https://leetcode.com/problems/numbers-at-most-n-given-digit-set/

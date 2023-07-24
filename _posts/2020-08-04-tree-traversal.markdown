@@ -7,7 +7,7 @@ tags: tree
 [Binary Tree Preorder Traveral][binary-tree-preorder-traversal]
 
 ### Recursion
-{% highlight java %}
+```java
 public List<Integer> preorderTraversal(TreeNode root) {
     List<Integer> list = new ArrayList<>();
     helper(root, list);
@@ -21,10 +21,10 @@ private void helper(TreeNode root, List<Integer> list) {
         helper(root.right, list);
     }
 }
-{% endhighlight %}
+```
 
 ### Stack
-{% highlight java %}
+```java
 public List<Integer> preorderTraversal(TreeNode root) {
     List<Integer> list = new ArrayList<>();
     Deque<TreeNode> stack = new ArrayDeque<>();
@@ -41,7 +41,7 @@ public List<Integer> preorderTraversal(TreeNode root) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 ### Morris
 
@@ -49,7 +49,7 @@ public List<Integer> preorderTraversal(TreeNode root) {
 [Binary Tree Inorder Traveral][binary-tree-inorder-traversal]
 
 ### Recursion
-{% highlight java %}
+```java
 public List<Integer> inorderTraversal(TreeNode root) {
     List<Integer> list = new ArrayList<>();
     helper(root, list);
@@ -63,10 +63,10 @@ private void helper(TreeNode root, List<Integer> list) {
         helper(root.right, list);
     }
 }
-{% endhighlight %}
+```
 
 ### Stack
-{% highlight java %}
+```java
 public List<Integer> inorderTraversal(TreeNode root) {
     List<Integer> list = new ArrayList<>();
     Deque<TreeNode> stack = new ArrayDeque<>();
@@ -83,13 +83,13 @@ public List<Integer> inorderTraversal(TreeNode root) {
     }
     return list;  
 }
-{% endhighlight %}
+```
 
 ## Postorder
 [Binary Tree Postorder Traveral][binary-tree-postorder-traversal]
 
 ### Recursion
-{% highlight java %}
+```java
 public List<Integer> postorderTraversal(TreeNode root) {
     List<Integer> list = new ArrayList<>();
     traverse(root, list);
@@ -103,10 +103,10 @@ private void traverse(TreeNode root, List<Integer> list) {
         list.add(root.val);
     }
 }
-{% endhighlight %}
+```
 
 ### Stack
-{% highlight java %}
+```java
 public List<Integer> postorderTraversal(TreeNode root) {
     List<Integer> list = new ArrayList<>();
     Deque<TreeNode> stack = new ArrayDeque<>();
@@ -124,13 +124,13 @@ public List<Integer> postorderTraversal(TreeNode root) {
     Collections.reverse(list);  // reverse
     return list;
 }
-{% endhighlight %}
+```
 
 ## Cache
 
 [Binary Search Tree Iterator II][binary-search-tree-iterator-ii]
 
-{% highlight java %}
+```java
 class BSTIterator {
     private Deque<TreeNode> stack = new ArrayDeque<>();
     // precomputed values
@@ -171,13 +171,13 @@ class BSTIterator {
         return list.get(--index);
     }
 }
-{% endhighlight %}
+```
 
 ## Vertical
 
 [Binary Tree Vertical Order Traversal][binary-tree-vertical-order-traversal]
 
-{% highlight java %}
+```java
 public List<List<Integer>> verticalOrder(TreeNode root) {
     List<List<Integer>> list = new ArrayList<>();
     if (root == null) {
@@ -214,11 +214,11 @@ public List<List<Integer>> verticalOrder(TreeNode root) {
 
     return list;
 }
-{% endhighlight %}
+```
 
 [Vertical Order Traversal of a Binary Tree][vertical-order-traversal-of-a-binary-tree]
 
-{% highlight java %}
+```java
 private Map<Integer, Map<Integer, PriorityQueue<Integer>>> map = new TreeMap<>();
 
 public List<List<Integer>> verticalTraversal(TreeNode root) {
@@ -249,13 +249,13 @@ private void dfs(TreeNode root, int x, int y) {
     dfs(root.left, x - 1, y + 1);
     dfs(root.right, x + 1, y + 1);
 }
-{% endhighlight %}
+```
 
 ## Depth First Search
 
 [Find Largest Value in Each Tree Row][find-largest-value-in-each-tree-row]
 
-{% highlight java %}
+```java
 public List<Integer> largestValues(TreeNode root) {
     List<Integer> list = new ArrayList<>();
     if (root == null) {
@@ -280,11 +280,11 @@ private void dfs(TreeNode node, List<Integer> list, int depth) {
     dfs(node.left, list, depth + 1);
     dfs(node.right, list, depth + 1);
 }
-{% endhighlight %}
+```
 
 [Flip Binary Tree To Match Preorder Traversal][flip-binary-tree-to-match-preorder-traversal]
 
-{% highlight java %}
+```java
 private List<Integer> list = new ArrayList<>();
 private int index = 0;
 
@@ -309,7 +309,7 @@ private boolean dfs(TreeNode node, int[] voyage) {
 
     return dfs(node.left, voyage) && dfs(node.right, voyage);
 }
-{% endhighlight %}
+```
 
 # Construction
 
@@ -317,7 +317,7 @@ private boolean dfs(TreeNode node, int[] voyage) {
 
 The key is to find the root in inorder. We can iterate to find it, or keep track of it in a map. Or optimally:
 
-{% highlight java %}
+```java
 private int pre = 0, in = 0;
 
 public TreeNode buildTree(int[] preorder, int[] inorder) {
@@ -341,7 +341,7 @@ private TreeNode build(int[] preorder, int[] inorder, int prevRoot) {
     node.right = build(preorder, inorder, prevRoot);
     return node;
 }
-{% endhighlight %}
+```
 
 For example:
 
@@ -366,7 +366,7 @@ pre	in	prevRoot
 
 [Construct Binary Tree from Inorder and Postorder Traversal][construct-binary-tree-from-inorder-and-postorder-traversal]
 
-{% highlight java %}
+```java
 private int in, post;
 
 public TreeNode buildTree(int[] inorder, int[] postorder) {
@@ -393,11 +393,11 @@ private TreeNode build(int[] inorder, int[] postorder, int prevRoot) {
     node.left = build(inorder, postorder, prevRoot);
     return node;
 }
-{% endhighlight %}
+```
 
 [Construct Binary Tree from Preorder and Postorder Traversal][construct-binary-tree-from-preorder-and-postorder-traversal]
 
-{% highlight java %}
+```java
 private int preIndex = 0, postIndex = 0;
 
 public TreeNode constructFromPrePost(int[] pre, int[] post) {
@@ -416,7 +416,7 @@ public TreeNode constructFromPrePost(int[] pre, int[] post) {
     postIndex++;
     return root;
 }
-{% endhighlight %}
+```
 
 For example:
 
@@ -435,7 +435,7 @@ preIndex	postIndex
 6		4
 ```
 
-{% highlight java %}
+```java
 public TreeNode constructFromPrePost(int[] pre, int[] post) {
     Deque<TreeNode> dq = new ArrayDeque<>();
     dq.offer(new TreeNode(pre[0]));
@@ -454,13 +454,13 @@ public TreeNode constructFromPrePost(int[] pre, int[] post) {
     }
     return dq.getFirst();
 }
-{% endhighlight %}
+```
 
 ## BST
 
 [Construct Binary Search Tree from Preorder Traversal][construct-binary-search-tree-from-preorder-traversal]
 
-{% highlight java %}
+```java
 private int index = 0;
 
 public TreeNode bstFromPreorder(int[] preorder) {
@@ -477,11 +477,11 @@ public TreeNode build(int[] preorder, int high) {
     root.right = build(preorder, high);
     return root;
 }
-{% endhighlight %}
+```
 
 [Convert Sorted List to Binary Search Tree][convert-sorted-list-to-binary-search-tree]
 
-{% highlight java %}
+```java
 private ListNode curr;
 
 public TreeNode sortedListToBST(ListNode head) {
@@ -516,23 +516,23 @@ private TreeNode convertListToBst(int low, int high) {
     node.right = convertListToBst(mid + 1, high);
     return node;
 }
-{% endhighlight %}
+```
 
 [Convert Sorted Array to Binary Search Tree][convert-sorted-array-to-binary-search-tree]
 
-{% highlight java %}
+```java
     // no need for inorder and global variable
     // because we can get current root directly by its index mid
     TreeNode node = new TreeNode(num[mid]);
     node.left = helper(num, low, mid - 1);
     node.right = helper(num, mid + 1, high);
-{% endhighlight %}
+```
 
 # Verification
 
 [Verify Preorder Sequence in Binary Search Tree][verify-preorder-sequence-in-binary-search-tree]
 
-{% highlight java %}
+```java
 public boolean verifyPreorder(int[] preorder) {
     int low = Integer.MIN_VALUE;
     Deque<Integer> st = new ArrayDeque<>();
@@ -551,11 +551,11 @@ public boolean verifyPreorder(int[] preorder) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 In-place:
 
-{% highlight java %}
+```java
 public boolean verifyPreorder(int[] preorder) {
     int low = Integer.MIN_VALUE, i = -1;
     for (int p : preorder) {
@@ -572,7 +572,7 @@ public boolean verifyPreorder(int[] preorder) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 For example:
 
@@ -590,7 +590,7 @@ For example:
 
 In-place, no overwriting:
 
-{% highlight java %}
+```java
 public boolean verifyPreorder(int[] preorder) {
     int low = Integer.MIN_VALUE;
     for (int i = 0; i < preorder.length; i++) {
@@ -604,13 +604,13 @@ public boolean verifyPreorder(int[] preorder) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 # Predecessor/Successor
 
 [Inorder Successor in BST][inorder-successor-in-bst]
 
-{% highlight java %}
+```java
 public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
     TreeNode node = root, candidate = null;
     // binary search
@@ -624,7 +624,7 @@ public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
     }
     return candidate;
 }
-{% endhighlight %}
+```
 
 [Inorder Successor in BST II][inorder-successor-in-bst-ii]
 
@@ -634,7 +634,7 @@ public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
 
 [Binary Search Tree Iterator][binary-search-tree-iterator]
 
-{% highlight java %}
+```java
 private Deque<TreeNode> stack;
 
 public BSTIterator(TreeNode root) {
@@ -660,11 +660,11 @@ private void leftmostInorder(TreeNode node) {
         node = node.left;
     }
 }
-{% endhighlight %}
+```
 
 [All Elements in Two Binary Search Trees][all-elements-in-two-binary-search-trees/submissions]
 
-{% highlight java %}
+```java
 public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
     List<Integer> list = new ArrayList<>();
     Deque<TreeNode> st1 = new ArrayDeque<>(), st2 = new ArrayDeque<>();
@@ -695,7 +695,7 @@ public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [all-elements-in-two-binary-search-trees/submissions]: https://leetcode.com/problems/all-elements-in-two-binary-search-trees/submissions/
 [binary-search-tree-iterator]: https://leetcode.com/problems/binary-search-tree-iterator/

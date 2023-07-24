@@ -1,15 +1,16 @@
 ---
 title:  "Java Cheatsheet"
+category: java
 tags: java
 ---
 # Array
 
 Empty array:
 
-{% highlight java %}
+```java
 int[] arr1 = new int[0];
 int[][] arr2 = new int[0][0];
-{% endhighlight %}
+```
 
 # ArrayDeque
 
@@ -39,12 +40,12 @@ Null elements are prohibited.
 * [public static void reverse(List\<?\> list)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Collections.html#reverse(java.util.List))
 * [public static \<T\> Comparator\<T\> reverseOrder()](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#reverseOrder--)
 
-{% highlight java %}
+```java
 Integer[] arr = {1, 2, 3};
   
 // Sorts arr[] in descending order 
 Arrays.sort(arr, Collections.reverseOrder()); 
-{% endhighlight %}
+```
 
 * [public static \<T\> void sort(List\<T\> list, Comparator\<? super T\> c)](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#sort-java.util.List-java.util.Comparator-): stable
 * [public static void swap(List\<?\> list, int i, int j)](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#swap-java.util.List-int-int-)
@@ -56,11 +57,11 @@ Arrays.sort(arr, Collections.reverseOrder());
 [Comparator](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html)
 
 Compare Strings by length in descending order, then by alphabetical order:
-{% highlight java %}
+```java
 Comparator.comparing(String::length)
     .reversed()
     .thenComparing(Comparator.<String>naturalOrder())
-{% endhighlight %}
+```
 
 * [static \<T\> Comparator\<T\> comparingInt(ToIntFunction\<? super T\> keyExtractor)](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html#comparingInt-java.util.function.ToIntFunction-)
 * [static \<T extends Comparable\<? super T\>\> Comparator\<T\> naturalOrder()](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html#naturalOrder--)
@@ -73,18 +74,18 @@ Comparator.comparing(String::length)
 
 https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/text/DecimalFormat.html
 
-{% highlight java %}
+```java
 DecimalFormat df = new DecimalFormat("0.00");
 df.format("1.2345");  // "1.23"
-{% endhighlight %}
+```
 
 # Deque
 [Deque](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Deque.html)
 Deques can also be used as LIFO (Last-In-First-Out) stacks. This interface should be used in preference to the legacy `Stack` class. When a deque is used as a stack, elements are pushed and popped from the beginning of the deque.
 
-{% highlight java %}
+```java
 Deque<Integer> stack = new ArrayDeque<>();
-{% endhighlight %}
+```
 
 * [Iterator\<E\> descendingIterator()](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Deque.html#descendingIterator())
 
@@ -105,9 +106,9 @@ Deque<Integer> stack = new ArrayDeque<>();
 * [public static String toBinaryString(int i)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Integer.html#toBinaryString(int))
 * [public static String toString(int i,int radix)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Integer.html#toString(int,int))
 
-{% highlight java %}
+```java
 MAX_VALUE + 1 == MIN_VALUE
-{% endhighlight %}
+```
 
 # IntStream
 * [int sum()](https://docs.oracle.com/javase/8/docs/api/java/util/stream/IntStream.html#sum--)
@@ -126,10 +127,10 @@ Doubly-linked list implementation of the `List` and `Deque` interfaces. Implemen
 # Math
 * [public static double random()](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Math.html#random()): it internally uses `Random.nextDouble()`
 
-{% highlight java %}
+```java
 // number of digits in n
 int k = (int) (Math.log10(n) + 1);
-{% endhighlight %}
+```
 
 # Object
 * [protected Object clone() throws CloneNotSupportedException](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#clone--)
@@ -144,7 +145,7 @@ https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Scanner.h
 
 [Fraction Addition and Subtraction][fraction-addition-and-subtraction]
 
-{% highlight java %}
+```java
 public String fractionAddition(String expression) {
     Scanner sc = new Scanner(expression).useDelimiter("/|(?=[-+])");
     int num = 0, den = 1;
@@ -168,7 +169,7 @@ private int gcd(int a, int b) {
     }
     return a;
 }
-{% endhighlight %}
+```
 
 # Set
 * [boolean containsAll(Collection\<?\> c)](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html#containsAll-java.util.Collection-)

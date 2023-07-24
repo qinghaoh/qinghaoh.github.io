@@ -59,7 +59,7 @@ Dijkstra's algorithm has some similarities with BFS:
 
 A common implementation with simple priority queue is as below:
 
-{% highlight java %}
+```java
 /**
  * Dijkstra's algorithm.
  * @param n number of vertices. Vertices range from 0 to (n - 1)
@@ -102,7 +102,7 @@ public void dijkstra(int n, List<int[]>[] graph, int src) {
         }
     }
 }
-{% endhighlight %}
+```
 
 See [Minimum Weighted Subgraph With the Required Paths][minimum-weighted-subgraph-with-the-required-paths], [Number of Ways to Arrive at Destination][number-of-ways-to-arrive-at-destination] as examples.
 
@@ -117,7 +117,7 @@ This section demos how to apply Dijkstra's algorithm to solve problems, along wi
 
 [Minimum Weighted Subgraph With the Required Paths][minimum-weighted-subgraph-with-the-required-paths]
 
-{% highlight java %}
+```java
 public long minimumWeight(int n, int[][] edges, int src1, int src2, int dest) {
     List<long[]>[] graph = new List[n], reverse = new List[n];
 
@@ -177,11 +177,11 @@ private void dijkstra(List<long[]>[] graph, int src, long[] weight) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [Number of Restricted Paths From First to Last Node][number-of-restricted-paths-from-first-to-last-node]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 private List<int[]>[] graph;
 private int[] dist, memo;
@@ -251,7 +251,7 @@ private int dfs(int node) {
 
     return memo[node] = count;
 }
-{% endhighlight %}
+```
 
 [Minimum Obstacle Removal to Reach Corner][minimum-obstacle-removal-to-reach-corner]
 
@@ -265,7 +265,7 @@ Cost function is monotonically increasing/decreasing. The traditional cost funct
 
 [Path with Maximum Probability][path-with-maximum-probability]
 
-{% highlight java %}
+```java
 public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
     List<int[]>[] graph = new List[n];
     for (int i = 0; i < n; i++) {
@@ -309,13 +309,13 @@ public double maxProbability(int n, int[][] edges, double[] succProb, int start,
     }
     return p[end];
 }
-{% endhighlight %}
+```
 
 **Summation of absolute difference**
 
 [Path with Minimum Effort][path-with-minimum-effort]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -356,7 +356,7 @@ public int minimumEffortPath(int[][] heights) {
 
     return -1;        
 }
-{% endhighlight %}
+```
 
 **Summation of Manhattan distances**
 
@@ -366,7 +366,7 @@ public int minimumEffortPath(int[][] heights) {
 
 [Trapping Rain Water II][trapping-rain-water-ii]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -433,7 +433,7 @@ public int trapRainWater(int[][] heightMap) {
     }
     return volume;
 }
-{% endhighlight %}
+```
 
 This problem can be solved by [BFS](../bfs) as well. We can see the intrinsic connection of the two approaches.
 
@@ -441,7 +441,7 @@ This problem can be solved by [BFS](../bfs) as well. We can see the intrinsic co
 
 [Minimum Time to Visit a Cell In a Grid][minimum-time-to-visit-a-cell-in-a-grid]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -498,13 +498,13 @@ public int minimumTime(int[][] grid) {
     }
     return -1;
 }
-{% endhighlight %}
+```
 
 ## Composite Vertex
 
 [The Maze III][the-maze-iii]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -569,11 +569,11 @@ public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
     }
     return "impossible";
 }
-{% endhighlight %}
+```
 
 [Campus Bikes II][campus-bikes-ii]
 
-{% highlight java %}
+```java
 public int assignBikes(int[][] workers, int[][] bikes) {
     // {worker, bike mask, distance}
     Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
@@ -604,7 +604,7 @@ public int assignBikes(int[][] workers, int[][] bikes) {
 private int distance(int[] p1, int[] p2) {
     return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
 }
-{% endhighlight %}
+```
 
 In this problem, each vertex is composite, i.e. a state that combines multiple variables. Specifically, vertices are constructed layer by layer from `workers[0]` to `workers[n - 1]`, and in the i-th layer, a vertex stands for a certain assignment of bikes to `workers[0...i]`. This solution is very similar to BFS - the only difference is we use a priority queue to find the min dist quickly in each layer.
 
@@ -614,7 +614,7 @@ If there are multiple shortest paths from `source` to `target`, we can track the
 
 [Number of Ways to Arrive at Destination][number-of-ways-to-arrive-at-destination]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int countPaths(int n, int[][] roads) {
@@ -658,7 +658,7 @@ public int countPaths(int n, int[][] roads) {
     }
     return ways[n - 1];
 }
-{% endhighlight %}
+```
 
 ## Constrained Dijkstra's
 
@@ -666,7 +666,7 @@ Given upper limit of weight sum, find/count all paths.
 
 [Reachable Nodes In Subdivided Graph][reachable-nodes-in-subdivided-graph]
 
-{% highlight java %}
+```java
 public int reachableNodes(int[][] edges, int maxMoves, int n) {
     // graph[i][j]: count between the edge [i, j]
     int[][] graph = new int[n][n];
@@ -713,13 +713,13 @@ public int reachableNodes(int[][] edges, int maxMoves, int n) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 Given a contraint on sum of vertex values, minimize the sum of path values. In the problem below, we view the value of each vertex as 1, so the constraint `stops` can be regarded as the sum of the vertex values.
 
 [Cheapest Flights Within K Stops][cheapest-flights-within-k-stops]
 
-{% highlight java %}
+```java
 public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
     // builds graph
     int[][] graph = new int[n][n];
@@ -767,7 +767,7 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
 
     return prices[dst] == Integer.MAX_VALUE ? -1 : prices[dst];
 }
-{% endhighlight %}
+```
 
 For example, `n = 9, flights = [[0,1,1],[1,2,1],[2,3,1],[3,7,1],[0,4,3],[4,5,3],[5,7,3],[0,6,5],[6,7,100],[7,8,1]], src = 0, dst = 8, k = 3`.
 
@@ -779,7 +779,7 @@ Given a contraint on sum of path values, minimize the sum of vertex values.
 
 [Minimum Cost to Reach Destination in Time][minimum-cost-to-reach-destination-in-time]
 
-{% highlight java %}
+```java
 public int minCost(int maxTime, int[][] edges, int[] passingFees) {
     int n = passingFees.length;
     List<int[]>[] graph = new List[n];
@@ -818,13 +818,13 @@ public int minCost(int maxTime, int[][] edges, int[] passingFees) {
 
     return -1;
 }
-{% endhighlight %}
+```
 
 ## Dijkstra's + DP
 
 [Minimum Cost to Reach City With Discounts][minimum-cost-to-reach-city-with-discounts]
 
-{% highlight java %}
+```java
 public int minimumCost(int n, int[][] highways, int discounts) {
     // buils graph
     List<int[]>[] graph = new List[n];
@@ -877,7 +877,7 @@ public int minimumCost(int n, int[][] highways, int discounts) {
     }
     return -1;
 }
-{% endhighlight %}
+```
 
 # Bellman-Ford Algorithm
 
@@ -885,7 +885,7 @@ public int minimumCost(int n, int[][] highways, int discounts) {
 
 [Cheapest Flights Within K Stops][cheapest-flights-within-k-stops]
 
-{% highlight java %}
+```java
 public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
     int[] prices = new int[n], tmp = new int[n];
     Arrays.fill(prices, Integer.MAX_VALUE);
@@ -902,7 +902,7 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
     }
     return prices[dst] == Integer.MAX_VALUE ? -1 : prices[dst];
 }
-{% endhighlight %}
+```
 
 # Floyd-Warshall Algorithm
 
@@ -928,7 +928,7 @@ Time complexity: \\(\Theta(V^3)\\)
 
 [Count Subtrees With Max Distance Between Cities][count-subtrees-with-max-distance-between-cities]
 
-{% highlight java %}
+```java
 public int[] countSubgraphsForEachDiameter(int n, int[][] edges) {
     // Floyd-Warshall
     int[][] tree = new int[n][n];
@@ -980,11 +980,11 @@ public int[] countSubgraphsForEachDiameter(int n, int[][] edges) {
 private boolean isBitSet(int i, int b) {
     return (i & (1 << b)) != 0;
 }
-{% endhighlight %}
+```
 
 [Course Schedule IV][course-schedule-iv]
 
-{% highlight java %}
+```java
 // Floyd–Warshall Algorithm
 public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
     boolean[][] graph = new boolean[numCourses][numCourses];
@@ -1006,13 +1006,13 @@ public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, 
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 # Paint and Expansion
 
 [Shortest Bridge][shortest-bridge]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -1074,11 +1074,11 @@ private boolean expand(int[][] grid, int i, int j, int color) {
     // returns true if it reaches the other island
     return grid[i][j] == 1;
 }
-{% endhighlight %}
+```
 
 [Minimum Number of Days to Disconnect Island][minimum-number-of-days-to-disconnect-island]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -1150,11 +1150,11 @@ private void paint(int i, int j, int color) {
         paint(i + d[0], j + d[1], color);
     }
 }
-{% endhighlight %}
+```
 
 [Making A Large Island][making-a-large-island]
 
-{% highlight java %}
+```java
 {% raw %}
 private static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 {% endraw %}
@@ -1221,11 +1221,11 @@ private int paint(int[][] grid, int i, int j, int color) {
     }
     return size;
 }
-{% endhighlight %}
+```
 
 [Modify Graph Edge Weights][modify-graph-edge-weights]
 
-{% highlight java %}
+```java
 public int[][] modifiedGraphEdges(int n, int[][] edges, int source, int destination, int target) {
     // {node, [neighbor, weight]}
     List<int[]>[] g = new List[n];
@@ -1341,7 +1341,7 @@ private int[][] dijkstra(int n, List<int[]>[] graph, int src, boolean skipNegati
     }
     return new int[][]{dist, parents};
 }
-{% endhighlight %}
+```
 
 [campus-bikes-ii]: https://leetcode.com/problems/campus-bikes-ii/
 [count-subtrees-with-max-distance-between-cities]: https://leetcode.com/problems/count-subtrees-with-max-distance-between-cities/

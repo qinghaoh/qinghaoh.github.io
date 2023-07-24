@@ -5,7 +5,7 @@ title:  "Game"
 
 [Chalkboard XOR Game][chalkboard-xor-game]
 
-{% highlight java %}
+```java
 public boolean xorGame(int[] nums) {
     int xor = 0;
     for (int num : nums) {
@@ -18,11 +18,11 @@ public boolean xorGame(int[] nums) {
     // Alice can erase either and not close at current turn
     return xor == 0 || nums.length % 2 == 0;
 }
-{% endhighlight %}
+```
 
 [Sum Game][sum-game]
 
-{% highlight java %}
+```java
 public boolean sumGame(String num) {
     // left - right
     int diff = 0, qDiff = 0;
@@ -44,11 +44,11 @@ public boolean sumGame(String num) {
     // smaller + n * 9 / 2 == larger
     return (qDiff & 1) == 1 || diff + qDiff * 9 / 2 != 0;
 }
-{% endhighlight %}
+```
 
 [Stone Game IX][stone-game-ix]
 
-{% highlight java %}
+```java
 public boolean stoneGameIX(int[] stones) {
     int[] remainders = new int[3];
     for (int s : stones) {
@@ -67,7 +67,7 @@ public boolean stoneGameIX(int[] stones) {
     // Alice should keep the invariant that the less frequency mod is still the less frequency mod
     return Math.abs(remainders[1] - remainders[2]) > 2;
 }
-{% endhighlight %}
+```
 
 # Dynamic Programming
 
@@ -75,7 +75,7 @@ public boolean stoneGameIX(int[] stones) {
 
 [Stone Game][stone-game]
 
-{% highlight java %}
+```java
 public boolean stoneGame(int[] piles) {
     int n = piles.length;
     // the largest number of stones one can get more than opponent
@@ -91,11 +91,11 @@ public boolean stoneGame(int[] piles) {
     }
     return dp[0][n - 1] > 0;
 }
-{% endhighlight %}
+```
 
 1D:
 
-{% highlight java %}
+```java
 public boolean stoneGame(int[] piles) {
     int n = piles.length;
     int[] dp = Arrays.copyOf(piles, n);
@@ -106,13 +106,13 @@ public boolean stoneGame(int[] piles) {
     }
     return dp[0] > 0;
 }
-{% endhighlight %}
+```
 
 Alex can always take either all odd piles or all even piles, and one of the colors must have a sum number of stones larger than the other color.
 
 [Stone Game IV][stone-game-iv]
 
-{% highlight java %}
+```java
 public boolean winnerSquareGame(int n) {
     boolean[] dp = new boolean[n + 1];
     for (int i = 1; i <= n; i++) {
@@ -125,13 +125,13 @@ public boolean winnerSquareGame(int n) {
     }
     return dp[n];
 }
-{% endhighlight %}
+```
 
 ## Top-down
 
 [Can I Win][can-i-win]
 
-{% highlight java %}
+```java
 private int maxChoosableInteger;
 private Map<Integer, Boolean> map = new HashMap<>();
 
@@ -168,13 +168,13 @@ private boolean dfs(int total, int state) {
     map.put(state, canWin);
     return canWin;
 }
-{% endhighlight %}
+```
 
 [Flip Game II][flip-game-ii]
 
 [Stone Game II][stone-game-ii]
 
-{% highlight java %}
+```java
 private int[] p;
 private int[][] memo;
 
@@ -205,11 +205,11 @@ private int helper(int[] piles, int start, int m) {
 
     return memo[start][m] = max;
 }
-{% endhighlight %}
+```
 
 [Cat and Mouse II][cat-and-mouse-ii]
 
-{% highlight java %}
+```java
 {% raw %}
 public static final int[][] DIRECTIONS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 {% endraw %}
@@ -293,13 +293,13 @@ private boolean dfs(int turn, int[] cat, int[] mouse) {
 
     return memo[turn][cat[0]][cat[1]][mouse[0]][mouse[1]] = true;
 }
-{% endhighlight %}
+```
 
 # Bottom-up Percolation
 
 [Cat and Mouse][cat-and-mouse]
 
-{% highlight java %}
+```java
 private enum Color {
     DRAW,
     MOUSE,
@@ -398,7 +398,7 @@ public int catMouseGame(int[][] graph) {
 
     return color[2][1][0].ordinal();
 }
-{% endhighlight %}
+```
 
 # Sprague–Grundy Theorem
 
@@ -440,7 +440,7 @@ In combinatorial game theory, the Sprague–Grundy theorem states that every imp
 
 Then Sprague-Grundy Theorem says that if both A and B play optimally, then the player starting first is guaranteed to win if the XOR of the grundy numbers of position in each sub-games at the beginning of the game is non-zero. Otherwise, if the XOR evaluates to zero, then player A will lose definitely, no matter what.
 
-{% highlight java %}
+```java
 // O(n ^ 2)
 public boolean canWin(String s) {
     int sg = 0;
@@ -469,9 +469,9 @@ public boolean canWin(String s) {
     }
     return sg != 0;
 }
-{% endhighlight %}
+```
 
-{% highlight java %}
+```java
 // O(n)
 public boolean canWin(String s) {
     // https://oeis.org/A002187
@@ -499,13 +499,13 @@ public boolean canWin(String s) {
     }
     return sg != 0;
 }
-{% endhighlight %}
+```
 
 [Subtree Removal Game with Fibonacci Tree][subtree-removal-game-with-fibonacci-tree]
 
 [Colon principle](https://en.wikipedia.org/wiki/Hackenbush#Proof_of_Colon_Principle): when branches come together at a vertex, one may replace the branches by a non-branching stalk of length equal to their nim sum.
 
-{% highlight java %}
+```java
 public boolean findGameWinner(int n) {
     // The Grundy value of a node is the nim sum of the Grundy values of its children.
     // SG(1) = 0
@@ -514,7 +514,7 @@ public boolean findGameWinner(int n) {
     // SG: [null, 0, 1, 3, 6, 3, 3, 0, 5, 7, 14, 7, 7, 0, 9, 11, 6, 11, 11, 0, 13, ...]
     return n % 6 != 1;
 }
-{% endhighlight %}
+```
 
 [can-i-win]: https://leetcode.com/problems/can-i-win/
 [cat-and-mouse]: https://leetcode.com/problems/cat-and-mouse/

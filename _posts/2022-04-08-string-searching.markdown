@@ -7,7 +7,7 @@ tags: string
 
 [Length of the Longest Valid Substring][length-of-the-longest-valid-substring]
 
-{% highlight java %}
+```java
 private static final int MAX_FORBIDDEN_LEN = 10;
 
 public int longestValidSubstring(String word, List<String> forbidden) {
@@ -28,7 +28,7 @@ public int longestValidSubstring(String word, List<String> forbidden) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 # KMP
 
@@ -42,7 +42,7 @@ For example, for the pattern `AABAACAABAA`,
 lps[] = [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
 ```
 
-{% highlight java %}
+```java
 int[] computeLps(String s) {
     int m = s.length();
     int[] lps = new int[m];
@@ -59,30 +59,30 @@ int[] computeLps(String s) {
     }
     return lps;
 }
-{% endhighlight %}
+```
 
 [Longest Happy Prefix][longest-happy-prefix]
 
-{% highlight java %}
+```java
 public String longestPrefix(String s) {
     return s.substring(0, computeLps(s)[s.length() - 1]);
 }
-{% endhighlight %}
+```
 
 [Shortest Palindrome][shortest-palindrome]
 
-{% highlight java %}
+```java
 public String shortestPalindrome(String s) {
     // "abace" -> "ec" + "aba" + "ce"
     // finds the longest prefix palindrome of s
     int[] lps = computeLps(s + "#" + new StringBuilder(s).reverse().toString());
     return new StringBuilder(s.substring(lps[lps.length - 1])).reverse().toString() + s;
 }
-{% endhighlight %}
+```
 
 [Sum of Scores of Built Strings][sum-of-scores-of-built-strings]
 
-{% highlight java %}
+```java
 public long sumScores(String s) {
     int[] lps = computeLps(s);
     int m = lps.length;
@@ -97,7 +97,7 @@ public long sumScores(String s) {
     // adding count[i] of all chars yields the total score
     return Arrays.stream(count).asLongStream().sum() + m;
 }
-{% endhighlight %}
+```
 
 For example, `s = "babab"`
 
@@ -111,7 +111,7 @@ count = [0, 0, 1, 1, 2]
 
 [Maximum Deletions on a String][maximum-deletions-on-a-string]
 
-{% highlight java %}
+```java
 public int deleteString(String s) {
     int n = s.length();
     int[] dp = new int[n];
@@ -131,11 +131,11 @@ public int deleteString(String s) {
     }
     return dp[0];
 }
-{% endhighlight %}
+```
 
 * Search pattern in text with the help of `lps[]`
 
-{% highlight java %}
+```java
 // finds the start indices of matches
 List<Integer> kmp(String text, String pattern) {
     int n = text.length(), m = pattern.length();
@@ -155,11 +155,11 @@ List<Integer> kmp(String text, String pattern) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [Remove All Occurrences of a Substring][remove-all-occurrences-of-a-substring]
 
-{% highlight java %}
+```java
 public String removeOccurrences(String s, String part) {
     int n = s.length(), m = part.length();
     int[] lps = computeLps(part);
@@ -201,11 +201,11 @@ public String removeOccurrences(String s, String part) {
 
     return new StringBuilder(st.stream().map(Object::toString).collect(Collectors.joining())).reverse().toString();
 }
-{% endhighlight %}
+```
 
 [Find All Good Strings][find-all-good-strings]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 private String s1, s2, evil;
 private int[] memo = new int[1 << 17];
@@ -263,7 +263,7 @@ private int getKey(int n, int m, boolean b1, boolean b2) {
     // 17 bits in total
     return (n << 8) | (m << 2) | ((b1 ? 1 : 0) << 1) | (b2 ? 1 : 0);
 }
-{% endhighlight %}
+```
 
 For example, `n = 2, s1 = "aa", s2 = "da", evil = "b"`
 
@@ -273,7 +273,7 @@ For example, `n = 2, s1 = "aa", s2 = "da", evil = "b"`
 
 [Z-function and its calculation](https://cp-algorithms.com/string/z-function.html): `z[i]` is the length of the longest string that is, at the same time, a prefix of `s` and a prefix of `s.substring(i)`.
 
-{% highlight java %}
+```java
 // O(n)
 private int[] computeZ(String s) {
     int n = s.length();
@@ -294,21 +294,21 @@ private int[] computeZ(String s) {
     }
     return z;
 }
-{% endhighlight %}
+```
 
 [Sum of Scores of Built Strings][sum-of-scores-of-built-strings]
 
-{% highlight java %}
+```java
 public long sumScores(String s) {
     return Arrays.stream(computeZ(s)).asLongStream().sum() + s.length();
 }
-{% endhighlight %}
+```
 
 # Rolling Hash
 
 [Longest Happy Prefix][longest-happy-prefix]
 
-{% highlight java %}
+```java
 public String longestPrefix(String s) {
     long h1 = 0, h2 = 0, mul = 1, mod = (long)1e9 + 7;
     int len = 0;
@@ -326,7 +326,7 @@ public String longestPrefix(String s) {
     }
     return s.substring(0, len);
 }
-{% endhighlight %}
+```
 
 [Rabin-Karp algorithm](https://en.wikipedia.org/wiki/Rabin%E2%80%93Karp_algorithm): a string-searching algorithm that uses hashing to find an exact match of a pattern string in a text. It uses a rolling hash to quickly filter out positions of the text that cannot match the pattern, and then checks for a match at the remaining positions.
 
@@ -334,7 +334,7 @@ $$ h(x) = \sum_{i = 0}^n a^{n - i}s_{i}$$
 
 [Longest Duplicate Substring][longest-duplicate-substring]
 
-{% highlight java %}
+```java
 // O(nlog(n))
 public String longestDupSubstring(String s) {
     // binary search
@@ -398,7 +398,7 @@ private String search(String s, int len) {
     // no duplicate substring found
     return null;
 }
-{% endhighlight %}
+```
 
 # Suffix Automaton
 
@@ -406,7 +406,7 @@ private String search(String s, int len) {
 
 [Longest Common Subpath][longest-common-subpath]
 
-{% highlight java %}
+```java
 public class Solution {
     public int longestCommonSubpath(int n, int[][] paths) {
         // builds suffix automaton from the shortest path (denoted as path0)
@@ -541,7 +541,7 @@ public class Solution {
         }
     }
 }
-{% endhighlight %}
+```
 
 # Suffix Tree
 
@@ -551,7 +551,7 @@ public class Solution {
 
 [String Matching in an Array][string-matching-in-an-array]
 
-{% highlight java %}
+```java
 public List<String> stringMatching(String[] words) {
     TrieNode root = new TrieNode();
     for (String w : words) {
@@ -591,7 +591,7 @@ private void insert(TrieNode root, String word) {
         node.count++;
     }
 }
-{% endhighlight %}
+```
 
 [find-all-good-strings]: https://leetcode.com/problems/find-all-good-strings/
 [length-of-the-longest-valid-substring]: https://leetcode.com/problems/length-of-the-longest-valid-substring/

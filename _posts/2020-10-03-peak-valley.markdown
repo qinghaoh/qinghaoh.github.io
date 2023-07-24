@@ -10,7 +10,7 @@ tag: array
 
 ![array](/assets/img/algorithm/best_time_to_buy_and_sell_stock_2.png)
 
-{% highlight java %}
+```java
 public int maxProfit(int[] prices) {
     int profit = 0;
     for (int i = 1; i < prices.length; i++) {
@@ -19,13 +19,13 @@ public int maxProfit(int[] prices) {
     }
     return profit;
 }
-{% endhighlight %}
+```
 
 Almost the same:
 
 [Maximum Alternating Subsequence Sum][maximum-alternating-subsequence-sum]
 
-{% highlight java %}
+```java
 public long maxAlternatingSum(int[] nums) {
     // gets the first one for free
     long max = nums[0];
@@ -34,11 +34,11 @@ public long maxAlternatingSum(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Decrease Elements To Make Array Zigzag][decrease-elements-to-make-array-zigzag]
 
-{% highlight java %}
+```java
 private int MAX = 1001;
 
 public int movesToMakeZigzag(int[] nums) {       
@@ -53,11 +53,11 @@ public int movesToMakeZigzag(int[] nums) {
     }
     return Math.min(result[0], result[1]);
 }
-{% endhighlight %}
+```
 
 [Find Permutation][find-permutation]
 
-{% highlight java %}
+```java
 public int[] findPermutation(String s) {
     int n = s.length();
     int[] perm = new int[n + 1];
@@ -79,7 +79,7 @@ public int[] findPermutation(String s) {
     }
     return perm;
 }
-{% endhighlight %}
+```
 
 In this solution, the final result is split into groups, with `I` as delimiter. In each group, the numbers are contiguous, and the groups are in ascending order.
 
@@ -91,7 +91,7 @@ e.g.
 
 [Candy][candy]
 
-{% highlight java %}
+```java
 public int candy(int[] ratings) {
     // steps of continuous up and down respectively
     int up = 0, down = 0, peak = 0, count = 1;
@@ -114,7 +114,7 @@ public int candy(int[] ratings) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 For example, `[0, 1, 10, 9, 8, 7]`
 
@@ -131,7 +131,7 @@ i = 5, up = 0, down = 3, peak = 2, count = 13
 
 [Shortest Subarray to be Removed to Make Array Sorted][shortest-subarray-to-be-removed-to-make-array-sorted]
 
-{% highlight java %}
+```java
 public int findLengthOfShortestSubarray(int[] arr) {
     int n = arr.length;
     // first peak and last valley
@@ -159,7 +159,7 @@ public int findLengthOfShortestSubarray(int[] arr) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [best-time-to-buy-and-sell-stock-ii]: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
 [candy]: https://leetcode.com/problems/candy/

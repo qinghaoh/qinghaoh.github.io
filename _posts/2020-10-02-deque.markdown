@@ -10,7 +10,7 @@ tags: queue
 
 [Shortest Subarray with Sum at Least K][shortest-subarray-with-sum-at-least-k]
 
-{% highlight java %}
+```java
 public int shortestSubarray(int[] A, int K) {
     // prefix sum
     // finds the smallest j - i so that j > i and p[j] - p[i] >= K
@@ -40,13 +40,13 @@ public int shortestSubarray(int[] A, int K) {
 
     return min <= A.length ? min : -1;
 }
-{% endhighlight %}
+```
 
 ### Push/Pop Tuple
 
 [Max Value of Equation][max-value-of-equation]
 
-{% highlight java %}
+```java
 public int findMaxValueOfEquation(int[][] points, int k) {
     // yi + yj + |xi - xj|
     // = yi + yj + xj - xi
@@ -67,11 +67,11 @@ public int findMaxValueOfEquation(int[][] points, int k) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 When using a heap to maintain an ordered subsequence/subarray, consider using a monotonic stack/queue.
 
-{% highlight java %}
+```java
 public int findMaxValueOfEquation(int[][] points, int k) {
     // yi + yj + |xi - xj|
     // = yi + yj + xj - xi
@@ -97,7 +97,7 @@ public int findMaxValueOfEquation(int[][] points, int k) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 # Max/Min in a Sliding Window
 
@@ -105,7 +105,7 @@ public int findMaxValueOfEquation(int[][] points, int k) {
 
 [Sliding Window Maximum][sliding-window-maximum]
 
-{% highlight java %}
+```java
 public int[] maxSlidingWindow(int[] nums, int k) {
     int n = nums.length;
     int[] result = new int[n - k + 1];
@@ -129,13 +129,13 @@ public int[] maxSlidingWindow(int[] nums, int k) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 ## Elastic-size Window
 
 [Maximum Number of Robots Within Budget][maximum-number-of-robots-within-budget]
 
-{% highlight java %}
+```java
 public int maximumRobots(int[] chargeTimes, int[] runningCosts, long budget) {
     long sum = 0;
     int i = 0, j = 0, n = chargeTimes.length;
@@ -161,11 +161,11 @@ public int maximumRobots(int[] chargeTimes, int[] runningCosts, long budget) {
     // sliding window doesn't shrink
     return n - i;
 }
-{% endhighlight %}
+```
 
 [Jump Game VI][jump-game-vi]
 
-{% highlight java %}
+```java
 public int maxResult(int[] nums, int k) {
     int n = nums.length;
     // dp[i]: max score to reach the end starting at index i
@@ -188,11 +188,11 @@ public int maxResult(int[] nums, int k) {
     }
     return dp[0];
 }
-{% endhighlight %}
+```
 
 [Constrained Subsequence Sum][constrained-subsequence-sum]
 
-{% highlight java %}
+```java
 public int constrainedSubsetSum(int[] nums, int k) {
     int max = nums[0];
     int[] dp = new int[nums.length];
@@ -213,7 +213,7 @@ public int constrainedSubsetSum(int[] nums, int k) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [constrained-subsequence-sum]: https://leetcode.com/problems/constrained-subsequence-sum/
 [jump-game-vi]: https://leetcode.com/problems/jump-game-vi/

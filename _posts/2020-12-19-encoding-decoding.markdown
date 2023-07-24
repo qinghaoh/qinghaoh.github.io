@@ -9,7 +9,7 @@ tag: string
 
 [Encode and Decode Strings][encode-and-decode-strings]
 
-{% highlight java %}
+```java
 private String toCount(String s) {
     int length = 4;  // 4 chunks
     char[] bytes = new char[length];
@@ -18,11 +18,11 @@ private String toCount(String s) {
     }
     return new String(bytes);
 }
-{% endhighlight %}
+```
 
 [Serialize and Deserialize Binary Tree][serialize-and-deserialize-binary-tree]
 
-{% highlight java %}
+```java
 // preorder
 public class Codec {
 
@@ -61,11 +61,11 @@ public class Codec {
         return root;
     }
 }
-{% endhighlight %}
+```
 
 [Serialize and Deserialize N-ary Tree][serialize-and-deserialize-n-ary-tree]
 
-{% highlight java %}
+```java
 class Codec {
     // Encodes a tree to a single string.
     public String serialize(Node root) {
@@ -114,7 +114,7 @@ class Codec {
         return root;
     }
 }
-{% endhighlight %}
+```
 
 [Encode N-ary Tree to Binary Tree][encode-n-ary-tree-to-binary-tree]
 
@@ -122,7 +122,7 @@ class Codec {
 
 [Construct Binary Tree from String][construct-binary-tree-from-string]
 
-{% highlight java %}
+```java
 public TreeNode str2tree(String s) {
     Deque<TreeNode> st = new ArrayDeque<>();
     for (int i = 0; i < s.length(); i++) {
@@ -149,11 +149,11 @@ public TreeNode str2tree(String s) {
     }
     return st.isEmpty() ? null : st.peek();
 }
-{% endhighlight %}
+```
 
 [Encode and Decode TinyURL][encode-and-decode-tinyurl]
 
-{% highlight java %}
+```java
 public class Codec {
     // 62 chars
     private static final String ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -186,11 +186,11 @@ public class Codec {
         return map.get(shortUrl.replace(PATH, ""));
     }
 }
-{% endhighlight %}
+```
 
 [Find Duplicate Subtrees][find-duplicate-subtrees]
 
-{% highlight java %}
+```java
 private List<TreeNode> list = new ArrayList<>();
 private Map<String, Integer> map = new HashMap<>();
 
@@ -213,11 +213,11 @@ private String dfs(TreeNode node) {
     }
     return s;
 }
-{% endhighlight %}
+```
 
 Optimization:
 
-{% highlight java %}
+```java
 private int id = 0;
 private List<TreeNode> list = new ArrayList<>();
 // serialized string : id
@@ -248,11 +248,11 @@ private int dfs(TreeNode node) {
     }
     return sid;
 }
-{% endhighlight %}
+```
 
 [Isomorphic Strings][isomorphic-strings]
 
-{% highlight java %}
+```java
 public boolean isIsomorphic(String s, String t) {
     return transform(s).equals(transform(t));
 }
@@ -269,7 +269,7 @@ private String transform(String s) {
 
     return sj.toString();
 }
-{% endhighlight %}
+```
 
 # Run-length encoding
 
@@ -277,7 +277,7 @@ private String transform(String s) {
 
 [String Compression II][string-compression-ii]
 
-{% highlight java %}
+```java
 public int getLengthOfOptimalCompression(String s, int k) {
     int n = s.length();
     // dp[i][j]: i-th character and j characters are deleted
@@ -317,7 +317,7 @@ public int getLengthOfOptimalCompression(String s, int k) {
     }
     return dp[n][k];
 }
-{% endhighlight %}
+```
 
 [construct-binary-tree-from-string]: https://leetcode.com/problems/construct-binary-tree-from-string/
 [encode-and-decode-strings]: https://leetcode.com/problems/encode-and-decode-strings/

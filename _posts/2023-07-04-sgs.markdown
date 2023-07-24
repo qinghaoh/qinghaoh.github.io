@@ -487,7 +487,7 @@ $$\begin{pmatrix}
 
 要求解满足以上不等式组的整数解的个数，等价于求解四维凸多胞形（[Convex polytope](https://en.wikipedia.org/wiki/Convex_polytope)）中的整数点（晶格点）的个数。以上矩阵不等式为该四维凸多胞形的半空间表示（Half-space representation）。利用开源软件[polymake](https://polymake.org/doku.php/start)，我们可以得知该凸多胞形为整多胞形（[Integral polytope](https://en.wikipedia.org/wiki/Integral_polytope)），进而可得到其Ehrhart多项式（[Ehrhart polynomial](https://en.wikipedia.org/wiki/Ehrhart_polynomial)）：
 
-{% highlight perl %}
+```perl
 polytope > $p = new Polytope(INEQUALITIES=>[[-14,1,1,0,0],[-14,1,0,1,0],[-14,1,0,0,1],[-14,0,1,1,0],[-14,0,1,0,1],[-14,0,0,1,1],[-1,1,0,0,0],[-1,0,1,0,0],[-1,0,0,1,0],[-1,0,0,0,1],[13,-1,0,0,0],[13,0,-1,0,0],[13,0,0,-1,0],[13,0,0,0,-1]]);
 
 polytope > print $p->LATTICE;
@@ -495,7 +495,7 @@ true
 
 polytope > print $p->EHRHART_POLYNOMIAL;
 2592*x^4 + 1296*x^3 + 252*x^2 + 24*x + 1
-{% endhighlight %}
+```
 
 所以，该凸多胞形内晶格点的个数为\\(2592+1296+252+24+1=4165\\)。
 
@@ -560,7 +560,7 @@ $$\begin{pmatrix}
 
 再次利用polymake的计算可知，以上四种情况对应的四个凸多胞形均为有理多胞形（Rational polytope）而非整多胞形。因此，只能通过求解其Ehrhart准多项式（[Ehrhart quasi-polynomial](https://en.wikipedia.org/wiki/Ehrhart_polynomial#Ehrhart_quasi-polynomials)）来求解其所包含的晶格点：
 
-{% highlight perl %}
+```perl
 polytope > $p1 = new Polytope(INEQUALITIES=>[[-14,1,1,1,1],[13,-1,-1,-1,0],[13,-1,-1,0,-1],[13,-1,0,-1,-1],[13,0,-1,-1,-1],[-1,1,0,0,0],[-1,0,1,0,0],[-1,0,0,1,0],[-1,0,0,0,1]]);
 
 polytope > $p2 = new Polytope(INEQUALITIES=>[[13,-1,-1,-1,0],[13,-1,-1,0,-1],[13,-1,0,-1,-1],[-14,0,1,1,1],[-1,1,0,0,0],[-1,0,1,0,0],[-1,0,0,1,0],[-1,0,0,0,1]]);
@@ -608,7 +608,7 @@ polytope > print $p3->N_LATTICE_POINTS;
 284
 polytope > print $p4->N_LATTICE_POINTS;
 1298
-{% endhighlight %}
+```
 
 在乘以相应的重复系数后，此类整数解组数为$$445+136*4+284*6+1298*4=7885$$。
 

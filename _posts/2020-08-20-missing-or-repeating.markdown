@@ -6,7 +6,7 @@ tags: array
 
 ## Sort
 
-{% highlight java %}
+```java
 public List<Integer> findDisappearedNumbers(int[] nums) {
     for (int i = 0; i < nums.length; i++) {
         int index = nums[i] - 1;
@@ -25,11 +25,11 @@ public List<Integer> findDisappearedNumbers(int[] nums) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 ## Mark
 
-{% highlight java %}
+```java
 public List<Integer> findDisappearedNumbers(int[] nums) {
     for (int i = 0; i < nums.length; i++) {
         int index = Math.abs(nums[i]) - 1;
@@ -46,7 +46,7 @@ public List<Integer> findDisappearedNumbers(int[] nums) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 ```
 [4,3,2,7,8,2,3,1]

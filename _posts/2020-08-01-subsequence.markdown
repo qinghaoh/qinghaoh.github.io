@@ -14,7 +14,7 @@ Where `0 <= i_0 < i_1 < ... < i_k <= a.length`
 
 [Shortest Impossible Sequence of Rolls][shortest-impossible-sequence-of-rolls]
 
-{% highlight java %}
+```java
 public int shortestSequence(int[] rolls, int k) {
     Set<Integer> seen = new HashSet<>();
     int len = 1;
@@ -31,13 +31,13 @@ public int shortestSequence(int[] rolls, int k) {
     }
     return len;
 }
-{% endhighlight %}
+```
 
 ## Sort
 
 [Sum of Subsequence Widths][sum-of-subsequence-widths]
 
-{% highlight java %}
+```java
 private final int MOD = (int)1e9 + 7;
 
 public int sumSubseqWidths(int[] A) {
@@ -52,7 +52,7 @@ public int sumSubseqWidths(int[] A) {
     }
     return (int)((sum + MOD) % MOD);
 }
-{% endhighlight %}
+```
 
 ## Binary Search
 
@@ -66,7 +66,7 @@ If there are lots of incoming `s` (e.g. more than one billion), how to check one
 
 Binary Search:
 
-{% highlight java %}
+```java
 public boolean isSubsequence(String s, String t) {
     Map<Integer, List<Integer>> map = new HashMap<>();
     for (int i = 0; i < t.length(); i++) {
@@ -90,7 +90,7 @@ public boolean isSubsequence(String s, String t) {
     }
     return true;
 }
-{% endhighlight %}
+```
 
 The above map pattern (character: list of indices) is very useful in many problems.
 
@@ -100,7 +100,7 @@ The above map pattern (character: list of indices) is very useful in many proble
 
 [Longest Increasing Subsequence][longest-increasing-subsequence]
 
-{% highlight java %}
+```java
 // O(n ^ 2)
 public int lengthOfLIS(int[] nums) {
     int n = nums.length;
@@ -120,13 +120,13 @@ public int lengthOfLIS(int[] nums) {
 
     return max;
 }
-{% endhighlight %}
+```
 
 Similar problems:
 
 [Largest Divisible Subset][largest-divisible-subset]
 
-{% highlight java %}
+```java
 public List<Integer> largestDivisibleSubset(int[] nums) {
     Arrays.sort(nums);
 
@@ -157,11 +157,11 @@ public List<Integer> largestDivisibleSubset(int[] nums) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 [Delete Columns to Make Sorted III][delete-columns-to-make-sorted-iii]
 
-{% highlight java %}
+```java
 public int minDeletionSize(String[] strs) {
     int m = strs.length, n = strs[0].length(), min = n - 1;
     int[] dp = new int[n];
@@ -183,7 +183,7 @@ public int minDeletionSize(String[] strs) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 [Russian Doll Envelopes][russian-doll-envelopes]: 2D
 
@@ -195,7 +195,7 @@ A quicker solution is [Patience sorting](https://en.wikipedia.org/wiki/Patience_
 1. Each subsequent card is placed on the leftmost existing pile whose top card has a value greater than or equal to the new card's value, or to the right of all of the existing piles, thus forming a new pile.
 1. When there are no more cards remaining to deal, the game ends.
 
-{% highlight java %}
+```java
 // O(nlog(n))
 public int lengthOfLIS(int[] nums) {
     List<Integer> piles = new ArrayList<>(nums.length);
@@ -213,11 +213,11 @@ public int lengthOfLIS(int[] nums) {
     }
     return piles.size();
 }
-{% endhighlight %}
+```
 
 Not as intuitive, we can use array instead:
 
-{% highlight java %}
+```java
 public int lengthOfLIS(int[] nums) {
     int[] piles = new int[nums.length];
     int count = 0;
@@ -234,7 +234,7 @@ public int lengthOfLIS(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 ### Variants
 
@@ -242,7 +242,7 @@ public int lengthOfLIS(int[] nums) {
 
 [Find the Longest Valid Obstacle Course at Each Position][find-the-longest-valid-obstacle-course-at-each-position]
 
-{% highlight java %}
+```java
 public int[] longestObstacleCourseAtEachPosition(int[] obstacles) {
     int n = obstacles.length;
     int[] piles = new int[n], ans = new int[n];
@@ -271,13 +271,13 @@ private int binarySearch(int[] piles, int end, int target) {
     }
     return low;
 }
-{% endhighlight %}
+```
 
 [Minimum Operations to Make the Array K-Increasing][minimum-operations-to-make-the-array-k-increasing]
 
 [Make Array Empty][make-array-empty]
 
-{% highlight java %}
+```java
 public long countOperationsToEmptyArray(int[] nums) {
     int n = nums.length;
     Integer[] indices = new Integer[n];
@@ -302,7 +302,7 @@ public long countOperationsToEmptyArray(int[] nums) {
     }
     return operations;
 }
-{% endhighlight %}
+```
 
 **Mountain Array**
 
@@ -310,7 +310,7 @@ public long countOperationsToEmptyArray(int[] nums) {
 
 [Russian Doll Envelopes][russian-doll-envelopes]
 
-{% highlight java %}
+```java
 public int maxEnvelopes(int[][] envelopes) {
     // ascending in the first dimension and descending in the second
     // so when the first dimension are equal, two envelopes won't be in the same increasing subsequence
@@ -325,11 +325,11 @@ public int maxEnvelopes(int[][] envelopes) {
 
     return lengthOfLIS(h);
 }
-{% endhighlight %}
+```
 
 [Minimum Operations to Make a Subsequence][minimum-operations-to-make-a-subsequence]
 
-{% highlight java %}
+```java
 public int minOperations(int[] target, int[] arr) {
     int n = target.length;
     // since target has distinct elements,
@@ -358,13 +358,13 @@ public int minOperations(int[] target, int[] arr) {
     }
     return n - lis;
 }
-{% endhighlight %}
+```
 
 ## Dynamic Programming
 
 [Shortest Common Supersequence][shortest-common-supersequence]
 
-{% highlight java %}
+```java
 public String shortestCommonSupersequence(String str1, String str2) {
     // longest common subsequence
     int[][] dp = new int[str1.length() + 1][str2.length() + 1];
@@ -406,11 +406,11 @@ public String shortestCommonSupersequence(String str1, String str2) {
 
     return sb.toString();
 }
-{% endhighlight %}
+```
 
 [Longest Arithmetic Subsequence][longest-arithmetic-subsequence]
 
-{% highlight java %}
+```java
 public int longestArithSeqLength(int[] nums) {
     int n = nums.length;
     // dp[i]: all subsequences in nums[0...i]
@@ -429,11 +429,11 @@ public int longestArithSeqLength(int[] nums) {
 
     return max;
 }
-{% endhighlight %}
+```
 
 [Arithmetic Slices II - Subsequence][arithmetic-slices-ii-subsequence]
 
-{% highlight java %}
+```java
 public int numberOfArithmeticSlices(int[] nums) {
     int n = nums.length;
     // dp[i]: all subsequences in nums[0...i]
@@ -467,11 +467,11 @@ public int numberOfArithmeticSlices(int[] nums) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 [Length of Longest Fibonacci Subsequence][length-of-longest-fibonacci-subsequence]
 
-{% highlight java %}
+```java
 public int lenLongestFibSubseq(int[] A) {
     int[][] dp = new int[A.length][A.length];
     Map<Integer, Integer> index = new HashMap<>();
@@ -487,11 +487,11 @@ public int lenLongestFibSubseq(int[] A) {
     }
     return max > 2 ? max : 0;
 }
-{% endhighlight %}
+```
 
 [Longest Arithmetic Subsequence of Given Difference][longest-arithmetic-subsequence-of-given-difference]
 
-{% highlight java %}
+```java
 public int longestSubsequence(int[] arr, int difference) {
     // array element : length of longest arithmetic subsequence ending at the key
     Map<Integer, Integer> dp = new HashMap<>();
@@ -503,11 +503,11 @@ public int longestSubsequence(int[] arr, int difference) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Number of Unique Good Subsequences][number-of-unique-good-subsequences]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numberOfUniqueGoodSubsequences(String binary) {
@@ -527,11 +527,11 @@ public int numberOfUniqueGoodSubsequences(String binary) {
     }
     return (dp0 + dp1 + (has0 ? 1 : 0)) % MOD;
 }
-{% endhighlight %}
+```
 
 [Subsequence With the Minimum Score][subsequence-with-the-minimum-score]
 
-{% highlight java %}
+```java
 public int minimumScore(String s, String t) {
     int n = s.length(), m = t.length(), index = m - 1;
     // dp[i]: rightmost index of s so that t.substring(i) is a subsequence of s.substring(dp[i])
@@ -567,13 +567,13 @@ public int minimumScore(String s, String t) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 ## Buckets
 
 [Number of Matching Subsequences][number-of-matching-subsequences]
 
-{% highlight java %}
+```java
 public int numMatchingSubseq(String s, String[] words) {
     List<Deque<Character>>[] buckets = new List[26];
     for (int i = 0; i < buckets.length; i++) {
@@ -604,7 +604,7 @@ public int numMatchingSubseq(String s, String[] words) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 For example, `s = "abcde", words = ["a","bb","acd","ace"]`. In each iteration:
 
@@ -642,7 +642,7 @@ count: 3
 
 [Longest Subsequence Repeated k Times][longest-subsequence-repeated-k-times]
 
-{% highlight java %}
+```java
 private List<String> candidates = new ArrayList<>();
 
 public String longestSubsequenceRepeatedK(String s, int k) {
@@ -713,7 +713,7 @@ private void backtrack(int[] freq, int len, StringBuilder sb) {
         }
     }
 }
-{% endhighlight %}
+```
 
 [arithmetic-slices-ii-subsequence]: https://leetcode.com/problems/arithmetic-slices-ii-subsequence/
 [delete-columns-to-make-sorted-iii]: https://leetcode.com/problems/delete-columns-to-make-sorted-iii/

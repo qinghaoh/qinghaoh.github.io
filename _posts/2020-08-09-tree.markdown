@@ -30,7 +30,7 @@ Pre-compute the depths and heights of all nodes. Also pre-compute the largest an
 
 [Verify Preorder Serialization of a Binary Tree][verify-preorder-serialization-of-a-binary-tree]
 
-{% highlight java %}
+```java
 public boolean isValidSerialization(String preorder) {
     // diff = outdegree - indegree
     int diff = 1;
@@ -50,13 +50,13 @@ public boolean isValidSerialization(String preorder) {
     // diff must be zero when complete
     return diff == 0;
 }
-{% endhighlight %}
+```
 
 # Complete Tree
 
 [Count Complete Tree Nodes][count-complete-tree-nodes]
 
-{% highlight java %}
+```java
 public int countNodes(TreeNode root) {
     if (root == null) {
         return 0;
@@ -78,11 +78,11 @@ public int countNodes(TreeNode root) {
 
     return 1 + countNodes(root.left) + countNodes(root.right);
 }
-{% endhighlight %}
+```
 
 Iterative, no recomputation of `h`:
 
-{% highlight java %}
+```java
 public int countNodes(TreeNode root) {
     int count = 0, h = height(root);
     TreeNode node = root;
@@ -104,7 +104,7 @@ private int height(TreeNode node) {
     // left subtree determines the height
     return node == null ? -1 : 1 + height(node.left);
 }
-{% endhighlight %}
+```
 
 # Cartesian Tree
 
@@ -114,7 +114,7 @@ Cartesian tree is a binary tree derived from a sequence of numbers; it can be un
 
 [Maximum Binary Tree][maximum-binary-tree]
 
-{% highlight java %}
+```java
 public TreeNode constructMaximumBinaryTree(int[] nums) {
     Deque<TreeNode> st = new ArrayDeque<>();
     for (int num : nums) {
@@ -131,7 +131,7 @@ public TreeNode constructMaximumBinaryTree(int[] nums) {
 
     return st.isEmpty() ? null : st.removeLast();
 }
-{% endhighlight %}
+```
 
 # Huffman Coding
 
@@ -139,7 +139,7 @@ public TreeNode constructMaximumBinaryTree(int[] nums) {
 
 [Minimum Time to Build Blocks][minimum-time-to-build-blocks]
 
-{% highlight java %}
+```java
 public int minBuildTime(int[] blocks, int split) {
     // Huffman coding, greedy
     Queue<Integer> pq = new PriorityQueue<>();
@@ -154,7 +154,7 @@ public int minBuildTime(int[] blocks, int split) {
 
     return pq.peek();
 }
-{% endhighlight %}
+```
 
 [count-complete-tree-nodes]: https://leetcode.com/problems/count-complete-tree-nodes/
 [height-of-binary-tree-after-subtree-removal-queries]: https://leetcode.com/problems/height-of-binary-tree-after-subtree-removal-queries/

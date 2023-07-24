@@ -10,7 +10,7 @@ There are two basic forms of algorithm. The first form is to use a list to recor
  
 [Average Height of Buildings in Each Segment][average-height-of-buildings-in-each-segment]
 
-{% highlight java %}
+```java
 public int[][] averageHeightOfBuildings(int[][] buildings) {
     // {point, (+/-)height}
     List<int[]> heights = new ArrayList<>();
@@ -53,7 +53,7 @@ public int[][] averageHeightOfBuildings(int[][] buildings) {
     }
     return street;
 }
-{% endhighlight %}
+```
 
 Similarly, we can use a priority queue instead of list to avoid manual sorting. See example.
 
@@ -61,7 +61,7 @@ The second form is to use an array or an ordered map to store the deltas of all 
 
 [Average Height of Buildings in Each Segment][average-height-of-buildings-in-each-segment]
 
-{% highlight java %}
+```java
 public int[][] averageHeightOfBuildings(int[][] buildings) {
     // {height sum, count}
     Map<Integer, int[]> map = new TreeMap<>();
@@ -113,13 +113,13 @@ public int[][] averageHeightOfBuildings(int[][] buildings) {
     }
     return street;
 }
-{% endhighlight %}
+```
 
 ## List/Priority Queue Form
 
 [The Skyline Problem][the-skyline-problem]
 
-{% highlight java %}
+```java
 public List<List<Integer>> getSkyline(int[][] buildings) {
     List<int[]> heights = new ArrayList<>();
     for (int[] b: buildings) {
@@ -159,7 +159,7 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 ## Array/Ordered Map Form
 
@@ -167,7 +167,7 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
 
 [Range Addition][range-addition]
 
-{% highlight java %}
+```java
 public int[] getModifiedArray(int length, int[][] updates) {
     int[] arr = new int[length];
     // finds pulses
@@ -185,13 +185,13 @@ public int[] getModifiedArray(int length, int[][] updates) {
 
     return arr;
 }
-{% endhighlight %}
+```
 
 In the above solution, interval end is exclusive, so we need to +1 to the end position. So is the next problem:
 
 [Count Positions on Street With Required Brightness][count-positions-on-street-with-required-brightness]
 
-{% highlight java %}
+```java
 public int meetRequirement(int n, int[][] lights, int[] requirement) {
     int[] brightness = new int[n + 1];
     for (int[] l : lights) {
@@ -208,13 +208,13 @@ public int meetRequirement(int n, int[][] lights, int[] requirement) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 **Ordered Map**
 
 [Describe the Painting][describe-the-painting]
 
-{% highlight java %}
+```java
 public List<List<Long>> splitPainting(int[][] segments) { 
     Map<Integer, Long> map = new TreeMap<>();
     for (int[] s : segments) {
@@ -236,7 +236,7 @@ public List<List<Long>> splitPainting(int[][] segments) {
     }
     return painting;
 }
-{% endhighlight %}
+```
 
 # Arc Sweep
 
@@ -244,7 +244,7 @@ public List<List<Long>> splitPainting(int[][] segments) {
 
 ![Arc sweep (created by https://www.geogebra.org/)](/assets/img/algorithm/maximum_number_of_darts_inside_of_a_circular_dartboard.png)
 
-{% highlight java %}
+```java
 public int numPoints(int[][] points, int r) {
     // at least 1 point can be included by the circle
     int max = 1;
@@ -286,11 +286,11 @@ public int numPoints(int[][] points, int r) {
 private double distance(int[] p1, int[] p2) {
     return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));
 }
-{% endhighlight %}
+```
 
 [Maximum Number of Visible Points][maximum-number-of-visible-points]
 
-{% highlight java %}
+```java
 public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
     // list of radian degrees
     List<Double> list = new ArrayList<>();
@@ -324,7 +324,7 @@ public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> lo
 
     return max + locationPoints;
 }
-{% endhighlight %}
+```
 
 [average-height-of-buildings-in-each-segment]: https://leetcode.com/problems/average-height-of-buildings-in-each-segment/
 [count-positions-on-street-with-required-brightness]: https://leetcode.com/problems/count-positions-on-street-with-required-brightness/

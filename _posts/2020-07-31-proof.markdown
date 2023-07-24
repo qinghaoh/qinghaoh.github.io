@@ -1,5 +1,6 @@
 ---
 title:  "Proof"
+category: algorithm
 ---
 [Distant Barcodes][distant-barcodes]
 
@@ -150,7 +151,7 @@ Q.E.D.
 
 [Maximum Running Time of N Computers][maximum-running-time-of-n-computers]
 
-{% highlight java %}
+```java
 public long maxRunTime(int n, int[] batteries) {
     Arrays.sort(batteries);
 
@@ -167,7 +168,7 @@ public long maxRunTime(int n, int[] batteries) {
     // in this case, a battery spans two computers at most, and the two parts won't overlap
     return sum / (n - i);
 }
-{% endhighlight %}
+```
 
 [Find a Good Subset of the Matrix][find-a-good-subset-of-the-matrix]
 

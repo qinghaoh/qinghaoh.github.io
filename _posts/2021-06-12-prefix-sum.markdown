@@ -6,20 +6,20 @@ category: algorithm
 
 The basic template for prefix sum creation is:
 
-{% highlight java %}
+```java
 int[] p = new int[n + 1];
 for (int i = 0: i < n; i++) {
     p[i + 1] = p[i] + nums[i];
 }
 
 // sum[i...j] = p[j + 1] - p[i]
-{% endhighlight %}
+```
 
 We don't always have to create an array to record prefix sums. Sometimes we can use a running prefix sum instead. For example:
 
 [Subarray Sum Equals K][subarray-sum-equals-k]
 
-{% highlight java %}
+```java
 public int subarraySum(int[] nums, int k) {
     // prefix sum : count
     Map<Integer, Integer> map = new HashMap<>();
@@ -34,11 +34,11 @@ public int subarraySum(int[] nums, int k) {
 
     return count;
 }
-{% endhighlight %}
+```
 
 Similar problem: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equals-k]
 
-{% highlight java %}
+```java
 public int maxSubArrayLen(int[] nums, int k) {
     // prefix sum : index of first occurrence
     Map<Integer, Integer> map = new HashMap<>();
@@ -55,11 +55,11 @@ public int maxSubArrayLen(int[] nums, int k) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Contiguous Array][contiguous-array]
 
-{% highlight java %}
+```java
 public int findMaxLength(int[] nums) {
     // prefix sum : index of first occurrence
     Map<Integer, Integer> map = new HashMap<>();
@@ -77,11 +77,11 @@ public int findMaxLength(int[] nums) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Longest Well-Performing Interval][longest-well-performing-interval]
 
-{% highlight java %}
+```java
 public int longestWPI(int[] hours) {
     // prefix sum : index of first occurrence
     Map<Integer, Integer> map = new HashMap<>();
@@ -103,11 +103,11 @@ public int longestWPI(int[] hours) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Maximize the Beauty of the Garden][maximize-the-beauty-of-the-garden]
 
-{% highlight java %}
+```java
 public int maximumBeauty(int[] flowers) {
     // flower : first prefix sum of this flower
     Map<Integer, Integer> map = new HashMap<>();
@@ -127,7 +127,7 @@ public int maximumBeauty(int[] flowers) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 # Variants
 
@@ -135,7 +135,7 @@ public int maximumBeauty(int[] flowers) {
 
 [Product of the Last K Numbers][product-of-the-last-k-numbers]
 
-{% highlight java %}
+```java
 private List<Integer> p = new ArrayList<>(); 
 
 public ProductOfNumbers() {
@@ -155,11 +155,11 @@ public int getProduct(int k) {
     int n = p.size();
     return k < n ? p.get(n - 1) / p.get(n - k - 1) : 0;
 }
-{% endhighlight %}
+```
 
 [Product of Array Except Self][product-of-array-except-self]
 
-{% highlight java %}
+```java
 public int[] productExceptSelf(int[] nums) {
     int n = nums.length;
     int[] answer = new int[n];
@@ -177,13 +177,13 @@ public int[] productExceptSelf(int[] nums) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 **Mod**
 
 [Make Sum Divisible by P][make-sum-divisible-by-p]
 
-{% highlight java %}
+```java
 public int minSubarray(int[] nums, int p) {
     // target remainder
     int r = 0;
@@ -209,7 +209,7 @@ public int minSubarray(int[] nums, int p) {
     }
     return min == n ? -1 : min;
 }
-{% endhighlight %}
+```
 
 **Exclusive Or**
 
@@ -217,7 +217,7 @@ public int minSubarray(int[] nums, int p) {
 
 [Can Make Palindrome from Substring][can-make-palindrome-from-substring]
 
-{% highlight java %}
+```java
 public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
     int n = s.length();
     // 26 bits to represent prefix xor
@@ -233,11 +233,11 @@ public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 [Number of Wonderful Substrings][number-of-wonderful-substrings]
 
-{% highlight java %}
+```java
 private static final int NUM_CHARS = 10;
 
 public long wonderfulSubstrings(String word) {
@@ -258,24 +258,24 @@ public long wonderfulSubstrings(String word) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 **Multi-dimension**
 
 [Sum of Beauty of All Substrings][sum-of-beauty-of-all-substrings]
 
-{% highlight java %}
+```java
 int[][] p = new int[26][n + 1];
 for (int i = 0; i < n; i++) {
     for (int k = 0; k < p.length; k++) {
         p[k][i + 1] = p[k][i] + (k == s.charAt(i) - 'a' ? 1 : 0);
     }
 }
-{% endhighlight %}
+```
 
 [Minimum Absolute Difference Queries][minimum-absolute-difference-queries]
 
-{% highlight java %}
+```java
 private static final int MAX_NUM = 100;
 
 public int[] minDifference(int[] nums, int[][] queries) {
@@ -304,11 +304,11 @@ public int[] minDifference(int[] nums, int[][] queries) {
     }
     return ans;
 }
-{% endhighlight %}
+```
 
 [Count Increasing Quadruplets][count-increasing-quadruplets]
 
-{% highlight java %}
+```java
 public long countQuadruplets(int[] nums) {
     int n = nums.length;
     // p[i][j]: number of elements < i in the first j elements
@@ -335,7 +335,7 @@ public long countQuadruplets(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 Another solution is by [dynamic programming](../dynamic-programming-vi).
  
@@ -343,7 +343,7 @@ Another solution is by [dynamic programming](../dynamic-programming-vi).
 
 [Sum of Floored Pairs][sum-of-floored-pairs]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int sumOfFlooredPairs(int[] nums) {
@@ -380,13 +380,13 @@ public int sumOfFlooredPairs(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 **Linked List**
 
 [Remove Zero Sum Consecutive Nodes from Linked List][remove-zero-sum-consecutive-nodes-from-linked-list]
 
-{% highlight java %}
+```java
 public ListNode removeZeroSumSublists(ListNode head) {
     ListNode dummy = new ListNode();
     dummy.next = head;
@@ -409,7 +409,7 @@ public ListNode removeZeroSumSublists(ListNode head) {
     }
     return dummy.next;
 }
-{% endhighlight %}
+```
 
 [Maximum Absolute Sum of Any Subarray][maximum-absolute-sum-of-any-subarray]
 
@@ -421,7 +421,7 @@ abs(subarray) = p[i] - p[j] <= max(p) - min(p)
 
 [Substring With Largest Variance][substring-with-largest-variance]
 
-{% highlight java %}
+```java
 public int largestVariance(String s) {
     Set<Character> chars = s.chars().mapToObj(ch -> (char)ch).collect(Collectors.toSet());
     int max = 0;
@@ -450,7 +450,7 @@ public int largestVariance(String s) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 This problem can also be solved by [Kadane's Algorithm](../kadanes).
 
@@ -458,7 +458,7 @@ This problem can also be solved by [Kadane's Algorithm](../kadanes).
 
 [Count Palindromic Subsequences][count-palindromic-subsequences]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int countPalindromes(String s) {
@@ -492,13 +492,13 @@ private int[][][] prefixSum(String s) {
     }
     return pp;
 }
-{% endhighlight %}
+```
 
 **Prefix Sum**
 
 [Sum of Total Strength of Wizards][sum-of-total-strength-of-wizards]
 
-{% highlight java %}
+```java
 private int MOD = (int)1e9 + 7;
 
 public int totalStrength(int[] strength) {
@@ -542,13 +542,13 @@ public int totalStrength(int[] strength) {
     }
     return (int)res;
 }
-{% endhighlight %}
+```
 
 # Range Sum
 
 [Number of Ways of Cutting a Pizza][number-of-ways-of-cutting-a-pizza]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 private Integer[][][] memo;
 
@@ -599,13 +599,13 @@ private int dfs(int m, int n, int cuts, int i, int j, int[][] p) {
     }
     return memo[cuts][i][j] = count;
 }
-{% endhighlight %}
+```
 
 # Discrete
 
 [Maximum Fruits Harvested After at Most K Steps][maximum-fruits-harvested-after-at-most-k-steps]
 
-{% highlight java %}
+```java
 public int maxTotalFruits(int[][] fruits, int startPos, int k) {
     int n = fruits.length, m = Math.max(startPos, fruits[n - 1][0]);
 
@@ -630,11 +630,11 @@ public int maxTotalFruits(int[][] fruits, int startPos, int k) {
     }
     return max;
 }
-{% endhighlight %}
+```
 
 [Find Good Days to Rob the Bank][find-good-days-to-rob-the-bank]
 
-{% highlight java %}
+```java
 public List<Integer> goodDaysToRobBank(int[] security, int time) {
     int n = security.length;
     int[] p = new int[n], s = new int[n];
@@ -654,13 +654,13 @@ public List<Integer> goodDaysToRobBank(int[] security, int time) {
     }
     return list;
 }
-{% endhighlight %}
+```
 
 # Rolling Prefix Sum
 
 [Change Minimum Characters to Satisfy One of Three Conditions][change-minimum-characters-to-satisfy-one-of-three-conditions]
 
-{% highlight java %}
+```java
 public int minCharacters(String a, String b) {
     int m = a.length(), n = b.length(), min = m + n;
     int[] c1 = new int[26], c2 = new int[26];
@@ -691,13 +691,13 @@ public int minCharacters(String a, String b) {
     }
     return min;
 }
-{% endhighlight %}
+```
 
 # Pre-computation
 
 [Sum Of Special Evenly-Spaced Elements In Array][sum-of-special-evenly-spaced-elements-in-array]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int[] solve(int[] nums, int[][] queries) {
@@ -733,13 +733,13 @@ public int[] solve(int[] nums, int[][] queries) {
     }
     return answer;
 }
-{% endhighlight %}
+```
 
 # Dynamic Programming
 
 [Maximum Number of Non-Overlapping Subarrays With Sum Equals Target][maximum-number-of-non-overlapping-subarrays-with-sum-equals-target]
 
-{% highlight java %}
+```java
 public int maxNonOverlapping(int[] nums, int target) {
     // prefix sum : max number of non-empty non-overlapping subarrays
     Map<Integer, Integer> map = new HashMap<>();
@@ -757,11 +757,11 @@ public int maxNonOverlapping(int[] nums, int target) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Count Subarrays With More Ones Than Zeros][count-subarrays-with-more-ones-than-zeros]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int subarraysWithMoreZerosThanOnes(int[] nums) {
@@ -799,11 +799,11 @@ public int subarraysWithMoreZerosThanOnes(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 Another solution is to use two DP variables to track states:
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int subarraysWithMoreZerosThanOnes(int[] nums) {
@@ -837,11 +837,11 @@ public int subarraysWithMoreZerosThanOnes(int[] nums) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [Number of Ways to Separate Numbers][number-of-ways-to-separate-numbers]
 
-{% highlight java %}
+```java
 private static final int MOD = (int)1e9 + 7;
 
 public int numberOfCombinations(String num) {
@@ -916,13 +916,13 @@ public int numberOfCombinations(String num) {
     }
     return (int)p[n][n - 1];
 }
-{% endhighlight %}
+```
 
 # Bounded Sum
 
 [Max Sum of Rectangle No Larger Than K][max-sum-of-rectangle-no-larger-than-k]
 
-{% highlight java %}
+```java
 public int maxSumSubmatrix(int[][] matrix, int k) {
     // 2D Kadane's algorithm
     int m = matrix.length, n = matrix[0].length;
@@ -961,7 +961,7 @@ public int maxSumSubmatrix(int[][] matrix, int k) {
 
     return max;
 }
-{% endhighlight %}
+```
 
 # Prefix + Suffix Sum
 
@@ -969,7 +969,7 @@ This can be extended to a very useful technique: for each element `arr[i]` in an
 
 [Maximum Number of Ways to Partition an Array][maximum-number-of-ways-to-partition-an-array]
 
-{% highlight java %}
+```java
 public int waysToPartition(int[] nums, int k) {
     int n = nums.length;
     long sum = Arrays.stream(nums).	asLongStream().sum();
@@ -1016,11 +1016,11 @@ public int waysToPartition(int[] nums, int k) {
     }
     return ways;
 }
-{% endhighlight %}
+```
 
 [Super Washing Machines][super-washing-machines]
 
-{% highlight java %}
+```java
 public int findMinMoves(int[] machines) {
     int n = machines.length;
     int sum = Arrays.stream(machines).sum();
@@ -1046,11 +1046,11 @@ public int findMinMoves(int[] machines) {
     }
     return move;
 }
-{% endhighlight %}
+```
 
 Optimization:
 
-{% highlight java %}
+```java
 public int findMinMoves(int[] machines) {
     int n = machines.length;
     int sum = Arrays.stream(machines).sum();
@@ -1069,13 +1069,13 @@ public int findMinMoves(int[] machines) {
     }
     return move;
 }
-{% endhighlight %}
+```
 
 # Expand Around Center
 
 [Count Subarrays With Median K][count-subarrays-with-median-k]
 
-{% highlight java %}
+```java
 public int countSubarrays(int[] nums, int k) {
     int n = nums.length, kIndex = 0;
     for (int i = 0; i < n; i++) {
@@ -1099,7 +1099,7 @@ public int countSubarrays(int[] nums, int k) {
     }
     return count;
 }
-{% endhighlight %}
+```
 
 [can-make-palindrome-from-substring]: https://leetcode.com/problems/can-make-palindrome-from-substring/
 [change-minimum-characters-to-satisfy-one-of-three-conditions]: https://leetcode.com/problems/change-minimum-characters-to-satisfy-one-of-three-conditions/
