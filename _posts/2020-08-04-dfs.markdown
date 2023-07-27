@@ -1,6 +1,7 @@
 ---
 title:  "DFS"
-tags: dfs
+category: algorithm
+tags: [dfs, graph]
 ---
 # Fundamentals
 

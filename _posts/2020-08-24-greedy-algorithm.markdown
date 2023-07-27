@@ -1,5 +1,6 @@
 ---
 title:  "Greedy Algorithm"
+category: algorithm
 tags: greedy
 ---
 

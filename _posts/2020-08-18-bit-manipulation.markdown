@@ -1,5 +1,6 @@
 ---
 title:  "Bit Manipulation"
+category: algorithm
 tags: bit
 ---
 # Properties

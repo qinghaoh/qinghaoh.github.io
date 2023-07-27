@@ -1,5 +1,6 @@
 ---
 title:  "Tree Traversal"
+category: algorithm
 tags: tree
 ---
 # Traversal

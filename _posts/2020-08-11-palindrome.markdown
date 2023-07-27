@@ -1,5 +1,6 @@
 ---
 title:  "Palindrome"
+category: algorithm
 tags: string
 ---
 # Palindrome String

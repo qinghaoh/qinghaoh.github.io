@@ -1,5 +1,6 @@
 ---
 title:  "Graph"
+category: algorithm
 tags: graph
 ---
 # Representation

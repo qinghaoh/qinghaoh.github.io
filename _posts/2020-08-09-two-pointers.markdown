@@ -1,5 +1,6 @@
 ---
 title:  "Two Pointers"
+category: algorithm
 tags: array
 ---
 [Number of Zero-Filled Subarrays][number-of-zero-filled-subarrays]

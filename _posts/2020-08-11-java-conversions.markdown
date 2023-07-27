@@ -1,5 +1,6 @@
 ---
 title:  "Java Conversions"
+category: java
 tags: java
 ---
 # int[] -> Integer[]

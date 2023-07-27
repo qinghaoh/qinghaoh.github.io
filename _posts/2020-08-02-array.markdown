@@ -1,5 +1,6 @@
 ---
 title:  "Array"
+category: algorithm
 tags: array
 ---
 

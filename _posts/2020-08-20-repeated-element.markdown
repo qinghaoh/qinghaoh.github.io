@@ -1,5 +1,6 @@
 ---
 title:  "Repeated Element"
+category: algorithm
 tags: array
 ---
 [N-Repeated Element in Size 2N Array][n-repeated-element-in-size-2n-array]

@@ -1,5 +1,6 @@
 ---
 title:  "Stack"
+category: algorithm
 tags: stack
 ---
 # Monotonic Stack

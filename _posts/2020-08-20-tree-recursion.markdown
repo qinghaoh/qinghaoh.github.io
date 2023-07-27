@@ -26,53 +26,11 @@ There are 3 core components:
 
 # Global Variable
 
-[Flatten Binary Tree to Linked List][flatten-binary-tree-to-linked-list]
+Global variables store the global state throughout the entire recursions. They are usually modified by each DFS call. Generally, there are two types of global variables: primitive/collection and structure.
 
-```java
-// the last node of the already formed linked list
-private TreeNode last = null;
+## Primitive/Collection
 
-public void flatten(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-
-    // makes current root as the right child of `last`
-    if (last != null) {
-        last.left = null;
-        last.right = root;
-    }
-
-    last = root;
-    TreeNode right = root.right;
-    flatten(root.left);
-    flatten(right);
-}
-```
-
-[Flatten a Multilevel Doubly Linked List][flatten-a-multilevel-doubly-linked-list]
-
-```java
-private Node tail = null;
-
-public Node flatten(Node head) {
-    if (head == null) {
-        return null;
-    }
-
-    head.prev = tail;
-    tail = head;
-
-    Node next = head.next;
-
-    head.next = flatten(head.child);
-    head.child = null;
-
-    tail.next = flatten(next);
-
-    return head;
-}
-```
+A primitive global variable is usually used as a counter or state tracker (e.g., bit mask). A collection global variable is used to store related elements. 
 
 [Convert BST to Greater Tree][convert-bst-to-greater-tree]
 
@@ -199,31 +157,6 @@ private int length(TreeNode node) {
 }
 ```
 
-[Minimum Absolute Difference in BST][minimum-absolute-difference-in-bst]
-
-```java
-private int d = Integer.MAX_VALUE;
-private TreeNode prev = null;
-
-public int getMinimumDifference(TreeNode root) {
-    if (root == null) {
-        return Integer.MAX_VALUE;
-    }
-
-    getMinimumDifference(root.left);
-
-    // inorder
-    if (prev != null) {
-        d = Math.min(d, root.val - prev.val);
-    }
-    prev = root;
-
-    getMinimumDifference(root.right);
-
-    return d;
-}
-```
-
 [Equal Tree Partition][equal-tree-partition]
 
 ```java
@@ -248,23 +181,81 @@ private int dfs(TreeNode node) {
 }
 ```
 
-[Split BST][split-bst]
+## Structure
+
+A structure global variable is used for maintaining a data structure, like linked list. Traverse order usally plays an important role.
+
+[Flatten Binary Tree to Linked List][flatten-binary-tree-to-linked-list]
 
 ```java
-public TreeNode[] splitBST(TreeNode root, int V) {
-    TreeNode[] result = new TreeNode[2];
-    if (root != null) {
-        if (root.val <= V) {
-            result = splitBST(root.right, V);
-            root.right = result[0];
-            result[0] = root;
-        } else {
-            result = splitBST(root.left, V);
-            root.left = result[1];
-            result[1] = root;
-        }
+// the last node of the already formed linked list
+private TreeNode last = null;
+
+public void flatten(TreeNode root) {
+    if (root == null) {
+        return;
     }
-    return result;
+
+    if (last != null) {
+        last.left = null;
+        last.right = root;
+    }
+
+    last = root;
+    // memorizes the right child before the left subtree recursion,
+    // which could modify the right child of root (last)
+    TreeNode right = root.right;
+    flatten(root.left);
+    flatten(right);
+}
+```
+
+[Flatten a Multilevel Doubly Linked List][flatten-a-multilevel-doubly-linked-list]
+
+```java
+private Node tail = null;
+
+public Node flatten(Node head) {
+    if (head == null) {
+        return null;
+    }
+
+    head.prev = tail;
+    tail = head;
+
+    Node next = head.next;
+
+    head.next = flatten(head.child);
+    head.child = null;
+
+    tail.next = flatten(next);
+
+    return head;
+}
+```
+
+[Minimum Absolute Difference in BST][minimum-absolute-difference-in-bst]
+
+```java
+private int d = Integer.MAX_VALUE;
+private TreeNode prev = null;
+
+public int getMinimumDifference(TreeNode root) {
+    if (root == null) {
+        return Integer.MAX_VALUE;
+    }
+
+    getMinimumDifference(root.left);
+
+    // inorder
+    if (prev != null) {
+        d = Math.min(d, root.val - prev.val);
+    }
+    prev = root;
+
+    getMinimumDifference(root.right);
+
+    return d;
 }
 ```
 
@@ -444,6 +435,26 @@ private int[] dfs(TreeNode node) {
     int path = Math.max(Math.max(left[1], right[0]) + 1, Math.max(left[2], right[2]));
 
     return new int[]{left[1] + 1, right[0] + 1, path};
+}
+```
+
+[Split BST][split-bst]
+
+```java
+public TreeNode[] splitBST(TreeNode root, int V) {
+    TreeNode[] result = new TreeNode[2];
+    if (root != null) {
+        if (root.val <= V) {
+            result = splitBST(root.right, V);
+            root.right = result[0];
+            result[0] = root;
+        } else {
+            result = splitBST(root.left, V);
+            root.left = result[1];
+            result[1] = root;
+        }
+    }
+    return result;
 }
 ```
 

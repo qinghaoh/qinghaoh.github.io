@@ -1,5 +1,6 @@
 ---
 title:  "Prime"
+category: algorithm
 tags: math
 ---
 # Theorem

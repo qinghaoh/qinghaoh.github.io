@@ -1,5 +1,6 @@
 ---
 title:  "Divide and Conquer"
+category: algorithm
 tags: divide-and-conquer
 ---
 [Merge K Sorted Lists][merge-k-sorted-lists]

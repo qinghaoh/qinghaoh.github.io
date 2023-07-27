@@ -1,6 +1,7 @@
 ---
 title:  "Backtracking"
-tags: dfs
+category: algorithm
+tags: [dfs, backtracking]
 ---
 # Fundamentals
 

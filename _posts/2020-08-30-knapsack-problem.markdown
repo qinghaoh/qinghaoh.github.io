@@ -1,5 +1,6 @@
 ---
 title:  "Knapsack Problem"
+category: algorithm
 tag: dynamic programming
 ---
 # Fundamentals

@@ -1,5 +1,6 @@
 ---
 title:  "GCD/LCM"
+category: algorithm
 tags: math
 ---
 # Greatest Common Divisor

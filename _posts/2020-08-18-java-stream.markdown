@@ -1,5 +1,6 @@
 ---
 title:  "Java Stream"
+category: java
 tags: java
 ---
 # Ordering

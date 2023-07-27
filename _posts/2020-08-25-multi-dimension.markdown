@@ -1,5 +1,6 @@
 ---
 title:  "Multi-dimension"
+category: algorithm
 tags: array
 ---
 # Search

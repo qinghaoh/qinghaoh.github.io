@@ -1,5 +1,6 @@
 ---
 title:  "Random"
+category: algorithm
 tag: random
 ---
 ## Shuffle

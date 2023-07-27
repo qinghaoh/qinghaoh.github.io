@@ -1,6 +1,6 @@
 ---
 title:  "Missing or Repeating"
-tags: array
+category: algorithm
 ---
 [Find All Numbers Disappeared in an Array][find-all-numbers-disappeared-in-an-array]
 

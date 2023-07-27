@@ -1,6 +1,7 @@
 ---
 title:  "Subsequence"
-tags: array
+category: algorithm
+tags: sequence
 ---
 # Definition
 ```

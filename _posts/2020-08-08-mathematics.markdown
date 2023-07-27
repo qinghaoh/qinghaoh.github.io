@@ -1,5 +1,6 @@
 ---
 title:  "Mathematics"
+category: algorithm
 tags: math
 ---
 # Theorem

@@ -1,6 +1,7 @@
 ---
 title:  "Linked List"
-tags: array
+category: algorithm
+tags: list
 ---
 # Sort
 

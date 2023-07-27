@@ -1,5 +1,6 @@
 ---
 title:  "Priority Queue"
+category: algorithm
 tags: queue
 ---
 Time complexity:

@@ -1,6 +1,7 @@
 ---
 title:  "Selection"
-tags: array
+category: algorithm
+tags: selection
 ---
 [Selection algorithm](https://en.wikipedia.org/wiki/Selection_algorithm)
 

@@ -1,6 +1,7 @@
 ---
 title:  "Sliding Window"
-tags: array
+category: algorithm
+tags: sliding window
 ---
 # Elastic-size Window
 

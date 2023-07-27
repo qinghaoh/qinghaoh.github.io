@@ -1,6 +1,7 @@
 ---
 title:  "BFS"
-tags: bfs
+category: algorithm
+tags: [bfs, graph]
 ---
 # Fundamentals
 

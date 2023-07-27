@@ -1,6 +1,7 @@
 ---
 title:  "Disjoint Set"
-tags: union
+category: algorithm
+tags: [disjoint set, union find]
 ---
 
 # Fundamentals

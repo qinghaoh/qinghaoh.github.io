@@ -1,5 +1,6 @@
 ---
 title:  "Corner Cases"
+category: algorithm
 ---
 [Reverse Integer][reverse-integer]
 
