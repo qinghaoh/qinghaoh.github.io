@@ -1,5 +1,6 @@
 ---
 title:  "Peak Valley"
+category: algorithm
 tag: array
 ---
 [Best Time to Buy and Sell Stock II][best-time-to-buy-and-sell-stock-ii]

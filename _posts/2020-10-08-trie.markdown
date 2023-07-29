@@ -1,5 +1,6 @@
 ---
 title:  "Trie"
+category: algorithm
 tag: trie
 ---
 [Trie](https://en.wikipedia.org/wiki/Trie)

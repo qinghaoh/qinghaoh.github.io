@@ -1,5 +1,6 @@
 ---
 title:  "K Sum"
+category: algorithm
 tag: array
 ---
 

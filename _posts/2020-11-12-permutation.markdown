@@ -1,5 +1,6 @@
 ---
 title:  "Permutation"
+category: algorithm
 ---
 [Permutation Sequence][permutation-sequence]
 

@@ -1,5 +1,6 @@
 ---
 title:  "Game"
+category: algorithm
 ---
 # Math
 

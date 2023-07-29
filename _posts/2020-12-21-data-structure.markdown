@@ -1,5 +1,6 @@
 ---
 title:  "Data Structure"
+category: algorithm
 tag: data structure
 ---
 [Min Stack][min-stack]

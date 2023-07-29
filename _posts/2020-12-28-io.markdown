@@ -1,5 +1,6 @@
 ---
 title:  "IO"
+category: algorithm
 tag: io
 ---
 

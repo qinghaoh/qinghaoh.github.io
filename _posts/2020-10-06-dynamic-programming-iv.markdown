@@ -1,5 +1,6 @@
 ---
 title:  "Dynamic Programming (Multi-dimension)"
+category: algorithm
 tag: dynamic programming
 ---
 [Minimum Path Sum][minimum-path-sum]

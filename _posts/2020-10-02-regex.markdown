@@ -1,5 +1,6 @@
 ---
 title:  "Regex"
+category: algorithm
 tags: regex
 ---
 

@@ -1,5 +1,6 @@
 ---
 title:  "Dynamic Programming III"
+category: algorithm
 tag: dynamic programming
 ---
 [Best Time to Buy and Sell Stock IV][best-time-to-buy-and-sell-stock-iv]

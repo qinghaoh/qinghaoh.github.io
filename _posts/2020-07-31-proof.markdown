@@ -170,6 +170,23 @@ public long maxRunTime(int n, int[] batteries) {
 }
 ```
 
+[Maximum Number of Groups With Increasing Length][maximum-number-of-groups-with-increasing-length]
+
+```java
+public int maxIncreasingGroups(List<Integer> usageLimits) {
+    Collections.sort(usageLimits);
+    int k = 0;
+    long sum = 0;
+    for (int limit : usageLimits) {
+        sum += limit;
+        if (sum >= (k + 1) * (k + 2) / 2) {
+            k++;
+        }
+    }
+    return k;
+}
+```
+
 [Find a Good Subset of the Matrix][find-a-good-subset-of-the-matrix]
 
 See [this proof](https://leetcode.com/problems/find-a-good-subset-of-the-matrix/solutions/3622824/easy-o-n-simple-greedy-with-math-proof/) by @hero080
@@ -178,5 +195,6 @@ See [this proof](https://leetcode.com/problems/find-a-good-subset-of-the-matrix/
 [array-partition-i]: https://leetcode.com/problems/array-partition-i/
 [distant-barcodes]: https://leetcode.com/problems/distant-barcodes/
 [find-a-good-subset-of-the-matrix]: https://leetcode.com/problems/find-a-good-subset-of-the-matrix/
+[maximum-number-of-groups-with-increasing-length]: https://leetcode.com/problems/maximum-number-of-groups-with-increasing-length/
 [maximum-running-time-of-n-computers]: https://leetcode.com/problems/maximum-running-time-of-n-computers/
 [reorganize-string]: https://leetcode.com/problems/reorganize-string/

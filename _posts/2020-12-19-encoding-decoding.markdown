@@ -1,5 +1,6 @@
 ---
 title:  "Encoding/Decoding"
+category: algorithm
 tag: string
 ---
 

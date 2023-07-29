@@ -1,7 +1,7 @@
 ---
 title:  "Kadane's Algorithm"
 category: algorithm
-tag: subarray
+tags: [subarray, dynamic programming]
 ---
 [Kadane's algorithm](https://en.wikipedia.org/wiki/Maximum_subarray_problem#Kadane's_algorithm)
 

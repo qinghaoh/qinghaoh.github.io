@@ -1,5 +1,6 @@
 ---
 title:  "Dynamic Programming (Linear Scan)"
+category: algorithm
 tag: dynamic programming
 ---
 
