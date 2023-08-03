@@ -1,11 +1,11 @@
 ---
 title:  "Sliding Window"
 category: algorithm
-tags: sliding window
+tag: sliding window
 ---
 # Elastic-size Window
 
-Define \\(v\\) as a variable which changes as the window slides, and it follows the function:
+Define \\(v\\) as a contraint variable which changes as the window slides and follows the function:
 
 \\[v = f(s, m)\\]
 
@@ -22,10 +22,10 @@ Now we will categorize problem based on the function monotonicity when \\(s\\) i
 The common steps to resolve the problems:
 
 1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
-2. Increment `j` (move to right by one)
+2. Increment `j` (move right by one)
 3. Check if the constraint is satisfied. If not:
   - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
-  - Increment `i` (move to right by one)
+  - Increment `i` (move right by one)
 4. Repeat 1. 2. 3. until `j` is out of boundary, the final answer is `j - i`
 
 [Max Consecutive Ones III][max-consecutive-ones-iii]
@@ -33,7 +33,7 @@ The common steps to resolve the problems:
 ```java
 public int longestOnes(int[] nums, int k) {
     int i = 0, j = 0;
-    // the sliding window never shrinks
+    // The sliding window never shrinks,
     // even if it doesn't meet the requirement at a certain moment
     while (j < nums.length) {
         if (nums[j++] == 0) {
@@ -48,7 +48,7 @@ public int longestOnes(int[] nums, int k) {
     }
 
     // [i, j) is a sliding window.
-    // its span memorizes the max range so far
+    // Its span memorizes the max range so far
     return j - i;
 }
 ```
@@ -91,30 +91,27 @@ public int equalSubstring(String s, String t, int maxCost) {
 }
 ```
 
+Sometimes, we need to convert the problem to the "max consecutive ones" model:
+
 [Longest Repeating Character Replacement][longest-repeating-character-replacement]
 
 ```java
 public int characterReplacement(String s, int k) {
-    int[] count = new int[26];
-    int i = 0, j = 0, max = 0;
+    int[] freqs = new int[26];
+    int i = 0, j = 0, maxFreq = 0;
     while (j < s.length()) {
-        // grows the window when the count of the new char exceeds the historical max count
-        // so, max is non-decreasing
-        max = Math.max(max, ++count[s.charAt(j++) - 'A']);
+        // Grows the window when the count of the new char exceeds the historical max frequency.
+        // So, max frequency is non-decreasing.
+        max = Math.max(maxFreq, ++freqs[s.charAt(j++) - 'A']);
 
-        // count of other chars == j - i - max
+        // After the element nums[j - 1] was added to the window in this iteration:
+        // - If maxFreq remains unchanged, j - i - maxFreq increments by one due to j
+        // - If maxFreq increases, it must have increased by one, and nums[j - 1] must be the new, unique element whose frequency is maxFreq
+        //    j - i - maxFreqs remains unchanged
         //
-        // without the loss of generality, assume in the last iteration, j - i - max > k before this if-condition
-        // (otherwise, the window will keep expanding until it reaches this threshold)
-        // because j was moved one step forward earlier in this iteration,
-        // if max remains the same as last iteration, at this moment, j - i - max > k must be true.
-        // if max is greater than that in last iteration, that means in this iteration the max is incremented
-        // i.e. the char at j - 1 is the new dominant char. j - i - max == k (windows expanded!)
-        //
-        // therefore, when the window is expanded, the max actually reflects the current char, not a previous one,
-        // and that explains why the logic is correct here.
-        if (j - i - max > k) {
-            count[s.charAt(i++) - 'A']--;
+        // Therefore, sliding window never shrinks, just like the "max consecutive ones" model.
+        if (j - i - maxFreq > k) {
+            freqs[s.charAt(i++) - 'A']--;
         }
     }
     return j - i;
@@ -130,10 +127,10 @@ public int maxFrequency(int[] nums, int k) {
     int i = 0, j = 0;
     long sum = k;    
     while (j < nums.length) {
-        sum += nums[j++];
+        sum += nums[j];
 
-        // constraint: sum >= max * length
-        if (sum < (long)nums[j - 1] * (j - i)) {
+        // Constraint: sum >= max * length
+        if (sum < (long)nums[j] * (++j - i)) {
             sum -= nums[i++];
         }
     }
@@ -181,12 +178,33 @@ public int longestSubarray(int[] nums, int limit) {
 The common steps to resolve the problems:
 
 1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
-2. Increment `j` (move to right by one)
+2. Increment `j` (move right by one)
 3. Do the following in a loop until the constraint is satisfied:
   - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
-  - Increment `i` (move to right by one)
+  - Increment `i` (move right by one)
 4. Add `j - i` to the final answer
 5. Repeat 1. 2. 3. 4. until `j` is out of boundary
+
+[Count Complete Subarrays in an Array][count-complete-subarrays-in-an-array]
+
+```java
+public int countCompleteSubarrays(int[] nums) {
+    int k = Arrays.stream(nums).boxed().collect(Collectors.toSet()).size(), i = 0, j = 0, result = 0;
+    Map<Integer, Integer> freqs = new HashMap<>();
+    while (j < nums.length) {
+        if (Optional.ofNullable(freqs.put(nums[j], freqs.getOrDefault(nums[j++], 0) + 1)).orElse(0) == 0) {
+            k--;
+        }
+        while (k == 0) {
+            if (freqs.put(nums[i], freqs.get(nums[i++]) - 1) == 1) {
+                k++;
+            }
+        }
+        result += i;
+    }
+    return result;
+}
+```
 
 [Subarrays with K Different Integers][subarrays-with-k-different-integers]
 
@@ -196,16 +214,15 @@ public int subarraysWithKDistinct(int[] nums, int k) {
 }
 
 private int atMost(int[] nums, int k) {
-    int n = nums.length;
-    int[] count = new int[n + 1];
-    int i = 0, j = 0, result = 0;
+    int n = nums.length, i = 0, j = 0, result = 0;
+    int[] freqs = new int[n + 1];
     while (j < n) {
-        if (count[nums[j++]]++ == 0) {
+        if (freqs[nums[j++]]++ == 0) {
             k--;
         }
 
         while (k < 0) {
-            if (--count[nums[i++]] == 0) {
+            if (--freqs[nums[i++]] == 0) {
                 k++;
             }
         }
@@ -391,10 +408,10 @@ public long countGood(int[] nums, int k) {
 The common steps to resolve the problems:
 
 1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
-2. Increment `j` (move to right by one)
+2. Increment `j` (move right by one)
 3. Do the following in a loop until the constraint is not satisfied (each iteration represents a valid window):
   - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
-  - Increment `i` (move to right by one)
+  - Increment `i` (move right by one)
 4. Repeat 1. 2. 3. until `j` is out of boundary
 
 **Min Length**
@@ -739,10 +756,10 @@ This type of problems can sometimes be solved by prefix sum:
 The common steps to resolve the problems:
 
 1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
-2. Increment `j` (move to right by one)
+2. Increment `j` (move right by one)
 3. Check if the window expands to the required size. If so:
   - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
-  - Increment `i` (move to right by one)
+  - Increment `i` (move right by one)
 4. Repeat 1. 2. 3. until `j` is out of boundary
 
 [Minimum Difference Between Largest and Smallest Value in Three Moves][minimum-difference-between-largest-and-smallest-value-in-three-moves]
@@ -1284,6 +1301,7 @@ public int[] countServers(int n, int[][] logs, int x, int[] queries) {
 }
 ```
 
+[count-complete-subarrays-in-an-array]: https://leetcode.com/problems/count-complete-subarrays-in-an-array/
 [count-number-of-nice-subarrays]: https://leetcode.com/problems/count-number-of-nice-subarrays/
 [count-subarrays-with-score-less-than-k]: https://leetcode.com/problems/count-subarrays-with-score-less-than-k/
 [count-the-number-of-good-subarrays]: https://leetcode.com/problems/count-the-number-of-good-subarrays/
