@@ -125,13 +125,13 @@ public int maxFrequency(int[] nums, int k) {
     Arrays.sort(nums);
 
     int i = 0, j = 0;
-    long sum = k;    
+    long availableOps = k;
     while (j < nums.length) {
-        sum += nums[j];
+        availableOps += nums[j];
 
-        // Constraint: sum >= max * length
-        if (sum < (long)nums[j] * (++j - i)) {
-            sum -= nums[i++];
+        // Constraint: availableOps >= max * length
+        if (availableOps < (long)nums[j] * (++j - i)) {
+            availableOps -= nums[i++];
         }
     }
     return j - i;
