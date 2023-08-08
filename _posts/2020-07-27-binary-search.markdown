@@ -181,16 +181,16 @@ public int search(int[] nums, int target) {
         return minIndex;
     }
 
-    int low = minIndex, high = minIndex - 1 + nums.length;
+    int n = nums.length, low = minIndex, high = minIndex - 1 + n;
     while (low < high) {
         int mid = (low + high) >>> 1;
-        if (nums[mid % nums.length] >= target) {
+        if (nums[mid % n] >= target) {
             high = mid;
         } else {
             low = mid + 1;
         }
     }
-    return nums[low % nums.length] == target ? low % nums.length : -1;
+    return nums[low % n] == target ? low % n : -1;
 }
 
 private int findMinIndex(int[] nums) {

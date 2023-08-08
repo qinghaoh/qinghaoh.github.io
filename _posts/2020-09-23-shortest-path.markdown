@@ -85,7 +85,7 @@ public void dijkstra(int n, List<int[]>[] graph, int src) {
         int u = curr[0], du = curr[1];
         
         // skips current if the vertex is visited
-        // (and hence already has a more optimal distance)
+        // (and hence already has a shorter distance)
         if (du > dist[u]) {
             continue;
         }
