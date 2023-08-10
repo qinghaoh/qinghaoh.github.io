@@ -47,6 +47,43 @@ for (int i = 0; i < n; i++) {
 Arrays.sort(candidate, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
 ```
 
+[Minimum Time to Make Array Sum At Most x][minimum-time-to-make-array-sum-at-most-x]
+
+```java
+public int minimumTime(List<Integer> nums1, List<Integer> nums2, int x) {
+    int n = nums1.size();
+    Integer[] indices = new Integer[n];
+    for (int i = 0; i < n; i++) {
+        indices[i] = i;
+    }
+
+    // Each nums1[i] is set to 0 at most once.
+    // After t seconds, if we don't do the operation, then the sum would be sum2 * t + sum1.
+    // With that operation at each second, The total sum of added nums2 elements is:
+    //   nums2[i_0] * (t - 1) + nums2[i_1] * (t - 2) + ... + nums2[i_t] * 0
+    // So, it's optimal to follow the ascending order of nums2
+    Arrays.sort(indices, Comparator.comparingInt(i -> nums2.get(i)));
+
+    // dp[i][j]: deducted value at j-th second with numbers chosen from sorted_nums1[0 ... i]
+    int[] dp = new int[n + 1];
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j > 0; j--) {
+            // dp[i][j] = Math.max(dp[i - 1][j] + dp[i - 1][j - 1] + sorted_nums1[i] + sorted_nums2[i] * j)
+            // sorted_nums1[i] + sorted_nums2[i] * j is the deducted value if we choose i
+            dp[j] = Math.max(dp[j], dp[j - 1] + j * nums2.get(indices[i]) + nums1.get(indices[i]));
+        }
+    }
+
+    int sum1 = (int)nums1.stream().mapToInt(i -> i).sum(), sum2 = (int)nums2.stream().mapToInt(i -> i).sum();
+    for (int i = 0; i <= n; i++) {
+        if (sum2 * i + sum1 - dp[i] <= x) {
+            return i;
+        }
+    }
+    return -1;
+}
+```
+
 [Maximum Height by Stacking Cuboids][maximum-height-by-stacking-cuboids]
 
 ```java
@@ -1151,6 +1188,7 @@ private int countStrings(int index, int sum, boolean isLowTight, boolean isHighT
 [minimum-distance-to-type-a-word-using-two-fingers]: https://leetcode.com/problems/minimum-distance-to-type-a-word-using-two-fingers/
 [minimum-skips-to-arrive-at-meeting-on-time]: https://leetcode.com/problems/minimum-skips-to-arrive-at-meeting-on-time/
 [minimum-time-to-finish-the-race]: https://leetcode.com/problems/minimum-time-to-finish-the-race/
+[minimum-time-to-make-array-sum-at-most-x]: https://leetcode.com/problems/minimum-time-to-make-array-sum-at-most-x/
 [minimum-total-space-wasted-with-k-resizing-operations]: https://leetcode.com/problems/minimum-total-space-wasted-with-k-resizing-operations/
 [minimum-white-tiles-after-covering-with-carpets]: https://leetcode.com/problems/minimum-white-tiles-after-covering-with-carpets/
 [number-of-music-playlists]: https://leetcode.com/problems/number-of-music-playlists/

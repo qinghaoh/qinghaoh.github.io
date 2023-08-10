@@ -380,32 +380,6 @@ $$\begin{equation}
 
 ![鼓舌死亡概率](/assets/img/sgs/gushe2.png)
 
-## 斯特林数
-
-### 神吕蒙（神话再临·风）
-
-![神吕蒙](/assets/img/sgs/shen_meng_lv.png)
-
-**涉猎**：摸牌阶段，你可选择采取以下行动来取代摸牌：从牌堆顶亮出五张牌，拿走不同花色的牌各一张，弃掉其余的。
-
-下面我们来研究**涉猎**获得的牌数。
-
-定义**涉猎**获得的牌数为\\(X\\)，则根据第二类斯特林数（[Stirling numbers of the second kind](https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind)）的定义：
-
-PMF：
-
-$$p_{X}(k) = \frac{k!}{M^{N}}\binom{M}{k}\begin{Bmatrix}N\\k\end{Bmatrix}$$
-
-其中\\(N\\)为亮出的牌数，\\(M\\)为一副牌中不同的花色数。在此模型下，\\(N=5, \enspace M=4\\)。
-
-其概率散点图为：
-
-![涉猎概率](/assets/img/sgs/shelie.png)
-
-数学期望和方差分别为：
-
-$$\operatorname{E}(X) = \frac{781}{265} \approxeq 3.0508, \quad \operatorname{Var}(X) = \frac{27735}{65536} \approxeq 0.4232$$
-
 ## 生日问题
 
 ### 孙资&刘放（原创之魂2016）
@@ -418,13 +392,13 @@ $$\operatorname{E}(X) = \frac{781}{265} \approxeq 3.0508, \quad \operatorname{Va
 
 下面我们来研究**瑰藻**可以回复体力或摸牌的概率。
 
-定义弃牌阶段弃置的牌数为\\(n \enspace (n \gt 1)\\)，一副牌中不同的花色数为\\(M\\)。此问题为典型的生日问题（[Birthday problem](https://en.wikipedia.org/wiki/Birthday_problem)）：
+定义弃牌阶段弃置的牌数为\\(n \enspace (n \gt 1)\\)，一副牌中不同的花色数为\\(m\\)。此问题为典型的生日问题（[Birthday problem](https://en.wikipedia.org/wiki/Birthday_problem)）：
 
-$${\bar {p}}(n) = \frac{M!}{(M-n)!M^{n}}, \quad 1 \lt n \le M$$
+$${\bar {p}}(n) = \frac{m!}{(m-n)!m^{n}}, \quad 1 \lt n \le m$$
 
-根据鸽巢原理（[Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle)），当\\(n \gt M\\)时，\\({\bar {p}}(n) = 0 \\)。
+根据鸽巢原理（[Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle)），当\\(n \gt m\\)时，\\({\bar {p}}(n) = 0 \\)。
 
-在此模型下，\\(M=4\\)。
+在此模型下，\\(m=4\\)。
 
 其概率散点图为：
 
@@ -436,13 +410,13 @@ $${\bar {p}}(n) = \frac{M!}{(M-n)!M^{n}}, \quad 1 \lt n \le M$$
 
 **不屈**：任何时候，当你的体力被扣减到0或更低时，每扣减1点体力：从牌堆翻开一张牌放在你的角色牌上，若该牌的点数与你角色牌上已有的任何一张牌都不同，你不会死去。
 
-下面我们来研究**不屈**失败时的角色牌上的牌数。定义其为\\(X\\)，一副牌中不同的点数为\\(M\\)。此问题可用生日问题（[Birthday problem](https://en.wikipedia.org/wiki/Birthday_problem#Average_number_of_people_to_get_at_least_one_shared_birthday)）来描述。
+下面我们来研究**不屈**失败时的角色牌上的牌数。定义其为\\(X\\)，一副牌中不同的点数为\\(M\\)。此问题可用生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Average_number_of_people_to_get_at_least_one_shared_birthday)来描述。
 
 PMF：
 
-$$p_{X}(k) = \frac{M!(k-1)}{M^{k}(M-k+1)!}, \quad k \in \mathbb{Z} \enspace \text{and} \enspace 1 \le k \le M + 1$$
+$$p_{X}(k) = \frac{m!(k-1)}{m^{k}(m-k+1)!}, \quad k \in \mathbb{Z} \enspace \text{and} \enspace 1 \le k \le m + 1$$
 
-在此模型下，\\(M=13\\)。
+在此模型下，\\(m=13\\)。
 
 其概率散点图为：
 
@@ -450,11 +424,11 @@ $$p_{X}(k) = \frac{M!(k-1)}{M^{k}(M-k+1)!}, \quad k \in \mathbb{Z} \enspace \tex
 
 数学期望为：
 
-$$\operatorname{E}(X) = 1 + \sum_{k=1}^{M}{\frac{M!}{(M-k)!M^{k}}} \approxeq 5.2124$$
+$$\operatorname{E}(X) = 1 + \sum_{k=1}^{m}{\frac{m!}{(m-k)!m^{k}}} \approxeq 5.2124$$
 
 我们也可以将右式进行拉马努金渐近展开，从而得到简化的近似表达式：
 
-$$\operatorname{E}(X) \sim \sqrt{\frac{\pi M}{2}}+\frac {2}{3} \approxeq 5.1856$$
+$$\operatorname{E}(X) \sim \sqrt{\frac{\pi m}{2}}+\frac {2}{3} \approxeq 5.1856$$
 
 由此我们可知，周泰的“不屈”牌数平均约为5.2张。
 
@@ -470,6 +444,30 @@ $$\operatorname{E}(X) \approxeq 5.2065$$
 
 可见，此结果的差异完全可以忽略。
 
+### 神吕蒙（神话再临·风）
+
+![神吕蒙](/assets/img/sgs/shen_meng_lv.png)
+
+**涉猎**：摸牌阶段，你可选择采取以下行动来取代摸牌：从牌堆顶亮出五张牌，拿走不同花色的牌各一张，弃掉其余的。
+
+下面我们来研究**涉猎**获得的牌数\\(X\\)，则根据第二类斯特林数（[Stirling numbers of the second kind](https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind)）的定义：
+
+PMF：
+
+$$p_{X}(k) = \frac{m^{\underline k}}{m^{n}}\begin{Bmatrix}n\\k\end{Bmatrix}$$
+
+其中\\(n\\)为亮出的牌数，\\(m\\)为一副牌中不同的花色数。在此模型下，\\(n=5, \enspace m=4\\)。
+
+其概率散点图为：
+
+![涉猎概率](/assets/img/sgs/shelie.png)
+
+该问题是生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Number_of_people_with_a_shared_birthday)。数学期望和方差分别为：
+
+$$\operatorname{E}(X) = m(1-(1-\frac{1}{m})^n) = \frac{781}{256} \approxeq 3.0508$$
+
+$$\operatorname{Var}(X) = m(m-1)(1-\frac{2}{m})^{n}+m(1-\frac{1}{m})^{n}-m^2(1-\frac{1}{m})^{2n} = \frac{27735}{65536} \approxeq 0.4232$$
+
 ### 袁绍（神话再临·火）
 
 ![袁绍](/assets/img/sgs/shao_yuan.png)
@@ -482,9 +480,9 @@ $$\operatorname{E}(X) \approxeq 5.2065$$
 
 PMF：
 
-$$p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, M)}{M}}\right)$$
+$$p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right)$$
 
-在此模型下，\\(M=4\\)。
+在此模型下，\\(m=4\\)。
 
 其概率散点图为：
 
