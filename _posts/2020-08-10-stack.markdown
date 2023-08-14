@@ -330,14 +330,15 @@ The requested element can be strictly or non-strictly less/greater.
 ```java
 Deque<Integer> st = new ArrayDeque<>();
 int[] prev = new int[n], next = new int[n];
-Arrays.fill(next, -1);
+Arrays.fill(next, n);
 
 for (int i = 0; i < n; i++) {
     // monotonically increasing stack
-    // non-strictly less
+    // strictly less next
     while (!st.isEmpty() && nums[i] < nums[st.peek()]) {
         next[st.pop()] = i;
     }
+    // non-strictly less prev
     prev[i] = st.isEmpty() ? -1 : st.peek();
     st.push(i);
 }
@@ -400,117 +401,6 @@ public int[] secondGreaterElement(int[] nums) {
 }
 ```
 
-### Subarray Min/Max
-
-[Sum of Subarray Minimums][sum-of-subarray-minimums]
-
-The basic idea is to find both the previous and next less elements of each array element with two stacks. This can be simplified to one stack:
-
-```java
-private int MOD = (int)1e9 + 7;
-
-public int sumSubarrayMins(int[] arr) {
-    Deque<Integer> st = new ArrayDeque<>();
-    long result = 0;
-    int n = arr.length;
-    // virtually appends 0 to the end of the array
-    for (int i = 0; i <= n; i++) {
-        while (!st.isEmpty() && (i == n || arr[i] < arr[st.peek()])) {
-            // i is the next less (<) element of j
-            int j = st.pop();
-            // k is the previous less (<=) element of j
-            int k = st.isEmpty() ? -1 : st.peek();
-            result = (result + (long)arr[j] * (i - j) * (j - k)) % MOD;
-        }
-        st.push(i);
-    }
-    return (int)result;
-}
-```
-
-[Subarray With Elements Greater Than Varying Threshold][subarray-with-elements-greater-than-varying-threshold]
-
-```java
-if ((i - k - 1) * nums[j] > threshold) {
-    return i - k - 1;
-}
-```
-
-With this perspective, the solution of the following *Histogram* problem is much easier to understand:
-
-[Largest Rectangle in Histogram][largest-rectangle-in-histogram]
-
-```java
-public int largestRectangleArea(int[] heights) {
-    // index of non-descreasing heights
-    Deque<Integer> st = new ArrayDeque<>();
-    st.push(-1);  // makes width concise
-
-    int area = 0, n = heights.length;
-    for (int i = 0; i <= heights.length; i++) {
-        while (st.peek() >= 0 && (i == n || heights[i] < heights[st.peek()])) {
-            // j = st.pop()
-            // heights[i] is the next less (<) element of heights[j]
-            int h = heights[st.pop()];
-            // k = st.peek()
-            // heights[k] is the previous less (<=) element of heights[j]
-            // w = length of (k, i)
-            int w = i - 1 - st.peek();
-            area = Math.max(area, h * w);
-        }
-        st.push(i);
-    }
-    return area;
-}
-```
-
-```
-[2,1,5,6,2,3]
-i = 0	[0]				area = 0
-i = 1	[]		h * w = 2	area = 2
-i = 1	[1]				area = 2
-i = 2	[2,1]				area = 2
-i = 3	[3,2,1]				area = 2
-i = 4	[2,1]		h * w = 6	area = 6
-i = 4	[1]		h * w = 10	area = 10
-i = 4	[4,1]				area = 10
-i = 5	[5,4,1]				area = 10
-i = 6	[4,1]		h * w = 3	area = 10
-i = 6	[1]		h * w = 8	area = 10
-i = 6	[]		h * w = 6	area = 10
-i = 6	[6]				area = 10
-```
-
-[Maximum of Minimum Values in All Subarrays][maximum-of-minimum-values-in-all-subarrays]
-
-```java
-public int[] findMaximums(int[] nums) {
-    int n = nums.length;
-    int[] ans = new int[n];
-
-    Deque<Integer> st = new ArrayDeque<>();
-    // virtually appends 0 to the end of the array
-    for (int i = 0; i <= n; i++) {
-        while (!st.isEmpty() && (i == n || nums[i] < nums[st.peek()])) {
-            // nums[i] is the next less (<) element of nums[j]
-            int j = st.pop();
-            // k = st.peek()
-            // nums[k] is the previous less (<=) element of nums[j]
-            // the range is (k, i)
-            int len = i - (st.isEmpty() ? -1 : st.peek()) - 1;
-            ans[len - 1] = Math.max(ans[len - 1], nums[j]);
-        }
-        st.push(i);
-    }
-
-    // ans is non-increasing
-    for (int i = n - 1; i > 0; i--) {
-        ans[i - 1] = Math.max(ans[i - 1], ans[i]);
-    }
-    return ans;
-}
-```
-
 Similarly, with Monotonically Decreasing Stack, we can get Previous Greater Element or Next Greater Element.
 
 |                | Previous > | Previous >= |  Next >  |  Next >=  | 
@@ -546,15 +436,6 @@ public int totalSteps(int[] nums) {
     return max;
 }
 ```
-
-### Summary
-
-1. L or G?
- * L: increasing stack, `a[i] < top` or `a[i] <= top`
- * G: decreasing stack, `a[i] > top` or `a[i] >= top`
-1. P or N?
- * P: strictness of the comparsion operator in `a[i] ? top` is the opposite of PLE/PGE
- * N: strictness of the comparsion operator in `a[i] ? top` is the same as NLE/NGE
 
 [Next Greater Element II][next-greater-element-ii]
 
@@ -725,6 +606,126 @@ public int sumImbalanceNumbers(int[] nums) {
     return sum - n * (n + 1) / 2;
 }
 ```
+
+### Subarray Min/Max
+
+[Sum of Subarray Minimums][sum-of-subarray-minimums]
+
+The basic idea is to find both the previous and next less elements of each array element with two stacks. This can be simplified to one stack:
+
+```java
+private int MOD = (int)1e9 + 7;
+
+public int sumSubarrayMins(int[] arr) {
+    Deque<Integer> st = new ArrayDeque<>();
+    long result = 0;
+    int n = arr.length;
+    // virtually appends 0 to the end of the array
+    for (int i = 0; i <= n; i++) {
+        while (!st.isEmpty() && (i == n || arr[i] < arr[st.peek()])) {
+            // i is the next less (<) element of j
+            int j = st.pop();
+            // k is the previous less (<=) element of j
+            int k = st.isEmpty() ? -1 : st.peek();
+            result = (result + (long)arr[j] * (i - j) * (j - k)) % MOD;
+        }
+        st.push(i);
+    }
+    return (int)result;
+}
+```
+
+[Subarray With Elements Greater Than Varying Threshold][subarray-with-elements-greater-than-varying-threshold]
+
+```java
+if ((i - k - 1) * nums[j] > threshold) {
+    return i - k - 1;
+}
+```
+
+With this perspective, the solution of the following *Histogram* problem is much easier to understand:
+
+[Largest Rectangle in Histogram][largest-rectangle-in-histogram]
+
+```java
+public int largestRectangleArea(int[] heights) {
+    // index of non-descreasing heights
+    Deque<Integer> st = new ArrayDeque<>();
+    st.push(-1);  // makes width concise
+
+    int area = 0, n = heights.length;
+    for (int i = 0; i <= heights.length; i++) {
+        while (st.peek() >= 0 && (i == n || heights[i] < heights[st.peek()])) {
+            // j = st.pop()
+            // heights[i] is the next less (<) element of heights[j]
+            int h = heights[st.pop()];
+            // k = st.peek()
+            // heights[k] is the previous less (<=) element of heights[j]
+            // w = length of (k, i)
+            int w = i - 1 - st.peek();
+            area = Math.max(area, h * w);
+        }
+        st.push(i);
+    }
+    return area;
+}
+```
+
+```
+[2,1,5,6,2,3]
+i = 0	[0]				area = 0
+i = 1	[]		h * w = 2	area = 2
+i = 1	[1]				area = 2
+i = 2	[2,1]				area = 2
+i = 3	[3,2,1]				area = 2
+i = 4	[2,1]		h * w = 6	area = 6
+i = 4	[1]		h * w = 10	area = 10
+i = 4	[4,1]				area = 10
+i = 5	[5,4,1]				area = 10
+i = 6	[4,1]		h * w = 3	area = 10
+i = 6	[1]		h * w = 8	area = 10
+i = 6	[]		h * w = 6	area = 10
+i = 6	[6]				area = 10
+```
+
+[Maximum of Minimum Values in All Subarrays][maximum-of-minimum-values-in-all-subarrays]
+
+```java
+public int[] findMaximums(int[] nums) {
+    int n = nums.length;
+    int[] ans = new int[n];
+
+    Deque<Integer> st = new ArrayDeque<>();
+    // virtually appends 0 to the end of the array
+    for (int i = 0; i <= n; i++) {
+        while (!st.isEmpty() && (i == n || nums[i] < nums[st.peek()])) {
+            // nums[i] is the next less (<) element of nums[j]
+            int j = st.pop();
+            // k = st.peek()
+            // nums[k] is the previous less (<=) element of nums[j]
+            // the range is (k, i)
+            int len = i - (st.isEmpty() ? -1 : st.peek()) - 1;
+            ans[len - 1] = Math.max(ans[len - 1], nums[j]);
+        }
+        st.push(i);
+    }
+
+    // ans is non-increasing
+    for (int i = n - 1; i > 0; i--) {
+        ans[i - 1] = Math.max(ans[i - 1], ans[i]);
+    }
+    return ans;
+}
+```
+
+### Summary
+
+1. L or G?
+ * L: increasing stack, `a[i] < top` or `a[i] <= top`
+ * G: decreasing stack, `a[i] > top` or `a[i] >= top`
+1. P or N?
+ * P: strictness of the comparsion operator in `a[i] ? top` is the opposite of PLE/PGE
+ * N: strictness of the comparsion operator in `a[i] ? top` is the same as NLE/NGE
 
 # Histogram
 

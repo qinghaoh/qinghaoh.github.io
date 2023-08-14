@@ -77,6 +77,8 @@ private int[] sieve(int n) {
                     minPrimes[j] = i;
                 }
             }
+            // If minPrimes[i] == i after exiting the loop,
+            // i is a prime
         }
     }
 
