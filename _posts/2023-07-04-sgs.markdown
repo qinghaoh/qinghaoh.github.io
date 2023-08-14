@@ -729,11 +729,46 @@ polytope > print $p4->N_LATTICE_POINTS;
 
 $$\operatorname{E}(K) = \frac{62272}{28561} \approxeq 2.1803, \quad \operatorname{Var}(K) = \frac{399322010}{815730721} \approxeq 0.4895$$
 
+## 子集和问题
+
 ### 糜竺（SP）
 
 ![糜竺](/assets/img/sgs/zhu_mi.webp){: width="400" }
 
 **资援**：出牌阶段限一次，你可以将任意张点数之和为13的手牌交给一名其他角色，然后该角色回复1点体力。
+
+下面研究在手牌数为\\(X\\)的情况下，可以发动**资援**的概率。这是典型的NP-hard的子集和问题（[Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)）。在目标总和数值较小的情况下，可以构造母函数来求解[^footnote2]，也可以用[Knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem)的动态规划法编程计算，程序如下：
+
+```python
+def ziyuan(n):
+    def is_subset_sum(nums, target):
+        dp = [False] * (target + 1)
+        dp[0] = True
+
+        for num in nums:
+            for i in range(target, num - 1, -1):
+                dp[i] = dp[i] or dp[i - num]
+
+        return dp[target]
+
+    def multinomial_coefficient(nums):
+        coefficient, s = 1, 1
+        for c in Counter(nums).values():
+            for i in range(1, c + 1):
+                coefficient *= s
+                coefficient //= i
+                s += 1
+        return coefficient
+
+    hands = list(itertools.combinations_with_replacement(range(1, 14), n))
+    return sum(multinomial_coefficient(hand) if is_subset_sum(hand, 13) else 0 for hand in hands)
+```
+
+由于计算量巨大，我们只计算\\(0 \lt X \le 10\\)的情况。其概率散点图为：
+
+![资援概率](/assets/img/sgs/ziyuan.png)
+
+易证明，当手牌数增加时，发动**资援**的概率也就越大。以上的计算佐证了这一点。
 
 # 技能比较
 
@@ -768,4 +803,5 @@ $$\operatorname{E}(K) = \frac{62272}{28561} \approxeq 2.1803, \quad \operatornam
 # 脚注
 
 [^footnote1]: 实际上，卡牌的点数并非均匀分布。【2】和【Q】这两种点数的概率为\\(7/80\\)，而其它的点数概率为\\(3/40\\)。由于这种差异对计算结果的影响可以忽略不记，我们还是认为所有卡牌点数是均匀分布的。
+[^footnote2]: https://mathworld.wolfram.com/SubsetSumProblem.html
 
