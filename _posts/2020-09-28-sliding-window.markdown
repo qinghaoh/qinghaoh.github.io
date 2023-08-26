@@ -102,14 +102,14 @@ public int characterReplacement(String s, int k) {
     while (j < s.length()) {
         // Grows the window when the count of the new char exceeds the historical max frequency.
         // So, max frequency is non-decreasing.
-        max = Math.max(maxFreq, ++freqs[s.charAt(j++) - 'A']);
+        maxFreq = Math.max(maxFreq, ++freqs[s.charAt(j++) - 'A']);
 
         // After the element nums[j - 1] was added to the window in this iteration:
         // - If maxFreq remains unchanged, j - i - maxFreq increments by one due to j
-        // - If maxFreq increases, it must have increased by one, and nums[j - 1] must be the new, unique element whose frequency is maxFreq
-        //    j - i - maxFreqs remains unchanged
+        // - If maxFreq increases, it must have incremented by one, and nums[j - 1] must be the new, unique element whose frequency is maxFreq
+        //   j - i - maxFreqs remains unchanged
         //
-        // Therefore, sliding window never shrinks, just like the "max consecutive ones" model.
+        // Therefore, the sliding window never shrinks, just like the "max consecutive ones" model.
         if (j - i - maxFreq > k) {
             freqs[s.charAt(i++) - 'A']--;
         }

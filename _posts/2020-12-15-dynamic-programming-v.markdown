@@ -56,6 +56,30 @@ public int maxSumDivThree(int[] nums) {
 }
 ```
 
+[Sorting Three Groups][sorting-three-groups]
+
+```c++
+int minimumOperations(vector<int>& nums) {
+    return minimumOperations(nums, 3);
+}
+
+int minimumOperations(vector<int>& nums, int k) {
+    // dp[i]: min operations if the array constructed so far is non-decreasing
+    // and the max group number is at most i + 1
+    // (assuming the unconstructed trailing array has all k's)
+    vector<int> dp(k, nums.size());
+
+    for (int num : nums) {
+        dp[num - 1]--;
+        // updates the dp vector in ascending order of group number
+        for (int i = 1; i < k; i++) {
+            dp[i] = min(dp[i], dp[i - 1]);
+        }
+    }
+    return dp[k - 1];
+}
+```
+
 ## Adjacency Model (House Robber)
 
 In this model, at each position there are multiple choices (e.g. to skip or rob). Current `dp[i]` depends on or affects adjacent elements `dp[i + k]`, `k = ..., -2, -1, ..., 1, 2, ...`. With a linear scan from left to right, we don't need to care about neighbors on the right (`k > 0`), because they have been equivalently included when we deal with their counterparts on the left (`-k`). The key is to find the recursive formula.
@@ -723,5 +747,6 @@ public int minimumTime(String s) {
 [paint-house-ii]: https://leetcode.com/problems/paint-house-ii/
 [painting-a-grid-with-three-different-colors]: https://leetcode.com/problems/painting-a-grid-with-three-different-colors/
 [pizza-with-3n-slices]: https://leetcode.com/problems/pizza-with-3n-slices/
+[sorting-three-groups]: https://leetcode.com/problems/sorting-three-groups/
 [the-number-of-beautiful-subsets]: https://leetcode.com/problems/the-number-of-beautiful-subsets/
 [wiggle-subsequence]: https://leetcode.com/problems/wiggle-subsequence/
