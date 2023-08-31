@@ -191,10 +191,43 @@ public int maxIncreasingGroups(List<Integer> usageLimits) {
 
 See [this proof](https://leetcode.com/problems/find-a-good-subset-of-the-matrix/solutions/3622824/easy-o-n-simple-greedy-with-math-proof/) by @hero080
 
+[Minimum Operations to Form Subsequence With Target Sum][minimum-operations-to-form-subsequence-with-target-sum]
+
+```c++
+int minOperations(vector<int>& nums, int target) {
+    long long sum = accumulate(nums.begin(), nums.end(), 0l);
+    if (sum < target) {
+        return -1;
+    }
+
+    sort(nums.begin(), nums.end());
+    int ops = 0;
+    while (target > 0) {
+        int max = nums.back();
+        nums.pop_back();
+        if (sum - max >= target) {
+            // All the elements other than max can sum to target
+            // so it's safe to skip max directly
+            sum -= max;
+        } else if (max <= target) {
+            // Picks the current max
+            sum -= max;
+            target -= max;
+        } else {
+            nums.push_back(max / 2);
+            nums.push_back(max / 2);
+            ops++;
+        }
+    }
+    return ops;
+}
+```
+
 [airplane-seat-assignment-probability]: https://leetcode.com/problems/airplane-seat-assignment-probability/
 [array-partition-i]: https://leetcode.com/problems/array-partition-i/
 [distant-barcodes]: https://leetcode.com/problems/distant-barcodes/
 [find-a-good-subset-of-the-matrix]: https://leetcode.com/problems/find-a-good-subset-of-the-matrix/
 [maximum-number-of-groups-with-increasing-length]: https://leetcode.com/problems/maximum-number-of-groups-with-increasing-length/
 [maximum-running-time-of-n-computers]: https://leetcode.com/problems/maximum-running-time-of-n-computers/
+[minimum-operations-to-form-subsequence-with-target-sum]: https://leetcode.com/problems/minimum-operations-to-form-subsequence-with-target-sum/
 [reorganize-string]: https://leetcode.com/problems/reorganize-string/

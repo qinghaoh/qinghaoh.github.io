@@ -5,17 +5,23 @@ tag: sliding window
 ---
 # Elastic-size Window
 
-Define \\(v\\) as a contraint variable which changes as the window slides and follows the function:
+The constraint can be expressed as:
 
-\\[v = f(s, m)\\]
+\\[f(v) \ge 0\\]
 
-where \\(s\\) is the start index of the window and \\(m\\) is the size of the window.
+where \\(v\\) is called _contraint variable_. Constraint variable is determined by the position and size of the sliding window:
 
-Now we will categorize problem based on the function monotonicity when \\(s\\) is fixed.
+\\[v = g(s, m)\\]
 
-## Monotonically Increasing Function
+where \\(s\\) is the start index and \\(m\\) is the size of the window.
 
-\\(v = f(s, m)\\) is a monotonically increasing function of \\(m\\), and \\(\max(v)\\) is constrained, e.g. "**at most** k elements".
+In this type of problems, when \\(s\\) is fixed and \\(m\\) increases, \\(f(v)\\) monotonically increases or decreases. More formally, the following function \\(h(m)\\) is a monotonic function:
+
+\\[f(v) = f(g(m)) = h(m) \ge 0\\]
+
+## Monotonically Decreasing Function
+
+\\(h(m)\\) is a monotonically decreasing function. For example, the constraint is "**at most** k elements". Denote the number of elements in the sliding window as \\(v\\), then \\(f(v) = k - v \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) decreases.
 
 ### Max Length 
 
@@ -26,7 +32,7 @@ The common steps to resolve the problems:
 3. Check if the constraint is satisfied. If not:
   - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
   - Increment `i` (move right by one)
-4. Repeat 1. 2. 3. until `j` is out of boundary, the final answer is `j - i`
+4. Repeat the above steps until `j` is out of boundary, the final answer is `j - i`
 
 [Max Consecutive Ones III][max-consecutive-ones-iii]
 
@@ -104,6 +110,7 @@ public int characterReplacement(String s, int k) {
         // So, max frequency is non-decreasing.
         maxFreq = Math.max(maxFreq, ++freqs[s.charAt(j++) - 'A']);
 
+        // Constraint variable: j - i - maxFreq
         // After the element nums[j - 1] was added to the window in this iteration:
         // - If maxFreq remains unchanged, j - i - maxFreq increments by one due to j
         // - If maxFreq increases, it must have incremented by one, and nums[j - 1] must be the new, unique element whose frequency is maxFreq
@@ -129,7 +136,7 @@ public int maxFrequency(int[] nums, int k) {
     while (j < nums.length) {
         availableOps += nums[j];
 
-        // Constraint: availableOps >= max * length
+        // Constraint variable: availableOps - max * length
         if (availableOps < (long)nums[j] * (++j - i)) {
             availableOps -= nums[i++];
         }
@@ -183,7 +190,7 @@ The common steps to resolve the problems:
   - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
   - Increment `i` (move right by one)
 4. Add `j - i` to the final answer
-5. Repeat 1. 2. 3. 4. until `j` is out of boundary
+5. Repeat the above steps until `j` is out of boundary
 
 [Count Complete Subarrays in an Array][count-complete-subarrays-in-an-array]
 
@@ -401,9 +408,9 @@ public long countGood(int[] nums, int k) {
 }
 ```
 
-## Monotonically Decreasing Function
+## Monotonically Increasing Function
 
-\\(v = f(s, m)\\) is a monotonically decreasing function of \\(m\\), and \\(\min(v)\\) is constrained, e.g. "sum is **greater than or equal to** target".
+\\(h(m)\\) is a monotonically increasing function. For example, the constraint is "sum is **greater than or equal to** target". Denote the sum of elements in the sliding window as \\(v\\), then \\(f(v) = v - target \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) increases.
 
 The common steps to resolve the problems:
 
@@ -412,7 +419,7 @@ The common steps to resolve the problems:
 3. Do the following in a loop until the constraint is not satisfied (each iteration represents a valid window):
   - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
   - Increment `i` (move right by one)
-4. Repeat 1. 2. 3. until `j` is out of boundary
+4. Repeat the above steps until `j` is out of boundary
 
 **Min Length**
 

@@ -173,14 +173,16 @@ The shortest path between any two nodes in a tree must pass through their Lowest
 
 # Binary Lifting
 
+[This](https://codeforces.com/blog/entry/100826) is a good tutorial on Binary Lifting.
+
 [Kth Ancestor of a Tree Node][kth-ancestor-of-a-tree-node]
 
 ```java
-// dp[i][j] = j-th node's 2^(i)th ancestor in the path
+// dp[i][j] = j-th node's (2 ^ i)-th ancestor in the path
 private int[][] dp;
 private int maxPow;
 
-// binary lifting
+// Binary lifting
 public TreeAncestor(int n, int[] parent) {
     // log_base_2(n)
     this.maxPow = (int)(Math.log(n) / Math.log(2)) + 1;
@@ -191,7 +193,7 @@ public TreeAncestor(int n, int[] parent) {
 
     for (int i = 1; i < maxPow; i++) {
         for (int j = 0; j < n; j++) {
-            // to find the (2 ^ i)-th ancestor of j
+            // To find the (2 ^ i)-th ancestor of j,
             // recursively finds j-th node's 2 ^ (i - 1)th ancestor's 2 ^ (i - 1)th ancestor
             // 2 ^ i = 2 ^ (i - 1) + 2 ^ (i - 1)
             int prev = dp[i - 1][j];
@@ -200,7 +202,6 @@ public TreeAncestor(int n, int[] parent) {
     }
 }
 
-// binary search
 public int getKthAncestor(int node, int k) {
     int currPow = maxPow;
     while (k > 0 && node >= 0) {
@@ -213,6 +214,45 @@ public int getKthAncestor(int node, int k) {
         }
     }
     return node;
+}
+```
+
+[Maximize Value of Function in a Ball Passing Game][maximize-value-of-function-in-a-ball-passing-game]
+
+```c++
+long long getMaxFunctionValue(vector<int>& receiver, long long k) {
+    int m = 8 * sizeof(k) - __builtin_clzll(k), n = receiver.size();
+    // dp[i][j]: {id, value sum}
+    vector<vector<pair<int, long long>>> dp(m, vector<pair<int, long long>>(n));
+    for (int j = 0; j < n; j++) {
+        dp[0][j] = {receiver[j], receiver[j]};
+    }
+    for (int i = 0; i < m - 1; i++) {
+        for (int j = 0; j < n; j++) {
+            int r = dp[i][j].first;
+            dp[i + 1][j] = {dp[i][r].first, dp[i][j].second + dp[i][r].second};
+        }
+    }
+
+    // The binary form of k can be interpreted as sum of receivers of `curr`.
+    // `bit` is the most significant bit
+    function<long long(int, int)> f = [&](int curr, int bit) -> long long {
+        if (bit < 0) {
+            return 0;
+        }
+
+        if ((k & (1ll << bit)) == 0) {
+            return f(curr, bit - 1);
+        }
+
+        return dp[bit][curr].second + f(dp[bit][curr].first, bit - 1);
+    };
+
+    long long res = 0;
+    for (int i = 0; i < n; i++) {
+        res = max(res, f(i, m - 1) + i);
+    }
+    return res;
 }
 ```
 
@@ -439,6 +479,7 @@ class TrieNode {
 [lowest-common-ancestor-of-a-binary-tree-ii]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/
 [lowest-common-ancestor-of-a-binary-tree-iii]: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/
 [lowest-common-ancestor-of-deepest-leaves]: https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/
+[maximize-value-of-function-in-a-ball-passing-game]: https://leetcode.com/problems/maximize-value-of-function-in-a-ball-passing-game/
 [maximum-xor-of-two-non-overlapping-subtrees]: https://leetcode.com/problems/maximum-xor-of-two-non-overlapping-subtrees/
 [step-by-step-directions-from-a-binary-tree-node-to-another]: https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another/
 [subtree-of-another-tree]: https://leetcode.com/problems/subtree-of-another-tree/

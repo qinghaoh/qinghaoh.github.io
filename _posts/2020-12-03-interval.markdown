@@ -364,6 +364,28 @@ public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
 }
 ```
 
+[Maximize the Profit as the Salesman][maximize-the-profit-as-the-salesman]
+
+```java
+public int maximizeTheProfit(int n, List<List<Integer>> offers) {
+    // end : list of index
+    Map<Integer, List<Integer>> map = new HashMap<>();
+    int[] dp = new int[n + 1];
+    for (int i = 0; i < offers.size(); i++) {
+        map.computeIfAbsent(offers.get(i).get(1), k -> new ArrayList<>()).add(i);
+    }
+
+    for (int i = 0; i < n; i++) {
+        dp[i + 1] = dp[i];
+        for (var e : map.getOrDefault(i, Collections.emptyList())) {
+            var o = offers.get(e);
+            dp[i + 1] = Math.max(dp[i + 1], dp[o.get(0)] + o.get(2));
+        }
+    }
+    return dp[n];
+}
+```
+
 [Maximum Number of Events That Can Be Attended II][maximum-number-of-events-that-can-be-attended-ii]
 
 ```java
@@ -1054,6 +1076,7 @@ class Interval implements Comparable<Interval> {
 [maximum-number-of-events-that-can-be-attended-ii]: https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended-ii/
 [maximum-number-of-non-overlapping-substrings]: https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/
 [maximum-profit-in-job-scheduling]: https://leetcode.com/problems/maximum-profit-in-job-scheduling/
+[maximize-the-profit-as-the-salesman]: https://leetcode.com/problems/maximize-the-profit-as-the-salesman/
 [meeting-rooms-ii]: https://leetcode.com/problems/meeting-rooms-ii/
 [meeting-scheduler]: https://leetcode.com/problems/meeting-scheduler/
 [merge-intervals]: https://leetcode.com/problems/merge-intervals/
