@@ -148,6 +148,8 @@ For example, `n = 4, k = 2`
 
 ## Number of k-combinations
 
+\\[\binom {n}{k}=\prod _{i=1}^{k}{\frac {n+1-i}{i}}\\]
+
 \\[{\binom {n}{k}}={\binom {n-1}{k-1}}+{\binom {n-1}{k}}\\]
 
 ```java

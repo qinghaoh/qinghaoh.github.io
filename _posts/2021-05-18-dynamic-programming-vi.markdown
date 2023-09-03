@@ -1123,7 +1123,7 @@ private static final int MOD = (int)1e9 + 7;
 private Integer[][][][] memo;
 
 public int count(String num1, String num2, int min_sum, int max_sum) {
-    // makes num1 and num2 equal length
+    // Makes num1 and num2 equal length
     num1 = "0".repeat(num2.length() - num1.length()) + num1;
 
     memo = new Integer[23][2][2][401];
@@ -1136,11 +1136,11 @@ public int count(String num1, String num2, int min_sum, int max_sum) {
 }
 
 /**
-    * Counts the number of integers in [num1, num2] whose sum of digits <= `sum`
-    * @param index: Index of the current index. Index 0 stands for the most significant digit.
-    * @param isLowTight: If all the selected digits so far are the lowest possible
-    * @param isHighTight: If all the selected digits so far are the highest possible
-    */
+ * Counts the number of integers in [num1, num2] whose sum of digits <= `sum`
+ * @param index: Index of the current index. Index 0 stands for the most significant digit.
+ * @param isLowTight: If all the selected digits so far are the lowest possible
+ * @param isHighTight: If all the selected digits so far are the highest possible
+ */
 private int countStrings(int index, int sum, boolean isLowTight, boolean isHighTight, String num1, String num2) {
     if (sum < 0) {
         return 0;
@@ -1157,12 +1157,12 @@ private int countStrings(int index, int sum, boolean isLowTight, boolean isHighT
 
     int count = 0;
     // e.g. num1 == 234, index == 1
-    //   if previous isLowTight is true, then the running number is 2**,
+    //   If previous isLowTight is true, then the running number is 2**,
     //     if we want to keep the current digit low tight, then it has to be 3.
     //     any number lower than 3, e.g. 2, will yield 22* < 234
     //   otherwise, the running number is more flexible, e.g. 3**
     //     the current digit can be any number (as low as 0)
-    // same applies to isHighTight
+    // Same applies to isHighTight
     int low = isLowTight ? num1.charAt(index) - '0' : 0;
     int high = isHighTight ? num2.charAt(index) - '0' : 9;
     for (int d = low; d <= high; d++) {
@@ -1170,6 +1170,53 @@ private int countStrings(int index, int sum, boolean isLowTight, boolean isHighT
     }
     return memo[index][lowTight][highTight][sum] = count;
 }
+```
+
+We can also handle `low` and `high` separately with two calls:
+
+[Number of Beautiful Integers in the Range][number-of-beautiful-integers-in-the-range]
+
+```c++
+    // memo[index][is_tight][odd][even][mod][is_zero]
+    int memo[12][2][12][12][20][2];
+    int countIntegers(const string& s, const int& k, int index = 0, bool is_tight = 1, int odd = 0, int even = 0, int mod = 0, bool is_zero = true)
+    {
+        if (index == s.size())
+        {
+            return !is_zero && mod == 0 && odd == even;
+        }
+
+        if (memo[index][is_tight][odd][even][mod][is_zero] != -1)
+        {
+            return memo[index][is_tight][odd][even][mod][is_zero];
+        }
+
+        int high = is_tight ? s[index] - '0' : 9;
+        // `is_zero` means the digits are all zeros so far.
+        // We don't count odds and evens for numbers with leading zeros,
+        // e.g. "0032" is not a valid beautiful integer for k = 2
+        int res = is_zero ? countIntegers(s, k, index + 1, 0, odd, even, mod, true) : 0;
+        for (int d = 0; d <= high; d++)
+        {
+            if (!is_zero || d != 0)
+            {
+                res += countIntegers(s, k, index + 1, is_tight && d == high, odd + d % 2, even + 1 - d % 2, (mod * 10 + d) % k, false);
+            }
+        }
+
+        return memo[index][is_tight][odd][even][mod][is_zero] = res;
+    }
+
+public:
+    int numberOfBeautifulIntegers(int low, int high, int k) {
+        memset(memo, -1, sizeof(memo));
+        int high_count = countIntegers(to_string(high), k);
+
+        memset(memo, -1, sizeof(memo));
+        int low_count = countIntegers(to_string(low - 1), k);
+
+        return high_count - low_count;
+    }
 ```
 
 [best-team-with-no-conflicts]: https://leetcode.com/problems/best-team-with-no-conflicts/
@@ -1191,6 +1238,7 @@ private int countStrings(int index, int sum, boolean isLowTight, boolean isHighT
 [minimum-time-to-make-array-sum-at-most-x]: https://leetcode.com/problems/minimum-time-to-make-array-sum-at-most-x/
 [minimum-total-space-wasted-with-k-resizing-operations]: https://leetcode.com/problems/minimum-total-space-wasted-with-k-resizing-operations/
 [minimum-white-tiles-after-covering-with-carpets]: https://leetcode.com/problems/minimum-white-tiles-after-covering-with-carpets/
+[number-of-beautiful-integers-in-the-range]: https://leetcode.com/problems/number-of-beautiful-integers-in-the-range/
 [number-of-music-playlists]: https://leetcode.com/problems/number-of-music-playlists/
 [number-of-ways-to-reach-a-position-after-exactly-k-steps]: https://leetcode.com/problems/number-of-ways-to-reach-a-position-after-exactly-k-steps/
 [number-of-ways-to-rearrange-sticks-with-k-sticks-visible]: https://leetcode.com/problems/number-of-ways-to-rearrange-sticks-with-k-sticks-visible/

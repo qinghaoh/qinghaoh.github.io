@@ -524,6 +524,41 @@ private int helper(int[] nums, int sign) {
 }
 ```
 
+[Minimum Operations to Form Subsequence With Target Sum][minimum-operations-to-form-subsequence-with-target-sum]
+
+```c++
+int minOperations(vector<int>& nums, int target) {
+    long long sum = accumulate(nums.begin(), nums.end(), 0l);
+    if (sum < target) {
+        return -1;
+    }
+
+    sort(nums.begin(), nums.end());
+    int ops = 0;
+    while (target > 0) {
+        int mx = nums.back();
+        nums.pop_back();
+        if (sum - mx >= target) {
+            // All the elements other than max can sum to target
+            // so it's safe to skip mx directly
+            sum -= mx;
+        } else if (mx <= target) {
+            // Picks the current max
+            sum -= mx;
+            target -= mx;
+        } else {
+            // sum - mx < target && mx > target
+            // sum < mx + target < 2 * mx
+            // mx > sum / 2
+            nums.push_back(mx / 2);
+            nums.push_back(mx / 2);
+            ops++;
+        }
+    }
+    return ops;
+}
+```
+
 [broken-calculator]: https://leetcode.com/problems/broken-calculator/
 [earliest-possible-day-of-full-bloom]: https://leetcode.com/problems/earliest-possible-day-of-full-bloom/
 [flower-planting-with-no-adjacent]: https://leetcode.com/problems/flower-planting-with-no-adjacent/
@@ -539,6 +574,7 @@ private int helper(int[] nums, int sign) {
 [minimum-initial-energy-to-finish-tasks]: https://leetcode.com/problems/minimum-initial-energy-to-finish-tasks/
 [minimum-number-of-days-to-eat-n-oranges]: https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/
 [minimum-number-of-people-to-teach]: https://leetcode.com/problems/minimum-number-of-people-to-teach/
+[minimum-operations-to-form-subsequence-with-target-sum]: https://leetcode.com/problems/minimum-operations-to-form-subsequence-with-target-sum/
 [partition-string-into-substrings-with-values-at-most-k]: https://leetcode.com/problems/partition-string-into-substrings-with-values-at-most-k/
 [put-boxes-into-the-warehouse-i]: https://leetcode.com/problems/put-boxes-into-the-warehouse-i/
 [split-array-into-consecutive-subsequences]: https://leetcode.com/problems/split-array-into-consecutive-subsequences/
