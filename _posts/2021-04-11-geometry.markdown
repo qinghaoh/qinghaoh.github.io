@@ -242,6 +242,26 @@ public int maxAbsValExpr(int[] arr1, int[] arr2) {
 }
 ```
 
+# Chebyshev Distance
+
+[Chebyshev distance](https://en.wikipedia.org/wiki/Chebyshev_distance) is also known as chessboard distance, since in the game of chess the minimum number of moves needed by a king to go from one square on a chessboard to another equals the Chebyshev distance between the centers of the squares.
+
+[Determine if a Cell Is Reachable at a Given Time][determine-if-a-cell-is-reachable-at-a-given-time]
+
+```c++
+bool isReachableAtTime(int sx, int sy, int fx, int fy, int t) {
+    int dx = abs(sx - fx), dy = abs(sy - fy);
+    if (dx == 0 && dy == 0 && t == 1) {
+        return false;
+    }
+
+    // Chebyshev distance
+    // Move diagonally for min(dx, dy)
+    // Then go along the longer side
+    return min(dx, dy) + abs(dx - dy) <= t;
+}
+```
+
 # Geometric Median
 
 $${\underset {y\in \mathbb {R} ^{n}}{\operatorname {arg\,min} }}\sum _{i=1}^{m}\left\|x_{i}-y\right\|_{2}$$
@@ -501,6 +521,7 @@ public int minimumBoxes(int n) {
 [building-boxes]: https://leetcode.com/problems/building-boxes/
 [circle-and-rectangle-overlapping]: https://leetcode.com/problems/circle-and-rectangle-overlapping/
 [convex-polygon]: https://leetcode.com/problems/convex-polygon/
+[determine-if-a-cell-is-reachable-at-a-given-time]: https://leetcode.com/problems/determine-if-a-cell-is-reachable-at-a-given-time/
 [erect-the-fence]: https://leetcode.com/problems/erect-the-fence/
 [erect-the-fence-ii]: https://leetcode.com/problems/erect-the-fence-ii/
 [escape-the-ghosts]: https://leetcode.com/problems/escape-the-ghosts/

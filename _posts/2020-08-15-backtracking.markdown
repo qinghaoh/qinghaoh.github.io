@@ -505,6 +505,10 @@ private void backtrack(List<String> list, StringBuilder sb, int index, int k) {
 }
 ```
 
+[Minimum Moves to Spread Stones Over Grid][minimum-moves-to-spread-stones-over-grid]
+
+Neither Greedy nor BFS works.
+
 # Subset Sum Problem
 
 [Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem): NP-complete
@@ -1277,6 +1281,7 @@ public long kSum(int[] nums, int k) {
 [maximum-number-of-groups-getting-fresh-donuts]: https://leetcode.com/problems/maximum-number-of-groups-getting-fresh-donuts/
 [maximum-points-in-an-archery-competition]: https://leetcode.com/problems/maximum-points-in-an-archery-competition/
 [maximum-score-words-formed-by-letters]: https://leetcode.com/problems/maximum-score-words-formed-by-letters/
+[minimum-moves-to-spread-stones-over-grid]: https://leetcode.com/problems/minimum-moves-to-spread-stones-over-grid/
 [optimal-account-balancing]: https://leetcode.com/problems/optimal-account-balancing/
 [palindrome-partitioning]: https://leetcode.com/problems/palindrome-partitioning/
 [palindrome-permutation-ii]: https://leetcode.com/problems/palindrome-permutation-ii/
