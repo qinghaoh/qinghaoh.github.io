@@ -54,19 +54,19 @@ graph TD
     module
     end
 
-    subgraph Namespaces
-    block_sc[[block scope]]
-    namespace_sc[[namespace scope]]
-    classDef Namespace fill:#ffb7c5,stroke:#333,stroke-width:2px;
-    class block_sc,namespace_sc Namespace;
+    subgraph Scopes
+    block_sc[[block]]
+    namespace_sc[[namespace]]
+    classDef Scope fill:#ffb7c5,stroke:#333,stroke-width:2px;
+    class block_sc,namespace_sc Scope;
     end
     
-    no_specifier---automatic
-    static_sp---static_sd
-    static_sp---thread
-    extern---static_sd
-    extern---thread
-    thread_local---thread
+    no_specifier--->automatic
+    static_sp--->static_sd
+    static_sp--->thread
+    extern--->static_sd
+    extern--->thread
+    thread_local--->thread
 
     internal---static_sp
     internal-.extern names in <br> a. an unnamed namespace or <br>b. a namespace within an unnamed namespace.-extern
@@ -75,7 +75,6 @@ graph TD
 
     automatic---block_sc
     static_sd---namespace_sc
-
 ```
 
 | Storage Duration | Duration | Object Initialization
@@ -83,4 +82,43 @@ graph TD
 | ***static*** | Program | |
 | ***thread*** | Thread | |
 | ***dynamic*** | Dynamic memory allocation | new-expression |
+
+```mermaid
+classDiagram
+    Container <|-- AllocatorAwareContainer
+    Container <|-- ReversibleContainer
+    AllocatorAwareContainer <|-- AssociativeContainer
+    AssociativeContainer <|.. `std::map`
+    AssociativeContainer <|.. `std::set`
+
+    AssociativeContainer o-- Compare
+
+    Predicate <|-- BinaryPredicate
+    Compare o-- BinaryPredicate
+
+    class AssociativeContainer{
+        +Key
+        +Compare
+    }
+    class ReversibleContainer{
+        +LegacyBidirectionalIterator
+        +LegacyRandomAccessIterator
+    }
+    class Compare{
+        + BinaryPredicate
+        +comp(a, b)
+        +equiv(a, b)
+    }
+    note for Compare "strict weak ordering"
+
+    class Predicate{
+        +pred(*iter)
+    }
+    note for Predicate "shall not apply any non-constant function through *iter"
+
+    class BinaryPredicate{
+        +bin_pred(*iter1, *iter2)
+        +bin_pred(*iter1, value)
+    }
+```
 

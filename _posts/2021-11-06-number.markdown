@@ -171,6 +171,27 @@ public int preimageSizeFZF(int k) {
 }
 ```
 
+# Sqaure
+
+[Maximum Element-Sum of a Complete Subset of Indices][maximum-element-sum-of-a-complete-subset-of-indices]
+
+```
+long long maximumSum(vector<int>& nums) {
+    int n = nums.size();
+    long long res = 0;
+    for (int r = 1; r <= n; r++)
+    {
+        // Each element in the complete subset is a square number except `r`
+        for (long long sum = 0, idx = 1; r * idx * idx <= n; idx++)
+        {
+            res = max(res, sum += nums[r * idx * idx - 1]);
+        }
+    }
+    return res;
+}
+```
+
 [digit-count-in-range]: https://leetcode.com/problems/digit-count-in-range/
+[maximum-element-sum-of-a-complete-subset-of-indices]: https://leetcode.com/problems/maximum-element-sum-of-a-complete-subset-of-indices/
 [numbers-at-most-n-given-digit-set]: https://leetcode.com/problems/numbers-at-most-n-given-digit-set/
 [preimage-size-of-factorial-zeroes-function]: https://leetcode.com/problems/preimage-size-of-factorial-zeroes-function/

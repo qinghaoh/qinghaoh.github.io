@@ -10,3 +10,17 @@ Media query: https://developer.mozilla.org/en-US/docs/Web/CSS/@media
 
 ![Box aligment properties](/assets/img/css/box_alignment_properties.png)
 
+[source](https://stackoverflow.com/questions/24657555/what-is-the-difference-between-first-child-and-first-of-type)
+
+* `first-child`
+* `first-of-type`
+
+```css
+<div class="parent">
+  <h1>Child</h1>   <!-- h1:first-child, h1:first-of-type -->
+  <div>Child</div> <!-- div:nth-child(2), div:first-of-type -->
+  <div>Child</div>
+  <div>Child</div>
+</div>
+```
+
