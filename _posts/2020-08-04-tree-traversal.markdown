@@ -698,6 +698,154 @@ public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
 }
 ```
 
+# Level Order Traversal
+
+The most intuitive way is BFS:
+
+```java
+List<Integer> currLevel = new ArrayList<>();
+for (int i = q.size(); i > 0; i--) {
+    Node node = q.poll();
+    currLevel.add(node.val);
+    for (Node child : node.children) {
+        q.offer(child);
+    }
+}
+```
+
+However, it can be implemented with DFS as well:
+
+[N-ary Tree Level Order Traversal][n-ary-tree-level-order-traversal]
+
+```java
+private List<List<Integer>> list;
+
+public List<List<Integer>> levelOrder(Node root) {
+    list = new ArrayList<>();
+    dfs(root, 0);
+    return list;
+}
+
+private void dfs(Node node, int level) {
+    if (node == null) {
+        return;
+    }
+
+    if (list.size() == level) {
+        list.add(new ArrayList<>());
+    }
+    list.get(level).add(node.val);
+
+    for (Node child : node.children) {
+        dfs(child, level + 1);
+    }
+}
+```
+
+[Find Leaves of Binary Tree][find-leaves-of-binary-tree]
+
+```java
+private List<List<Integer>> leaves = new ArrayList<>();
+
+public List<List<Integer>> findLeaves(TreeNode root) {
+    dfs(root);
+    return leaves;
+}
+
+private int height(TreeNode node) {
+    if (node == null) {
+        return -1;
+    }
+
+    int h = Math.max(height(node.left), height(node.right)) + 1;
+
+    if (h == leaves.size()) {
+        leaves.add(new ArrayList<>());
+    }
+    leaves.get(h).add(node.val);
+
+    return h;
+}
+```
+
+[Binary Tree Right Side View][binary-tree-right-side-view]
+
+```java
+private List<Integer> rightside = new ArrayList<>();
+
+public List<Integer> rightSideView(TreeNode root) {
+    dfs(root, 0);
+    return rightside;
+}
+
+public void dfs(TreeNode node, int level) {
+    if (node == null) {
+        return;
+    }
+
+    // adds node value to the list if the level is new
+    if (rightside.size() == level) {
+        rightside.add(node.val);
+    }
+
+    // first right, then left
+    dfs(node.right, level + 1);
+    dfs(node.left, level + 1);
+}
+```
+
+[Increasing Order Search Tree][increasing-order-search-tree]
+
+```java
+private TreeNode curr;  // current node of the list
+
+public TreeNode increasingBST(TreeNode root) {
+    TreeNode head = new TreeNode(0);
+    curr = head;
+    inorder(root);
+    return head.right;
+}
+
+private void inorder(TreeNode node) {
+    if (node == null) {
+        return;
+    }
+
+    inorder(node.left);
+    node.left = null;
+    curr.right = node;
+    curr = node;
+    inorder(node.right);
+}
+```
+
+```java
+public TreeNode increasingBST(TreeNode root) {
+    return inorder(root, null);
+}
+
+/**
+ * Inorder traverses and rearranges the tree.
+ * @param node current tree node
+ * @param next next ancestor node in inorder traversal
+ * @return head of the list after rearrangement
+ */
+public TreeNode inorder(TreeNode node, TreeNode next) {
+    // If the current node is a left child, next will be its parent
+    // else if the current node is a right child, next will be its "leftmost" parent's parent
+    if (node == null) {
+        return next;
+    }
+
+    TreeNode left = inorder(node.left, node);
+    node.left = null;
+    // If node.right == 0, it links the next ancesotr to the rearranged right list
+    // otherwise it links the rearranged right list to the current node
+    node.right = inorder(node.right, next);
+    return left;
+}
+```
+
 [all-elements-in-two-binary-search-trees/submissions]: https://leetcode.com/problems/all-elements-in-two-binary-search-trees/submissions/
 [binary-search-tree-iterator]: https://leetcode.com/problems/binary-search-tree-iterator/
 [binary-search-tree-iterator-ii]: https://leetcode.com/problems/binary-search-tree-iterator-ii/
@@ -705,6 +853,7 @@ public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
 [binary-tree-preorder-traversal]: https://leetcode.com/problems/binary-tree-preorder-traversal
 [binary-tree-inorder-traversal]: https://leetcode.com/problems/binary-tree-inorder-traversal
 [binary-tree-postorder-traversal]: https://leetcode.com/problems/binary-tree-postorder-traversal
+[binary-tree-right-side-view]: https://leetcode.com/problems/binary-tree-right-side-view/
 [construct-binary-search-tree-from-preorder-traversal]: https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/
 [construct-binary-tree-from-inorder-and-postorder-traversal]: https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
 [construct-binary-tree-from-preorder-and-inorder-traversal]: https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
@@ -712,8 +861,11 @@ public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
 [convert-sorted-array-to-binary-search-tree]: https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
 [convert-sorted-list-to-binary-search-tree]: https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
 [find-largest-value-in-each-tree-row]: https://leetcode.com/problems/find-largest-value-in-each-tree-row/
+[find-leaves-of-binary-tree]: https://leetcode.com/problems/find-leaves-of-binary-tree/
 [flip-binary-tree-to-match-preorder-traversal]: https://leetcode.com/problems/flip-binary-tree-to-match-preorder-traversal/
+[increasing-order-search-tree]: https://leetcode.com/problems/increasing-order-search-tree/
 [inorder-successor-in-bst]: https://leetcode.com/problems/inorder-successor-in-bst/
 [inorder-successor-in-bst-ii]: https://leetcode.com/problems/inorder-successor-in-bst-ii/
+[n-ary-tree-level-order-traversal]: https://leetcode.com/problems/n-ary-tree-level-order-traversal/
 [verify-preorder-sequence-in-binary-search-tree]: https://leetcode.com/problems/verify-preorder-sequence-in-binary-search-tree/
 [vertical-order-traversal-of-a-binary-tree]: https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/

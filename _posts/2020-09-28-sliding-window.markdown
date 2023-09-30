@@ -620,7 +620,7 @@ private int slidingWindow(String s, int k, int uniqueCharsTarget) {
 ```java
 public int minOperations(int[] nums, int x) {
     int i = 0, j = 0, n = nums.length, sum = Arrays.stream(nums).sum(), min = Integer.MAX_VALUE;
-    while (j < nums.length) {
+    while (j < n) {
         // sum([0...i) + (j...n - 1]) == x
         sum -= nums[j++];
 

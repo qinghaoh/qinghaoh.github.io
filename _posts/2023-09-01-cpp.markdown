@@ -18,6 +18,24 @@ Dan Saks. (2001). _[Lvalues and Rvalues](https://www.embedded.com/lvalues-and-rv
 David Anderson. (1994). _[The ``Clockwise/Spiral Rule''](https://c-faq.com/decl/spiral.anderson.html)_
 : A technique to parse C declarations
 
+```mermaid
+classDiagram
+    ExpressionValue <|-- glvalue
+    ExpressionValue <|-- rvalue
+    glvalue <|-- lvalue
+    glvalue <|-- xvalue
+    rvalue <|-- prvalue
+    rvalue <|-- xvalue
+```
+
+* glvalue
+  + may be implicitly converted to prvalue
+  + may be polymorphic
+  + can have incomplete type
+
+* rvalue
+  + cannot be taken by address-of operator
+  + cannot be used as left-hand operand of assignment and compound assignment operator
 
 A reference is essentially a pointer that’s automatically dereferenced each time it’s used.
 
@@ -88,24 +106,38 @@ classDiagram
     Container <|-- AllocatorAwareContainer
     Container <|-- ReversibleContainer
     AllocatorAwareContainer <|-- AssociativeContainer
+    AllocatorAwareContainer <|-- UnorderedAssociativeContainer
     AssociativeContainer <|.. `std::map`
-    AssociativeContainer <|.. `std::set`
+    UnorderedAssociativeContainer <|.. `std::unordered_map`
 
     AssociativeContainer o-- Compare
-
     Predicate <|-- BinaryPredicate
     Compare o-- BinaryPredicate
+
+    UnorderedAssociativeContainer o-- Hash
+    UnorderedAssociativeContainer o-- BinaryPredicate
+    FunctionObject <|-- Hash
+    CopyConstructible <|-- Hash
+    Destructible <|-- Hash
+
+    MoveConstructible <|-- CopyConstructible
 
     class AssociativeContainer{
         +Key
         +Compare
     }
+    class UnorderedAssociativeContainer{
+        +Key
+        +Hash
+        +BinaryPredicate
+    }
     class ReversibleContainer{
         +LegacyBidirectionalIterator
         +LegacyRandomAccessIterator
     }
+
     class Compare{
-        + BinaryPredicate
+        +BinaryPredicate
         +comp(a, b)
         +equiv(a, b)
     }
@@ -114,11 +146,52 @@ classDiagram
     class Predicate{
         +pred(*iter)
     }
-    note for Predicate "shall not apply any non-constant function through *iter"
 
     class BinaryPredicate{
         +bin_pred(*iter1, *iter2)
         +bin_pred(*iter1, value)
     }
+
+    class Hash{
+        +h(k)
+    }
 ```
 
+```mermaid
+---
+title: Implicit conversion sequence
+---
+flowchart TD
+    A([start]) --> B{standard?}
+    B -->|Yes| C[standard conversion sequence]
+    B -->|No| D{user-defined?}
+    C --> D
+    D -->|Yes| E[user-defined conversion]
+    D -->|No| F([End])
+    E --> G[standard conversion sequence]
+    G --> F
+```
+
+```mermaid
+---
+title: Standard conversion sequence
+---
+flowchart LR
+    A([start]) --> B{conversion?}
+    B -->|Yes| C[lvalue-to-rvalue conversion\narray-to-pointer conversion\nfunction-to-pointer conversion]
+    B -->|No| D{numeric?}
+    C --> D
+    D -->|Yes| E[numeric promotion\nnumeric conversion]
+    D -->|No| F{function pointer?}
+    E --> F
+    F -->|Yes| G[function pointer conversion]
+    F -->|No| H{qualification?}
+    G --> H
+    H -->|Yes| I[qualification conversion]
+    H -->|No| J([End])
+    I --> J
+```
+
+```c++
+basic_string(size_type count, CharT ch, const Allocator& alloc = Allocator())
+```

@@ -603,154 +603,6 @@ public int findSecondMinimumValue(TreeNode root) {
 }
 ```
 
-# Level Order Traversal
-
-The most intuitive way is BFS:
-
-```java
-List<Integer> currLevel = new ArrayList<>();
-for (int i = q.size(); i > 0; i--) {
-    Node node = q.poll();
-    currLevel.add(node.val);
-    for (Node child : node.children) {
-        q.offer(child);
-    }
-}
-```
-
-However, it can be implemented with DFS as well:
-
-[N-ary Tree Level Order Traversal][n-ary-tree-level-order-traversal]
-
-```java
-private List<List<Integer>> list;
-
-public List<List<Integer>> levelOrder(Node root) {
-    list = new ArrayList<>();
-    dfs(root, 0);
-    return list;
-}
-
-private void dfs(Node node, int level) {
-    if (node == null) {
-        return;
-    }
-
-    if (list.size() == level) {
-        list.add(new ArrayList<>());
-    }
-    list.get(level).add(node.val);
-
-    for (Node child : node.children) {
-        dfs(child, level + 1);
-    }
-}
-```
-
-[Find Leaves of Binary Tree][find-leaves-of-binary-tree]
-
-```java
-private List<List<Integer>> leaves = new ArrayList<>();
-
-public List<List<Integer>> findLeaves(TreeNode root) {
-    dfs(root);
-    return leaves;
-}
-
-private int height(TreeNode node) {
-    if (node == null) {
-        return -1;
-    }
-
-    int h = Math.max(height(node.left), height(node.right)) + 1;
-
-    if (h == leaves.size()) {
-        leaves.add(new ArrayList<>());
-    }
-    leaves.get(h).add(node.val);
-
-    return h;
-}
-```
-
-[Binary Tree Right Side View][binary-tree-right-side-view]
-
-```java
-private List<Integer> rightside = new ArrayList<>();
-
-public List<Integer> rightSideView(TreeNode root) {
-    dfs(root, 0);
-    return rightside;
-}
-
-public void dfs(TreeNode node, int level) {
-    if (node == null) {
-        return;
-    }
-
-    // adds node value to the list if the level is new
-    if (rightside.size() == level) {
-        rightside.add(node.val);
-    }
-
-    // first right, then left
-    dfs(node.right, level + 1);
-    dfs(node.left, level + 1);
-}
-```
-
-[Increasing Order Search Tree][increasing-order-search-tree]
-
-```java
-private TreeNode curr;  // current node of the list
-
-public TreeNode increasingBST(TreeNode root) {
-    TreeNode head = new TreeNode(0);
-    curr = head;
-    inorder(root);
-    return head.right;
-}
-
-private void inorder(TreeNode node) {
-    if (node == null) {
-        return;
-    }
-
-    inorder(node.left);
-    node.left = null;
-    curr.right = node;
-    curr = node;
-    inorder(node.right);
-}
-```
-
-```java
-public TreeNode increasingBST(TreeNode root) {
-    return inorder(root, null);
-}
-
-/**
- * Inorder traverses and rearranges the tree.
- * @param node current tree node
- * @param next next ancestor node in inorder traversal
- * @return head of the list after rearrangement
- */
-public TreeNode inorder(TreeNode node, TreeNode next) {
-    // If the current node is a left child, next will be its parent
-    // else if the current node is a right child, next will be its "leftmost" parent's parent
-    if (node == null) {
-        return next;
-    }
-
-    TreeNode left = inorder(node.left, node);
-    node.left = null;
-    // If node.right == 0, it links the next ancesotr to the rearranged right list
-    // otherwise it links the rearranged right list to the current node
-    node.right = inorder(node.right, next);
-    return left;
-}
-```
-
 # Top-down Local State
 
 [Count Good Nodes in Binary Tree][count-good-nodes-in-binary-tree]
@@ -1289,10 +1141,58 @@ public int checkWays(int[][] pairs) {
 }
 ```
 
+## Dynamic Programming
+
+[Minimum Edge Reversals So Every Node Is Reachable][minimum-edge-reversals-so-every-node-is-reachable]
+
+```c++
+    map<pair<int, int>, int> memo;
+
+    int dfs(const vector<vector<int>> &graph, const vector<vector<int>> &revGraph, int node, int parent) {
+        pair<int, int> key{node, parent};
+        if (memo.contains(key))
+        {
+            return memo[key];
+        }
+
+        int ans = 0;
+        for (auto &neighbor : graph[node]) {
+            if (neighbor != parent)
+            {
+                ans += dfs(graph, revGraph, neighbor, node);
+            }
+        }
+
+        for (auto &neighbor : revGraph[node]) {
+            if (neighbor != parent)
+            {
+                ans += dfs(graph, revGraph, neighbor, node) + 1;
+            }
+        }
+        return memo[key] = ans;
+    }
+
+public:
+    vector<int> minEdgeReversals(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> graph(n);
+        vector<vector<int>> revGraph(n);
+
+        for (auto e : edges) {
+            graph[e[0]].push_back(e[1]);
+            revGraph[e[1]].push_back(e[0]);
+        }
+
+        vector<int> answer;
+        for (int i = 0; i < n; i++) {
+            answer.push_back(dfs(graph, revGraph, i, -1));
+        }
+        return answer;
+    }
+```
+
 [all-nodes-distance-k-in-binary-tree]: https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
 [binary-tree-cameras]: https://leetcode.com/problems/binary-tree-cameras/
 [binary-tree-maximum-path-sum]: https://leetcode.com/problems/binary-tree-maximum-path-sum/
-[binary-tree-right-side-view]: https://leetcode.com/problems/binary-tree-right-side-view/
 [convert-bst-to-greater-tree]: https://leetcode.com/problems/convert-bst-to-greater-tree/
 [count-good-nodes-in-binary-tree]: https://leetcode.com/problems/count-good-nodes-in-binary-tree/
 [count-paths-that-can-form-a-palindrome-in-a-tree]: https://leetcode.com/problems/count-paths-that-can-form-a-palindrome-in-a-tree/
@@ -1303,18 +1203,16 @@ public int checkWays(int[][] pairs) {
 [distribute-coins-in-binary-tree]: https://leetcode.com/problems/distribute-coins-in-binary-tree/
 [equal-tree-partition]: https://leetcode.com/problems/equal-tree-partition/
 [find-bottom-left-tree-value]: https://leetcode.com/problems/find-bottom-left-tree-value/
-[find-leaves-of-binary-tree]: https://leetcode.com/problems/find-leaves-of-binary-tree/
 [flatten-a-multilevel-doubly-linked-list]: https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/
 [flatten-binary-tree-to-linked-list]: https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
 [house-robber-iii]: https://leetcode.com/problems/house-robber-iii/
-[increasing-order-search-tree]: https://leetcode.com/problems/increasing-order-search-tree/
 [largest-bst-subtree]: https://leetcode.com/problems/largest-bst-subtree/
 [longest-univalue-path]: https://leetcode.com/problems/longest-univalue-path/
 [longest-zigzag-path-in-a-binary-tree]: https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/
 [maximum-difference-between-node-and-ancestor]: https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
 [maximum-width-of-binary-tree]: https://leetcode.com/problems/maximum-width-of-binary-tree/
 [minimum-absolute-difference-in-bst]: https://leetcode.com/problems/minimum-absolute-difference-in-bst/
-[n-ary-tree-level-order-traversal]: https://leetcode.com/problems/n-ary-tree-level-order-traversal/
+[minimum-edge-reversals-so-every-node-is-reachable]: https://leetcode.com/problems/minimum-edge-reversals-so-every-node-is-reachable/
 [number-of-good-leaf-nodes-pairs]: https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/
 [number-of-ways-to-reconstruct-a-tree]: https://leetcode.com/problems/number-of-ways-to-reconstruct-a-tree/
 [path-sum-iii]: https://leetcode.com/problems/path-sum-iii/

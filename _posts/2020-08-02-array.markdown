@@ -899,6 +899,32 @@ public int carFleet(int target, int[] position, int[] speed) {
 }
 ```
 
+[Happy Students][happy-students]
+
+```c++
+int countWays(vector<int>& nums) {
+    int n = nums.size();
+    nums.push_back(INT_MAX);
+    // If i-th student is selected, all the students with nums[j] <= nums[i] must be selected
+    // If i-th student is not selected, all the students with nums[j] >= nums[i] must not be selected
+    sort(begin(nums), end(nums));
+
+    // If no one is selected and all students are happy,
+    // nums[0] > 0
+    int cnt = nums[0] != 0;
+    for (int i = 0; i < n; i++)
+    {
+        // Check if nums[i] should be selected
+        // If nums[i] is selected, the number of selected people will be (i + 1)
+        if (nums[i] < i + 1 and nums[i + 1] > i + 1)
+        {
+            cnt++;
+        }
+    }
+    return cnt;
+}
+```
+
 # Parity
 
 [Subsequence of Size K With the Largest Even Sum][subsequence-of-size-k-with-the-largest-even-sum]
@@ -951,6 +977,7 @@ public long largestEvenSum(int[] nums, int k) {
 [find-the-winner-of-the-circular-game]: https://leetcode.com/problems/find-the-winner-of-the-circular-game/
 [first-missing-positive]: https://leetcode.com/problems/first-missing-positive/
 [gas-station]: https://leetcode.com/problems/gas-station/
+[happy-students]: https://leetcode.com/problems/happy-students/
 [longest-consecutive-sequence]: https://leetcode.com/problems/longest-consecutive-sequence/
 [make-k-subarray-sums-equal]: https://leetcode.com/problems/make-k-subarray-sums-equal/
 [max-chunks-to-make-sorted-ii]: https://leetcode.com/problems/max-chunks-to-make-sorted-ii/
