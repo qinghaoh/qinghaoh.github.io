@@ -292,7 +292,9 @@ public int makeTheIntegerZero(int num1, int num2) {
 }
 ```
 
-# And
+# Bitwise Operators
+
+## And
 
 [Find a Value of a Mysterious Function Closest to Target][find-a-value-of-a-mysterious-function-closest-to-target]
 
@@ -327,9 +329,26 @@ public int closestToTarget(int[] arr, int target) {
 }
 ```
 
-# Exclusive Or
+[Split Array Into Maximum Number of Subarrays][split-array-into-maximum-number-of-subarrays]
 
-## Properties
+```c++
+int maxSubarrays(vector<int>& nums) {
+    // Each subarray has score 0
+    int ways = 0, curr = 0;
+    for (int num : nums) {
+        curr = curr == 0 ? num : curr & num;
+        ways += curr == 0;
+    }
+
+    // 1 means no split
+    // & monitonically decreases
+    // so the score(any subarray) >= score(nums)
+    // If score(nums) is non-zero, the sum of score(subarrays) must be greater than score(num)
+    return max(ways, 1);
+}
+```
+
+## Exclusive Or
 
 Distributive Property:
 
@@ -338,7 +357,7 @@ Distributive Property:
 (a ^ b) & (c ^ d) = (a & c) ^ (a & d) ^ (b & c) ^ (b & d)
 ```
 
-## MSB -> LSB
+### MSB -> LSB
 
 Process the numbres bit by bit from msb to lsb.
 
@@ -377,7 +396,7 @@ public int findMaximumXOR(int[] nums) {
 }
 ```
 
-## Trie
+### Trie
 
 It's a more intuitive way to process the numbers bit by bit.
 
@@ -837,6 +856,7 @@ public boolean validUtf8(int[] data) {
 [single-number]: https://leetcode.com/problems/single-number/
 [single-number-ii]: https://leetcode.com/problems/single-number-ii/
 [single-number-iii]: https://leetcode.com/problems/single-number-iii/
+[split-array-into-maximum-number-of-subarrays]: https://leetcode.com/problems/split-array-into-maximum-number-of-subarrays/
 [total-hamming-distance]: https://leetcode.com/problems/total-hamming-distance/
 [utf-8-validation]: https://leetcode.com/problems/utf-8-validation/
 [xor-operation-in-an-array]: https://leetcode.com/problems/xor-operation-in-an-array/

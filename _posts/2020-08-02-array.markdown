@@ -4,6 +4,28 @@ category: algorithm
 tags: array
 ---
 
+# Iteration
+
+while iterating through an array, keep a running state to some variables.
+
+[Maximum Value of an Ordered Triplet II][maximum-value-of-an-ordered-triplet-ii]
+
+```c++
+long long maximumTripletValue(vector<int>& nums) {
+    long long res = 0;
+    // maxi: max(nums[i])
+    // maxd: max(nums[i] - nums[j])
+    int maxi = 0, maxd = 0;
+    for (int& num : nums) {
+        // The order of "res -> maxd -> maxi" is a trick to make code concise
+        res = max(res, (long long)maxd * num);
+        maxd = max(maxd, maxi - num);
+        maxi = max(maxi, num);
+    }
+    return res;
+}
+```
+
 [Minimum Money Required Before Transactions][minimum-money-required-before-transactions]
 
 ```java
@@ -981,8 +1003,9 @@ public long largestEvenSum(int[] nums, int k) {
 [longest-consecutive-sequence]: https://leetcode.com/problems/longest-consecutive-sequence/
 [make-k-subarray-sums-equal]: https://leetcode.com/problems/make-k-subarray-sums-equal/
 [max-chunks-to-make-sorted-ii]: https://leetcode.com/problems/max-chunks-to-make-sorted-ii/
-[maximum-matrix-sum]: https://leetcode.com/problems/maximum-matrix-sum/
 [maximum-building-height]: https://leetcode.com/problems/maximum-building-height/
+[maximum-matrix-sum]: https://leetcode.com/problems/maximum-matrix-sum/
+[maximum-value-of-an-ordered-triplet-ii]: https://leetcode.com/problems/maximum-value-of-an-ordered-triplet-ii/
 [minimum-cost-to-make-all-characters-equal]: https://leetcode.com/problems/minimum-cost-to-make-all-characters-equal/
 [minimum-deletions-to-make-array-beautiful]: https://leetcode.com/problems/minimum-deletions-to-make-array-beautiful/
 [minimum-money-required-before-transactions]: https://leetcode.com/problems/minimum-money-required-before-transactions/
