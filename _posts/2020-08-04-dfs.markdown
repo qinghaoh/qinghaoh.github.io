@@ -653,7 +653,6 @@ public int dfs(String[] pieces, int[][] positions, int p) {
 [clone-graph]: https://leetcode.com/problems/clone-graph/
 [contain-virus]: https://leetcode.com/problems/contain-virus/
 [create-components-with-same-value]: https://leetcode.com/problems/create-components-with-same-value/
-[detect-cycles-in-2d-grid]: https://leetcode.com/problems/detect-cycles-in-2d-grid/
 [keys-and-rooms]: https://leetcode.com/problems/keys-and-rooms/
 [lexicographical-numbers]: https://leetcode.com/problems/lexicographical-numbers/
 [lexicographically-smallest-string-after-applying-operations]: https://leetcode.com/problems/lexicographically-smallest-string-after-applying-operations/

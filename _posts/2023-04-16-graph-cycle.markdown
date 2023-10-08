@@ -1,14 +1,99 @@
 ---
 title:  "Graph Cycle"
 category: algorithm
+mermaid: true
 tags: graph
 ---
+
+# Acyclic Graph
+
+```mermaid
+flowchart LR
+    A([Acyclic Graph]) --> B{Directed?}
+    B -->|Yes| C[DAG]
+    B -->|No| D{Forest}
+    D --> E{Connected?}
+    E -->|Yes| F{Tree}
+```
+
+A topological sorting is possible iff the graph is a DAG.
+
+# Cyclic Graph
 
 Common graph cycle problems:
 * Cycle detection
 * Cycle length
 
-# White-Gray-Black DFS
+## Khan's Algorithm
+
+See [Topological Sorting](../topological-sorting/#kahns-algorithm)
+
+A directed graph with `n` nodes and `n` edges. [Loops](https://en.wikipedia.org/wiki/Loop_(graph_theory)) are not allowed.
+
+[Maximum Employees to Be Invited to a Meeting][maximum-employees-to-be-invited-to-a-meeting]
+
+```java
+public int maximumInvitations(int[] favorite) {
+    int n = favorite.length;
+    // Constucts a graph by creating a directed edge i -> favorite[i] for each node
+    //
+    // The graph has possibly more than one component. Each component is one of the two cases:
+    // - a cycle with length 2, and each node can have an "arm" (acyclic nodes)
+    // - a cycle with no "arms"
+
+    // Kahn's Algorithm picks out acyclic nodes
+    int[] indegrees = new int[n];
+    for (int i = 0; i < n; i++) {
+        indegrees[favorite[i]]++;
+    }
+
+    // Enqueues leaves
+    Queue<Integer> q = new LinkedList<>();
+    boolean[] visited = new boolean[n];
+    for (int i = 0; i < n; i++) {
+        if (indegrees[i] == 0) {
+            visited[i] = true;
+            q.offer(i);
+        }
+    }
+
+    // dp[i]: longest path from leaves to i exclusively
+    int[] dp = new int[n]; 
+    while (!q.isEmpty()) {
+        int node = q.poll(), to = favorite[node];
+        dp[to] = Math.max(dp[to], dp[node] + 1);
+
+        if (--indegrees[to] == 0) {
+            visited[to] = true;
+            q.offer(to);
+        }
+    }
+
+    int count1 = 0;  // cycle length is 2
+    int count2 = 0;
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            // Gets the cycle length
+            int length = 0;
+            for (int j = i; !visited[j]; j = favorite[j]) {
+                visited[j] = true;
+                length++;
+            }
+
+            if (length == 2) {
+                // There can be multiple isolated connected components of case 1
+                // Adds them all up
+                count1 += 2 + dp[i] + dp[favorite[i]];
+            } else {
+                count2 = Math.max(count2, length);
+            }
+        }
+    }
+    return Math.max(count1, count2);
+}
+```
+
+## White-Gray-Black DFS
 
 [Course Schedule II][course-schedule-ii]
 
@@ -175,7 +260,7 @@ minSub: 2
 rank: 0,1,2,2
 ```
 
-# BFS
+## BFS
 
 [Shortest Cycle in a Graph][shortest-cycle-in-a-graph]
 
@@ -225,75 +310,9 @@ private int bfs(List<Integer>[] graph, int node) {
 }
 ```
 
-# Topological Sorting
-
-A topological sorting is possible iff the graph is a DAG.
-
-[Maximum Employees to Be Invited to a Meeting][maximum-employees-to-be-invited-to-a-meeting]
-
-```java
-public int maximumInvitations(int[] favorite) {
-    int n = favorite.length;
-    // for every index i, there is a directed edge from i to favorite[i]
-    // topological sort picks out acyclic part
-    int[] indegrees = new int[n];
-    for (int i = 0; i < n; i++) {
-        indegrees[favorite[i]]++;
-    }
-
-    // enqueues leaves
-    boolean[] removed = new boolean[n];
-    Queue<Integer> q = new LinkedList<>();
-    for (int i = 0; i < n; i++) {
-        if (indegrees[i] == 0) {
-            removed[i] = true;
-            q.offer(i);
-        }
-    }
-
-    // dp[i]: longest path from leaves to i exclusively
-    int[] dp = new int[n]; 
-    while (!q.isEmpty()) {
-        int node = q.poll(), to = favorite[node];
-        dp[to] = Math.max(dp[to], dp[node] + 1);
-
-        if (--indegrees[to] == 0) {
-            removed[to] = true;
-            q.offer(to);
-        }
-    }
-
-    // now remaining nodes are all cycles
-    // checks each cycle's length.
-    // case 1: cycle length == 2. i.e. two nodes like each other
-    // finds the longest arm on each side
-    int count1 = 0;
-    // case 2: cycle length > 2
-    // finds the longest cycle
-    int count2 = 0;
-    for (int i = 0; i < n; i++) {
-        if (!removed[i]) {
-            // gets the cycle length
-            int length = 0;
-            for (int j = i; !removed[j]; j = favorite[j]) {
-                removed[j] = true;
-                length++;
-            }
-
-            if (length == 2) {
-                // there can be multiple isolated connected components of case 1
-                // adds them all up
-                count1 += 2 + dp[i] + dp[favorite[i]];
-            } else {
-                count2 = Math.max(count2, length);
-            }
-        }
-    }
-    return Math.max(count1, count2);
-}
-```
-
 [course-schedule-ii]: https://leetcode.com/problems/course-schedule-ii/
 [critical-connections-in-a-network]: https://leetcode.com/problems/critical-connections-in-a-network/
+[detect-cycles-in-2d-grid]: https://leetcode.com/problems/detect-cycles-in-2d-grid/
 [maximum-employees-to-be-invited-to-a-meeting]: https://leetcode.com/problems/maximum-employees-to-be-invited-to-a-meeting/
 [shortest-cycle-in-a-graph]: https://leetcode.com/problems/shortest-cycle-in-a-graph/
+

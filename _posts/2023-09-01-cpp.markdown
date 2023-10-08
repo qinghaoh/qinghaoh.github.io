@@ -37,6 +37,9 @@ classDiagram
   + cannot be taken by address-of operator
   + cannot be used as left-hand operand of assignment and compound assignment operator
 
+lvalue-to-rvalue conversion
+glvalue -> prvalue
+
 A reference is essentially a pointer that’s automatically dereferenced each time it’s used.
 
 # Object
@@ -194,6 +197,22 @@ flowchart LR
 
 ```c++
 basic_string(size_type count, CharT ch, const Allocator& alloc = Allocator())
+
+// min
+min_element(v.begin(), v.end());
+min_element(v, v + n);
+min_element(begin(v), end(v));
+ranges::min_element(v);
+
+// sort
+sort(v.begin(), v.end());
+ranges::sort(v);
+
+// sum
+reduce(v.begin(), v.end());
+reduce(v.begin(), v.end(), 0);
+reduce(v.begin(), v.end(), 0ll);
+reduce(v.begin() + 1, v.end() + 3);
 ```
 
 Class type:

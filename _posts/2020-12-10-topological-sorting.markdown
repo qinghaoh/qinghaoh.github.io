@@ -99,55 +99,55 @@ public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredie
 
 **Undirected Graph**
 
-For undirected graphs, leaves are nodes with `indegree == 1`.
+For undirected graphs, leaves are nodes with `degrees == 1`.
 
 [Distance to a Cycle in Undirected Graph][distance-to-a-cycle-in-undirected-graph]
 
 ```java
 public int[] distanceToCycle(int n, int[][] edges) {
-    int[] indegree = new int[n];
+    int[] degrees = new int[n];
     List<Integer>[] graph = new List[n];
     for (int i = 0; i < n; i++) {
         graph[i] = new ArrayList<>();
     }
     for (int[] e : edges) {
-        indegrees[e[0]]++;
-        indegrees[e[1]]++;
         graph[e[0]].add(e[1]);
         graph[e[1]].add(e[0]);
+        degrees[e[0]]++;
+        degrees[e[1]]++;
     }
 
-    boolean[] visited = new boolean[n];
-    // enqueues leaves
+    // Enqueues leaves
     Queue<Integer> q = new LinkedList<>();
+    // flags means "visited"
+    boolean[] flags = new boolean[n];
     for (int i = 0; i < n; i++) {
-        // undirected graph leaf
-        if (indegrees[i] == 1) {
+        // Undirected graph leaf
+        if (degrees[i] == 1) {
             q.offer(i);
-            visited[i] = true;
+            flags[i] = true;
         }
     }
 
     while (!q.isEmpty()) {
         int node = q.poll();
         for (int neighbor : graph[node]) {
-            if (visited[neighbor]) {
+            if (flags[neighbor]) {
                 continue;
             }
-            // undirected graph
-            if (--indegrees[neighbor] == 1) {
+            // Undirected graph
+            if (--degrees[neighbor] == 1) {
                 q.offer(neighbor);
-                visited[neighbor] = true;
+                flags[neighbor] = true;
             }
         }
     }
 
-    // the nodes in cycle are unvisited
-    // flips visisted[] and dfs from the cycle to outer
+    // DFS from the cycle to outer
+    // Now flags means "unvisited"
     q.clear();
     for (int i = 0; i < n; i++) {
-        visited[i] = !visited[i];
-        if (visited[i]) {
+        if (!flags[i]) {
             q.offer(i);
         }
     }
@@ -158,16 +158,15 @@ public int[] distanceToCycle(int n, int[][] edges) {
         for (int i = q.size(); i > 0; i--) {
             int node = q.poll();
             for (int neighbor : graph[node]) {
-                if (!visited[neighbor]) {
+                if (!flags[neighbor]) {
                     q.offer(neighbor);
                     answer[neighbor] = level;
-                    visited[neighbor] = true;
+                    flags[neighbor] = true;
                 }
             }
         }
         level++;
     }
-
     return answer;
 }
 ```
