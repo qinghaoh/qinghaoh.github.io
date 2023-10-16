@@ -20,14 +20,16 @@ subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\in \{0,1\} $$
 ```java
 for (int elment : elements) {
     for (int i = weight; i >= element; i--) {
-        dp[i] = Math.max(dp[i], dp[weight - element] + element);
+        dp[i] = f(dp[i], dp[weight - element]);
     }
 }
 ```
 
-The problem [Parition Equal Subset Sum][partition-equal-subset-sum] below demonstrates how the template is derived. Mapping the template to the Knapsack model: `weight` is the upper bound of the picked element sum, and `dp[i]` is the optimal `value` when the weight sum is `i`.
+The problem [Parition Equal Subset Sum][partition-equal-subset-sum] below demonstrates how the template is derived. Mapping the template to the Knapsack model: `weight` is the upper bound of the sum of the selected elements, and `dp[i]` is the optimal `value` when the weight sum is `i`.
 
-The key point of solving Knapsack Problem is to identify the meaning of `weight` and `value` under a specific condition and apply the template.
+`f` is the transition function between `dp` elements. Its actual form depends on the problem. For example, in [Parition Equal Subset Sum][partition-equal-subset-sum] `f` is logical OR, while in [Target Sum][target-sum] `f` is `sum()`.
+
+The key point of solving Knapsack Problem is to identify the meaning of `weight`, `value` and `f` under a specific condition and apply the template.
 
 ## Subset Sum Problem
 
@@ -254,7 +256,9 @@ public double probabilityOfHeads(double[] prob, int target) {
 }
 ```
 
-**3D**
+**Multi-dimension**
+
+Imagine the constraint is not a one-dimensional "weight" - instead, it's a two-dimensional height and width constraint.
 
 [Ones and Zeroes][ones-and-zeroes]
 

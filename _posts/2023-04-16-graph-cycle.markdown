@@ -28,7 +28,7 @@ Common graph cycle problems:
 
 See [Topological Sorting](../topological-sorting/#kahns-algorithm)
 
-A directed graph with `n` nodes and `n` edges. [Loops](https://en.wikipedia.org/wiki/Loop_(graph_theory)) are not allowed.
+A directed graph with `n` nodes and `n` edges. Each node has one and only one outgoing edge. [Loops](https://en.wikipedia.org/wiki/Loop_(graph_theory)) are not allowed.
 
 [Maximum Employees to Be Invited to a Meeting][maximum-employees-to-be-invited-to-a-meeting]
 
@@ -37,9 +37,8 @@ public int maximumInvitations(int[] favorite) {
     int n = favorite.length;
     // Constucts a graph by creating a directed edge i -> favorite[i] for each node
     //
-    // The graph has possibly more than one component. Each component is one of the two cases:
-    // - a cycle with length 2, and each node can have an "arm" (acyclic nodes)
-    // - a cycle with no "arms"
+    // The graph has possibly more than one component.
+    // Each component is a cycle (length > 1); each node on the cycle can have an "arm" (acyclic nodes)
 
     // Kahn's Algorithm picks out acyclic nodes
     int[] indegrees = new int[n];
@@ -69,8 +68,8 @@ public int maximumInvitations(int[] favorite) {
         }
     }
 
-    int count1 = 0;  // cycle length is 2
-    int count2 = 0;
+    int count1 = 0;  // case 1: cycle length == 2
+    int count2 = 0;  // case 2: cycle length > 2
     for (int i = 0; i < n; i++) {
         if (!visited[i]) {
             // Gets the cycle length
@@ -80,11 +79,14 @@ public int maximumInvitations(int[] favorite) {
                 length++;
             }
 
-            if (length == 2) {
-                // There can be multiple isolated connected components of case 1
-                // Adds them all up
+            if (length == 2) {  // Case 1
+                // The max path of each component is (2 + lengths of the two arms)
+                // We can put the max paths of all the components along the circular table,
+                // side by side.
                 count1 += 2 + dp[i] + dp[favorite[i]];
-            } else {
+            } else {  // Case 2
+                // Only the on-cycle nodes can be seated on the table
+                // Arms can't be seated
                 count2 = Math.max(count2, length);
             }
         }

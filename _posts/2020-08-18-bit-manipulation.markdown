@@ -687,6 +687,18 @@ class TrieNode {
 }
 ```
 
+# Hybrid
+
+[Apply Operations on Array to Maximize Sum of Squares][apply-operations-on-array-to-maximize-sum-of-squares]
+
+`(a, b) -> (a & b, a | b)`
+
+```
+(1, 0) -> (0, 1)  // bit transferred
+// all the other pairs
+(a, b) -> (a, b)
+```
+
 # Gray Code
 
 [Gray code](https://en.wikipedia.org/wiki/Gray_code): an ordering of the binary numeral system such that two successive values differ in only one bit (binary digit).
@@ -836,6 +848,7 @@ public boolean validUtf8(int[] data) {
 }
 ```
 
+[apply-operations-on-array-to-maximize-sum-of-squares]: https://leetcode.com/problems/apply-operations-on-array-to-maximize-sum-of-squares/
 [binary-number-with-alternating-bits]: https://leetcode.com/problems/binary-number-with-alternating-bits/
 [bitwise-and-of-numbers-range]: https://leetcode.com/problems/bitwise-and-of-numbers-range/
 [concatenation-of-consecutive-binary-numbers]: https://leetcode.com/problems/concatenation-of-consecutive-binary-numbers/

@@ -167,6 +167,64 @@ private int[] dfs(TreeNode node) {
 }
 ```
 
+## Any-to-any Paths
+
+Aggregate paths from current node to all ancestor nodes in its subtree.
+
+[Count Valid Paths in a Tree][count-valid-paths-in-a-tree]
+
+```c++
+   vector<bool> notPrime;
+    long long cnt = 0;
+
+    // Number of paths from `node` to its ancestors:
+    // p[i]: paths contain i prime numbers
+    pair<int,int> dfs(const vector<vector<int>>& g, int node, int parent) {
+        // 0 if not prime; 1 otherwise.
+        pair<int,int> p = {notPrime[node], !notPrime[node]};
+        for (int neighbor : g[node]) {
+            if (neighbor != parent) {
+                auto np = dfs(g, neighbor, node);
+                // cnt and p are updated in every iteration - this trick is very important
+                // If cnt is updated after the for loop, there can be invalid paths
+                // e.g. 3-4-1-2, uses 1 as root
+                // When 1 is the current node, 1-3 and 1-4 would be viewed as valid segments
+                // which composes the path. But that is not valid, since 3 and 4 are from the same subtree. 
+                cnt += (long long)np.first * p.second + (long long)np.second * p.first;
+                if (notPrime[node]) {
+                    p.first += np.first;
+                    p.second += np.second;
+                } else {
+                    p.second += np.first;
+                }
+            }
+        }
+        return p;
+    }
+
+public:
+    long long countPaths(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> g(n + 1, vector<int>{});
+        for (const auto& e : edges) {
+            g[e[0]].push_back(e[1]);
+            g[e[1]].push_back(e[0]);
+        }
+
+        notPrime.resize(n + 1);
+        notPrime[1] = true;
+        for (int i = 2; i <= n; i++) {
+            if (!notPrime[i]) {
+                for (int j = i; (long long)i * j <= n; j++) {
+                    notPrime[i * j] = true;
+                }
+            }
+        }
+
+        dfs(g, 1, 0);
+        return cnt;
+    }
+```
+
 [binary-tree-maximum-path-sum]: https://leetcode.com/problems/binary-tree-maximum-path-sum/
 [diameter-of-binary-tree]: https://leetcode.com/problems/diameter-of-binary-tree/
 [diameter-of-n-ary-tree]: https://leetcode.com/problems/diameter-of-n-ary-tree/

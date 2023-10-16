@@ -204,6 +204,9 @@ min_element(v, v + n);
 min_element(begin(v), end(v));
 ranges::min_element(v);
 
+// index of max
+distance(v.begin(), ranges::max_element(v));
+
 // sort
 sort(v.begin(), v.end());
 ranges::sort(v);
@@ -213,6 +216,9 @@ reduce(v.begin(), v.end());
 reduce(v.begin(), v.end(), 0);
 reduce(v.begin(), v.end(), 0ll);
 reduce(v.begin() + 1, v.end() + 3);
+
+// reverse
+ranges::reverse(v);
 ```
 
 Class type:

@@ -26,6 +26,31 @@ long long maximumTripletValue(vector<int>& nums) {
 }
 ```
 
+[Find Indices With Index and Value Difference II][find-indices-with-index-and-value-difference-ii]
+
+```c++
+vector<int> findIndices(vector<int>& nums, int indexDifference, int valueDifference) {
+    int n = nums.size(), mini = 0, maxi = 0;
+    for (int i = indexDifference; i < n; i++) {
+        if (nums[i - indexDifference] < nums[mini]) {
+            mini = i - indexDifference;
+        }
+        if (nums[i - indexDifference] > nums[maxi]) {
+            maxi = i - indexDifference;
+        }
+
+        // The key is to understand the relation between mini, maxi and current
+        if (nums[i] - nums[mini] >= valueDifference) {
+            return {mini, i};
+        }
+        if (nums[maxi] - nums[i] >= valueDifference) {
+            return {maxi, i};
+        }
+    }
+    return {-1, -1};
+}
+```
+
 [Minimum Money Required Before Transactions][minimum-money-required-before-transactions]
 
 ```java
@@ -996,6 +1021,7 @@ public long largestEvenSum(int[] nums, int k) {
 [couples-holding-hands]: https://leetcode.com/problems/couples-holding-hands/
 [divide-array-into-increasing-sequences]: https://leetcode.com/problems/divide-array-into-increasing-sequences/
 [find-all-duplicates-in-an-array]: https://leetcode.com/problems/find-all-duplicates-in-an-array/
+[find-indices-with-index-and-value-difference-ii]: https://leetcode.com/problems/find-indices-with-index-and-value-difference-ii/
 [find-the-winner-of-the-circular-game]: https://leetcode.com/problems/find-the-winner-of-the-circular-game/
 [first-missing-positive]: https://leetcode.com/problems/first-missing-positive/
 [gas-station]: https://leetcode.com/problems/gas-station/
