@@ -17,19 +17,35 @@ subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\in \{0,1\} $$
 
 ## Template
 
-```java
+When the "weight" is an upper bound:
+
+```c++
 for (int elment : elements) {
     for (int i = weight; i >= element; i--) {
-        dp[i] = f(dp[i], dp[weight - element]);
+        dp[i] = f(dp[i], dp[i - element]);
     }
 }
 ```
 
-The problem [Parition Equal Subset Sum][partition-equal-subset-sum] below demonstrates how the template is derived. Mapping the template to the Knapsack model: `weight` is the upper bound of the sum of the selected elements, and `dp[i]` is the optimal `value` when the weight sum is `i`.
+The problem [Parition Equal Subset Sum][partition-equal-subset-sum] below demonstrates how the template is derived. Analogous to the Knapsack model: `weight` is the upper bound of the sum of the selected elements, and `dp[i]` is the optimal `value` when the weight sum is `i`.
 
-`f` is the transition function between `dp` elements. Its actual form depends on the problem. For example, in [Parition Equal Subset Sum][partition-equal-subset-sum] `f` is logical OR, while in [Target Sum][target-sum] `f` is `sum()`.
+The generalized form of the transition function `f` is `dp = f(dp, pick current element, not pick current element)`. Its actual form depends on the problem. For example, in [Parition Equal Subset Sum][partition-equal-subset-sum] `f` is logical OR, while in [Target Sum][target-sum] `f` is `sum()`. Sometimes the function can be complex, like that in [Painting the Walls][painting-the-walls].
+
+Remember the essence of the function is _To pick, or not to pick_.
 
 The key point of solving Knapsack Problem is to identify the meaning of `weight`, `value` and `f` under a specific condition and apply the template.
+
+When the "weight" is a lower bound:
+
+```c++
+for (int elment : elements) {
+    for (int i = weight; i >= 0; i--) {
+        dp[i] = f(dp[i], dp[max(0, i - weight)]);
+    }
+}
+```
+
+See the example [Profitable Schemes][profitable-schemes].
 
 ## Subset Sum Problem
 
@@ -169,11 +185,32 @@ public int countPartitions(int[] nums, int k) {
 }
 ```
 
-## Variants
+## Transition Functions
 
 **Max**
 
 [Last Stone Weight II][last-stone-weight-ii]
+
+```java
+public int lastStoneWeightII(int[] stones) {
+    int sum = Arrays.stream(stones).sum();
+    // dp[i]: weight sum of stones that is closest to i
+    //   it's possible that no group of stones can sum to i
+    //   e.g. stones = [1,2,5]
+    //   dp = [0, 1, 2, 3, 3]
+    //   dp[sum / 2] = dp[4] = 3, i.e. stone 1 and 2
+    int[] dp = new int[sum / 2 + 1];
+    for (int stone : stones) {
+        // the smaller group has a sum no greater than sum / 2
+        for (int i = sum / 2; i >= stone; i--) {
+            dp[i] = Math.max(dp[i], dp[i - stone] + stone);
+        }
+    }
+    return sum - 2 * dp[sum / 2];
+}
+```
+
+Another solution is subset sum.
 
 ```java
 public int lastStoneWeightII(int[] stones) {
@@ -195,25 +232,6 @@ public int lastStoneWeightII(int[] stones) {
         }
     }
     return 0;
-}
-```
-
-```java
-public int lastStoneWeightII(int[] stones) {
-    int sum = Arrays.stream(stones).sum();
-    // dp[i]: weight sum of stones that is closest to i
-    //   it's possible that no group of stones can sum to i
-    //   e.g. stones = [1,2,5]
-    //   dp = [0, 1, 2, 3, 3]
-    //   dp[sum / 2] = dp[4] = 3, i.e. stone 1 and 2
-    int[] dp = new int[sum / 2 + 1];
-    for (int stone : stones) {
-        // the smaller group has a sum no greater than sum / 2
-        for (int i = sum / 2; i >= stone; i--) {
-            dp[i] = Math.max(dp[i], dp[i - stone] + stone);
-        }
-    }
-    return sum - 2 * dp[sum / 2];
 }
 ```
 
@@ -258,7 +276,7 @@ public double probabilityOfHeads(double[] prob, int target) {
 
 **Multi-dimension**
 
-Imagine the constraint is not a one-dimensional "weight" - instead, it's a two-dimensional height and width constraint.
+Imagine the constraint of each item is not only a one-dimensional "weight" - instead, it's a two-dimensional height and width constraint.
 
 [Ones and Zeroes][ones-and-zeroes]
 
@@ -333,6 +351,73 @@ public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
 }
 ```
 
+**Multiset**
+
+[Number of Ways to Earn Points][number-of-ways-to-earn-points]
+
+```java
+private static final int MOD = (int)1e9 + 7;
+
+public int waysToReachTarget(int target, int[][] types) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;
+
+    for (int[] t : types) {
+        for (int j = target; j > 0; j--) {
+            for (int k = 1; k <= t[0] && k * t[1] <= j; k++) {
+                dp[j] = (dp[j] + dp[j - k * t[1]]) % MOD;
+            }
+        }
+    }
+
+    return dp[target];
+}
+```
+
+[Count of Sub-Multisets With Bounded Sum][count-of-sub-multisets-with-bounded-sum]
+
+```c++
+int countSubMultisets(vector<int>& nums, int l, int r) {
+    unordered_map<int, int> freqs;
+    for (int num : nums) {
+        freqs[num]++;
+    }
+
+    const int mod = 1e9 + 7;
+    vector<int> dp(r + 1);
+    dp[0] = 1;
+
+    // Knapsack
+    for (const auto& [num, f] : freqs) {
+        // Compute from dp[0] to dp[r]
+        for (int t = r; t > max(0, r - num); t--) {
+            long v = 0;
+            // v = dp[t] + dp[t - num] + dp[t - 2 * num] + ... + dp[t - c * num]
+            // where c < f and c is the greatest number that satisfies t - c * m >= 0
+            for (int k = 0; k < f && k * num <= t; k++) {
+                v += dp[t - k * num];
+            }
+
+            // Sliding window to reduce repeated computation
+            // Compute dp[t], dp[t - num], dp[t - 2 * num], ...
+            // dp[t] += dp[t - num] + dp[t - 2 * num] + ... + dp[t - c * num]
+            //        = v - dp[t]
+            for (int j = t; j > 0; j -= num) {
+                v = (v - dp[j] + mod) % mod;
+                if (f * num <= j) {
+                    v = (v + dp[j - f * num]) % mod;
+                }
+                dp[j] = (dp[j] + v) % mod;
+            }
+        }
+    }
+
+    // Each sub-multiset can be padded with m zeros, where m \in [0, freqs[0]]
+    // Therefore, the multiplier is (freqs[0] + 1)
+    return (freqs[0] + 1) * accumulate(dp.begin() + l, dp.begin() + r + 1, 0ll, [&](int a, int b){ return (a + b) % mod; }) % mod;
+}
+```
+
 **Count of Selected Elements**
 
 [Split Array With Same Average][split-array-with-same-average]
@@ -368,28 +453,7 @@ int n = nums.length, sum = Arrays.stream(nums).sum();
 }
 ```
 
-**Multi-layer**
-
-[Number of Ways to Earn Points][number-of-ways-to-earn-points]
-
-```java
-private static final int MOD = (int)1e9 + 7;
-
-public int waysToReachTarget(int target, int[][] types) {
-    int[] dp = new int[target + 1];
-    dp[0] = 1;
-
-    for (int[] t : types) {
-        for (int j = target; j >= 0; j--) {
-            for (int k = 1; k <= t[0] && k * t[1] <= j; k++) {
-                dp[j] = (dp[j] + dp[j - k * t[1]]) % MOD;
-            }
-        }
-    }
-
-    return dp[target];
-}
-```
+**Dependency**
 
 [Painting the Walls][painting-the-walls]
 
@@ -406,7 +470,7 @@ public int paintWalls(int[] cost, int[] time) {
     for (int i = 0; i < n; i++) {
         // j is the number of remaining walls
         for (int j = n; j > 0; j--) {
-            // if a paid painter is selected for the current wall
+            // If a paid painter is selected for the current wall,
             // then in the time period time[i]:
             // * 1 wall is painted by the paid painter
             // * at most time[i] walls are painted by free painter
@@ -463,6 +527,56 @@ private int dfs(int i, int amount, int coupon) {
 maximize $$ \sum _{i=1}^{n}v_{i}x_{i} $$
 
 subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\geq 0,\ x_{i}\in \mathbb {Z} $$
+
+## Change-making Problem
+
+[Change-making problem](https://en.wikipedia.org/wiki/Change-making_problem): Weakly NP-hard. Find the minimum number of coins (of certain denominations) that add up to a given amount of money. It is a special case of the integer knapsack problem.
+
+minimize $$ f(W)=\sum _{j=1}^{n}x_{j} $$
+
+subject to $$ \sum _{j=1}^{n}w_{j}x_{j}=W $$
+
+[Coin Change][coin-change]
+
+```java
+public int coinChange(int[] coins, int amount) {
+    int n = coins.length;
+
+    int[][] dp = new int[n + 1][amount + 1];
+    for (int i = 0; i < dp.length; i++) {
+        Arrays.fill(dp[i], amount + 1);
+    }
+    for (int i = 0; i < dp.length; i++) {
+        dp[i][0] = 0;
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= amount; j++) {
+            if (j < coins[i]) {
+                dp[i + 1][j] = dp[i][j];
+            } else {
+                dp[i + 1][j] = Math.min(dp[i][j], dp[i + 1][j - coins[i]] + 1);
+            }
+        }
+    }
+    return dp[n][amount] > amount ? -1 : dp[n][amount];
+}
+```
+
+```java
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1);
+    dp[0] = 0;
+
+    for (int coin : coins) {
+        for (int i = coin; i <= amount; i++) {
+            dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+        }
+    }
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+```
 
 [Coin Change 2][coin-change-2]
 
@@ -606,66 +720,17 @@ Similar problem: [Count Ways To Build Good Strings][count-ways-to-build-good-str
 
 Even if `zero` and `one` are equal, they represent different base values. This is a bit different from the requirement of [Combination Sum IV][combination-sum-iv] that all base numbers are distinct.
 
-## Change-making Problem
-
-[Change-making problem](https://en.wikipedia.org/wiki/Change-making_problem): Weakly NP-hard. Find the minimum number of coins (of certain denominations) that add up to a given amount of money. It is a special case of the integer knapsack problem.
-
-minimize $$ f(W)=\sum _{j=1}^{n}x_{j} $$
-
-subject to $$ \sum _{j=1}^{n}w_{j}x_{j}=W $$
-
-[Coin Change][coin-change]
-
-```java
-public int coinChange(int[] coins, int amount) {
-    int n = coins.length;
-
-    int[][] dp = new int[n + 1][amount + 1];
-    for (int i = 0; i < dp.length; i++) {
-        Arrays.fill(dp[i], amount + 1);
-    }
-    for (int i = 0; i < dp.length; i++) {
-        dp[i][0] = 0;
-    }
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j <= amount; j++) {
-            if (j < coins[i]) {
-                dp[i + 1][j] = dp[i][j];
-            } else {
-                dp[i + 1][j] = Math.min(dp[i][j], dp[i + 1][j - coins[i]] + 1);
-            }
-        }
-    }
-    return dp[n][amount] > amount ? -1 : dp[n][amount];
-}
-```
-
-```java
-public int coinChange(int[] coins, int amount) {
-    int[] dp = new int[amount + 1];
-    Arrays.fill(dp, amount + 1);
-    dp[0] = 0;
-
-    for (int coin : coins) {
-        for (int i = coin; i <= amount; i++) {
-            dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-        }
-    }
-    return dp[amount] > amount ? -1 : dp[amount];
-}
-```
-
 # Summary
 
 |       | 2D     | 1D order |
 |-------|--------|----------|
-| 0-1 | `dp[i + 1][j] = dp[i][j] + dp[i][j - num]` | j: num <- target |
-| UKP | `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - num]` | j: num -> target |
+| 0-1 | `dp[i + 1][j] = dp[i][j] + dp[i][j - num]` | j: num <- target (decreasing) |
+| UKP | `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - num]` | j: num -> target (increasing) |
 
 [coin-change]: https://leetcode.com/problems/coin-change/
 [coin-change-2]: https://leetcode.com/problems/coin-change-2/
 [combination-sum-iv]: https://leetcode.com/problems/combination-sum-iv/
+[count-of-sub-multisets-with-bounded-sum]: https://leetcode.com/problems/count-of-sub-multisets-with-bounded-sum/
 [count-ways-to-build-good-strings]: https://leetcode.com/problems/count-ways-to-build-good-strings/
 [form-largest-integer-with-digits-that-add-up-to-target]: https://leetcode.com/problems/form-largest-integer-with-digits-that-add-up-to-target/
 [last-stone-weight-ii]: https://leetcode.com/problems/last-stone-weight-ii/
