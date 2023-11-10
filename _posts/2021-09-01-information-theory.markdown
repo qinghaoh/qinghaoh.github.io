@@ -5,11 +5,11 @@ tags: math
 ---
 [Poor Pigs][poor-pigs]
 
-```java
-public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
-    // the number of available states for a pig
+```c++
+int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
+    // The number of available states for a pig
     // e.g. minutesToTest / minutesToDie == 2
-    // there are 3 available states for the pig:
+    // There are 3 available states for the pig:
     // - alive
     // - dead after the 1st test
     // - dead after the 2nd test
@@ -17,9 +17,13 @@ public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
     // Information Theory: each pig carries log(states) bit of information
     int states = minutesToTest / minutesToDie + 1;
 
-    // if one pig has s states, p pigs can test s ^ p buckets
+    // If one pig has s states, p pigs can test s ^ p buckets
     // finds min p that s ^ p >= buckets
-    return (int)Math.ceil(Math.log(buckets) / Math.log(states));
+    int pigs = 0;
+    while (pow(states, pigs) < buckets) {
+        pigs++;
+    }
+    return pigs;
 }
 ```
 

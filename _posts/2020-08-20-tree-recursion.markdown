@@ -295,6 +295,43 @@ private int[] dfs(TreeNode root) {
 }
 ```
 
+[Maximum Score After Applying Operations on a Tree][maximum-score-after-applying-operations-on-a-tree]
+
+```c++
+// score, subtree sum
+pair<long long, long long> dfs(vector<vector<int>>& tree, vector<int>& values, int node, int parent) {
+    // When the subtree is rooted at leaf, the node can't be reset
+    if (tree[node].size() == 1 && node > 0) {
+        return {0, values[node]};
+    }
+
+    // pick: reset current node
+    long long pick = values[node], sum = values[node];
+    for (auto& neighbor : tree[node]) {
+        if (neighbor != parent) {
+            auto v = dfs(tree, values, neighbor, node);
+            pick += v.first;
+            sum += v.second;
+        }
+    }
+
+    // sum - values[node]: keep current node
+    return {max(pick, sum - values[node]), sum};
+}
+
+public:
+long long maximumScoreAfterOperations(vector<vector<int>>& edges, vector<int>& values) {
+    int n = values.size();
+    vector<vector<int>> tree(n);
+    for (auto& e : edges) {
+        tree[e[0]].push_back(e[1]);
+        tree[e[1]].push_back(e[0]);
+    }
+
+    return dfs(tree, values, 0, -1).first;
+}
+```
+
 [Largest BST Subtree][largest-bst-subtree]
 
 ```java
@@ -1039,6 +1076,7 @@ public:
 [house-robber-iii]: https://leetcode.com/problems/house-robber-iii/
 [largest-bst-subtree]: https://leetcode.com/problems/largest-bst-subtree/
 [maximum-difference-between-node-and-ancestor]: https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
+[maximum-score-after-applying-operations-on-a-tree]: https://leetcode.com/problems/maximum-score-after-applying-operations-on-a-tree/
 [maximum-width-of-binary-tree]: https://leetcode.com/problems/maximum-width-of-binary-tree/
 [minimum-absolute-difference-in-bst]: https://leetcode.com/problems/minimum-absolute-difference-in-bst/
 [minimum-edge-reversals-so-every-node-is-reachable]: https://leetcode.com/problems/minimum-edge-reversals-so-every-node-is-reachable/

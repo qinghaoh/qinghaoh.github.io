@@ -6,20 +6,25 @@ tag: dynamic programming
 
 In this type of problem, we linear scan the elements one by one, and use `dp[i]` to store the state at a certain position. The DP array (1D) can usually be reduced to a DP variable (0D).
 
-# Single DP Variable
+The general form of the transaction function is a linear expression, i.e., \\(\sum_{0 \le k \le i}{c_k \cdot dp[i - k]}\\). With a linear scan from left to right, we don't need to care about indices to the right (`k < 0`), because they have been equivalently included when we deal with their counterparts to the left (`-k`). The key is to find the recurrence relation.
+
+The state `dp[i]` can be a single value, or an array (rolling array).
+
+# Single DP Value
 
 [Min Cost Climbing Stairs][min-cost-climbing-stairs]
 
 ```java
 public int minCostClimbingStairs(int[] cost) {
-    int[] dp = new int[cost.length];
+    int n = cost.length;
+    int[] dp = new int[n];
     dp[0] = cost[0];
     dp[1] = cost[1];
 
-    for (int i = 2; i < cost.length; i++) {
+    for (int i = 2; i < n; i++) {
         dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
     }
-    return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
+    return Math.min(dp[n - 1], dp[n - 2]);
 }
 ```
 
@@ -35,6 +40,61 @@ public int minCostClimbingStairs(int[] cost) {
     return Math.min(dp0, dp1);
 }
 ```
+
+[Decode Ways][decode-ways]
+
+```java
+public int numDecodings(String s) {
+    int n = s.length();
+    // dp[i]: number of ways ending at s[i]
+    int[] dp = new int[n + 1];
+    dp[0] = s.charAt(0) == '0' ? 0 : 1;
+
+    for (int i = 1; i < n; i++) {
+        // one digit
+        if (s.charAt(i) != '0') {
+            dp[i] += dp[i - 1];
+        }
+
+        // two digits
+        int twoDigits = Integer.valueOf(s.substring(i - 1, i + 1));
+        if (twoDigits >= 10 && twoDigits <= 26) {
+            dp[i] += i == 1 ? 1 : dp[i - 2];
+        }
+    }
+
+    return dp[n - 1];
+}
+```
+
+Reduced to 1D:
+
+```java
+public int numDecodings(String s) {
+    if (s.charAt(0) == '0') {
+        return 0;
+    }
+
+    int oneBack = 1, twoBack = 1;
+    for (int i = 1; i < s.length(); i++) {
+        int curr = 0;
+        if (s.charAt(i) != '0') {
+            curr = oneBack;
+        }
+
+        int twoDigits = Integer.parseInt(s.substring(i - 1, i + 1));
+        if (twoDigits >= 10 && twoDigits <= 26) {
+            curr += twoBack;
+        }
+
+        twoBack = oneBack;
+        oneBack = curr;
+    }
+    return oneBack;
+}
+```
+
+# Rolling DP Array
 
 [Greatest Sum Divisible by Three][greatest-sum-divisible-by-three]
 
@@ -80,9 +140,28 @@ int minimumOperations(vector<int>& nums, int k) {
 }
 ```
 
-## Adjacency Model (House Robber)
+[Apply Operations to Make Two Strings Equal][apply-operations-to-make-two-strings-equal]
 
-In this model, at each position there are multiple choices (e.g. to skip or rob). Current `dp[i]` depends on or affects adjacent elements `dp[i + k]`, `k = ..., -2, -1, ..., 1, 2, ...`. With a linear scan from left to right, we don't need to care about neighbors on the right (`k > 0`), because they have been equivalently included when we deal with their counterparts on the left (`-k`). The key is to find the recursive formula.
+```c++
+int minOperations(string s1, string s2, int x) {
+    int n = s1.size(), res = 0, prev = 500, parity = 0;
+    for (int i = 0; i < s1.size(); i++) {
+        if (s1[i] != s2[i]) {
+            int tmp = res;
+            res = min(res + x, prev);
+            prev = tmp;
+            parity ^= 1;
+        }
+        // prev stores the distance to the previous diff
+        prev += 2;
+    }
+    return parity ? -1 : res / 2;
+}
+```
+
+## House Robber
+
+In this model, at each position there are multiple choices (e.g. to skip or rob). We need to find out the recurrence relation in each case and combine them.
 
 ### Linear
 
@@ -259,56 +338,24 @@ public int numOfWays(int n) {
 }
 ```
 
-[Decode Ways][decode-ways]
+[Minimum Increment Operations to Make Array Beautiful][minimum-increment-operations-to-make-array-beautiful]
 
-```java
-public int numDecodings(String s) {
-    int n = s.length();
-    // dp[i]: number of ways ending at s[i]
-    int[] dp = new int[n + 1];
-    dp[0] = s.charAt(0) == '0' ? 0 : 1;
-
-    for (int i = 1; i < n; i++) {
-        // one digit
-        if (s.charAt(i) != '0') {
-            dp[i] += dp[i - 1];
-        }
-
-        // two digits
-        int twoDigits = Integer.valueOf(s.substring(i - 1, i + 1));
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            dp[i] += i == 1 ? 1 : dp[i - 2];
-        }
+```c++
+long long minIncrementOperations(vector<int>& nums, int k) {
+    // Consider the last 3 elements a1, a2 and a3 from left to right
+    // If we denote "picked" as 1 and "not picked" as 0, and wildcard * means either 0 or 1, then
+    //      a1 a2 a3
+    // dp1: 1  *  *
+    // dp2: 0  1  *
+    // dp3: 0  0  1
+    long long dp1 = 0, dp2 = 0, dp3 = 0, dp;
+    for (int& num : nums) {
+        dp = min(dp1, min(dp2, dp3)) + max(k - num, 0);
+        dp1 = dp2;
+        dp2 = dp3;
+        dp3 = dp;
     }
-
-    return dp[n - 1];
-}
-```
-
-Reduced to 1D:
-
-```java
-public int numDecodings(String s) {
-    if (s.charAt(0) == '0') {
-        return 0;
-    }
-
-    int oneBack = 1, twoBack = 1;
-    for (int i = 1; i < s.length(); i++) {
-        int curr = 0;
-        if (s.charAt(i) != '0') {
-            curr = oneBack;
-        }
-
-        int twoDigits = Integer.parseInt(s.substring(i - 1, i + 1));
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            curr += twoBack;
-        }
-
-        twoBack = oneBack;
-        oneBack = curr;
-    }
-    return oneBack;
+    return min(dp1, min(dp2, dp3));
 }
 ```
 
@@ -343,7 +390,8 @@ public int numWays(int steps, int arrLen) {
 }
 ```
 
-Reduced to 1D
+Reduced to 1D:
+
 ```java
 private static final int MOD = (int)1e9 + 7;
 
@@ -728,6 +776,7 @@ public int minimumTime(String s) {
 }
 ```
 
+[apply-operations-to-make-two-strings-equal]: https://leetcode.com/problems/apply-operations-to-make-two-strings-equal/
 [choose-edges-to-maximize-score-in-a-tree]: https://leetcode.com/problems/choose-edges-to-maximize-score-in-a-tree/
 [count-number-of-ways-to-place-houses]: https://leetcode.com/problems/count-number-of-ways-to-place-houses/
 [decode-ways]: https://leetcode.com/problems/decode-ways/
@@ -739,6 +788,7 @@ public int minimumTime(String s) {
 [min-cost-climbing-stairs]: https://leetcode.com/problems/min-cost-climbing-stairs/
 [maximum-earnings-from-taxi]: https://leetcode.com/problems/maximum-earnings-from-taxi/
 [minimum-deletions-to-make-string-balanced]: https://leetcode.com/problems/minimum-deletions-to-make-string-balanced/
+[minimum-increment-operations-to-make-array-beautiful]: https://leetcode.com/problems/minimum-increment-operations-to-make-array-beautiful/
 [minimum-time-to-remove-all-cars-containing-illegal-goods]: https://leetcode.com/problems/minimum-time-to-remove-all-cars-containing-illegal-goods/
 [number-of-ways-to-form-a-target-string-given-a-dictionary]: https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary/
 [number-of-ways-to-paint-n-3-grid]: https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/
