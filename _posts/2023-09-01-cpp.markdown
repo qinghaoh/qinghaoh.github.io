@@ -209,7 +209,10 @@ distance(v.begin(), ranges::max_element(v));
 
 // sort
 sort(v.begin(), v.end());
+// descending order
+sort(v.begin(), v.end(), greater<char>());
 ranges::sort(v);
+ranges::sort(v, greater<int>());
 
 // sum
 reduce(v.begin(), v.end());
@@ -226,6 +229,18 @@ accumulate(dp.begin() + l, dp.begin() + r + 1, 0, [&](int a, int b){ return (a +
 // bit count
 bitset<32> bs(i);
 bs.count()
+
+// min heap
+priority_queue<int, vector<int>, greater<int>> pq;
+
+// priority queue with lambda
+auto cmp = [&](const pair<int, int>& a, const pair<int, int>& b) {
+    return values[a.first][a.second] < values[b.first][b.second];
+};
+priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pq(cmp);
+
+// string
+if (string("aeiouAEIOU").find(ch) != string::npos) {}  // no matches were found
 ```
 
 Class type:

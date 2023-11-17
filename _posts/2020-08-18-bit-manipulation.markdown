@@ -366,8 +366,9 @@ Process the numbres bit by bit from msb to lsb.
 ```java
 public int findMaximumXOR(int[] nums) {
     int max = 0, mask = 0;
+    // Builds the max xor bit by bit from msb to lsb.
     for (int i = 31; i >= 0; i--) {
-        // most significant (32 - i) bits
+        // Most significant (32 - i) bits
         mask = mask | (1 << i);
 
         Set<Integer> set = new HashSet<>();
@@ -375,18 +376,14 @@ public int findMaximumXOR(int[] nums) {
             set.add(num & mask);
         }
 
-        // so far, max contains the most significant i bits
-        // candidate stands for the potential max we can get if we set the current bit to 1
         int candidate = max | (1 << i);
 
-        // finds a and b in the set so that a ^ b == candidate
-        // a ^ b == candidate
-        // => a ^ b ^ b == candidate ^ b
-        // => a == candidate ^ b
-        // if there's no such a and b
-        // we pick 0 at this bit so max continues to be the max so far
-        for (int prefix : set) {
-            if (set.contains(candidate ^ prefix)) {
+        // Finds a and b in the set so that a ^ b == candidate
+        // => b == candidate ^ a
+        // If there's no such (a, b), `max` remains the same,
+        // i.e. the bit at this index in `max` is 0
+        for (int a : set) {
+            if (set.contains(candidate ^ a)) {
                 max = candidate;
                 break;
             }
@@ -398,7 +395,7 @@ public int findMaximumXOR(int[] nums) {
 
 ### Trie
 
-It's a more intuitive way to process the numbers bit by bit.
+It's more intuitive to process the numbers bit by bit.
 
 [Maximum XOR of Two Numbers in an Array][maximum-xor-of-two-numbers-in-an-array]
 
@@ -407,31 +404,29 @@ public int findMaximumXOR(int[] nums) {
     TrieNode root = new TrieNode();
     int max = 0;
     for (int num : nums) {
-        // node: the iterator to find the optimal peer of num, which yields max num ^ peer
         TrieNode node = root;
         int xor = 0;
 
-        // searches for the optimal peer in the existing trie
+        // Searches for such an existing number x in the trie that makes
+        // `xor` = num ^ x the max so far.
         for (int i = 31; i >= 0; i--) {
             // num[i]: the i-th bit of num
             int b = (num >> i) & 1;
-
-            if (node.children[b ^ 1] != null) {
-                // there exists an element in the trie whose i-th bit is 1 - num[i]
-                node = node.children[b ^ 1];
-                // xor[i] = 1
-                xor = (xor << 1) + 1;
-            } else if (node.children[b] != null) {
-                // there exists an element in the trie whose i-th bit is num[i]
-                node = node.children[b];
-                // xor[i] = 0
-                xor <<= 1;
-            } else {
-                break;
+            // v = xor[i]
+            // First, checks whether there is an existing number that makes xor[i] = 1.
+            // Otherwise, unless the trie is empty, there is an existing number that makes xor[i] = 0.
+            for (int v = 1; v >= 0; v--) {
+                if (node.children[b ^ v] != null) {
+                    // There exists an number in the trie whose i-th bit is num[i] ^ v
+                    node = node.children[b ^ v];
+                    // xor[i] = v
+                    xor = (xor << 1) + v;
+                    break;
+                }
             }
         }
 
-        // inserts the num into the trie
+        // Inserts the num into the trie
         node = root;
         for (int i = 31; i >= 0; i--) {
             int b = (num >> i) & 1;
