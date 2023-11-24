@@ -213,6 +213,8 @@ sort(v.begin(), v.end());
 sort(v.begin(), v.end(), greater<char>());
 ranges::sort(v);
 ranges::sort(v, greater<int>());
+// sort with projection
+ranges::sort(indices, greater<int>(), [&](int i){ return *ranges::max_element(queries[i]); });
 
 // sum
 reduce(v.begin(), v.end());
@@ -225,6 +227,12 @@ ranges::reverse(v);
 
 // accumulate
 accumulate(dp.begin() + l, dp.begin() + r + 1, 0, [&](int a, int b){ return (a + b) % mod; });
+
+// binary search
+auto it = upper_bound(rbegin(st), rend(st), a, [&](int i, int j){ return heights[i] < heights[j]; }); // reverse order
+res[i] = it == rend(st) ? -1 : *it;
+
+ranges::upper_bound(st, a, [&](int i, int j){ return heights[i] < heights[j]; });
 
 // bit count
 bitset<32> bs(i);
@@ -241,6 +249,9 @@ priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pq(cmp);
 
 // string
 if (string("aeiouAEIOU").find(ch) != string::npos) {}  // no matches were found
+
+// descending map
+map<int, int, greater<int>> mp;
 ```
 
 Class type:

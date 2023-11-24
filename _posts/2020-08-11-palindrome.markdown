@@ -648,6 +648,55 @@ public int minimumMoves(int[] arr) {
 }
 ```
 
+[Minimum Changes to Make K Semi-palindromes][minimum-changes-to-make-k-semi-palindromes]
+
+```c++
+int minimumChanges(string s, int k) {
+    int n = s.size();
+    // Find all d's for each length.
+    // A semi-palindrome has at least 2 characters.
+    vector<vector<int>> divisors(n + 1, vector<int>(1, 1));
+    for (int d = 2; d < n; d++) {
+        for (int v = 2 * d; v <= n; v += d) {
+            divisors[v].push_back(d);
+        }
+    }
+
+    // [i, j, d]: s.substr(i, j - i + 1)
+    // semi[i][j][0] = min(semi[i][j][d]), where d > 0
+    vector<vector<vector<int>>> semi(n, vector<vector<int>>(n, vector<int>(n)));
+    for (int i = n - 1; i >= 0; i--) {
+        for (int j = i + 1; j < n; j++) {
+            semi[i][j][0] = n;
+            for (int d : divisors[j - i + 1]) {
+                if (i + d < n && j - d >= 0) {
+                    semi[i][j][d] = semi[i + d][j - d][d];
+                }
+                for (int m = 0; m < d; m++) {
+                    semi[i][j][d] += s[i + m] != s[j - d + 1 + m];
+                }
+                semi[i][j][0] = min(semi[i][j][0], semi[i][j][d]);
+            }
+        }
+    }
+
+    vector<vector<int>> dp(n + 1, vector<int>(k + 1));
+    // m = 1
+    for (int i = 1; i < n; i++) {
+        dp[i + 1][1] = semi[0][i][0];
+    }
+    for (int m = 2; m <= k; m++) {
+        for (int i = 2 * m; i <= n; i++) {
+            dp[i][m] = n;
+            for (int j = 2 * (m - 1); j < i - 1; j++) {
+                dp[i][m] = min(dp[i][m], dp[j][m - 1] + semi[j][i - 1][0]);
+            }
+        }
+    }
+    return dp[n][k];
+}
+```
+
 [Maximum Product of the Length of Two Palindromic Subsequences][maximum-product-of-the-length-of-two-palindromic-subsequences]
 
 ```java
@@ -790,6 +839,7 @@ public int countPalindromicSubsequences(String S) {
 [maximum-number-of-non-overlapping-palindrome-substrings]: https://leetcode.com/problems/maximum-number-of-non-overlapping-palindrome-substrings/
 [maximum-product-of-the-length-of-two-palindromic-subsequences]: https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/
 [maximum-product-of-the-length-of-two-palindromic-substrings]: https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-substrings/
+[minimum-changes-to-make-k-semi-palindromes]: https://leetcode.com/problems/minimum-changes-to-make-k-semi-palindromes/
 [minimum-number-of-moves-to-make-palindrome]: https://leetcode.com/problems/minimum-number-of-moves-to-make-palindrome/
 [palindrome-number]: https://leetcode.com/problems/palindrome-number/
 [palindrome-pairs]: https://leetcode.com/problems/palindrome-pairs/

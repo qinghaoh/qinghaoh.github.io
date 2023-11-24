@@ -1066,6 +1066,50 @@ public int calculate(String s) {
 }
 ```
 
+# Binary Search
+
+[Find Building Where Alice and Bob Can Meet][find-building-where-alice-and-bob-can-meet]
+
+```c++
+vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& queries) {
+    int m = queries.size();
+    // Sorts queries in descending order of `b`,
+    // so we process the heights from right to left.
+    vector<int> indices, res(m);
+    for (int i = 0; i < m; i++) {
+        // a <= b
+        int a = *ranges::min_element(queries[i]), b = *ranges::max_element(queries[i]);
+
+        if (a == b || heights[a] < heights[b]) {
+            res[i] = b;
+        } else {
+            indices.push_back(i);
+        }
+    }
+    ranges::sort(indices, greater<int>(), [&](int i){ return *ranges::max_element(queries[i]); });
+
+    vector<int> st;
+    int j = heights.size() - 1;
+    for (const int& i : indices) {
+        int a = *ranges::min_element(queries[i]), b = *ranges::max_element(queries[i]);
+
+        // Pushes [j:(b - 1):-1] to maintain a monotonic stack
+        while (j >= b) {
+            while (!st.empty() && heights[j] >= heights[st.back()]) {
+                st.pop_back();
+            }
+            st.push_back(j--);
+        }
+
+        // Binary search
+        auto it = upper_bound(rbegin(st), rend(st), a, [&](int i, int j){ return heights[i] < heights[j]; });
+        res[i] = it == rend(st) ? -1 : *it;
+    }
+
+    return res;
+}
+```
+
 [132-pattern]: https://leetcode.com/problems/132-pattern/
 [basic-calculator]: https://leetcode.com/problems/basic-calculator/
 [binary-searchable-numbers-in-an-unsorted-array]: https://leetcode.com/problems/binary-searchable-numbers-in-an-unsorted-array/
@@ -1073,6 +1117,7 @@ public int calculate(String s) {
 [count-submatrices-with-all-ones]: https://leetcode.com/problems/count-submatrices-with-all-ones/
 [create-maximum-number]: https://leetcode.com/problems/create-maximum-number/
 [final-prices-with-a-special-discount-in-a-shop]: https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/
+[find-building-where-alice-and-bob-can-meet]: https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/
 [find-the-most-competitive-subsequence]: https://leetcode.com/problems/find-the-most-competitive-subsequence/
 [flatten-nested-list-iterator]: https://leetcode.com/problems/flatten-nested-list-iterator/
 [jump-game-v]: https://leetcode.com/problems/jump-game-v/

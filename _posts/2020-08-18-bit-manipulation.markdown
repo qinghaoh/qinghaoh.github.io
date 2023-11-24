@@ -357,6 +357,32 @@ Distributive Property:
 (a ^ b) & (c ^ d) = (a & c) ^ (a & d) ^ (b & c) ^ (b & d)
 ```
 
+[Maximum Xor Product][maximum-xor-product]
+
+```c++
+int maximumXorProduct(long long a, long long b, int n) {
+    const int mod = 1e9 + 7;
+    if (n) {
+        // Consider the i-th bit.
+        // If a[i] == b[i], x[i] should make (a ^ x)[i] == (b ^ x)[i] == 1
+        // Otherwise,
+        //   if x[i] == 0, a and b don't change
+        //   otherwise, x[i] transfers bit 1 from one number to the other
+        //
+        // Denote a ^ x as a', b ^ x as b'
+        // In either case, a' + b' = a + b remains unchanged
+        // so we should make a' and b' as close as possible to maximize a' * b'
+        for (long long bt = 1ll << (n - 1); bt > 0; bt >>= 1) {
+            if ((min(a, b) & bt) == 0) {
+                a ^= bt;
+                b ^= bt;
+            }
+        }
+    }
+    return a % mod * (b % mod) % mod;
+}
+```
+
 ### MSB -> LSB
 
 Process the numbres bit by bit from msb to lsb.
@@ -445,37 +471,36 @@ class TrieNode {
 }
 ```
 
-A more compact approach is as follows, which inserts the node and finds the optimal peer in one loop:
+A more compact approach is as follows, which inserts the node and finds the optimal complement in one loop:
 
 ```java
 public int findMaximumXOR(int[] nums) {
     TrieNode root = new TrieNode();
     int max = 0;
     for (int num : nums) {
-        // peer: the iterator to find the optimal peer of num, which yields max num ^ peer
-        TrieNode node = root, peer = root;
+        // num ^ complement yields max possible value
+        TrieNode node = root, complement = root;
         int xor = 0;
 
         for (int i = 31; i >= 0; i--) {
             // num[i]: the i-th bit of num
             int b = (num >> i) & 1;
 
-            // inserts node into the trie
+            // Inserts node into the trie
             if (node.children[b] == null) {
                 node.children[b] = new TrieNode();
             }
             node = node.children[b];
 
-            if (peer.children[b ^ 1] != null) {
-                // there exists an element in the trie whose i-th bit is 1 - num[i]
-                peer = peer.children[b ^ 1];
+            if (complement.children[b ^ 1] != null) {
+                // There exists an element in the trie whose i-th bit is 1 - num[i]
+                complement = complement.children[b ^ 1];
                 // xor[i] = 1
                 xor += 1 << i;
             } else {
-                // otherwise, xor[i] = 0
-                // since the `node` is already inserted
-                // either peer.children[b ^ 1] == null or not, there is no other branch
-                peer = peer.children[b];
+                // In this case, complement.children[b] != null because num is already inserted.
+                // Otherwise, xor[i] = 0
+                complement = complement.children[b];
             }
         }
         max = Math.max(max, xor);
@@ -856,6 +881,7 @@ public boolean validUtf8(int[] data) {
 [integer-replacement]: https://leetcode.com/problems/integer-replacement/
 [k-th-symbol-in-grammar]: https://leetcode.com/problems/k-th-symbol-in-grammar/
 [maximum-genetic-difference-query]: https://leetcode.com/problems/maximum-genetic-difference-query/
+[maximum-xor-product]: https://leetcode.com/problems/maximum-xor-product/
 [maximum-xor-of-two-numbers-in-an-array]: https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/
 [minimum-one-bit-operations-to-make-integers-zero]: https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/
 [minimum-operations-to-make-the-integer-zero]: https://leetcode.com/problems/minimum-operations-to-make-the-integer-zero/
