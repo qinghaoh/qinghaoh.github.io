@@ -3,7 +3,9 @@ title:  "Map"
 category: algorithm
 tag: map 
 ---
-# Methods
+# Java
+
+## Methods
 
 [NavigableMap](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/NavigableMap.html)
 
@@ -93,8 +95,38 @@ Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
      return null;
 ```
 
-# Map.Entry
+## Map.Entry
 * [static \<K,V extends Comparable\<? super V\>\> Comparator\<Map.Entry\<K,V\>\> comparingByValue()](https://docs.oracle.com/javase/8/docs/api/java/util/Map.Entry.html#comparingByValue--)
+
+# C++
+
+## Methods
+
+* `iterator upper_bound(const key_type& k)` -> "higher"
+* `iterator lower_bound(const key_type& k)` -> "ceiling"
+
+* `map::operator[]`
+  - "find-or-add"
+  - Default constructible and assignable
+* `map::at`: same as `[]` except throws an exception when the key doesn't exist
+* `map::insert`: doesn't modify the map if the key exists
+* `map::emplace`: parameters are forwareded to the constructor of the object stored in the container. No copies.
+
+The following example is from [this](https://stackoverflow.com/a/17174245) post:
+```c++
+K t; V u;
+std::map<K,V> m;           // std::map<K,V>::value_type is std::pair<const K,V>
+    
+m.insert( std::pair<const K,V>(t,u) );
+m.insert( std::map<K,V>::value_type(t,u) );
+m.insert( std::make_pair<const K,V>(t,u) );
+
+m.insert( std::make_pair(t,u) );
+
+m.emplace(t,u);
+```
+
+@walletfox. (2018). _[Overview of std::map’s Insertion / Emplacement Methods in C++17](https://www.fluentcpp.com/2018/12/11/overview-of-std-map-insertion-emplacement-methods-in-cpp17/)_
 
 [Making File Names Unique][making-file-names-unique]
 
@@ -399,6 +431,30 @@ public boolean wordPattern(String pattern, String s) {
 ```
 
 # Monotonic Map
+
+[Maximum Balanced Subsequence Sum][maximum-balanced-subsequence-sum]
+
+```c++
+long long maxBalancedSubsequenceSum(vector<int>& nums) {
+    {% raw %}
+    map<int, long long> mp{{INT_MIN, 0}};
+    {% endraw %}
+    for (int i = 0; i < nums.size(); i++) {
+        // Considers positive num only
+        if (nums[i] > 0) {
+            auto it = mp.upper_bound(nums[i] - i);
+            long long sum = nums[i] + prev(it)->second;
+            mp.insert_or_assign(it, nums[i] - i, sum);
+            // Monotonically increasing values
+            // Because greater keys with less values are no better than current
+            while (it != end(mp) && it->second <= sum) {
+                mp.erase(it++);
+            }
+        }
+    }
+    return mp.size() > 1 ? rbegin(mp)->second : *max_element(begin(nums), end(nums));
+}
+```
 
 [Maximum Sum Queries][maximum-sum-queries]
 

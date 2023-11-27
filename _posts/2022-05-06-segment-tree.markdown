@@ -16,18 +16,24 @@ Efficient range query, while array modification is flexible.
 The [standard (recursive, top-down) Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html) requires \\(4n\\) vertices for working on an array of size \\(n\\).
 
 ```java
+/**
+ */
 class SegmentTree {
     private int n;
-    // one-based indexing, i.e. root is at index 1
+    // One-based indexing, i.e. root is at index 1
     private int[] arr;
     private BiFunction<Integer, Integer, Integer> f;
 
-    // default all-zero array
+    // Default all-zero array
     public SegmentTree(int n, BiFunction<Integer, Integer, Integer> f) {
         this.n = n;
         this.arr = new int[4 * n];
         this.f = f;
     }
+    
+    // In all the below methods:
+    // v is the index of the segment tree array (`arr`)
+    // tl, tr, pos, l, r are indices of the input array (`nums`)
 
     /**
      * Builds the segment tree.
@@ -186,17 +192,16 @@ public int lengthOfLIS(int[] nums, int k) {
 
 ```java
 public List<Integer> fallingSquares(int[][] positions) {
-    // coordinate compression
-    Set<Integer> coords = new TreeSet();
+    // Coordinate compression
+    // {pos, index of pos after compression}
+    Map<Integer, Integer> map = new TreeMap<>();
     for (int[] p : positions) {
-        coords.add(p[0]);
-        coords.add(p[0] + p[1]);
+        map.put(p[0], 0);
+        map.put(p[0] + p[1], 0);
     }
 
-    // {pos, index of pos after compression}
-    Map<Integer, Integer> map = new HashMap<>();
     int index = 0;
-    for (int c : coords) {
+    for (int c : map.keySet()) {
         map.put(c, index++);
     }
 
@@ -635,7 +640,7 @@ class SegmentTreeNode {
 
 # Range Updates (Lazy Propagation)
 
-Updates and queries of an entire segment of an entire segment of contiguous elements. The time complexity of both operations are \\(O(\log n)\\).
+Updates and queries of an entire segment of contiguous elements. The time complexity of both operations are \\(O(\log n)\\).
 
 It's more straightforward to implement lazy propagation with recursive segment tree.
 
@@ -643,7 +648,7 @@ It's more straightforward to implement lazy propagation with recursive segment t
 
 ```java
 public List<Integer> fallingSquares(int[][] positions) {
-    // coordinate compression
+    // Coordinate compression
     ...
 
     int n = map.size();
@@ -652,8 +657,8 @@ public List<Integer> fallingSquares(int[][] positions) {
     List<Integer> list = new ArrayList<>();
     int max = 0;
     for (int[] p : positions) {
-        // one-based indexing
-        int l = map.get(p[0]) + 1, r = map.get(p[0] + p[1]);
+        // l and r are inclusive
+        int l = map.get(p[0]), r = map.get(p[0] + p[1]) - 1;
         int h = st.query(1, 0, n - 1, l, r) + p[1];
         st.update(1, 0, n - 1, l, r, h);
         list.add(max = Math.max(max, h));

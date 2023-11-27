@@ -254,6 +254,11 @@ if (string("aeiouAEIOU").find(ch) != string::npos) {}  // no matches were found
 map<int, int, greater<int>> mp;
 ```
 
+```
+     |  0  |  1  |  2  |   3   |
+rend  begin              rbegin   end
+```
+
 Class type:
 * `class`
 * `struct`

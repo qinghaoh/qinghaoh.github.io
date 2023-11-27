@@ -107,4 +107,15 @@ Considerably slower than stream ciphers.
 
 PRP \\(\subset\\) PRF
 
+**Secure PRFs**
+* A random function in \\(Funs[X,Y]\\) (size = \\(\lvert Y \rvert ^ {\lvert X \rvert}\\)) is indistinguishable from a random function in \\(S_F = \{ F(k,\cdot)) \enspace \text{s.t.} \enspace k \in K\}\\) (size = \\(\lvert K \rvert\\))
+  - \\(S_F \subseteq Funs[X,Y]\\)
+* Secure PRF \\(\Rightarrow\\) Secure PRG
+  - \\(F:K \times \{0,1\}^{n} \rightarrow \{0,1\}^{n} \enspace G:k \rightarrow \{0,1\}^{nt}\\), \\(G(k) = F(k,0) \parallel F(k,1) \parallel \ldots \parallel F(k,t)\\), 
+  - Parallelizable
 
+**Feistel Network**
+* Build *invertible* function from arbitrary functions
+* ![Construction](https://upload.wikimedia.org/wikipedia/commons/f/fa/Feistel_cipher_diagram_en.svg)
+* Used in many block ciphers, but not AES
+* Luby-Rackoff Theorem: Secure PRF \\(\xrightarrow{\text{3-round Feistel}}\\) Secure PRP

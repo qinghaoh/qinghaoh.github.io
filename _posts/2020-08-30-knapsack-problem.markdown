@@ -40,7 +40,7 @@ When the "weight" is a lower bound:
 ```c++
 for (int elment : elements) {
     for (int i = weight; i >= 0; i--) {
-        dp[i] = f(dp[i], dp[max(0, i - weight)]);
+        dp[i] = f(dp[i], dp[max(0, i - element)]);
     }
 }
 ```
