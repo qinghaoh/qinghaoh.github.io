@@ -12,35 +12,6 @@ The state `dp[i]` can be a single value, or an array (rolling array).
 
 # Single DP Value
 
-[Min Cost Climbing Stairs][min-cost-climbing-stairs]
-
-```java
-public int minCostClimbingStairs(int[] cost) {
-    int n = cost.length;
-    int[] dp = new int[n];
-    dp[0] = cost[0];
-    dp[1] = cost[1];
-
-    for (int i = 2; i < n; i++) {
-        dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
-    }
-    return Math.min(dp[n - 1], dp[n - 2]);
-}
-```
-
-```java
-public int minCostClimbingStairs(int[] cost) {
-    int dp0 = cost[0], dp1 = cost[1];
-
-    for (int i = 2; i < cost.length; i++) {
-        int tmp = Math.min(dp0, dp1) + cost[i];
-        dp0 = dp1;
-        dp1 = tmp;
-    }
-    return Math.min(dp0, dp1);
-}
-```
-
 [Decode Ways][decode-ways]
 
 ```java
@@ -159,11 +130,11 @@ int minOperations(string s1, string s2, int x) {
 }
 ```
 
-## House Robber
+# House Robber
 
 In this model, at each position there are multiple choices (e.g. to skip or rob). We need to find out the recurrence relation in each case and combine them.
 
-### Linear
+## Linear
 
 [House Robber][house-robber]
 
@@ -419,7 +390,7 @@ public int numWays(int steps, int arrLen) {
 }
 ```
 
-### Circular
+## Circular
 
 [House Robber II][house-robber-ii]
 
@@ -484,7 +455,7 @@ private int maxSizeSlices(int[] slices, int start, int end) {
 }
 ```
 
-### Tree
+## Tree
 
 [Choose Edges to Maximize Score in a Tree][choose-edges-to-maximize-score-in-a-tree]
 
@@ -523,6 +494,33 @@ private long[] dfs(int node , List<int[]>[] tree) {
     // now adds the scenario of no child edge (curr[0]) to curr[1]
     curr[1] += curr[0];
     return curr;
+}
+```
+
+# Reverse Iteration
+
+[Minimum Number of Coins for Fruits][minimum-number-of-coins-for-fruits]
+
+```c++
+
+```
+
+The reverse iteration is more intuitive:
+
+```c++
+int minimumCoins(vector<int>& prices) {
+    int n = prices.size();
+    // dp[i]: [i:]
+    vector<int> dp(n + 1);
+    for (int i = n - 1; i >= 0; i--) {
+        dp[i] = INT_MAX;
+        // dp[n] = 0
+        for (int j = 1; j <= i + 2 && i + j <= n; j++) {
+            dp[i] = min(dp[i], dp[i + j]);
+        }
+        dp[i] += prices[i];
+    }
+    return dp[0];
 }
 ```
 
@@ -785,10 +783,10 @@ public int minimumTime(String s) {
 [greatest-sum-divisible-by-three]: https://leetcode.com/problems/greatest-sum-divisible-by-three/
 [house-robber]: https://leetcode.com/problems/house-robber/
 [house-robber-ii]: https://leetcode.com/problems/house-robber-ii/
-[min-cost-climbing-stairs]: https://leetcode.com/problems/min-cost-climbing-stairs/
 [maximum-earnings-from-taxi]: https://leetcode.com/problems/maximum-earnings-from-taxi/
 [minimum-deletions-to-make-string-balanced]: https://leetcode.com/problems/minimum-deletions-to-make-string-balanced/
 [minimum-increment-operations-to-make-array-beautiful]: https://leetcode.com/problems/minimum-increment-operations-to-make-array-beautiful/
+[minimum-number-of-coins-for-fruits]: https://leetcode.com/problems/minimum-number-of-coins-for-fruits/
 [minimum-time-to-remove-all-cars-containing-illegal-goods]: https://leetcode.com/problems/minimum-time-to-remove-all-cars-containing-illegal-goods/
 [number-of-ways-to-form-a-target-string-given-a-dictionary]: https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary/
 [number-of-ways-to-paint-n-3-grid]: https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/

@@ -7,41 +7,7 @@ tags: queue
 
 ## Monoqueue
 
-### Push/Pop Array Index
-
-[Shortest Subarray with Sum at Least K][shortest-subarray-with-sum-at-least-k]
-
-```java
-public int shortestSubarray(int[] A, int K) {
-    // prefix sum
-    // finds the smallest j - i so that j > i and p[j] - p[i] >= K
-    int[] p = new int[A.length + 1];
-    for (int i = 0; i < A.length; i++) {
-        p[i + 1] = p[i] + A[i];   
-    }
-
-    int min = A.length + 1;
-    Deque<Integer> dq = new ArrayDeque<>();  // monoqueue of p indices
-    for (int i = 0; i < p.length; i++) {
-        while (!dq.isEmpty() && p[i] - p[dq.peekFirst()] >= K) {
-            // if dq.peekFirst() is the best candidate start, we don't need to consider it again
-            // proof:
-            //   for k > j > i, if p[j] - p[i] >= K and p[k] - p[i] >= K
-            //   we know k - i > j - i, so the length would be larger (worse)
-            min = Math.min(min, i - dq.pollFirst());
-        }
-
-        // if j > i and p[j] <= p[i], j is a better candidate start
-        while (!dq.isEmpty() && p[i] <= p[dq.peekLast()]) {
-            dq.pollLast();
-        }
-
-        dq.offerLast(i);
-    }
-
-    return min <= A.length ? min : -1;
-}
-```
+Analogous to monotonic stacks.
 
 ### Push/Pop Tuple
 
@@ -220,5 +186,4 @@ public int constrainedSubsetSum(int[] nums, int k) {
 [jump-game-vi]: https://leetcode.com/problems/jump-game-vi/
 [max-value-of-equation]: https://leetcode.com/problems/max-value-of-equation/
 [maximum-number-of-robots-within-budget]: https://leetcode.com/problems/maximum-number-of-robots-within-budget/
-[shortest-subarray-with-sum-at-least-k]: https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
 [sliding-window-maximum]: https://leetcode.com/problems/sliding-window-maximum/

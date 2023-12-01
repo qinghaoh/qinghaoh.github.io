@@ -94,6 +94,7 @@ Key expansion -> Round function (`R(k,m)`)
 
 ||Block size (bits)|Key size (bits)|Number of rounds|
 |-|-|-|-|
+|DES|64|56|16|
 |3DES|64|168|48|
 |AES|128|128/192/256|10|
 
@@ -119,3 +120,20 @@ PRP \\(\subset\\) PRF
 * ![Construction](https://upload.wikimedia.org/wikipedia/commons/f/fa/Feistel_cipher_diagram_en.svg)
 * Used in many block ciphers, but not AES
 * Luby-Rackoff Theorem: Secure PRF \\(\xrightarrow{\text{3-round Feistel}}\\) Secure PRP
+
+**DES (Data Encryption Standard)**
+* Overall Feistel structure
+  - ![DES Main Networking](https://upload.wikimedia.org/wikipedia/commons/6/6a/DES-main-network.png){: width="250" }
+* Key sechedule
+  - ![DES Key Schedule](https://upload.wikimedia.org/wikipedia/commons/0/06/DES-key-schedule.png)
+* F function
+  - ![DES F Function](https://upload.wikimedia.org/wikipedia/commons/a/a3/DES-f-function.png){: width="400" }
+* [S-box](https://en.wikipedia.org/wiki/S-box)
+  - 6 bits -> 4 bits
+  - 4-to-1 maps: 1 output has 4 preimages
+  - Nonlinear, otherwise DES is linear (_insecure_)
+
+**Exhausive Search Attacks**
+* Suppose DES is an ideal cipher:
+  - \\(2^56\\) (= number of keys) random invertible functions
+  - \\(\forall m,c\\), \\(\exists\\) at most one key \\(k \enspace \text{s.t.} \enspace \Pr[c=DES(k,m)] >= 1 - 2^{56}\frac{1}{2^{64}} = 99.5%\\)
