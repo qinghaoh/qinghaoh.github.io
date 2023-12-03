@@ -252,6 +252,9 @@ if (string("aeiouAEIOU").find(ch) != string::npos) {}  // no matches were found
 
 // descending map
 map<int, int, greater<int>> mp;
+
+// string
+s.length() == s.size();
 ```
 
 ```

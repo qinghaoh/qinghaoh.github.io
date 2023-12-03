@@ -15,13 +15,52 @@ The following table shows the process of deriving monotonically (strictly) incre
 |4|6|`[1,3,6]`|
 |5|4|`[1,3,4]`|
 
-Here are some key observations of monotonic data structures:
+Here are some _key properties_ of monotonic data structures:
 
 1. The current element is always at the top.
 1. The minimum element so far is always at the bottom.
 1. The stack at each index can be equivalently derived in this way: iterate _reversely_ from the current index, and push the element into the stack if it's less than the stack top; when this iteration is completed, reverse the entire stack.
 
 # Monoqueue
+
+Monoqueue can be used to find the min/max of a _bounded_ range.
+
+# Upper Bound
+
+[Sliding Window Maximum][sliding-window-maximum]
+
+```c++
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+    int n = nums.size();
+    vector<int> res;
+    deque<int> dq;
+    for (int i = 0; i < n; i++) {
+        // Removes the out-of-window number
+        if (!dq.empty() && dq.front() == i - k) {
+            dq.pop_front();
+        }
+
+        // Monotonically decreasing from head to tail
+        while (!dq.empty() && nums[i] > nums[dq.back()]) {
+            dq.pop_back();
+        }
+        dq.push_back(i);
+
+        if (i >= k - 1) {
+            res.push_back(nums[dq.front()]);
+        }
+    }
+    return res;
+}
+```
+
+From the above solution, we have _Property #4_:
+
+At index `i`, if we truncate the stack in such a way that all elements with index `< j < i` are removed, the bottom of the remaining stack is the min element of `nums[j...i]`.
+
+Property #2 can be viewed as a special case of Property #4, where `j = 0`.
+
+# Lower Bound
 
 [Shortest Subarray with Sum at Least K][shortest-subarray-with-sum-at-least-k]
 
@@ -67,4 +106,7 @@ public int shortestSubarray(int[] nums, int k) {
 }
 ```
 
+From another perspective, the above solution finds the min (deque head) of a bounded range.
+
 [shortest-subarray-with-sum-at-least-k]: https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
+[sliding-window-maximum]: https://leetcode.com/problems/sliding-window-maximum/

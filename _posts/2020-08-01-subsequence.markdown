@@ -237,6 +237,10 @@ public int lengthOfLIS(int[] nums) {
 }
 ```
 
+### Monotonic Map
+
+### Segment Tree/Fenwick Tree
+
 ### Variants
 
 **Longest Non-Decreasing Sequence**

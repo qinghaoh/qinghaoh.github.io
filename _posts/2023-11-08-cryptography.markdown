@@ -137,3 +137,16 @@ PRP \\(\subset\\) PRF
 * Suppose DES is an ideal cipher:
   - \\(2^56\\) (= number of keys) random invertible functions
   - \\(\forall m,c\\), \\(\exists\\) at most one key \\(k \enspace \text{s.t.} \enspace \Pr[c=DES(k,m)] >= 1 - 2^{56}\frac{1}{2^{64}} = 99.5%\\)
+* 3DES
+  - \\(E(k1, D(k2, E(k3, m)))\\): not 3 E's because when \\(k1=k2=k3\\) we get hardware implementation of normal DES
+  - Meet-in-the-middle Attack \\(\approx 2^{118} > 2^{90}\\).
+* 2DES
+  - \\(E(k1, E(k2, m))\\)
+  - Meet-in-the-middle Attack
+    * \\(2^{56}\log(2^{56}) + 2^{56}\log(2^{56}) \lt 2^{63} \lll 2^{112}\\): build and sort in one way + binary search in the other way
+* DESX
+  - \\(k1 \oplus E(k2, m \oplus k3)\\)
+  - Key size = 64 + 56 + 64 = 184 bits
+  - Meet-in-the-middle Attack \\(2^{120}\\)
+  - Vulnerable to more subtle attacks
+  - \\(k1 \oplus E(k2, m)\\) and \\(E(k2, m \oplus k1)\\) are both wrong constructions

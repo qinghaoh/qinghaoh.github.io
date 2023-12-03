@@ -70,34 +70,6 @@ public int findMaxValueOfEquation(int[][] points, int k) {
 
 ## Fixed-size Window
 
-[Sliding Window Maximum][sliding-window-maximum]
-
-```java
-public int[] maxSlidingWindow(int[] nums, int k) {
-    int n = nums.length;
-    int[] result = new int[n - k + 1];
-    Deque<Integer> dq = new ArrayDeque<>();
-    for (int i = 0; i < n; i++) {
-        // Removes the out-of-window number
-        if (!dq.isEmpty() && dq.peekFirst() == i - k) {
-            dq.pollFirst();
-        }
-
-        // Removes elements in stack that are less than nums[i]
-        // monotonically decreasing from head to tail
-        while (!dq.isEmpty() && nums[i] > nums[dq.peekLast()]) {
-            dq.pollLast();
-        }
-        dq.offerLast(i);
-
-        if (i >= k - 1) {
-            result[i - k + 1] = nums[dq.peekFirst()];
-        }
-    }
-    return result;
-}
-```
-
 ## Elastic-size Window
 
 [Maximum Number of Robots Within Budget][maximum-number-of-robots-within-budget]
@@ -186,4 +158,3 @@ public int constrainedSubsetSum(int[] nums, int k) {
 [jump-game-vi]: https://leetcode.com/problems/jump-game-vi/
 [max-value-of-equation]: https://leetcode.com/problems/max-value-of-equation/
 [maximum-number-of-robots-within-budget]: https://leetcode.com/problems/maximum-number-of-robots-within-budget/
-[sliding-window-maximum]: https://leetcode.com/problems/sliding-window-maximum/

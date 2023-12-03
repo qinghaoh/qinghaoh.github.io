@@ -102,20 +102,20 @@ public long minimumMoney(int[][] transactions) {
 ```java
 public int minPatches(int[] nums, int n) {
     int patches = 0, i = 0;
-    // miss is the smallest missing number
-    // [1, miss) is already covered
-    // initially the range is empty
+    // [1, miss) is already covered,
+    // and `miss` is the smallest missing number
     long miss = 1;
     while (miss <= n) {
-        if (i < nums.length && nums[i] <= miss) {  // miss is covered
-            // extends the range to [1, miss + nums[i])
+        if (i < nums.length && nums[i] <= miss) {
+            // Extends the range to [1, miss + nums[i])
             miss += nums[i++];
         } else {
-            // supposes the number to patch is x
-            // after patching, [1, miss) and [x, x + miss) are both covered
-            // apparently x <= miss
-            // so [1, x + miss) is covered
-            // to make the range as large as possible, picks x = miss
+            // In this branch, we've run out of numbers in the array that can possibily sum up to `n`.
+            // so, we need to patch a number x.
+            // After patching, [1, miss) and [x, x + miss) are both covered.
+            // x <= miss, otherwise `miss` still can't be covered after patching.
+            // Therefore, the new covered range is [1, x + miss).
+            // Pick x = miss to maximize the range.
             miss += miss;
             patches++;
         }
