@@ -150,3 +150,18 @@ PRP \\(\subset\\) PRF
   - Meet-in-the-middle Attack \\(2^{120}\\)
   - Vulnerable to more subtle attacks
   - \\(k1 \oplus E(k2, m)\\) and \\(E(k2, m \oplus k1)\\) are both wrong constructions
+
+**More Attacks**
+* Attacks on the implementation
+  - Side channel attacks: time, power, ...
+  - Fault attacks: computing errors in the last round exposes the secret key
+* Linear and differential attacks
+  - There's a dependence between message, ciphertext and the key bits
+  - 5th S-box of DES it too close to a linear function
+  - Success probability >= 97.7% given \\(1/\epsilon^2\\) random \\((m,c)\\) pairs. For DES:
+    * \\(\epsilon = 1/2^{21}\\). Can find 14 key bits this way in time \\(2^{42}\\)
+    * The remaining 42 key bits can be found by brute force in \\(2^{42}\\)
+    * In total \\(2^{43}\\)
+* Quantum Attacks
+  - Could solve generic search problem in \\(O(\lvert X \rvert^{1/2})\\).
+   

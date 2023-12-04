@@ -108,5 +108,38 @@ public int shortestSubarray(int[] nums, int k) {
 
 From another perspective, the above solution finds the min (deque head) of a bounded range.
 
+This technique can be used to compute the recurrence relation more quickly in some dynamic programming problems.
+
+[Jump Game VI][jump-game-vi]
+
+```java
+public int maxResult(int[] nums, int k) {
+    int n = nums.length;
+    // dp[i]: max score to reach the end starting at index i
+    int[] dp = new int[n];
+    dp[n - 1] = nums[n - 1];
+
+    Deque<Integer> dq = new ArrayDeque<>();
+    for (int i = n - 2; i >= 0; i--) {
+        // max(dp[i + 1, i + k])
+        if (!dq.isEmpty() && dq.peek() == i + k + 1) {
+            dq.poll();
+        }
+
+        while (!dq.isEmpty() && dp[i + 1] > dp[dq.peekLast()] {
+            dq.pollLast();
+        }
+        dq.offer(i + 1);
+
+        // Finds max using monoqueue
+        dp[i] = nums[i] + dp[dq.peek()];
+    }
+    return dp[0];
+}
+```
+
+In the solution above, it's worth noting the iteration is in reverse order, which is more intuitive and straightforward than the natural order.
+
+[jump-game-vi]: https://leetcode.com/problems/jump-game-vi/
 [shortest-subarray-with-sum-at-least-k]: https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
 [sliding-window-maximum]: https://leetcode.com/problems/sliding-window-maximum/

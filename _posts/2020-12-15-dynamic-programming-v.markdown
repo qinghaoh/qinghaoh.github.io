@@ -497,33 +497,6 @@ private long[] dfs(int node , List<int[]>[] tree) {
 }
 ```
 
-# Reverse Iteration
-
-[Minimum Number of Coins for Fruits][minimum-number-of-coins-for-fruits]
-
-```c++
-
-```
-
-The reverse iteration is more intuitive:
-
-```c++
-int minimumCoins(vector<int>& prices) {
-    int n = prices.size();
-    // dp[i]: [i:]
-    vector<int> dp(n + 1);
-    for (int i = n - 1; i >= 0; i--) {
-        dp[i] = INT_MAX;
-        // dp[n] = 0
-        for (int j = 1; j <= i + 2 && i + j <= n; j++) {
-            dp[i] = min(dp[i], dp[i + j]);
-        }
-        dp[i] += prices[i];
-    }
-    return dp[0];
-}
-```
-
 # Multiple DP Variables
 
 In this model, there are multiple choices at the current position, and we assign each choice a dp variable, which essentially is a 0-dimensional dp array. Then we find the relations between the dp variables.
