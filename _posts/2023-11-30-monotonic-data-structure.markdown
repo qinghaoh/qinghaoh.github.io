@@ -25,7 +25,7 @@ Here are some _key properties_ of monotonic data structures:
 
 Monoqueue can be used to find the min/max of a _bounded_ range.
 
-# Upper Bound
+## Upper Bound
 
 [Sliding Window Maximum][sliding-window-maximum]
 
@@ -60,7 +60,62 @@ At index `i`, if we truncate the stack in such a way that all elements with inde
 
 Property #2 can be viewed as a special case of Property #4, where `j = 0`.
 
-# Lower Bound
+[Max Value of Equation][max-value-of-equation]
+
+```java
+public int findMaxValueOfEquation(int[][] points, int k) {
+    // yi + yj + |xi - xj|
+    // = yi + yj + xj - xi
+    // = (yi - xi) + (xj + yj)
+
+    // {yi - xi , xi}
+    Deque<int[]> dq = new ArrayDeque<>();
+
+    int max = Integer.MIN_VALUE;
+    for (int[] p : points) {
+        while (!dq.isEmpty() && p[0] - dq.peekFirst()[1] > k) {
+            dq.pollFirst();
+        }
+        if (!dq.isEmpty()) {
+            max = Math.max(max, dq.peekFirst()[0] + p[0] + p[1]);
+        }
+
+        // monotonically decreasing (from first to last)
+        while (!dq.isEmpty() && p[1] - p[0] > dq.peekLast()[0]) {
+            dq.pollLast();
+        }
+        dq.offerLast(new int[]{p[1] - p[0], p[0]});
+    }
+    return max;
+}
+```
+
+This problem can also be solved by priority queue: (Question/Thinking: is monoqueue equivalent to priority queue?)
+
+```java
+public int findMaxValueOfEquation(int[][] points, int k) {
+    // yi + yj + |xi - xj|
+    // = yi + yj + xj - xi
+    // = (yi - xi) + (xj + yj)
+
+    // {yi - xi , xi}
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a[0]));
+
+    int max = Integer.MIN_VALUE;
+    for (int[] p : points) {
+        while (!pq.isEmpty() && p[0] - pq.peek()[1] > k) {
+            pq.poll();
+        }
+        if (!pq.isEmpty()) {
+            max = Math.max(max, pq.peek()[0] + p[0] + p[1]);
+        }
+        pq.offer(new int[]{p[1] - p[0], p[0]});
+    }
+    return max;
+}
+```
+
+## Lower Bound
 
 [Shortest Subarray with Sum at Least K][shortest-subarray-with-sum-at-least-k]
 
@@ -106,7 +161,49 @@ public int shortestSubarray(int[] nums, int k) {
 }
 ```
 
-From another perspective, the above solution finds the min (deque head) of a bounded range.
+[Find Maximum Non-decreasing Array Length][find-maximum-non-decreasing-array-length]
+
+```c++
+int findMaximumLength(vector<int>& nums) {
+    // dp[i]: max len of a non-decreasing array after applying operations for the first i elements in nums
+    // dp[i] = max(dp[j]) + 1, where 0 < j < i and sum(nums[j...(i - 1)]) >= last[j]
+    //   last[j] is the last element after applying operations to the first j elements in nums
+    //
+    // dp[i] is non-decreasing, because we can always append nums[i] to the non-decreasing array
+    // converted from nums[0...(i - 1)] and it's still valid. Therefore:
+    //
+    // dp[i] = dp[j] + 1, where j is the highest index that satisfies:
+    //   - 0 < j < i
+    //   - p[i] - p[j] >= last[j] (prefix sum) => last[j] + p[j] <= p[i]
+    int n = nums.size();
+    vector<long long> p(n + 1);
+    for (int i = 0; i < n; i++) {
+        p[i + 1] = p[i] + nums[i];
+    }
+
+    vector<int> dp(n + 1), last(n + 1);
+    deque<int> dq;
+    for (int i = 1, j = 0; i <= n; i++) {
+        // For every index k in the deque, last[k] + p[k] > p[i]
+        while (!dq.empty() && last[dq.front()] + p[dq.front()] <= p[i]) {
+            j = dq.front();
+            dq.pop_front();
+        }
+
+        dp[i] = dp[j] + 1;
+        last[i] = p[i] - p[j];
+
+        // Monotonically increasing queue
+        while (!dq.empty() && last[i] + p[i] <= last[dq.back()] + p[dq.back()]) {
+            dq.pop_back();
+        }
+        dq.push_back(i);
+    }
+    return dp[n];
+}
+```
+
+## Dynamic Programming
 
 This technique can be used to compute the recurrence relation more quickly in some dynamic programming problems.
 
@@ -140,6 +237,53 @@ public int maxResult(int[] nums, int k) {
 
 In the solution above, it's worth noting the iteration is in reverse order, which is more intuitive and straightforward than the natural order.
 
+# + Binary Search
+
+[Find Building Where Alice and Bob Can Meet][find-building-where-alice-and-bob-can-meet]
+
+```c++
+vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& queries) {
+    int m = queries.size();
+    // Sorts queries in descending order of `b`,
+    // so we process the heights from right to left.
+    vector<int> indices, res(m);
+    for (int i = 0; i < m; i++) {
+        // a <= b
+        int a = *ranges::min_element(queries[i]), b = *ranges::max_element(queries[i]);
+
+        if (a == b || heights[a] < heights[b]) {
+            res[i] = b;
+        } else {
+            indices.push_back(i);
+        }
+    }
+    ranges::sort(indices, greater<int>(), [&](int i){ return *ranges::max_element(queries[i]); });
+
+    vector<int> st;
+    int j = heights.size() - 1;
+    for (const int& i : indices) {
+        int a = *ranges::min_element(queries[i]), b = *ranges::max_element(queries[i]);
+
+        // Pushes [j:(b - 1):-1] to maintain a monotonic stack
+        while (j >= b) {
+            while (!st.empty() && heights[j] >= heights[st.back()]) {
+                st.pop_back();
+            }
+            st.push_back(j--);
+        }
+
+        // Binary search
+        auto it = upper_bound(rbegin(st), rend(st), a, [&](int i, int j){ return heights[i] < heights[j]; });
+        res[i] = it == rend(st) ? -1 : *it;
+    }
+
+    return res;
+}
+```
+
+[find-building-where-alice-and-bob-can-meet]: https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/
+[find-maximum-non-decreasing-array-length]: https://leetcode.com/problems/find-maximum-non-decreasing-array-length/
 [jump-game-vi]: https://leetcode.com/problems/jump-game-vi/
+[max-value-of-equation]: https://leetcode.com/problems/max-value-of-equation/
 [shortest-subarray-with-sum-at-least-k]: https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
 [sliding-window-maximum]: https://leetcode.com/problems/sliding-window-maximum/

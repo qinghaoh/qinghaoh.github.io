@@ -9,67 +9,6 @@ tags: queue
 
 Analogous to monotonic stacks.
 
-### Push/Pop Tuple
-
-[Max Value of Equation][max-value-of-equation]
-
-```java
-public int findMaxValueOfEquation(int[][] points, int k) {
-    // yi + yj + |xi - xj|
-    // = yi + yj + xj - xi
-    // = (yi - xi) + (xj + yj)
-
-    // {yi - xi , xi}
-    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a[0]));
-
-    int max = Integer.MIN_VALUE;
-    for (int[] p : points) {
-        while (!pq.isEmpty() && p[0] - pq.peek()[1] > k) {
-            pq.poll();
-        }
-        if (!pq.isEmpty()) {
-            max = Math.max(max, pq.peek()[0] + p[0] + p[1]);
-        }
-        pq.offer(new int[]{p[1] - p[0], p[0]});
-    }
-    return max;
-}
-```
-
-When using a heap to maintain an ordered subsequence/subarray, consider using a monotonic stack/queue.
-
-```java
-public int findMaxValueOfEquation(int[][] points, int k) {
-    // yi + yj + |xi - xj|
-    // = yi + yj + xj - xi
-    // = (yi - xi) + (xj + yj)
-
-    // {yi - xi , xi}
-    Deque<int[]> dq = new ArrayDeque<>();
-
-    int max = Integer.MIN_VALUE;
-    for (int[] p : points) {
-        while (!dq.isEmpty() && p[0] - dq.peekFirst()[1] > k) {
-            dq.pollFirst();
-        }
-        if (!dq.isEmpty()) {
-            max = Math.max(max, dq.peekFirst()[0] + p[0] + p[1]);
-        }
-
-        // monotonically decreasing (from first to last)
-        while (!dq.isEmpty() && p[1] - p[0] > dq.peekLast()[0]) {
-            dq.pollLast();
-        }
-        dq.offerLast(new int[]{p[1] - p[0], p[0]});
-    }
-    return max;
-}
-```
-
-# Max/Min in a Sliding Window
-
-## Fixed-size Window
-
 ## Elastic-size Window
 
 [Maximum Number of Robots Within Budget][maximum-number-of-robots-within-budget]
@@ -128,5 +67,4 @@ public int constrainedSubsetSum(int[] nums, int k) {
 ```
 
 [constrained-subsequence-sum]: https://leetcode.com/problems/constrained-subsequence-sum/
-[max-value-of-equation]: https://leetcode.com/problems/max-value-of-equation/
 [maximum-number-of-robots-within-budget]: https://leetcode.com/problems/maximum-number-of-robots-within-budget/

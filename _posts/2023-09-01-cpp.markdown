@@ -196,7 +196,7 @@ flowchart LR
 ```
 
 ```c++
-basic_string(size_type count, CharT ch, const Allocator& alloc = Allocator())
+using ll = long long;
 
 // min
 min_element(v.begin(), v.end());
@@ -229,6 +229,8 @@ ranges::reverse(v);
 accumulate(dp.begin() + l, dp.begin() + r + 1, 0, [&](int a, int b){ return (a + b) % mod; });
 
 // binary search
+// lower_bound: iterator to first element >= v
+// upper_bound: iterator to first element > v
 auto it = upper_bound(rbegin(st), rend(st), a, [&](int i, int j){ return heights[i] < heights[j]; }); // reverse order
 res[i] = it == rend(st) ? -1 : *it;
 
@@ -255,6 +257,7 @@ map<int, int, greater<int>> mp;
 
 // string
 s.length() == s.size();
+basic_string(size_type count, CharT ch, const Allocator& alloc = Allocator())
 ```
 
 ```

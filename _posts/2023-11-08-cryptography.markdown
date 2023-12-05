@@ -92,11 +92,11 @@ Secure PRG \\(\Rightarrow\\) Semantically secure stream cipher
 
 Key expansion -> Round function (`R(k,m)`)
 
-||Block size (bits)|Key size (bits)|Number of rounds|
-|-|-|-|-|
-|DES|64|56|16|
-|3DES|64|168|48|
-|AES|128|128/192/256|10|
+||Block size (bits)|Key size (bits)|Number of rounds|Network|
+|-|-|-|-|-|
+|DES|64|56|16|Feistel|
+|3DES|64|168|48|Feistel|
+|AES|128|128/192/256|10/12/14|Subs-Perm|
 
 Considerably slower than stream ciphers.
 
@@ -135,8 +135,8 @@ PRP \\(\subset\\) PRF
 
 **Exhausive Search Attacks**
 * Suppose DES is an ideal cipher:
-  - \\(2^56\\) (= number of keys) random invertible functions
-  - \\(\forall m,c\\), \\(\exists\\) at most one key \\(k \enspace \text{s.t.} \enspace \Pr[c=DES(k,m)] >= 1 - 2^{56}\frac{1}{2^{64}} = 99.5%\\)
+  - \\(2^{56}\\) (= number of keys) random invertible functions
+  - \\(\forall m,c\\), \\(\exists\\) at most one key \\(k \enspace \text{s.t.} \enspace \Pr[c=DES(k,m)] \ge 1 - 2^{56}\frac{1}{2^{64}} = 99.5\%\\)
 * 3DES
   - \\(E(k1, D(k2, E(k3, m)))\\): not 3 E's because when \\(k1=k2=k3\\) we get hardware implementation of normal DES
   - Meet-in-the-middle Attack \\(\approx 2^{118} > 2^{90}\\).
@@ -164,4 +164,21 @@ PRP \\(\subset\\) PRF
     * In total \\(2^{43}\\)
 * Quantum Attacks
   - Could solve generic search problem in \\(O(\lvert X \rvert^{1/2})\\).
-   
+
+**AES**
+* [Algorithm](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard#High-level_description_of_the_algorithm)
+  - [Key schedule](https://en.wikipedia.org/wiki/AES_key_schedule): 11 round keys
+  - SubBytes
+    * ![SubBytes](https://upload.wikimedia.org/wikipedia/commons/a/a4/AES-SubBytes.svg){: width="400" }
+  - ShiftRows
+    * ![ShiftRows](https://upload.wikimedia.org/wikipedia/commons/6/66/AES-ShiftRows.svg){: width="450" }
+  - MixColumns
+    * ![MixColumns](https://upload.wikimedia.org/wikipedia/commons/7/76/AES-MixColumns.svg){: width="400" }
+* Hardware
+  - Intel Westmere
+    * `aesenc`, `aesenclast`: one round of AES; 128 bit registers
+    * `aeskeygenassist`: key expansion
+  - AMD Bulldozer
+* Attacks
+  - Key recovery attack: 4x better than exhaustive search (e.g. 128 bit key -> \\(2^{126}\\))
+  - Related key attack: given \\(2^{99}\\) in/out pairs from 4 related keys AES-256; recovery time: \\\approx (2^{99}\\)
