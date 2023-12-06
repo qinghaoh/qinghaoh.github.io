@@ -92,11 +92,11 @@ Secure PRG \\(\Rightarrow\\) Semantically secure stream cipher
 
 Key expansion -> Round function (`R(k,m)`)
 
-||Block size (bits)|Key size (bits)|Number of rounds|Network|
-|-|-|-|-|-|
-|DES|64|56|16|Feistel|
-|3DES|64|168|48|Feistel|
-|AES|128|128/192/256|10/12/14|Subs-Perm|
+||Block size (bits)|Key size (bits)|Number of rounds|Network|Secure?|
+|-|-|-|-|-|-|
+|DES|64|56|16|Feistel|No|
+|3DES|64|168|48|Feistel|Yes (Heuristic)|
+|AES|128|128/192/256|10/12/14|Subs-Perm|Yes (Heuristic)|
 
 Considerably slower than stream ciphers.
 
@@ -109,11 +109,17 @@ Considerably slower than stream ciphers.
 PRP \\(\subset\\) PRF
 
 **Secure PRFs**
-* A random function in \\(Funs[X,Y]\\) (size = \\(\lvert Y \rvert ^ {\lvert X \rvert}\\)) is indistinguishable from a random function in \\(S_F = \{ F(k,\cdot)) \enspace \text{s.t.} \enspace k \in K\}\\) (size = \\(\lvert K \rvert\\))
+* A random function in \\(Funs[X,Y]\\) (size = \\(\lvert Y \rvert ^ {\lvert X \rvert}\\)) is indistinguishable from a random function in \\(S_F = \\{ F(k,\cdot) \enspace \text{s.t.} \enspace k \in K\\}\\) (size = \\(\lvert K \rvert\\))
   - \\(S_F \subseteq Funs[X,Y]\\)
 * Secure PRF \\(\Rightarrow\\) Secure PRG
-  - \\(F:K \times \{0,1\}^{n} \rightarrow \{0,1\}^{n} \enspace G:k \rightarrow \{0,1\}^{nt}\\), \\(G(k) = F(k,0) \parallel F(k,1) \parallel \ldots \parallel F(k,t)\\), 
+  - \\(F:K \times \\{0,1\\}^{n} \rightarrow \\{0,1\\}^{n} \enspace G:k \rightarrow \\{0,1\\}^{nt}\\), \\(G(k) = F(k,0) \parallel F(k,1) \parallel \ldots \parallel F(k,t)\\) 
   - Parallelizable
+
+**Secure PRPs**
+* -> Secure block cipher
+* _PRF Switching Lemma_
+  - \\(\lvert Adv_{PRF}[A,E] - Adv_{PRP}[A,E] \rvert \lt q^2/2\lvert X \rvert\\), where \\(q\\) is the number of queries
+  - If \\(\lvert X \rvert\\) is sufficiently large, then Secure PRP \\(\Rightarrow\\) Secure PRF
 
 **Feistel Network**
 * Build *invertible* function from arbitrary functions
@@ -182,3 +188,27 @@ PRP \\(\subset\\) PRF
 * Attacks
   - Key recovery attack: 4x better than exhaustive search (e.g. 128 bit key -> \\(2^{126}\\))
   - Related key attack: given \\(2^{99}\\) in/out pairs from 4 related keys AES-256; recovery time: \\\approx (2^{99}\\)
+
+[GGM (Goldreich-Goldwasser-Micali) PRF](https://crypto.stanford.edu/pbc/notes/crypto/ggm.html)
+* Secure PRG \\(\Rightarrow\\) Secure PRF
+* Not used in practice due to slow practice
+
+**CPA Security**
+* \\(m,c\\) pairs; \\(q\\) queries
+* Suppose \\(E(k,m)\\) always outputs the same ciphertext for msg \\(m\\), it's CPA _insecure_. Solutions:
+  - Randomized encryption
+    * CT size = PT size + "# random bits"
+  - Nonce-based encryption: \\(k,n)\\) pair never used more than once. A nonce can be:
+    * A counter (Stateful)
+    * A random nonce (Stateless; Nonce space is sufficiently large)
+
+**Modes of Operation**
+* One-time key (COA)
+  - ECB
+    * Not semantically secure if #blocks > 1
+  - Deterministic Counter Mode
+    * Stream cipher: \\(c[i] = m[i] \oplus F(k, i)\\), where \\(F\\) is a PRF
+    * \\(Adv_{SS}[A,E_{DETCTR}] = 2 \cdot Adv_{PRF}[B,F]\\)
+    * Secure PRF \\(\Rightarrow\\) \\(E_{DETCTR}\\) is semantically secure
+* Many-time Key (CPA)
+

@@ -23,9 +23,9 @@ Here are some _key properties_ of monotonic data structures:
 
 # Monoqueue
 
-Monoqueue can be used to find the min/max of a _bounded_ range.
+## Sliding Window Min/Max
 
-## Upper Bound
+Similar to that in [sliding window](../sliding-window/#monotonically-decreasing-function), the constraint function \\(h(m)\\) is monotonically decreasing. Monoqueues can be used to find the min/max of a window constrained by a monotonically decreasing function.
 
 [Sliding Window Maximum][sliding-window-maximum]
 
@@ -115,7 +115,42 @@ public int findMaxValueOfEquation(int[][] points, int k) {
 }
 ```
 
-## Lower Bound
+[Maximum Number of Robots Within Budget][maximum-number-of-robots-within-budget]
+
+See [Sliding window (monotonically decreasing function)](../sliding-window/#monotonically-decreasing-function) for the sliding window template.
+
+```java
+public int maximumRobots(int[] chargeTimes, int[] runningCosts, long budget) {
+    long sum = 0;
+    int i = 0, j = 0, n = chargeTimes.length;
+    Deque<Integer> dq = new LinkedList<>();
+    while (j < n) {
+        sum += runningCosts[j];
+
+        // Monotonically decreasing
+        while (!dq.isEmpty() && chargeTimes[j] >= chargeTimes[dq.peekLast()]) {
+            dq.pollLast();
+        }
+        dq.offerLast(j++);
+
+        // Moves i forward
+        if (chargeTimes[dq.peekFirst()] + (j - i) * sum > budget) {
+            if (dq.peekFirst() == i) {
+                dq.pollFirst();
+            }
+            sum -= runningCosts[i++];
+        }
+    }
+
+    // Sliding window doesn't shrink
+    return j - i;
+}
+
+```
+
+## Shortest Subarray With Sum >= k
+
+In this type of problems, there is a constraint \\(f(i,j) \ge 0\\), where \\(i\\) is the current index and \\(j\\) is a smaller index. For all indices \\(\in (j, i)\\), \\(f(i,j) \lt 0\\). Monoqueues can be used to find the largest \\(j\\) of each \\(i\\) which satisfies the constraint.
 
 [Shortest Subarray with Sum at Least K][shortest-subarray-with-sum-at-least-k]
 
@@ -134,23 +169,16 @@ public int shortestSubarray(int[] nums, int k) {
     // Strictly increasing monoqueue
     Deque<Integer> dq = new ArrayDeque<>();
     for (int i = 0; i < p.length; i++) {
-        // Checks all possible candidates when p[i] is used as the minuend
-        // Pops the head of the deque until p[i] - p[head] < k
-        // The head is a possible candidate
-        //
-        // It's impossible to miss a candidate subtrahend for p[i]
-        // due to the subtrahend not being the current deque head,
-        // because the minimum element so far is always the deque head
+        // Checks all possible candidates when p[i] is used as the minuend.
+        // Pops the head of the deque until p[i] - p[head] < k.
+        // The head is a possible candidate.
         while (!dq.isEmpty() && p[i] - p[dq.peekFirst()] >= k) {
             min = Math.min(min, i - dq.pollFirst());
         }
 
-        // Now we prove there's no shorter subarray:
-        // For the element at index j, head < j < i, it's either in the deque or was popped.
-        // If in the deque:
-        //   p[j] > p[head] => p[i] - p[j] < p[i] - p[head] < k
-        // Otherwise, it was greater than some in-deque element p[j']:
-        //   p[j] > p[j'], p[j'] > p[head] => p[i] - p[j] < p[i] - p[j'] < p[i] - p[head] < k
+        // The current head is the min in the range of [current head, i],
+        // so for all j in this range, p[i] - p[j] < k.
+        // Therefore, there's no shorter subarray.
         while (!dq.isEmpty() && p[i] <= p[dq.peekLast()]) {
             dq.pollLast();
         }
@@ -237,6 +265,8 @@ public int maxResult(int[] nums, int k) {
 
 In the solution above, it's worth noting the iteration is in reverse order, which is more intuitive and straightforward than the natural order.
 
+Similar problem: [Constrained Subsequence Sum][constrained-subsequence-sum]
+
 # + Binary Search
 
 [Find Building Where Alice and Bob Can Meet][find-building-where-alice-and-bob-can-meet]
@@ -281,9 +311,11 @@ vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& q
 }
 ```
 
+[constrained-subsequence-sum]: https://leetcode.com/problems/constrained-subsequence-sum/
 [find-building-where-alice-and-bob-can-meet]: https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/
 [find-maximum-non-decreasing-array-length]: https://leetcode.com/problems/find-maximum-non-decreasing-array-length/
 [jump-game-vi]: https://leetcode.com/problems/jump-game-vi/
 [max-value-of-equation]: https://leetcode.com/problems/max-value-of-equation/
+[maximum-number-of-robots-within-budget]: https://leetcode.com/problems/maximum-number-of-robots-within-budget/
 [shortest-subarray-with-sum-at-least-k]: https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
 [sliding-window-maximum]: https://leetcode.com/problems/sliding-window-maximum/

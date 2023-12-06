@@ -16,8 +16,6 @@ Efficient range query, while array modification is flexible.
 The [standard (recursive, top-down) Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html) requires \\(4n\\) vertices for working on an array of size \\(n\\).
 
 ```java
-/**
- */
 class SegmentTree {
     private int n;
     // One-based indexing, i.e. root is at index 1
@@ -631,7 +629,7 @@ class SegmentTreeNode {
             r.update(Math.max(getMid(), i), j, val);
         }
 
-        // if count > 0, then intervals between start and end will all be included
+        // If count > 0, then intervals between start and end will all be included
         // otherwise, recursively sums child intervals
         return sum = count > 0 ? list.get(end) - list.get(start) : l.sum + r.sum;
     }
@@ -640,9 +638,11 @@ class SegmentTreeNode {
 
 # Range Updates (Lazy Propagation)
 
-Updates and queries of an entire segment of contiguous elements. The time complexity of both operations are \\(O(\log n)\\).
+Updates/Adds and queries an entire segment of contiguous elements. The time complexity of both operations are \\(O(\log n)\\).
 
 It's more straightforward to implement lazy propagation with recursive segment tree.
+
+## Assignment on Segments
 
 [Falling Squares][falling-squares]
 
@@ -668,13 +668,13 @@ public List<Integer> fallingSquares(int[][] positions) {
 
 class SegmentTree {
     private int n;
-    // root is at index 1
+    // Root is at index 1
     private int[] arr;
     // marked[i]: all elements (the complete subtree) of segment i is assigned to the value arr[i]
     private boolean[] marked;
     private BiFunction<Integer, Integer, Integer> f;
 
-    // default all-zero array
+    // Default all-zero array
     public SegmentTree(int n, BiFunction<Integer, Integer, Integer> f) {
         this.n = n;
         this.arr = new int[4 * n];
@@ -690,7 +690,7 @@ class SegmentTree {
         }
     }
 
-    // assignment on segments
+    // Assignment on segments
     public void update(int v, int tl, int tr, int l, int r, int value) {
         if (l > r) {
             return;
@@ -704,18 +704,18 @@ class SegmentTree {
             int tm = (tl + tr) / 2;
             update(v * 2, tl, tm, l, Math.min(r, tm), value);
             update(v * 2 + 1, tm + 1, tr, Math.max(l, tm + 1), r, value);
-            // applies the update back to the parent node
+            // Applies the update back to the parent node
             arr[v] = f.apply(arr[v * 2], arr[v * 2 + 1]);
         }
     }
 
-    // query of a segment
+    // Query of a segment
     public int query(int v, int tl, int tr, int l, int r) {
         if (l > r) {
             return 0;
         }
 
-        if (l <= tl && tr <= r) {
+        if (l == tl && tr == r) {
             return arr[v];
         }
 
@@ -725,6 +725,8 @@ class SegmentTree {
     }
 }
 ```
+
+## Adding on segments
 
 [booking-concert-tickets-in-groups]: https://leetcode.com/problems/booking-concert-tickets-in-groups/
 [falling-squares]: https://leetcode.com/problems/falling-squares/
