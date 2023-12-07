@@ -60,7 +60,11 @@ At index `i`, if we truncate the stack in such a way that all elements with inde
 
 Property #2 can be viewed as a special case of Property #4, where `j = 0`.
 
+Equivalently, we can always use _priority queues_ to solve this type of problem. In the following example, we store `[value, position]` pairs in the heap, and pops elements until the distance is within the required range:
+
 [Max Value of Equation][max-value-of-equation]
+
+Monoqueue:
 
 ```java
 public int findMaxValueOfEquation(int[][] points, int k) {
@@ -90,7 +94,7 @@ public int findMaxValueOfEquation(int[][] points, int k) {
 }
 ```
 
-This problem can also be solved by priority queue: (Question/Thinking: is monoqueue equivalent to priority queue?)
+Priority Queue:
 
 ```java
 public int findMaxValueOfEquation(int[][] points, int k) {
@@ -147,6 +151,40 @@ public int maximumRobots(int[] chargeTimes, int[] runningCosts, long budget) {
 }
 
 ```
+
+This technique can be used to compute the recurrence relation more quickly in some _dynamic programming_ problems.
+
+[Jump Game VI][jump-game-vi]
+
+```java
+public int maxResult(int[] nums, int k) {
+    int n = nums.length;
+    // dp[i]: max score to reach the end starting at index i
+    int[] dp = new int[n];
+    dp[n - 1] = nums[n - 1];
+
+    Deque<Integer> dq = new ArrayDeque<>();
+    for (int i = n - 2; i >= 0; i--) {
+        // max(dp[i + 1, i + k])
+        if (!dq.isEmpty() && dq.peek() == i + k + 1) {
+            dq.poll();
+        }
+
+        while (!dq.isEmpty() && dp[i + 1] > dp[dq.peekLast()] {
+            dq.pollLast();
+        }
+        dq.offer(i + 1);
+
+        // Finds max using monoqueue
+        dp[i] = nums[i] + dp[dq.peek()];
+    }
+    return dp[0];
+}
+```
+
+In the solution above, it's worth noting the iteration is in reverse order, which is more intuitive and straightforward than the natural order.
+
+Similar problem: [Constrained Subsequence Sum][constrained-subsequence-sum]
 
 ## Shortest Subarray With Sum >= k
 
@@ -231,42 +269,6 @@ int findMaximumLength(vector<int>& nums) {
 }
 ```
 
-## Dynamic Programming
-
-This technique can be used to compute the recurrence relation more quickly in some dynamic programming problems.
-
-[Jump Game VI][jump-game-vi]
-
-```java
-public int maxResult(int[] nums, int k) {
-    int n = nums.length;
-    // dp[i]: max score to reach the end starting at index i
-    int[] dp = new int[n];
-    dp[n - 1] = nums[n - 1];
-
-    Deque<Integer> dq = new ArrayDeque<>();
-    for (int i = n - 2; i >= 0; i--) {
-        // max(dp[i + 1, i + k])
-        if (!dq.isEmpty() && dq.peek() == i + k + 1) {
-            dq.poll();
-        }
-
-        while (!dq.isEmpty() && dp[i + 1] > dp[dq.peekLast()] {
-            dq.pollLast();
-        }
-        dq.offer(i + 1);
-
-        // Finds max using monoqueue
-        dp[i] = nums[i] + dp[dq.peek()];
-    }
-    return dp[0];
-}
-```
-
-In the solution above, it's worth noting the iteration is in reverse order, which is more intuitive and straightforward than the natural order.
-
-Similar problem: [Constrained Subsequence Sum][constrained-subsequence-sum]
-
 # + Binary Search
 
 [Find Building Where Alice and Bob Can Meet][find-building-where-alice-and-bob-can-meet]
@@ -311,11 +313,103 @@ vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& q
 }
 ```
 
+# Monotonic Map
+
+[Maximum Balanced Subsequence Sum][maximum-balanced-subsequence-sum]
+
+```c++
+long long maxBalancedSubsequenceSum(vector<int>& nums) {
+    {% raw %}
+    map<int, long long> mp{{INT_MIN, 0}};
+    {% endraw %}
+    for (int i = 0; i < nums.size(); i++) {
+        // Considers positive num only
+        if (nums[i] > 0) {
+            auto it = mp.upper_bound(nums[i] - i);
+            long long sum = nums[i] + prev(it)->second;
+            mp.insert_or_assign(it, nums[i] - i, sum);
+            // Monotonically increasing values
+            // Because greater keys with less values are no better than current
+            while (it != end(mp) && it->second <= sum) {
+                mp.erase(it++);
+            }
+        }
+    }
+    return mp.size() > 1 ? rbegin(mp)->second : *max_element(begin(nums), end(nums));
+}
+```
+
+[Maximum Sum Queries][maximum-sum-queries]
+
+```java
+// {y: x + y}, ascending
+// candidates for the current query
+// monotonic map: keys are ascending, while values are descending
+private TreeMap<Integer, Integer> map = new TreeMap<>();
+
+public int[] maximumSumQueries(int[] nums1, int[] nums2, int[][] queries) {
+    int n = nums1.length, m = queries.length;
+    Integer[] numIndices = new Integer[n], queryIndices = new Integer[m];
+    for (int i = 0; i < n; i++) {
+        numIndices[i] = i;
+    }
+    for (int i = 0; i < m; i++) {
+        queryIndices[i] = i;
+    }
+
+    // iterates nums in descending order of x
+    // so we add candidate pairs to map as x decreases, rather than remove candiate pairs
+    Arrays.sort(numIndices, Comparator.comparingInt(i -> -nums1[i]));
+    Arrays.sort(queryIndices, Comparator.comparingInt(i -> -queries[i][0]));
+
+    int[] answer = new int[m];
+    for (int i = 0, j = 0; i < m; i++) {
+        int queryIndex = queryIndices[i];
+        // "nums1[j]" >= xi
+        while (j < n && nums1[numIndices[j]] >= queries[queryIndex][0]) {
+            int numIndex = numIndices[j];
+            update(nums2[numIndex], nums1[numIndex] + nums2[numIndex]);
+            j++;
+        }
+        // query(yi)
+        answer[queryIndices[i]] = query(queries[queryIndex][1]);
+    }
+    return answer;
+}
+
+private void update(int y, int xy) {
+    // if the candicates map already contains key y' >= y
+    // then x' + y' >= current x + y, as x is in descending order
+    // there is no need to put the current pair (y, x + y)
+    var e = map.ceilingEntry(y);
+    if (e != null && e.getValue() >= xy) {
+        return;
+    }
+
+    // maintains map values as monotically decreasing
+    // just like monotic stack
+    e = map.floorEntry(y);
+    while (e != null && e.getValue() <= xy) {
+        map.remove(e.getKey());
+        e = map.floorEntry(y);
+    }
+    map.put(y, xy);
+}
+
+// filters entries with key >= y only
+private int query(int y) {
+    var e = map.ceilingEntry(y);
+    return e == null ? -1 : e.getValue();
+}
+```
+
 [constrained-subsequence-sum]: https://leetcode.com/problems/constrained-subsequence-sum/
 [find-building-where-alice-and-bob-can-meet]: https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/
 [find-maximum-non-decreasing-array-length]: https://leetcode.com/problems/find-maximum-non-decreasing-array-length/
 [jump-game-vi]: https://leetcode.com/problems/jump-game-vi/
 [max-value-of-equation]: https://leetcode.com/problems/max-value-of-equation/
+[maximum-balanced-subsequence-sum]: https://leetcode.com/problems/maximum-balanced-subsequence-sum/
 [maximum-number-of-robots-within-budget]: https://leetcode.com/problems/maximum-number-of-robots-within-budget/
+[maximum-sum-queries]: https://leetcode.com/problems/maximum-sum-queries/
 [shortest-subarray-with-sum-at-least-k]: https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
 [sliding-window-maximum]: https://leetcode.com/problems/sliding-window-maximum/

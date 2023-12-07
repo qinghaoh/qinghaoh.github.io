@@ -225,6 +225,9 @@ reduce(v.begin() + 1, v.end() + 3);
 // reverse
 ranges::reverse(v);
 
+// fill
+ranges::fill(v);
+
 // accumulate
 accumulate(dp.begin() + l, dp.begin() + r + 1, 0, [&](int a, int b){ return (a + b) % mod; });
 

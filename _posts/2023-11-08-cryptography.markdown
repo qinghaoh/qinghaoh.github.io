@@ -116,7 +116,6 @@ PRP \\(\subset\\) PRF
   - Parallelizable
 
 **Secure PRPs**
-* -> Secure block cipher
 * _PRF Switching Lemma_
   - \\(\lvert Adv_{PRF}[A,E] - Adv_{PRP}[A,E] \rvert \lt q^2/2\lvert X \rvert\\), where \\(q\\) is the number of queries
   - If \\(\lvert X \rvert\\) is sufficiently large, then Secure PRP \\(\Rightarrow\\) Secure PRF
@@ -198,7 +197,7 @@ PRP \\(\subset\\) PRF
 * Suppose \\(E(k,m)\\) always outputs the same ciphertext for msg \\(m\\), it's CPA _insecure_. Solutions:
   - Randomized encryption
     * CT size = PT size + "# random bits"
-  - Nonce-based encryption: \\(k,n)\\) pair never used more than once. A nonce can be:
+  - Nonce-based encryption: `(k,n)` pair never used more than once. A nonce can be:
     * A counter (Stateful)
     * A random nonce (Stateless; Nonce space is sufficiently large)
 
@@ -209,6 +208,30 @@ PRP \\(\subset\\) PRF
   - Deterministic Counter Mode
     * Stream cipher: \\(c[i] = m[i] \oplus F(k, i)\\), where \\(F\\) is a PRF
     * \\(Adv_{SS}[A,E_{DETCTR}] = 2 \cdot Adv_{PRF}[B,F]\\)
-    * Secure PRF \\(\Rightarrow\\) \\(E_{DETCTR}\\) is semantically secure
+    * Secure PRF \\(\Rightarrow\\) \\(E_{DETCTR}\\) is sem. sec.
 * Many-time Key (CPA)
-
+  - CBC
+    * Random IV
+      - ![CBC Encryption](https://upload.wikimedia.org/wikipedia/commons/8/80/CBC_encryption.svg)
+      - ![CBC Decryption](https://upload.wikimedia.org/wikipedia/commons/2/2a/CBC_decryption.svg)
+      - \\(Adv_{CPA}[A,E_{CBC}] \le 2 \cdot Adv_{PRP}[B,E] + 2q^2L^2/\lvert X \rvert\\), where \\(q\\) = # messages encrypted with \\(k\\), \\(L\\) = message length (# blocks).
+        * \\(qL\\) = message lengt in bits
+      - CBC is only secure if \\(q^2L^2 \ll \lvert X \rvert\\)
+      - IV must be _unpredictable_
+    * Nonce-based
+      - `key = (k,k1)`
+      - `E(k1,nonce) -> IV`
+      - `(key,nonce)` pair must be _unique_
+      - `k1 != k` (see [CBC1](https://web.cs.ucdavis.edu/~rogaway/papers/nonce.pdf#page=6))
+    * Padding: [PKCS#7](https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS#5_and_PKCS#7)
+      - [Ciphertext stealing](https://en.wikipedia.org/wiki/Ciphertext_stealing) can avoid padding
+  - Randomized Counter Mode
+    * PRF
+    * \\(c[i] = m[i] \oplus F(k, IV + i)\\)
+    * IV is chosen at random for every message
+    * Parallelizable
+    * Variant: nonce based
+      - IV = 64 bit nonce + 64 bit counter
+    * \\(Adv_{CPA}[A,E_{CTR}] \le 2 \cdot Adv_{PRF}[B,F] + 2q^2L/\lvert X \rvert\\), where \\(q\\) = # messages encrypted with \\(k\\), \\(L\\) = message length (# blocks).
+    * CTR is only secure if \\(q^2L \ll \lvert X \rvert\\)
+      - Beter than CBC
