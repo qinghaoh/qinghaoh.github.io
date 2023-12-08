@@ -60,7 +60,7 @@ An important property of *XOR*: \\(Y\\) is a random variable over \\(\\{0,1\\}^n
     
 **Advantage**
 
-$$Adv_{PRG}[A,G] = \lvert \Pr_{k \xleftarrow{R} \mathcal{k}}[A(G(k)) = 1] - \Pr_{r \xleftarrow{R} \\{0,1\\}^{n}}[A(r) = 1]\rvert \in [0, 1]$$
+$$Adv_{PRG}[A,G] = \lvert \Pr_{k \xleftarrow{R} \mathcal{k}}[A(G(k)) = 1] - \Pr_{r \xleftarrow{R} \{0,1\}^{n}}[A(r) = 1]\rvert \in [0, 1]$$
 
 **Secure PRG**
 * \\(\forall\\) "eff" statistical tests \\(A\\), \\(Adv_{PRG}[A,G]\\) is "neg".
@@ -113,6 +113,7 @@ PRP \\(\subset\\) PRF
   - \\(S_F \subseteq Funs[X,Y]\\)
 * Secure PRF \\(\Rightarrow\\) Secure PRG
   - \\(F:K \times \\{0,1\\}^{n} \rightarrow \\{0,1\\}^{n} \enspace G:k \rightarrow \\{0,1\\}^{nt}\\), \\(G(k) = F(k,0) \parallel F(k,1) \parallel \ldots \parallel F(k,t)\\) 
+  - e.g. Deterministic CTR mode
   - Parallelizable
 
 **Secure PRPs**
@@ -122,7 +123,7 @@ PRP \\(\subset\\) PRF
 
 **Feistel Network**
 * Build *invertible* function from arbitrary functions
-* ![Construction](https://upload.wikimedia.org/wikipedia/commons/f/fa/Feistel_cipher_diagram_en.svg)
+* ![Construction](https://upload.wikimedia.org/wikipedia/commons/f/fa/Feistel_cipher_diagram_en.svg){: width="300" }
 * Used in many block ciphers, but not AES
 * Luby-Rackoff Theorem: Secure PRF \\(\xrightarrow{\text{3-round Feistel}}\\) Secure PRP
 
@@ -186,7 +187,7 @@ PRP \\(\subset\\) PRF
   - AMD Bulldozer
 * Attacks
   - Key recovery attack: 4x better than exhaustive search (e.g. 128 bit key -> \\(2^{126}\\))
-  - Related key attack: given \\(2^{99}\\) in/out pairs from 4 related keys AES-256; recovery time: \\\approx (2^{99}\\)
+  - Related key attack: given \\(2^{99}\\) in/out pairs from 4 related keys AES-256; recovery time: \\(\approx 2^{99}\\)
 
 [GGM (Goldreich-Goldwasser-Micali) PRF](https://crypto.stanford.edu/pbc/notes/crypto/ggm.html)
 * Secure PRG \\(\Rightarrow\\) Secure PRF
@@ -202,36 +203,83 @@ PRP \\(\subset\\) PRF
     * A random nonce (Stateless; Nonce space is sufficiently large)
 
 **Modes of Operation**
-* One-time key (COA)
-  - ECB
-    * Not semantically secure if #blocks > 1
-  - Deterministic Counter Mode
+* ECB
+  - Not semantically secure if #blocks > 1
+* CBC
+  - Random IV
+    * ![CBC Encryption](https://upload.wikimedia.org/wikipedia/commons/8/80/CBC_encryption.svg)
+    * ![CBC Decryption](https://upload.wikimedia.org/wikipedia/commons/2/2a/CBC_decryption.svg)
+    * \\(Adv_{CPA}[A,E_{CBC}] \le 2 \cdot Adv_{PRP}[B,E] + 2q^2L^2/\lvert X \rvert\\), where \\(q\\) = # messages encrypted with \\(k\\), \\(L\\) = message length (# blocks).
+      - \\(qL\\) = message lengt in bits
+    * CBC is only secure if \\(q^2L^2 \ll \lvert X \rvert\\)
+    * IV must be _unpredictable_
+  - Nonce-based
+    * `key = (k,k1)`
+    * `E(k1,nonce) -> IV`
+    * `(key,nonce)` pair must be _unique_
+    * `k1 != k` (see [CBC1](https://web.cs.ucdavis.edu/~rogaway/papers/nonce.pdf#page=6))
+  - Padding: [PKCS#7](https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS#5_and_PKCS#7)
+    * [Ciphertext stealing](https://en.wikipedia.org/wiki/Ciphertext_stealing) can avoid padding
+* CTR (Counter Mode)
+  - Turns a block cipher into stream cipher
+  - Parallelizable
+  - Deterministic: _One-time Key_
     * Stream cipher: \\(c[i] = m[i] \oplus F(k, i)\\), where \\(F\\) is a PRF
     * \\(Adv_{SS}[A,E_{DETCTR}] = 2 \cdot Adv_{PRF}[B,F]\\)
     * Secure PRF \\(\Rightarrow\\) \\(E_{DETCTR}\\) is sem. sec.
-* Many-time Key (CPA)
-  - CBC
-    * Random IV
-      - ![CBC Encryption](https://upload.wikimedia.org/wikipedia/commons/8/80/CBC_encryption.svg)
-      - ![CBC Decryption](https://upload.wikimedia.org/wikipedia/commons/2/2a/CBC_decryption.svg)
-      - \\(Adv_{CPA}[A,E_{CBC}] \le 2 \cdot Adv_{PRP}[B,E] + 2q^2L^2/\lvert X \rvert\\), where \\(q\\) = # messages encrypted with \\(k\\), \\(L\\) = message length (# blocks).
-        * \\(qL\\) = message lengt in bits
-      - CBC is only secure if \\(q^2L^2 \ll \lvert X \rvert\\)
-      - IV must be _unpredictable_
-    * Nonce-based
-      - `key = (k,k1)`
-      - `E(k1,nonce) -> IV`
-      - `(key,nonce)` pair must be _unique_
-      - `k1 != k` (see [CBC1](https://web.cs.ucdavis.edu/~rogaway/papers/nonce.pdf#page=6))
-    * Padding: [PKCS#7](https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS#5_and_PKCS#7)
-      - [Ciphertext stealing](https://en.wikipedia.org/wiki/Ciphertext_stealing) can avoid padding
-  - Randomized Counter Mode
-    * PRF
+  - Randomized
     * \\(c[i] = m[i] \oplus F(k, IV + i)\\)
     * IV is chosen at random for every message
-    * Parallelizable
-    * Variant: nonce based
-      - IV = 64 bit nonce + 64 bit counter
     * \\(Adv_{CPA}[A,E_{CTR}] \le 2 \cdot Adv_{PRF}[B,F] + 2q^2L/\lvert X \rvert\\), where \\(q\\) = # messages encrypted with \\(k\\), \\(L\\) = message length (# blocks).
     * CTR is only secure if \\(q^2L \ll \lvert X \rvert\\)
-      - Beter than CBC
+      - Better than CBC
+  - Nonce-based
+    * IV = 64 bit nonce + 64 bit counter
+
+## Message Integrity
+
+**MAC**
+* Integrity, no confidentiality
+* Signing: `S(k,m) -> t`
+* Verifification: `V(k,m,t) -> 0,1`
+
+**Secure MACs**
+* _chosen message attack_: given `q` `(m,t)` pairs, the attacker:
+  - Cannot produce a valid tag for a new message
+  - Cannot produce `(m,t')` given `(m,t)`
+* Secure PRF \\(\Rightarrow\\) Secure MAC
+  - `S(k,m) := F(k,m)`
+  - `V(k,m,t) := 1 if t = F(k, m), 0 otherwise`
+  - \\(Adv_{MAC}[A,I_F] \le Adv_{PRF}[B,F] + 1/\lvert Y \rvert\\)
+    * \\(I_F\\) is secure as long as \\(\lvert Y \rvert\\) is sufficiently large
+  - Lemma: A MAC is secure if truncated to `w` bits and \\(1/2^w\\) is still negligible
+
+**Small-MAC -> Big-MAC**
+* CBC-MAC (banking)
+* HMAC (Internet protocols)
+
+**Encrypted CBC-MAC (ECBC-MAC)**
+* \\(F: K \times X \rightarrow X\\)
+* ![ECBC-MAC](https://upload.wikimedia.org/wikipedia/commons/a/ae/CBC-MAC_%28encrypt_last_block%29_structure.svg)
+* [Raw CBC-MAC](https://en.wikipedia.org/wiki/CBC-MAC) is not secure: Chosen message attack
+  - Choose an arbitrary one-block message \\(m \in X\\)
+  - Request tag \\(t = F(k,m)\\)
+  - Output \\(t\\) as MAC forgery for the 2-block message \\((m, t \oplus m)\\)
+* \\(Adv_{PRF}[A,F_{ECBC}] \le Adv_{PRP}[B,F] + 2q^2/\lvert X \rvert\\)
+  - Secure as long as \\(q \ll \lvert X \rvert ^{1/2}\\)
+
+**NMAC (Nested MAC)**
+* \\(F: K \times X \rightarrow K\\)
+* ![NMAC](http://www.crypto-it.net/Images/theory/mac/nmac_eng.png)
+* Cascade function is not secure: Chosen message attack
+  - \\(cascade(k,m \parallel w) = F(cascade(m),w)\\)
+* \\(Adv_{PRF}[A,F_{NMAC}] \le q \cdot L \cdot Adv_{PRP}[B,F] + q^2/2\lvert K \rvert\\)
+  - Secure as long as \\(q \ll \lvert K \rvert ^{1/2}\\)
+
+**Extension Property**
+* For both ECBC-MAC and NMAC, \\(\forall x,y,w: F_{BIG}(k,x) = F_{BIG}{k,y} \Rightarrow F_{BIG}(k,x \parallel w) = F_{BIG}(k,y \parallel w)\\)
+* Attack
+
+## Basic Key Exchange
+
+Trusted 3rd Party: simple protocol; replay attack
