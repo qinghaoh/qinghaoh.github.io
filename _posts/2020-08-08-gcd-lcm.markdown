@@ -84,7 +84,7 @@ If `n1 * n2 % k == 0`, then `gcd(n1, k) * gcd(n2, k) % k == 0`
 
 [Bézout's identity](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity)
 
-Let $$ a $$ and $$ b $$ be integers with greatest common divisor $$ d $$. Then, there exist integers $$ x $$ and $$ y $$ such that $$ ax + by = d $$. More generally, the integers of the form $$ ax + by $$ are exactly the multiples of $$ d $$.
+Let $$ a $$ and $$ b $$ be integers with greatest common divisor $$ d $$. Then, there exist integers $$ x $$ and $$ y $$ such that $$ ax + by = d $$. More generally, the integers of the form $$ ax + by $$ are exactly the multiples of $$ d $$. The coefficients can be computed by [Extended Euclidean algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm).
 
 [Check if Point Is Reachable][check-if-point-is-reachable]
 

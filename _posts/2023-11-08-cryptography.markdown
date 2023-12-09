@@ -219,6 +219,7 @@ PRP \\(\subset\\) PRF
     * `(key,nonce)` pair must be _unique_
     * `k1 != k` (see [CBC1](https://web.cs.ucdavis.edu/~rogaway/papers/nonce.pdf#page=6))
   - Padding: [PKCS#7](https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS#5_and_PKCS#7)
+    * Dummy block if multiple of block size
     * [Ciphertext stealing](https://en.wikipedia.org/wiki/Ciphertext_stealing) can avoid padding
 * CTR (Counter Mode)
   - Turns a block cipher into stream cipher
@@ -256,7 +257,12 @@ PRP \\(\subset\\) PRF
 
 **Small-MAC -> Big-MAC**
 * CBC-MAC (banking)
-* HMAC (Internet protocols)
+  - Commonly used as an AES-based MAC
+    * CCM encryption mode
+    * CMAC
+* NMAC (Internet protocols)
+  - Not usually used with AES or 3DES: need to change AES key on every block (re-computing AES key expansion)
+  - HMAC
 
 **Encrypted CBC-MAC (ECBC-MAC)**
 * \\(F: K \times X \rightarrow X\\)
@@ -277,9 +283,30 @@ PRP \\(\subset\\) PRF
   - Secure as long as \\(q \ll \lvert K \rvert ^{1/2}\\)
 
 **Extension Property**
-* For both ECBC-MAC and NMAC, \\(\forall x,y,w: F_{BIG}(k,x) = F_{BIG}{k,y} \Rightarrow F_{BIG}(k,x \parallel w) = F_{BIG}(k,y \parallel w)\\)
-* Attack
+* For both ECBC-MAC and NMAC, \\(\forall x,y,w: F_{BIG}(k,x) = F_{BIG}(k,y) \Rightarrow F_{BIG}(k,x \parallel w) = F_{BIG}(k,y \parallel w)\\)
+* Attack: Issue \\(lvert Y \rvert^{1/2}\\) to find a collision; _b-day paradox_
+* The security bounds are _tight_
+
+**MAC Padding**
+* Must be invertible
+* CBC-MAC: [Bit padding](https://en.wikipedia.org/wiki/ISO/IEC_9797-1#Padding_method_2)
+  - Dummy block if multiple of block size
+
+**CMAC**
+* NIST SP 800-38B
+* 3-key construction
+* ![CMAC](https://i.stack.imgur.com/ISalk.png)
+* No final encryption step (extension attack thwarted by last keyed xor)
+* No dummy block
 
 ## Basic Key Exchange
 
 Trusted 3rd Party: simple protocol; replay attack
+
+**[Merkle's Puzzles](https://en.wikipedia.org/wiki/Merkle%27s_Puzzles)**
+* Quadratic gap - best possible if ciphers are black box oracle
+
+**Diffie-Hellman Protocol**
+
+**Public-Key Encryption**
+* `(G,E,D)`

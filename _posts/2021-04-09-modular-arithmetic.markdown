@@ -110,6 +110,9 @@ public int smallestRepunitDivByK(int k) {
 
 # Modular Inverse
 
+\\(a\\) has modular inverse modulo \\(m\\) iff \\(gcd(a,m) = 1\\). Modular inverse can be computed by [Extended Euclidean algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm) in time \\(O(\log^2(m))\\).
+
+
 [Fancy Sequence][fancy-sequence]
 
 ```java
