@@ -284,8 +284,8 @@ PRP \\(\subset\\) PRF
 
 **Extension Property**
 * For both ECBC-MAC and NMAC, \\(\forall x,y,w: F_{BIG}(k,x) = F_{BIG}(k,y) \Rightarrow F_{BIG}(k,x \parallel w) = F_{BIG}(k,y \parallel w)\\)
-* Attack: Issue \\(lvert Y \rvert^{1/2}\\) to find a collision; _b-day paradox_
-* The security bounds are _tight_
+* Attack: Issue \\(lvert Y \rvert^{1/2}\\) to find a collision; *b-day paradox*
+* The security bounds are *tight*
 
 **MAC Padding**
 * Must be invertible
@@ -298,6 +298,24 @@ PRP \\(\subset\\) PRF
 * ![CMAC](https://i.stack.imgur.com/ISalk.png)
 * No final encryption step (extension attack thwarted by last keyed xor)
 * No dummy block
+* \\(Adv_{PRF}[A,F_{PMAC}] \le Adv_{PRF}[B,F] + 2q^2L^2/\lvert X \rvert\\)
+  - Secure as long as \\(qL \ll \lvert X \rvert ^{1/2}\\)
+
+**PMAC (Parallelizable MAC)**
+* [PMAC](https://web.cs.ucdavis.edu/~rogaway/ocb/pmac.pdf)
+* Gray codes \\(\gamma_i\\) are used to enforce order on message blocks
+* Padding similar to CBC-MAC: no need for dummy block
+* Incremental (i.e. we can quickly update the tag if one block changes) if PRF is also a PRP
+
+**One-time MAC**
+* Fast
+* Example: \\(S(key,m) = P_m(k) + a (\mod q)\\), where \\(P_m(x) = \sum_{i=1}^{L}{m[i]x^i}\\), \\(key = (k,a) \in \\{1,2,\ldots, q\\}^2\\)
+
+**Carter-Wegman MAC**
+* One-time MAC \\(\Rightarrow\\) Many-time MAC
+* Randomized MAC
+* \\(CW((k1,k2),m) = (r, F(k1,r) \oplus S(k2,m))\\)
+  - CW is a secure MAC if \\((S,V)\\) is a secure one-time MAC and \\(F\\) is a secure PRF.
 
 ## Basic Key Exchange
 

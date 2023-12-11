@@ -231,6 +231,9 @@ ranges::fill(v);
 // accumulate
 accumulate(dp.begin() + l, dp.begin() + r + 1, 0, [&](int a, int b){ return (a + b) % mod; });
 
+// set
+set<int> s(v.begin(), v.end());
+
 // binary search
 // lower_bound: iterator to first element >= v
 // upper_bound: iterator to first element > v

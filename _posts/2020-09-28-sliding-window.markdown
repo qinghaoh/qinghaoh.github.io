@@ -9,7 +9,7 @@ The constraint can be expressed as:
 
 \\[f(v) \ge 0\\]
 
-where \\(v\\) is called _contraint variable_. Constraint variable is determined by the position and size of the sliding window:
+where \\(v\\) is called *contraint variable*. Constraint variable is determined by the position and size of the sliding window:
 
 \\[v = g(s, m)\\]
 
@@ -25,16 +25,31 @@ In this type of problems, when \\(s\\) is fixed and \\(m\\) increases, \\(f(v)\\
 
 ### Max Length 
 
-The common steps to resolve the problems:
-
-1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
-2. Increment `j` (move right by one)
-3. Check if the constraint is satisfied. If not:
-  - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
-  - Increment `i` (move right by one)
-4. Repeat the above steps until `j` is out of boundary, the final answer is `j - i`
-
 [Max Consecutive Ones III][max-consecutive-ones-iii]
+
+The common solution: expand the window; whenever the constraint is *not satisfied*, use a `while` loop to shrink the window util the constraint is *satisfied* again.
+
+```c++
+int longestOnes(vector<int>& nums, int k) {
+    int i = 0, j = 0, mx = 0;
+    while (j < nums.size()) {
+        if (nums[j++] == 0) {
+            k--;
+        }
+
+        while (k < 0) {
+            if (nums[i++] == 0) {
+                k++;
+            }
+        }
+
+        mx = max(mx, j - i);
+    }
+    return mx;
+}
+```
+
+An alternative solution is **Non-shrinking Window**: when the constraint is not satisfied, increment the left pointer `i` by one. The sliding window never shrinks.
 
 ```java
 public int longestOnes(int[] nums, int k) {
@@ -46,7 +61,7 @@ public int longestOnes(int[] nums, int k) {
             k--;
         }
 
-        // if k < 0, both i, j move forward together
+        // If k < 0, both i, j move forward together
         // i.e. right shift by one
         if (k < 0 && nums[i++] == 0) {
             k++;
@@ -59,43 +74,47 @@ public int longestOnes(int[] nums, int k) {
 }
 ```
 
-[Fruit Into Baskets][fruit-into-baskets]
+The prerequiste of *Non-shrinking Window* solution is it's easy to check if the constraint is satisfied or not. Look at the below example. We have to introduce a counter variable to store the number of in-window elements with frequency more than `k`.
 
-```java
-public int totalFruit(int[] fruits) {
-    int n = fruits.length, i = 0, j = 0, k = 2;
-    // picks[i]: number of picked fruits of type i
-    int[] picks = new int[n];
-    while (j < n) {
-        if (picks[fruits[j++]]++ == 0) {
-            k--;
+[Length of Longest Subarray With at Most K Frequency][length-of-longest-subarray-with-at-most-k-frequency]
+
+```c++
+int maxSubarrayLength(vector<int>& nums, int k) {
+    int i = 0, j = 0, len = 0, freqsGtK = 0;
+    unordered_map<int, int> freqs;
+    while (j < nums.size()) {
+        if (freqs[nums[j++]]++ == k) {
+            freqsGtK++;
         }
-
-        if (k < 0 && --picks[fruits[i++]] == 0) {
-            k++;
-        }
-    }
-    return j - i;
-}
-```
-
-[Get Equal Substrings Within Budget][get-equal-substrings-within-budget]
-
-```java
-public int equalSubstring(String s, String t, int maxCost) {
-    int i = 0, j = 0, cost = 0;
-    while (j < s.length()) {
-        cost += Math.abs(s.charAt(j) - t.charAt(j));
-        j++;
-
-        if (cost > maxCost) {
-            cost -= Math.abs(s.charAt(i) - t.charAt(i));
-            i++;
+        
+        if (freqsGtK > 0) {
+            if (--freqs[nums[i++]] == k) {
+                freqsGtK--;
+            }
         }
     }
     return j - i;
 }
 ```
+
+As a comparison, the common solution doesn't need any extra variables:
+
+```c++
+int maxSubarrayLength(vector<int>& nums, int k) {
+    int i = 0, j = 0, len = 0;
+    unordered_map<int, int> freqs;
+    while (j < nums.size()) {
+        freqs[nums[j]]++;
+        while (freqs[nums[j]] > k) {
+            freqs[nums[i++]]--;
+        }
+        len = max(len, ++j - i);
+    }
+    return len;
+}
+```
+
+In conclusion, *Non-shrinking Window* is not always better than the common solution. It depends on the specific problem which one to choose.
 
 Sometimes, we need to convert the problem to the "max consecutive ones" model:
 
@@ -139,41 +158,6 @@ public int maxFrequency(int[] nums, int k) {
         // Constraint variable: availableOps - max * length
         if (availableOps < (long)nums[j] * (++j - i)) {
             availableOps -= nums[i++];
-        }
-    }
-    return j - i;
-}
-```
-
-[Longest Substring with At Most K Distinct Characters][longest-substring-with-at-most-k-distinct-characters]
-
-[Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit][longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit]
-
-```java
-public int longestSubarray(int[] nums, int limit) {
-    Deque<Integer> maxd = new ArrayDeque<>(), mind = new ArrayDeque<>();
-    int i = 0, j = 0;
-    while (j < nums.length) {
-        while (!maxd.isEmpty() && maxd.peekLast() < nums[j]) {
-            maxd.pollLast();
-        }
-        maxd.add(nums[j]);
-
-        while (!mind.isEmpty() && mind.peekLast() > nums[j]) {
-            mind.pollLast();
-        }
-        mind.add(nums[j]);
-
-        j++;
-
-        if (maxd.peek() - mind.peek() > limit) {
-            if (maxd.peek() == nums[i]) {
-                maxd.poll();
-            }
-            if (mind.peek() == nums[i]) {
-                mind.poll();
-            }
-            i++;
         }
     }
     return j - i;
@@ -412,18 +396,11 @@ public long countGood(int[] nums, int k) {
 
 \\(h(m)\\) is a monotonically increasing function. For example, the constraint is "sum is **greater than or equal to** target". Denote the sum of elements in the sliding window as \\(v\\), then \\(f(v) = v - target \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) increases.
 
-The common steps to resolve the problems:
-
-1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
-2. Increment `j` (move right by one)
-3. Do the following in a loop until the constraint is not satisfied (each iteration represents a valid window):
-  - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
-  - Increment `i` (move right by one)
-4. Repeat the above steps until `j` is out of boundary
-
 **Min Length**
 
 [Minimum Size Subarray Sum][minimum-size-subarray-sum]
+
+The common solution is opposite compared to that for Monotonically Decreasing Function: expand the window; whenever the constraint is *satisfied*, use a `while` loop to shrink the window util the constraint is *not satisfied* again.
 
 ```java
 public int minSubArrayLen(int target, int[] nums) {
@@ -441,45 +418,21 @@ public int minSubArrayLen(int target, int[] nums) {
 }
 ```
 
-[Replace the Substring for Balanced String][replace-the-substring-for-balanced-string]
-
-```java
-public int balancedString(String s) {
-    int[] freq = new int[26];
-    for (char ch : s.toCharArray()) {
-        freq[ch - 'A']++;
-    }
-
-    int i = 0, j = 0, n = s.length(), min = n;
-    while (j < n) {
-        // erases all chars inside the window
-        freq[s.charAt(j++) - 'A']--;
-
-        // outside the window, max(count[]) < n / 4
-        while (i < n && "QWER".chars().allMatch(ch -> freq[ch - 'A'] <= n / 4)) {
-            min = Math.min(min, j - i);
-            freq[s.charAt(i++) - 'A']++;
-        }
-    }
-    return min;
-}
-```
-
 [Minimum Window Substring][minimum-window-substring]
 
 ```java
 public String minWindow(String s, String t) {
-    int[] freq = new int[256];
+    int[] freqs = new int[256];
     for (char ch : t.toCharArray()) {
-        freq[ch]++;
+        freqs[ch]++;
     }
 
     int i = 0, j = 0, k = t.length(), min = s.length();
     String window = "";
     while (j < s.length()) {
-        // count of t-chars > 0
-        // count of non-t-chars == 0
-        if (freq[s.charAt(j++)]-- > 0) {
+        // Count of t-chars > 0
+        // Count of non-t-chars == 0
+        if (freqs[s.charAt(j++)]-- > 0) {
             // only t-chars will decrement k
             k--;
         }
@@ -490,8 +443,8 @@ public String minWindow(String s, String t) {
                 min = j - i;
             }
 
-            // count of non-t-chars < 0
-            if (freq[s.charAt(i++)]++ == 0) {
+            // Count of non-t-chars < 0
+            if (freqs[s.charAt(i++)]++ == 0) {
                 // only t-chars will increment k
                 k++;
             }
@@ -1318,16 +1271,13 @@ public int[] countServers(int n, int[][] logs, int x, int[] queries) {
 [find-all-anagrams-in-a-string]: https://leetcode.com/problems/find-all-anagrams-in-a-string/
 [find-k-th-smallest-pair-distance]: https://leetcode.com/problems/find-k-th-smallest-pair-distance/
 [frequency-of-the-most-frequent-element]: https://leetcode.com/problems/frequency-of-the-most-frequent-element/
-[fruit-into-baskets]: https://leetcode.com/problems/fruit-into-baskets/
-[get-equal-substrings-within-budget]: https://leetcode.com/problems/get-equal-substrings-within-budget/
 [jump-game-vii]: https://leetcode.com/problems/jump-game-vii/
 [k-empty-slots]: https://leetcode.com/problems/k-empty-slots/
 [kth-smallest-subarray-sum]: https://leetcode.com/problems/kth-smallest-subarray-sum/
-[longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit]: https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
+[length-of-longest-subarray-with-at-most-k-frequency]: https://leetcode.com/problems/length-of-longest-subarray-with-at-most-k-frequency/
 [longest-nice-subarray]: https://leetcode.com/problems/longest-nice-subarray/
 [longest-repeating-character-replacement]: https://leetcode.com/problems/longest-repeating-character-replacement/
 [longest-substring-with-at-least-k-repeating-characters]: https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/
-[longest-substring-with-at-most-k-distinct-characters]: https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
 [max-consecutive-ones-iii]: https://leetcode.com/problems/max-consecutive-ones-iii/
 [maximize-win-from-two-segments]: https://leetcode.com/problems/maximize-win-from-two-segments/
 [maximum-number-of-occurrences-of-a-substring]: https://leetcode.com/problems/maximum-number-of-occurrences-of-a-substring/
@@ -1349,7 +1299,6 @@ public int[] countServers(int n, int[][] logs, int x, int[] queries) {
 [number-of-equal-count-substrings]: https://leetcode.com/problems/number-of-equal-count-substrings/
 [number-of-substrings-containing-all-three-characters]: https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/
 [permutation-in-string]: https://leetcode.com/problems/permutation-in-string/
-[replace-the-substring-for-balanced-string]: https://leetcode.com/problems/replace-the-substring-for-balanced-string/
 [subarray-product-less-than-k]: https://leetcode.com/problems/subarray-product-less-than-k/submissions/
 [subarray-sum-equals-k]: https://leetcode.com/problems/subarray-sum-equals-k/
 [subarrays-with-k-different-integers]: https://leetcode.com/problems/subarrays-with-k-different-integers/

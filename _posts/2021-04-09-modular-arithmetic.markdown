@@ -154,6 +154,10 @@ class Fancy {
 }
 ```
 
+# Group
+
+A cyclic group of order \\(n\\) has exactly \\(\varphi(n)\\) generators.
+
 [fancy-sequence]: https://leetcode.com/problems/fancy-sequence/
 [smallest-integer-divisible-by-k]: https://leetcode.com/problems/smallest-integer-divisible-by-k/
 [super-pow]: https://leetcode.com/problems/super-pow/

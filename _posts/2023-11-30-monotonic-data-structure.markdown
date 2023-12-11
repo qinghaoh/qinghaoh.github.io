@@ -149,7 +149,38 @@ public int maximumRobots(int[] chargeTimes, int[] runningCosts, long budget) {
     // Sliding window doesn't shrink
     return j - i;
 }
+```
 
+[Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit][longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit]
+
+```c++
+int longestSubarray(vector<int>& nums, int limit) {
+    deque<int> maxd, mind;
+    int i = 0, j = 0;
+    while (j < nums.size()) {
+        while (!maxd.empty() && maxd.back() < nums[j]) {
+            maxd.pop_back();
+        }
+        maxd.push_back(nums[j]);
+
+        while (!mind.empty() && mind.back() > nums[j]) {
+            mind.pop_back();
+        }
+        mind.push_back(nums[j]);
+        j++;
+
+        if (maxd.front() - mind.front() > limit) {
+            if (maxd.front() == nums[i]) {
+                maxd.pop_front();
+            }
+            if (mind.front() == nums[i]) {
+                mind.pop_front();
+            }
+            i++;
+        }
+    }
+    return j - i;
+}
 ```
 
 This technique can be used to compute the recurrence relation more quickly in some _dynamic programming_ problems.
@@ -407,6 +438,7 @@ private int query(int y) {
 [find-building-where-alice-and-bob-can-meet]: https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/
 [find-maximum-non-decreasing-array-length]: https://leetcode.com/problems/find-maximum-non-decreasing-array-length/
 [jump-game-vi]: https://leetcode.com/problems/jump-game-vi/
+[longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit]: https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
 [max-value-of-equation]: https://leetcode.com/problems/max-value-of-equation/
 [maximum-balanced-subsequence-sum]: https://leetcode.com/problems/maximum-balanced-subsequence-sum/
 [maximum-number-of-robots-within-budget]: https://leetcode.com/problems/maximum-number-of-robots-within-budget/
