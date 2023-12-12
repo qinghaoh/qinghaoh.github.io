@@ -317,6 +317,20 @@ PRP \\(\subset\\) PRF
 * \\(CW((k1,k2),m) = (r, F(k1,r) \oplus S(k2,m))\\)
   - CW is a secure MAC if \\((S,V)\\) is a secure one-time MAC and \\(F\\) is a secure PRF.
 
+||ECBC-MAC|CMAC|NMAC|HMAC|PMAC|Carter-Wegman MAC|
+|-|-|-|-|-|-|-|
+|Property|PRF|PRF|PRF|PRF|PRF|Randomized MAC|
+|Parallizable?|No|No|No|No|Yes|No|
+
+**MACs from Collision Resistance**
+* \\(S^{big}(k,m) = S(k,H(m))\\)
+* \\(V^{big}(k,m,t) = V(k,H(m),t)\\)
+* \\(I^{big}\\) is a secure MAC if \\(I\\) is a secure MAC and \\(H\\) is collision resistant.
+
+**Birthday Paradox**
+* \\(n \approx 1.2\sqrt{B} \Rightarrow \Pr \le 1/2\\)
+* Generic attack on collision resistant functions: time and space: \\(O(2^{n/2})\\)
+
 ## Basic Key Exchange
 
 Trusted 3rd Party: simple protocol; replay attack

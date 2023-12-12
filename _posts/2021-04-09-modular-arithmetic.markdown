@@ -3,11 +3,9 @@ title:  "Modular Arithmetic"
 category: algorithm
 tags: math
 ---
-# Theorem
+# Euler's Theorem
 
-[Euler's theorem](https://en.wikipedia.org/wiki/Euler's_theorem)
-
-In number theory, Euler's theorem (also known as the Fermat–Euler theorem or Euler's totient theorem) states that if \\(n\\) and \\(a\\) are coprime positive integers, then \\(a\\) raised to the power of the totient of \\(n\\) is congruent to \\(1\\) modulo \\(n\\), or:
+In number theory, [Euler's theorem](https://en.wikipedia.org/wiki/Euler's_theorem) (also known as the Fermat–Euler theorem or Euler's totient theorem) states that if \\(n\\) and \\(a\\) are coprime positive integers, then \\(a\\) raised to the power of the totient of \\(n\\) is congruent to \\(1\\) modulo \\(n\\), or:
 
 \\[a^{\varphi (n)} \equiv 1 \pmod{n}\\]
 

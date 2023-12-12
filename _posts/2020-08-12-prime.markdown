@@ -3,11 +3,15 @@ title:  "Prime"
 category: algorithm
 tags: math
 ---
-# Theorem
+# Theorems
 
-[Euclid-Euler theorem](https://en.wikipedia.org/wiki/Euclid%E2%80%93Euler_theorem)
+## Euclid-Euler Theorem
 
-The Euclid–Euler theorem is a theorem in mathematics that relates perfect numbers to Mersenne primes. It states that an even number is perfect if and only if it has the form \\(2^{p−1}(2^p − 1)\\), where \\(2^p − 1\\) is a prime number.
+The [Euclid-Euler theorem](https://en.wikipedia.org/wiki/Euclid%E2%80%93Euler_theorem) relates perfect numbers to Mersenne primes. It states that an even number is perfect if and only if it has the form \\(2^{p−1}(2^p − 1)\\), where \\(2^p − 1\\) is a prime number.
+
+## Relatively Prime
+
+Integers \\(a\\) and \\(b\\) are relatively prime iff there exists Bézout's identity \\(ax + by = 1\\).
 
 # Algorithm
 

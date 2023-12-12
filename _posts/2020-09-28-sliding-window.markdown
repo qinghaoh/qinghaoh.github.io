@@ -23,11 +23,11 @@ In this type of problems, when \\(s\\) is fixed and \\(m\\) increases, \\(f(v)\\
 
 \\(h(m)\\) is a monotonically decreasing function. For example, the constraint is "**at most** k elements". Denote the number of elements in the sliding window as \\(v\\), then \\(f(v) = k - v \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) decreases.
 
+The common solution: expand the window; whenever the constraint is *not satisfied*, use a `while` loop to shrink the window util the constraint is *satisfied* again.
+
 ### Max Length 
 
 [Max Consecutive Ones III][max-consecutive-ones-iii]
-
-The common solution: expand the window; whenever the constraint is *not satisfied*, use a `while` loop to shrink the window util the constraint is *satisfied* again.
 
 ```c++
 int longestOnes(vector<int>& nums, int k) {
@@ -166,16 +166,6 @@ public int maxFrequency(int[] nums, int k) {
 
 ### Count of Subarrays
 
-The common steps to resolve the problems:
-
-1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
-2. Increment `j` (move right by one)
-3. Do the following in a loop until the constraint is satisfied:
-  - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
-  - Increment `i` (move right by one)
-4. Add `j - i` to the final answer
-5. Repeat the above steps until `j` is out of boundary
-
 [Count Complete Subarrays in an Array][count-complete-subarrays-in-an-array]
 
 ```java
@@ -196,6 +186,8 @@ public int countCompleteSubarrays(int[] nums) {
     return result;
 }
 ```
+
+**At Most K** model.
 
 [Subarrays with K Different Integers][subarrays-with-k-different-integers]
 
@@ -218,15 +210,51 @@ private int atMost(int[] nums, int k) {
             }
         }
 
-        // [i, j) is a sliding window
-        // (j - i) represents the count of subarrays that has at most k different integers and end at index j
-        // i.e., these subarrays [i, j), [i + 1, j), ..., [j - 1, j)
-        // since each loop iteration moves j by one from start to end,
-        // the final result will include the counts at all positions of j
-        // Fomula: given an array of length n, it will produce (n * (n + 1)) / 2 total contiguous subarrays
+        // [i, j) is a sliding window.
+        // (j - i) represents the count of subarrays that has at most k different integers
+        // and exclusively ends at index j.
+        // i.e., subarrays [i, j), [i + 1, j), ..., [j - 1, j)
+        // Since each loop iteration moves j by one from start to end,
+        // the final result will include the counts at all positions of j.
         result += j - i;
     }
     return result;
+}
+```
+
+An alternative solution is **Three pointers**, which is a bit more complex.
+
+```c++
+int subarraysWithKDistinct(vector<int>& nums, int k) {
+    // [i1, j) is the longest subarray with k different integers
+    // [i2, j) is the shortest subarray with k different integers
+    //   Apparently, nums[i2] appears only once in [i2, j)
+    int n = nums.size(), res = 0, i1 = 0, i2 = 0, j = 0;
+    vector<int> freqs(n + 1);
+    while (j < n) {
+        if (freqs[nums[j++]]++ == 0) {
+            // In the beginning, the sliding window contains less than k different integers.
+            // When k == 0, the window contains exactly k different integers.
+            // After that (k <= 0), the window tends to have more than k different integers with the move of j
+            // so we need the following block to keep the window having exact k different integers.
+            if (--k < 0) {
+                // Since i2 is the only occurrence of nums[i2] until j
+                // moving i2 right by one will decrement the number of different integers by one 
+                freqs[nums[i2]] = 0;
+                i1 = ++i2;
+            }
+        }
+
+        // k never grows.
+        if (k <= 0) {
+            // Moves i2 right as far as possible
+            while (freqs[nums[i2]] > 1) {
+                freqs[nums[i2++]]--;
+            }
+            res += i2 - i1 + 1;   
+        }
+    }
+    return res;
 }
 ```
 
