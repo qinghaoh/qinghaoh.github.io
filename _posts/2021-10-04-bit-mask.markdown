@@ -175,7 +175,7 @@ public int minimumDifference(int[] nums) {
     //   = Math.abs(p1 - (sum - p1))
     //   = Math.abs(sum - 2 * p1)
     //
-    // to make d == 0, p1 = sum / 2
+    // To make d == 0, p1 = sum / 2
     int min = Integer.MAX_VALUE, sum = Arrays.stream(nums).sum();
     for (int i = 0; i <= n; i++) {
         for (int l : leftSums[i]) {
@@ -192,7 +192,6 @@ public int minimumDifference(int[] nums) {
     return min;
 }
 
-// subset sums of nums[start, ..., start + n - 1]
 private List<Integer>[] subsetSums(int[] nums, int start) {
     int n = nums.length / 2;
 
@@ -202,7 +201,7 @@ private List<Integer>[] subsetSums(int[] nums, int start) {
         sums[i] = new ArrayList<>();
     }
 
-    // computes the subset sum of each state
+    // Computes the subset sum of each state
     for (int s = 0; s < (1 << n); s++) {
         int sum = 0;
         for (int i = 0; i < n; i++) {
@@ -218,7 +217,7 @@ private List<Integer>[] subsetSums(int[] nums, int start) {
 }
 
 private int binarySearch(List<Integer> list, int target) {
-    // searches for the element closest to target.
+    // Searches for the element closest to target.
     int low = 0, high = list.size() - 1;
     while (low < high) {
         int mid = (low + high) >>> 1;

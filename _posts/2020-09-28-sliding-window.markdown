@@ -187,6 +187,23 @@ public int countCompleteSubarrays(int[] nums) {
 }
 ```
 
+[Count Subarrays With Score Less Than K][count-subarrays-with-score-less-than-k]
+
+```java
+public long countSubarrays(int[] nums, long k) {
+    long sum = 0, count = 0;
+    int i = 0, j = 0;
+    while (j < nums.length) {
+        sum += nums[j++];
+        while (sum * (j - i) >= k) {
+            sum -= nums[i++];
+        }
+        count += j - i;
+    }
+    return count;
+}
+```
+
 **At Most K** model.
 
 [Subarrays with K Different Integers][subarrays-with-k-different-integers]
@@ -258,47 +275,6 @@ int subarraysWithKDistinct(vector<int>& nums, int k) {
 }
 ```
 
-[Count Number of Nice Subarrays][count-number-of-nice-subarrays]
-
-```java
-public int numberOfSubarrays(int[] nums, int k) {
-    return atMost(nums, k) - atMost(nums, k - 1);
-}
-
-private int atMost(int[] nums, int k) {
-    int i = 0, j = 0, result = 0;
-    while (j < nums.length) {
-        k -= nums[j++] % 2;
-
-        while (k < 0) {
-            k += nums[i++] % 2;
-        }
-
-        result += j - i;
-    }
-    return result;
-}
-```
-
-If we apply `nums[i] -> nums[i] % 2`, the problem becomes [Subarray Sum Equals K][subarray-sum-equals-k]
-
-[Count Subarrays With Score Less Than K][count-subarrays-with-score-less-than-k]
-
-```java
-public long countSubarrays(int[] nums, long k) {
-    long sum = 0, count = 0;
-    int i = 0, j = 0;
-    while (j < nums.length) {
-        sum += nums[j++];
-        while (sum * (j - i) >= k) {
-            sum -= nums[i++];
-        }
-        count += j - i;
-    }
-    return count;
-}
-```
-
 [Count Vowel Substrings of a String][count-vowel-substrings-of-a-string]
 
 ```java
@@ -323,26 +299,6 @@ private int atMost(String word, int k) {
             char ci = word.charAt(i++);
             freq.put(ci, freq.get(ci) - 1);
             freq.remove(ci, 0);
-        }
-        count += j - i;
-    }
-    return count;
-}
-```
-
-[Subarray Product Less Than K][subarray-product-less-than-k]
-
-```java
-public int numSubarrayProductLessThanK(int[] nums, int k) {
-    if (k <= 1) {
-        return 0;
-    }
-
-    int i = 0, j = 0, prod = 1, count = 0;
-    while (j < nums.length) {
-        prod *= nums[j++];
-        while (prod >= k) {
-            prod /= nums[i++];
         }
         count += j - i;
     }
@@ -390,33 +346,11 @@ private boolean condition(int[] nums, int distance, int k) {
         while (nums[j] - nums[i] > distance) {
             i++;
         }
-        // it's not `count += j - i` because it's the count of pairs (start != end)
+        // It's not `count += j - i` because it's the count of pairs (start != end)
         // rather than the count of subarrays (start == end is possible)
         count += j++ - i;
     }
     return count >= k;
-}
-```
-
-[Count the Number of Good Subarrays][count-the-number-of-good-subarrays]
-
-```java
-public long countGood(int[] nums, int k) {
-    long count = 0;
-    int i = 0, j = 0;
-    Map<Integer, Integer> freqs = new HashMap<>();
-    while (j < nums.length) {
-        k -= freqs.getOrDefault(nums[j], 0);
-        freqs.put(nums[j], freqs.getOrDefault(nums[j], 0) + 1);
-        j++;
-
-        while (k <= 0) {
-            freqs.put(nums[i], freqs.get(nums[i]) - 1);
-            k += freqs.get(nums[i++]);
-        }
-        count += i;
-    }
-    return count;
 }
 ```
 
@@ -461,7 +395,7 @@ public String minWindow(String s, String t) {
         // Count of t-chars > 0
         // Count of non-t-chars == 0
         if (freqs[s.charAt(j++)]-- > 0) {
-            // only t-chars will decrement k
+            // Only t-chars will decrement k
             k--;
         }
 
@@ -473,7 +407,7 @@ public String minWindow(String s, String t) {
 
             // Count of non-t-chars < 0
             if (freqs[s.charAt(i++)]++ == 0) {
-                // only t-chars will increment k
+                // Only t-chars will increment k
                 k++;
             }
         }
@@ -543,6 +477,34 @@ public int numberOfSubstrings(String s) {
     return result;
 }
 ```
+
+[Count the Number of Good Subarrays][count-the-number-of-good-subarrays]
+
+```java
+public long countGood(int[] nums, int k) {
+    long count = 0;
+    int i = 0, j = 0;
+    Map<Integer, Integer> freqs = new HashMap<>();
+    while (j < nums.length) {
+        k -= freqs.getOrDefault(nums[j], 0);
+        freqs.put(nums[j], freqs.getOrDefault(nums[j], 0) + 1);
+        j++;
+
+        while (k <= 0) {
+            freqs.put(nums[i], freqs.get(nums[i]) - 1);
+            k += freqs.get(nums[i++]);
+        }
+        count += i;
+    }
+    return count;
+}
+```
+
+||Monotonically Decreasing Function|Monotonically Increasing Function|
+|-|-|-|
+|Loop|`while (!condition)`|`while (condition)`|
+|Length|`max(j - i)` or `j - i` (Non-shrinking Window)|`min(j - i)`|
+|#Subarrays|`+= j - i`|`+= i`|
 
 ## Non-monotonic Function
 
@@ -1290,7 +1252,6 @@ public int[] countServers(int n, int[][] logs, int x, int[] queries) {
 ```
 
 [count-complete-subarrays-in-an-array]: https://leetcode.com/problems/count-complete-subarrays-in-an-array/
-[count-number-of-nice-subarrays]: https://leetcode.com/problems/count-number-of-nice-subarrays/
 [count-subarrays-with-score-less-than-k]: https://leetcode.com/problems/count-subarrays-with-score-less-than-k/
 [count-the-number-of-good-subarrays]: https://leetcode.com/problems/count-the-number-of-good-subarrays/
 [count-vowel-substrings-of-a-string]: https://leetcode.com/problems/count-vowel-substrings-of-a-string/
@@ -1327,7 +1288,5 @@ public int[] countServers(int n, int[][] logs, int x, int[] queries) {
 [number-of-equal-count-substrings]: https://leetcode.com/problems/number-of-equal-count-substrings/
 [number-of-substrings-containing-all-three-characters]: https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/
 [permutation-in-string]: https://leetcode.com/problems/permutation-in-string/
-[subarray-product-less-than-k]: https://leetcode.com/problems/subarray-product-less-than-k/submissions/
-[subarray-sum-equals-k]: https://leetcode.com/problems/subarray-sum-equals-k/
 [subarrays-with-k-different-integers]: https://leetcode.com/problems/subarrays-with-k-different-integers/
 [substring-with-concatenation-of-all-words]: https://leetcode.com/problems/substring-with-concatenation-of-all-words/

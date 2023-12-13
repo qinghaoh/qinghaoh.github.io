@@ -195,7 +195,7 @@ PRP \\(\subset\\) PRF
 
 **CPA Security**
 * \\(m,c\\) pairs; \\(q\\) queries
-* Suppose \\(E(k,m)\\) always outputs the same ciphertext for msg \\(m\\), it's CPA _insecure_. Solutions:
+* Suppose \\(E(k,m)\\) always outputs the same ciphertext for msg \\(m\\), it's CPA *insecure*. Solutions:
   - Randomized encryption
     * CT size = PT size + "# random bits"
   - Nonce-based encryption: `(k,n)` pair never used more than once. A nonce can be:
@@ -212,11 +212,11 @@ PRP \\(\subset\\) PRF
     * \\(Adv_{CPA}[A,E_{CBC}] \le 2 \cdot Adv_{PRP}[B,E] + 2q^2L^2/\lvert X \rvert\\), where \\(q\\) = # messages encrypted with \\(k\\), \\(L\\) = message length (# blocks).
       - \\(qL\\) = message lengt in bits
     * CBC is only secure if \\(q^2L^2 \ll \lvert X \rvert\\)
-    * IV must be _unpredictable_
+    * IV must be *unpredictable*
   - Nonce-based
     * `key = (k,k1)`
     * `E(k1,nonce) -> IV`
-    * `(key,nonce)` pair must be _unique_
+    * `(key,nonce)` pair must be *unique*
     * `k1 != k` (see [CBC1](https://web.cs.ucdavis.edu/~rogaway/papers/nonce.pdf#page=6))
   - Padding: [PKCS#7](https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS#5_and_PKCS#7)
     * Dummy block if multiple of block size
@@ -224,7 +224,7 @@ PRP \\(\subset\\) PRF
 * CTR (Counter Mode)
   - Turns a block cipher into stream cipher
   - Parallelizable
-  - Deterministic: _One-time Key_
+  - Deterministic: *One-time Key*
     * Stream cipher: \\(c[i] = m[i] \oplus F(k, i)\\), where \\(F\\) is a PRF
     * \\(Adv_{SS}[A,E_{DETCTR}] = 2 \cdot Adv_{PRF}[B,F]\\)
     * Secure PRF \\(\Rightarrow\\) \\(E_{DETCTR}\\) is sem. sec.
@@ -245,7 +245,7 @@ PRP \\(\subset\\) PRF
 * Verifification: `V(k,m,t) -> 0,1`
 
 **Secure MACs**
-* _chosen message attack_: given `q` `(m,t)` pairs, the attacker:
+* *Chosen message attack*: given `q` `(m,t)` pairs, the attacker:
   - Cannot produce a valid tag for a new message
   - Cannot produce `(m,t')` given `(m,t)`
 * Secure PRF \\(\Rightarrow\\) Secure MAC
@@ -330,6 +330,36 @@ PRP \\(\subset\\) PRF
 **Birthday Paradox**
 * \\(n \approx 1.2\sqrt{B} \Rightarrow \Pr \le 1/2\\)
 * Generic attack on collision resistant functions: time and space: \\(O(2^{n/2})\\)
+
+**Merkle–Damgård Construction**
+* Collision resistant: short message -> long message
+* ![Merkle-Damgard](https://upload.wikimedia.org/wikipedia/commons/e/ed/Merkle-Damgard_hash_big.svg)
+* Length padding: `10...0 || 64-bit message length`; possible dummy block
+* `f` is compression function
+  - If `f` is collision resistant, then so is `H`
+  - Block Cipher
+    * ![Davies-Meyer](https://upload.wikimedia.org/wikipedia/commons/5/53/Davies-Meyer_hash.svg){: width="150" }
+      - Suppose `E` is an ideal cipher, then it takes \\(O(2^{n/2})\\) evaluations to find a collision - best possible
+      - \\(h(H,m) = E(m,H)\\) is not collision resistant -> \\(H'=D(m',E(m,H))\\)
+      - Used by all SHA functions, e.g. SHA-256 with SHACAL-2 as the block cipher, and key size (block size) is 512-bit
+    * 12 variants, e.g. Miyaguchi–Preneel (Whirlpool)
+      - \\(h(H,m) = E(m,H) \oplus m\\) is insecure
+  - Provable
+    * Deiscrete log
+    * Slow
+
+**HMAC**
+* `S(k,m) = H(k || m)` is insecure due to extension attack
+* [Definition](https://en.wikipedia.org/wiki/HMAC#Definition)
+* Similar to NMAC PRF; main difference: k1 and k2 are dependent
+* Secure PRF if
+  - Compression function is a PRF when dependent keys are used 
+  - \\(q \ll \lvert T \rvert^{1/2}\\)
+* TLS: HMAC-SHA1-96 (HMAC doesn't require compression function to be collision resistant)
+* Attacks:
+  - Verification timing attacks: `==` byte-by-byte comparison and returns false when first inequality found
+    * Defense #1: `res |= ord(x) ^ ord(y); return res == 0`; difficult to ensure due to compiler optimization
+    * Defense #2: `mac = HMAC(k,m); return HMAC(k,mac) == HMAC(k,sig_bytes)`
 
 ## Basic Key Exchange
 
