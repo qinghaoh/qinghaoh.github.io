@@ -25,7 +25,7 @@ In this type of problems, when \\(s\\) is fixed and \\(m\\) increases, \\(f(v)\\
 
 The common solution: expand the window; whenever the constraint is *not satisfied*, use a `while` loop to shrink the window util the constraint is *satisfied* again.
 
-### Max Length (MDF)
+### Max Length
 
 [Max Consecutive Ones III][max-consecutive-ones-iii]
 
@@ -141,6 +141,25 @@ public int characterReplacement(String s, int k) {
         }
     }
     return j - i;
+}
+```
+
+[Longest Nice Subarray][longest-nice-subarray]
+
+```java
+public int longestNiceSubarray(int[] nums) {
+    // mask is the ORs of elements in the sliding window
+    int mask = 0, i = 0, j = 0, max = 0;
+    while (j < nums.length) {
+        // Ensures only one element contriutes a set bit in mask
+        while ((mask & nums[j]) != 0) {
+            mask ^= nums[i++];
+        }
+
+        mask |= nums[j++];
+        max = Math.max(max, j - i);
+    }
+    return max;
 }
 ```
 
@@ -430,7 +449,7 @@ public String minWindow(String s1, String s2) {
 }
 ```
 
-### Count of Subarrays (MDF)
+### Count of Subarrays (MIF)
 
 [Number of Substrings Containing All Three Characters][number-of-substrings-containing-all-three-characters]
 
@@ -590,27 +609,6 @@ private int slidingWindow(String s, int k, int uniqueCharsTarget) {
 |#Subarrays|`+= j - i`|`+= i`|
 
 # Elastic Size
-
-[Longest Nice Subarray][longest-nice-subarray]
-
-```java
-public int longestNiceSubarray(int[] nums) {
-    int mask = 0, i = 0, j = 0, max = 0;
-    while (j < nums.length) {
-        // with this loop, if a bit of mask is set,
-        // only one element in the window has that bit set
-        while ((mask & nums[j]) != 0) {
-            mask ^= nums[i++];
-        }
-
-        mask |= nums[j];
-        max = Math.max(max, ++j - i);
-    }
-    return max;
-}
-```
-
-We can't use "Upper Bound Constraints, Max Length" model, otherwise if a bit of the mask is set, it's possible more than one element in the window have that bit set. Therefore, we don't know what the new mask is like after moving `nums[i++]` out of the window.
 
 [Moving Stones Until Consecutive II][moving-stones-until-consecutive-ii]
 
