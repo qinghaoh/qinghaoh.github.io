@@ -21,11 +21,11 @@ In this type of problems, when \\(s\\) is fixed and \\(m\\) increases, \\(f(v)\\
 
 ## Monotonically Decreasing Function
 
-\\(h(m)\\) is a monotonically decreasing function. For example, the constraint is "**at most** k elements". Denote the number of elements in the sliding window as \\(v\\), then \\(f(v) = k - v \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) decreases.
+\\(h(m)\\) is a monotonically decreasing function (MDF). For example, the constraint is "**at most** k elements". Denote the number of elements in the sliding window as \\(v\\), then \\(f(v) = k - v \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) decreases.
 
 The common solution: expand the window; whenever the constraint is *not satisfied*, use a `while` loop to shrink the window util the constraint is *satisfied* again.
 
-### Max Length 
+### Max Length (MDF)
 
 [Max Consecutive Ones III][max-consecutive-ones-iii]
 
@@ -164,28 +164,7 @@ public int maxFrequency(int[] nums, int k) {
 }
 ```
 
-### Count of Subarrays
-
-[Count Complete Subarrays in an Array][count-complete-subarrays-in-an-array]
-
-```java
-public int countCompleteSubarrays(int[] nums) {
-    int k = Arrays.stream(nums).boxed().collect(Collectors.toSet()).size(), i = 0, j = 0, result = 0;
-    Map<Integer, Integer> freqs = new HashMap<>();
-    while (j < nums.length) {
-        if (Optional.ofNullable(freqs.put(nums[j], freqs.getOrDefault(nums[j++], 0) + 1)).orElse(0) == 0) {
-            k--;
-        }
-        while (k == 0) {
-            if (freqs.put(nums[i], freqs.get(nums[i++]) - 1) == 1) {
-                k++;
-            }
-        }
-        result += i;
-    }
-    return result;
-}
-```
+### Count of Subarrays (MDF)
 
 [Count Subarrays With Score Less Than K][count-subarrays-with-score-less-than-k]
 
@@ -204,7 +183,7 @@ public long countSubarrays(int[] nums, long k) {
 }
 ```
 
-**At Most K** model.
+The following problem applies the **At Most K** model:
 
 [Subarrays with K Different Integers][subarrays-with-k-different-integers]
 
@@ -287,7 +266,7 @@ private int atMost(String word, int k) {
     int i = 0, j = 0, count = 0;
     while (j < word.length()) {
         char cj = word.charAt(j++);
-        // relocates i if the current char is not vowel
+        // Relocates i if the current char is not vowel
         if ("aeiou".indexOf(cj) < 0) {
             freq.clear();
             i = j;
@@ -356,13 +335,13 @@ private boolean condition(int[] nums, int distance, int k) {
 
 ## Monotonically Increasing Function
 
-\\(h(m)\\) is a monotonically increasing function. For example, the constraint is "sum is **greater than or equal to** target". Denote the sum of elements in the sliding window as \\(v\\), then \\(f(v) = v - target \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) increases.
-
-**Min Length**
-
-[Minimum Size Subarray Sum][minimum-size-subarray-sum]
+\\(h(m)\\) is a monotonically increasing function (MIF). For example, the constraint is "sum is **greater than or equal to** target". Denote the sum of elements in the sliding window as \\(v\\), then \\(f(v) = v - target \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) increases.
 
 The common solution is opposite compared to that for Monotonically Decreasing Function: expand the window; whenever the constraint is *satisfied*, use a `while` loop to shrink the window util the constraint is *not satisfied* again.
+
+### Min Length (MIF)
+
+[Minimum Size Subarray Sum][minimum-size-subarray-sum]
 
 ```java
 public int minSubArrayLen(int target, int[] nums) {
@@ -451,7 +430,7 @@ public String minWindow(String s1, String s2) {
 }
 ```
 
-**Count of Subarrays** 
+### Count of Subarrays (MDF)
 
 [Number of Substrings Containing All Three Characters][number-of-substrings-containing-all-three-characters]
 
@@ -500,15 +479,61 @@ public long countGood(int[] nums, int k) {
 }
 ```
 
-||Monotonically Decreasing Function|Monotonically Increasing Function|
-|-|-|-|
-|Loop|`while (!condition)`|`while (condition)`|
-|Length|`max(j - i)` or `j - i` (Non-shrinking Window)|`min(j - i)`|
-|#Subarrays|`+= j - i`|`+= i`|
+## Exact-value Constraints
+
+This type of problem can usually be converted to a MDF or MIF problem.
+
+**MDF**
+
+[Minimum Operations to Reduce X to Zero][minimum-operations-to-reduce-x-to-zero]
+
+```java
+public int minOperations(int[] nums, int x) {
+    int i = 0, j = 0, n = nums.length, sum = Arrays.stream(nums).sum(), min = Integer.MAX_VALUE;
+    while (j < n) {
+        // sum(nums[0...i) + nums(j...n - 1]) == x
+        sum -= nums[j++];
+
+        while (sum < x && i < j) {
+            sum += nums[i++];
+        }
+
+        if (sum == x) {
+            min = Math.min(min, n - j + i);
+        }
+    }
+    return min == Integer.MAX_VALUE ? -1 : min;
+}
+```
+
+Similar to: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equals-k]
+
+**MIF**
+
+[Count Complete Subarrays in an Array][count-complete-subarrays-in-an-array]
+
+```java
+public int countCompleteSubarrays(int[] nums) {
+    int k = Arrays.stream(nums).boxed().collect(Collectors.toSet()).size(), i = 0, j = 0, result = 0;
+    Map<Integer, Integer> freqs = new HashMap<>();
+    while (j < nums.length) {
+        if (Optional.ofNullable(freqs.put(nums[j], freqs.getOrDefault(nums[j++], 0) + 1)).orElse(0) == 0) {
+            k--;
+        }
+        while (k == 0) {
+            if (freqs.put(nums[i], freqs.get(nums[i++]) - 1) == 1) {
+                k++;
+            }
+        }
+        result += i;
+    }
+    return result;
+}
+```
 
 ## Non-monotonic Function
 
-\\(v = f(s, m)\\) is not a monotonic function of \\(m\\), e.g. "the frequency each character in the substring is greater than or equal to k". When you anchor the start index, expanding the window will either make all chars in thw window have more than k frequency, or introduce a new char so it goes the opposite direction of the goal.
+\\(v = f(s, m)\\) is not a monotonic function of \\(m\\), e.g. "the frequency of each character in the substring is greater than or equal to k". When you anchor the start index, expanding the window will either make all chars in the window have more than k frequency, or introduce a new char so it doesn't approach the goal.
 
 [Longest Substring with At Least K Repeating Characters][longest-substring-with-at-least-k-repeating-characters]
 
@@ -556,30 +581,13 @@ private int slidingWindow(String s, int k, int uniqueCharsTarget) {
 }
 ```
 
-## Exact-value Constraints
+## Summary
 
-[Minimum Operations to Reduce X to Zero][minimum-operations-to-reduce-x-to-zero]
-
-```java
-public int minOperations(int[] nums, int x) {
-    int i = 0, j = 0, n = nums.length, sum = Arrays.stream(nums).sum(), min = Integer.MAX_VALUE;
-    while (j < n) {
-        // sum([0...i) + (j...n - 1]) == x
-        sum -= nums[j++];
-
-        while (sum < x && i < j) {
-            sum += nums[i++];
-        }
-
-        if (sum == x) {
-            min = Math.min(min, n - j + i);
-        }
-    }
-    return min == Integer.MAX_VALUE ? -1 : min;
-}
-```
-
-Similar to: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equals-k]
+||Monotonically Decreasing Function (MDF)|Monotonically Increasing Function (MIF)|
+|-|-|-|
+|Loop|`while (!condition)`|`while (condition)`|
+|Length|`max(j - i)` or `j - i` (Non-shrinking Window)|`min(j - i)`|
+|#Subarrays|`+= j - i`|`+= i`|
 
 # Elastic Size
 
@@ -699,24 +707,7 @@ public int boxDelivering(int[][] boxes, int portsCount, int maxBoxes, int maxWei
 
 # Fixed-size Window
 
-This type of problems can sometimes be solved by prefix sum:
-
-[Maximum Points You Can Obtain from Cards][maximum-points-you-can-obtain-from-cards]
-
-The common steps to resolve the problems:
-
-1. Move the element referenced by the right pointer (`j`) into the sliding window and update related variables (counters, frequency array, etc.)
-2. Increment `j` (move right by one)
-3. Check if the window expands to the required size. If so:
-  - Move the element referenced by the left pointer (`i`) out of the sliding window and update related variables
-  - Increment `i` (move right by one)
-4. Repeat 1. 2. 3. until `j` is out of boundary
-
-[Minimum Difference Between Largest and Smallest Value in Three Moves][minimum-difference-between-largest-and-smallest-value-in-three-moves]
-
-[Maximum Number of Occurrences of a Substring][maximum-number-of-occurrences-of-a-substring]
-
-If a substring occurs `n` times, any of its substring occurs at least `n` times. So a substring with length `minSize` will have the max occurrences.
+If the window size is required to be a fixed value `k`, then we regard `j - i == k` as a constraint, and maintain it in each loop iteration.
 
 [Minimum Swaps to Group All 1's Together][minimum-swaps-to-group-all-1s-together]
 
@@ -733,6 +724,15 @@ public int minSwaps(int[] data) {
     return min;
 }
 ```
+
+[Maximum Number of Occurrences of a Substring][maximum-number-of-occurrences-of-a-substring]
+
+If a substring occurs `n` times, any of its substring occurs at least `n` times. So a substring with length `minSize` will have the max occurrences.
+
+It's also common to combine prefix sum to solve this type of problem:
+
+[Maximum Points You Can Obtain from Cards][maximum-points-you-can-obtain-from-cards]
+
 
 [Find All Anagrams in a String][find-all-anagrams-in-a-string]
 
@@ -789,38 +789,6 @@ public int equalCountSubstrings(String s, int count) {
         }
     }
     return result;
-}
-```
-
-[Maximum Sum of Distinct Subarrays With Length K][maximum-sum-of-distinct-subarrays-with-length-k]
-
-```java
-public long maximumSubarraySum(int[] nums, int k) {
-    // the index of the last duplicate element in the window
-    int lastDup = -1;
-    // last index of an element
-    Map<Integer, Integer> map = new HashMap<>();
-    // sum: running sum of size-k window
-    long sum = 0, max = 0;
-    for (int i = 0; i < nums.length; i++) {
-        sum += nums[i];
-        if (i >= k) {
-            sum -= nums[i - k];
-        }
-
-        int lastIndex = map.getOrDefault(nums[i], -1);
-        if (i - lastIndex < k) {
-            lastDup = Math.max(lastDup, lastIndex);
-        }
-
-        // attempts to update the max if the last duplicate is out of th window
-        if (i - lastDup >= k) {
-            max = Math.max(max, sum);
-        }
-
-        map.put(nums[i], i);
-    }
-    return max;
 }
 ```
 
@@ -1272,10 +1240,8 @@ public int[] countServers(int n, int[][] logs, int x, int[] queries) {
 [maximum-number-of-occurrences-of-a-substring]: https://leetcode.com/problems/maximum-number-of-occurrences-of-a-substring/
 [maximum-points-you-can-obtain-from-cards]: https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/
 [maximum-size-subarray-sum-equals-k]: https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
-[maximum-sum-of-distinct-subarrays-with-length-k]: https://leetcode.com/problems/maximum-sum-of-distinct-subarrays-with-length-k/
 [maximum-white-tiles-covered-by-a-carpet]: https://leetcode.com/problems/maximum-white-tiles-covered-by-a-carpet/
 [minimum-adjacent-swaps-for-k-consecutive-ones]: https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/
-[minimum-difference-between-largest-and-smallest-value-in-three-moves]: https://leetcode.com/problems/minimum-difference-between-largest-and-smallest-value-in-three-moves/
 [minimum-number-of-flips-to-make-the-binary-string-alternating]: https://leetcode.com/problems/minimum-number-of-flips-to-make-the-binary-string-alternating/
 [minimum-number-of-k-consecutive-bit-flips]: https://leetcode.com/problems/minimum-number-of-k-consecutive-bit-flips/
 [minimum-number-of-operations-to-make-array-continuous]: https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/

@@ -361,6 +361,14 @@ PRP \\(\subset\\) PRF
     * Defense #1: `res |= ord(x) ^ ord(y); return res == 0`; difficult to ensure due to compiler optimization
     * Defense #2: `mac = HMAC(k,m); return HMAC(k,mac) == HMAC(k,sig_bytes)`
 
+## Authenticated Encryption
+
+**Security**
+* Sem. sec. under a CPA attack, and
+* Ciphertext integrity
+
+CBC with random IV does not provide AE, because \\(D(k,\cdot)\\) never outputs \\(\perp\\).
+
 ## Basic Key Exchange
 
 Trusted 3rd Party: simple protocol; replay attack
