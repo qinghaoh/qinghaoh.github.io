@@ -367,7 +367,12 @@ PRP \\(\subset\\) PRF
 * Sem. sec. under a CPA attack, and
 * Ciphertext integrity
 
-CBC with random IV does not provide AE, because \\(D(k,\cdot)\\) never outputs \\(\perp\\).
+**Chosen Ciphertext Security**
+* Sem. sec. under Both CPA and CCA
+* CBC with random IV does not provide AE, because \\(D(k,\cdot)\\) never outputs \\(\perp\\).
+* AE \\(\Rightarrow\\) CCA security
+  - \\(Adv_{CCA}[A,E] \le 2q \cdot Adv_{CI}[B_1,E] + Adv_{CPA}[B_2,E]\\)
+* Does not prevent replay attacks and side channels
 
 ## Basic Key Exchange
 

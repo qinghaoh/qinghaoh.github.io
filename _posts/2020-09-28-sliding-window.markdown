@@ -880,6 +880,30 @@ public int minMoves(int[] nums, int k) {
 }
 ```
 
+[Jump Game VII][jump-game-vii]
+
+```java
+public boolean canReach(String s, int minJump, int maxJump) {
+    // prev: the number of previous positions that we can jump from
+    int n = s.length(), prev = 0;
+    boolean[] dp = new boolean[n];
+    dp[0] = true;
+
+    for (int i = 1; i < n; i++) {
+        // Sliding window: [i - maxJump, i - minJump]
+        if (i >= minJump && dp[i - minJump]) {
+            prev++;
+        }
+        if (i > maxJump && dp[i - maxJump - 1]) {
+            prev--;
+        }
+        // Checks if there's a true in the window
+        dp[i] = prev > 0 && s.charAt(i) == '0';
+    }
+    return dp[n - 1];
+}
+```
+
 [Minimum Number of Operations to Make Array Continuous][minimum-number-of-operations-to-make-array-continuous]
 
 ```java
@@ -1059,92 +1083,23 @@ private void slidingWindow(String s, int i) {
 
 ```java
 public int maximizeWin(int[] prizePositions, int k) {
-    int n = prizePositions.length, max = 0;
-    // dp[i]: in the first i positions, the maximum number of prizes we can get from one segment
+    int n = prizePositions.length;
+    // dp[i]: In the first i positions, the maximum number of prizes we can get from one segment
     int[] dp = new int[n + 1];
-    for (int i = 0, j = 0; j < n; j++) {
+    int i = 0, j = 0, max = 0;
+    while (j < n) {
         while (prizePositions[i] + k < prizePositions[j]) {
             i++;
         }
-        // the prize at index j is either selected or not
-        dp[j + 1] = Math.max(dp[j], j - i + 1);
-        max = Math.max(max, j - i + 1 + dp[i]);
+        j++;
+
+        // The prize at index j is either selected or not
+        dp[j] = Math.max(dp[j - 1], j - i);
+        max = Math.max(max, j - i + dp[i]);
     }
     return max;
 }
 ```
-
-[Jump Game VII][jump-game-vii]
-
-```java
-public boolean canReach(String s, int minJump, int maxJump) {
-    // prev is the number of previous positions that we can jump from
-    int n = s.length(), prev = 0;
-    boolean[] dp = new boolean[n];
-    dp[0] = true;
-
-    for (int i = 1; i < n; i++) {
-        // checks if there's a true in sliding window dp[i - maxJump : i - minJump]
-        if (i >= minJump && dp[i - minJump]) {
-            prev++;
-        }
-        if (i > maxJump && dp[i - maxJump - 1]) {
-            prev--;
-        }
-        dp[i] = prev > 0 && s.charAt(i) == '0';
-    }
-    return dp[n - 1];
-}
-```
-
-# Variants
-
-[permutation in string][permutation-in-string]
-
-```java
-public boolean checkInclusion(String s1, String s2) {
-    int n1 = s1.length(), n2 = s2.length();
-    if (n1 > n2) {
-        return false;
-    }
-
-    int[] map1 = new int[26], map2 = new int[26];
-    for (int i = 0; i < n1; i++) {
-        map1[s1.charAt(i) - 'a']++;
-        map2[s2.charAt(i) - 'a']++;
-    }
-
-    int count = 0;
-    for (int i = 0; i < 26; i++) {
-        if (map1[i] == map2[i]) {
-            count++;
-        }
-    }
-
-    for (int i = 0; i + n1 < n2; i++) {
-        int r = s2.charAt(i + n1) - 'a', l = s2.charAt(i) - 'a';
-        if (count == 26) {
-            return true;
-        }
-
-        map2[r]++;
-        if (map2[r] == map1[r]) {
-            count++;
-        } else if (map2[r] == map1[r] + 1) {
-            count--;
-        }
-
-        map2[l]--;
-        if (map2[l] == map1[l]) {
-            count++;
-        } else if (map2[l] == map1[l] - 1) {
-            count--;
-        }
-    }
-    return count == 26;
-}
-```
-
 
 # In Batch
 
@@ -1251,6 +1206,5 @@ public int[] countServers(int n, int[][] logs, int x, int[] queries) {
 [moving-stones-until-consecutive-ii]: https://leetcode.com/problems/moving-stones-until-consecutive-ii/
 [number-of-equal-count-substrings]: https://leetcode.com/problems/number-of-equal-count-substrings/
 [number-of-substrings-containing-all-three-characters]: https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/
-[permutation-in-string]: https://leetcode.com/problems/permutation-in-string/
 [subarrays-with-k-different-integers]: https://leetcode.com/problems/subarrays-with-k-different-integers/
 [substring-with-concatenation-of-all-words]: https://leetcode.com/problems/substring-with-concatenation-of-all-words/
