@@ -247,6 +247,7 @@ PRP \\(\subset\\) PRF
 **Secure MACs**
 * *Chosen message attack*: given `q` `(m,t)` pairs, the attacker:
   - Cannot produce a valid tag for a new message
+    * e.g. prevent CCA against Encrypt-then-MAC
   - Cannot produce `(m,t')` given `(m,t)`
 * Secure PRF \\(\Rightarrow\\) Secure MAC
   - `S(k,m) := F(k,m)`
@@ -373,6 +374,81 @@ PRP \\(\subset\\) PRF
 * AE \\(\Rightarrow\\) CCA security
   - \\(Adv_{CCA}[A,E] \le 2q \cdot Adv_{CI}[B_1,E] + Adv_{CPA}[B_2,E]\\)
 * Does not prevent replay attacks and side channels
+
+||MAC-then-Encrypt|Encrypt-then-MAC|Encrypt-and-MAC|
+|-|-|-|-|
+|Application|SSL|IPSec|SSH|
+|Secure?|No (CCA)|Yes (AE)|No (CPA; MAC doesn't provide confidentiality)|
+|Construction|Rand-CTR or Rand-CBC|Always|N/A|
+|Note|One-time MAC is sufficient for Rand-CTR|N/A|N/A|
+
+**AEAD**
+
+```
+                  |<---     encrypted      --->|
+ ----------------------------------------------
+| associated data |       encrypted data       |
+ ----------------------------------------------
+|<---            authenticated             --->|
+```
+
+||GCM|CCM|EAX|
+|-|-|-|-|
+|Type|Encrypt-then-MAC|MAC-then-Encrypt|Encrypt-then-MAC|
+|Construction|CTR then CW-MAC|CBC-MAC then CTR|CTR then CMAC|
+|NIST?|Yes|Yes|No|
+|Nonce-based?|Yes|Yes|Yes|
+|AEAD?|Yes|Yes|Yes|
+|Code size|Large (Non-Intel)|Smaller|Smaller|
+|Speed|Fast|Slower|Slower|
+|Note|Intel `PCLMULQDQ`|Block cipher for MAC & Enc|Block cipher for MAC & Enc|
+
+**OCB**
+![OCB](https://web.cs.ucdavis.edu/~rogaway/ocb/faq1.gif)
+
+**TLS 1.2**
+* MAC-then-Encrypt
+* Unidirectional keys
+* Stateful encryption
+* CBC AES-128, HMAC-SHA1
+* 4 keys, e.g. \\(k_{b->s}=(k_{mac},k_{enc})\\)
+* Attacks (Prior to TLS 1.1)
+  - Predictable IV for CBC (chained IV): Not CPA secure; BEAST attack
+  - Padding oracle: CBC only; CTR doesn't have padding
+    * IMAP over TLS: query every 5 min
+
+**802.11b WEP**
+* Attack: CRC is linear
+
+**SSH**
+* Binary Packet Protocol
+* Non-atomic decrypt
+* Len field decrypted and used before it is authenticated
+
+**Key Derivation**
+* Extract pseudo-random key `k` from source key `SK`
+  - Salt: a fixed non-secret string chosen at random
+* Expand uniform `k`
+  - \\(KDF(k,CTX,L) = \parallel_{i = 0}^{L}F(k,(CTX \parallel i))\\)
+
+**HKDF**
+* Extract: \\(k \leftarrow HMAC(k=salt,data=SK)\\)
+
+**Password-Based KDF (PBKDF)**
+* Deriving keys from passwords:
+  - Do not use HKDF: passwords have insufficient entropy
+  - Derived keys will be vulnerable to dictionary attacks
+* Slow hash function: \\(H^{(c)}(pwd \parallel salt)\\)
+
+**Deterministic Encryption**
+* Cannot be CPA secure
+* Never encrypts same message twice
+  - Choose message at random from a large message space
+  - Message structure ensures uniqueness
+* Deterministic CPA security
+  - CBC with fixed IV is not det. CPA secure
+
+**Tweakable Encryption**
 
 ## Basic Key Exchange
 

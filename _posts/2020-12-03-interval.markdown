@@ -507,7 +507,7 @@ public int minMeetingRooms(int[][] intervals) {
 }
 ```
 
-Notice how similar it is to finding max length with upper bounded constraint by [Sliding window](../sliding-window/#max-length) - the window never shrinks.
+Notice how similar it is to finding max length with upper bounded constraint by [Sliding window](../sliding-window/#max-length-mdf) - the window never shrinks.
 
 Another solution is Line weep. We consolidate the number of occupied rooms at each time and find the max.
 

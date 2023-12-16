@@ -25,7 +25,7 @@ In this type of problems, when \\(s\\) is fixed and \\(m\\) increases, \\(f(v)\\
 
 The common solution: expand the window; whenever the constraint is *not satisfied*, use a `while` loop to shrink the window util the constraint is *satisfied* again.
 
-### Max Length
+### Max Length (MDF)
 
 [Max Consecutive Ones III][max-consecutive-ones-iii]
 
@@ -125,41 +125,22 @@ public int characterReplacement(String s, int k) {
     int[] freqs = new int[26];
     int i = 0, j = 0, maxFreq = 0;
     while (j < s.length()) {
-        // Grows the window when the count of the new char exceeds the historical max frequency.
-        // So, max frequency is non-decreasing.
+        // maxFreq: the max occurrences of a char so far; it's non-decreasing.
         maxFreq = Math.max(maxFreq, ++freqs[s.charAt(j++) - 'A']);
 
         // Constraint variable: j - i - maxFreq
-        // After the element nums[j - 1] was added to the window in this iteration:
-        // - If maxFreq remains unchanged, j - i - maxFreq increments by one due to j
-        // - If maxFreq increases, it must have incremented by one, and nums[j - 1] must be the new, unique element whose frequency is maxFreq
+        // After the element s[j - 1] was added to the window in this iteration:
+        // - If maxFreq remains unchanged. j - i - maxFreq increments by one due to s[j - 1]
+        // - If maxFreq increases, it must have incremented by one,
+        //   and s[j - 1] must be the new, unique element whose frequency is maxFreq.
         //   j - i - maxFreqs remains unchanged
         //
-        // Therefore, the sliding window never shrinks, just like the "max consecutive ones" model.
+        // Therefore, we can apply the Non-shrinking window technique.
         if (j - i - maxFreq > k) {
             freqs[s.charAt(i++) - 'A']--;
         }
     }
     return j - i;
-}
-```
-
-[Longest Nice Subarray][longest-nice-subarray]
-
-```java
-public int longestNiceSubarray(int[] nums) {
-    // mask is the ORs of elements in the sliding window
-    int mask = 0, i = 0, j = 0, max = 0;
-    while (j < nums.length) {
-        // Ensures only one element contriutes a set bit in mask
-        while ((mask & nums[j]) != 0) {
-            mask ^= nums[i++];
-        }
-
-        mask |= nums[j++];
-        max = Math.max(max, j - i);
-    }
-    return max;
 }
 ```
 
@@ -180,6 +161,25 @@ public int maxFrequency(int[] nums, int k) {
         }
     }
     return j - i;
+}
+```
+
+[Longest Nice Subarray][longest-nice-subarray]
+
+```java
+public int longestNiceSubarray(int[] nums) {
+    // mask: the ORs of elements in the sliding window
+    int mask = 0, i = 0, j = 0, max = 0;
+    while (j < nums.length) {
+        // Only one element contriutes a set bit in mask
+        while ((mask & nums[j]) != 0) {
+            mask ^= nums[i++];
+        }
+
+        mask |= nums[j++];
+        max = Math.max(max, j - i);
+    }
+    return max;
 }
 ```
 
@@ -790,6 +790,62 @@ public int equalCountSubstrings(String s, int count) {
 }
 ```
 
+[Count Zero Request Servers][count-zero-request-servers]
+
+```java
+public int[] countServers(int n, int[][] logs, int x, int[] queries) {
+    Arrays.sort(logs, Comparator.comparingInt(l -> l[1]));
+
+    int l = logs.length, m = queries.length;
+    Integer[] indices = new Integer[m];
+    for (int i = 0; i < m; i++) {
+        indices[i] = i;
+    }
+    Arrays.sort(indices, Comparator.comparingInt(i -> queries[i]));
+
+    int[] arr = new int[m];
+    int i = 0, j = 0, k = 0;
+    Map<Integer, Integer> freqs = new HashMap<>();
+    while (k < m) {
+        while (j < l && logs[j][1] <= queries[indices[k]]) {
+            freqs.put(logs[j][0], freqs.getOrDefault(logs[j][0], 0) + 1);
+            j++;
+        }
+        while (i < l && logs[i][1] < queries[indices[k]] - x) {
+            freqs.put(logs[i][0], freqs.get(logs[i][0]) - 1);
+            freqs.remove(logs[i][0], 0);
+            i++;
+        }
+        arr[indices[k++]] = n - freqs.size();
+    }
+    return arr;
+}
+```
+
+[Maximize Win From Two Segments][maximize-win-from-two-segments]
+
+Unlike other problems, array values are used to udpate window boundaries, and distances between array indices are used to update quantities in window.
+
+```java
+public int maximizeWin(int[] prizePositions, int k) {
+    int n = prizePositions.length;
+    // dp[i]: In the first i positions, the maximum number of prizes we can get from one segment
+    int[] dp = new int[n + 1];
+    int i = 0, j = 0, max = 0;
+    while (j < n) {
+        while (prizePositions[i] + k < prizePositions[j]) {
+            i++;
+        }
+        j++;
+
+        // The prize at index j is either selected or not
+        dp[j] = Math.max(dp[j - 1], j - i);
+        max = Math.max(max, j - i + dp[i]);
+    }
+    return max;
+}
+```
+
 [Minimum Number of K Consecutive Bit Flips][minimum-number-of-k-consecutive-bit-flips]
 
 ```java
@@ -1077,30 +1133,6 @@ private void slidingWindow(String s, int i) {
 }
 ```
 
-# Dynamic Programming
-
-[Maximize Win From Two Segments][maximize-win-from-two-segments]
-
-```java
-public int maximizeWin(int[] prizePositions, int k) {
-    int n = prizePositions.length;
-    // dp[i]: In the first i positions, the maximum number of prizes we can get from one segment
-    int[] dp = new int[n + 1];
-    int i = 0, j = 0, max = 0;
-    while (j < n) {
-        while (prizePositions[i] + k < prizePositions[j]) {
-            i++;
-        }
-        j++;
-
-        // The prize at index j is either selected or not
-        dp[j] = Math.max(dp[j - 1], j - i);
-        max = Math.max(max, j - i + dp[i]);
-    }
-    return max;
-}
-```
-
 # In Batch
 
 [Maximum White Tiles Covered by a Carpet][maximum-white-tiles-covered-by-a-carpet]
@@ -1133,42 +1165,6 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
         }
     }
     return max;
-}
-```
-
-# Dynamic Constraints
-
-In the following example, the constraints are "dynamic" - a series of fixed windows.
-
-[Count Zero Request Servers][count-zero-request-servers]
-
-```java
-public int[] countServers(int n, int[][] logs, int x, int[] queries) {
-    Arrays.sort(logs, Comparator.comparingInt(l -> l[1]));
-
-    int l = logs.length, m = queries.length;
-    Integer[] indices = new Integer[m];
-    for (int i = 0; i < m; i++) {
-        indices[i] = i;
-    }
-    Arrays.sort(indices, Comparator.comparingInt(i -> queries[i]));
-
-    int[] arr = new int[m];
-    int i = 0, j = 0, k = 0;
-    Map<Integer, Integer> freqs = new HashMap<>();
-    while (k < m) {
-        while (j < l && logs[j][1] <= queries[indices[k]]) {
-            freqs.put(logs[j][0], freqs.getOrDefault(logs[j][0], 0) + 1);
-            j++;
-        }
-        while (i < l && logs[i][1] < queries[indices[k]] - x) {
-            freqs.put(logs[i][0], freqs.get(logs[i][0]) - 1);
-            freqs.remove(logs[i][0], 0);
-            i++;
-        }
-        arr[indices[k++]] = n - freqs.size();
-    }
-    return arr;
 }
 ```
 
