@@ -846,6 +846,41 @@ public int maximizeWin(int[] prizePositions, int k) {
 }
 ```
 
+[Maximum White Tiles Covered by a Carpet][maximum-white-tiles-covered-by-a-carpet]
+
+```java
+public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
+    Arrays.sort(tiles, Comparator.comparingInt(t -> t[0]));
+
+    // It's always optimal to align the carpet with the left of a tile range.
+    // i, j are indices of tiles array, not the actual tile position.
+    int i = 0, j = 0, max = 0, cover = 0;
+    while (max < carpetLen && j < tiles.length) {
+        if (i == j || tiles[i][0] + carpetLen > tiles[j][1]) {
+            // case 1: tiles[j] is the first tile (i == j)
+            //   carpet may be longer or shorter than this tile
+            //   so picks the min of the two as the covered length
+            // case 2: carpet fully covers tiles[j]
+            //
+            // in either case, moves tiles[j] into the window
+            cover += Math.min(carpetLen, tiles[j][1] - tiles[j][0] + 1);
+            max = Math.max(max, cover);
+            j++;
+        } else {
+            // Partial of tiles[j] is covered by the carpet
+            int partial = Math.max(0, tiles[i][0] + carpetLen - tiles[j][0]);
+            max = Math.max(max, cover + partial);
+            // Moves tile[i] out of the window.
+            // tiles[i] always aligns with the carpet start,
+            // so it's always fully covered by the carpet in this else-branch.
+            cover -= tiles[i][1] - tiles[i][0] + 1;
+            i++;
+        }
+    }
+    return max;
+}
+```
+
 [Minimum Number of K Consecutive Bit Flips][minimum-number-of-k-consecutive-bit-flips]
 
 ```java
@@ -884,7 +919,7 @@ public int minMoves(int[] nums, int k) {
         return 0;
     }
 
-    // indexes of ones
+    // Indices of ones
     List<Integer> ones = new ArrayList<>();
     for (int i = 0; i < nums.length; i++) {
         if (nums[i] == 1) {
@@ -892,7 +927,7 @@ public int minMoves(int[] nums, int k) {
         }
     }
 
-    // prefix sum
+    // Prefix sum
     int m = ones.size();
     int[] p = new int[m + 1];
     for (int i = 0; i < m; i++) {
@@ -902,9 +937,9 @@ public int minMoves(int[] nums, int k) {
     int min = Integer.MAX_VALUE;
     // sliding window [i...j] of length k
     for (int i = 0, j = k - 1; j < m; i++, j++) {
-        // mid point
+        // Mid point
         int mid = (i + j) / 2;
-        // number of elements on each side
+        // Number of elements on each side
         int radius = mid - i;
 
         int left = p[mid] - p[i];
@@ -1130,41 +1165,6 @@ private void slidingWindow(String s, int i) {
             i = j + len;
         }
     }
-}
-```
-
-# In Batch
-
-[Maximum White Tiles Covered by a Carpet][maximum-white-tiles-covered-by-a-carpet]
-
-```java
-public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
-    Arrays.sort(tiles, Comparator.comparingInt(t -> t[0]));
-
-    // it's always optimal to place the carpet at the left of tile range
-    // i, j are indices of tiles array, not the actual tile position
-    int i = 0, j = 0, max = 0, cover = 0;
-    while (max < carpetLen && j < tiles.length) {
-        if (i == j || tiles[i][0] + carpetLen > tiles[j][1]) {
-            // case 1: tiles[j] is the first tile (i == j)
-            //   carpet may be longer or shorter than this tile
-            //   so picks the min of the two as the covered length
-            // case 2: carpet fully covers tiles[j]
-            //
-            // in either case, moves tiles[j] into the window
-            cover += Math.min(carpetLen, tiles[j][1] - tiles[j][0] + 1);
-            max = Math.max(max, cover);
-            j++;
-        } else {
-            // partial of tiles[j] is covered by the carpet
-            int partial = Math.max(0, tiles[i][0] + carpetLen - tiles[j][0]);
-            max = Math.max(max, cover + partial);
-            // moves tile[i] out of the window
-            cover -= tiles[i][1] - tiles[i][0] + 1;
-            i++;
-        }
-    }
-    return max;
 }
 ```
 

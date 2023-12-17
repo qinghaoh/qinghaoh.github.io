@@ -117,7 +117,7 @@ PRP \\(\subset\\) PRF
   - Parallelizable
 
 **Secure PRPs**
-* _PRF Switching Lemma_
+* *PRF Switching Lemma*
   - \\(\lvert Adv_{PRF}[A,E] - Adv_{PRP}[A,E] \rvert \lt q^2/2\lvert X \rvert\\), where \\(q\\) is the number of queries
   - If \\(\lvert X \rvert\\) is sufficiently large, then Secure PRP \\(\Rightarrow\\) Secure PRF
 
@@ -285,7 +285,7 @@ PRP \\(\subset\\) PRF
 
 **Extension Property**
 * For both ECBC-MAC and NMAC, \\(\forall x,y,w: F_{BIG}(k,x) = F_{BIG}(k,y) \Rightarrow F_{BIG}(k,x \parallel w) = F_{BIG}(k,y \parallel w)\\)
-* Attack: Issue \\(lvert Y \rvert^{1/2}\\) to find a collision; *b-day paradox*
+* Attack: Issue \\(\lvert Y \rvert^{1/2}\\) to find a collision; *b-day paradox*
 * The security bounds are *tight*
 
 **MAC Padding**
@@ -447,6 +447,25 @@ PRP \\(\subset\\) PRF
   - Message structure ensures uniqueness
 * Deterministic CPA security
   - CBC with fixed IV is not det. CPA secure
+* Synthetic IV (SIV)
+  - \\(E_{det}((k1,k2),m) = E(k2,m;r \leftarrow F(k1,m))\\), where \\((E,D)\\) is CPA-secure and \\(F\\) is a secure PRF.
+  - \\(E_{det}\\) is sem. sec. under det. CPA
+  - Well suited for messages longer than ana AES block
+  - Automatically ensures Deterministic Authenciated Encryption (DAE): det. CPA + ciphertext integrity
+    * In decryption, apply the PRF to the decrypted message and verify it's identical to the IV
+    * Secure PRF + CPA-secure CTR -> SIV-CTR provides DAE
+* PRP
+  - sem. sec. under det. CPA
+  - Good for short messages (< 16 bytes); just use AES
+  - Wide PRP
+    * For long messages
+    * [EME](https://www.cs.ucdavis.edu/~rogaway/papers/eme.pdf): a PRP on \\(\\{0,1\\}^N\\) for \\(N \gg n\\), where \\(n\\) is the size of PRP block
+      - Secure
+      - Parallelizable
+      - 2X slower than SIV
+  - PRP-based DAE
+    * Append 0's to the LSB of the message
+    * DAE if \\(1/2^n\\) is negligible, where \\(n\\) is the count of appended 0's
 
 **Tweakable Encryption**
 
