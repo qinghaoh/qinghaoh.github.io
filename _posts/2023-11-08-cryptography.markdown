@@ -462,12 +462,31 @@ PRP \\(\subset\\) PRF
     * [EME](https://www.cs.ucdavis.edu/~rogaway/papers/eme.pdf): a PRP on \\(\\{0,1\\}^N\\) for \\(N \gg n\\), where \\(n\\) is the size of PRP block
       - Secure
       - Parallelizable
-      - 2X slower than SIV
+      - 2x slower than SIV
   - PRP-based DAE
     * Append 0's to the LSB of the message
     * DAE if \\(1/2^n\\) is negligible, where \\(n\\) is the count of appended 0's
 
-**Tweakable Encryption**
+**Disk encryption**
+* Sectors on disk are fixed size
+* No expansion (\\(\lvert M \rvert = \lvert C \rvert\\))
+* Must use deterministic encryption; no integrity
+* Det. CPA secure cipher with (\\(\lvert M \rvert = \lvert C \rvert\\)) \\(\Rightarrow\\) PRP
+  - \\(PRP(k_t, sector_t)\\)
+  - \\(k_t = PRF(k,t)\\)
+* Tweakable block ciphers
+  - Construct many PRPs from a master key
+  - \\(E(k,t,\cdot)\\) is invertable; indist. from random
+  - Construction
+    * \\(E_{tweak}(k,t,x) = E(E(k,t),x)\\), where \\((E,D)\\) is a secure PRP, \\(E:K \times X \rightarrow X, K = X\\)
+      - `2n` evaluations of `E`
+    * [XTS (XEX Tweakable Block Cipher with Ciphertext Stealing)](https://luca-giuzzi.unibs.it/corsi/Support/papers-cryptography/1619-2007-NIST-Submission.pdf)
+      - `n + 1` evaluations of `E`
+      - It is necessary to encrypt the tweak before using it
+      - Block-level PRP, not sector-level
+      - Mac OS X-Lion, TrueCrypt, BestCrypt
+
+**Format Preserving Encryption**
 
 ## Basic Key Exchange
 

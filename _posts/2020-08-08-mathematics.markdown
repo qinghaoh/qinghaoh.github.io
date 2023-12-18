@@ -149,7 +149,7 @@ anything greater than 1010111 will not be allowed
 
 [Best Meeting Point][best-meeting-point]
 
-* Mean minimizes total distance for Euclidian distance
+* Mean minimizes total distance for Euclidean distance
 * Median minimizes total distance for absolute deviation: \\[D_{i}=\|x_{i}-m(X)\|\\]
 * Mode minimizes distance for indicator function
 

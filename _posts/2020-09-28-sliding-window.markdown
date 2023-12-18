@@ -935,36 +935,48 @@ public int minMoves(int[] nums, int k) {
     }
 
     int min = Integer.MAX_VALUE;
-    // sliding window [i...j] of length k
+    // Sliding window ones[i...j] of length k
     for (int i = 0, j = k - 1; j < m; i++, j++) {
         // Mid point
         int mid = (i + j) / 2;
+        // left: [i, mid - 1], right: [mid + 1, j]
+        int left = p[mid] - p[i], right = p[j + 1] - p[mid + 1];
+
         // Number of elements on each side
         int radius = mid - i;
 
-        int left = p[mid] - p[i];
-        int right = p[j + 1] - p[mid + 1];
+        // For example, ones = [0,1,3,5,7,10,13]
+        //
+        // If k is odd, e.g. k = 5, consider the first window [0,1,3,5,7]
+        //   ones[mid] = ones[2] = 3
+        //   left = sum(ones[0,1]) = 1
+        //   right = sum(ones[3,4]) = 12
+        //   radius = 2
+        //
+        //   Step 1: swaps all ones to the mid
+        //     i.e. [0,1,3,5,7] -> [3,3,3,3,3]
+        //     swaps1 = (3 - 0) + (3 - 1) + (5 - 3) + (7 - 3)
+        //           = right - left
+        //   Step 2: distributes the ones at the mid uniformly in the window
+        //     i.e. [3,3,3,3,3] -> [1,2,3,4,5]
+        //     swaps2 = (3 - 1) + (2 - 1) + (4 - 3) + (5 - 3)
+        //            = 2 * (1 + 2) = (1 + radius) * radius
+        //            = subtrahend
+        //   swap = swaps1 - swaps2 = left + right - subtrahend
+        //
+        // Similarly, if k is even, e.g. k = 6, consider the first window [0,1,3,5,7,10]
+        //   ones[mid] = ones[2] = 3
+        //   left = sum(ones[0,1]) = 1
+        //   right = sum(ones[3,5]) = 22
+        //   radius = 2
+        //
+        //   Step 1: [0,1,3,5,7,10] -> [3,3,3,3,3,3]
+        //     swaps1 = right - left - 3 = right - left - ones[mid]
+        //   Step 2: [3,3,3,3,3,3] -> [1,2,3,4,5,6]
+        //     swaps2 = 2 + 1 + 0 + 1 + 2 + 3
+        //            = (1 + radius) * radius + (radius + 1)
 
-        int subtrahend = radius * (radius + 1);
-        if (k % 2 == 0) {
-            // e.g. [0, 2, 4, 6, 7, 9]
-            // k = 6
-            //
-            // Step 1:
-            // -> [4, 4, 4, 4, 4, 4]
-            // left = 0 + 2 (+ 4)
-            // right = 6 + 7 + 9
-            // radius = 2
-            // swap = (4 - 0) + (4 - 2) + (9 - 4) + (7 - 4) + (6 - 4)
-            //    = (9 + 7 + 6) - (0 + 2 + 4)
-            //
-            // Step2:
-            // -> [2, 3, 4, 5, 6, 7]
-            // swap -= 1 + 2 + 0 + 1 + 2 + 3
-            //   -= (radius + 1) * radius + (radius + 1)
-            left += ones.get(mid);
-            subtrahend += radius + 1;
-        }
+        int subtrahend = radius * (radius + 1) + (k % 2 == 0 ? radius + 1 + ones.get(mid) : 0);
         min = Math.min(min, right - left - subtrahend);
     }
     return min;
