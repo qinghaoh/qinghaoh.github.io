@@ -145,158 +145,6 @@ public int findIntegers(int n) {
 anything greater than 1010111 will not be allowed
 ```
 
-# Median
-
-[Best Meeting Point][best-meeting-point]
-
-* Mean minimizes total distance for Euclidean distance
-* Median minimizes total distance for absolute deviation: \\[D_{i}=\|x_{i}-m(X)\|\\]
-* Mode minimizes distance for indicator function
-
-```java
-public int minTotalDistance(int[][] grid) {
-    int m = grid.length, n = grid[0].length;
-    List<Integer> x = new ArrayList<>(), y = new ArrayList<>();    
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (grid[i][j] == 1) {
-                x.add(i);
-            }
-        }
-    }
-    for (int j = 0; j < n; j++) {
-        for (int i = 0; i < m; i ++) {
-            if (grid[i][j] == 1) {  
-                y.add(j);
-            }
-        }
-    }
-    return minDistance1D(x) + minDistance1D(y);
-}
-
-private int minDistance1D(List<Integer> points) {
-    int d = 0, median = points.get(points.size() / 2);
-    for (int p : points) {
-        d += Math.abs(p - median);
-    }
-    return d;
-}
-```
-
-[Allocate Mailboxes][allocate-mailboxes]
-
-```java
-private static final int MAX = 100 * 10000;
-
-public int minDistance(int[] houses, int k) {
-    int n = houses.length;
-
-    Arrays.sort(houses);
-
-    // finds the median of houses[i] to houses[j]
-    // calculates the distance
-    int[][] distance = new int[n + 1][n + 1];
-    for (int i = 0; i < n; i++) {
-        for (int j = i; j < n; j++) {
-            for (int m = i; m <= j; m++) {
-                distance[i][j] += Math.abs(houses[(i + j) / 2] - houses[m]);
-            }
-        }
-    }
-
-    // dp[m][i]: minimum total distance of m mailboxes starting from i-th house
-    int[][] dp = new int[k + 1][n + 1];
-
-    // initializes dp table boarders with max
-    Arrays.fill(dp[0], MAX);
-    for (int i = 1; i <= k; i++) {
-        dp[i][n] = MAX;
-    }
-
-    // initializes dp[0][n] with 0
-    dp[0][n] = 0;
-
-    for (int i = n - 1; i >= 0; i--) {
-        for (int m = 1; m <= k; m++) {
-            dp[m][i] = Integer.MAX_VALUE;
-            for (int j = i; j < n; j++) {
-                // houses[i:] is split into two groups:
-                // houses[i:j] and houses[(j + 1):]
-                dp[m][i] = Math.min(dp[m][i], distance[i][j] + dp[m - 1][j + 1]);
-            }
-        }
-    }
-
-    return dp[k][0];
-}
-```
-
-Another way to calculate the distance matrix:
-
-```java
-for (int i = n - 1; i >= 0; i--) {
-    for (int j = i; j < n; j++) {
-        distance[i][j] = houses[j] - houses[i];
-        if (i + 1 < n - 1 && j > 0) {
-            // from houses[(i + 1):(j - 1)] to houses[i:j]
-            // the minimum distance added by the two new endpoints houses[i] and houses[j]
-            // equals houses[j] - houses[i]
-            // the mailbox can be at any point between the new endpoints
-            distance[i][j] += distance[i + 1][j - 1];
-        }
-    }
-}
-```
-
-[Median of Two Sorted Arrays][median-of-two-sorted-arrays]
-
-```java
-public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-    int m = nums1.length, n = nums2.length;
-
-    if (m > n) {
-        return findMedianSortedArrays(nums2, nums1);
-    }
-
-    //       left_part          |        right_part
-    // A[0], A[1], ..., A[i-1]  |  A[i], A[i+1], ..., A[m-1]
-    // B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
-
-    // binary searches the cut point in nums1
-    int low = 0, high = m;
-    while (low <= high) {
-        // len(left) == len(right)
-        // (m + n is even) i + j == m - i + n - j
-        // (m + n is odd) i + j == m - i + n - j + 1
-        // combines the above two cases:
-        // j == (m + n + 1) / 2 - i
-        int i = (low + high) >>> 1, j = (m + n + 1) / 2 - i;
-
-        int nums1Left = i == 0 ? Integer.MIN_VALUE : nums1[i - 1];
-        int nums1Right = i == m ? Integer.MAX_VALUE : nums1[i];
-        int nums2Left = j == 0 ? Integer.MIN_VALUE : nums2[j - 1];
-        int nums2Right = j == n ? Integer.MAX_VALUE : nums2[j];
-
-        // max(left) <= min(right)
-        if (nums1Left > nums2Right) {
-            high = i - 1;
-        } else if (nums2Left > nums1Right) {
-            low = i + 1;
-        } else {
-            int maxLeft = Math.max(nums1Left, nums2Left);
-            int minRight = Math.min(nums1Right, nums2Right);
-            if ((m + n) % 2 == 1) {
-                // len(left) == len(right) + 1
-                return maxLeft;
-            } else {
-                return (maxLeft + minRight) / 2.0;
-            }
-        }
-    }
-    return -1;
-}
-```
-
 ## Catalan Number
 
 The nth Catalan number is given directly in terms of binomial coefficients by
@@ -838,15 +686,12 @@ public int numSquares(int n) {
 
 [4-keys-keyboard]: https://leetcode.com/problems/4-keys-keyboard/
 [adding-two-negabinary-numbers]: https://leetcode.com/problems/adding-two-negabinary-numbers/
-[allocate-mailboxes]: https://leetcode.com/problems/allocate-mailboxes/
-[best-meeting-point]: https://leetcode.com/problems/best-meeting-point/
 [check-if-number-is-a-sum-of-powers-of-three]: https://leetcode.com/problems/check-if-number-is-a-sum-of-powers-of-three/
 [divide-two-integers]: https://leetcode.com/problems/divide-two-integers/
 [egg-drop-with-2-eggs-and-n-floors]: https://leetcode.com/problems/egg-drop-with-2-eggs-and-n-floors/
 [find-unique-binary-string]: https://leetcode.com/problems/find-unique-binary-string/
 [handshakes-that-dont-cross]: https://leetcode.com/problems/handshakes-that-dont-cross/
 [maximum-of-absolute-value-expression]: https://leetcode.com/problems/maximum-of-absolute-value-expression/
-[median-of-two-sorted-arrays]: https://leetcode.com/problems/median-of-two-sorted-arrays/
 [non-negative-integers-without-consecutive-ones]: https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/
 [perfect-squares]: https://leetcode.com/problems/perfect-squares/
 [power-of-three]: https://leetcode.com/problems/power-of-three/

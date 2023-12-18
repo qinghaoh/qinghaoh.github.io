@@ -486,7 +486,19 @@ PRP \\(\subset\\) PRF
       - Block-level PRP, not sector-level
       - Mac OS X-Lion, TrueCrypt, BestCrypt
 
-**Format Preserving Encryption**
+**Format Preserving Encryption (FPE)**
+* Build a PRP on \\(\\{0,\ldots,s-1\\}\\) from a secure PRF \\(F:K \times \\{0,1\\}^n \rightarrow \\{0,1\\}^n\\), where \\(0 \lt s \le 2^n\\)
+  - From \\(\\{0,1\\}^n\\) to \\(\\{0,1\\}^t\\), s.t. \\(2^{t-1} \lt s \le 2^t\\)
+    * PRP on \\(\\{0,\ldots,s-1\\}\\)
+    * Truncate \\(F\\), \\(F': K \times \\{0,1\\}^{t/2} \rightarrow \\{0,1\\}^{t/2}\\)
+    * Patarin (7 rounds) is better than Luby-Rackoff
+    * Security is the same as Patarin
+  - From \\(\\{0,1\\}^t\\) to \\(\\{0,\ldots,s-1\\}\\)
+    * Given PRP \\(E,D):K \times \\{0,1\\}^t \rightarrow \\{0,1\\}^t\\)
+    * Build \\((E',D'): K \times \\{0,\ldots,s-1\\} \rightarrow \\{0,\ldots,s-1\\}\\): \\(x \in \\{0,\ldots,s-1\\}\\). \\(y \leftarrow x\\), do {\\(y \leftarrow E(k,y)\\)} until \\(y \in \\{0,ldots,s-1\\}\\)
+    * Expected 2 iterations
+    * Security is tight: \\(Adv_{PRP}[A,E] = Adv_{PRP}[B,E']\\)
+  - No integrity
 
 ## Basic Key Exchange
 
@@ -496,6 +508,14 @@ Trusted 3rd Party: simple protocol; replay attack
 * Quadratic gap - best possible if ciphers are black box oracle
 
 **Diffie-Hellman Protocol**
+* [Overview](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange#General_overview)
+* Best known algorithm (GNFS): \\(\exp(\tilde{O}(\sqrt[3]{n}))\\) (sub-exponential)
+* Multi Party Key Agreement
+  - n = 2: Diffie-Hellman
+  - n = 3: Joux
+  - n > 3: open question
 
 **Public-Key Encryption**
 * `(G,E,D)`
+* IND-CPA
+

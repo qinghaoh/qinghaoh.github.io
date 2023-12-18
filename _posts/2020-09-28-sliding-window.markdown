@@ -610,51 +610,6 @@ private int slidingWindow(String s, int k, int uniqueCharsTarget) {
 
 # Elastic Size
 
-[Moving Stones Until Consecutive II][moving-stones-until-consecutive-ii]
-
-```java
-public int[] numMovesStonesII(int[] stones) {
-    Arrays.sort(stones);
-
-    // sliding window
-    int n = stones.length;
-    int i = 0, j = 0, min = n;
-    while (j < n) {
-        // moves i so that the window size is <= n and as close to n as possible
-        while (stones[j] - stones[i] >= n) {
-            i++;
-        }
-
-        // corner case
-        // - number of stones in the window is (n - 1)
-        // - window size is (n - 1)
-        // e.g. [1,2,3,4,10] -> [2,3,4,6,10] -> [2,3,4,5,6]
-        if (j - i + 1 == n - 1 && stones[j] - stones[i] == n - 2) {
-            min = Math.min(min, 2);
-        } else {
-            // e.g. [1,2,4,5,10] -> [1,2,3,4,5]
-            // e.g. [1,2,3,4,6] -> [2,3,4,5,6]
-            // the 2nd example has two windows:
-            // - the first window matches the corner case, min = 2;
-            // - the second window falls into this else block, min = 1
-            min = Math.min(min, n - (j - i + 1));
-        }
-        j++;
-    }
-
-    // moves leftmost or rightmost stone
-    // e.g. moves leftmost to the next available slot
-    // [1,3,5,10] -> [3,4,5,10] -> [4,5,6,10]
-    //
-    // max of avaible slots:
-    // - left -> right: (stones[n - 1] - stones[1] + 1) - (n - 1)
-    // - right -> left: (stones[n - 2] - stones[0] + 1) - (n - 1)
-    int max = Math.max(stones[n - 1] - stones[1] - n + 2, stones[n - 2] - stones[0] - n + 2);
-
-    return new int[]{min, max};
-}
-```
-
 [Delivering Boxes from Storage to Ports][delivering-boxes-from-storage-to-ports]
 
 ```java
@@ -881,33 +836,46 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
 }
 ```
 
-[Minimum Number of K Consecutive Bit Flips][minimum-number-of-k-consecutive-bit-flips]
+[Moving Stones Until Consecutive II][moving-stones-until-consecutive-ii]
 
-```java
-public int minKBitFlips(int[] nums, int k) {
-    // accumulated is the number of flips contributed by the preceding window nums[i - k + 1, ..., i - 1]
-    // flipping the windows starting with these indices will also flip nums[i]
-    int accumulated = 0, flips = 0, n = nums.length;
-    // sliding window (i - k, i]
-    for (int i = 0; i < n; i++) {
-        if (i >= k && nums[i - k] > 1) {
-            accumulated--;
-            nums[i - k] -= 2;
+```c++
+vector<int> numMovesStonesII(vector<int>& stones) {
+    ranges::sort(stones);
+
+    int n = stones.size();
+    int i = 0, j = 0, mn = n;
+    while (j < n) {
+        // The sliding window is tight, i.e. the ends of the window are always on stone positions.
+        // Window size: stones[j] - stones[i] + 1
+        // Number of stones in the window: j - i + 1
+        // Moves i so that the window size <= n and is closest to n
+        while (stones[j] - stones[i] >= n) {
+            i++;
         }
 
-        // needs flipping
-        if (accumulated % 2 == nums[i]) {
-            if (i + k > n) {
-                return -1;
-            }
-
-            // a lazy way to mark nums[i] is flipped
-            nums[i] += 2;
-            accumulated++;
-            flips++;
+        // Corner case
+        // - number of stones in the window is (n - 1)
+        // - window size is (n - 1)
+        // e.g. [1,2,3,4,10] -> [2,3,4,6,10] -> [2,3,4,5,6]
+        if (j - i == n - 2 && stones[j] - stones[i] == n - 2) {
+            mn = min(mn, 2);
+        } else {
+            // e.g. [1,2,4,5,10] -> [1,2,3,4,5]
+            mn = min(mn, n - (j - i + 1));
         }
+        j++;
     }
-    return flips;
+
+    // Moves leftmost or rightmost stone
+    // e.g. moves leftmost to the next available slot
+    // [1,3,5,10] -> [3,4,5,10] -> [4,5,6,10]
+    //
+    // Max of avaible slots:
+    // - left -> right: (stones[n - 1] - stones[1] + 1) - (n - 1)
+    // - right -> left: (stones[n - 2] - stones[0] + 1) - (n - 1)
+    int mx = max(stones[n - 1] - stones[1], stones[n - 2] - stones[0]) - n + 2;
+
+    return {mn, mx};
 }
 ```
 
@@ -1004,6 +972,38 @@ public boolean canReach(String s, int minJump, int maxJump) {
         dp[i] = prev > 0 && s.charAt(i) == '0';
     }
     return dp[n - 1];
+}
+```
+
+[Minimum Number of K Consecutive Bit Flips][minimum-number-of-k-consecutive-bit-flips]
+
+```c++
+int minKBitFlips(vector<int>& nums, int k) {
+    // accumulated: parity of the number of flips at nums[i] caused by the sliding window
+    // nums[i - k + 1, ..., i - 1]
+    int accumulated = 0, flips = 0, n = nums.size();
+    // Checks if the k-sized window starting from i needs flipping
+    for (int i = 0; i < n; i++) {
+        if (i >= k && nums[i - k] > 1) {
+            accumulated ^= 1;
+            nums[i - k] -= 2;
+        }
+
+        // Needs flipping
+        if (accumulated == nums[i]) {
+            // The max window starting from i is less than k, so the flipping cannot be done
+            if (i + k > n) {
+                return -1;
+            }
+
+            // A lazy way to mark nums[i] is flipped:
+            // if nums[i] is not binary, it's flipped; otherwise not flipped
+            nums[i] += 2;
+            accumulated ^= 1;
+            flips++;
+        }
+    }
+    return flips;
 }
 ```
 

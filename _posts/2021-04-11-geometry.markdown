@@ -210,11 +210,15 @@ private String getKey(List<int[]> cells) {
 }
 ```
 
-# Manhattan Distance
+# Distance
 
-[Taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry)
+For a real number \\(p \ge 1\\), the \\(p\\)-norm or \\(L^{p}\\)-norm of \\(x\\) is defined by:
 
-Taxicab metric = \\(l_1\\) distance = \\(l_1\\) norm = Manhattan distance
+$$\lVert x \rVert_{p}=(|x_{1}|^{p}+|x_{2}|^{p}+\dots +|x_{n}|^{p})^{1/p}$$
+
+## Taxicab Distance
+
+[Taxicab distance](https://en.wikipedia.org/wiki/Taxicab_geometry) = Manhattan distance: \\(L^1\\)-norm
 
 [Maximum of Absolute Value Expression][maximum-of-absolute-value-expression]
 
@@ -242,9 +246,13 @@ public int maxAbsValExpr(int[] arr1, int[] arr2) {
 }
 ```
 
-# Chebyshev Distance
+## Euclidean Distance
 
-[Chebyshev distance](https://en.wikipedia.org/wiki/Chebyshev_distance) is also known as chessboard distance, since in the game of chess the minimum number of moves needed by a king to go from one square on a chessboard to another equals the Chebyshev distance between the centers of the squares.
+[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance): \\(L^2\\)
+
+## Chebyshev Distance
+
+[Chebyshev distance](https://en.wikipedia.org/wiki/Chebyshev_distance) = chessboard distance: \\(L^{\infty}\\)
 
 [Determine if a Cell Is Reachable at a Given Time][determine-if-a-cell-is-reachable-at-a-given-time]
 
@@ -264,11 +272,200 @@ bool isReachableAtTime(int sx, int sy, int fx, int fy, int t) {
 
 # Geometric Median
 
+[Geometric median](https://en.wikipedia.org/wiki/Geometric_median): \\(L^1\\) estimator.
+
 $${\underset {y\in \mathbb {R} ^{n}}{\operatorname {arg\,min} }}\sum _{i=1}^{m}\left\|x_{i}-y\right\|_{2}$$
 
 Weiszfeld's algorithm
 
 $$y_{i+1}=(\sum_{j=1}^{m}{\frac{x_{j}}{\|x_{j}-y_{i}\|}})/(\sum_{j=1}^{m}{\frac{1}{\|x_{j}-y_{i}\|}})$$
+
+## Median
+
+One-dimensional median is a special case of geometric median. It is the point about which the mean absolute deviation is minimized.
+
+Mean absolute deviation of a set \\(\\{x_1,x_2,\ldots,x_n\\}\\):
+
+$$\frac{1}{n}\sum _{i=1}^{n}|x_{i}-m(X)|$$
+
+Where \\(m(X)\\) is a measure of central tendency.
+
+* Mean minimizes total distance for Euclidean distance:
+* Mode minimizes distance for indicator function
+
+[Best Meeting Point][best-meeting-point]
+
+```java
+public int minTotalDistance(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    List<Integer> x = new ArrayList<>(), y = new ArrayList<>();
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1) {
+                x.add(i);
+            }
+        }
+    }
+    for (int j = 0; j < n; j++) {
+        for (int i = 0; i < m; i ++) {
+            if (grid[i][j] == 1) {
+                y.add(j);
+            }
+        }
+    }
+    return minDistance1D(x) + minDistance1D(y);
+}
+
+private int minDistance1D(List<Integer> points) {
+    int d = 0, median = points.get(points.size() / 2);
+    for (int p : points) {
+        d += Math.abs(p - median);
+    }
+    return d;
+}
+```
+
+[Apply Operations to Maximize Frequency Score][apply-operations-to-maximize-frequency-score]
+
+```c++
+nt maxFrequencyScore(vector<int>& nums, long long k) {
+    ranges::sort(nums);
+
+    int i = 0, j = 0;
+    while (j < nums.size()) {
+        // Median minimizes the sum of absolute deviation.
+        // nums[(i + j++) / 2] equals the median before j moves in.
+        // e.g. odd-size window
+        //    i = 0, j = 3, window = [0,1,2]
+        //    old median = 1
+        //    new median = nums[(0 + 3) / 2] = 1
+        // e.g. even-size window
+        //    i = 0, j = 2, window = [0,1]
+        //    old median = 0 or 1
+        //    new median = nums[(0 + 2) / 2] = 1
+        k -= nums[j] - nums[(i + j++) / 2];
+        if (k < 0) {
+            // Similarly, nums[(i + j) / 2] equals the median before i moves out.
+            k += nums[(i + j) / 2] - nums[i++];
+        }
+    }
+    return j - i;
+}
+```
+
+[Allocate Mailboxes][allocate-mailboxes]
+
+```java
+private static final int MAX = 100 * 10000;
+
+public int minDistance(int[] houses, int k) {
+    int n = houses.length;
+
+    Arrays.sort(houses);
+
+    // finds the median of houses[i] to houses[j]
+    // calculates the distance
+    int[][] distance = new int[n + 1][n + 1];
+    for (int i = 0; i < n; i++) {
+        for (int j = i; j < n; j++) {
+            for (int m = i; m <= j; m++) {
+                distance[i][j] += Math.abs(houses[(i + j) / 2] - houses[m]);
+            }
+        }
+    }
+
+    // dp[m][i]: minimum total distance of m mailboxes starting from i-th house
+    int[][] dp = new int[k + 1][n + 1];
+
+    // initializes dp table boarders with max
+    Arrays.fill(dp[0], MAX);
+    for (int i = 1; i <= k; i++) {
+        dp[i][n] = MAX;
+    }
+
+    // initializes dp[0][n] with 0
+    dp[0][n] = 0;
+
+    for (int i = n - 1; i >= 0; i--) {
+        for (int m = 1; m <= k; m++) {
+            dp[m][i] = Integer.MAX_VALUE;
+            for (int j = i; j < n; j++) {
+                // houses[i:] is split into two groups:
+                // houses[i:j] and houses[(j + 1):]
+                dp[m][i] = Math.min(dp[m][i], distance[i][j] + dp[m - 1][j + 1]);
+            }
+        }
+    }
+
+    return dp[k][0];
+}
+```
+
+Another way to calculate the distance matrix:
+
+```java
+for (int i = n - 1; i >= 0; i--) {
+    for (int j = i; j < n; j++) {
+        distance[i][j] = houses[j] - houses[i];
+        if (i + 1 < n - 1 && j > 0) {
+            // from houses[(i + 1):(j - 1)] to houses[i:j]
+            // the minimum distance added by the two new endpoints houses[i] and houses[j]
+            // equals houses[j] - houses[i]
+            // the mailbox can be at any point between the new endpoints
+            distance[i][j] += distance[i + 1][j - 1];
+        }
+    }
+}
+```
+
+[Median of Two Sorted Arrays][median-of-two-sorted-arrays]
+
+```java
+public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    int m = nums1.length, n = nums2.length;
+
+    if (m > n) {
+        return findMedianSortedArrays(nums2, nums1);
+    }
+
+    //       left_part          |        right_part
+    // A[0], A[1], ..., A[i-1]  |  A[i], A[i+1], ..., A[m-1]
+    // B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
+
+    // binary searches the cut point in nums1
+    int low = 0, high = m;
+    while (low <= high) {
+        // len(left) == len(right)
+        // (m + n is even) i + j == m - i + n - j
+        // (m + n is odd) i + j == m - i + n - j + 1
+        // combines the above two cases:
+        // j == (m + n + 1) / 2 - i
+        int i = (low + high) >>> 1, j = (m + n + 1) / 2 - i;
+
+        int nums1Left = i == 0 ? Integer.MIN_VALUE : nums1[i - 1];
+        int nums1Right = i == m ? Integer.MAX_VALUE : nums1[i];
+        int nums2Left = j == 0 ? Integer.MIN_VALUE : nums2[j - 1];
+        int nums2Right = j == n ? Integer.MAX_VALUE : nums2[j];
+
+        // max(left) <= min(right)
+        if (nums1Left > nums2Right) {
+            high = i - 1;
+        } else if (nums2Left > nums1Right) {
+            low = i + 1;
+        } else {
+            int maxLeft = Math.max(nums1Left, nums2Left);
+            int minRight = Math.min(nums1Right, nums2Right);
+            if ((m + n) % 2 == 1) {
+                // len(left) == len(right) + 1
+                return maxLeft;
+            } else {
+                return (maxLeft + minRight) / 2.0;
+            }
+        }
+    }
+    return -1;
+}
+```
 
 # Circle
 
@@ -518,6 +715,9 @@ public int minimumBoxes(int n) {
 }
 ```
 
+[allocate-mailboxes]: https://leetcode.com/problems/allocate-mailboxes/
+[apply-operations-to-maximize-frequency-score]: https://leetcode.com/problems/apply-operations-to-maximize-frequency-score/
+[best-meeting-point]: https://leetcode.com/problems/best-meeting-point/
 [building-boxes]: https://leetcode.com/problems/building-boxes/
 [circle-and-rectangle-overlapping]: https://leetcode.com/problems/circle-and-rectangle-overlapping/
 [convex-polygon]: https://leetcode.com/problems/convex-polygon/
@@ -526,6 +726,7 @@ public int minimumBoxes(int n) {
 [erect-the-fence-ii]: https://leetcode.com/problems/erect-the-fence-ii/
 [escape-the-ghosts]: https://leetcode.com/problems/escape-the-ghosts/
 [maximum-of-absolute-value-expression]: https://leetcode.com/problems/maximum-of-absolute-value-expression/
+[median-of-two-sorted-arrays]: https://leetcode.com/problems/median-of-two-sorted-arrays/
 [minimum-area-rectangle]: https://leetcode.com/problems/minimum-area-rectangle/
 [minimum-area-rectangle-ii]: https://leetcode.com/problems/minimum-area-rectangle-ii/
 [number-of-distinct-islands-ii]: https://leetcode.com/problems/number-of-distinct-islands-ii/
