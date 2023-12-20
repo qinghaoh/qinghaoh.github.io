@@ -154,8 +154,18 @@ class Fancy {
 
 # Group
 
-A cyclic group of order \\(n\\) has exactly \\(\varphi(n)\\) generators.
+[Multiplicative group of integers modulo n](https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n): the integers coprime (relatively prime) to \\(n\\) from the set \\(\\{0,1,\dots ,n-1\\}\\) of \\(n\\) non-negative integers form a group under multiplication modulo \\(n\\).
 
+$$\lvert(\mathbb {Z} /n\mathbb {Z} )^{\times }\rvert = \varphi (n)$$
+
+For prime \\(n\\) the group is cyclic.
+
+Generator: \\(\langle g \rangle = \\{g^k \| k \in \mathbb{Z}\\}\\)
+
+[Lagrange's theorem](https://en.wikipedia.org/wiki/Lagrange%27s_theorem_(group_theory)): If \\(H\\) is a subgroup of a group \\(G\\), then
+
+$$\left|G\right|=\left[G:H\right]\cdot \left|H\right|$$
+ 
 [fancy-sequence]: https://leetcode.com/problems/fancy-sequence/
 [smallest-integer-divisible-by-k]: https://leetcode.com/problems/smallest-integer-divisible-by-k/
 [super-pow]: https://leetcode.com/problems/super-pow/

@@ -183,6 +183,29 @@ public int longestNiceSubarray(int[] nums) {
 }
 ```
 
+[Minimum Number of Operations to Make Array Continuous][minimum-number-of-operations-to-make-array-continuous]
+
+```c++
+int minOperations(vector<int>& nums) {
+    ranges::sort(nums);
+
+    // De-dupe
+    int n = nums.size();
+    nums.erase(unique(nums.begin(), nums.end()), nums.end());
+
+    // Finds the longest subarray in which max - min <= n - 1
+    int i = 0, j = 0;
+    while (j < nums.size()) {
+        if (nums[j++] >= nums[i] + n) {
+            i++;
+        }
+    }
+    // The length of the longest subarray is j - i
+    // We need to replace n - j - i elements
+    return n - j + i;
+}
+```
+
 ### Count of Subarrays (MDF)
 
 [Count Subarrays With Score Less Than K][count-subarrays-with-score-less-than-k]
@@ -352,6 +375,50 @@ private boolean condition(int[] nums, int distance, int k) {
 }
 ```
 
+[Delivering Boxes from Storage to Ports][delivering-boxes-from-storage-to-ports]
+
+```c++
+int boxDelivering(vector<vector<int>>& boxes, int portsCount, int maxBoxes, int maxWeight) {
+    int n = boxes.size();
+    // dp[i]: minimum number of trips to deliver the first i boxes
+    vector<int> dp(n + 1, 2e5);
+    dp[0] = 0;
+
+    // trips: trips needed to deliver boxes(i, j]
+    for (int i = 0, j = 0, prevJ = 0, trips = 0; i < n; i++) {
+        // Sliding window
+        while (j < n && maxBoxes > 0 && maxWeight >= boxes[j][1]) {
+            maxBoxes--;
+            maxWeight -= boxes[j][1];
+
+            // current port is different from previous port
+            if (j == 0 || boxes[j][0] != boxes[j - 1][0]) {
+                prevJ = j;
+                trips++;
+            }
+            j++;
+        }
+
+        // Delivers boxes[prevJ...j] ('+1')
+        dp[j] = min(dp[j], dp[i] + trips + 1);
+
+        // Or, don't deliver boxes[prevJ...j] to save one trip (no '+1')
+        dp[prevJ] = min(dp[prevJ], dp[i] + trips);
+
+        // Gets ready to move the left pointer i forward
+        maxBoxes++;
+        maxWeight += boxes[i][1];
+
+        // If after moving the left pointer i forward, the port is different
+        // then the trips between the new i and j needs to decrement by 1
+        if (i < n - 1 && boxes[i][0] != boxes[i + 1][0]) {
+            trips--;
+        }
+    }
+    return dp[n];
+}
+```
+
 ## Monotonically Increasing Function
 
 \\(h(m)\\) is a monotonically increasing function (MIF). For example, the constraint is "sum is **greater than or equal to** target". Denote the sum of elements in the sliding window as \\(v\\), then \\(f(v) = v - target \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) increases.
@@ -380,31 +447,33 @@ public int minSubArrayLen(int target, int[] nums) {
 
 [Minimum Window Substring][minimum-window-substring]
 
-```java
-public String minWindow(String s, String t) {
-    int[] freqs = new int[256];
-    for (char ch : t.toCharArray()) {
+```c++
+string minWindow(string s, string t) {
+    vector<int> freqs(256);
+    for (char ch : t) {
         freqs[ch]++;
     }
 
-    int i = 0, j = 0, k = t.length(), min = s.length();
-    String window = "";
+    int i = 0, j = 0, k = t.length(), mn = s.length();
+    string window = "";
     while (j < s.length()) {
-        // Count of t-chars > 0
-        // Count of non-t-chars == 0
-        if (freqs[s.charAt(j++)]-- > 0) {
+        // Counts of chars in the window:
+        // * t-chars > 0
+        // * non-t-chars == 0
+        if (freqs[s[j++]]-- > 0) {
             // Only t-chars will decrement k
             k--;
         }
 
         while (k == 0) {
-            if (j - i <= min) {
-                window = s.substring(i, j);
-                min = j - i;
+            if (j - i <= mn) {
+                window = s.substr(i, mn = j - i);
             }
 
-            // Count of non-t-chars < 0
-            if (freqs[s.charAt(i++)]++ == 0) {
+            // Counts of chars in the window:
+            // * t-chars > 0
+            // * non-t-chars < 0
+            if (freqs[s[i++]]++ == 0) {
                 // Only t-chars will increment k
                 k++;
             }
@@ -608,56 +677,6 @@ private int slidingWindow(String s, int k, int uniqueCharsTarget) {
 |Length|`max(j - i)` or `j - i` (Non-shrinking Window)|`min(j - i)`|
 |#Subarrays|`+= j - i`|`+= i`|
 
-# Elastic Size
-
-[Delivering Boxes from Storage to Ports][delivering-boxes-from-storage-to-ports]
-
-```java
-private static final int MAX_TRIPS = (int)2e5;
-
-public int boxDelivering(int[][] boxes, int portsCount, int maxBoxes, int maxWeight) {
-    int n = boxes.length;
-    // dp[i]: minimum number of trips to deliver boxes[0, i)
-    int[] dp = new int[n + 1];
-    Arrays.fill(dp, MAX_TRIPS);
-    dp[0] = 0;
-
-    // trips needed to deliver box(i, j]
-    int trips = 0, j = 0, prevJ = 0;
-    for (int i = 0; i < n; i++) {
-        // sliding window
-        while (j < n && maxBoxes > 0 && maxWeight >= boxes[j][1]) {
-            maxBoxes--;
-            maxWeight -= boxes[j][1];
-
-            // current port is different from previous port
-            if (j == 0 || boxes[j][0] != boxes[j - 1][0]) {
-                prevJ = j;
-                trips++;
-            }
-            j++;
-        }
-
-        // delivers boxes[prevJ...j] ('+1')
-        dp[j] = Math.min(dp[j], dp[i] + trips + 1);
-
-        // or, don't deliver boxes[prevJ...j] to save one trip (no '+1')
-        dp[prevJ] = Math.min(dp[prevJ], dp[i] + trips);
-
-        // gets ready to move the left pointer i forward
-        maxBoxes++;
-        maxWeight += boxes[i][1];
-
-        // if after moving the left pointer i forward, the port is different
-        // then the trips between the new i and j needs to decrement by 1
-        if (i < n - 1 && boxes[i][0] != boxes[i + 1][0]) {
-            trips--;
-        }
-    }
-    return dp[n];
-}
-```
-
 # Fixed-size Window
 
 If the window size is required to be a fixed value `k`, then we regard `j - i == k` as a constraint, and maintain it in each loop iteration.
@@ -686,37 +705,36 @@ It's also common to combine prefix sum to solve this type of problem:
 
 [Maximum Points You Can Obtain from Cards][maximum-points-you-can-obtain-from-cards]
 
-
 [Find All Anagrams in a String][find-all-anagrams-in-a-string]
 
-```java
-public List<Integer> findAnagrams(String s, String p) {
-    int[] count = new int[26];
-    for (char ch : p.toCharArray()) {
-        count[ch - 'a']++;
+```c++
+vector<int> findAnagrams(string s, string p) {
+    vector<int> freqs(26);
+    for (char ch : p) {
+        freqs[ch - 'a']++;
     }
 
-    List<Integer> list = new ArrayList<>();
+    vector<int> v;
     int i = 0, j = 0, k = p.length();
     while (j < s.length()) {
-        if (count[s.charAt(j++) - 'a']-- > 0) {
-            k--; 
+        if (freqs[s[j++] - 'a']-- > 0) {
+            k--;
         }
 
         if (k == 0) {
-            list.add(i);
+            v.push_back(i);
         }
 
-        // count of chars in p won't go below 0
-        if (j - i == p.length() && count[s.charAt(i++) - 'a']++ >= 0) {
+        // Count of chars in p won't go below 0
+        if (j - i == p.length() && freqs[s[i++] - 'a']++ >= 0) {
             k++;
         }
     }
-    return list;
+    return v;
 }
 ```
 
-The above problem is similar to [Minimum Window Substring][minimum-window-substring], but when moving left pointer, we use `if` rather than `while`. That's because the window size is fixed to be the length of `p`, and for a particular `j` we move `i` at most once.
+[Substring with Concatenation of All Words][substring-with-concatenation-of-all-words] is similar to this problem, but on word level. Both use the *frequency map* technique in [Minimum Window Substring][minimum-window-substring]. 
 
 [Number of Equal Count Substrings][number-of-equal-count-substrings]
 
@@ -742,6 +760,32 @@ public int equalCountSubstrings(String s, int count) {
         }
     }
     return result;
+}
+```
+
+[Minimum Number of Flips to Make the Binary String Alternating][minimum-number-of-flips-to-make-the-binary-string-alternating]
+
+```c++
+int minFlips(string s) {
+    // Flips needed to maintain "0101..." and "1010..." respectively
+    vector<int> flips(2);
+    int n = s.length(), mn = n;
+
+    // Sliding window
+    // Cyclic problem: s += s
+    for (int i = 0; i < 2 * n; i++) {
+        // The expected char at i-th index of "0101..."
+        flips['0' + i % 2 == s[i % n]]++;
+
+        // i is the end of the window
+        if (i >= n) {
+            // i % n is outside of the window
+            // Decrements if it was flipped before
+            flips['0' + (i % n) % 2 == s[i % n]]--;
+            mn = min(mn, min(flips[0], flips[1]));
+        }
+    }
+    return mn;
 }
 ```
 
@@ -833,49 +877,6 @@ public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
         }
     }
     return max;
-}
-```
-
-[Moving Stones Until Consecutive II][moving-stones-until-consecutive-ii]
-
-```c++
-vector<int> numMovesStonesII(vector<int>& stones) {
-    ranges::sort(stones);
-
-    int n = stones.size();
-    int i = 0, j = 0, mn = n;
-    while (j < n) {
-        // The sliding window is tight, i.e. the ends of the window are always on stone positions.
-        // Window size: stones[j] - stones[i] + 1
-        // Number of stones in the window: j - i + 1
-        // Moves i so that the window size <= n and is closest to n
-        while (stones[j] - stones[i] >= n) {
-            i++;
-        }
-
-        // Corner case
-        // - number of stones in the window is (n - 1)
-        // - window size is (n - 1)
-        // e.g. [1,2,3,4,10] -> [2,3,4,6,10] -> [2,3,4,5,6]
-        if (j - i == n - 2 && stones[j] - stones[i] == n - 2) {
-            mn = min(mn, 2);
-        } else {
-            // e.g. [1,2,4,5,10] -> [1,2,3,4,5]
-            mn = min(mn, n - (j - i + 1));
-        }
-        j++;
-    }
-
-    // Moves leftmost or rightmost stone
-    // e.g. moves leftmost to the next available slot
-    // [1,3,5,10] -> [3,4,5,10] -> [4,5,6,10]
-    //
-    // Max of avaible slots:
-    // - left -> right: (stones[n - 1] - stones[1] + 1) - (n - 1)
-    // - right -> left: (stones[n - 2] - stones[0] + 1) - (n - 1)
-    int mx = max(stones[n - 1] - stones[1], stones[n - 2] - stones[0]) - n + 2;
-
-    return {mn, mx};
 }
 ```
 
@@ -1007,39 +1008,6 @@ int minKBitFlips(vector<int>& nums, int k) {
 }
 ```
 
-[Minimum Number of Operations to Make Array Continuous][minimum-number-of-operations-to-make-array-continuous]
-
-```java
-public int minOperations(int[] nums) {
-    Arrays.sort(nums);
-
-    // de-dupe, m is the number of unique elements
-    int n = nums.length, m = 1;
-    for (int i = 1; i < n; i++) {
-        if (nums[i] != nums[i - 1]) {
-            nums[m++] = nums[i];
-        }
-    }
-
-    // uses each num as the start of the range
-    // finds the range which requires minimum operations
-    int j = 0, min = n;
-    for (int i = 0; i < m; i++) {
-        // start = nums[i]
-        // end = nums[i] + n - 1
-        // range = [start, end], len = n
-        // finds the first out-of-range element
-        while (j < m && nums[j] <= n + nums[i] - 1) {
-            j++;
-        }
-
-        // number of unique elements in the range is n - j + i
-        min = Math.min(min, n - j + i);
-    }
-    return min;
-}
-```
-
 [K Empty Slots][k-empty-slots]
 
 ```java
@@ -1076,107 +1044,50 @@ public int kEmptySlots(int[] bulbs, int k) {
 }
 ```
 
-[Minimum Number of Flips to Make the Binary String Alternating][minimum-number-of-flips-to-make-the-binary-string-alternating]
+# Quasi-fixed Window
 
-```java
-public int minFlips(String s) {
-    // sliding window
-    // cyclic problem: s += s
-    int n = s.length();
-    // flips needed to become "0101..." and "1010..." respectively
-    int flips0 = 0, flips1 = 0;
-    int flips = n;
+The sliding window is close to fixed, but not exactly.
 
-    for (int i = 0; i < 2 * n; i++) {
-        // the expected char at i-th index of "0101..."
-        char c = (char)('0' + i % 2);
+[Moving Stones Until Consecutive II][moving-stones-until-consecutive-ii]
 
-        if (c != s.charAt(i % n)) {
-            flips0++;
+```c++
+vector<int> numMovesStonesII(vector<int>& stones) {
+    ranges::sort(stones);
+
+    int n = stones.size();
+    int i = 0, j = 0, mn = n;
+    while (j < n) {
+        // The sliding window is tight, i.e. the ends of the window are always on stone positions.
+        // Window size: stones[j] - stones[i] + 1
+        // Number of stones in the window: j - i + 1
+        // Moves i so that the window size <= n and is closest to n
+        while (stones[j] - stones[i] >= n) {
+            i++;
+        }
+
+        // Corner case
+        // - number of stones in the window is (n - 1)
+        // - window size is (n - 1)
+        // e.g. [1,2,3,4,10] -> [2,3,4,6,10] -> [2,3,4,5,6]
+        if (j - i == n - 2 && stones[j] - stones[i] == n - 2) {
+            mn = min(mn, 2);
         } else {
-            flips1++;
+            // e.g. [1,2,4,5,10] -> [1,2,3,4,5]
+            mn = min(mn, n - (j - i + 1));
         }
-
-        // i is the end of the window
-        if (i >= n) {
-            // i % n is outside of the window
-            // decrements if it was flipped before
-            c = (char)('0' + (i % n) % 2);
-
-            if (c != s.charAt(i % n)) {
-                flips0--;
-            } else {
-                flips1--;
-            }
-
-            flips = Math.min(flips, Math.min(flips0, flips1));
-        }
-    }
-    return flips;
-}
-```
-
-[Substring with Concatenation of All Words][substring-with-concatenation-of-all-words]
-
-```java
-private int k = 0, len = 0;
-private Map<String, Integer> map = new HashMap<>();
-private List<Integer> list = new ArrayList<>();
-
-public List<Integer> findSubstring(String s, String[] words) {
-    k = words.length;
-    len = words[0].length();
-
-    for (String word : words) {
-        map.put(word, map.getOrDefault(word, 0) + 1);
+        j++;
     }
 
-    // possible window start positions are bounded by the word length
-    for (int i = 0; i < len; i++) {
-        slidingWindow(s, i);
-    }
-    return list;
-}
+    // Moves leftmost or rightmost stone
+    // e.g. moves leftmost to the next available slot
+    // [1,3,5,10] -> [3,4,5,10] -> [4,5,6,10]
+    //
+    // Max of avaible slots:
+    // - left -> right: (stones[n - 1] - stones[1] + 1) - (n - 1)
+    // - right -> left: (stones[n - 2] - stones[0] + 1) - (n - 1)
+    int mx = max(stones[n - 1] - stones[1], stones[n - 2] - stones[0]) - n + 2;
 
-private void slidingWindow(String s, int i) {
-    Map<String, Integer> window = new HashMap<>();
-    // used words from the word list
-    int used = 0, n = s.length();
-
-    for (int j = i; j <= n - len; j += len) {
-        // new word that is to be added to the window
-        String newWord = s.substring(j, j + len);
-        if (map.containsKey(newWord)) {
-            window.put(newWord, window.getOrDefault(newWord, 0) + 1);
-            if (window.get(newWord) <= map.get(newWord)) {
-                used++;
-            } else {
-                while (window.get(newWord) > map.get(newWord)) {
-                    // old word that is removed from the window
-                    String oldWord = s.substring(i, i += len);
-                    window.put(oldWord, window.get(oldWord) - 1);
-                    // the removed old word was used
-                    if (window.get(oldWord) < map.get(oldWord)) {
-                        used--;
-                    }
-                }
-            }
-
-            // all words in the word list are used
-            if (used == k) {
-                list.add(i);
-                // moves the left pointer forward
-                String oldWord = s.substring(i, i += len);
-                window.put(oldWord, window.get(oldWord) - 1);
-                used--;
-            }
-        } else {
-            // resets the start of the sliding window
-            window.clear();
-            used = 0;
-            i = j + len;
-        }
-    }
+    return {mn, mx};
 }
 ```
 
