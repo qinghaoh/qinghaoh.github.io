@@ -381,39 +381,30 @@ private boolean condition(int[] nums, int distance, int k) {
 int boxDelivering(vector<vector<int>>& boxes, int portsCount, int maxBoxes, int maxWeight) {
     int n = boxes.size();
     // dp[i]: minimum number of trips to deliver the first i boxes
-    vector<int> dp(n + 1, 2e5);
-    dp[0] = 0;
+    vector<int> dp(n + 1);
 
-    // trips: trips needed to deliver boxes(i, j]
-    for (int i = 0, j = 0, prevJ = 0, trips = 0; i < n; i++) {
-        // Sliding window
-        while (j < n && maxBoxes > 0 && maxWeight >= boxes[j][1]) {
-            maxBoxes--;
-            maxWeight -= boxes[j][1];
+    // trips: the number of trips needed to deliver the boxes in the sliding window [i,j)
+    int i = 0, j = 0, trips = 1, w = 0;
+    while (j < n) {
+        // Current port is different from previous port
+        if (j == 0 || boxes[j][0] != boxes[j - 1][0]) {
+            trips++;
+        }
+        maxWeight -= boxes[j++][1];
 
-            // current port is different from previous port
-            if (j == 0 || boxes[j][0] != boxes[j - 1][0]) {
-                prevJ = j;
-                trips++;
+        // Moves i out of window
+        // If dp[i] == dp[i + 1], boxes[i] had better be delivered in the previous segment,
+        // not the current segment due to increasing the total weight
+        while (j - i > maxBoxes || maxWeight < 0 || (i + 1 < j && dp[i] == dp[i + 1])) {
+            maxWeight += boxes[i][1];
+
+            // Decrements trips if boxes[i] will be delivered to a different port
+            if (boxes[i][0] != boxes[++i][0]) {
+                trips--;
             }
-            j++;
         }
 
-        // Delivers boxes[prevJ...j] ('+1')
-        dp[j] = min(dp[j], dp[i] + trips + 1);
-
-        // Or, don't deliver boxes[prevJ...j] to save one trip (no '+1')
-        dp[prevJ] = min(dp[prevJ], dp[i] + trips);
-
-        // Gets ready to move the left pointer i forward
-        maxBoxes++;
-        maxWeight += boxes[i][1];
-
-        // If after moving the left pointer i forward, the port is different
-        // then the trips between the new i and j needs to decrement by 1
-        if (i < n - 1 && boxes[i][0] != boxes[i + 1][0]) {
-            trips--;
-        }
+        dp[j] = dp[i] + trips;
     }
     return dp[n];
 }
@@ -821,65 +812,6 @@ public int[] countServers(int n, int[][] logs, int x, int[] queries) {
 }
 ```
 
-[Maximize Win From Two Segments][maximize-win-from-two-segments]
-
-Unlike other problems, array values are used to udpate window boundaries, and distances between array indices are used to update quantities in window.
-
-```java
-public int maximizeWin(int[] prizePositions, int k) {
-    int n = prizePositions.length;
-    // dp[i]: In the first i positions, the maximum number of prizes we can get from one segment
-    int[] dp = new int[n + 1];
-    int i = 0, j = 0, max = 0;
-    while (j < n) {
-        while (prizePositions[i] + k < prizePositions[j]) {
-            i++;
-        }
-        j++;
-
-        // The prize at index j is either selected or not
-        dp[j] = Math.max(dp[j - 1], j - i);
-        max = Math.max(max, j - i + dp[i]);
-    }
-    return max;
-}
-```
-
-[Maximum White Tiles Covered by a Carpet][maximum-white-tiles-covered-by-a-carpet]
-
-```java
-public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
-    Arrays.sort(tiles, Comparator.comparingInt(t -> t[0]));
-
-    // It's always optimal to align the carpet with the left of a tile range.
-    // i, j are indices of tiles array, not the actual tile position.
-    int i = 0, j = 0, max = 0, cover = 0;
-    while (max < carpetLen && j < tiles.length) {
-        if (i == j || tiles[i][0] + carpetLen > tiles[j][1]) {
-            // case 1: tiles[j] is the first tile (i == j)
-            //   carpet may be longer or shorter than this tile
-            //   so picks the min of the two as the covered length
-            // case 2: carpet fully covers tiles[j]
-            //
-            // in either case, moves tiles[j] into the window
-            cover += Math.min(carpetLen, tiles[j][1] - tiles[j][0] + 1);
-            max = Math.max(max, cover);
-            j++;
-        } else {
-            // Partial of tiles[j] is covered by the carpet
-            int partial = Math.max(0, tiles[i][0] + carpetLen - tiles[j][0]);
-            max = Math.max(max, cover + partial);
-            // Moves tile[i] out of the window.
-            // tiles[i] always aligns with the carpet start,
-            // so it's always fully covered by the carpet in this else-branch.
-            cover -= tiles[i][1] - tiles[i][0] + 1;
-            i++;
-        }
-    }
-    return max;
-}
-```
-
 [Minimum Adjacent Swaps for K Consecutive Ones][minimum-adjacent-swaps-for-k-consecutive-ones]
 
 ```java
@@ -1075,6 +1007,11 @@ vector<int> numMovesStonesII(vector<int>& stones) {
             // e.g. [1,2,4,5,10] -> [1,2,3,4,5]
             mn = min(mn, n - (j - i + 1));
         }
+
+        // e.g. [1,2,3,4,6] -> [2,3,4,5,6]
+        // the 2nd example has two windows:
+        // - the first window matches the corner case, min = 2;
+        // - the second window falls into this else block, min = 1
         j++;
     }
 
@@ -1090,6 +1027,70 @@ vector<int> numMovesStonesII(vector<int>& stones) {
     return {mn, mx};
 }
 ```
+
+# Special Cases
+
+## Array Value as Window Boundaries
+
+In these problems, array values are used to udpate window boundaries, and distances between array indices are used to update quantities in window.
+
+[Maximize Win From Two Segments][maximize-win-from-two-segments]
+
+```java
+public int maximizeWin(int[] prizePositions, int k) {
+    int n = prizePositions.length;
+    // dp[i]: In the first i positions, the maximum number of prizes we can get from one segment
+    int[] dp = new int[n + 1];
+    int i = 0, j = 0, max = 0;
+    while (j < n) {
+        while (prizePositions[i] + k < prizePositions[j]) {
+            i++;
+        }
+        j++;
+
+        // The prize at index j is either selected or not
+        dp[j] = Math.max(dp[j - 1], j - i);
+        max = Math.max(max, j - i + dp[i]);
+    }
+    return max;
+}
+```
+
+[Maximum White Tiles Covered by a Carpet][maximum-white-tiles-covered-by-a-carpet]
+
+```java
+public int maximumWhiteTiles(int[][] tiles, int carpetLen) {
+    Arrays.sort(tiles, Comparator.comparingInt(t -> t[0]));
+
+    // It's always optimal to align the carpet with the left of a tile range.
+    // i, j are indices of tiles array, not the actual tile position.
+    int i = 0, j = 0, max = 0, cover = 0;
+    while (max < carpetLen && j < tiles.length) {
+        if (i == j || tiles[i][0] + carpetLen > tiles[j][1]) {
+            // case 1: tiles[j] is the first tile (i == j)
+            //   carpet may be longer or shorter than this tile
+            //   so picks the min of the two as the covered length
+            // case 2: carpet fully covers tiles[j]
+            //
+            // in either case, moves tiles[j] into the window
+            cover += Math.min(carpetLen, tiles[j][1] - tiles[j][0] + 1);
+            max = Math.max(max, cover);
+            j++;
+        } else {
+            // Partial of tiles[j] is covered by the carpet
+            int partial = Math.max(0, tiles[i][0] + carpetLen - tiles[j][0]);
+            max = Math.max(max, cover + partial);
+            // Moves tile[i] out of the window.
+            // tiles[i] always aligns with the carpet start,
+            // so it's always fully covered by the carpet in this else-branch.
+            cover -= tiles[i][1] - tiles[i][0] + 1;
+            i++;
+        }
+    }
+    return max;
+}
+```
+
 
 [count-complete-subarrays-in-an-array]: https://leetcode.com/problems/count-complete-subarrays-in-an-array/
 [count-subarrays-with-score-less-than-k]: https://leetcode.com/problems/count-subarrays-with-score-less-than-k/

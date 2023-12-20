@@ -21,6 +21,469 @@ Here are some _key properties_ of monotonic data structures:
 1. The minimum element so far is always at the bottom.
 1. The stack at each index can be equivalently derived in this way: iterate _reversely_ from the current index, and push the element into the stack if it's less than the stack top; when this iteration is completed, reverse the entire stack.
 
+# Monotonic Stack
+
+## Lexicographic Order
+
+We can get lexicographically least/largest subsequency of an array by Property #2.
+
+[Remove K Digits][remove-k-digits]
+
+```java
+public String removeKdigits(String num, int k) {
+    StringBuilder sb = new StringBuilder();
+    for (char ch : num.toCharArray()) {
+        // Monotonically increasing stack
+        while (k > 0 && sb.length() > 0 && ch < sb.charAt(sb.length() - 1)) {
+            sb.deleteCharAt(sb.length() - 1);
+            k--;
+        }
+
+        // To avoid leading 0, don't push '0' if the stack is empty
+        if (sb.length() > 0 || ch > '0') {
+            sb.append(ch);
+        }
+    }
+
+    // Uses up k digits
+    while (k > 0 && sb.length() > 0) {
+        sb.deleteCharAt(sb.length() - 1);
+        k--;
+    }
+    return sb.length() == 0 ? "0" : sb.toString();
+}
+```
+
+[Find the Most Competitive Subsequence][find-the-most-competitive-subsequence]
+
+```java
+public int[] mostCompetitive(int[] nums, int k) {
+    int[] st = new int[k];
+    // j is the stack size
+    for (int i = 0, j = 0, n = nums.length; i < n; i++) {
+        // (n - i) remaining numbers
+        while (j > 0 && nums[i] < st[j - 1] && n - i + j > k) {
+            j--;
+        }
+        if (j < k) {
+            st[j++] = nums[i];
+        }
+    }
+    return st;
+}
+```
+
+## PLE/PGE/NLE/NGE
+
+* Previous Less Element (PLE)
+* Previous Greater Element (PGE)
+* Next Less Element (NLE)
+* Next Greater Element (NGE)
+
+The requested element can be strictly or non-strictly less/greater.
+
+### Template
+
+```java
+Deque<Integer> st = new ArrayDeque<>();
+int[] prev = new int[n], next = new int[n];
+Arrays.fill(next, n);
+
+for (int i = 0; i < n; i++) {
+    // monotonically increasing stack
+    // strictly less next
+    while (!st.isEmpty() && nums[i] < nums[st.peek()]) {
+        next[st.pop()] = i;
+    }
+    // non-strictly less prev
+    prev[i] = st.isEmpty() ? -1 : st.peek();
+    st.push(i);
+}
+```
+
+|                | Previous < | Previous <= |  Next <  |  Next <=  |
+|----------------|------------|-------------|----------|-----------|
+|Monotonic Stack | Increasing | Increasing  |Increasing|Increasing |
+|Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
+|   Condition    |a[i] <= top | a[i] < top  |a[i] < top|a[i] <= top|
+
+**NLE**
+
+[Final Prices With a Special Discount in a Shop][final-prices-with-a-special-discount-in-a-shop]
+
+```java
+public int[] finalPrices(int[] prices) {
+    int n = prices.length;
+    int[] result = Arrays.copyOf(prices, n);
+
+    // next less element
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        while (!st.isEmpty() && result[i] <= result[st.peek()]) {
+            result[st.pop()] -= result[i];
+        }
+        st.push(i);
+    }
+    return result;
+}
+```
+
+Similarly, with Monotonically Decreasing Stack, we can get Previous Greater Element or Next Greater Element.
+
+|                | Previous > | Previous >= |  Next >  |  Next >=  |
+|----------------|------------|-------------|----------|-----------|
+|Monotonic Stack | Decreasing | Decreasing  |Decreasing|Decreasing |
+|Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
+|   Condition    |a[i] >= top | a[i] > top  |a[i] > top|a[i] >= top|
+
+**PGE**
+
+[Steps to Make Array Non-decreasing][steps-to-make-array-non-decreasing]
+
+```java
+public int totalSteps(int[] nums) {
+    Deque<int[]> st = new ArrayDeque<>();
+    // {number, count of preceding elements to remove before reaching PGE(>)}
+    st.push(new int[]{nums[0], 0});
+
+    int max = 0;
+    for (int i = 1; i < nums.length; i++) {
+        // previous greater element (>)
+        int steps = 0;
+        while (!st.isEmpty() && nums[i] >= st.peek()[0]) {
+            // the max steps among all the popped elements
+            steps = Math.max(steps, st.peek()[1]);
+            st.pop();
+        }
+
+        // when the stack is not empty
+        // increments the steps to include the current step
+        steps = st.isEmpty() ? 0 : steps + 1;
+        max = Math.max(max, steps);
+        st.push(new int[]{nums[i], steps});
+    }
+    return max;
+}
+```
+
+[Online Stock Span][online-stock-span]
+
+```java
+private Deque<int[]> st;
+
+public StockSpanner() {
+    st = new ArrayDeque<>();
+}
+
+public int next(int price) {
+    int count = 1;
+    while (!st.isEmpty() && price >= st.peek()[0]) {
+        count += st.pop()[1];
+    }
+    st.push(new int[]{price, count});
+    return count;
+}
+```
+
+[Next Greater Element IV][next-greater-element-iv]
+
+```java
+public int[] secondGreaterElement(int[] nums) {
+    int n = nums.length;
+    int[] next = new int[n];
+    Arrays.fill(next, -1);
+
+    // stack1: elements that haven't found their first NGE
+    // stack2: elements that have found their first NGE but not second NGE
+    Deque<Integer> st1 = new ArrayDeque<>(), st2 = new ArrayDeque<>(), tmp = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        // finds second NGE
+        while (!st2.isEmpty() && nums[i] > nums[st2.peek()]) {
+            next[st2.pop()] = nums[i];
+        }
+
+        // moves all elements whose first NGE is nums[i] to stack2
+        while (!st1.isEmpty() && nums[i] > nums[st1.peek()]) {
+            tmp.push(st1.pop());
+        }
+
+        while (!tmp.isEmpty()) {
+            st2.push(tmp.pop());
+        }
+
+        st1.push(i);
+    }
+    return next;
+}
+```
+
+[Minimum Cost Tree From Leaf Values][minimum-cost-tree-from-leaf-values]
+
+```java
+public int mctFromLeafValues(int[] arr) {
+    Deque<Integer> st = new ArrayDeque<>();
+    st.push(Integer.MAX_VALUE);
+
+    int sum = 0;
+    for (int a : arr) {
+        // previous and next greater element
+        while (st.peek() <= a) {
+            int top = st.pop();
+            sum += top * Math.min(st.peek(), a);
+        }
+        st.push(a);
+    }
+
+    while (st.size() > 2) {
+        sum += st.pop() * st.peek();
+    }
+
+    return sum;
+}
+```
+
+[Number of Visible People in a Queue][number-of-visible-people-in-a-queue]
+
+```java
+public int[] canSeePersonsCount(int[] heights) {
+    int n = heights.length;
+    int[] answer = new int[n];
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        // monotonically decreasing stack (strict)
+        // next greater (>=) element
+        while (!st.isEmpty() && heights[i] >= heights[st.peek()]) {
+            // st.peek() can see i
+            // st.peek() can't see after i, so st.peek() is done and popped
+            answer[st.pop()]++;
+        }
+
+        if (!st.isEmpty()) {
+            // previous greater (>) element
+            // st.peek() can see i
+            answer[st.peek()]++;
+        }
+
+        st.push(i);
+    }
+    return answer;
+}
+```
+
+Similar: [Number of People That Can Be Seen in a Grid][number-of-people-that-can-be-seen-in-a-grid]
+
+In this problem, elements are not necessarily distinct. Therefore, we need to make a slight change to the code:
+
+```java
+public int[] canSeePersonsCount(int[] heights) {
+    int n = heights.length;
+    int[] answer = new int[n];
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        // monotonically decreasing stack (strict)
+        // next greater (>=) element
+        boolean isEqual = false;
+        while (!st.isEmpty() && heights[i] >= heights[st.peek()]) {
+            if (heights[i] == heights[st.peek()]) {
+                isEqual = true;
+            }
+            // st.peek() can see i
+            // st.peek() can't see after i, so st.peek() is done and popped
+            answer[st.pop()]++;
+        }
+
+        // e.g. [4,2,1,1,3]
+        // we skip incrementing the answer at index 0 when i == 3
+        // because it's already incremented when i == 2
+        // iwo, heights[0] can't see heights[3] because of heights[2]
+        if (!st.isEmpty() && isEqual) {
+            // previous greater (>) element
+            // st.peek() can see i
+            answer[st.peek()]++;
+        }
+
+        st.push(i);
+    }
+    return answer;
+}
+```
+
+[Maximum Width Ramp][maximum-width-ramp]
+
+```java
+public int maxWidthRamp(int[] nums) {
+    // decreasing stack
+    Deque<Integer> st = new ArrayDeque<>();
+    int max = 0, n = nums.length;
+    for (int i = 0; i < n; i++) {
+        if (st.isEmpty() || nums[i] < nums[st.peek()]) {
+            st.push(i);
+        }
+    }
+
+    for (int i = n - 1; i > max; i--) {
+        while (!st.isEmpty() && nums[i] >= nums[st.peek()]) {
+            // i is the largest index with nums[i] >= stack top
+            // so it's safe to pop
+            max = Math.max(max, i - st.pop());
+        }
+    }
+    return max;
+}
+```
+
+The following problem is not PGE or NGE, and the solution doesn't use stacks. But we can see some similarities.
+
+[Sum of Imbalance Numbers of All Subarrays][sum-of-imbalance-numbers-of-all-subarrays]
+
+```java
+public int sumImbalanceNumbers(int[] nums) {
+    int sum = 0, n = nums.length;
+    // lastIndices[i]: last index of the number `i`
+    // leftBounds[i]: left bound of the number `i`.
+    //   subarrays starts exclusively from leftBounds[i] up to i have non-zero imbalance numbers
+    int[] lastIndices = new int[n + 2], leftBounds = new int[n];
+
+    // for each num, considers num and num + 1 only - no need to consider num - 1
+    // otherwise the final result will include duplication
+    Arrays.fill(lastIndices, -1);
+    for (int i = 0; i < n; i++) {
+        leftBounds[i] = Math.max(lastIndices[nums[i] + 1], lastIndices[nums[i]]);
+        lastIndices[nums[i]] = i;
+    }
+
+    Arrays.fill(lastIndices, n);
+    for (int i = n - 1; i >= 0; i--) {
+        lastIndices[nums[i]] = i;
+        // again, considers num + 1 only - no need to consider num, in order to deduplicate
+        sum += (i - leftBounds[i]) * (lastIndices[nums[i] + 1] - i);
+    }
+
+    // subtracts the result for max(nums[i])
+    return sum - n * (n + 1) / 2;
+}
+```
+
+### Subarray Min/Max
+
+[Sum of Subarray Minimums][sum-of-subarray-minimums]
+
+The basic idea is to find both the previous and next less elements of each array element with two stacks. This can be simplified to one stack:
+
+```java
+private int MOD = (int)1e9 + 7;
+
+public int sumSubarrayMins(int[] arr) {
+    Deque<Integer> st = new ArrayDeque<>();
+    long result = 0;
+    int n = arr.length;
+    // virtually appends 0 to the end of the array
+    for (int i = 0; i <= n; i++) {
+        while (!st.isEmpty() && (i == n || arr[i] < arr[st.peek()])) {
+            // i is the next less (<) element of j
+            int j = st.pop();
+            // k is the previous less (<=) element of j
+            int k = st.isEmpty() ? -1 : st.peek();
+            result = (result + (long)arr[j] * (i - j) * (j - k)) % MOD;
+        }
+        st.push(i);
+    }
+    return (int)result;
+}
+```
+
+[Subarray With Elements Greater Than Varying Threshold][subarray-with-elements-greater-than-varying-threshold]
+
+```java
+if ((i - k - 1) * nums[j] > threshold) {
+    return i - k - 1;
+}
+```
+
+With this perspective, the solution of the following *Histogram* problem is much easier to understand:
+
+[Largest Rectangle in Histogram][largest-rectangle-in-histogram]
+
+```java
+public int largestRectangleArea(int[] heights) {
+    // index of non-descreasing heights
+    Deque<Integer> st = new ArrayDeque<>();
+    st.push(-1);  // makes width concise
+
+    int area = 0, n = heights.length;
+    for (int i = 0; i <= heights.length; i++) {
+        while (st.peek() >= 0 && (i == n || heights[i] < heights[st.peek()])) {
+            // j = st.pop()
+            // heights[i] is the next less (<) element of heights[j]
+            int h = heights[st.pop()];
+            // k = st.peek()
+            // heights[k] is the previous less (<=) element of heights[j]
+            // w = length of (k, i)
+            int w = i - 1 - st.peek();
+            area = Math.max(area, h * w);
+        }
+        st.push(i);
+    }
+    return area;
+}
+```
+
+```
+[2,1,5,6,2,3]
+i = 0	[0]				area = 0
+i = 1	[]		h * w = 2	area = 2
+i = 1	[1]				area = 2
+i = 2	[2,1]				area = 2
+i = 3	[3,2,1]				area = 2
+i = 4	[2,1]		h * w = 6	area = 6
+i = 4	[1]		h * w = 10	area = 10
+i = 4	[4,1]				area = 10
+i = 5	[5,4,1]				area = 10
+i = 6	[4,1]		h * w = 3	area = 10
+i = 6	[1]		h * w = 8	area = 10
+i = 6	[]		h * w = 6	area = 10
+i = 6	[6]				area = 10
+```
+
+[Maximum of Minimum Values in All Subarrays][maximum-of-minimum-values-in-all-subarrays]
+
+```java
+public int[] findMaximums(int[] nums) {
+    int n = nums.length;
+    int[] ans = new int[n];
+
+    Deque<Integer> st = new ArrayDeque<>();
+    // virtually appends 0 to the end of the array
+    for (int i = 0; i <= n; i++) {
+        while (!st.isEmpty() && (i == n || nums[i] < nums[st.peek()])) {
+            // nums[i] is the next less (<) element of nums[j]
+            int j = st.pop();
+            // k = st.peek()
+            // nums[k] is the previous less (<=) element of nums[j]
+            // the range is (k, i)
+            int len = i - (st.isEmpty() ? -1 : st.peek()) - 1;
+            ans[len - 1] = Math.max(ans[len - 1], nums[j]);
+        }
+        st.push(i);
+    }
+
+    // ans is non-increasing
+    for (int i = n - 1; i > 0; i--) {
+        ans[i - 1] = Math.max(ans[i - 1], ans[i]);
+    }
+    return ans;
+}
+```
+
+### Summary
+
+1. L or G?
+ * L: increasing stack, `a[i] < top` or `a[i] <= top`
+ * G: decreasing stack, `a[i] > top` or `a[i] >= top`
+1. P or N?
+ * P: strictness of the comparsion operator in `a[i] ? top` is the opposite of PLE/PGE
+ * N: strictness of the comparsion operator in `a[i] ? top` is the same as NLE/NGE
+
 # Monoqueue
 
 ## Sliding Window Min/Max
@@ -435,13 +898,28 @@ private int query(int y) {
 ```
 
 [constrained-subsequence-sum]: https://leetcode.com/problems/constrained-subsequence-sum/
+[final-prices-with-a-special-discount-in-a-shop]: https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/
 [find-building-where-alice-and-bob-can-meet]: https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/
 [find-maximum-non-decreasing-array-length]: https://leetcode.com/problems/find-maximum-non-decreasing-array-length/
+[find-the-most-competitive-subsequence]: https://leetcode.com/problems/find-the-most-competitive-subsequence/
 [jump-game-vi]: https://leetcode.com/problems/jump-game-vi/
+[largest-rectangle-in-histogram]: https://leetcode.com/problems/largest-rectangle-in-histogram/
 [longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit]: https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
 [max-value-of-equation]: https://leetcode.com/problems/max-value-of-equation/
 [maximum-balanced-subsequence-sum]: https://leetcode.com/problems/maximum-balanced-subsequence-sum/
 [maximum-number-of-robots-within-budget]: https://leetcode.com/problems/maximum-number-of-robots-within-budget/
+[maximum-of-minimum-values-in-all-subarrays]: https://leetcode.com/problems/maximum-of-minimum-values-in-all-subarrays/
 [maximum-sum-queries]: https://leetcode.com/problems/maximum-sum-queries/
+[maximum-width-ramp]: https://leetcode.com/problems/maximum-width-ramp/
+[minimum-cost-tree-from-leaf-values]: https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/
+[next-greater-element-iv]: https://leetcode.com/problems/next-greater-element-iv/
+[number-of-people-that-can-be-seen-in-a-grid]: https://leetcode.com/problems/number-of-people-that-can-be-seen-in-a-grid/
+[number-of-visible-people-in-a-queue]: https://leetcode.com/problems/number-of-visible-people-in-a-queue/
+[online-stock-span]: https://leetcode.com/problems/online-stock-span/
+[remove-k-digits]: https://leetcode.com/problems/remove-k-digits/
 [shortest-subarray-with-sum-at-least-k]: https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
 [sliding-window-maximum]: https://leetcode.com/problems/sliding-window-maximum/
+[steps-to-make-array-non-decreasing]: https://leetcode.com/problems/steps-to-make-array-non-decreasing/
+[subarray-with-elements-greater-than-varying-threshold]: https://leetcode.com/problems/subarray-with-elements-greater-than-varying-threshold/
+[sum-of-imbalance-numbers-of-all-subarrays]: https://leetcode.com/problems/sum-of-imbalance-numbers-of-all-subarrays/
+[sum-of-subarray-minimums]: https://leetcode.com/problems/sum-of-subarray-minimums/
