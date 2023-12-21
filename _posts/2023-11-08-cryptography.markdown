@@ -519,3 +519,16 @@ Trusted 3rd Party: simple protocol; replay attack
 * `(G,E,D)`
 * IND-CPA
 
+**Arithmetic Algorithms**
+
+For \\(n\\)-bit integers:
+* Addition and subtraction: \\(O(n)\\)
+* Multiplication
+  - Naive: \\(o(n^2)\\)
+  - Karatsuba: \\(O(n^{1.585})\\); 3 mults
+  - Best (asymptotic) algorithm: \\(\tilde{O}(n\log(n))\\); not practical
+* Division with remainder: \\(O(n^2)\\)
+* Modualr exponentiation: successive square \\(O(n^2\log(n)) \le O(n^3)\\)
+
+## Public-Key Encrytion
+

@@ -4,7 +4,26 @@ category: algorithm
 tags: [stack, queue, map]
 ---
 
-The following table shows the process of deriving monotonically (strictly) increasing stack from the `[2,5,1,3,6,4]` by iterating from left to right:
+# Overview
+
+## Template
+
+```c++
+// Monotonically increasing stack (non-strict)
+stack<int> st;
+for (int i = 0; i < n; i++) {
+    while (!st.isEmpty() && nums[i] < nums[st.top()]) {
+        st.pop();
+    }
+    st.push(i);
+}
+```
+
+Variants:
+* To make the stack strict: `nums[i] <= nums[st.top()]`
+* To make the stack monotonically increasing (non-strict): `nums[i] > nums[st.top()]`
+
+Let's look at an example `[2,5,1,3,6,4]`. The algorithm iterates the array from left to right, and derives a monotonically (strictly) increasing stack. The following table demonstrates the process:
 
 |index|element|stack|
 |-|-|-|
@@ -84,18 +103,20 @@ The requested element can be strictly or non-strictly less/greater.
 
 ### Template
 
+Use monotonically increasing stack to get PLE/NLE.
+
 ```java
 Deque<Integer> st = new ArrayDeque<>();
 int[] prev = new int[n], next = new int[n];
 Arrays.fill(next, n);
 
 for (int i = 0; i < n; i++) {
-    // monotonically increasing stack
-    // strictly less next
+    // Monotonically increasing stack
+    // Strictly less next
     while (!st.isEmpty() && nums[i] < nums[st.peek()]) {
         next[st.pop()] = i;
     }
-    // non-strictly less prev
+    // Non-strictly less prev
     prev[i] = st.isEmpty() ? -1 : st.peek();
     st.push(i);
 }
@@ -111,24 +132,23 @@ for (int i = 0; i < n; i++) {
 
 [Final Prices With a Special Discount in a Shop][final-prices-with-a-special-discount-in-a-shop]
 
-```java
-public int[] finalPrices(int[] prices) {
-    int n = prices.length;
-    int[] result = Arrays.copyOf(prices, n);
-
-    // next less element
-    Deque<Integer> st = new ArrayDeque<>();
-    for (int i = 0; i < n; i++) {
-        while (!st.isEmpty() && result[i] <= result[st.peek()]) {
-            result[st.pop()] -= result[i];
+```c++
+vector<int> finalPrices(vector<int>& prices) {
+    vector<int> answer = prices;
+    // Next less element
+    stack<int> st;
+    for (int i = 0; i < prices.size(); i++) {
+        while (!st.empty() && answer[i] <= answer[st.top()]) {
+            answer[st.top()] -= answer[i];
+            st.pop();
         }
         st.push(i);
     }
-    return result;
+    return answer;
 }
 ```
 
-Similarly, with Monotonically Decreasing Stack, we can get Previous Greater Element or Next Greater Element.
+Similarly, with monotonically decreasing stack, we can get PGE/NGE.
 
 |                | Previous > | Previous >= |  Next >  |  Next >=  |
 |----------------|------------|-------------|----------|-----------|
@@ -136,35 +156,7 @@ Similarly, with Monotonically Decreasing Stack, we can get Previous Greater Elem
 |Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
 |   Condition    |a[i] >= top | a[i] > top  |a[i] > top|a[i] >= top|
 
-**PGE**
-
-[Steps to Make Array Non-decreasing][steps-to-make-array-non-decreasing]
-
-```java
-public int totalSteps(int[] nums) {
-    Deque<int[]> st = new ArrayDeque<>();
-    // {number, count of preceding elements to remove before reaching PGE(>)}
-    st.push(new int[]{nums[0], 0});
-
-    int max = 0;
-    for (int i = 1; i < nums.length; i++) {
-        // previous greater element (>)
-        int steps = 0;
-        while (!st.isEmpty() && nums[i] >= st.peek()[0]) {
-            // the max steps among all the popped elements
-            steps = Math.max(steps, st.peek()[1]);
-            st.pop();
-        }
-
-        // when the stack is not empty
-        // increments the steps to include the current step
-        steps = st.isEmpty() ? 0 : steps + 1;
-        max = Math.max(max, steps);
-        st.push(new int[]{nums[i], steps});
-    }
-    return max;
-}
-```
+**NGE**
 
 [Online Stock Span][online-stock-span]
 
@@ -172,16 +164,43 @@ public int totalSteps(int[] nums) {
 private Deque<int[]> st;
 
 public StockSpanner() {
-    st = new ArrayDeque<>();
+    this.st = new ArrayDeque<>();
 }
 
 public int next(int price) {
     int count = 1;
+    // Next greater element
     while (!st.isEmpty() && price >= st.peek()[0]) {
         count += st.pop()[1];
     }
     st.push(new int[]{price, count});
     return count;
+}
+```
+
+**PGE**
+
+[Steps to Make Array Non-decreasing][steps-to-make-array-non-decreasing]
+
+```c++
+int totalSteps(vector<int>& nums) {
+    // {num, number of steps performed until num}
+    stack<pair<int,int>> st;
+    int mx = 0;
+    for (int num : nums) {
+        // Next greater element (>)
+        int steps = 0;
+        while (!st.empty() && num >= st.top().first) {
+            // The max steps among all the popped elements
+            steps = max(steps, st.top().second);
+            st.pop();
+        }
+
+        // If no element is left in the stack, 
+        st.push({num, steps = st.empty() ? 0 : steps + 1});
+        mx = max(mx, steps);
+    }
+    return mx;
 }
 ```
 
@@ -475,15 +494,6 @@ public int[] findMaximums(int[] nums) {
 }
 ```
 
-### Summary
-
-1. L or G?
- * L: increasing stack, `a[i] < top` or `a[i] <= top`
- * G: decreasing stack, `a[i] > top` or `a[i] >= top`
-1. P or N?
- * P: strictness of the comparsion operator in `a[i] ? top` is the opposite of PLE/PGE
- * N: strictness of the comparsion operator in `a[i] ? top` is the same as NLE/NGE
-
 # Monoqueue
 
 ## Sliding Window Min/Max
@@ -678,7 +688,7 @@ public int maxResult(int[] nums, int k) {
 
 In the solution above, it's worth noting the iteration is in reverse order, which is more intuitive and straightforward than the natural order.
 
-Similar problem: [Constrained Subsequence Sum][constrained-subsequence-sum]
+Similar problem: [Constrained Subsequence Sum][constrained-subsequence-sum].
 
 ## Shortest Subarray With Sum >= k
 

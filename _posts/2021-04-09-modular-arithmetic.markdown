@@ -170,13 +170,47 @@ class Fancy {
 
 To compute \\(k^{th}\\) roots modulo \\(m\\):
 
-If \\(gcd(b,m) = 1\\) and \\(gcd(k,\varphi(m)) = 1\\), the following steps find the congruence \\(x^{k} \equiv b \pmod{ma}\\):
+## Easy Case
+
+If \\(gcd(b,m) = 1\\) and \\(gcd(k,\varphi(m)) = 1\\), the following steps find the congruence \\(x^{k} \equiv b \pmod{ma}\\)[^1]:
 1. Compute \\(\varphi(m)\\)
 1. Find positive integers \\(u\\) and \\(v\\) that satisfy \\(ku - \varphi(m)v = 1\\)
 1. Compute \\(x \equiv b^u \pmod{m}\\) by successive squaring
 
-Ref: [*Number Theory Handouts* of Wellesley College Mathematics Department](https://palmer.wellesley.edu/~ivolic/pdf/Classes/Handouts/NumberTheoryHandouts/EulerTheorem-Silverman.pdf)
+As a special case: if \\(m\\) is a prime, \\(\forall c \in \mathbb {Z} /m\mathbb {Z}\\)
+
+$$c^{1/k} \equiv c^d \pmod{m}$$
+
+where \\(d \equiv k^{-1} \pmod{m-1}\\).
+
+## Quadratic Residue
+
+\\(k = 2\\).
+
+[Euler's criterion](https://en.wikipedia.org/wiki/Euler%27s_criterion): Let \\(p\\) be an odd prime and \\(a\\) be an integer coprime to \\(p\\). Then
+
+$$ a^{\tfrac {p-1}{2}}\equiv {
+\begin{cases}
+  1{\pmod {p}} & {\text{ if there is an integer }}x{\text{ such that }}x^{2}\equiv a{\pmod {p}}, \\
+  -1{\pmod {p}} & {\text{ otherwise.}}
+\end{cases}}$$
+
+Legendre symbol:
+
+$$ \left({\frac {a}{p}}\right)\equiv a^{\tfrac {p-1}{2}}{\pmod {p}}$$
+
+Modulo an odd prime \\(p\\), there are \\((p+1)/2\\) quadratic residues.
+
+[Tonelli-Shanks algorithm](https://zerobone.net/blog/math/tonelli-shanks/): \\(O(\log^2(p))\\)
+
+Special case: if \\(p \equiv 3 \pmod{4}\\), quadratic residue is \\(a^{\frac {p+1}{4}}{\pmod {p}}\\).
+
+## General Case
+
+If \\(m\\) is composite number and \\(k \gt 1\\), computing the root efficiently requires factorization of \\(m\\).
 
 [fancy-sequence]: https://leetcode.com/problems/fancy-sequence/
 [smallest-integer-divisible-by-k]: https://leetcode.com/problems/smallest-integer-divisible-by-k/
 [super-pow]: https://leetcode.com/problems/super-pow/
+
+[^1]: Joseph H. Silverman. (2009). *A Friendly Introduction to Number Theory*
