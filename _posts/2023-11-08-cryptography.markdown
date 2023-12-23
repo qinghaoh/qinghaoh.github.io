@@ -534,7 +534,23 @@ For \\(n\\)-bit integers:
 * IND-CCA
 
 **Trapdoor Functions (TDF)**
-* \\(G() \rightarrow (pk, sk)\\)
-* \\(F(pk,\cdot)\\)
-* \\(F^{-1}(sk,\cdot)\\)
+* \\(G,F,F^{-1}\\)
+  - \\(G() \rightarrow (pk, sk)\\)
+  - \\(F(pk,\cdot)\\)
+  - \\(F^{-1}(sk,\cdot)\\)
+* Secure if \\(F\\) is a one-way function
+* Public-key encryption
+  - \\((G,E,D)\\): ISO standard
+  - \\(E(pk,m)\\): \\(x \xleftarrow{R} X\\), \\(y \leftarrow F(pk,x)\\), \\(k \leftarrow H(x)\\), \\(c \leftarrow E_s(k,m)\\); output \\((y,c)\\)
+  - \\(D(sk,(y,c)\\): \\(x \leftarrow F^{-1}(sk,y)\\), \\(k \leftarrow H(x)\\), \\(m \leftarrow D_s(k,c)\\); output \\(m\\)
+  - Secure TDF + \\((E_s,D_s)\\) auth. enc. + \\(H\\) is random oracle \\(\Rightarrow\\) \\((G,E,D)\\) is \\(CCA^{ro}\\) secure
+  - *Never* encrypt by applying \\(F\\) directly to plaintext!
+    * Deterministic
+    * Many attacks exist
 
+```
+|<-- header -->|<---     body      --->|
+ ---------------------------------------
+|   F(pk,x)    |       Es(H(x),m)      |
+ ---------------------------------------
+```

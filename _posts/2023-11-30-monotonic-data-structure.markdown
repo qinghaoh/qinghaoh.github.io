@@ -6,23 +6,26 @@ tags: [stack, queue, map]
 
 ## Overview
 
-The **template** of monotonically non-strictly increasing stack:
+### Form-I Template
+
+The most commonly used **template** of monotonically strictly increasing stack is shown belown:
 
 ```c++
-// Monotonically increasing stack (non-strict)
+// Monotonically increasing stack (strict)
 stack<int> st;
 for (int i = 0; i < n; i++) {
-    while (!st.isEmpty() && nums[i] < nums[st.top()]) {
+    while (!st.isEmpty() && nums[i] <= st.top()) {
         st.pop();
     }
-    // It's also very common to push index into the stack
+    // It's also very common to push the index: st.push(i);
     st.push(nums[i]);
 }
 ```
 
 Variants:
-* Monotonically *strictly* increasing stack: `nums[i] <= nums[st.top()]`
-* Monotonically (non-strictly) decreasing stack: `nums[i] > nums[st.top()]`
+* Monotonically *non-strictly* increasing stack: `nums[i] < nums[st.top()]`
+* Monotonically strictly *decreasing* stack: `nums[i] >= nums[st.top()]`
+* Monotonically *non-strictly decreasing* stack: `nums[i] > nums[st.top()]`
 
 Let's go over the algorithm with an example `[2,5,1,3,6,4]`. The algorithm maintains a monotonically strictly increasing stack while iterating from left to right:
 
@@ -35,27 +38,92 @@ Let's go over the algorithm with an example `[2,5,1,3,6,4]`. The algorithm maint
 |4|6|`[1,3,6]`|
 |5|4|`[1,3,4]`|
 
-Let \\(st(i)\\) denote the stack when the iterator is at index \\(i\\), we have the following **theorem**[^1]:
+### Form-II Template
 
-Define \\(m(j) = \min_{j \le k \le i}(\text{nums}[k])\\), then \\(st(i)\\) is identical to the array \\(m(0),m(1),\cdots,m(i)\\) after de-duplication.
+The other form of monotonic stack **template** looks more intuitive, but actually less commonly used:
 
-**Proof**
+```c++
+// Monotonically increasing stack (strict)
+stack<int> st;
+for (int i = 0; i < n; i++) {
+    if (st.empty() || nums[i] > st.top()) {
+        st.push(nums[i]);
+    }
+}
+```
+
+With the same example `[2,5,1,3,6,4]`, the stack of the algorithm changes as follows:
+
+|index|element|stack|
+|-|-|-|
+|0|2|`[2]`|
+|1|5|`[2,5]`|
+|2|1|`[2,5]`|
+|3|3|`[2,5]`|
+|4|6|`[2,5,6]`|
+|5|4|`[2,5,6]`|
+
+In another perspective, the stack in this template stores the cumulative maximum of the sequence. Cumulative maximum funtion is monotonically increasing, so is the stack.
+
+[Maximum Width Ramp][maximum-width-ramp]
+
+```java
+public int maxWidthRamp(int[] nums) {
+    int max = 0, n = nums.length;
+    // Decreasing stack
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        if (st.isEmpty() || nums[i] < nums[st.peek()]) {
+            st.push(i);
+        }
+    }
+
+    for (int i = n - 1; i > max; i--) {
+        while (!st.isEmpty() && nums[i] >= nums[st.peek()]) {
+            // i is the largest index such that nums[i] >= top
+            // so, it's safe to pop
+            max = Math.max(max, i - st.pop());
+        }
+    }
+    return max;
+}
+```
+
+### Theorems and Corollaries
+
+Let \\(st(i)\\) denote the stack of *Form-I template* when the iterator is at index \\(i\\), we have the following **theorem**[^1]:
+
+Define a sequence \\(a_n = \min_{n \le j \le i}(\text{nums}[j])\\), then \\(st(i) = \text{dedupe}(a_n)\\), where \\(\text{dedupe}(a_n)\\) is a function that de-duplicate the sequence \\(a_n\\) while preserving the order of sequence terms.
+
+The below code implementation illustrates the theorem, and it uses a variant of the Form-II template:
+
+```c++
+vector<int> st;
+for (int j = i; j >= 0; j--) {
+    if (st.empty() || nums[j] < st.back()) {
+        st.push_back(nums[j]);
+    }
+}
+
+// Monotonically increasing stack (strict)
+ranges::reverse(st);
+```
+
+Therefore, we can conclude that Form-I template and Form-II template are interconvertible.
+
+It's trivial to derive the following corollaries on *Form-I template*:
 
 **Corollary 1** The current element `nums[i]` is always at the top.
+
+A direct conslusion of this corollary is: the condition `nums[i] <= st.top()` in the `while` loop always starts with `nums[i] <= nums[i - 1]`, because `nums[i - 1]` is the stack top.
 
 **Corollary 2** The minimum element of `nums[0...i]` is always at the bottom.
 
 **Corollary 3** The stack is lexicographically minimum subsequence of `nums[0...i]`.
 
-If we truncate the stack in such a way that all elements with index `< j < i` are removed, the bottom of the remaining stack is the min element of `nums[j...i]`.
-
-The stack at each index can be equivalently derived in this way: iterate _reversely_ from the current index, and push the element into the stack if it's less than the stack top; when this iteration is completed, reverse the entire stack.
-
 ## Monotonic Stack
 
 ### Lexicographic Order
-
-We can get lexicographically least/largest subsequency of an array by **Corollary 3**.
 
 [Remove K Digits][remove-k-digits]
 
@@ -192,6 +260,8 @@ public int next(int price) {
     return count;
 }
 ```
+
+Can you see the connection between the above solution and *Tree recursion (DFS)*?
 
 **PGE**
 
@@ -339,30 +409,6 @@ public int[] canSeePersonsCount(int[] heights) {
         st.push(i);
     }
     return answer;
-}
-```
-
-[Maximum Width Ramp][maximum-width-ramp]
-
-```java
-public int maxWidthRamp(int[] nums) {
-    // decreasing stack
-    Deque<Integer> st = new ArrayDeque<>();
-    int max = 0, n = nums.length;
-    for (int i = 0; i < n; i++) {
-        if (st.isEmpty() || nums[i] < nums[st.peek()]) {
-            st.push(i);
-        }
-    }
-
-    for (int i = n - 1; i > max; i--) {
-        while (!st.isEmpty() && nums[i] >= nums[st.peek()]) {
-            // i is the largest index with nums[i] >= stack top
-            // so it's safe to pop
-            max = Math.max(max, i - st.pop());
-        }
-    }
-    return max;
 }
 ```
 
@@ -945,5 +991,5 @@ vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& q
 [sum-of-imbalance-numbers-of-all-subarrays]: https://leetcode.com/problems/sum-of-imbalance-numbers-of-all-subarrays/
 [sum-of-subarray-minimums]: https://leetcode.com/problems/sum-of-subarray-minimums/
 
-[^1]: For the sake of simplicity, we only discuss monotonically strictly increasing stack in the theorem, and we suppose all the elements are unique. It's trivial to extend it to non-strict or descreasing stacks.
+[^1]: For the sake of simplicity, we assume a) the stack is monotonically *strictly increasing* stack, b) all the elements are *unique*. It's trivial to extend it to non-strict or descreasing stacks.
 
