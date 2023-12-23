@@ -4,9 +4,9 @@ category: algorithm
 tags: [stack, queue, map]
 ---
 
-# Overview
+## Overview
 
-## Template
+The **template** of monotonically non-strictly increasing stack:
 
 ```c++
 // Monotonically increasing stack (non-strict)
@@ -15,15 +15,16 @@ for (int i = 0; i < n; i++) {
     while (!st.isEmpty() && nums[i] < nums[st.top()]) {
         st.pop();
     }
-    st.push(i);
+    // It's also very common to push index into the stack
+    st.push(nums[i]);
 }
 ```
 
 Variants:
-* To make the stack strict: `nums[i] <= nums[st.top()]`
-* To make the stack monotonically increasing (non-strict): `nums[i] > nums[st.top()]`
+* Monotonically *strictly* increasing stack: `nums[i] <= nums[st.top()]`
+* Monotonically (non-strictly) decreasing stack: `nums[i] > nums[st.top()]`
 
-Let's look at an example `[2,5,1,3,6,4]`. The algorithm iterates the array from left to right, and derives a monotonically (strictly) increasing stack. The following table demonstrates the process:
+Let's go over the algorithm with an example `[2,5,1,3,6,4]`. The algorithm maintains a monotonically strictly increasing stack while iterating from left to right:
 
 |index|element|stack|
 |-|-|-|
@@ -34,17 +35,27 @@ Let's look at an example `[2,5,1,3,6,4]`. The algorithm iterates the array from 
 |4|6|`[1,3,6]`|
 |5|4|`[1,3,4]`|
 
-Here are some _key properties_ of monotonic data structures:
+Let \\(st(i)\\) denote the stack when the iterator is at index \\(i\\), we have the following **theorem**[^1]:
 
-1. The current element is always at the top.
-1. The minimum element so far is always at the bottom.
-1. The stack at each index can be equivalently derived in this way: iterate _reversely_ from the current index, and push the element into the stack if it's less than the stack top; when this iteration is completed, reverse the entire stack.
+Define \\(m(j) = \min_{j \le k \le i}(\text{nums}[k])\\), then \\(st(i)\\) is identical to the array \\(m(0),m(1),\cdots,m(i)\\) after de-duplication.
 
-# Monotonic Stack
+**Proof**
 
-## Lexicographic Order
+**Corollary 1** The current element `nums[i]` is always at the top.
 
-We can get lexicographically least/largest subsequency of an array by Property #2.
+**Corollary 2** The minimum element of `nums[0...i]` is always at the bottom.
+
+**Corollary 3** The stack is lexicographically minimum subsequence of `nums[0...i]`.
+
+If we truncate the stack in such a way that all elements with index `< j < i` are removed, the bottom of the remaining stack is the min element of `nums[j...i]`.
+
+The stack at each index can be equivalently derived in this way: iterate _reversely_ from the current index, and push the element into the stack if it's less than the stack top; when this iteration is completed, reverse the entire stack.
+
+## Monotonic Stack
+
+### Lexicographic Order
+
+We can get lexicographically least/largest subsequency of an array by **Corollary 3**.
 
 [Remove K Digits][remove-k-digits]
 
@@ -92,7 +103,7 @@ public int[] mostCompetitive(int[] nums, int k) {
 }
 ```
 
-## PLE/PGE/NLE/NGE
+### PLE/PGE/NLE/NGE
 
 * Previous Less Element (PLE)
 * Previous Greater Element (PGE)
@@ -101,9 +112,7 @@ public int[] mostCompetitive(int[] nums, int k) {
 
 The requested element can be strictly or non-strictly less/greater.
 
-### Template
-
-Use monotonically increasing stack to get PLE/NLE.
+The **template** below uses monotonically increasing stack to get PLE/NLE.
 
 ```java
 Deque<Integer> st = new ArrayDeque<>();
@@ -127,6 +136,8 @@ for (int i = 0; i < n; i++) {
 |Monotonic Stack | Increasing | Increasing  |Increasing|Increasing |
 |Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
 |   Condition    |a[i] <= top | a[i] < top  |a[i] < top|a[i] <= top|
+
+![NGE & PGE](/assets/img/algorithm/monotonic_stack.png){: width="400" }
 
 **NLE**
 
@@ -157,6 +168,10 @@ Similarly, with monotonically decreasing stack, we can get PGE/NGE.
 |   Condition    |a[i] >= top | a[i] > top  |a[i] > top|a[i] >= top|
 
 **NGE**
+
+Imagine each element is a node in a graph, and we connect node `u` to its NLE node `v` with an edge. The resulting graph is an [increasing spanning forest](https://users.math.msu.edu/users/bsagan/Papers/Old/isf-pub.pdf).
+
+![Increasing Spanning Forest](/assets/img/algorithm/monotonic_stack_nle.png)
 
 [Online Stock Span][online-stock-span]
 
@@ -383,7 +398,7 @@ public int sumImbalanceNumbers(int[] nums) {
 }
 ```
 
-### Subarray Min/Max
+#### Subarray Min/Max
 
 [Sum of Subarray Minimums][sum-of-subarray-minimums]
 
@@ -494,9 +509,9 @@ public int[] findMaximums(int[] nums) {
 }
 ```
 
-# Monoqueue
+## Monoqueue
 
-## Sliding Window Min/Max
+### Sliding Window Min/Max
 
 Similar to that in [sliding window](../sliding-window/#monotonically-decreasing-function), the constraint function \\(h(m)\\) is monotonically decreasing. Monoqueues can be used to find the min/max of a window constrained by a monotonically decreasing function.
 
@@ -527,11 +542,7 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
 }
 ```
 
-From the above solution, we have _Property #4_:
-
-At index `i`, if we truncate the stack in such a way that all elements with index `< j < i` are removed, the bottom of the remaining stack is the min element of `nums[j...i]`.
-
-Property #2 can be viewed as a special case of Property #4, where `j = 0`.
+The above solution is a good example of the application of _Property #2_:
 
 Equivalently, we can always use _priority queues_ to solve this type of problem. In the following example, we store `[value, position]` pairs in the heap, and pops elements until the distance is within the required range:
 
@@ -690,7 +701,7 @@ In the solution above, it's worth noting the iteration is in reverse order, whic
 
 Similar problem: [Constrained Subsequence Sum][constrained-subsequence-sum].
 
-## Shortest Subarray With Sum >= k
+### Shortest Subarray With Sum >= k
 
 In this type of problems, there is a constraint \\(f(i,j) \ge 0\\), where \\(i\\) is the current index and \\(j\\) is a smaller index. For all indices \\(\in (j, i)\\), \\(f(i,j) \lt 0\\). Monoqueues can be used to find the largest \\(j\\) of each \\(i\\) which satisfies the constraint.
 
@@ -773,51 +784,7 @@ int findMaximumLength(vector<int>& nums) {
 }
 ```
 
-# + Binary Search
-
-[Find Building Where Alice and Bob Can Meet][find-building-where-alice-and-bob-can-meet]
-
-```c++
-vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& queries) {
-    int m = queries.size();
-    // Sorts queries in descending order of `b`,
-    // so we process the heights from right to left.
-    vector<int> indices, res(m);
-    for (int i = 0; i < m; i++) {
-        // a <= b
-        int a = *ranges::min_element(queries[i]), b = *ranges::max_element(queries[i]);
-
-        if (a == b || heights[a] < heights[b]) {
-            res[i] = b;
-        } else {
-            indices.push_back(i);
-        }
-    }
-    ranges::sort(indices, greater<int>(), [&](int i){ return *ranges::max_element(queries[i]); });
-
-    vector<int> st;
-    int j = heights.size() - 1;
-    for (const int& i : indices) {
-        int a = *ranges::min_element(queries[i]), b = *ranges::max_element(queries[i]);
-
-        // Pushes [j:(b - 1):-1] to maintain a monotonic stack
-        while (j >= b) {
-            while (!st.empty() && heights[j] >= heights[st.back()]) {
-                st.pop_back();
-            }
-            st.push_back(j--);
-        }
-
-        // Binary search
-        auto it = upper_bound(rbegin(st), rend(st), a, [&](int i, int j){ return heights[i] < heights[j]; });
-        res[i] = it == rend(st) ? -1 : *it;
-    }
-
-    return res;
-}
-```
-
-# Monotonic Map
+## Monotonic Map
 
 [Maximum Balanced Subsequence Sum][maximum-balanced-subsequence-sum]
 
@@ -907,6 +874,50 @@ private int query(int y) {
 }
 ```
 
+## + Binary Search
+
+[Find Building Where Alice and Bob Can Meet][find-building-where-alice-and-bob-can-meet]
+
+```c++
+vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& queries) {
+    int m = queries.size();
+    // Sorts queries in descending order of `b`,
+    // so we process the heights from right to left.
+    vector<int> indices, res(m);
+    for (int i = 0; i < m; i++) {
+        // a <= b
+        int a = *ranges::min_element(queries[i]), b = *ranges::max_element(queries[i]);
+
+        if (a == b || heights[a] < heights[b]) {
+            res[i] = b;
+        } else {
+            indices.push_back(i);
+        }
+    }
+    ranges::sort(indices, greater<int>(), [&](int i){ return *ranges::max_element(queries[i]); });
+
+    vector<int> st;
+    int j = heights.size() - 1;
+    for (const int& i : indices) {
+        int a = *ranges::min_element(queries[i]), b = *ranges::max_element(queries[i]);
+
+        // Pushes [j:(b - 1):-1] to maintain a monotonic stack
+        while (j >= b) {
+            while (!st.empty() && heights[j] >= heights[st.back()]) {
+                st.pop_back();
+            }
+            st.push_back(j--);
+        }
+
+        // Binary search
+        auto it = upper_bound(rbegin(st), rend(st), a, [&](int i, int j){ return heights[i] < heights[j]; });
+        res[i] = it == rend(st) ? -1 : *it;
+    }
+
+    return res;
+}
+```
+
 [constrained-subsequence-sum]: https://leetcode.com/problems/constrained-subsequence-sum/
 [final-prices-with-a-special-discount-in-a-shop]: https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/
 [find-building-where-alice-and-bob-can-meet]: https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/
@@ -933,3 +944,6 @@ private int query(int y) {
 [subarray-with-elements-greater-than-varying-threshold]: https://leetcode.com/problems/subarray-with-elements-greater-than-varying-threshold/
 [sum-of-imbalance-numbers-of-all-subarrays]: https://leetcode.com/problems/sum-of-imbalance-numbers-of-all-subarrays/
 [sum-of-subarray-minimums]: https://leetcode.com/problems/sum-of-subarray-minimums/
+
+[^1]: For the sake of simplicity, we only discuss monotonically strictly increasing stack in the theorem, and we suppose all the elements are unique. It's trivial to extend it to non-strict or descreasing stacks.
+

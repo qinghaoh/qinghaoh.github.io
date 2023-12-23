@@ -515,10 +515,6 @@ Trusted 3rd Party: simple protocol; replay attack
   - n = 3: Joux
   - n > 3: open question
 
-**Public-Key Encryption**
-* `(G,E,D)`
-* IND-CPA
-
 **Arithmetic Algorithms**
 
 For \\(n\\)-bit integers:
@@ -531,4 +527,14 @@ For \\(n\\)-bit integers:
 * Modualr exponentiation: successive square \\(O(n^2\log(n)) \le O(n^3)\\)
 
 ## Public-Key Encrytion
+
+**Security**
+* `(G,E,D)`
+* One-time security \\(\Rightarrow\\) Many-time security (CPA): attacker can encrypt any message with the public key
+* IND-CCA
+
+**Trapdoor Functions (TDF)**
+* \\(G() \rightarrow (pk, sk)\\)
+* \\(F(pk,\cdot)\\)
+* \\(F^{-1}(sk,\cdot)\\)
 
