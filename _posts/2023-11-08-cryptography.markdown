@@ -544,7 +544,7 @@ For \\(n\\)-bit integers:
   - \\(E(pk,m)\\): \\(x \xleftarrow{R} X\\), \\(y \leftarrow F(pk,x)\\), \\(k \leftarrow H(x)\\), \\(c \leftarrow E_s(k,m)\\); output \\((y,c)\\)
   - \\(D(sk,(y,c)\\): \\(x \leftarrow F^{-1}(sk,y)\\), \\(k \leftarrow H(x)\\), \\(m \leftarrow D_s(k,c)\\); output \\(m\\)
   - Secure TDF + \\((E_s,D_s)\\) auth. enc. + \\(H\\) is random oracle \\(\Rightarrow\\) \\((G,E,D)\\) is \\(CCA^{ro}\\) secure
-  - *Never* encrypt by applying \\(F\\) directly to plaintext!
+  - *Never* encrypt by applying \\(F\\) directly to plaintext! (e.g. Textbook RSA)
     * Deterministic
     * Many attacks exist
 
@@ -554,3 +554,33 @@ For \\(n\\)-bit integers:
 |   F(pk,x)    |       Es(H(x),m)      |
  ---------------------------------------
 ```
+
+**RSA Trapdoor Permutation**
+* \\(G()\\): \\(p,q \approx 1024\\) bits, \\(N = pq\\), \\(e \cdot d \equiv 1 \pmod{\varphi(N)})\\); output \\(pk = (N,e)\\), \\(sk = (N,d)\\)
+* \\(F(pk,x) = RSA(x) \equiv x^e \pmod{N}\\)
+* \\(F^{-1}(sk,x) \equiv y^d \pmod{N}\\)
+* Attacks on textbook RSA
+  - Exhausive search: if \\(k = k_1 \cdot k_2\\) (prob. \\(\approx\\) 20%), \\(c/k_1^e \equiv k_2^e \pmod{N}\\)
+
+**PKCS #1**
+* ISO standard is not often used
+* E.g. preprocess a symmetric key \\(k\\) to 2048 bit then use RSA() to encrypt it
+* [PKCS1 v1.5](https://datatracker.ietf.org/doc/html/rfc2313#section-8.1)
+  - Bleichenbacher Attack
+    * Test if the 16 MSBs of plaintext = `02`
+    * \\(c' \leftarrow r^e \cdot c = (r \cdot PKCS1(m))^e\\)
+    * HTTPS Defense (RFC 5246): return a random string `R` of 46 bytes if decryption fails 
+* PKCS1 v2.0: OAEP
+  - ![OAEP RFC 8017](https://upload.wikimedia.org/wikipedia/commons/8/8f/OAEP_encoding_schema.svg){: width="400"}
+  - Check pad on decryption
+  - *RSA* is trapdoor permutation + MGFs are random oracles \\(\Rightarrow\\) RSA-OAEP is CCA secure
+    * The theorem is false if you use general trapdoor permutation
+  - OAEP+
+    * General trapdoor permutation
+    * During decryption validate \\(W(m,r)\\) field
+  - SAEP+
+    * RSA \\(e = 3\\)
+    * One MGF
+    * During decryption validate \\(W(m,r)\\) field
+  
+
