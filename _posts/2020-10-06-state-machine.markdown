@@ -1,10 +1,17 @@
 ---
 title:  "State Machine"
 category: algorithm
+mermaid: true
 ---
 [Best Time to Buy and Sell Stock with Transaction Fee][best-time-to-buy-and-sell-stock-with-transaction-fee]
 
-![state machine](/assets/img/algorithm/best_time_to_buy_and_sell_stock_with_transaction_fee.png)
+```mermaid
+graph LR
+    s0((S0)) -- buy --> s1((S1))
+    s1 -- sell --> s0
+    s0 -- rest --> s0
+    s1 -- rest --> s1
+```
 
 ```java
 public int maxProfit(int[] prices, int fee) {
@@ -68,7 +75,14 @@ public int maxProfit(int[] prices, int fee) {
 
 [Best Time to Buy and Sell Stock with Cooldown][best-time-to-buy-and-sell-stock-with-cooldown]
 
-![state machine](/assets/img/algorithm/best_time_to_buy_and_sell_stock_with_cooldown.png)
+```mermaid
+graph LR
+    s0((S0)) -- buy --> s1((S1))
+    s1 -- sell --> s2((S2))
+    s0 -- rest --> s0
+    s1 -- rest --> s1
+    s2 -- rest --> s0
+```
 
 ```java
 public int maxProfit(int[] prices) {
@@ -138,7 +152,24 @@ public int minSwap(int[] A, int[] B) {
 
 [Valid Number][valid-number]
 
-![DFA](/assets/img/algorithm/valid_number.png)
+```mermaid
+graph LR
+    0((0)) --> 1((1))
+    0 --> 2((2))
+    2 --> 3
+    0 --> 3((3))
+    1 --> 1
+    2 --> 1
+    1 --> 4((4))
+    3 --> 4
+    4 --> 4
+    1 --> 5((5))
+    4 --> 5
+    5 --> 6((6))
+    5 --> 7((7))
+    6 --> 7
+    7 --> 7
+```
 
 ```java
 private static final List<Map<String, Integer>> dfa = List.of(

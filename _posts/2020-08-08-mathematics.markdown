@@ -199,7 +199,10 @@ If we write \\(n\\) in binary as \\(b_{k}\cdots b_{0}\\), then this is equivalen
 
 [Pow(x, n)][powx-n]
 
-![Exponentiation by squaring](/assets/img/algorithm/powx_n.png)
+|$$ n=13 $$||$$ 1 $$|$$ 1 $$|$$ 0 $$|$$ 1 $$|
+|-|-|-|-|-|-|
+|$$ x $$||$$ x^8 $$|$$ x^4 $$|$$ x^2 $$|$$ x^1 $$|
+|$$ r $$|$$ x^{13} $$|$$ x^5 $$|$$ x^1 $$|$$ x^1 $$|$$ x^0 $$|
 
 Iterative:
 

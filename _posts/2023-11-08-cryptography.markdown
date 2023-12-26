@@ -277,7 +277,7 @@ PRP \\(\subset\\) PRF
 
 **NMAC (Nested MAC)**
 * \\(F: K \times X \rightarrow K\\)
-* [NMAC](https://cseweb.ucsd.edu/~mihir/papers/kmd5.pdf): $$ NMAC_K(x) = F_{k_1}(F_{k_2}(x)) $$
+* [NMAC](https://cseweb.ucsd.edu/~mihir/papers/kmd5.pdf): $$ \text{NMAC}_K(x) = F_{k_1}(F_{k_2}(x)) $$
 * Cascade function is not secure: Chosen message attack
   - \\(cascade(k,m \parallel w) = F(cascade(m),w)\\)
 * \\(Adv_{PRF}[A,F_{NMAC}] \le q \cdot L \cdot Adv_{PRP}[B,F] + q^2/2\lvert K \rvert\\)
@@ -612,7 +612,7 @@ For \\(n\\)-bit integers:
 
 **ElGamal Public-key System**
 * `(Gen,E,D)`
-* Gen: \\(g \xleftarrow{R} G\\), \\(a \xleftarrow{R} [0,n)\\); output \\(sk=a\\), \\(pk=(g,h=g^a)\\))
+* KeyGen: $$ g \xleftarrow{R} G $$, $$ a \xleftarrow{R} [0,n) $$; output $$ sk=a $$, $$ pk=(g,h=g^a) $$
 * \\(E(pk=(g,h),m)\\): \\(b \xleftarrow{R} [0,n)\\), \\(u \leftarrow g^b\\), \\(v \leftarrow h^b\\), \\(k \leftarrow H(u,v)\\), \\(c \leftarrow E_s(k,m)\\); output \\((u,c)\\)
   - 2 exp. (fixed basis)
   - Can pre-compute (3x speed-up)
@@ -637,3 +637,17 @@ For \\(n\\)-bit integers:
   - Stronger; needed to prove CCA security
   - Adv. can query \\(u_1,v_1\\) and Chal. returns 1 if \\((u_1)^a=v_1\\)
   - IDH + \\((E_s,D_s)\\) auth. enc. + \\(H\\) random oracle \\(\Rightarrow\\) ElGamal is \\(CCA^{ro}\\) secure
+* Prove CCA security based on CDH?
+  - Option 1: use group $$ G $$ where CDH = IDH (e.g. bilinear group)
+  - Option 2: twin ElGamal
+    * KeyGen: $$ g \xleftarrow{R} G $$, $$ a1,a2 \xleftarrow{R} [0,n) $$; output $$ sk=(a1,a2), pk=(g,h_1=g^{a1},h_2=g^{a2}) $$
+    * $$ E(pk=(g,h_1,h_2),m) $$: $$ b \xleftarrow{R} [0,n) $$, $$ k \leftarrow H(g^b,h_1^b,h_2^b) $$, $$c \leftarrow E_s(k,m) $$; output $$ (u=g^b,c) $$
+    * $$ D(sk=(a1,a2),(u,c)) $$: $$ k \leftarrow H(u,u^{a1},u^{a2}) $$, $$ m \leftarrow D_s(k,c) $$; output $$ m $$
+    * CDH + \\((E_s,D_s)\\) auth. enc. + \\(H\\) random oracle \\(\Rightarrow\\) twin ElGamal is \\(CCA^{ro}\\) secure
+    * Cost: one more exp. during enc./dec.
+    * No one knows if it is worth it...
+* Prove CCA security without random oracles
+  - Option 1: use HDH in bilinear groups
+  - Option 2: use Decision-DH assumption in any group
+    * [Cramer-Shoup cryptogsystem](https://en.wikipedia.org/wiki/Cramer%E2%80%93Shoup_cryptosystem)
+

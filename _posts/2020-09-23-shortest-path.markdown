@@ -2,6 +2,7 @@
 title:  "Shortest Path"
 category: algorithm
 tags: graph
+mermaid: true
 ---
 # Dijkstra
 
@@ -771,7 +772,19 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
 
 For example, `n = 9, flights = [[0,1,1],[1,2,1],[2,3,1],[3,7,1],[0,4,3],[4,5,3],[5,7,3],[0,6,5],[6,7,100],[7,8,1]], src = 0, dst = 8, k = 3`.
 
-![Example](/assets/img/algorithm/cheapest_flights_within_k_stops.png)
+```mermaid
+graph TD
+    0((0)) -- 1 --> 1((1))
+    1 -- 1 --> 2((2))
+    2 -- 1 --> 3((3))
+    3 -- 1 --> 7((7))
+    0 -- 3 --> 4((4))
+    4 -- 3 --> 5((5))
+    5 -- 3 --> 7
+    0 -- 5 --> 6((6))
+    6 -- 100 --> 7
+    7 -- 1 --> 8((8))
+```
 
 If in `else if (s + 1 < stops[neighbor])`, the statement is `pq.offer(new int[]{neighbor, alt, stops[neighbor] = s + 1});`, then the path `0 -> 6 -> 7` would set `stops[7] = 2` and exclude the correct path `0 -> 4 -> 5 -> 7` (because its `stops == 3`).
 

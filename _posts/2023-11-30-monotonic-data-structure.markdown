@@ -268,31 +268,56 @@ public int next(int price) {
 
 Can you see the connection between the above solution and *Tree recursion (DFS)*?
 
-**PGE**
+**Iteration Direction**
 
 [Steps to Make Array Non-decreasing][steps-to-make-array-non-decreasing]
 
 ```c++
 int totalSteps(vector<int>& nums) {
-    // {num, number of steps performed until num is removed because it meets its PGE}
+    // {num, number of steps performed until num is removed because it meets its PGE (>)}
     stack<pair<int,int>> st;
     int mx = 0;
     for (int num : nums) {
-        // Next greater (>) element
         int steps = 0;
         while (!st.empty() && num >= st.top().first) {
-            // The max steps among all the popped elements
+            // `num` is the next greater (>=) element of the popped element.
+            // Gets max steps among all the popped elements.
             steps = max(steps, st.top().second);
             st.pop();
         }
 
-        // If PGE exists, removes the current num will increment steps by one
+        // If previous greater (>) element exists, removing `num` increments steps by one
         st.push({num, steps = st.empty() ? 0 : steps + 1});
         mx = max(mx, steps);
     }
     return mx;
 }
 ```
+
+We can also build a monotonically decreasing stack by backward iteration:
+
+```c++
+int totalSteps(vector<int>& nums) {
+    // {num, number of steps performed until num is removed because it meets its PGE}
+    stack<pair<int,int>> st;
+    int mx = 0;
+    for (int i = nums.size() - 1; i >= 0; i--) {
+        int steps = 0;
+        while (!st.empty() && nums[i] > st.top().first) {
+            // `num` is the next greater (>) element of the popped element.
+            // Gets max steps among all the popped elements.
+            steps = max(steps + 1, st.top().second);
+            st.pop();
+        }
+        st.push({nums[i], steps});
+        mx = max(mx, steps);
+    }
+    return mx;
+}
+```
+
+> Both the forward iteration and backward iteration solutions use monotonically decreasing stack. However, the stack strictness is different. Consider the example `[4,3,3]` to understand the nuance.
+{: .prompt-info }
 
 [Next Greater Element IV][next-greater-element-iv]
 
