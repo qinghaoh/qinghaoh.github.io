@@ -583,4 +583,57 @@ For \\(n\\)-bit integers:
     * One MGF
     * During decryption validate \\(W(m,r)\\) field
   
+**RSA One-Way Function**
+* Best known algorithm to compute e'th roots modulo \\(N\\)
+  - Step 1: factor \\(N\\) (hard)
+  - Step 2: compute e'th roots modulo \\(p\\) and \\(q\\) (easy)
+* Reduction: efficient algorithm for e'th roots mod \\(N\\) \\(\Rightarrow\\) efficient algorithm for factoring \\(N\\)
+  - Unknown
+  - \\(e = 2 \Rightarrow\\) factoring \\(N\\), however, it can't be used in RSA
+* Caveats
+  - Wiener: if \\d < N^{0.25}\\), then RSA is insecure
+    * \\(\lvert e/N - k/d \rvert \le 1/2d^2\\): difference is so small
+    * Continued fraction algorithm to find \\(k/d\\); \\e \cdot d \equiv 1 \pmod{k} \Rightarrow (gcd(k,d) = 1\\)
+  - BD: if \\d < N^{0.292}\\), then RSA is insecure. (Conjecture: \\(d < N^{0.5}\\)
 
+**RSA in Practice**
+* Use a small \(e\\) to speed up RSA encryption
+  - Minimum value: \\(e = 3\\)
+  - Recommened: \\(e = 65537 = 2^16 + 1\\)
+* Asymmetry of RSA
+  - Fast enc./slow dec.: 10~30:1
+  - RSA-CRT: 4x dec., but still much slower than enc.
+* Attacks
+  - Timing attack (Kocher 97)
+  - Power attack (Kocher 99)
+  - Faults attack (BDL 97)
+    * Defence: always check output (10% slowdown)
+  - Low entropy at RSA key generation
+
+**ElGamal Public-key System**
+* `(Gen,E,D)`
+* Gen: \\(g \xleftarrow{R} G\\), \\(a \xleftarrow{R} [0,n)\\); output \\(sk=a\\), \\(pk=(g,h=g^a)\\))
+* \\(E(pk=(g,h),m)\\): \\(b \xleftarrow{R} [0,n)\\), \\(u \leftarrow g^b\\), \\(v \leftarrow h^b\\), \\(k \leftarrow H(u,v)\\), \\(c \leftarrow E_s(k,m)\\); output \\((u,c)\\)
+  - 2 exp. (fixed basis)
+  - Can pre-compute (3x speed-up)
+* \\(D(sk=a,(u,c))\\): \\(v \leftarrow u^a\\), \\(k \leftarrow H(u,v)\\), \\(m \leftarrow D_s(k,c)\\); output \\(m\\)
+  - 1 exp. (variable basis)
+
+```
+|<- header ->|<---     body      --->|
+ -------------------------------------
+|     u      |       Es(H(x),m)      |
+ -------------------------------------
+```
+
+**ElGamal Security**
+* Computational Diffie-Hellman (CDH) Assumption
+  - \\(\Pr[A(g,g^a,g^b) = g^{ab}] < negligible\\)
+* Hash Diffie-Hellman (HDH) Assumption
+  - \\((g,g^a,g^b,H(g^b,g^{ab})) \approx_{p} (g,g^a,g^b,R)\\)
+  - Slightly stronger: CDH is easy in \\(G \Rightarrow\\) HDH is easy in \\((G,H) \enspace \forall H, \lvert Im(H) \rvert \ge 2\\)
+  - ElGamal is sem. sec. under HDH
+* Interactive Diffie-Hellman (IDH)
+  - Stronger; needed to prove CCA security
+  - Adv. can query \\(u_1,v_1\\) and Chal. returns 1 if \\((u_1)^a=v_1\\)
+  - IDH + \\((E_s,D_s)\\) auth. enc. + \\(H\\) random oracle \\(\Rightarrow\\) ElGamal is \\(CCA^{ro}\\) secure

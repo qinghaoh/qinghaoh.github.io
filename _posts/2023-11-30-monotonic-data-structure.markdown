@@ -91,7 +91,7 @@ public int maxWidthRamp(int[] nums) {
 
 ### Theorems and Corollaries
 
-Let \\(st(i)\\) denote the stack of *Form-I template* when the iterator is at index \\(i\\), we have the following **theorem**[^1]:
+Let \\(st(i)\\) denote the stack of *Form-I template* when the iteration at index \\(i\\) is complete, we have the following **theorem**[^1]:
 
 Define a sequence \\(a_n = \min_{n \le j \le i}(\text{nums}[j])\\), then \\(st(i) = \text{dedupe}(a_n)\\), where \\(\text{dedupe}(a_n)\\) is a function that de-duplicate the sequence \\(a_n\\) while preserving the order of sequence terms.
 
@@ -205,7 +205,12 @@ for (int i = 0; i < n; i++) {
 |Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
 |   Condition    |a[i] <= top | a[i] < top  |a[i] < top|a[i] <= top|
 
-![NGE & PGE](/assets/img/algorithm/monotonic_stack.png){: width="400" }
+![NLE & PLE](/assets/img/algorithm/monotonic_stack.png){: width="300" }
+
+From the theorem, we have the following conclusions for NLE and PLE[^2]:
+
+* In the stack, each element is the PLE of the element on top of it.
+* After all iterations (\\(i = n\\)), \\(st(n)\\) is the set of elements that don't have NLEs.
 
 **NLE**
 
@@ -235,7 +240,7 @@ Similarly, with monotonically decreasing stack, we can get PGE/NGE.
 |Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
 |   Condition    |a[i] >= top | a[i] > top  |a[i] > top|a[i] >= top|
 
-**NGE**
+**Increasing/Decreasing Spanning Forest**
 
 Imagine each element is a node in a graph, and we connect node `u` to its NLE node `v` with an edge. The resulting graph is an [increasing spanning forest](https://users.math.msu.edu/users/bsagan/Papers/Old/isf-pub.pdf).
 
@@ -269,11 +274,11 @@ Can you see the connection between the above solution and *Tree recursion (DFS)*
 
 ```c++
 int totalSteps(vector<int>& nums) {
-    // {num, number of steps performed until num}
+    // {num, number of steps performed until num is removed because it meets its PGE}
     stack<pair<int,int>> st;
     int mx = 0;
     for (int num : nums) {
-        // Next greater element (>)
+        // Next greater (>) element
         int steps = 0;
         while (!st.empty() && num >= st.top().first) {
             // The max steps among all the popped elements
@@ -281,7 +286,7 @@ int totalSteps(vector<int>& nums) {
             st.pop();
         }
 
-        // If no element is left in the stack, 
+        // If PGE exists, removes the current num will increment steps by one
         st.push({num, steps = st.empty() ? 0 : steps + 1});
         mx = max(mx, steps);
     }
@@ -353,9 +358,13 @@ public int[] canSeePersonsCount(int[] heights) {
     int n = heights.length;
     int[] answer = new int[n];
     Deque<Integer> st = new ArrayDeque<>();
+    // There are two types of people that the i-th person can see to his right:
+    // 1. NGE(i) (>=). All the people to the right of NGE(i) are blocked by it and thus invisible.
+    // 2. The people in the range of (i, NGE(i)), and their PGE is i.
+    //    If j in (i, NGE(i)) and PGE(j) > i, then i is blocked by PGE(j) and thus invisible to j.
     for (int i = 0; i < n; i++) {
-        // monotonically decreasing stack (strict)
-        // next greater (>=) element
+        // Monotonically decreasing stack (strict)
+        // Next greater (>=) element
         while (!st.isEmpty() && heights[i] >= heights[st.peek()]) {
             // st.peek() can see i
             // st.peek() can't see after i, so st.peek() is done and popped
@@ -363,7 +372,7 @@ public int[] canSeePersonsCount(int[] heights) {
         }
 
         if (!st.isEmpty()) {
-            // previous greater (>) element
+            // Previous greater (>) element
             // st.peek() can see i
             answer[st.peek()]++;
         }
@@ -992,4 +1001,4 @@ vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& q
 [sum-of-subarray-minimums]: https://leetcode.com/problems/sum-of-subarray-minimums/
 
 [^1]: For the sake of simplicity, we assume a) the stack is monotonically *strictly increasing* stack, b) all the elements are *unique*. It's trivial to extend it to non-strict or descreasing stacks.
-
+[^2]: Again, we don't elaborate on PGE & NGE, or stack strictness.

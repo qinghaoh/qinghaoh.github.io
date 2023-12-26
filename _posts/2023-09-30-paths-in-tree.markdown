@@ -226,6 +226,7 @@ public:
 ```
 
 [binary-tree-maximum-path-sum]: https://leetcode.com/problems/binary-tree-maximum-path-sum/
+[count-valid-paths-in-a-tree]: https://leetcode.com/problems/count-valid-paths-in-a-tree/
 [diameter-of-binary-tree]: https://leetcode.com/problems/diameter-of-binary-tree/
 [diameter-of-n-ary-tree]: https://leetcode.com/problems/diameter-of-n-ary-tree/
 [longest-univalue-path]: https://leetcode.com/problems/longest-univalue-path/

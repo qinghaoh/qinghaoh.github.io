@@ -133,17 +133,16 @@ return curr;
 
 [Number of Dice Rolls With Target Sum][number-of-dice-rolls-with-target-sum]
 
-```java
-private static final int MOD = (int)1e9 + 7;
-
-public int numRollsToTarget(int d, int f, int target) {
-    int[][] dp = new int[d + 1][target + 1];
-    dp[d][0] = 1;
-    for (int i = d - 1; i >= 0; i--) {
-        for (int j = 1; j <= f; j++) {
-            for (int k = 0; k < target; k++) {
-                if (j + k <= target) {
-                    dp[i][j + k] = (dp[i][j + k] + dp[i + 1][k]) % MOD;
+```c++
+int numRollsToTarget(int n, int k, int target) {
+    const int mod = 1e9 + 7;
+    vector<vector<int>> dp(n + 1, vector<int>(target + 1));
+    dp[n][0] = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        for (int j = 1; j <= k; j++) {
+            for (int m = 0; m < target; m++) {
+                if (j + m <= target) {
+                    dp[i][j + m] = (dp[i][j + m] + dp[i + 1][m]) % mod;
                 }
             }
         }
