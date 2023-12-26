@@ -591,7 +591,7 @@ For \\(n\\)-bit integers:
   - Unknown
   - \\(e = 2 \Rightarrow\\) factoring \\(N\\), however, it can't be used in RSA
 * Caveats
-  - Wiener: if \\d < N^{0.25}\\), then RSA is insecure
+  - Wiener: if $$ d < N^{0.25} $$, then RSA is insecure
     * \\(\lvert e/N - k/d \rvert \le 1/2d^2\\): difference is so small
     * Continued fraction algorithm to find \\(k/d\\); \\e \cdot d \equiv 1 \pmod{k} \Rightarrow (gcd(k,d) = 1\\)
   - BD: if \\d < N^{0.292}\\), then RSA is insecure. (Conjecture: \\(d < N^{0.5}\\)
