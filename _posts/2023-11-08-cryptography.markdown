@@ -277,7 +277,7 @@ PRP \\(\subset\\) PRF
 
 **NMAC (Nested MAC)**
 * \\(F: K \times X \rightarrow K\\)
-* ![NMAC](http://www.crypto-it.net/Images/theory/mac/nmac_eng.png)
+* [NMAC](https://cseweb.ucsd.edu/~mihir/papers/kmd5.pdf): $$ NMAC_K(x) = F_{k_1}(F_{k_2}(x)) $$
 * Cascade function is not secure: Chosen message attack
   - \\(cascade(k,m \parallel w) = F(cascade(m),w)\\)
 * \\(Adv_{PRF}[A,F_{NMAC}] \le q \cdot L \cdot Adv_{PRP}[B,F] + q^2/2\lvert K \rvert\\)

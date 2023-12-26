@@ -102,7 +102,7 @@ A thread can acquire a lock that it already owns. Allowing a thread to acquire t
 * [Object notify()](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Object.html#notify()): Wakes up a single thread that is waiting on this object's monitor. If any threads are waiting on this object, one of them is chosen to be awakened. The choice is arbitrary and occurs at the discretion of the implementation.
 * [Thread interrupt()](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Thread.html#interrupt()): Interrupts this thread. If this thread is blocked in an invocation of the wait(), join() or sleep(long), or sleep(long, int), then its interrupt status will be cleared and it will receive an InterruptedException.
 
-![Thread Life Cycle](http://www.btechsmartclass.com/java/java_images/java-thread-life-cycle.png)
+![Thread Life Cycle](https://www.scientecheasy.com/wp-content/uploads/2020/06/thread-life-cycle.png)
 
 ### Synchronized Methods
 

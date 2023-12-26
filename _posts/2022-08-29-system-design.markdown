@@ -6,7 +6,7 @@ tags: design
 
 ## Redis
 
-<img src="/assets/img/system_design/redis_logo.svg" width="150">
+![Redis](/assets/img/system_design/redis_logo.svg){: w="150" }
 
 * [Documentation](https://redis.io/docs/)
 * [Interview questions](https://gist.github.com/aershov24/16f4e369a93182de3f235a9a154a6b4a)
@@ -106,7 +106,7 @@ Rollback is not supported
 
 ## Apache Kafka
 
-<img src="/assets/img/system_design/apache_kafka.png" width="150">
+![Apache Kafka](/assets/img/system_design/apache_kafka.png){: w="150" }
 
 * [Documentation](https://kafka.apache.org/documentation/)
 * [Interview questions](https://www.interviewbit.com/kafka-interview-questions/)
@@ -168,13 +168,13 @@ Kafka Schema Registry: ensures the (Avro) schema used by the consumer and the pr
 
 ## RabbitMQ
 
-<img src="/assets/img/system_design/rabbitmq.png" width="150">
+[RabbitMQ](/assets/img/system_design/rabbitmq.png){: w="150" }
 
 # Database
 
 ## Apache Cassandra
 
-<img src="/assets/img/system_design/apache_cassandra.jpg" width="250">
+[Apache Cassandra](/assets/img/system_design/apache_cassandra.jpg){: w="250" }
 
 * [Basics](https://cassandra.apache.org/_/cassandra-basics.html)
 * [Documentation](https://cassandra.apache.org/doc/latest/)
@@ -234,7 +234,7 @@ Incremental scale-out on commodity hardware
 
 ## MongoDB
 
-<img src="/assets/img/system_design/mongodb_logo.svg" width="150">
+[MongoDB](/assets/img/system_design/mongodb_logo.svg){: w="150" }
 
 ## Apache HBase
 Wide column. Time series data
