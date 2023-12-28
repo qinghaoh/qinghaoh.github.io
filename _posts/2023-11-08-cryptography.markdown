@@ -2,6 +2,7 @@
 title:  "Cryptography"
 category: cryptography
 tags: cryptography
+mermaid: true
 ---
 
 # Cryptography I
@@ -236,6 +237,17 @@ PRP \\(\subset\\) PRF
       - Better than CBC
   - Nonce-based
     * IV = 64 bit nonce + 64 bit counter
+
+```mermaid
+graph LR
+    PRP -- \subseteq --> PRF
+    PRF -- Feistel --> PRP
+    sPRP[Secure PRP] -- PRF Switching Lemma --> sPRF[Secure PRF]
+    sPRF -- Luby-Rackoff Theorem --> sPRP
+    sPRF -- DETCTR --> sPRG[Secure PRG]
+    sPRG -- GGM --> sPRF
+    sPRG --> ssStreamCipher[Sem. sec. Stream Cipher]
+```
 
 ## Message Integrity
 
@@ -597,9 +609,9 @@ For \\(n\\)-bit integers:
   - BD: if \\d < N^{0.292}\\), then RSA is insecure. (Conjecture: \\(d < N^{0.5}\\)
 
 **RSA in Practice**
-* Use a small \(e\\) to speed up RSA encryption
-  - Minimum value: \\(e = 3\\)
-  - Recommened: \\(e = 65537 = 2^16 + 1\\)
+* Use a small $$ e $$ to speed up RSA encryption
+  - Minimum value: $$ e = 3 $$
+  - Recommened: $$ e = 65537 = 2^{16} + 1 $$
 * Asymmetry of RSA
   - Fast enc./slow dec.: 10~30:1
   - RSA-CRT: 4x dec., but still much slower than enc.
@@ -613,10 +625,10 @@ For \\(n\\)-bit integers:
 **ElGamal Public-key System**
 * `(Gen,E,D)`
 * KeyGen: $$ g \xleftarrow{R} G $$, $$ a \xleftarrow{R} [0,n) $$; output $$ sk=a $$, $$ pk=(g,h=g^a) $$
-* \\(E(pk=(g,h),m)\\): \\(b \xleftarrow{R} [0,n)\\), \\(u \leftarrow g^b\\), \\(v \leftarrow h^b\\), \\(k \leftarrow H(u,v)\\), \\(c \leftarrow E_s(k,m)\\); output \\((u,c)\\)
+* $$ E(pk=(g,h),m) $$: $$ b \xleftarrow{R} [0,n) $$, $$ u \leftarrow g^b $$, $$ v \leftarrow h^b $$, $$ k \leftarrow H(u,v) $$, $$ c \leftarrow E_s(k,m) $$; output $$ (u,c) $$
   - 2 exp. (fixed basis)
   - Can pre-compute (3x speed-up)
-* \\(D(sk=a,(u,c))\\): \\(v \leftarrow u^a\\), \\(k \leftarrow H(u,v)\\), \\(m \leftarrow D_s(k,c)\\); output \\(m\\)
+* $$ D(sk=a,(u,c)) $$: $$ v \leftarrow u^a $$, $$ k \leftarrow H(u,v) $$, $$ m \leftarrow D_s(k,c) $$; output $$ m $$
   - 1 exp. (variable basis)
 
 ```

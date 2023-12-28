@@ -91,9 +91,9 @@ public int maxWidthRamp(int[] nums) {
 
 ### Theorems and Corollaries
 
-Let \\(st(i)\\) denote the stack of *Form-I template* when the iteration at index \\(i\\) is complete, we have the following **theorem**[^1]:
+Let \\(st(i)\\) denote the stack of *Form-I template* when the iteration at index $$ i $$ is complete, we have the following **theorem**[^1]:
 
-Define a sequence \\(a_n = \min_{n \le j \le i}(\text{nums}[j])\\), then \\(st(i) = \text{dedupe}(a_n)\\), where \\(\text{dedupe}(a_n)\\) is a function that de-duplicate the sequence \\(a_n\\) while preserving the order of sequence terms.
+Define a sequence $$ a_n = \min_{n \le j \le i}(\text{nums}[j]) $$, then $$ st(i) = \text{dedupe}(a_n) $$, where $$ \text{dedupe}(a_n) $$ is a function that de-duplicate the sequence $$ a_n $$ while preserving the order of sequence terms.
 
 The below code implementation illustrates the theorem, and it uses a variant of the Form-II template:
 
@@ -189,11 +189,11 @@ Arrays.fill(next, n);
 
 for (int i = 0; i < n; i++) {
     // Monotonically increasing stack
-    // Strictly less next
+    // Strictly less (<) next
     while (!st.isEmpty() && nums[i] < nums[st.peek()]) {
         next[st.pop()] = i;
     }
-    // Non-strictly less prev
+    // Non-strictly less (<=) prev
     prev[i] = st.isEmpty() ? -1 : st.peek();
     st.push(i);
 }
@@ -205,14 +205,31 @@ for (int i = 0; i < n; i++) {
 |Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
 |   Condition    |a[i] <= top | a[i] < top  |a[i] < top|a[i] <= top|
 
-![NLE & PLE](/assets/img/algorithm/monotonic_stack.png){: width="300" }
-
-From the theorem, we have the following conclusions for NLE and PLE[^2]:
+From the theorem, we have the following conclusions for PLE and NLE[^2]:
 
 * In the stack, each element is the PLE of the element on top of it.
-* After all iterations (\\(i = n\\)), \\(st(n)\\) is the set of elements that don't have NLEs.
+* After all iterations ($$ i = n $$), $$ st(n) $$ is the set of elements that don't have NLEs.
+* To get $$ S_{\text{NLE}}(\text{nums}, i) = \{a \mid \text{NLE}(a) = \text{nums[i]} \} $$, hold `nums[i]` and keep popping until $$ \text{PLE}(\text{nums[i]}) $$:
+```c++
+    while (!st.isEmpty() && nums[i] < nums[st.peek()]) {
+        next[st.pop()] = i;
+    }
+```
+* To get $$ S_{\text{PLE}}(\text{nums}, i) = \{a \mid \text{PLE}(a) = \text{nums[i]} \} $$, iterate over `nums` from `i` until `nums[i]` is popped out of the stack, i.e., until $$ \text{NLE}(\text{nums[i]}) $$:
+```c++
+    prev[i] = st.isEmpty() ? -1 : st.peek();
+```
+  - Before `nums[i]` is popped, at most *one* element of $$ S_{\text{PLE}}(\text{nums}, i) $$ is found at each index.
+  - Since PLE is NLE in reverse, we can iterate over `nums` **backward** and find NLE instead. Thus we find all elements of the set by computation at only *one* index `i`, rather than a range of indices.
 
-**NLE**
+![NLE & PLE](/assets/img/algorithm/monotonic_stack.png){: width="300" }
+_Fig. 1. Monotonically increasing stack_
+
+In Fig. 1, `a3` is the current element, and we have the following relations:
+* `a0 = PLE(a1) = PLE(a3)`
+* `a1 = PLE(a2)`
+* `a3 = NLE(a1) = NLE(a2)`
+* `a0` and `a3` don't have NLEs
 
 [Final Prices With a Special Discount in a Shop][final-prices-with-a-special-discount-in-a-shop]
 
@@ -266,7 +283,8 @@ public int next(int price) {
 }
 ```
 
-Can you see the connection between the above solution and *Tree recursion (DFS)*?
+> Can you see the connection between the above solution and *Tree recursion (DFS)*?
+{: .prompt-tip }
 
 **Iteration Direction**
 
@@ -274,13 +292,13 @@ Can you see the connection between the above solution and *Tree recursion (DFS)*
 
 ```c++
 int totalSteps(vector<int>& nums) {
-    // {num, number of steps performed until num is removed because it meets its PGE (>)}
+    // All elements will be removed by their PGEs.
+    // {num, number of steps performed until `num` is removed by its PGE (>)}
     stack<pair<int,int>> st;
     int mx = 0;
     for (int num : nums) {
         int steps = 0;
         while (!st.empty() && num >= st.top().first) {
-            // `num` is the next greater (>=) element of the popped element.
             // Gets max steps among all the popped elements.
             steps = max(steps, st.top().second);
             st.pop();
@@ -294,18 +312,35 @@ int totalSteps(vector<int>& nums) {
 }
 ```
 
-We can also build a monotonically decreasing stack by backward iteration:
+> Forward PGE = Backward NGE
+{: .prompt-info }
+
+Equivalently, we can build a monotonically decreasing stack by backward iteration:
 
 ```c++
 int totalSteps(vector<int>& nums) {
-    // {num, number of steps performed until num is removed because it meets its PGE}
+    // {num, number of steps performed `num` needs to remove all the elements whose NGE (>) is `num`}
     stack<pair<int,int>> st;
     int mx = 0;
     for (int i = nums.size() - 1; i >= 0; i--) {
         int steps = 0;
         while (!st.empty() && nums[i] > st.top().first) {
-            // `num` is the next greater (>) element of the popped element.
-            // Gets max steps among all the popped elements.
+            // Say, it takes `num` t0 steps to meet a to-be-popped element (denoted by e),
+            // and st[e][1] = t1.
+            // The number of steps for `num` to remove e is max(t0, t1).
+            // t0 > t1
+            // e.g. [10,6,7,2,8], num = 10, e = 7, t0 = 2, t1 = 1
+            //   * Step 1: 10 <- 6, 7 <- 2
+            //   * Step 2: 10 <- 7
+            //   * Step 3: 10 <- 8
+            // t0 < t1
+            // e.g. [10,6,2,3,8], num = 10, e = 6, t0 = 1, t1 = 2
+            //   * Step 1: 10 <- 6, 6 <- 2
+            //   * Step 2: 10 <- 3 (imagine 10 helps 6 to finish its remaining task)
+            //   * Step 3: 10 <- 8
+            //
+            // `steps`: the number of steps `num` needs to meet this to-be-popped element.
+            // steps + 1 is required for `num` to move from this to the next to-be-popped element.
             steps = max(steps + 1, st.top().second);
             st.pop();
         }
@@ -315,9 +350,6 @@ int totalSteps(vector<int>& nums) {
     return mx;
 }
 ```
-
-> Both the forward iteration and backward iteration solutions use monotonically decreasing stack. However, the stack strictness is different. Consider the example `[4,3,3]` to understand the nuance.
-{: .prompt-info }
 
 [Next Greater Element IV][next-greater-element-iv]
 
@@ -484,25 +516,25 @@ public int sumImbalanceNumbers(int[] nums) {
 
 The basic idea is to find both the previous and next less elements of each array element with two stacks. This can be simplified to one stack:
 
-```java
-private int MOD = (int)1e9 + 7;
-
-public int sumSubarrayMins(int[] arr) {
-    Deque<Integer> st = new ArrayDeque<>();
-    long result = 0;
-    int n = arr.length;
-    // virtually appends 0 to the end of the array
+```c++
+int sumSubarrayMins(vector<int>& arr) {
+    long long res = 0;
+    int n = arr.size();
+    const int mod = 1e9 + 7;
+    stack<int> st;
+    // Virtually appends 0 to the end of the array
     for (int i = 0; i <= n; i++) {
-        while (!st.isEmpty() && (i == n || arr[i] < arr[st.peek()])) {
+        while (!st.empty() && (i == n || arr[i] < arr[st.top()])) {
             // i is the next less (<) element of j
-            int j = st.pop();
+            int j = st.top();
+            st.pop();
             // k is the previous less (<=) element of j
-            int k = st.isEmpty() ? -1 : st.peek();
-            result = (result + (long)arr[j] * (i - j) * (j - k)) % MOD;
+            int k = st.empty() ? -1 : st.top();
+            res = (res + (long long)arr[j] * (i - j) * (j - k)) % mod;
         }
         st.push(i);
     }
-    return (int)result;
+    return (int)res;
 }
 ```
 
@@ -519,22 +551,23 @@ With this perspective, the solution of the following *Histogram* problem is much
 [Largest Rectangle in Histogram][largest-rectangle-in-histogram]
 
 ```java
-public int largestRectangleArea(int[] heights) {
-    // index of non-descreasing heights
-    Deque<Integer> st = new ArrayDeque<>();
+int largestRectangleArea(vector<int>& heights) {
+    // Indices of non-descreasing heights
+    stack<int> st;
     st.push(-1);  // makes width concise
 
-    int area = 0, n = heights.length;
-    for (int i = 0; i <= heights.length; i++) {
-        while (st.peek() >= 0 && (i == n || heights[i] < heights[st.peek()])) {
+    int area = 0, n = heights.size();
+    for (int i = 0; i <= n; i++) {
+        while (st.top() >= 0 && (i == n || heights[i] < heights[st.top()])) {
             // j = st.pop()
             // heights[i] is the next less (<) element of heights[j]
-            int h = heights[st.pop()];
-            // k = st.peek()
+            int h = heights[st.top()];
+            st.pop();
+            // k = st.top()
             // heights[k] is the previous less (<=) element of heights[j]
             // w = length of (k, i)
-            int w = i - 1 - st.peek();
-            area = Math.max(area, h * w);
+            int w = i - 1 - st.top();
+            area = max(area, h * w);
         }
         st.push(i);
     }
