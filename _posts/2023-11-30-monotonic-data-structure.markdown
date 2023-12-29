@@ -286,7 +286,113 @@ public int next(int price) {
 > Can you see the connection between the above solution and *Tree recursion (DFS)*?
 {: .prompt-tip }
 
+[Minimum Difficulty of a Job Schedule][minimum-difficulty-of-a-job-schedule]
+
+```c++
+// O(nd)
+int minDifficulty(vector<int>& jobDifficulty, int d) {
+    int n = jobDifficulty.size();
+    if (n < d) {
+        return -1;
+    }
+
+    // Rolling DP
+    // initializes dp with max jobDifficulty of each day
+    vector<int> dp(n, 1000), dp2(n);
+
+    // With stack, we don't have to try all cuts
+    stack<int> st;
+    for (int i = 0; i < d; i++) {
+        // Clears the stack
+        st = {};
+
+        // dp[j]: for i days with j jobs
+        for (int j = i; j < n; j++) {
+            // dp is for the previous day
+            // First, assigns today's job difficulty to dp2[j]
+            // (we could possibly find better solutions with stack later)
+            dp2[j] = jobDifficulty[j] + (j ? dp[j - 1] : 0);
+
+            // Monotonically decreasing
+            //
+            // Case 1: difficulty of last day is jobDifficulty[top]
+            //
+            //   dp2[j] = dp2[top] + (jobDifficulty[j] - jobDifficulty[top])
+            //   adds the extra difficulity introduced by jobDifficulty[j]
+            //
+            // Case 2: difficulty of last day is jobDifficulty[k],
+            //   where k < top and jobDifficulty[top] <= jobDifficulty[k] <= jobDifficulty[j]
+            //   so dp2[top] = dp2[k]
+            //
+            //   dp2[top] - jobDifficulty[top] + jobDifficulty[j]
+            //   = dp2[k] - jobDifficulty[top] + jobDifficulty[j]
+            //   >= dp2[k] - jobDifficulty[k] + jobDifficulty[j]
+            //   which is already calculated when k was visited
+            while (!st.empty() && jobDifficulty[j] >= jobDifficulty[st.top()]) {
+                int top = st.top();
+                dp2[j] = min(dp2[j], dp2[top] - jobDifficulty[top] + jobDifficulty[j]);
+                st.pop();
+            }
+
+            // Case 3: max of last day is jobDifficulty[k],
+            //   where k < top and jobDifficulty[top] <= jobDifficulty[j] <= jobDifficulty[k] (because top is popped)
+            //   so dp2[top] = dp2[k]
+            //
+            //  st.peek() == k
+            //   dp2[top] - jobDifficulty[top] + jobDifficulty[j]
+            //   = dp2[k] - jobDifficulty[top] + jobDifficulty[j]
+            //   >= dp2[k]
+            if (!st.empty()) {
+                dp2[j] = min(dp2[j], dp2[st.top()]);
+            }
+
+            st.push(j);
+        }
+
+        swap(dp, dp2);
+    }
+    return dp[n - 1];
+}
+```
+
 **Iteration Direction**
+
+[132 Pattern][132-pattern]
+
+```c++
+bool find132pattern(vector<int>& nums) {
+    stack<int> st;
+    // e1 e3 e2 -> 1 3 2
+    int e2 = INT_MIN;
+    for (int i = nums.size() - 1; i >= 0; i--) {
+        // nums[i] as e1
+        if (nums[i] < e2) {
+            return true;
+        }
+
+        // The following algorithm ensures when nums[i] >= e2,
+        // the likelihood of finding 132 pattern increases.
+        // Proof:
+        // Case 1: nums[i] > e3 (= st.top())
+        //   The pattern now is 321.
+        //   After stack operations, e2 <- e3, e3 <- nums[i]
+        //   Both e2 and e3 increase.
+        // Case 2: e2 < nums[i] < e3
+        //   The pattern now is 231.
+        //   After stack operations, e3 <- nums[i]
+        //   e2 remains unchanged, e3 decreases.
+
+        // Monotonically decreasing stack (reverse)
+        // Finds the largest e2 when nums[i] is viewed as e3
+        while (!st.empty() && nums[i] > st.top()) {
+            e2 = st.top();
+            st.pop();
+        }
+        st.push(nums[i]);
+    }
+    return false;
+}
+```
 
 [Steps to Make Array Non-decreasing][steps-to-make-array-non-decreasing]
 
@@ -353,35 +459,77 @@ int totalSteps(vector<int>& nums) {
 
 [Next Greater Element IV][next-greater-element-iv]
 
-```java
-public int[] secondGreaterElement(int[] nums) {
-    int n = nums.length;
-    int[] next = new int[n];
-    Arrays.fill(next, -1);
+```c++
+vector<int> secondGreaterElement(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> answer(n, -1);
 
-    // stack1: elements that haven't found their first NGE
-    // stack2: elements that have found their first NGE but not second NGE
-    Deque<Integer> st1 = new ArrayDeque<>(), st2 = new ArrayDeque<>(), tmp = new ArrayDeque<>();
+    // st1: elements that haven't found their first NGE
+    // st2: elements that have found their first NGE but not second NGE
+    stack<int> st1, st2, tmp;
     for (int i = 0; i < n; i++) {
-        // finds second NGE
-        while (!st2.isEmpty() && nums[i] > nums[st2.peek()]) {
-            next[st2.pop()] = nums[i];
+        // Finds second NGE.
+        // After the while loop, nums[i] <= st2.top().
+        while (!st2.empty() && nums[i] > nums[st2.top()]) {
+            answer[st2.top()] = nums[i];
+            st2.pop();
         }
 
-        // moves all elements whose first NGE is nums[i] to stack2
-        while (!st1.isEmpty() && nums[i] > nums[st1.peek()]) {
-            tmp.push(st1.pop());
+        // Moves all the elements whose first NGE is nums[i] to `tmp`.
+        // `tmp` is a monotonically increasing stack, and nums[i] > tmp.top().
+        while (!st1.empty() && nums[i] > nums[st1.top()]) {
+            tmp.push(st1.top());
+            st1.pop();
         }
 
-        while (!tmp.isEmpty()) {
-            st2.push(tmp.pop());
+        // nums[i] <= st2.top()
+        // nums[i] > tmp.top()
+        // => st2.top > tmp.top()
+        // So, we can push tmp reversely to st2, and st2 remains monotonically decreasing.
+        while (!tmp.empty()) {
+            st2.push(tmp.top());
+            tmp.pop();
         }
 
         st1.push(i);
     }
-    return next;
+    return answer;
 }
 ```
+
+**Generalization: K-th Greater Element**
+
+```c++
+vector<int> secondGreaterElement(vector<int>& nums, int k = 2) {
+    int n = nums.size();
+    vector<int> answer(n, -1);
+    vector<stack<int>> sts(k);
+    stack<int> tmp;
+    for (int i = 0; i < n; i++) {
+        for (int j = k - 1; j > 0; j--) {
+            while (!sts[j].empty() && nums[i] > nums[sts[j].top()]) {
+                answer[sts[j].top()] = nums[i];
+                sts[j].pop();
+            }
+
+            while (!sts[j - 1].empty() && nums[i] > nums[sts[j - 1].top()]) {
+                tmp.push(sts[j - 1].top());
+                sts[j - 1].pop();
+            }
+
+            while (!tmp.empty()) {
+                sts[j].push(tmp.top());
+                tmp.pop();
+            }
+        }
+        sts[0].push(i);
+    }
+    return answer;
+}
+```
+
+> O(nlog(n)) solution: monotonic stack + piority queue/binary search
+{: .prompt-info }
 
 [Minimum Cost Tree From Leaf Values][minimum-cost-tree-from-leaf-values]
 
@@ -1031,6 +1179,7 @@ vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& q
 }
 ```
 
+[132-pattern]: https://leetcode.com/problems/132-pattern/
 [constrained-subsequence-sum]: https://leetcode.com/problems/constrained-subsequence-sum/
 [final-prices-with-a-special-discount-in-a-shop]: https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/
 [find-building-where-alice-and-bob-can-meet]: https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/
@@ -1046,6 +1195,7 @@ vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& q
 [maximum-sum-queries]: https://leetcode.com/problems/maximum-sum-queries/
 [maximum-width-ramp]: https://leetcode.com/problems/maximum-width-ramp/
 [minimum-cost-tree-from-leaf-values]: https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/
+[minimum-difficulty-of-a-job-schedule]: https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/
 [next-greater-element-iv]: https://leetcode.com/problems/next-greater-element-iv/
 [number-of-people-that-can-be-seen-in-a-grid]: https://leetcode.com/problems/number-of-people-that-can-be-seen-in-a-grid/
 [number-of-visible-people-in-a-queue]: https://leetcode.com/problems/number-of-visible-people-in-a-queue/

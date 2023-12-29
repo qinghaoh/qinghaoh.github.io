@@ -495,28 +495,6 @@ public String smallestSubsequence(String s, int k, char letter, int repetition) 
 }
 ```
 
-[132 Pattern][132-pattern]
-
-```java
-public boolean find132pattern(int[] nums) {
-    Deque<Integer> st = new ArrayDeque<>();
-    int mid = Integer.MIN_VALUE;
-    for (int i = nums.length - 1; i >= 0; i--) {
-        if (nums[i] < mid) {
-            return true;
-        }
-
-        // monotonically decreasing stack
-        // finds the largest mid for the current high (nums[i])
-        while (!st.isEmpty() && nums[i] > st.peek()) {
-            mid = st.pop(); 
-        }
-        st.push(nums[i]);
-    }
-    return false;
-}
-```
-
 [Flatten Nested List Iterator][flatten-nested-list-iterator]
 
 ```java
@@ -610,7 +588,6 @@ public int calculate(String s) {
 }
 ```
 
-[132-pattern]: https://leetcode.com/problems/132-pattern/
 [basic-calculator]: https://leetcode.com/problems/basic-calculator/
 [binary-searchable-numbers-in-an-unsorted-array]: https://leetcode.com/problems/binary-searchable-numbers-in-an-unsorted-array/
 [car-fleet-ii]: https://leetcode.com/problems/car-fleet-ii/
