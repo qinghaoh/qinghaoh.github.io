@@ -2,6 +2,7 @@
 title:  "System Design"
 category: "system design"
 tags: design
+mermaid: true
 ---
 
 ## Redis
@@ -27,7 +28,24 @@ NOT consistent hashing!
 
 [Replication](https://redis.io/docs/manual/replication/): Master-replica (Leader-follower)
 
-Asynchronous replication by default. Replicas asynchronously acknowledge the amount of data they received periodically with the master.
+Asynchronous replication by default.
+
+```mermaid
+sequenceDiagram
+    Replica->>Master: PSYNC (Replication ID + offset)
+    alt Partial resynchronization
+        Master-->>Replica: Incremental part
+    else Full synchronization
+        par
+            Master->>Master: Produce an RDB file
+        and
+            Master->>Master: Buffer all new write commands<br/>received from the clients
+        end
+    Note right of Master: Diskless replication
+    Master-->>Replica: RDB + buffered commands
+    end
+    Replica-)Master: Acknowledgement of data processed
+```
 
 Synchronous replication can be requested by `WAIT` command when absolutely needed. There's still a possibility that acknowledged writes get lost during a failover, so it doesn't ensure strong consistency. however the probability is very low. 
 

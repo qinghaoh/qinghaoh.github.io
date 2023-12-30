@@ -370,17 +370,32 @@ bool find132pattern(vector<int>& nums) {
             return true;
         }
 
-        // The following algorithm ensures when nums[i] >= e2,
-        // the likelihood of finding 132 pattern increases.
+        // The following algorithm ensures when nums[i] > e2,
+        // if j is the largest index such that j < i and nums[j] < e2,
+        // we will find a 132 pattern with nums[j] as e1.
         // Proof:
         // Case 1: nums[i] > e3 (= st.top())
         //   The pattern now is 321.
-        //   After stack operations, e2 <- e3, e3 <- nums[i]
-        //   Both e2 and e3 increase.
+        //   After stack operations, e2 <- e3, e3 <- nums[i].
+        //   Both e2 and e3 increase, nums[j] < e2 < e3 (132 pattern).
         // Case 2: e2 < nums[i] < e3
         //   The pattern now is 231.
         //   After stack operations, e3 <- nums[i]
-        //   e2 remains unchanged, e3 decreases.
+        //   e2 remains unchanged, e3 decreases, nums[j] < e2 < e3 (132 pattern).
+        // Case 3: nums[i] == e3
+        //   The pattern now is 221.
+        //   After stack operations, e3 <- nums[i].
+        //   Both e2 and e3 remain unchanged, nums[j] < e2 < e3 (132 pattern).
+        // Case 4: nums[i] == e2
+        //   The pattern now is 121.
+        //   After stack operations, e3 <- nums[i].
+        //   e2 remains unchanged, e3 decreases, nums[j] < e2 == e3 (122 pattern).
+        //   Then for the next element, the 122 pattern possibly transitions to:
+        //   a) Case 1, back to 132 pattern
+        //   b) Case 4, remains 122 pattern
+        //   It it stays in 122 pattern until index j, we can say 132 pattern exists (with nums[j] as e1),
+        //   because there existed an e3' > e3 == e2
+        // In summary, e2 and e3 are non-decreasing, and e3 >= e2 always stands
 
         // Monotonically decreasing stack (reverse)
         // Finds the largest e2 when nums[i] is viewed as e3
