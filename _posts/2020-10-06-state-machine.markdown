@@ -6,11 +6,11 @@ mermaid: true
 [Best Time to Buy and Sell Stock with Transaction Fee][best-time-to-buy-and-sell-stock-with-transaction-fee]
 
 ```mermaid
-graph LR
-    s0((S0)) -- buy --> s1((S1))
-    s1 -- sell --> s0
-    s0 -- rest --> s0
-    s1 -- rest --> s1
+stateDiagram-v2
+    S0 --> S1: buy
+    S1 --> S0: sell
+    S0 --> S0: rest
+    S1 --> S1: rest
 ```
 
 ```java
@@ -76,12 +76,12 @@ public int maxProfit(int[] prices, int fee) {
 [Best Time to Buy and Sell Stock with Cooldown][best-time-to-buy-and-sell-stock-with-cooldown]
 
 ```mermaid
-graph LR
-    s0((S0)) -- buy --> s1((S1))
-    s1 -- sell --> s2((S2))
-    s0 -- rest --> s0
-    s1 -- rest --> s1
-    s2 -- rest --> s0
+stateDiagram-v2
+    S0 --> S1: buy
+    S1 --> S2: sell
+    S0 --> S0: rest
+    S1 --> S1: rest
+    S2 --> S0: rest
 ```
 
 ```java
@@ -153,20 +153,21 @@ public int minSwap(int[] A, int[] B) {
 [Valid Number][valid-number]
 
 ```mermaid
-graph LR
-    0((0)) --> 1((1))
-    0 --> 2((2))
+stateDiagram-v2
+    direction LR
+    0 --> 1
+    0 --> 2
     2 --> 3
-    0 --> 3((3))
+    0 --> 3
     1 --> 1
     2 --> 1
-    1 --> 4((4))
+    1 --> 4
     3 --> 4
     4 --> 4
-    1 --> 5((5))
+    1 --> 5
     4 --> 5
-    5 --> 6((6))
-    5 --> 7((7))
+    5 --> 6
+    5 --> 7
     6 --> 7
     7 --> 7
 ```

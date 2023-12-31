@@ -203,6 +203,7 @@ min_element(v.begin(), v.end());
 min_element(v, v + n);
 min_element(begin(v), end(v));
 ranges::min_element(v);
+min({a,b,c});  // initializer list
 
 // index of max
 distance(v.begin(), ranges::max_element(v));

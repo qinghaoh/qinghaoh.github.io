@@ -24,11 +24,20 @@ hash value = CRC16(key) / #hash_slots (=16384)
 
 NOT consistent hashing!
 
-**Replication**
+### Replication
 
 [Replication](https://redis.io/docs/manual/replication/): Master-replica (Leader-follower)
 
 Asynchronous replication by default.
+
+Synchronous replication can be requested by `WAIT` command when absolutely needed. There's still a possibility that acknowledged writes get lost during a failover, so it doesn't ensure strong consistency. however the probability is very low.
+
+Actions that change master dataset:
+* client writes
+* keys expired or evicted
+* others
+
+Master-replica link breaks (due to network issues or timeout): partial resynchronization
 
 ```mermaid
 sequenceDiagram
@@ -47,20 +56,17 @@ sequenceDiagram
     Replica-)Master: Acknowledgement of data processed
 ```
 
-Synchronous replication can be requested by `WAIT` command when absolutely needed. There's still a possibility that acknowledged writes get lost during a failover, so it doesn't ensure strong consistency. however the probability is very low. 
-
-Master sends a stream of commands to the replica to keep it updated when:
-* client writes
-* keys expired or evicted
-* any other action changing the master dataset
-
-Every time the link breaks, the replica will automatically reconnect to the master and proceed with a partial resynchronization (obatin the part of the stream of commands it missed during the disconnection).
-
-If partial resynchronization is not possible, the replica will attempt a more complex full resynchronization (master create snapshot and send it to replica).
-
 After *node timeout* has elapsed:
 * Unresponsive master node is considered to be failing and can be replaced by one of its replicas
 * If a master node cannot sense the majority of the other masters, it enters error state
+
+### Sentinel
+
+[Redis Sentinel](https://redis.io/docs/management/sentinel/)
+* Automatic failover: high availability
+* Monitoring
+* Notification
+* Configuration provider
 
 **Node Communication**
 
