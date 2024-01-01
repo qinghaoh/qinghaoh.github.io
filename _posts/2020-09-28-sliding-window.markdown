@@ -997,10 +997,15 @@ vector<int> numMovesStonesII(vector<int>& stones) {
             i++;
         }
 
-        // Corner case
-        // - number of stones in the window is (n - 1)
-        // - window size is (n - 1)
+        // Corner case:
+        // * number of stones in the window is (n - 1)
+        // * window size is (n - 1)
         // e.g. [1,2,3,4,10] -> [2,3,4,6,10] -> [2,3,4,5,6]
+        //
+        // The logic is valid even for the the following example:
+        // e.g. [1,2,3,4,6] -> [2,3,4,5,6]
+        // * First window (i = 0, j = 3) matches the corner case, mn = 2;
+        // * Second window (i = 1, j = 4) falls into the else block, mn = 1
         if (j - i == n - 2 && stones[j] - stones[i] == n - 2) {
             mn = min(mn, 2);
         } else {
@@ -1008,10 +1013,6 @@ vector<int> numMovesStonesII(vector<int>& stones) {
             mn = min(mn, n - (j - i + 1));
         }
 
-        // e.g. [1,2,3,4,6] -> [2,3,4,5,6]
-        // the 2nd example has two windows:
-        // - the first window matches the corner case, min = 2;
-        // - the second window falls into this else block, min = 1
         j++;
     }
 

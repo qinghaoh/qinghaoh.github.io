@@ -231,6 +231,14 @@ In Fig. 1, `a3` is the current element, and we have the following relations:
 * `a3 = NLE(a1) = NLE(a2)`
 * `a0` and `a3` don't have NLEs
 
+Similarly, with monotonically decreasing stack, we can get PGE/NGE.
+
+|                | Previous > | Previous >= |  Next >  |  Next >=  |
+|----------------|------------|-------------|----------|-----------|
+|Monotonic Stack | Decreasing | Decreasing  |Decreasing|Decreasing |
+|Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
+|   Condition    |a[i] >= top | a[i] > top  |a[i] > top|a[i] >= top|
+
 [Final Prices With a Special Discount in a Shop][final-prices-with-a-special-discount-in-a-shop]
 
 ```c++
@@ -249,19 +257,213 @@ vector<int> finalPrices(vector<int>& prices) {
 }
 ```
 
-Similarly, with monotonically decreasing stack, we can get PGE/NGE.
+[Next Greater Element IV][next-greater-element-iv]
 
-|                | Previous > | Previous >= |  Next >  |  Next >=  |
-|----------------|------------|-------------|----------|-----------|
-|Monotonic Stack | Decreasing | Decreasing  |Decreasing|Decreasing |
-|Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
-|   Condition    |a[i] >= top | a[i] > top  |a[i] > top|a[i] >= top|
+```c++
+vector<int> secondGreaterElement(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> answer(n, -1);
 
-**Increasing/Decreasing Spanning Forest**
+    // st1: elements that haven't found their first NGE
+    // st2: elements that have found their first NGE but not second NGE
+    stack<int> st1, st2, tmp;
+    for (int i = 0; i < n; i++) {
+        // Finds second NGE.
+        // After the while loop, nums[i] <= st2.top().
+        while (!st2.empty() && nums[i] > nums[st2.top()]) {
+            answer[st2.top()] = nums[i];
+            st2.pop();
+        }
+
+        // Moves all the elements whose first NGE is nums[i] to `tmp`.
+        // `tmp` is a monotonically increasing stack, and nums[i] > tmp.top().
+        while (!st1.empty() && nums[i] > nums[st1.top()]) {
+            tmp.push(st1.top());
+            st1.pop();
+        }
+
+        // nums[i] <= st2.top()
+        // nums[i] > tmp.top()
+        // => st2.top > tmp.top()
+        // So, we can push tmp reversely to st2, and st2 remains monotonically decreasing.
+        while (!tmp.empty()) {
+            st2.push(tmp.top());
+            tmp.pop();
+        }
+
+        st1.push(i);
+    }
+    return answer;
+}
+```
+
+**Generalization: K-th Greater Element**
+
+```c++
+vector<int> secondGreaterElement(vector<int>& nums, int k = 2) {
+    int n = nums.size();
+    vector<int> answer(n, -1);
+    vector<stack<int>> sts(k);
+    stack<int> tmp;
+    for (int i = 0; i < n; i++) {
+        for (int j = k - 1; j > 0; j--) {
+            while (!sts[j].empty() && nums[i] > nums[sts[j].top()]) {
+                answer[sts[j].top()] = nums[i];
+                sts[j].pop();
+            }
+
+            while (!sts[j - 1].empty() && nums[i] > nums[sts[j - 1].top()]) {
+                tmp.push(sts[j - 1].top());
+                sts[j - 1].pop();
+            }
+
+            while (!tmp.empty()) {
+                sts[j].push(tmp.top());
+                tmp.pop();
+            }
+        }
+        sts[0].push(i);
+    }
+    return answer;
+}
+```
+
+> O(nlog(n)) solution: monotonic stack + piority queue/binary search
+{: .prompt-info }
+
+[Minimum Difficulty of a Job Schedule][minimum-difficulty-of-a-job-schedule]
+
+```c++
+// O(nd)
+int minDifficulty(vector<int>& jobDifficulty, int d) {
+    int n = jobDifficulty.size();
+    if (n < d) {
+        return -1;
+    }
+
+    // Rolling DP
+    // Initializes dp with max jobDifficulty of each day
+    vector<int> dp(n, 1000);
+
+    // With stack, we don't have to try all cuts
+    stack<int> st;
+    for (int i = 0, prev = 0; i < d; prev = dp[i++]) {
+        // Clears the stack
+        st = {};
+
+        // dp[j]: min difficulty of a schedule after first i days with (j + 1) jobs.
+        // dp is non-decreasing.
+        // For dp[j], the j-th job is always in the last bucket.
+        for (int j = i; j < n; j++) {
+            swap(prev, dp[j]);
+
+            // dp has i buckets.
+            // Initializes the dp for the new i by adding a new bucket and putting the j-th job into it
+            // (we can possibly find better solutions with stack later).
+            // Now there are (i + 1) buckets.
+            dp[j] += jobDifficulty[j];
+
+            // Monotonically decreasing stack
+            // Finds the job in the last bucket that is less difficulty than the j-th job.
+            // (jobDifficulty[j] - jobDifficulty[top]) is the extra difficulty introduced by the j-th job.
+            // Apparently, for the ones in the last bucket that are more difficulty than the j-th job,
+            // the j-th job won't affect their dp value. So we skip them.
+            // We only process elements whose NGE is jobDifficulty[j], not all the previous jobs that are of less difficulty,
+            // because those jobs had been processed by an earlier index m (i <= m < j), and m remains in the stack (m doesn't have NGE)
+            while (!st.empty() && jobDifficulty[j] >= jobDifficulty[st.top()]) {
+                int top = st.top();
+                dp[j] = min(dp[j], dp[top] + jobDifficulty[j] - jobDifficulty[top]);
+                st.pop();
+            }
+
+            // For all the indices k before p = PGE(j), dp[k] <= dp[p]
+            if (!st.empty()) {
+                dp[j] = min(dp[j], dp[st.top()]);
+            }
+
+            st.push(j);
+        }
+    }
+    return dp[n - 1];
+}
+```
+
+[Number of Visible People in a Queue][number-of-visible-people-in-a-queue]
+
+```java
+public int[] canSeePersonsCount(int[] heights) {
+    int n = heights.length;
+    int[] answer = new int[n];
+    Deque<Integer> st = new ArrayDeque<>();
+    // There are two types of people that the i-th person can see to his right:
+    // 1. NGE(i) (>=). All the people to the right of NGE(i) are blocked by it and thus invisible.
+    // 2. The people in the range of (i, NGE(i)), and their PGE is i.
+    //    If j in (i, NGE(i)) and PGE(j) > i, then i is blocked by PGE(j) and thus invisible to j.
+    for (int i = 0; i < n; i++) {
+        // Monotonically decreasing stack (strict)
+        // Next greater (>=) element
+        while (!st.isEmpty() && heights[i] >= heights[st.peek()]) {
+            // st.peek() can see i
+            // st.peek() can't see after i, so st.peek() is done and popped
+            answer[st.pop()]++;
+        }
+
+        if (!st.isEmpty()) {
+            // Previous greater (>) element
+            // st.peek() can see i
+            answer[st.peek()]++;
+        }
+
+        st.push(i);
+    }
+    return answer;
+}
+```
+
+Similar: [Number of People That Can Be Seen in a Grid][number-of-people-that-can-be-seen-in-a-grid]
+
+In this problem, elements are not necessarily distinct. Therefore, we need to make a slight change to the code:
+
+```java
+public int[] canSeePersonsCount(int[] heights) {
+    int n = heights.length;
+    int[] answer = new int[n];
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        // monotonically decreasing stack (strict)
+        // next greater (>=) element
+        boolean isEqual = false;
+        while (!st.isEmpty() && heights[i] >= heights[st.peek()]) {
+            if (heights[i] == heights[st.peek()]) {
+                isEqual = true;
+            }
+            // st.peek() can see i
+            // st.peek() can't see after i, so st.peek() is done and popped
+            answer[st.pop()]++;
+        }
+
+        // e.g. [4,2,1,1,3]
+        // we skip incrementing the answer at index 0 when i == 3
+        // because it's already incremented when i == 2
+        // iwo, heights[0] can't see heights[3] because of heights[2]
+        if (!st.isEmpty() && isEqual) {
+            // previous greater (>) element
+            // st.peek() can see i
+            answer[st.peek()]++;
+        }
+
+        st.push(i);
+    }
+    return answer;
+}
+```
+
+#### Increasing/Decreasing Spanning Forest
 
 Imagine each element is a node in a graph, and we connect node `u` to its NLE node `v` with an edge. The resulting graph is an [increasing spanning forest](https://users.math.msu.edu/users/bsagan/Papers/Old/isf-pub.pdf).
 
 ![Increasing Spanning Forest](/assets/img/algorithm/monotonic_stack_nle.png)
+_Fig. 2. Increasing/Decreasing spanning forest_
 
 [Online Stock Span][online-stock-span]
 
@@ -286,76 +488,39 @@ public int next(int price) {
 > Can you see the connection between the above solution and *Tree recursion (DFS)*?
 {: .prompt-tip }
 
-[Minimum Difficulty of a Job Schedule][minimum-difficulty-of-a-job-schedule]
+[Minimum Cost Tree From Leaf Values][minimum-cost-tree-from-leaf-values]
 
 ```c++
-// O(nd)
-int minDifficulty(vector<int>& jobDifficulty, int d) {
-    int n = jobDifficulty.size();
-    if (n < d) {
-        return -1;
-    }
-
-    // Rolling DP
-    // initializes dp with max jobDifficulty of each day
-    vector<int> dp(n, 1000), dp2(n);
-
-    // With stack, we don't have to try all cuts
+int mctFromLeafValues(vector<int>& arr) {
     stack<int> st;
-    for (int i = 0; i < d; i++) {
-        // Clears the stack
-        st = {};
+    st.push(INT_MAX);
 
-        // dp[j]: for i days with j jobs
-        for (int j = i; j < n; j++) {
-            // dp is for the previous day
-            // First, assigns today's job difficulty to dp2[j]
-            // (we could possibly find better solutions with stack later)
-            dp2[j] = jobDifficulty[j] + (j ? dp[j - 1] : 0);
-
-            // Monotonically decreasing
-            //
-            // Case 1: difficulty of last day is jobDifficulty[top]
-            //
-            //   dp2[j] = dp2[top] + (jobDifficulty[j] - jobDifficulty[top])
-            //   adds the extra difficulity introduced by jobDifficulty[j]
-            //
-            // Case 2: difficulty of last day is jobDifficulty[k],
-            //   where k < top and jobDifficulty[top] <= jobDifficulty[k] <= jobDifficulty[j]
-            //   so dp2[top] = dp2[k]
-            //
-            //   dp2[top] - jobDifficulty[top] + jobDifficulty[j]
-            //   = dp2[k] - jobDifficulty[top] + jobDifficulty[j]
-            //   >= dp2[k] - jobDifficulty[k] + jobDifficulty[j]
-            //   which is already calculated when k was visited
-            while (!st.empty() && jobDifficulty[j] >= jobDifficulty[st.top()]) {
-                int top = st.top();
-                dp2[j] = min(dp2[j], dp2[top] - jobDifficulty[top] + jobDifficulty[j]);
-                st.pop();
-            }
-
-            // Case 3: max of last day is jobDifficulty[k],
-            //   where k < top and jobDifficulty[top] <= jobDifficulty[j] <= jobDifficulty[k] (because top is popped)
-            //   so dp2[top] = dp2[k]
-            //
-            //  st.peek() == k
-            //   dp2[top] - jobDifficulty[top] + jobDifficulty[j]
-            //   = dp2[k] - jobDifficulty[top] + jobDifficulty[j]
-            //   >= dp2[k]
-            if (!st.empty()) {
-                dp2[j] = min(dp2[j], dp2[st.top()]);
-            }
-
-            st.push(j);
+    int sum = 0;
+    for (int a : arr) {
+        // If a leaf has both PGE and NGE, removes it and multiplies it with the smaller of the two.
+        while (st.top() <= a) {
+            int top = st.top();
+            st.pop();
+            sum += top * min(st.top(), a);
         }
-
-        swap(dp, dp2);
+        st.push(a);
     }
-    return dp[n - 1];
+
+    // The remaining leaves don't have an NGE.
+    // Starts from the top since the stack is decreasing.
+    while (st.size() > 2) {
+        int top = st.top();
+        st.pop();
+        sum += st.top() * top;
+    }
+    return sum;
 }
 ```
 
-**Iteration Direction**
+> In fact, Fig.2 shows how to span the tree from the leaves if we always pick NLE.
+{: .prompt-tip }
+
+#### Iteration Direction
 
 [132 Pattern][132-pattern]
 
@@ -469,175 +634,6 @@ int totalSteps(vector<int>& nums) {
         mx = max(mx, steps);
     }
     return mx;
-}
-```
-
-[Next Greater Element IV][next-greater-element-iv]
-
-```c++
-vector<int> secondGreaterElement(vector<int>& nums) {
-    int n = nums.size();
-    vector<int> answer(n, -1);
-
-    // st1: elements that haven't found their first NGE
-    // st2: elements that have found their first NGE but not second NGE
-    stack<int> st1, st2, tmp;
-    for (int i = 0; i < n; i++) {
-        // Finds second NGE.
-        // After the while loop, nums[i] <= st2.top().
-        while (!st2.empty() && nums[i] > nums[st2.top()]) {
-            answer[st2.top()] = nums[i];
-            st2.pop();
-        }
-
-        // Moves all the elements whose first NGE is nums[i] to `tmp`.
-        // `tmp` is a monotonically increasing stack, and nums[i] > tmp.top().
-        while (!st1.empty() && nums[i] > nums[st1.top()]) {
-            tmp.push(st1.top());
-            st1.pop();
-        }
-
-        // nums[i] <= st2.top()
-        // nums[i] > tmp.top()
-        // => st2.top > tmp.top()
-        // So, we can push tmp reversely to st2, and st2 remains monotonically decreasing.
-        while (!tmp.empty()) {
-            st2.push(tmp.top());
-            tmp.pop();
-        }
-
-        st1.push(i);
-    }
-    return answer;
-}
-```
-
-**Generalization: K-th Greater Element**
-
-```c++
-vector<int> secondGreaterElement(vector<int>& nums, int k = 2) {
-    int n = nums.size();
-    vector<int> answer(n, -1);
-    vector<stack<int>> sts(k);
-    stack<int> tmp;
-    for (int i = 0; i < n; i++) {
-        for (int j = k - 1; j > 0; j--) {
-            while (!sts[j].empty() && nums[i] > nums[sts[j].top()]) {
-                answer[sts[j].top()] = nums[i];
-                sts[j].pop();
-            }
-
-            while (!sts[j - 1].empty() && nums[i] > nums[sts[j - 1].top()]) {
-                tmp.push(sts[j - 1].top());
-                sts[j - 1].pop();
-            }
-
-            while (!tmp.empty()) {
-                sts[j].push(tmp.top());
-                tmp.pop();
-            }
-        }
-        sts[0].push(i);
-    }
-    return answer;
-}
-```
-
-> O(nlog(n)) solution: monotonic stack + piority queue/binary search
-{: .prompt-info }
-
-[Minimum Cost Tree From Leaf Values][minimum-cost-tree-from-leaf-values]
-
-```java
-public int mctFromLeafValues(int[] arr) {
-    Deque<Integer> st = new ArrayDeque<>();
-    st.push(Integer.MAX_VALUE);
-
-    int sum = 0;
-    for (int a : arr) {
-        // previous and next greater element
-        while (st.peek() <= a) {
-            int top = st.pop();
-            sum += top * Math.min(st.peek(), a);
-        }
-        st.push(a);
-    }
-
-    while (st.size() > 2) {
-        sum += st.pop() * st.peek();
-    }
-
-    return sum;
-}
-```
-
-[Number of Visible People in a Queue][number-of-visible-people-in-a-queue]
-
-```java
-public int[] canSeePersonsCount(int[] heights) {
-    int n = heights.length;
-    int[] answer = new int[n];
-    Deque<Integer> st = new ArrayDeque<>();
-    // There are two types of people that the i-th person can see to his right:
-    // 1. NGE(i) (>=). All the people to the right of NGE(i) are blocked by it and thus invisible.
-    // 2. The people in the range of (i, NGE(i)), and their PGE is i.
-    //    If j in (i, NGE(i)) and PGE(j) > i, then i is blocked by PGE(j) and thus invisible to j.
-    for (int i = 0; i < n; i++) {
-        // Monotonically decreasing stack (strict)
-        // Next greater (>=) element
-        while (!st.isEmpty() && heights[i] >= heights[st.peek()]) {
-            // st.peek() can see i
-            // st.peek() can't see after i, so st.peek() is done and popped
-            answer[st.pop()]++;
-        }
-
-        if (!st.isEmpty()) {
-            // Previous greater (>) element
-            // st.peek() can see i
-            answer[st.peek()]++;
-        }
-
-        st.push(i);
-    }
-    return answer;
-}
-```
-
-Similar: [Number of People That Can Be Seen in a Grid][number-of-people-that-can-be-seen-in-a-grid]
-
-In this problem, elements are not necessarily distinct. Therefore, we need to make a slight change to the code:
-
-```java
-public int[] canSeePersonsCount(int[] heights) {
-    int n = heights.length;
-    int[] answer = new int[n];
-    Deque<Integer> st = new ArrayDeque<>();
-    for (int i = 0; i < n; i++) {
-        // monotonically decreasing stack (strict)
-        // next greater (>=) element
-        boolean isEqual = false;
-        while (!st.isEmpty() && heights[i] >= heights[st.peek()]) {
-            if (heights[i] == heights[st.peek()]) {
-                isEqual = true;
-            }
-            // st.peek() can see i
-            // st.peek() can't see after i, so st.peek() is done and popped
-            answer[st.pop()]++;
-        }
-
-        // e.g. [4,2,1,1,3]
-        // we skip incrementing the answer at index 0 when i == 3
-        // because it's already incremented when i == 2
-        // iwo, heights[0] can't see heights[3] because of heights[2]
-        if (!st.isEmpty() && isEqual) {
-            // previous greater (>) element
-            // st.peek() can see i
-            answer[st.peek()]++;
-        }
-
-        st.push(i);
-    }
-    return answer;
 }
 ```
 
