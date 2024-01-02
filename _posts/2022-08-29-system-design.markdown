@@ -8,21 +8,38 @@ mermaid: true
 ## Redis
 
 ![Redis](/assets/img/system_design/redis_logo.svg){: w="150" }
+_Redis (Remote Dictionary Server)_
+
 
 * [Documentation](https://redis.io/docs/)
 * [Interview questions](https://gist.github.com/aershov24/16f4e369a93182de3f235a9a154a6b4a)
 
-Redis (Remote Dictionary Server)
-
 In-memory key-value data store. Stores cache data into physical storage if needed.
+
+### Scaling
 
 [Scaling](https://redis.io/docs/manual/scaling/): Redis Cluster
 
-**Sharding**
+TCP ports
+* Redis TCP port: node to clients
+* Cluster bus port: node to node
+  * Binary protocol: Redis Cluster Bus (*Gossip*)
+  * Failure detection, configuration updates, failover authorization, etc.
+
+**Data Sharding**
 
 hash value = CRC16(key) / #hash_slots (=16384)
 
-NOT consistent hashing!
+NOT *consistent hashing*!
+
+**Node Communication**
+
+Nodes:
+* hold the data
+* take the state of the cluster, including mapping keys to the right nodes
+* auto-discover other nodes
+* detect non-working nodes
+* promote replica nodes to master (failover)
 
 ### Replication
 
@@ -38,6 +55,8 @@ Actions that change master dataset:
 * others
 
 Master-replica link breaks (due to network issues or timeout): partial resynchronization
+
+*Synchronization*
 
 ```mermaid
 sequenceDiagram
@@ -60,7 +79,7 @@ After *node timeout* has elapsed:
 * Unresponsive master node is considered to be failing and can be replaced by one of its replicas
 * If a master node cannot sense the majority of the other masters, it enters error state
 
-### Sentinel
+### High Availability
 
 [Redis Sentinel](https://redis.io/docs/management/sentinel/)
 * Automatic failover: high availability
@@ -68,23 +87,37 @@ After *node timeout* has elapsed:
 * Notification
 * Configuration provider
 
-**Node Communication**
+![Sentinels](https://s3.us-east-2.amazonaws.com/assets-university.redislabs.com/ru301/3.4/image1.png)
 
-TCP ports:
-* Redis TCP port: node to clients
-* Cluster bus port: node to node
- * Binary protocol: Redis Cluster Bus (Gossip)
+Redis + Sentinel as a whole are an *eventually consistent* system where the merge function is *last failover wins*.
 
-Nodes:
-* hold the data
-* take the state of the cluster, including mapping keys to the right nodes
-* auto-discover other nodes
-* detect non-working nodes
-* promote replica nodes to master (failover)
+*Failover*
 
-**Consistency**
-
-NOT strong consistency.
+```mermaid
+sequenceDiagram
+    activate Master
+    Sentinel->>Master: PING
+    deactivate Master
+    Note right of Sentinel:  No valid reply for down-after-milliseconds
+    Note right of Sentinel: SDOWN
+    loop Failure detection
+        Sentinel->>Sentinel: >= quorum
+    end
+    Note right of Sentinel: ODOWN
+    loop Vote
+        Sentinel->>Sentinel: >= max(majority, quorum)
+    end
+    Note right of Sentinel: Replica selection
+    Sentinel->>Selected Replica: REPLICAOF NO ONE
+    Selected Replica--)Sentinel: The switch is observed in INFO
+    loop Broadcasting
+        Sentinel->>Sentinel: Configuration (with epoch)
+    end
+    Sentinel->>Ohter Replicas: Reconfigure
+    activate Master
+    Sentinel->>Master: Reconfigure
+    deactivate Master
+```
 
 Datatypes:
 * string: C dynamic string library
@@ -107,10 +140,16 @@ Item eviction policies
 
 Blocking queues
 
-Data persistence: snapshots (automatic, BGSAVE or at shutdown) (RDB?)
-AOF (Append Only Files): optional
+### Data persistence
 
-journaling??
+* RDB: snapshots
+  * `dump.rdb` by default
+  * Manual commands: `SAVE`/`BGSAVE`
+  * `fork()` using a child process
+* AOF (Append Only Files)
+  * `fsync` policies
+  * Log rewriting: `BGREWRITAOF`
+  * More *durable* (how much data you can afford to lose)
 
 Single threaded: an individual command is always atomic
 Provide concurrency at the I/O level by I/O multiplexing + even loop. Atomicity is at no extra cost (doesn't require synchronization between threads)
