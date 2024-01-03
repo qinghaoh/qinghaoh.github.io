@@ -12,34 +12,63 @@ _Redis (Remote Dictionary Server)_
 
 
 * [Documentation](https://redis.io/docs/)
+* [Redis Cluster](https://redis.io/docs/reference/cluster-spec/)
 * [Interview questions](https://gist.github.com/aershov24/16f4e369a93182de3f235a9a154a6b4a)
 
 In-memory key-value data store. Stores cache data into physical storage if needed.
 
-### Scaling
+Executes ultra-fast LUA scripts.
 
-[Scaling](https://redis.io/docs/manual/scaling/): Redis Cluster
+Supports [blocking queues](https://redis.io/commands/blpop/).
+
+Single threaded: an individual command is always atomic
+Provide concurrency at the I/O level by I/O multiplexing + even loop. Atomicity is at no extra cost (doesn't require synchronization between threads)
+CPU is usually not the bottleneck. IT's either memory or network bound.
+Redis 4.0 more threaded: deleting objects in the background, blocking commands implemented via Redis modules
+
+Pipelining (vs batching?) Redis commands
+
+Multi/exec sequence ensures no other clients are executing commands in between.
+
+Transactions: MULTI, EXEC, DISCARD, WATCH
+Rollback is not supported
+
+Atomicity
+
+[CRDTs](https://redis.com/blog/diving-into-crdts/): Conflict-Free Replicated Data Types
+
 
 TCP ports
 * Redis TCP port: node to clients
 * Cluster bus port: node to node
-  * Binary protocol: Redis Cluster Bus (*Gossip*)
-  * Failure detection, configuration updates, failover authorization, etc.
+  * Redis Cluster Bus
+  * Binary protocol (*Gossip*)
+  * Complete graph
+  * Propagate information about the cluster
+    * Discover new nodes
+    * Send ping packets for failure detection
+    * Configuration updates
+    * Failover authorization
+    * Propagate Pub/Sub messages
 
-**Data Sharding**
+### Data persistence
 
-hash value = CRC16(key) / #hash_slots (=16384)
+* RDB: snapshots
+  * `dump.rdb` by default
+  * Manual commands: `SAVE`/`BGSAVE`
+  * `fork()` using a child process
+* AOF (Append Only Files)
+  * `fsync` policies
+  * Log rewriting: `BGREWRITAOF`
+  * More *durable* (how much data you can afford to lose)
 
-NOT *consistent hashing*!
+### Scaling
 
-**Node Communication**
+[Scaling](https://redis.io/docs/manual/scaling/)
 
-Nodes:
-* hold the data
-* take the state of the cluster, including mapping keys to the right nodes
-* auto-discover other nodes
-* detect non-working nodes
-* promote replica nodes to master (failover)
+**Algorithmic sharding**: hash value = CRC16(key) / #hash_slots (=16384)
+
+*hash tags* force certain keys to be stored in the same hash slot
 
 ### Replication
 
@@ -47,7 +76,21 @@ Nodes:
 
 Asynchronous replication by default.
 
-Synchronous replication can be requested by `WAIT` command when absolutely needed. There's still a possibility that acknowledged writes get lost during a failover, so it doesn't ensure strong consistency. however the probability is very low.
+Not *strong consistency*!
+
+```mermaid
+sequenceDiagram
+    activate Master
+    Client->>Master: Write
+    Master-->>Client: Ack
+    deactivate Master
+    Note right of Master:  Master failed
+    Master-xReplica: Replicate
+    Note right of Replica:  Promoted as Master
+    Note right of Replica:  Data loss
+```
+
+Synchronous replication is supported when absolutely needed, via `WAIT`. But it's always possible that a replica that was not able to receive the write will be elected as master. So it's *not* strong consistency.
 
 Actions that change master dataset:
 * client writes
@@ -75,11 +118,25 @@ sequenceDiagram
     Replica-)Master: Acknowledgement of data processed
 ```
 
+### Failure Detection
+
 After *node timeout* has elapsed:
 * Unresponsive master node is considered to be failing and can be replaced by one of its replicas
 * If a master node cannot sense the majority of the other masters, it enters error state
 
-### High Availability
+### Pub/sub
+
+`SUBSCRIBE`, `UNSUBSCRIBE` and `PUBLISH`.
+
+*at-most-once* message delivery semantics
+
+Messages are *sharded*.
+
+#### Redis Streams
+
+### Redis Sentinel
+
+Provides high availability for Redis when not using Redis Cluster.
 
 [Redis Sentinel](https://redis.io/docs/management/sentinel/)
 * Automatic failover: high availability
@@ -108,62 +165,16 @@ sequenceDiagram
         Sentinel->>Sentinel: >= max(majority, quorum)
     end
     Note right of Sentinel: Replica selection
-    Sentinel->>Selected Replica: REPLICAOF NO ONE
-    Selected Replica--)Sentinel: The switch is observed in INFO
+    Sentinel->>Elected Replica: REPLICAOF NO ONE
+    Elected Replica--)Sentinel: The switch is observed in INFO
     loop Broadcasting
         Sentinel->>Sentinel: Configuration (with epoch)
     end
-    Sentinel->>Ohter Replicas: Reconfigure
+    Sentinel->>Other Replicas: Reconfigure
     activate Master
     Sentinel->>Master: Reconfigure
     deactivate Master
 ```
-
-Datatypes:
-* string: C dynamic string library
-* hash: namespace/ group for several key/value pairs (??) Hash table
-* list: durable, atomic queues. Linked list
-* set: Hash table
-* sorted set: Skip list
-* bitmap
-* hyperlog
-* zip list
-* int set
-
-Pub-sub model
-
-Executes ultra-fast LUA scripts.
-
-Atomicity
-
-Item eviction policies
-
-Blocking queues
-
-### Data persistence
-
-* RDB: snapshots
-  * `dump.rdb` by default
-  * Manual commands: `SAVE`/`BGSAVE`
-  * `fork()` using a child process
-* AOF (Append Only Files)
-  * `fsync` policies
-  * Log rewriting: `BGREWRITAOF`
-  * More *durable* (how much data you can afford to lose)
-
-Single threaded: an individual command is always atomic
-Provide concurrency at the I/O level by I/O multiplexing + even loop. Atomicity is at no extra cost (doesn't require synchronization between threads)
-CPU is usually not the bottleneck. IT's either memory or network bound.
-Redis 4.0 more threaded: deleting objects in the background, blocking commands implemented via Redis modules
-
-Pipelining (vs batching?) Redis commands
-
-Multi/exec sequence ensures no other clients are executing commands in between.
-
-Transactions: MULTI, EXEC, DISCARD, WATCH
-Rollback is not supported
-
-[CRDTs](https://redis.com/blog/diving-into-crdts/): Conflict-Free Replicated Data Types
 
 # Distributed Messaging System
 

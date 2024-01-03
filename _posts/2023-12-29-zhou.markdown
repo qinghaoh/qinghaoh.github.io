@@ -117,7 +117,7 @@ tags: history
   * 孔父嘉
 * 五日後退兵
 * 秋諸侯復伐鄭
-  * 鲁隱公：姬姓，名息姑
+  * 鲁隱公：姬姓，名息姑。母聲子
   * 公子翬：姬姓，名翬，世稱羽父
   * 取其禾而還
 
@@ -145,6 +145,20 @@ tags: history
 * 宋、衛同蔡進攻戴國
 * 鄭莊公救援戴國，順便將戴占為己有，戴國滅亡
 
+鄭攻許之戰（前712年）
+* 鄭、魯、齊
+* 許莊公[^13]：姜姓，《春秋分記》載名茀或苴人
+* 許桓公：姜姓，名鄭。許莊公弟
+* 子都：姬姓，名閼，又稱公孫閼，字子都。著名美男子。
+* 子都射死潁考叔
+* 瑕叔盈、公孫獲
+
+公子翬弒鲁隱公
+* 惠公元妃孟子
+* 魯桓公：姬姓，名允，一名軌。魯隱公之弟。母仲子。
+* 仲子：宋武公之女
+* 蒍氏
+
 [^1]: [尹國君主列表](https://zh.wikipedia.org/wiki/%E5%B0%B9%E5%9C%8B#%E5%B0%B9%E5%9C%8B%E5%90%9B%E4%B8%BB%E5%88%97%E8%A1%A8)
 [^2]: [范氏世系圖](https://zh.wikipedia.org/wiki/%E8%8C%83%E6%B0%8F#%E4%B8%96%E7%B3%BB%E5%9B%BE)
 [^3]: [西虢国君主列表](https://zh.wikipedia.org/wiki/%E8%A5%BF%E8%99%A2%E5%9B%BD#%E5%90%9B%E4%B8%BB%E5%88%97%E8%A1%A8)
@@ -157,3 +171,4 @@ tags: history
 [^10]: [姜齊君主世系圖](https://zh.wikipedia.org/wiki/%E5%A7%9C%E9%BD%90%E5%90%9B%E4%B8%BB%E4%B8%96%E7%B3%BB%E5%9B%BE)
 [^11]: [宋國君主世系圖](https://zh.wikipedia.org/wiki/%E5%AE%8B%E5%9B%BD%E5%90%9B%E4%B8%BB%E4%B8%96%E7%B3%BB%E5%9B%BE)
 [^12]: [陳國君主世系圖](https://zh.wikipedia.org/wiki/%E9%99%88%E5%9B%BD%E5%90%9B%E4%B8%BB%E4%B8%96%E7%B3%BB%E5%9B%BE)
+[^13]: [許國君主世系圖](https://zh.wikipedia.org/wiki/%E8%A8%B1%E5%9C%8B%E5%90%9B%E4%B8%BB%E4%B8%96%E7%B3%BB%E5%9C%96)

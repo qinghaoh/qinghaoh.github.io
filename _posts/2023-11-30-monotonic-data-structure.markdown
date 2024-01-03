@@ -641,30 +641,33 @@ The following problem is not PGE or NGE, and the solution doesn't use stacks. Bu
 
 [Sum of Imbalance Numbers of All Subarrays][sum-of-imbalance-numbers-of-all-subarrays]
 
-```java
-public int sumImbalanceNumbers(int[] nums) {
-    int sum = 0, n = nums.length;
-    // lastIndices[i]: last index of the number `i`
-    // leftBounds[i]: left bound of the number `i`.
-    //   subarrays starts exclusively from leftBounds[i] up to i have non-zero imbalance numbers
-    int[] lastIndices = new int[n + 2], leftBounds = new int[n];
+```c++
+int sumImbalanceNumbers(vector<int>& nums) {
+    // In an array, if `num` has next greater element that's not `num + 1`,
+    // then `num` contributes one score to the imbalance of the array.
+    int sum = 0, n = nums.size();
+    // lastIndices[num]: index of the last occurrence `num`
+    // leftBounds[num]: all the subarrays of (leftBounds[num], num] don't contain (num + 1).
+    //    Therefore, for any one of the subarrays, if `num` is not the max value,
+    //    then `num` contributes one score to the imbalance of the subarray.
+    vector<int> lastIndices(n + 2, -1), leftBounds(n);
 
-    // for each num, considers num and num + 1 only - no need to consider num - 1
-    // otherwise the final result will include duplication
-    Arrays.fill(lastIndices, -1);
     for (int i = 0; i < n; i++) {
-        leftBounds[i] = Math.max(lastIndices[nums[i] + 1], lastIndices[nums[i]]);
+        // `lastIndices[nums[i]]` is used for deduplication.
+        // If a subarray contains multiple nums[i], only one of them constributes to the imbalance of the subarray.
+        leftBounds[i] = max(lastIndices[nums[i] + 1], lastIndices[nums[i]]);
         lastIndices[nums[i]] = i;
     }
 
-    Arrays.fill(lastIndices, n);
+    ranges::fill(lastIndices, n);
     for (int i = n - 1; i >= 0; i--) {
         lastIndices[nums[i]] = i;
-        // again, considers num + 1 only - no need to consider num, in order to deduplicate
         sum += (i - leftBounds[i]) * (lastIndices[nums[i] + 1] - i);
     }
 
-    // subtracts the result for max(nums[i])
+    // Subtracts the result when nums[i] is the max of the subarray.
+    // Each subarray has a max, and each subarray contributes to the imbalance sum as per the algorithm above.
+    // There are n * (n + 1) / 2 subarrays in total.
     return sum - n * (n + 1) / 2;
 }
 ```
