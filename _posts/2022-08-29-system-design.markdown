@@ -37,19 +37,36 @@ Atomicity
 
 [CRDTs](https://redis.com/blog/diving-into-crdts/): Conflict-Free Replicated Data Types
 
-
 TCP ports
 * Redis TCP port: node to clients
 * Cluster bus port: node to node
   * Redis Cluster Bus
   * Binary protocol (*Gossip*)
-  * Complete graph
+  * Full mesh
   * Propagate information about the cluster
     * Discover new nodes
     * Send ping packets for failure detection
     * Configuration updates
     * Failover authorization
     * Propagate Pub/Sub messages
+
+**Node handshake**
+```mermaid
+sequenceDiagram
+    Note over Node X, Node B: Even if Node X is untrusted
+    Node X->>Node B: PING
+    Node B-->>Node X: PONG/The provided argument
+    Note over Node A, Node B: Requested by System Admin
+    Node A->>Node B: CLUSTER MEET ip port
+    Node B-->>Node A: OK
+    Node B->>Node C: Gossip message about A
+```
+
+Heartbeat
+* `PING` and `PONG` packets
+* Every node:
+  * pings a few random nodes every second
+  * makes sure to ping every other node that hasn't sent a ping or received a pong for `> NODE_TIMEOUT / 2`
 
 ### Data persistence
 
@@ -66,9 +83,41 @@ TCP ports
 
 [Scaling](https://redis.io/docs/manual/scaling/)
 
-**Algorithmic sharding**: hash value = CRC16(key) / #hash_slots (=16384)
+Algorithmic sharding:
+```
+HASH_SLOT = CRC16(key) mod 16384
+```
 
 *hash tags* force certain keys to be stored in the same hash slot
+
+```mermaid
+sequenceDiagram
+    Client->>Node A: Query <hash_slot>
+    alt Has <hash_slot>
+        Node A->>Node A: Process
+        Node A-->>Client: Reply
+    else
+        Node A->>Node A: Look up hash slot to node map
+        Node A-->>Client: -MOVED <hash_slot> <ip:port>
+    end
+    Client->>Client: CLUSTER SHARDS (Update slot configuration map)
+```
+
+Resharding
+
+Scaling reads using `READONLY`
+
+```mermaid
+sequenceDiagram
+    Client->>Replica: Read
+    alt Keys served by the replica's master
+        Replica-->>Client: Reply
+    else
+        Replica-->>Client: -MOVED <hash_slot> <ip:port>
+        Note over Client, Replica: 1) Never served 2) Resharded
+    end
+    Client->>Client: CLUSTER SHARDS
+```
 
 ### Replication
 
@@ -78,6 +127,7 @@ Asynchronous replication by default.
 
 Not *strong consistency*!
 
+**Failure mode 1**
 ```mermaid
 sequenceDiagram
     activate Master
@@ -120,7 +170,7 @@ sequenceDiagram
 
 ### Failure Detection
 
-After *node timeout* has elapsed:
+`NODE_TIMEOUT`
 * Unresponsive master node is considered to be failing and can be replaced by one of its replicas
 * If a master node cannot sense the majority of the other masters, it enters error state
 
@@ -176,11 +226,14 @@ sequenceDiagram
     deactivate Master
 ```
 
-# Distributed Messaging System
+## Memcached
+
+![Memcached](/assets/img/system_design/memcached.png){: w="150" }
 
 ## Apache Kafka
 
 ![Apache Kafka](/assets/img/system_design/apache_kafka.png){: w="150" }
+_Apache Kafka_
 
 * [Documentation](https://kafka.apache.org/documentation/)
 * [Interview questions](https://www.interviewbit.com/kafka-interview-questions/)
