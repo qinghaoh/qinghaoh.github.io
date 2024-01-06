@@ -196,44 +196,19 @@ A quicker solution is [Patience sorting](https://en.wikipedia.org/wiki/Patience_
 1. Each subsequent card is placed on the leftmost existing pile whose top card has a value greater than or equal to the new card's value, or to the right of all of the existing piles, thus forming a new pile.
 1. When there are no more cards remaining to deal, the game ends.
 
-```java
+```c++
 // O(nlog(n))
-public int lengthOfLIS(int[] nums) {
-    List<Integer> piles = new ArrayList<>(nums.length);
+int lengthOfLIS(vector<int>& nums) {
+    vector<int> piles;
     for (int num : nums) {
-        int pile = Collections.binarySearch(piles, num);
-        if (pile < 0) {
-            pile = ~pile;
-        }
-
-        if (pile == piles.size()) {
-            piles.add(num);
+        auto it = lower_bound(piles.begin(), piles.end(), num);
+        if (it == piles.end()) {
+            piles.push_back(num);
         } else {
-            piles.set(pile, num);
+            *it = num;
         }
     }
     return piles.size();
-}
-```
-
-Not as intuitive, we can use array instead:
-
-```java
-public int lengthOfLIS(int[] nums) {
-    int[] piles = new int[nums.length];
-    int count = 0;
-    for (int num : nums) {
-        int i = Arrays.binarySearch(piles, 0, count, num);
-        if (i < 0) {
-            i = ~i;
-        }
-
-        piles[i] = num;
-        if (i == count) {
-            count++;
-        }
-    }
-    return count;
 }
 ```
 

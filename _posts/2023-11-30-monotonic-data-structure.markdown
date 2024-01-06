@@ -493,7 +493,7 @@ public int next(int price) {
 ```c++
 int mctFromLeafValues(vector<int>& arr) {
     stack<int> st;
-    st.push(INT_MAX);
+    st.push(numeric_limits<int>::max());
 
     int sum = 0;
     for (int a : arr) {
@@ -528,7 +528,7 @@ int mctFromLeafValues(vector<int>& arr) {
 bool find132pattern(vector<int>& nums) {
     stack<int> st;
     // e1 e3 e2 -> 1 3 2
-    int e2 = INT_MIN;
+    int e2 = numeric_limits<int>::min();
     for (int i = nums.size() - 1; i >= 0; i--) {
         // nums[i] as e1
         if (nums[i] < e2) {
@@ -1066,7 +1066,7 @@ int findMaximumLength(vector<int>& nums) {
 ```c++
 long long maxBalancedSubsequenceSum(vector<int>& nums) {
     {% raw %}
-    map<int, long long> mp{{INT_MIN, 0}};
+    map<int, long long> mp{{numeric_limits<int>::min(), 0}};
     {% endraw %}
     for (int i = 0; i < nums.size(); i++) {
         // Considers positive num only

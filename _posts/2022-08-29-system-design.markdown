@@ -50,8 +50,10 @@ TCP ports
     * Failover authorization
     * Propagate Pub/Sub messages
 
-**Node handshake**
 ```mermaid
+---
+title: Node handshake
+---
 sequenceDiagram
     Note over Node X, Node B: Even if Node X is untrusted
     Node X->>Node B: PING
@@ -67,6 +69,41 @@ Heartbeat
 * Every node:
   * pings a few random nodes every second
   * makes sure to ping every other node that hasn't sent a ping or received a pong for `> NODE_TIMEOUT / 2`
+
+```mermaid
+---
+title: Failure Detection
+---
+sequenceDiagram
+    Node A->>Node B: PING
+    Note left of Node B: No reply after NODE_TIMEOUT / 2
+    Node A->>Node B: Try to reconnect
+    Note left of Node B: No reply after NODE_TIMEOUT
+    Node A->>Node A: Flag Node B PFAIL
+    Other Nodes-)Node A: Gossip about Node B
+    Note right of Node A: The majority of Masters flagged Node B PFAIL/FAIL
+    Note right of Node A: within NODE_TIMEOUT * FAIL_REPORT_VALIDITY_MULT
+    Node A->>Node A: Flag Node B FAIL
+    Node A-)Other Nodes: Send FAIL messages
+    Note over Node A, Other Nodes: NOT a FAIL condition within a heartbeat message
+    Other Nodes-)Other Nodes: Flag Node B FAIL
+```
+
+```mermaid
+---
+title: Flag of Node B
+---
+stateDiagram-v2
+    [*] --> PFAIL: Unreachable
+    [*] --> FAIL: FAIL message
+    PFAIL --> FAIL: Majority agreement or FAIL Message
+    FAIL --> [*]: Reachable
+    note right of FAIL
+        - Replica
+        - Master Not serving any slot
+        - Master N * NODE_TIMEOUT has elapsed without detectable replica promotion
+    end note
+```
 
 ### Data persistence
 
@@ -91,6 +128,9 @@ HASH_SLOT = CRC16(key) mod 16384
 *hash tags* force certain keys to be stored in the same hash slot
 
 ```mermaid
+---
+title: Redirection
+---
 sequenceDiagram
     Client->>Node A: Query <hash_slot>
     alt Has <hash_slot>
@@ -105,9 +145,12 @@ sequenceDiagram
 
 Resharding
 
-Scaling reads using `READONLY`
+`READONLY`: client is OK reading possibly stale data and it not interested in running write queries. Replica nodes will not redirect client to the authoritative master for the hash slot involved in the given command.
 
 ```mermaid
+---
+title: Scaling reads using READONLY
+---
 sequenceDiagram
     Client->>Replica: Read
     alt Keys served by the replica's master
@@ -127,8 +170,10 @@ Asynchronous replication by default.
 
 Not *strong consistency*!
 
-**Failure mode 1**
 ```mermaid
+---
+title: Failure Mode 1
+---
 sequenceDiagram
     activate Master
     Client->>Master: Write
@@ -149,9 +194,10 @@ Actions that change master dataset:
 
 Master-replica link breaks (due to network issues or timeout): partial resynchronization
 
-*Synchronization*
-
 ```mermaid
+---
+title: Synchronization
+---
 sequenceDiagram
     Replica->>Master: PSYNC (Replication ID + offset)
     alt Partial resynchronization
@@ -198,9 +244,10 @@ Provides high availability for Redis when not using Redis Cluster.
 
 Redis + Sentinel as a whole are an *eventually consistent* system where the merge function is *last failover wins*.
 
-*Failover*
-
 ```mermaid
+---
+title: Failover
+---
 sequenceDiagram
     activate Master
     Sentinel->>Master: PING

@@ -951,20 +951,18 @@ public int carFleet(int target, int[] position, int[] speed) {
 ```c++
 int countWays(vector<int>& nums) {
     int n = nums.size();
-    nums.push_back(INT_MAX);
+    nums.push_back(numeric_limits<int>::max());
     // If i-th student is selected, all the students with nums[j] <= nums[i] must be selected
     // If i-th student is not selected, all the students with nums[j] >= nums[i] must not be selected
-    sort(begin(nums), end(nums));
+    ranges::sort(nums);
 
     // If no one is selected and all students are happy,
     // nums[0] > 0
     int cnt = nums[0] != 0;
-    for (int i = 0; i < n; i++)
-    {
-        // Check if nums[i] should be selected
+    for (int i = 0; i < n; i++) {
+        // Checks if nums[i] should be selected
         // If nums[i] is selected, the number of selected people will be (i + 1)
-        if (nums[i] < i + 1 and nums[i + 1] > i + 1)
-        {
+        if (nums[i] < i + 1 and nums[i + 1] > i + 1) {
             cnt++;
         }
     }

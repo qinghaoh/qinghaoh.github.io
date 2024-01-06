@@ -329,38 +329,31 @@ private int updateEnd(String s, int i, int[][] intervals) {
 
 [Maximum Profit in Job Scheduling][maximum-profit-in-job-scheduling]
 
-```java
-public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
-    int n = startTime.length;
-    Integer[] indices = new Integer[n];
-    for (int i = 0; i < n; i++) {
-        indices[i] = i;
-    }
+```c++
+int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+    int n = startTime.size();
+    vector<int> indices(n);
+    iota(indices.begin(), indices.end(), 0);
 
-    // sorts indices by end time
-    Arrays.sort(indices, Comparator.comparingInt(i -> endTime[i]));
+    // Sorts index by end time
+    ranges::sort(indices, {}, [&](int i){ return endTime[i]; });
 
-    // end time : max profit by the end time
-    TreeMap<Integer, Integer> dp = new TreeMap<>();
-    dp.put(0, 0);
-
+    // <end time, max profit>
+    map<int, int> dp = {{0, 0}};
     for (int i : indices) {
-        // curr is the max profit if we pick the current job
-        // binary searches in dp for the max profit we can make before startTime[i]
-        int curr = dp.floorEntry(startTime[i]).getValue() + profit[i];
+        // Curr is the max profit if we pick the current job.
+        // Binary searches in dp for the max profit we can make before startTime[i].
+        int curr = prev(dp.upper_bound(startTime[i]))->second + profit[i];
 
-        // if curr max profit is more than last time
-        // it's worth doing this job
-        if (curr > dp.lastEntry().getValue()) {
-            // puts the job and its profit into the map
-            // only if curr max profit is more than last time
-            // it guarantees the map value increases as endTime (map key) increases
-            dp.put(endTime[i], curr);
+        // If curr max profit is more than last time, it's worth doing this job.
+        // It guarantees the map value monotonically increases with endTime (keys).
+        if (curr > dp.rbegin()->second) {
+            dp[endTime[i]] = curr;
         }
 
-        // otherwise don't do this job
+        // Otherwise don't do this job.
     }
-    return dp.lastEntry().getValue();
+    return dp.rbegin()->second;
 }
 ```
 
