@@ -413,39 +413,37 @@ public int longestArithSeqLength(int[] nums) {
 
 [Arithmetic Slices II - Subsequence][arithmetic-slices-ii-subsequence]
 
-```java
-public int numberOfArithmeticSlices(int[] nums) {
-    int n = nums.length;
+```c++
+int numberOfArithmeticSlices(vector<int>& nums) {
+    int n = nums.size();
     // dp[i]: all subsequences in nums[0...i]
-    // map -> diff : count
-    Map<Integer, Integer>[] dp = new Map[n];
+    // map: <diff, count>
+    vector<unordered_map<int, int>> dp(n);
 
-    int count = 0;
+    int cnt = 0;
     for (int i = 0; i < n; i++) {
-        dp[i] = new HashMap<>(i);
         for (int j = 0; j < i; j++) {
-            // not (long)(nums[i] - nums[j])
+            // Not (long long)(nums[i] - nums[j])
             // e.g. [0,2000000000,-294967296]
-            long diff = (long)nums[i] - nums[j];
+            long long diff = static_cast<long long>(nums[i]) - nums[j];
 
-            // out of 32 bits
-            if (diff <= Integer.MIN_VALUE || diff > Integer.MAX_VALUE) {
+            // Out of 32 bits
+            if (diff <= numeric_limits<int>::min() || diff > numeric_limits<int>::max()) {
                 continue;
             }
 
-            int d = (int)diff;
+            int d = static_cast<int>(diff);
             // sub: number of subsequences in nums[0...j] with difference d
-            int sub = dp[j].getOrDefault(d, 0);
+            int sub = dp[j][d];
 
             // 1: 2-element slice -> [nums[j], nums[i]]
-            dp[i].put(d, dp[i].getOrDefault(d, 0) + sub + 1);
+            dp[i][d] += sub + 1;
 
-            // accumulates sub would yield all indexes with all differences
-            count += sub;
+            // Accumulates sub would yield all indexes with all differences
+            cnt += sub;
         }
     }
-
-    return count;
+    return cnt;
 }
 ```
 
