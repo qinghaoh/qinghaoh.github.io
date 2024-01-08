@@ -416,7 +416,7 @@ public int longestArithSeqLength(int[] nums) {
 ```c++
 int numberOfArithmeticSlices(vector<int>& nums) {
     int n = nums.size();
-    // dp[i]: all subsequences in nums[0...i]
+    // dp[i]: all arithmetic subsequences (len > 1) in nums[0...i]
     // map: <diff, count>
     vector<unordered_map<int, int>> dp(n);
 

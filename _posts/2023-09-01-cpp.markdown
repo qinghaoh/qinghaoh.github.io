@@ -234,6 +234,9 @@ accumulate(dp.begin() + l, dp.begin() + r + 1, 0, [&](int a, int b){ return (a +
 
 // set
 set<int> s(v.begin(), v.end());
+// set intersection
+set<int> common;
+set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(common, common.begin()));
 
 // binary search
 // lower_bound: iterator to first element >= v
@@ -244,8 +247,10 @@ res[i] = it == rend(st) ? -1 : *it;
 ranges::upper_bound(st, a, [&](int i, int j){ return heights[i] < heights[j]; });
 
 // bit count
-bitset<32> bs(i);
-bs.count()
+bitset<32> bs(num);
+bs.count();
+// or, gcc
+__builtin_popcount(num);
 
 // min heap
 priority_queue<int, vector<int>, greater<int>> pq;

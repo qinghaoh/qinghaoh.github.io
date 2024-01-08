@@ -2,12 +2,12 @@
 title:  "Prefix Sum"
 category: algorithm
 ---
-# Fundamentals
+## Fundamentals
 
 The basic template for prefix sum creation is:
 
-```java
-int[] p = new int[n + 1];
+```c++
+vector<int> p(n + 1);
 for (int i = 0: i < n; i++) {
     p[i + 1] = p[i] + nums[i];
 }
@@ -129,89 +129,41 @@ public int maximumBeauty(int[] flowers) {
 }
 ```
 
-# Variants
+## Variants
 
-**Product**
-
-[Product of the Last K Numbers][product-of-the-last-k-numbers]
-
-```java
-private List<Integer> p = new ArrayList<>(); 
-
-public ProductOfNumbers() {
-    p.add(1);
-}
-
-public void add(int num) {
-    if (num > 0) {
-        p.add(p.get(p.size() - 1) * num);
-    } else {
-        p = new ArrayList<>();
-        p.add(1);
-    }
-}
-
-public int getProduct(int k) {
-    int n = p.size();
-    return k < n ? p.get(n - 1) / p.get(n - k - 1) : 0;
-}
-```
+* Product
 
 [Product of Array Except Self][product-of-array-except-self]
 
-```java
-public int[] productExceptSelf(int[] nums) {
-    int n = nums.length;
-    int[] answer = new int[n];
-
-    // prefix product, no last element
-    answer[0] = 1;
-    for (int i = 0; i < n - 1; i++) {
-        answer[i + 1] = nums[i] * answer[i];
-    }
-
-    int product = 1;
-    for (int i = n - 1; i >= 0; i--) {
-        answer[i] *= product;
-        product *= nums[i];
-    }
-    return answer;
-}
-```
-
-**Mod**
+* Mod
 
 [Make Sum Divisible by P][make-sum-divisible-by-p]
 
-```java
-public int minSubarray(int[] nums, int p) {
-    // target remainder
-    int r = 0;
-    for (int num : nums) {
-        r = (r + num) % p;
-    }
-    if (r == 0) {
-        return 0;
-    }
+```c++
+int minSubarray(vector<int>& nums, int p) {
+    // Target remainder
+    int r = accumulate(nums.begin(), nums.end(), 0, [&](int a, int b) { return (a + b) % p; });
 
-    // prefix mod : index of last occurrence
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
+    // Indices of the last occurrence of prefix_sum % p
+    {% raw %}
+    unordered_map<int, int> lastIndices = {{0, -1}};
+    {% endraw %}
+    int n = nums.size(), mn = n;
+    for (int i = 0, curr = 0; i < n; i++) {
+        curr = (curr + nums[i]) % p;
+        lastIndices[curr] = i;
 
-    int n = nums.length, min = n, m = 0;
-    for (int i = 0; i < n; i++) {
-        m = (m + nums[i] % p) % p;
-        int d = (m - r + p) % p;
-        if (map.containsKey(d)) {
-            min = Math.min(min, i - map.get(d));
+        // Finds the last index of the remainder that needs to be subtracted.
+        int d = (curr - r + p) % p;
+        if (lastIndices.contains(d)) {
+            mn = min(mn, i - lastIndices[d]);
         }
-        map.put(m, i);
     }
-    return min == n ? -1 : min;
+    return mn == n ? -1 : mn;
 }
 ```
 
-**Exclusive Or**
+* Exclusive Or
 
 [Count Triplets That Can Form Two Arrays of Equal XOR][count-triplets-that-can-form-two-arrays-of-equal-xor]
 
@@ -260,7 +212,7 @@ public long wonderfulSubstrings(String word) {
 }
 ```
 
-**Multi-dimension**
+* Multi-dimension
 
 [Sum of Beauty of All Substrings][sum-of-beauty-of-all-substrings]
 
@@ -339,7 +291,7 @@ public long countQuadruplets(int[] nums) {
 
 Another solution is by [dynamic programming](../dynamic-programming-vi).
  
-**Frequency**
+* Frequency
 
 [Sum of Floored Pairs][sum-of-floored-pairs]
 
@@ -382,7 +334,65 @@ public int sumOfFlooredPairs(int[] nums) {
 }
 ```
 
-**Linked List**
+[Palindrome Rearrangement Queries][palindrome-rearrangement-queries]
+
+```c++
+vector<bool> canMakePalindromeQueries(string s, vector<vector<int>>& queries) {
+    int n = s.size();
+    // Prefix sum of number of different chars at symmetric positions
+    vector<int> p1(n + 1);
+    for (int i = 0; i < n - 1 - i; i++) {
+        p1[i + 1] = p1[i] + (s[i] != s[n - 1 - i]);
+    }
+
+    valarray<int> freqs(26);
+    vector<valarray<int>> p2 = {freqs};
+    for (char ch : s) {
+        freqs[ch - 'a']++;
+        p2.push_back(freqs);
+    }
+
+    vector<bool> answer;
+    for (const auto& q : queries) {
+        //  --a1----b1---b2----a2--
+        //  -d2-c2-----------c1-d1-
+        // x1 and x2 are symmetric.
+        int a1 = q[0], b1 = q[1] + 1, a2 = n - q[0], b2 = n - 1 - q[1];
+        int c1 = q[2], d1 = q[3] + 1, c2 = n - q[2], d2 = n - 1 - q[3];
+
+        // No differences allowed outside the query ranges.
+        // e.g. R1, R2 and R3:
+        //   -----a1 b1---d2 c2---
+        //   | R1 |    |R2|   |R3|
+        if ((min(a1, d2) && p1[min(a1, d2)])
+            || (n / 2 > max(b1, c2) && p1[n / 2] - p1[max(b1, c2)])
+            || (d2 > b1 && p1[d2] - p1[b1])
+            || (a1 > c2 && p1[a1] - p1[c2])) {
+            answer.push_back(false);
+        } else {
+            valarray<int> f1 = p2[b1] - p2[a1], f2 = p2[d1] - p2[c1];
+            // Trims to the overlapping ranges.
+            if (c1 > b2) {
+                f1 -= p2[min(c1, a2)] - p2[b2];
+            }
+            if (a2 > d1) {
+                f1 -= p2[a2] - p2[max(d1, b2)];
+            }
+            if (a1 > d2) {
+                f2 -= p2[min(a1, c2)] - p2[d2];
+            }
+            if (c2 > b1) {
+                f2 -= p2[c2] - p2[max(b1, d2)];
+            }
+            // Frequency map of the overlapping ranges on both sides should be identical.
+            answer.push_back((f1 >= 0 && f2 >= 0 && f1 == f2).min());
+        }
+    }
+    return answer;
+}
+```
+
+* Linked List
 
 [Remove Zero Sum Consecutive Nodes from Linked List][remove-zero-sum-consecutive-nodes-from-linked-list]
 
@@ -417,7 +427,7 @@ public ListNode removeZeroSumSublists(ListNode head) {
 abs(subarray) = p[i] - p[j] <= max(p) - min(p)
 ```
 
-**Diff**
+* Diff
 
 [Substring With Largest Variance][substring-with-largest-variance]
 
@@ -454,7 +464,7 @@ public int largestVariance(String s) {
 
 This problem can also be solved by [Kadane's Algorithm](../kadanes).
 
-**Ordered Pair**
+* Ordered Pair
 
 [Count Palindromic Subsequences][count-palindromic-subsequences]
 
@@ -494,7 +504,7 @@ private int[][][] prefixSum(String s) {
 }
 ```
 
-**Prefix Sum**
+* Prefix Sum
 
 [Sum of Total Strength of Wizards][sum-of-total-strength-of-wizards]
 
@@ -544,7 +554,7 @@ public int totalStrength(int[] strength) {
 }
 ```
 
-# Range Sum
+## Range Sum
 
 [Number of Ways of Cutting a Pizza][number-of-ways-of-cutting-a-pizza]
 
@@ -601,7 +611,7 @@ private int dfs(int m, int n, int cuts, int i, int j, int[][] p) {
 }
 ```
 
-# Discrete
+## Discrete
 
 [Maximum Fruits Harvested After at Most K Steps][maximum-fruits-harvested-after-at-most-k-steps]
 
@@ -656,7 +666,7 @@ public List<Integer> goodDaysToRobBank(int[] security, int time) {
 }
 ```
 
-# Rolling Prefix Sum
+## Rolling Prefix Sum
 
 [Change Minimum Characters to Satisfy One of Three Conditions][change-minimum-characters-to-satisfy-one-of-three-conditions]
 
@@ -693,7 +703,7 @@ public int minCharacters(String a, String b) {
 }
 ```
 
-# Pre-computation
+## Pre-computation
 
 [Sum Of Special Evenly-Spaced Elements In Array][sum-of-special-evenly-spaced-elements-in-array]
 
@@ -735,7 +745,7 @@ public int[] solve(int[] nums, int[][] queries) {
 }
 ```
 
-# Dynamic Programming
+## Dynamic Programming
 
 [Maximum Number of Non-Overlapping Subarrays With Sum Equals Target][maximum-number-of-non-overlapping-subarrays-with-sum-equals-target]
 
@@ -918,7 +928,7 @@ public int numberOfCombinations(String num) {
 }
 ```
 
-# Bounded Sum
+## Bounded Sum
 
 [Max Sum of Rectangle No Larger Than K][max-sum-of-rectangle-no-larger-than-k]
 
@@ -963,7 +973,7 @@ public int maxSumSubmatrix(int[][] matrix, int k) {
 }
 ```
 
-# Prefix + Suffix Sum
+## Prefix + Suffix Sum
 
 This can be extended to a very useful technique: for each element `arr[i]` in an array, compute its `left[i]` and `right[i]` for a particular variable (e.g. sum, min, max, etc.). Eventually we get two auxiliary arrays `left` and `right`.
 
@@ -1071,7 +1081,7 @@ public int findMinMoves(int[] machines) {
 }
 ```
 
-# Expand Around Center
+## Expand Around Center
 
 [Count Subarrays With Median K][count-subarrays-with-median-k]
 
@@ -1123,8 +1133,8 @@ public int countSubarrays(int[] nums, int k) {
 [number-of-ways-of-cutting-a-pizza]: https://leetcode.com/problems/number-of-ways-of-cutting-a-pizza/
 [number-of-ways-to-separate-numbers]: https://leetcode.com/problems/number-of-ways-to-separate-numbers/
 [number-of-wonderful-substrings]: https://leetcode.com/problems/number-of-wonderful-substrings/
+[palindrome-rearrangement-queries]: https://leetcode.com/problems/palindrome-rearrangement-queries/
 [product-of-array-except-self]: https://leetcode.com/problems/product-of-array-except-self/
-[product-of-the-last-k-numbers]: https://leetcode.com/problems/product-of-the-last-k-numbers/
 [remove-zero-sum-consecutive-nodes-from-linked-list]: https://leetcode.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list/
 [subarray-sum-equals-k]: https://leetcode.com/problems/subarray-sum-equals-k/
 [substring-with-largest-variance]: https://leetcode.com/problems/substring-with-largest-variance/

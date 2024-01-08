@@ -339,7 +339,9 @@ int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& pro
     ranges::sort(indices, {}, [&](int i){ return endTime[i]; });
 
     // <end time, max profit>
+    {% raw %}
     map<int, int> dp = {{0, 0}};
+    {% endraw %}
     for (int i : indices) {
         // Curr is the max profit if we pick the current job.
         // Binary searches in dp for the max profit we can make before startTime[i].
