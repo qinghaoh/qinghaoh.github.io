@@ -342,17 +342,19 @@ Kafka Schema Registry: ensures the (Avro) schema used by the consumer and the pr
 
 ## RabbitMQ
 
-[RabbitMQ](/assets/img/system_design/rabbitmq.png){: w="150" }
+![RabbitMQ](/assets/img/system_design/rabbitmq.png){: w="150" }
 
 # Database
 
 ## Apache Cassandra
 
-[Apache Cassandra](/assets/img/system_design/apache_cassandra.jpg){: w="250" }
+![Apache Cassandra](/assets/img/system_design/apache_cassandra.jpg){: w="250" }
 
 * [Basics](https://cassandra.apache.org/_/cassandra-basics.html)
 * [Documentation](https://cassandra.apache.org/doc/latest/)
 * [Interview questions](https://www.edureka.co/blog/interview-questions/cassandra-interview-questions/)
+
+PiB+
 
 Cluster: container for Keyspaces (database)
 
@@ -378,9 +380,17 @@ Primary Key
 Gossip Protocol
 * Failure detection
 
-Consistent Hashing
-* Murmur3Partitioner (MurmurHash)
-* ByteOrderedPartioner: orders rows lexically by key bytes; allows ordered scans by primary key.
+### Data Partitioning (Dynamo Style)
+
+LWW-Element-Set CRDT (Last-Write-Wins)
+
+The default partitioner is the Murmur3Partitioner ([MurmurHash](https://en.wikipedia.org/wiki/MurmurHash))
+
+**Consistent Hashing**
+* vnode
+  * The more tokens, the higher the probability of an outage
+  * Cluster-wide maintenance operations are often slowed
+  * Performance of operations that span token rangs could be affected
 
 Consistency
 * Tunable
@@ -408,7 +418,7 @@ Incremental scale-out on commodity hardware
 
 ## MongoDB
 
-[MongoDB](/assets/img/system_design/mongodb_logo.svg){: w="150" }
+![MongoDB](/assets/img/system_design/mongodb_logo.svg){: w="150" }
 
 ## Apache HBase
 Wide column. Time series data

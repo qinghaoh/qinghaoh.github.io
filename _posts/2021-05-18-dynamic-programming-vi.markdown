@@ -481,7 +481,7 @@ public long countQuadruplets(int[] nums) {
 
 Another solution is by [prefix sum](../prefix-sum).
 
-# Fractional DP
+## Fractional DP
 
 [Minimum Skips to Arrive at Meeting On Time][minimum-skips-to-arrive-at-meeting-on-time]
 
@@ -511,7 +511,7 @@ public int minSkips(int[] dist, int speed, int hoursBefore) {
 }
 ```
 
-# Map
+## Map
 
 [Tallest Billboard][tallest-billboard]
 
@@ -865,7 +865,7 @@ public int makeArrayIncreasing(int[] arr1, int[] arr2) {
 }
 ```
 
-# Reverse
+## Reverse
 
 [Coin Path][coin-path]
 
@@ -948,7 +948,7 @@ public int racecar(int target) {
 }
 ```
 
-# Precompute
+## Precompute
 
 [Number of Ways to Reach a Position After Exactly k Steps][number-of-ways-to-reach-a-position-after-exactly-k-steps]
 
@@ -971,109 +971,212 @@ public int numberOfWays(int startPos, int endPos, int k) {
 }
 ```
 
-# Digit Dynamic Programming
+## Digit Dynamic Programming
 
 [Count of Integers][count-of-integers]
 
-```java
-private static final int MOD = (int)1e9 + 7;
-// memo[index][lowTight][highTight][sum]
-private Integer[][][][] memo;
+```c++
+    const int MOD = 1e9 + 7;
+    // memo[index][isLowTight][isHighTight][sum]
+    int memo[23][2][2][401];
 
-public int count(String num1, String num2, int min_sum, int max_sum) {
-    // Makes num1 and num2 equal length
-    num1 = "0".repeat(num2.length() - num1.length()) + num1;
+    /**
+     * @brief Counts the number of integers in [num1, num2] whose sum of digits <= `sum`.
+     * @param index: Index of the current index. Index 0 stands for the most significant digit.
+     * @param isLowTight: If all the selected digits so far are the lowest possible.
+     * @param isHighTight: If all the selected digits so far are the highest possible.
+     */
+    int countStrings(int index, int sum, bool isLowTight, bool isHighTight, string num1, string num2) {
+        if (sum < 0) {
+            return 0;
+        }
 
-    memo = new Integer[23][2][2][401];
-    int count1 = countStrings(0, max_sum, true, true, num1, num2);
+        if (index == num2.length()) {
+            return 1;
+        }
 
-    memo = new Integer[23][2][2][401];
-    int count2 = countStrings(0, min_sum - 1, true, true, num1, num2);
+        if (memo[index][isLowTight][isHighTight][sum] >= 0) {
+            return memo[index][isLowTight][isHighTight][sum];
+        }
 
-    return (count1 - count2 + MOD) % MOD;
-}
-
-/**
- * Counts the number of integers in [num1, num2] whose sum of digits <= `sum`
- * @param index: Index of the current index. Index 0 stands for the most significant digit.
- * @param isLowTight: If all the selected digits so far are the lowest possible
- * @param isHighTight: If all the selected digits so far are the highest possible
- */
-private int countStrings(int index, int sum, boolean isLowTight, boolean isHighTight, String num1, String num2) {
-    if (sum < 0) {
-        return 0;
+        int cnt = 0;
+        // e.g. num1 == 234, index == 1
+        //   If previous isLowTight is true, then the running number is 2**,
+        //     if we want to keep the current digit low tight, then it has to be 3.
+        //     any number lower than 3, e.g. 2, will yield 22* < 234
+        //   otherwise, the running number is more flexible, e.g. 3**
+        //     the current digit can be any number (as low as 0)
+        // Same applies to isHighTight
+        int low = isLowTight ? num1[index] - '0' : 0;
+        int high = isHighTight ? num2[index] - '0' : 9;
+        for (int d = low; d <= high; d++) {
+            cnt = (cnt + countStrings(index + 1, sum - d, isLowTight && d == low, isHighTight && d == high, num1, num2) % MOD) % MOD;
+        }
+        return memo[index][isLowTight][isHighTight][sum] = cnt;
     }
 
-    if (index == num2.length()) {
-        return 1;
-    }
+public:
+    int count(string num1, string num2, int min_sum, int max_sum) {
+        memset(memo, -1, sizeof(memo));
 
-    int lowTight = isLowTight ? 1 : 0, highTight = isHighTight ? 1 : 0;
-    if (memo[index][lowTight][highTight][sum] != null) {
-        return memo[index][lowTight][highTight][sum];
-    }
+        // Makes num1 and num2 equal length
+        num1 = string(num2.length() - num1.length(), '0') + num1;
 
-    int count = 0;
-    // e.g. num1 == 234, index == 1
-    //   If previous isLowTight is true, then the running number is 2**,
-    //     if we want to keep the current digit low tight, then it has to be 3.
-    //     any number lower than 3, e.g. 2, will yield 22* < 234
-    //   otherwise, the running number is more flexible, e.g. 3**
-    //     the current digit can be any number (as low as 0)
-    // Same applies to isHighTight
-    int low = isLowTight ? num1.charAt(index) - '0' : 0;
-    int high = isHighTight ? num2.charAt(index) - '0' : 9;
-    for (int d = low; d <= high; d++) {
-        count = (count + countStrings(index + 1, sum - d, isLowTight && d == low, isHighTight && d == high, num1, num2) % MOD) % MOD;
+        // Initial value of `isTight` is `true`.
+        int cnt1 = countStrings(0, max_sum, true, true, num1, num2);
+        int cnt2 = countStrings(0, min_sum - 1, true, true, num1, num2);
+
+        return (cnt1 - cnt2 + MOD) % MOD;
     }
-    return memo[index][lowTight][highTight][sum] = count;
-}
 ```
-
-We can also handle `low` and `high` separately with two calls:
 
 [Number of Beautiful Integers in the Range][number-of-beautiful-integers-in-the-range]
 
 ```c++
-    // memo[index][is_tight][odd][even][mod][is_zero]
-    int memo[12][2][12][12][20][2];
-    int countIntegers(const string& s, const int& k, int index = 0, bool is_tight = 1, int odd = 0, int even = 0, int mod = 0, bool is_zero = true)
-    {
-        if (index == s.size())
-        {
-            return !is_zero && mod == 0 && odd == even;
+    // memo[index][isLowTight][isHighTight][odd][even][mod][isZero]
+    int memo[12][2][2][12][12][20][2];
+    int k;
+
+    int countIntegers(const string& s1, const string& s2, int index, bool isLowTight, bool isHighTight, int odd, int even, int mod, bool isZero) {
+        if (index == s2.length()) {
+            return !isZero && mod == 0 && odd == even;
         }
 
-        if (memo[index][is_tight][odd][even][mod][is_zero] != -1)
-        {
-            return memo[index][is_tight][odd][even][mod][is_zero];
+        if (memo[index][isLowTight][isHighTight][odd][even][mod][isZero] >= 0) {
+            return memo[index][isLowTight][isHighTight][odd][even][mod][isZero];
         }
 
-        int high = is_tight ? s[index] - '0' : 9;
-        // `is_zero` means the digits are all zeros so far.
-        // We don't count odds and evens for numbers with leading zeros,
-        // e.g. "0032" is not a valid beautiful integer for k = 2
-        int res = is_zero ? countIntegers(s, k, index + 1, 0, odd, even, mod, true) : 0;
-        for (int d = 0; d <= high; d++)
-        {
-            if (!is_zero || d != 0)
-            {
-                res += countIntegers(s, k, index + 1, is_tight && d == high, odd + d % 2, even + 1 - d % 2, (mod * 10 + d) % k, false);
+        int low = isLowTight ? s1[index] - '0' : 0;
+        int high = isHighTight ? s2[index] - '0' : 9;
+        int cnt = 0;
+        for (int d = low; d <= high; d++) {
+            // `isZero` means the digits at [0, index) are all zeros .
+            // We don't count odds and evens for numbers with leading zeros,
+            // e.g. "0032" is not a valid beautiful integer for k = 2.
+            if (isZero && !d) {
+                // isZero && d == 0
+                //   => low == 0 && isLowTight == true
+                //   => new isLowTight = (isLowTight && d == low) == true
+                //
+                // Since s2 has no leading zeros, the current number with isZero == true can't be high tight.
+                // Therefore, new isHighTight == false.
+                cnt += countIntegers(s1, s2, index + 1, true, false, odd, even, mod, true);
+            } else {
+                cnt += countIntegers(s1, s2, index + 1, isLowTight && d == low, isHighTight && d == high, odd + d % 2, even + 1 - d % 2, (mod * 10 + d) % k, false);
             }
         }
-
-        return memo[index][is_tight][odd][even][mod][is_zero] = res;
+        return memo[index][isLowTight][isHighTight][odd][even][mod][isZero] = cnt;
     }
 
 public:
     int numberOfBeautifulIntegers(int low, int high, int k) {
-        memset(memo, -1, sizeof(memo));
-        int high_count = countIntegers(to_string(high), k);
+        this->k = k;
 
         memset(memo, -1, sizeof(memo));
-        int low_count = countIntegers(to_string(low - 1), k);
 
-        return high_count - low_count;
+        // Makes num1 and num2 equal length
+        string s1 = to_string(low), s2 = to_string(high);
+        s1 = string(s2.length() - s1.length(), '0') + s1;
+        return countIntegers(s1, s2, 0, true, true, 0, 0, 0, true);
+    }
+```
+
+{: .prompt-info }
+> You can process `low` and `high` separately with two calls, eliminating the need to pad `low`.
+
+```c++
+    // memo[index][isTight][odd][even][mod][isZero]
+    int memo[12][2][12][12][20][2];
+    int k;
+
+    int countIntegers(const string& s, int index = 0, bool isTight = true, int odd = 0, int even = 0, int mod = 0, bool isZero = true) {
+        if (index == s.size()) {
+            return !isZero && mod == 0 && odd == even;
+        }
+
+        if (memo[index][isTight][odd][even][mod][isZero] >= 0) {
+            return memo[index][isTight][odd][even][mod][isZero];
+        }
+
+        int high = isTight ? s[index] - '0' : 9;
+        int cnt = 0;
+        for (int d = 0; d <= high; d++) {
+            // `isZero` means the digits at [0, index) are all zeros .
+            // We don't count odds and evens for numbers with leading zeros,
+            // e.g. "0032" is not a valid beautiful integer for k = 2.
+            if (isZero && !d) {
+                // Since s has no leading zeros, the current number with isZero == true can't be high tight.
+                // Therefore, new isHighTight == false.
+                cnt += countIntegers(s, index + 1, false, odd, even, mod, true);
+            } else {
+                cnt += countIntegers(s, index + 1, isTight && d == high, odd + d % 2, even + 1 - d % 2, (mod * 10 + d) % k, false);
+            }
+        }
+        return memo[index][isTight][odd][even][mod][isZero] = cnt;
+    }
+
+public:
+    int numberOfBeautifulIntegers(int low, int high, int k) {
+        this->k = k;
+
+        memset(memo, -1, sizeof(memo));
+        int cnt1 = countIntegers(to_string(high));
+
+        memset(memo, -1, sizeof(memo));
+        int cnt2 = countIntegers(to_string(low - 1));
+
+        return cnt1 - cnt2;
+    }
+```
+
+[Count the Number of Powerful Integers][count-the-number-of-powerful-integers]
+
+This problem can be solved by digit DP, however, there is a more efficient and smarter solution (credits to @abhik2003):
+
+```c++
+    string s;
+    int limit;
+
+    long long countInts(const string& num) {
+        // Length of prefix
+        int p = num.length() - s.length();
+        if (p < 0) {
+            return 0;
+        }
+
+        if (p == 0) {
+            return num >= s;
+        }
+
+        string suffix = num.substr(p, s.length());
+        long long res = 0;
+        // Iterates through nums[0...p)
+        for (int i = 0; i < p; i++) {
+            if (num[i] - '0' > limit) {
+                // The remaining digits in the prefix (index [i, p)) can pick any number in [0, limit].
+                // In this way, the built string (p + s) < num.
+                return res + pow(limit + 1, p - i);
+            }
+
+            // num[i] - '0' <= limit
+            // If we pick any number in [0, num[i]),
+            //   the remaining digits in the prefix (index (i, p)) can pick any number in the range [0, limit].
+            // If we pick num[i] (tight case),
+            //   the iteration needs to go on for possibly more candidates.
+            res += (num[i] - '0') * pow(limit + 1, p - i - 1);
+        }
+
+        // Code reaches here only if the prefix has been tight up to p - 1.
+        // so suffix >= s is the requirement to make (p + s) <= num.
+        return res + (suffix >= s);
+    }
+
+public:
+    long long numberOfPowerfulInt(long long start, long long finish, int limit, string s) {
+        this->limit = limit;
+        this->s = s;
+
+        return countInts(to_string(finish)) - countInts(to_string(start - 1));
     }
 ```
 
@@ -1083,6 +1186,7 @@ public:
 [coin-path]: https://leetcode.com/problems/coin-path/
 [count-increasing-quadruplets]: https://leetcode.com/problems/count-increasing-quadruplets/
 [count-of-integers]: https://leetcode.com/problems/count-of-integers/
+[count-the-number-of-powerful-integers]: https://leetcode.com/problems/count-the-number-of-powerful-integers/
 [first-day-where-you-have-been-in-all-the-rooms]: https://leetcode.com/problems/first-day-where-you-have-been-in-all-the-rooms/
 [frog-jump]: https://leetcode.com/problems/frog-jump/
 [longest-string-chain]: https://leetcode.com/problems/longest-string-chain/
