@@ -346,6 +346,41 @@ Kafka Schema Registry: ensures the (Avro) schema used by the consumer and the pr
 
 # Database
 
+## Amazon DynamoDB
+
+![Amazon DynamoDB](https://upload.wikimedia.org/wikipedia/commons/f/fd/DynamoDB.png){: w="150" }
+
+[Dynamo Paper](https://www.allthingsdistributed.com/2007/10/amazons_dynamo.html)
+
+### Data Versioning
+
+Vector clock
+* (node, count)
+* Clock truncation scheme
+
+### Handling Failures
+
+Sloppy quorum: all read and write operations are performed on the first N *healthy* nodes from the preference list
+
+```mermaid
+---
+title: Hinted Handoff
+---
+sequenceDiagram
+    Client->>Node A: Write
+    Note left of Node A: Node A is unavailable
+    Client->>Node B: Send replica
+    Node B->>Node B: Store a hint of the intended recipient <br/> (Node A) to metadata
+    Node B->>Node B Local Database: Store the hinted replica
+    Node B-) Node B Local Database: Scan periodically
+
+    Activate Node A
+    Note right of Node A: Node A is recovered
+    Node B->>Node A: Send replica
+    Node B-) Node B Local Database: Delete the replica
+    Deactivate Node A
+```
+
 ## Apache Cassandra
 
 ![Apache Cassandra](/assets/img/system_design/apache_cassandra.jpg){: w="250" }
@@ -400,7 +435,7 @@ Inconsistency Repair
 * Read: fix at the time of read request (newer nodes overwrites older nodes)
 * Incremental: only repair the data that's bee nwriteen since the previous incremental repair
 
-Hinted Handoff (?)
+![Hinted handoff](https://cassandra.apache.org/doc/4.1/cassandra/_images/hints.svg)
 
 Snitch: determines which datacenters and racks, nodes belong to, informing Cassandra about the network topology
 
