@@ -381,6 +381,10 @@ sequenceDiagram
     Deactivate Node A
 ```
 
+### Consistency
+
+`R`, `W` and `N`
+
 ## Apache Cassandra
 
 ![Apache Cassandra](/assets/img/system_design/apache_cassandra.jpg){: w="250" }
@@ -421,14 +425,29 @@ LWW-Element-Set CRDT (Last-Write-Wins)
 
 The default partitioner is the Murmur3Partitioner ([MurmurHash](https://en.wikipedia.org/wiki/MurmurHash))
 
-**Consistent Hashing**
+#### Consistent Hashing
 * vnode
   * The more tokens, the higher the probability of an outage
   * Cluster-wide maintenance operations are often slowed
   * Performance of operations that span token rangs could be affected
 
-Consistency
-* Tunable
+#### Consistency
+
+Tunable:
+* `ONE`
+* `TWO`
+* `THREE`
+* `QUORUM`
+* `ALL`
+* `LOCAL_QUORUM`
+* `EACH_QUORUM`
+* `LOCAL_ONE`
+* `ANY`: a single replica may respond, or the coordinator may store a hint. Accepted for write operations only.
+
+Operations:
+* Write: always sent to all replicas, regardless of consistency level
+* Read: sent to enough replicas to satisfy the consistency level
+  * One exception: when speculative retry may issue a redundant read request to an extra replica if the original replicas have not responded within a specified time window
 
 Inconsistency Repair
 * Anti-entropy: compare the data of all replicates and update them with the newest version using Merkle Tree
@@ -741,7 +760,5 @@ Service + Daemon
 
 maxmemory: write commands starts to fail or evict keys
 
-```java
-```
+[Twitter Snowflake](https://github.com/twitter-archive/snowflake/tree/b3f6a3c6ca8e1b6847baa6ff42bf72201e2c2231): Unique ID generator
 
-[number-of-distinct-roll-sequences]: https://leetcode.com/problems/number-of-distinct-roll-sequences/

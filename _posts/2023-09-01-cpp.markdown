@@ -262,7 +262,7 @@ auto cmp = [&](const pair<int, int>& a, const pair<int, int>& b) {
 priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pq(cmp);
 
 // string
-if (string("aeiouAEIOU").find(ch) != string::npos) {}  // no matches were found
+if (string("aeiouAEIOU").find(ch) == string::npos) {}  // no matches were found
 
 // descending map
 map<int, int, greater<int>> mp;

@@ -15,68 +15,34 @@ for (int i = 0: i < n; i++) {
 // sum[i...j] = p[j + 1] - p[i]
 ```
 
-We don't always have to create an array to record prefix sums. Sometimes we can use a running prefix sum instead. For example:
+Sometimes we can use a running prefix sum instead of a prefix array. For example:
 
 [Subarray Sum Equals K][subarray-sum-equals-k]
 
-```java
-public int subarraySum(int[] nums, int k) {
-    // prefix sum : count
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, 1);  // p[0]
-
-    int sum = 0, count = 0;
+```c++
+int subarraySum(vector<int>& nums, int k) {
+    // {prefix sum, count}
+    {% raw %}
+    unordered_map<int, int> mp{{0, 1}};  // p[0]
+    {% endraw %}
+    int sum = 0, cnt = 0;
     for (int num : nums) {
         sum += num;
-        count += map.getOrDefault(sum - k, 0);
-        map.put(sum, map.getOrDefault(sum, 0) + 1);
+        cnt += mp[sum - k];
+        mp[sum]++;
     }
-
-    return count;
-}
-```
-
-Similar problem: [Maximum Size Subarray Sum Equals k][maximum-size-subarray-sum-equals-k]
-
-```java
-public int maxSubArrayLen(int[] nums, int k) {
-    // prefix sum : index of first occurrence
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
-
-    int max = 0, sum = 0;;
-    for (int i = 0; i < nums.length; i++) {
-        sum += nums[i];
-        if (map.containsKey(sum - k)) {
-            max = Math.max(max, i - map.get(sum - k));
-        } else {
-            map.put(sum, i);
-        }
-    }
-    return max;
+    return cnt;
 }
 ```
 
 [Contiguous Array][contiguous-array]
 
-```java
-public int findMaxLength(int[] nums) {
-    // prefix sum : index of first occurrence
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
-
+```c++
+    // {prefix sum, index of first occurrence}
+    {% raw %}
+    unordered_map<int, int> mp{{0, -1}};  // p[0]
+    {% endraw %}
     // count(ones) - count(zeros)
-    int diff = 0, max = 0;
-    for (int i = 0; i < nums.length; i++) {
-        diff += nums[i] == 0 ? -1 : 1;
-        if (map.containsKey(diff)) {
-            max = Math.max(max, i - map.get(diff));
-        } else {
-            map.put(diff, i);
-        }
-    }
-    return max;
-}
 ```
 
 [Longest Well-Performing Interval][longest-well-performing-interval]
@@ -1128,7 +1094,6 @@ public int countSubarrays(int[] nums, int k) {
 [maximum-fruits-harvested-after-at-most-k-steps]: https://leetcode.com/problems/maximum-fruits-harvested-after-at-most-k-steps/
 [maximum-number-of-non-overlapping-subarrays-with-sum-equals-target]: https://leetcode.com/problems/maximum-number-of-non-overlapping-subarrays-with-sum-equals-target/
 [maximum-number-of-ways-to-partition-an-array]: https://leetcode.com/problems/maximum-number-of-ways-to-partition-an-array/
-[maximum-size-subarray-sum-equals-k]: https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
 [minimum-absolute-difference-queries]: https://leetcode.com/problems/minimum-absolute-difference-queries/
 [number-of-ways-of-cutting-a-pizza]: https://leetcode.com/problems/number-of-ways-of-cutting-a-pizza/
 [number-of-ways-to-separate-numbers]: https://leetcode.com/problems/number-of-ways-to-separate-numbers/
