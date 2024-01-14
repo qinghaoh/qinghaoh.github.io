@@ -47,27 +47,26 @@ int subarraySum(vector<int>& nums, int k) {
 
 [Longest Well-Performing Interval][longest-well-performing-interval]
 
-```java
-public int longestWPI(int[] hours) {
-    // prefix sum : index of first occurrence
-    Map<Integer, Integer> map = new HashMap<>();
-    int max = 0, score = 0;
-    for (int i = 0; i < hours.length; i++) {
-        // finds the longest subarray with positive sum
+```c++
+int longestWPI(vector<int>& hours) {
+    // {prefix sum : index of first occurrence}
+    unordered_map<int, int> mp;
+    int mx = 0, score = 0;
+    for (int i = 0; i < hours.size(); i++) {
+        // Finds the longest subarray with positive sum
         score += hours[i] > 8 ? 1 : -1;
         if (score > 0) {
-            max = i + 1;
+            mx = i + 1;
         } else {
-            map.putIfAbsent(score, i);
-            // when score <= 0,
-            // the first occurrence of (score - 1) is always before (score - k), where k > 1
-            // i.e. map[score - 1] is the farthest from current position
-            if (map.containsKey(score - 1)) {
-                max = Math.max(max, i - map.get(score - 1));
+            mp.insert({score, i});
+            // When key < 0, the map is monotonically descreasing.
+            // So, mp[score - 1] is the farthest from current position
+            if (mp.contains(score - 1)) {
+                mx = max(mx, i - mp[score - 1]);
             }
         }
     }
-    return max;
+    return mx;
 }
 ```
 
@@ -135,19 +134,18 @@ int minSubarray(vector<int>& nums, int p) {
 
 [Can Make Palindrome from Substring][can-make-palindrome-from-substring]
 
-```java
-public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
+```c++
+vector<bool> canMakePaliQueries(string s, vector<vector<int>>& queries) {
     int n = s.length();
     // 26 bits to represent prefix xor
-    int[] p = new int[n + 1];
+    vector<int> p(n + 1);
     for (int i = 0; i < n; i++) {
-        p[i + 1] = p[i] ^ (1 << (s.charAt(i) - 'a'));
+        p[i + 1] = p[i] ^ (1 << (s[i] - 'a'));
     }
 
-    List<Boolean> answer = new ArrayList<>();
-    for (int[] q : queries) {
-        int odd = Integer.bitCount(p[q[1] + 1] ^ p[q[0]]);
-        answer.add(odd <= 2 * q[2] + 1);
+    vector<bool> answer;
+    for (const auto& q : queries) {
+        answer.push_back(popcount(static_cast<unsigned int>(p[q[1] + 1] ^ p[q[0]])) <= 2 * q[2] + 1);
     }
     return answer;
 }
@@ -155,26 +153,25 @@ public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
 
 [Number of Wonderful Substrings][number-of-wonderful-substrings]
 
-```java
-private static final int NUM_CHARS = 10;
+```c++
+long long wonderfulSubstrings(string word) {
+    const int NUM_CHARS = 10;
+    // Freqs map of bit mask
+    vector<long long> freqs(1 << NUM_CHARS);
+    freqs[0] = 1;
 
-public long wonderfulSubstrings(String word) {
-    // map[i]: count of bit mask i
-    long[] map = new long[1 << NUM_CHARS];
-    map[0] = 1;
-
-    // bits to represent prefix xor
-    long count = 0;
+    // Bits to represent prefix xor
+    long long cnt = 0;
     int p = 0;
     for (int i = 0; i < word.length(); i++) {
-        p ^= 1 << (word.charAt(i) - 'a');
-        count += map[p];
+        p ^= 1 << (word[i] - 'a');
+        cnt += freqs[p];
         for (int j = 0; j < NUM_CHARS; j++) {
-            count += map[p ^ (1 << j)];
+            cnt += freqs[p ^ (1 << j)];
         }
-        map[p]++;
+        freqs[p]++;
     }
-    return count;
+    return cnt;
 }
 ```
 
@@ -191,36 +188,61 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-[Minimum Absolute Difference Queries][minimum-absolute-difference-queries]
+[Palindrome Rearrangement Queries][palindrome-rearrangement-queries]
 
-```java
-private static final int MAX_NUM = 100;
-
-public int[] minDifference(int[] nums, int[][] queries) {
-    int n = nums.length, m = queries.length;
-    int[][] p = new int[n + 1][MAX_NUM + 1];
-    int[] count = new int[MAX_NUM + 1];
-    for (int i = 0; i < n; i++) {
-        count[nums[i]]++;
-        p[i + 1] = Arrays.copyOf(count, count.length);
+```c++
+vector<bool> canMakePalindromeQueries(string s, vector<vector<int>>& queries) {
+    int n = s.size();
+    // Prefix sum of number of different chars at symmetric positions
+    vector<int> p1(n + 1);
+    for (int i = 0; i < n - 1 - i; i++) {
+	p1[i + 1] = p1[i] + (s[i] != s[n - 1 - i]);
     }
 
-    int[] ans = new int[m];
-    for (int i = 0; i < m; i++) {
-        ans[i] = Integer.MAX_VALUE;
-        for (int j = 0, prev = 0; j < p[0].length; j++) {
-            if (p[queries[i][1] + 1][j] != p[queries[i][0]][j]) {
-                if (prev != 0) {
-                    ans[i] = Math.min(ans[i], j - prev);
-                }
-                prev = j;
-            }
-        }
-        if (ans[i] == Integer.MAX_VALUE) {
-            ans[i] = -1;
-        }
+    valarray<int> freqs(26);
+    vector<valarray<int>> p2 = {freqs};
+    for (char ch : s) {
+	freqs[ch - 'a']++;
+	p2.push_back(freqs);
     }
-    return ans;
+
+    vector<bool> answer;
+    for (const auto& q : queries) {
+	//  --a1----b1---b2----a2--
+	//  -d2-c2-----------c1-d1-
+	// x1 and x2 are symmetric.
+	int a1 = q[0], b1 = q[1] + 1, a2 = n - q[0], b2 = n - 1 - q[1];
+	int c1 = q[2], d1 = q[3] + 1, c2 = n - q[2], d2 = n - 1 - q[3];
+
+	// No differences allowed outside the query ranges.
+	// e.g. R1, R2 and R3:
+	//   -----a1 b1---d2 c2---
+	//   | R1 |    |R2|   |R3|
+	if ((min(a1, d2) && p1[min(a1, d2)])
+	    || (n / 2 > max(b1, c2) && p1[n / 2] - p1[max(b1, c2)])
+	    || (d2 > b1 && p1[d2] - p1[b1])
+	    || (a1 > c2 && p1[a1] - p1[c2])) {
+	    answer.push_back(false);
+	} else {
+	    valarray<int> f1 = p2[b1] - p2[a1], f2 = p2[d1] - p2[c1];
+	    // Trims to the overlapping ranges.
+	    if (c1 > b2) {
+		f1 -= p2[min(c1, a2)] - p2[b2];
+	    }
+	    if (a2 > d1) {
+		f1 -= p2[a2] - p2[max(d1, b2)];
+	    }
+	    if (a1 > d2) {
+		f2 -= p2[min(a1, c2)] - p2[d2];
+	    }
+	    if (c2 > b1) {
+		f2 -= p2[c2] - p2[max(b1, d2)];
+	    }
+	    // Frequency map of the overlapping ranges on both sides should be identical.
+	    answer.push_back((f1 >= 0 && f2 >= 0 && f1 == f2).min());
+	}
+    }
+    return answer;
 }
 ```
 
@@ -297,64 +319,6 @@ public int sumOfFlooredPairs(int[] nums) {
         count = (count + (dp[num] = curr)) % MOD;
     }
     return count;
-}
-```
-
-[Palindrome Rearrangement Queries][palindrome-rearrangement-queries]
-
-```c++
-vector<bool> canMakePalindromeQueries(string s, vector<vector<int>>& queries) {
-    int n = s.size();
-    // Prefix sum of number of different chars at symmetric positions
-    vector<int> p1(n + 1);
-    for (int i = 0; i < n - 1 - i; i++) {
-        p1[i + 1] = p1[i] + (s[i] != s[n - 1 - i]);
-    }
-
-    valarray<int> freqs(26);
-    vector<valarray<int>> p2 = {freqs};
-    for (char ch : s) {
-        freqs[ch - 'a']++;
-        p2.push_back(freqs);
-    }
-
-    vector<bool> answer;
-    for (const auto& q : queries) {
-        //  --a1----b1---b2----a2--
-        //  -d2-c2-----------c1-d1-
-        // x1 and x2 are symmetric.
-        int a1 = q[0], b1 = q[1] + 1, a2 = n - q[0], b2 = n - 1 - q[1];
-        int c1 = q[2], d1 = q[3] + 1, c2 = n - q[2], d2 = n - 1 - q[3];
-
-        // No differences allowed outside the query ranges.
-        // e.g. R1, R2 and R3:
-        //   -----a1 b1---d2 c2---
-        //   | R1 |    |R2|   |R3|
-        if ((min(a1, d2) && p1[min(a1, d2)])
-            || (n / 2 > max(b1, c2) && p1[n / 2] - p1[max(b1, c2)])
-            || (d2 > b1 && p1[d2] - p1[b1])
-            || (a1 > c2 && p1[a1] - p1[c2])) {
-            answer.push_back(false);
-        } else {
-            valarray<int> f1 = p2[b1] - p2[a1], f2 = p2[d1] - p2[c1];
-            // Trims to the overlapping ranges.
-            if (c1 > b2) {
-                f1 -= p2[min(c1, a2)] - p2[b2];
-            }
-            if (a2 > d1) {
-                f1 -= p2[a2] - p2[max(d1, b2)];
-            }
-            if (a1 > d2) {
-                f2 -= p2[min(a1, c2)] - p2[d2];
-            }
-            if (c2 > b1) {
-                f2 -= p2[c2] - p2[max(b1, d2)];
-            }
-            // Frequency map of the overlapping ranges on both sides should be identical.
-            answer.push_back((f1 >= 0 && f2 >= 0 && f1 == f2).min());
-        }
-    }
-    return answer;
 }
 ```
 
@@ -1094,7 +1058,6 @@ public int countSubarrays(int[] nums, int k) {
 [maximum-fruits-harvested-after-at-most-k-steps]: https://leetcode.com/problems/maximum-fruits-harvested-after-at-most-k-steps/
 [maximum-number-of-non-overlapping-subarrays-with-sum-equals-target]: https://leetcode.com/problems/maximum-number-of-non-overlapping-subarrays-with-sum-equals-target/
 [maximum-number-of-ways-to-partition-an-array]: https://leetcode.com/problems/maximum-number-of-ways-to-partition-an-array/
-[minimum-absolute-difference-queries]: https://leetcode.com/problems/minimum-absolute-difference-queries/
 [number-of-ways-of-cutting-a-pizza]: https://leetcode.com/problems/number-of-ways-of-cutting-a-pizza/
 [number-of-ways-to-separate-numbers]: https://leetcode.com/problems/number-of-ways-to-separate-numbers/
 [number-of-wonderful-substrings]: https://leetcode.com/problems/number-of-wonderful-substrings/

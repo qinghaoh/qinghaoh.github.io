@@ -426,10 +426,32 @@ LWW-Element-Set CRDT (Last-Write-Wins)
 The default partitioner is the Murmur3Partitioner ([MurmurHash](https://en.wikipedia.org/wiki/MurmurHash))
 
 #### Consistent Hashing
+
 * vnode
   * The more tokens, the higher the probability of an outage
   * Cluster-wide maintenance operations are often slowed
   * Performance of operations that span token rangs could be affected
+
+### Multi-Master Replication
+
+Replication strategy
+* `NetworkTopologyStrategy`: requires a specified `replication_factor` (RF) per datacenter; rack-aware
+* `SimpleStrategy`: allows a single RF to be defined; only for testing clusters
+
+**Replica synchronization**
+* Best effort
+  * Read path: Read repair
+    * Monotonic Quorum Reads (`BLOCKING`): in 2 successive quorum reads, it’s guaranteed the 2nd one won’t get something older than the 1st one
+    * Write Atomicity (`NONE`): prevents reading partially applied writes
+  * Write path: Hinted handoff
+* Anti-entropy repair: Full repair; compare hierarchical hash-trees across replicas using [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree)
+* Sub-range repair: increase the resolution of the hash trees
+* Incremental: only repair the partitions that have changed since the last repair
+
+![Hinted handoff](https://cassandra.apache.org/doc/4.1/cassandra/_images/hints.svg)
+_Hinted Handoff_
+
+#### Data Versioning
 
 #### Consistency
 
@@ -449,13 +471,6 @@ Operations:
 * Read: sent to enough replicas to satisfy the consistency level
   * One exception: when speculative retry may issue a redundant read request to an extra replica if the original replicas have not responded within a specified time window
 
-Inconsistency Repair
-* Anti-entropy: compare the data of all replicates and update them with the newest version using Merkle Tree
-* Read: fix at the time of read request (newer nodes overwrites older nodes)
-* Incremental: only repair the data that's bee nwriteen since the previous incremental repair
-
-![Hinted handoff](https://cassandra.apache.org/doc/4.1/cassandra/_images/hints.svg)
-
 Snitch: determines which datacenters and racks, nodes belong to, informing Cassandra about the network topology
 
 Storage Engine: based on a Log Structured Merge Tree (LSM)
@@ -467,8 +482,6 @@ Storage Engine: based on a Log Structured Merge Tree (LSM)
 
 * Write: CommitLog -> MemTables -> SSTable
 * Read: Bloom Filter -> Partition Key Cache -> Partition Index
-
-Incremental scale-out on commodity hardware
 
 ## MongoDB
 

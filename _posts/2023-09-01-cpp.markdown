@@ -249,6 +249,8 @@ ranges::upper_bound(st, a, [&](int i, int j){ return heights[i] < heights[j]; })
 // bit count
 bitset<32> bs(num);
 bs.count();
+// or
+popcount(static_cast<unsigned_int>(num));
 // or, gcc
 __builtin_popcount(num);
 

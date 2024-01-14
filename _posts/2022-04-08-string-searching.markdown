@@ -42,18 +42,18 @@ For example, for the pattern `AABAACAABAA`,
 lps[] = [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
 ```
 
-```java
-int[] computeLps(String s) {
+```c++
+vector<int> computeLps(const string& s) {
     int m = s.length();
-    int[] lps = new int[m];
+    vector<int> lps(m);
 
     // lps[0] == 0
     for (int i = 1, j = 0; i < m; i++) {
-        while (j > 0 && s.charAt(i) != s.charAt(j)) {
+        while (j > 0 && s[i] != s[j]) {
             j = lps[j - 1];
         }
         
-        if (s.charAt(i) == s.charAt(j)) {
+        if (s[i] == s[j]) {
             lps[i] = ++j;
         }
     }
