@@ -395,14 +395,6 @@ sequenceDiagram
 
 PiB+
 
-Cluster: container for Keyspaces (database)
-
-Replication:
-Multi-master replication using versioned data and tunable consistency
-* Strategy
-  * Simple Strategy: Partitioner determines the node for the first replica; additional replicas are placed on the next nodes in the Ring clockwise
-  * Network Topology Strategy: consider rack or datacenter locations
-
 Column family: a container for an ordered collection of rows
 Row: an ordered collection of columns
 * Row key
@@ -415,9 +407,6 @@ Primary Key
   * Partitioning Key + Clustering Key
   * Clustering is the process that sorts data in the partition
 * Composite Partitioning Key
-
-Gossip Protocol
-* Failure detection
 
 ### Data Partitioning (Dynamo Style)
 
@@ -435,14 +424,14 @@ The default partitioner is the Murmur3Partitioner ([MurmurHash](https://en.wikip
 ### Multi-Master Replication
 
 Replication strategy
-* `NetworkTopologyStrategy`: requires a specified `replication_factor` (RF) per datacenter; rack-aware
+* `NetworkTopologyStrategy`: requires a specified `replication_factor` (RF) per datacenter; rack-aware (`Snitch`)
 * `SimpleStrategy`: allows a single RF to be defined; only for testing clusters
 
 **Replica synchronization**
 * Best effort
   * Read path: Read repair
     * Monotonic Quorum Reads (`BLOCKING`): in 2 successive quorum reads, it’s guaranteed the 2nd one won’t get something older than the 1st one
-    * Write Atomicity (`NONE`): prevents reading partially applied writes
+    * Write Atomicity (`NONE`): prevents reading partially applied writes; partition level
   * Write path: Hinted handoff
 * Anti-entropy repair: Full repair; compare hierarchical hash-trees across replicas using [Merkle Tree](https://en.wikipedia.org/wiki/Merkle_tree)
 * Sub-range repair: increase the resolution of the hash trees
@@ -452,6 +441,8 @@ Replication strategy
 _Hinted Handoff_
 
 #### Data Versioning
+
+Mutation timestamp versioning: requires time synchronization (NTP.)
 
 #### Consistency
 
@@ -471,7 +462,28 @@ Operations:
 * Read: sent to enough replicas to satisfy the consistency level
   * One exception: when speculative retry may issue a redundant read request to an extra replica if the original replicas have not responded within a specified time window
 
-Snitch: determines which datacenters and racks, nodes belong to, informing Cassandra about the network topology
+### Failure detection
+
+#### Gossip Protocol
+
+Cluster bootstrapping information
+* State information: versioned with vector clock of (generation, version)
+* Token metadata
+* Schema version
+
+Seed nodes
+* Designated at cluster bootstrap
+* Hotspots for gossip
+
+Non-seed nodes
+* Must contact at least one seed node to bootstrap into the cluster.
+* Often contacts one seed node for each rack or datacenter.
+
+Every node, every second:
+1. Updates the local node’s heartbeat state (the version) and constructs the node’s local view of the cluster gossip endpoint state.
+1. Picks a random other node in the cluster to exchange gossip endpoint state with.
+1. Probabilistically attempts to gossip with any unreachable nodes (if one exists)
+1. Gossips with a seed node if that didn’t happen in step 2.
 
 Storage Engine: based on a Log Structured Merge Tree (LSM)
 * CommitLog: append-only log of all mutations local to a node

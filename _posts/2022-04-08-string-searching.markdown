@@ -52,7 +52,7 @@ vector<int> computeLps(const string& s) {
         while (j > 0 && s[i] != s[j]) {
             j = lps[j - 1];
         }
-        
+
         if (s[i] == s[j]) {
             lps[i] = ++j;
         }
@@ -74,28 +74,42 @@ public String longestPrefix(String s) {
 ```java
 public String shortestPalindrome(String s) {
     // "abace" -> "ec" + "aba" + "ce"
-    // finds the longest prefix palindrome of s
+    // Finds the longest prefix palindrome of s
     int[] lps = computeLps(s + "#" + new StringBuilder(s).reverse().toString());
     return new StringBuilder(s.substring(lps[lps.length - 1])).reverse().toString() + s;
 }
 ```
 
+[Find Beautiful Indices in the Given Array II][find-beautiful-indices-in-the-given-array-ii]
+
+```c++
+void getIndices(string& s, string& a, vector<int>& v){
+    string t = a + "#" + s;
+    vector<int> lps = computeLps(t);
+    for (int i = 0; i < lps.size(); i++) {
+        if (lps[i] == a.length()) {
+            v.push_back(i - 2 * a.length());
+        }
+    }
+}
+```
+
 [Sum of Scores of Built Strings][sum-of-scores-of-built-strings]
 
-```java
-public long sumScores(String s) {
-    int[] lps = computeLps(s);
-    int m = lps.length;
-    // count[i]: occurrences of s[i] as the last character of a postfix of s[j...i] which equals a prefix of s,
-    //   where j != 0
-    int[] count = new int[m];
+```c++
+long long sumScores(string s) {
+    vector<int> lps = computeLps(s);
+    int m = lps.size();
+    // dp[i]: for the substring s[0...i], max length of suffix when it's also a prefix
+    vector<int> dp(m);
     for (int i = 0; i < m; i++) {
-        int j = lps[i];
-        // +1 is s.substring(0, j), because lps[j - 1] doesn't include s.substring[0, j] itself
-        count[i] = j == 0 ? 0 : count[j - 1] + 1;
+        if (int j = lps[i]; j) {
+            dp[i] = dp[j - 1] + 1;
+        }
     }
-    // adding count[i] of all chars yields the total score
-    return Arrays.stream(count).asLongStream().sum() + m;
+
+    // Adds dp[i] of all chars yields the total score
+    return accumulate(dp.begin(), dp.end(), 0ll) + m;
 }
 ```
 
@@ -105,7 +119,7 @@ For example, `s = "babab"`
 lps   = [0, 0, 1, 2, 3]
 count = [0, 0, 1, 1, 2] 
                |     |
-              "b"    "b"   (count[2])
+              "b"    "b"   (dp[2])
                      "bab" (+1)
 ```
 
@@ -594,6 +608,7 @@ private void insert(TrieNode root, String word) {
 ```
 
 [find-all-good-strings]: https://leetcode.com/problems/find-all-good-strings/
+[find-beautiful-indices-in-the-given-array-ii]: https://leetcode.com/problems/find-beautiful-indices-in-the-given-array-ii/
 [length-of-the-longest-valid-substring]: https://leetcode.com/problems/length-of-the-longest-valid-substring/
 [longest-common-subpath]: https://leetcode.com/problems/longest-common-subpath/
 [longest-duplicate-substring]: https://leetcode.com/problems/longest-duplicate-substring/

@@ -283,42 +283,46 @@ Another solution is by [dynamic programming](../dynamic-programming-vi).
 
 [Sum of Floored Pairs][sum-of-floored-pairs]
 
-```java
-private static final int MOD = (int)1e9 + 7;
+```c++
+int sumOfFlooredPairs(vector<int>& nums) {
+    const int mod = 1e9 + 7;
+    int mx = *ranges::max_element(nums);
 
-public int sumOfFlooredPairs(int[] nums) {
-    int max = Arrays.stream(nums).max().getAsInt();
-
-    int[] freq = new int[max + 1];
+    vector<int> freqs(mx + 1);
     for (int num : nums) {
-        freq[num]++;
+        freqs[num]++;
     }
 
-    for (int i = 1; i < freq.length; i++) {
-        freq[i] += freq[i - 1];
+    for (int i = 0; i < mx; i++) {
+        freqs[i + 1] += freqs[i];
     }
 
-    // if floor(nums[i] / nums[j]) = k,
-    // then k * nums[j] <= nums[i] < ((k + 1) * nums[j])
-    Integer[] dp = new Integer[max + 1];
-    int count = 0;
+    unordered_map<int, int> mp;
+    int cnt = 0;
     for (int num : nums) {
-        if (dp[num] != null) {
-            count = (count + dp[num]) % MOD;
+        if (mp.contains(num)) {
+            cnt = (cnt + mp[num]) % mod;
             continue;
         }
 
-        // initial interval: [low, high]
-        int curr = 0, k = 1, low = num, high = Math.min(2 * num - 1, max);
-        while (low <= max) {
-            curr = (int)(curr + ((freq[high] - freq[low - 1]) * (long)k) % MOD) % MOD;
+        // If floor(nums[i] / nums[j]) = k, then k * nums[j] <= nums[i] < (k + 1) * nums[j].
+        // Lets low = k * nums[j], high = (k + 1) * nums[j].
+        // For all elements in the range [low, high], floor(num / nums[j]) == k.
+        //
+        // Counts all the pairs with `num` as denominator.
+        // In each iteration, counts the pairs with floor() == k
+        // When k increments, increases low and high by `num` to update the boundaries.
+        int curr = 0, low = num, high = min(2 * num - 1, mx);
+        long long k = 1;
+        while (low <= mx) {
+            curr = (curr + ((freqs[high] - freqs[low - 1]) * k) % mod) % mod;
             low += num;
-            high = Math.min(high + num, max);
+            high = min(high + num, mx);
             k++;
         }
-        count = (count + (dp[num] = curr)) % MOD;
+        cnt = (cnt + (mp[num] = curr)) % mod;
     }
-    return count;
+    return cnt;
 }
 ```
 
