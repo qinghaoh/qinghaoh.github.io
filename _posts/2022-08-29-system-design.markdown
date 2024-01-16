@@ -285,14 +285,27 @@ _Apache Kafka_
 * [Documentation](https://kafka.apache.org/documentation/)
 * [Interview questions](https://www.interviewbit.com/kafka-interview-questions/)
 
-Records -> Topic
-* Topics are separated into partitions
-* Partition: append-only sequence of records arranged chronologically
+**Event**: key, value, timestamp and ptional metadata headers
+
+**Topic**
+* Multi-publisher and multi-subscriber
+* Event retain is configurable (not deleted after consumption)
+* Partitioned
+  * Scalability
+  * Append-only sequence of records arranged chronologically
+  * Per partition read preserves order
+* Replicated: RF = 3 by default
 * Each record is given an offset
 * A single topic can contain multiple partition logs (parallel processing)
 * Topic's default retention time: 7 days
 
-Replication
+{: .prompt-tip }
+> Event -> File; Topic -> Folder
+
+![Topic](https://kafka.apache.org/images/streams-and-tables-p1_p4.png){: w="600" }
+_Topic with 4 paritions_
+
+### Replication
 * A replica is the redundant element of a topic partition
 * Each partition contains one or more replicas across brokers
 * Each partition has Leader + Followers
@@ -410,7 +423,7 @@ Primary Key
 
 ### Data Partitioning (Dynamo Style)
 
-LWW-Element-Set CRDT (Last-Write-Wins)
+[LWW-Element-Set CRDT (Last-Write-Wins)](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#LWW-Element-Set_(Last-Write-Wins-Element-Set))
 
 The default partitioner is the Murmur3Partitioner ([MurmurHash](https://en.wikipedia.org/wiki/MurmurHash))
 
@@ -485,8 +498,10 @@ Every node, every second:
 1. Probabilistically attempts to gossip with any unreachable nodes (if one exists)
 1. Gossips with a seed node if that didn’t happen in step 2.
 
-Storage Engine: based on a Log Structured Merge Tree (LSM)
-* CommitLog: append-only log of all mutations local to a node
+### Storage Engine
+
+[Log Structured Merge (LSM) Tree](https://en.wikipedia.org/wiki/Log-structured_merge-tree)
+* CommitLog: an append-only log of all mutations local to a node
 * MemTables: in-memory structures where Cassandra buffers writes
   * One active memtable per table
 * SSTables: the immutable data files that Cassandra uses for persisting data on disk
@@ -513,16 +528,14 @@ Availability
 Scalability
 Performance
 
-CAP Theorem: Consistency, Availability and Parition Tolerance
+**CAP Theorem**: Consistency, Availability and Parition Tolerance
 
 Distributed cache:
 * Dedicated cache cluster
 * Co-located cache
 
-MemCacheD
-
 Shards: consistent hashing (cache client, server (Redis) or cache proxy (Twemproxy))
-e.g. MurmurHash
+
 Drawbacks:
 * Domino effect
 * Uneven server distribution
@@ -531,10 +544,11 @@ Solution:
 * add each server on the circle multiple times
 * Jump Hash algorithm (Google)
 * Proportional Hash (Yahoo!)
+
 Possible problem: hot shard
 
 Hot partition solution:
-* include event time to the parition key
+* Include event time to the parition key
 * Split hot parition into more partitions
 * Dedicated parition for popular items
 
@@ -643,6 +657,9 @@ Jay Kreps, Apache Kafka
 # Stream Processing Framework
 
 ## Apache Spark
+
+![Apache Spark](https://upload.wikimedia.org/wikipedia/commons/f/f3/Apache_Spark_logo.svg){: w="200" }
+_Apache Spark_
 
 ## Apache Flink
 

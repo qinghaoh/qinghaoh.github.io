@@ -3,7 +3,7 @@ title:  "String Searching"
 category: algorithm
 tags: string
 ---
-# Iteration
+## Iteration
 
 [Length of the Longest Valid Substring][length-of-the-longest-valid-substring]
 
@@ -30,7 +30,7 @@ public int longestValidSubstring(String word, List<String> forbidden) {
 }
 ```
 
-# KMP
+## KMP
 
 [Knuth–Morris–Pratt (KMP) algorithm](https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm)
 
@@ -100,28 +100,41 @@ void getIndices(string& s, string& a, vector<int>& v){
 long long sumScores(string s) {
     vector<int> lps = computeLps(s);
     int m = lps.size();
-    // dp[i]: for the substring s[0...i], max length of suffix when it's also a prefix
+    // dp[i]: how many non-zero j's there are such that s[j..i] is a prefix of the entire string s.
     vector<int> dp(m);
     for (int i = 0; i < m; i++) {
         if (int j = lps[i]; j) {
+            // Denotes the starting index of the longest command prefix ending at s[i] as k,
+            // then s[k...i] is a "shift" of s[0...(lps[i] - 1)].
+            // "+1" is s[0...(lps[i] - 1)] itself, since dp[lps[i] - 1] doesn't include s[0...(lps[i] - 1)].
+            //
+            // e.g. "bababba"
+            // lps: [0, 0, 1, 2, 3, 1, 2]
+            //  dp: [0, 0, 1, 1, 2, 1, 1]
+            //                   ^
+            // dp[4] = 2
+            //   s[4...4] = "b", s[2...4] = "bab"
+            // lps[4] = 3 = "bab"
+            //   s[2...2] -> s[4...4] (dp[2])
+            //   s[0...2] -> s[2...4] (longest common prefix ending at s[4]) ("+1")
             dp[i] = dp[j - 1] + 1;
         }
     }
 
-    // Adds dp[i] of all chars yields the total score
+    // The longest common prefix between s_i and s_n is denoted as s[n - i, j],
+    // where n - i <= j < n if the prefix exists.
+    // For any character k such that n - i <= k <= j, s[n - i, k] is counted in dp[k].
+    // So, sum(dp) is a superset of sum(score).
+    // Next, we prove sum(dp) is a subset of sum(score), therefore sum(dp) == sum(score).
+    // Without generality, we focus on any common prefix included in dp[i] as s[j...i].
+    // s[j...i] will either be the longest common prefix between s_(n - j) and s_n,
+    // or a prefix of that longest common prefix. So, it always contributes to sum(score).
     return accumulate(dp.begin(), dp.end(), 0ll) + m;
 }
 ```
 
-For example, `s = "babab"`
-
-```
-lps   = [0, 0, 1, 2, 3]
-count = [0, 0, 1, 1, 2] 
-               |     |
-              "b"    "b"   (dp[2])
-                     "bab" (+1)
-```
+{: .prompt-tip }
+> More intuitively, Z-function is a better solution to this problem.
 
 [Maximum Deletions on a String][maximum-deletions-on-a-string]
 
@@ -283,7 +296,7 @@ For example, `n = 2, s1 = "aa", s2 = "da", evil = "b"`
 
 ![Good strings](/assets/img/algorithm/find_all_good_strings.png)
 
-# Z Function
+## Z-Function
 
 [Z-function and its calculation](https://cp-algorithms.com/string/z-function.html): `z[i]` is the length of the longest string that is, at the same time, a prefix of `s` and a prefix of `s.substring(i)`.
 
@@ -318,7 +331,7 @@ public long sumScores(String s) {
 }
 ```
 
-# Rolling Hash
+## Rolling Hash
 
 [Longest Happy Prefix][longest-happy-prefix]
 
@@ -414,7 +427,7 @@ private String search(String s, int len) {
 }
 ```
 
-# Suffix Automaton
+## Suffix Automaton
 
 [Suffix Automaton](https://cp-algorithms.com/string/suffix-automaton.html)
 
@@ -557,7 +570,7 @@ public class Solution {
 }
 ```
 
-# Suffix Tree
+## Suffix Tree
 
 [Suffix Tree](https://en.wikipedia.org/wiki/Suffix_tree)
 
