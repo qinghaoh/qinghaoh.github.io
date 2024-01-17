@@ -34,6 +34,8 @@ public int longestValidSubstring(String word, List<String> forbidden) {
 
 [Knuth–Morris–Pratt (KMP) algorithm](https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm)
 
+### LPS
+
 * Construct an auxiliary array `lps[]` of the same size as pattern
 * `lps[i]` is the length of the longest matching proper prefix of the sub-pattern `pat[0...i]`, which is also a suffix of the sub-pattern `pat[0...i]`. A proper prefix of a string is a prefix that is not equal to the string itself.
 
@@ -138,27 +140,29 @@ long long sumScores(string s) {
 
 [Maximum Deletions on a String][maximum-deletions-on-a-string]
 
-```java
-public int deleteString(String s) {
+```c++
+int deleteString(string s) {
     int n = s.length();
-    int[] dp = new int[n];
+    vector<int> dp(n);
     dp[n - 1] = 1;
 
     for (int i = n - 2; i >= 0; i--) {
         dp[i] = 1;
-        int[] lps = computeLps(s.substring(i, n));
+        vector<int> lps = computeLps(s.substr(i));
         for (int j = 1; i + j < n; j += 2) {
-            // uses KMP LPS to quickly find the prefix which can be split to two identical parts
-            // e.g. "aaab"
-            // if i == 0, j == 1, then lps[1] = 1, which means "aa" is the good prefix
+            // Uses LPS to quickly find a prefix which can be split to two identical parts
+            // e.g. "aaab", i = 0, j = 1
+            //   lps[1] = 1, which means "aa" is a good prefix
             if (lps[j] == j / 2 + 1) {
-                dp[i] = Math.max(dp[i], 1 + dp[i + lps[j]]);
+                dp[i] = max(dp[i], 1 + dp[i + lps[j]]);
             }
         }
     }
     return dp[0];
 }
 ```
+
+### Pattern Searching
 
 * Search pattern in text with the help of `lps[]`
 

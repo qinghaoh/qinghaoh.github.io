@@ -285,6 +285,18 @@ _Apache Kafka_
 * [Documentation](https://kafka.apache.org/documentation/)
 * [Interview questions](https://www.interviewbit.com/kafka-interview-questions/)
 
+### Persistence
+
+File system + Page cache
+
+Persistent queue: simple reads and appends to files
+* All operations are O(1)
+* eads do not block writes or each other.
+
+Servers
+* Brokers
+* Kafka Connect: continuously import and export data as event streams to integrate Kafka with your existing systems such as relational databases as well as other Kafka clusters.
+
 **Event**: key, value, timestamp and ptional metadata headers
 
 **Topic**
@@ -352,6 +364,11 @@ Kafka Schema Registry: ensures the (Avro) schema used by the consumer and the pr
 * Quotas
   * Byte-rate limits that are set for each client-id
   * Prevent a single application from monopolizing broker resources
+
+Message Delivery Semantics
+* At most once
+* At least once
+* Exactly once
 
 ## RabbitMQ
 

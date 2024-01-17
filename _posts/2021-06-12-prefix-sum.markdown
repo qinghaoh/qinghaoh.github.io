@@ -15,16 +15,14 @@ for (int i = 0: i < n; i++) {
 // sum[i...j] = p[j + 1] - p[i]
 ```
 
-Sometimes we can use a running prefix sum instead of a prefix array. For example:
+Sometimes we can use a *running prefix sum* instead of a prefix array. For example:
 
 [Subarray Sum Equals K][subarray-sum-equals-k]
 
 ```c++
 int subarraySum(vector<int>& nums, int k) {
     // {prefix sum, count}
-    {% raw %}
-    unordered_map<int, int> mp{{0, 1}};  // p[0]
-    {% endraw %}
+    {% raw %}unordered_map<int, int> mp{{0, 1}};  // p[0]{% endraw %}
     int sum = 0, cnt = 0;
     for (int num : nums) {
         sum += num;
@@ -39,9 +37,7 @@ int subarraySum(vector<int>& nums, int k) {
 
 ```c++
     // {prefix sum, index of first occurrence}
-    {% raw %}
-    unordered_map<int, int> mp{{0, -1}};  // p[0]
-    {% endraw %}
+    {% raw %}unordered_map<int, int> mp{{0, -1}};  // p[0]{% endraw %}
     // count(ones) - count(zeros)
 ```
 
@@ -70,6 +66,33 @@ int longestWPI(vector<int>& hours) {
 }
 ```
 
+[Remove Zero Sum Consecutive Nodes from Linked List][remove-zero-sum-consecutive-nodes-from-linked-list]
+
+```c++
+ListNode* removeZeroSumSublists(ListNode* head) {
+    ListNode* dummy = new ListNode();
+    dummy->next = head;
+
+    // {prefix sum, last node with this value}
+    {% raw %}unordered_map<int, ListNode*> mp{{0, dummy}};{% endraw %}
+
+    int sum = 0;
+    for (ListNode* itr = dummy; itr; itr = itr->next) {
+        mp[sum += itr->val] = itr;
+    }
+
+    // Pass two: links to the last node that has the same prefix sum.
+    sum = 0;
+    for (ListNode* itr = dummy; itr; itr = itr->next) {
+        itr->next = mp[sum += itr->val]->next;
+    }
+    return dummy->next;
+}
+```
+
+{: .prompt-info }
+> To solve the problem in a single pass, we can employ the standard running sum approach. However, during this process, it's necessary to remove all map entries corresponding to nodes situated between the current node and the last node with the same prefix sum.
+
 [Maximize the Beauty of the Garden][maximize-the-beauty-of-the-garden]
 
 ```java
@@ -94,7 +117,7 @@ public int maximumBeauty(int[] flowers) {
 }
 ```
 
-## Variants
+## Generalizing Prefix Operations: Beyond Sum
 
 * Product
 
@@ -110,9 +133,7 @@ int minSubarray(vector<int>& nums, int p) {
     int r = accumulate(nums.begin(), nums.end(), 0, [&](int a, int b) { return (a + b) % p; });
 
     // Indices of the last occurrence of prefix_sum % p
-    {% raw %}
-    unordered_map<int, int> lastIndices = {{0, -1}};
-    {% endraw %}
+    {% raw %}unordered_map<int, int> lastIndices = {{0, -1}};{% endraw %}
     int n = nums.size(), mn = n;
     for (int i = 0, curr = 0; i < n; i++) {
         curr = (curr + nums[i]) % p;
@@ -330,37 +351,6 @@ int sumOfFlooredPairs(vector<int>& nums) {
 
 [Remove Zero Sum Consecutive Nodes from Linked List][remove-zero-sum-consecutive-nodes-from-linked-list]
 
-```java
-public ListNode removeZeroSumSublists(ListNode head) {
-    ListNode dummy = new ListNode();
-    dummy.next = head;
-
-    // prefix sum : last node with this value
-    Map<Integer, ListNode> map = new HashMap<>();
-    map.put(0, dummy);
-
-    int sum = 0;
-    for (ListNode curr = dummy; curr != null; curr = curr.next) {
-        sum += curr.val;
-        map.put(sum, curr);
-    }
-
-    // links to the last node that has the same prefix sum
-    sum = 0;
-    for (ListNode curr = dummy; curr != null; curr = curr.next) {
-        sum += curr.val;
-        curr.next = map.get(sum).next;
-    }
-    return dummy.next;
-}
-```
-
-[Maximum Absolute Sum of Any Subarray][maximum-absolute-sum-of-any-subarray]
-
-```
-abs(subarray) = p[i] - p[j] <= max(p) - min(p)
-```
-
 * Diff
 
 [Substring With Largest Variance][substring-with-largest-variance]
@@ -486,6 +476,12 @@ public int totalStrength(int[] strength) {
     }
     return (int)res;
 }
+```
+
+[Maximum Absolute Sum of Any Subarray][maximum-absolute-sum-of-any-subarray]
+
+```
+abs(subarray) = p[i] - p[j] <= max(p) - min(p)
 ```
 
 ## Range Sum

@@ -1065,9 +1065,7 @@ int findMaximumLength(vector<int>& nums) {
 
 ```c++
 long long maxBalancedSubsequenceSum(vector<int>& nums) {
-    {% raw %}
-    map<int, long long> mp{{numeric_limits<int>::min(), 0}};
-    {% endraw %}
+    {% raw %}map<int, long long> mp{{numeric_limits<int>::min(), 0}};{% endraw %}
     for (int i = 0; i < nums.size(); i++) {
         // Considers positive num only
         if (nums[i] > 0) {
