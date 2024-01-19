@@ -388,46 +388,6 @@ public int largestVariance(String s) {
 
 This problem can also be solved by [Kadane's Algorithm](../kadanes).
 
-* Ordered Pair
-
-[Count Palindromic Subsequences][count-palindromic-subsequences]
-
-```java
-private static final int MOD = (int)1e9 + 7;
-
-public int countPalindromes(String s) {
-    int n = s.length();
-    int[][][] pp = prefixSum(s), ss = prefixSum(new StringBuilder(s).reverse().toString());
-
-    long count = 0;
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            for (int k = 2; k < n - 2; k++) {
-                count = (count + ((long)pp[i][j][k] * ss[i][j][n - k - 1]) % MOD) % MOD;
-            }
-        }
-    }
-    return (int)count;
-}
-
-private int[][][] prefixSum(String s) {
-    int n = s.length();
-    // p[i][j]: occurrences of 'i' in s.substring(0, j)
-    int[][] p = new int[10][n + 1];
-    // pp[i][j][k]: occurrences of ordered pair ('i', 'j') in s.substring(0, k)
-    int[][][] pp = new int[10][10][n + 1];
-    for (int k = 0; k < n; k++) {
-        for (int i = 0; i < 10; i++) {
-            p[i][k + 1] = p[i][k] + (s.charAt(k) - '0' == i ? 1 : 0);
-            for (int j = 0; j < 10; j++) {
-                pp[i][j][k + 1] = (pp[i][j][k] + (s.charAt(k) - '0' == j ? p[i][k] : 0)) % MOD;
-            }
-        }
-    }
-    return pp;
-}
-```
-
 * Prefix Sum
 
 [Sum of Total Strength of Wizards][sum-of-total-strength-of-wizards]
@@ -481,7 +441,9 @@ public int totalStrength(int[] strength) {
 [Maximum Absolute Sum of Any Subarray][maximum-absolute-sum-of-any-subarray]
 
 ```
-abs(subarray) = p[i] - p[j] <= max(p) - min(p)
+abs(nums[i...j)) = abs(p[j] - p[i]) = max(p[i], p[j]) - min(p[i], p[j]), where 0 <= i < j <= n
+
+max(abs(nums[i...j])) = max(max(p[i], p[j]) - min(p[i], p[j])) = max(p) - min(p)
 ```
 
 ## Range Sum
@@ -1045,7 +1007,6 @@ public int countSubarrays(int[] nums, int k) {
 [change-minimum-characters-to-satisfy-one-of-three-conditions]: https://leetcode.com/problems/change-minimum-characters-to-satisfy-one-of-three-conditions/
 [contiguous-array]: https://leetcode.com/problems/contiguous-array/
 [count-increasing-quadruplets]: https://leetcode.com/problems/count-increasing-quadruplets/
-[count-palindromic-subsequences]: https://leetcode.com/problems/count-palindromic-subsequences/
 [count-subarrays-with-median-k]: https://leetcode.com/problems/count-subarrays-with-median-k/
 [count-subarrays-with-more-ones-than-zeros]: https://leetcode.com/problems/count-subarrays-with-more-ones-than-zeros/
 [count-triplets-that-can-form-two-arrays-of-equal-xor]: https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/

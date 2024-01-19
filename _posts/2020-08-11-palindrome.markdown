@@ -3,7 +3,7 @@ title:  "Palindrome"
 category: algorithm
 tags: string
 ---
-# Palindrome String
+## Palindrome String
 
 ```java
 public boolean isPalindrome(String s) {
@@ -17,7 +17,7 @@ public boolean isPalindrome(String s) {
 }
 ```
 
-# Palindrome Number
+## Palindrome Number
 
 [Palindrome Number][palindrome-number]
 
@@ -37,7 +37,7 @@ public boolean isPalindrome(int x) {
 }
 ```
 
-# Construction
+## Construction
 
 [Prime Palindrome][prime-palindrome]
 
@@ -180,7 +180,7 @@ private boolean isMirror(long num, int base) {
 }
 ```
 
-# Trie
+## Trie
 
 [Palindrome Pairs][palindrome-pairs]
 
@@ -310,7 +310,7 @@ private long palindrome(String root, int len) {
 }
 ```
 
-# Greedy
+## Greedy
 
 [Construct K Palindrome Strings][construct-k-palindrome-strings]
 
@@ -350,7 +350,7 @@ public int minMovesToMakePalindrome(String s) {
 }
 ```
 
-# Expand Around Center
+## Expand Around Center
 
 [Palindromic Substring][palindromic-substring]
 
@@ -440,7 +440,7 @@ public int minCut(String s) {
 }
 ```
 
-# Manacher's Algorithm
+## Manacher's Algorithm
 
 [Manacher's algorithm](https://en.wikipedia.org/wiki/Longest_palindromic_substring#Manacher's_algorithm): find all palindromic substrings in `O(n)`.
 
@@ -553,7 +553,7 @@ public long maxProduct(String s) {
 }
 ```
 
-# Dynamic Programming
+## Dynamic Programming
 
 Iteration pattern:
 
@@ -830,8 +830,54 @@ public int countPalindromicSubsequences(String S) {
 }
 ```
 
+[Count Palindromic Subsequences][count-palindromic-subsequences]
+
+```c++
+// @param d: iteration direction.
+auto precompute(string s, int d = 1) {
+    int n = s.length();
+    vector<int> freqs(10);
+    freqs[s[d > 0 ? 0 : n - 1] - '0'] = 1;
+
+    // dp[i][j][k]: occurrences of ordered pair ('j', 'k') in s[0...i] (prefix) or s[i...(n - 1)] (suffix).
+    vector<array<array<int, 10>, 10>> dp(n);
+
+    for (int i = d > 0 ? 1 : n - 2; i >= 0 && i < n; i += d) {
+        int digit = s[i] - '0';
+        for (int j = 0; j < 10; j++) {
+            for (int k = 0; k < 10; k++) {
+                dp[i][j][k] = dp[i - d][j][k] + (k == digit ? freqs[j] : 0);
+            }
+        }
+        freqs[digit]++;
+    }
+    return dp;
+}
+
+public:
+int countPalindromes(string s) {
+    // Prefix and suffix
+    auto pDp = precompute(s), sDp = precompute(s, -1);
+
+    const int mod = 1e9 + 7;
+    int cnt = 0, n = s.length();
+    for (int i = 2; i < n - 2; i++) {
+        for (int j = 0; j < 10; j++) {
+            for (int k = 0; k < 10; k++) {
+                cnt = (cnt + static_cast<long long>(pDp[i - 1][j][k]) * sDp[i + 1][j][k]) % mod;
+            }
+        }
+    }
+    return cnt;
+}
+```
+
+{: .prompt-info }
+> The `dp` array in this solution is not a prefix sum array of counts of ordered pairs. e.g. `s = "103301"`, `pDp[5][0][1] = 2` and `pDp[4][0][1] = 0`, we cannot say between index 4 and 5, `s` contains `pDp[5][0][1] - pDp[4][0][1] = 2` ordered pairs.
+
 [construct-k-palindrome-strings]: https://leetcode.com/problems/construct-k-palindrome-strings/
 [count-different-palindromic-subsequences]: https://leetcode.com/problems/count-different-palindromic-subsequences/
+[count-palindromic-subsequences]: https://leetcode.com/problems/count-palindromic-subsequences/
 [find-the-closest-palindrome]: https://leetcode.com/problems/find-the-closest-palindrome/
 [longest-palindromic-subsequence]: https://leetcode.com/problems/longest-palindromic-subsequence/
 [longest-palindromic-substring]: https://leetcode.com/problems/longest-palindromic-substring/
