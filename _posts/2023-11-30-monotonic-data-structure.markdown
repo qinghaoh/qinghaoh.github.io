@@ -680,8 +680,7 @@ The basic idea is to find both the previous and next less elements of each array
 
 ```c++
 int sumSubarrayMins(vector<int>& arr) {
-    long long res = 0;
-    int n = arr.size();
+    int res = 0, n = arr.size();
     const int mod = 1e9 + 7;
     stack<int> st;
     // Virtually appends 0 to the end of the array
@@ -696,7 +695,7 @@ int sumSubarrayMins(vector<int>& arr) {
         }
         st.push(i);
     }
-    return (int)res;
+    return res;
 }
 ```
 

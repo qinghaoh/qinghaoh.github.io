@@ -138,17 +138,17 @@ In this model, at each position there are multiple choices (e.g. to skip or rob)
 
 [House Robber][house-robber]
 
-```java
-public int rob(int[] nums) {
-    int n = nums.length;
-    int[] dp = new int[n + 1];
+```c++
+int rob(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> dp(n + 1);
     dp[1] = nums[0];
     for (int i = 1; i < n; i++) {
         // dp[i] = max(dpRob[i], dpSkip[i])
         //       = max(dpRob[i], dp[i - 1])
         //       = max(dpSkip[i - 1] + curr, dp[i - 1])
         //       = max(dp[i - 2] + curr, dp[i - 1])
-        dp[i + 1] = Math.max(dp[i], dp[i - 1] + nums[i]);
+        dp[i + 1] = max(dp[i], dp[i - 1] + nums[i]);
     }
     return dp[n];
 }
@@ -156,12 +156,12 @@ public int rob(int[] nums) {
 
 Reduced to 0D:
 
-```java
-public int rob(int[] nums) {
+```c++
+int rob(vector<int>& nums) {
     int prev = 0, curr = 0;
-    for (int num : nums) {
+    for (const int& num : nums) {
         int tmp = curr;
-        curr = Math.max(curr, prev + num);
+        curr = max(curr, prev + num);
         prev = tmp;
     }
     return curr;

@@ -211,9 +211,9 @@ distance(v.begin(), ranges::max_element(v));
 // sort
 sort(v.begin(), v.end());
 // descending order
-sort(v.begin(), v.end(), greater<char>());
+sort(v.begin(), v.end(), greater{});
 ranges::sort(v);
-ranges::sort(v, greater<int>());
+ranges::sort(v, ranges::greater());
 // sort with projection
 ranges::sort(indices, greater<int>(), [&](int i){ return *ranges::max_element(queries[i]); });
 

@@ -93,6 +93,27 @@ ListNode* removeZeroSumSublists(ListNode* head) {
 {: .prompt-info }
 > To solve the problem in a single pass, we can employ the standard running sum approach. However, during this process, it's necessary to remove all map entries corresponding to nodes situated between the current node and the last node with the same prefix sum.
 
+[Maximum Number of Non-Overlapping Subarrays With Sum Equals Target][maximum-number-of-non-overlapping-subarrays-with-sum-equals-target]
+
+```c++
+int maxNonOverlapping(vector<int>& nums, int target) {
+    // {prefix sum, max number of non-empty non-overlapping subarrays with sum equals the prefix sum}
+    {% raw %}unordered_map<int, int> mp{{0, 0}};{% endraw %}
+    int sum = 0, cnt = 0;
+    for (const auto& num : nums) {
+        sum += num;
+        if (mp.contains(sum - target)) {
+            cnt = max(cnt, mp[sum - target] + 1);
+        }
+
+        // If the prefix sums at two indices are equal,
+        // `cnt` at the second index is always no less than that at the first index.
+        mp[sum] = cnt;
+    }
+    return cnt;
+}
+```
+
 [Maximize the Beauty of the Garden][maximize-the-beauty-of-the-garden]
 
 ```java
@@ -388,6 +409,30 @@ public int largestVariance(String s) {
 
 This problem can also be solved by [Kadane's Algorithm](../kadanes).
 
+* Deviation
+
+[Super Washing Machines][super-washing-machines]
+
+```c++
+int findMinMoves(vector<int>& machines) {
+    int n = machines.size();
+    int sum = accumulate(machines.begin(), machines.end(), 0);
+    if (sum % n) {
+        return -1;
+    }
+
+    // Minimum moves is the maximum dresses throughput of each single machine.
+    int moves = 0, deviation = 0, avg = sum / n;
+    for (const int& machine : machines) {
+        deviation += machine - avg;
+        // Max of running deviation and each deviation.
+        moves = max(max(moves, abs(deviation)), machine - avg);
+    }
+    return moves;
+}
+```
+
+
 * Prefix Sum
 
 [Sum of Total Strength of Wizards][sum-of-total-strength-of-wizards]
@@ -469,12 +514,12 @@ public int ways(String[] pizza, int k) {
 }
 
 private int dfs(int m, int n, int cuts, int i, int j, int[][] p) {
-    // if the remain piece has no apple
+    // If the remaining piece has no apple
     if (p[i][j] == 0) {
         return 0;
     }
 
-    // found valid way after using k - 1 cuts
+    // Found valid way after using k - 1 cuts
     if (cuts == 0) {
         return 1;
     }
@@ -484,9 +529,9 @@ private int dfs(int m, int n, int cuts, int i, int j, int[][] p) {
     }
 
     int count = 0;
-    // cuts in horizontal
+    // Cuts in horizontal
     for (int r = i + 1; r < m; r++)  {
-        // cuts if the upper piece contains at least one apple
+        // Cuts if the upper piece contains at least one apple
         if (p[i][j] - p[r][j] > 0) {
             count = (count + dfs(m, n, cuts - 1, r, j, p)) % MOD;
         }
@@ -494,7 +539,7 @@ private int dfs(int m, int n, int cuts, int i, int j, int[][] p) {
 
     // cuts in vertical
     for (int c = j + 1; c < n; c++) {
-        // cuts if the left piece contains at least one apple
+        // Cuts if the left piece contains at least one apple
         if (p[i][j] - p[i][c] > 0) {
             count = (count + dfs(m, n, cuts - 1, i, c, p)) % MOD;
         }
@@ -638,28 +683,6 @@ public int[] solve(int[] nums, int[][] queries) {
 ```
 
 ## Dynamic Programming
-
-[Maximum Number of Non-Overlapping Subarrays With Sum Equals Target][maximum-number-of-non-overlapping-subarrays-with-sum-equals-target]
-
-```java
-public int maxNonOverlapping(int[] nums, int target) {
-    // prefix sum : max number of non-empty non-overlapping subarrays
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, 0);
-
-    int sum = 0, count = 0;
-    for (int i = 0; i < nums.length; i++) {
-        sum += nums[i];
-        if (map.containsKey(sum - target)) {
-            count = Math.max(count, map.get(sum - target) + 1);
-        }
-
-        // later sum can always overwrite, because `count` is guaranteed >=
-        map.put(sum, count);
-    }
-    return count;
-}
-```
 
 [Count Subarrays With More Ones Than Zeros][count-subarrays-with-more-ones-than-zeros]
 
@@ -917,59 +940,6 @@ public int waysToPartition(int[] nums, int k) {
         p.compute(left - right, (key, v) -> v == null ? 1 : v + 1);
     }
     return ways;
-}
-```
-
-[Super Washing Machines][super-washing-machines]
-
-```java
-public int findMinMoves(int[] machines) {
-    int n = machines.length;
-    int sum = Arrays.stream(machines).sum();
-    if (sum % n != 0) {
-        return -1;
-    }
-
-    // prefix and suffix sum
-    int[] p = new int[n], s = new int[n];
-    for (int i = 1; i < n; i++) {
-        p[i] = p[i - 1] + machines[i - 1];
-    }
-    for (int i = n - 2; i >= 0; i--) {
-        s[i] = s[i + 1] + machines[i + 1];
-    }
-
-    // minimum moves is the maximum dresses that pass through for each single machine
-    int move = 0, avg = sum / n, expLeft = 0, expRight = sum - avg;
-    for (int i = 0; i < n; i++) {
-        move = Math.max(move, Math.max(expLeft - p[i], 0) + Math.max(expRight - s[i], 0));
-        expLeft += avg;
-        expRight -= avg;
-    }
-    return move;
-}
-```
-
-Optimization:
-
-```java
-public int findMinMoves(int[] machines) {
-    int n = machines.length;
-    int sum = Arrays.stream(machines).sum();
-    if (sum % n != 0) {
-        return -1;
-    }
-
-    // minimum moves is the maximum dresses that pass through for each single machine
-    int target = sum / n, move = 0, toRight = 0;
-    for (int m : machines) {
-        // for each machines, toRight = right - left
-        // if toRight > 0, left -> right
-        // if toRight < 0, right -> left
-        toRight += m - target;
-        move = Math.max(move, Math.max(Math.abs(toRight), m - target));
-    }
-    return move;
 }
 ```
 

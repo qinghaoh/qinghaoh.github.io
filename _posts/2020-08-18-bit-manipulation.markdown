@@ -3,7 +3,7 @@ title:  "Bit Manipulation"
 category: algorithm
 tags: bit
 ---
-# Properties
+## Properties
 ```
 n ^ 0 = n
 n ^ n = 0
@@ -17,7 +17,7 @@ n & (n - 1)		// zeros out rightmost set bit, Brian Kernighan's Algorithm
 for (int s = mask; s > 0; s = (s - 1) & mask)
 ```
 
-## Brian Kernighan's Algorithm
+### Brian Kernighan's Algorithm
 
 [Counting Bits][counting-bits]
 
@@ -265,7 +265,7 @@ public int[] singleNumber(int[] nums) {
 }
 ```
 
-# Bit Count
+## Bit Count
 
 [Minimum Operations to Make the Integer Zero][minimum-operations-to-make-the-integer-zero]
 
@@ -292,9 +292,75 @@ public int makeTheIntegerZero(int num1, int num2) {
 }
 ```
 
-# Bitwise Operators
+[Maximum Number That Sum of the Prices Is Less Than or Equal to K][maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k]
 
-## And
+Credits to @votrubac.
+
+```c++
+// @param fixedBits: carry of number of fixed bits from the previous recursion level.
+long long findMaximumNumber(long long k, int fixedBits, int x) {
+    if (k < fixedBits) {
+        return 0;
+    }
+
+    // Denote the sum of prices of [1, 2 ^ i) as f(i).
+    // The goal in this recursion level is to find the largest i such that f(i) <= k
+    // (we use the variable `p` to represent one-indexed i).
+    //
+    // If x = 1, then f(0) = 0, f(1) = 1, f(2) = 4, f(3) = 12, ...
+    // f(i) = 2 * f(i - 1) + 2 ^ (i - 1) <-- addend
+    //      = 2 ^ i * f(0) + 2 ^ (i - 1) * i
+    //
+    // e.g. f(3):
+    //       ----- msb = 0, count 4 = f(2)
+    //       0 0 1   
+    //       0 1 0
+    //       0 1 1
+    //       ----- msb = 1, count = 8 = f(2) + 4 = f(2) + 2 ^ 2 <-- addend
+    //       1 0 0
+    //       1 0 1
+    //       1 1 0
+    //       1 1 1
+    //
+    // `addend` needs to be added as long as p % x == 0.
+    //
+    // `fixedBits` is the number of bits that are computed and fixed by previous recursions.
+    // These bits are more significant than the targeted `i` in this recursion level.
+    // e.g. k = 40, x = 1
+    // With one recursion level, i = 4, f(i) = 32, and the remaining value is 40 - 32 = 8.
+    // In the second recursion level, the 4-th bit is fixed, and we need to find the largest j
+    // such that j < i, and g(j) = f(j) + count of fixed bits <= 8.
+    // It turns out j = 2, and the binary representations are: 10000, 10001, 10010, 10011
+    //
+    // If `fixedBits` = m, the corrected function is:
+    // g(i) = f(i) + 2 ^ i * m
+    //      = 2 ^ i * f(0) + 2 ^ (i - 1) * i + 2 ^ i * m
+    //      = 2 ^ i * (f(0) + m) + 2 ^ (i - 1) * i
+    // The only difference between f(i) and g(i) is the initial value.
+    // By setting f(0) = m, we convert f(i) to g(i).
+    //
+    // For x > 1, tracks the position p of the rightmost bit
+    // and adds it only if p % x == 0.
+    long long addend = 1, sumOfPrices = fixedBits, p = 1;
+    while (2 * sumOfPrices + (p % x == 0 ? addend : 0) <= k) {
+        sumOfPrices = 2 * sumOfPrices + (p % x == 0 ? addend : 0);
+        addend *= 2;
+        p++;
+    }
+
+    // The target bit p is fixed in the next recursion level if p % x == 0.
+    return findMaximumNumber(k - sumOfPrices, fixedBits + (p % x == 0), x) + addend;
+}
+
+public:
+long long findMaximumNumber(long long k, int x) {
+    return findMaximumNumber(k, 0, x) - 1;
+}
+```
+
+## Bitwise Operators
+
+### And
 
 [Find a Value of a Mysterious Function Closest to Target][find-a-value-of-a-mysterious-function-closest-to-target]
 
@@ -348,7 +414,7 @@ int maxSubarrays(vector<int>& nums) {
 }
 ```
 
-## Exclusive Or
+### Exclusive Or
 
 Distributive Property:
 
@@ -383,7 +449,7 @@ int maximumXorProduct(long long a, long long b, int n) {
 }
 ```
 
-### MSB -> LSB
+#### MSB -> LSB
 
 Process the numbres bit by bit from msb to lsb.
 
@@ -419,7 +485,7 @@ public int findMaximumXOR(int[] nums) {
 }
 ```
 
-### Trie
+#### Trie
 
 It's more intuitive to process the numbers bit by bit.
 
@@ -619,7 +685,7 @@ private int countSmallerPairs(int[] nums, int x) {
 }
 ```
 
-### Backtracking/DFS
+#### Backtracking/DFS
 
 [Maximum Genetic Difference Query][maximum-genetic-difference-query]
 
@@ -707,7 +773,7 @@ class TrieNode {
 }
 ```
 
-# Hybrid
+## Hybrid
 
 [Apply Operations on Array to Maximize Sum of Squares][apply-operations-on-array-to-maximize-sum-of-squares]
 
@@ -719,7 +785,7 @@ class TrieNode {
 (a, b) -> (a, b)
 ```
 
-# Gray Code
+## Gray Code
 
 [Gray code](https://en.wikipedia.org/wiki/Gray_code): an ordering of the binary numeral system such that two successive values differ in only one bit (binary digit).
 
@@ -743,7 +809,7 @@ public List<Integer> circularPermutation(int n, int start) {
 }
 ```
 
-## Inverse Gray Code
+### Inverse Gray Code
 
 [Minimum One Bit Operations to Make Integers Zero][minimum-one-bit-operations-to-make-integers-zero]
 
@@ -881,6 +947,7 @@ public boolean validUtf8(int[] data) {
 [integer-replacement]: https://leetcode.com/problems/integer-replacement/
 [k-th-symbol-in-grammar]: https://leetcode.com/problems/k-th-symbol-in-grammar/
 [maximum-genetic-difference-query]: https://leetcode.com/problems/maximum-genetic-difference-query/
+[maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k]: https://leetcode.com/problems/maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k/
 [maximum-xor-product]: https://leetcode.com/problems/maximum-xor-product/
 [maximum-xor-of-two-numbers-in-an-array]: https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/
 [minimum-one-bit-operations-to-make-integers-zero]: https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/
