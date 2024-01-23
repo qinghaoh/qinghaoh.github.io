@@ -66,6 +66,35 @@ int longestWPI(vector<int>& hours) {
 }
 ```
 
+{: .prompt-tip }
+> The prefix sum technique is often used to identify subarrays where the count of elements either less than or greater than a given number num predominates.
+
+[Count Subarrays With Median K][count-subarrays-with-median-k]
+
+```c++
+int countSubarrays(vector<int>& nums, int k) {
+    int kIndex = ranges::find(nums, k) - nums.begin(), sum = 0;
+    function<int(int)> signum = [](int a) {
+        return (a > 0) - (a < 0);
+    };
+
+    // {prefix sum, count}
+    unordered_map<int, int> mp;
+    for (int i = kIndex, sum = 0; i >= 0; i--) {
+        sum += signum(nums[i] - k);
+        mp[sum]++;
+    }
+
+    int cnt = 0;
+    for (int i = kIndex, sum = 0; i < nums.size(); i++) {
+        sum += signum(nums[i] - k);
+        // Odd-size and even-size
+        cnt += mp[-sum] + mp[-sum + 1];
+    }
+    return cnt;
+}
+```
+
 [Remove Zero Sum Consecutive Nodes from Linked List][remove-zero-sum-consecutive-nodes-from-linked-list]
 
 ```c++
@@ -91,7 +120,7 @@ ListNode* removeZeroSumSublists(ListNode* head) {
 ```
 
 {: .prompt-info }
-> To solve the problem in a single pass, we can employ the standard running sum approach. However, during this process, it's necessary to remove all map entries corresponding to nodes situated between the current node and the last node with the same prefix sum.
+> To solve the problem with a single pass, we can use the running sum method. However, this requires removing map entries for nodes located between the current node and the most recent node having the same prefix sum.
 
 [Maximum Number of Non-Overlapping Subarrays With Sum Equals Target][maximum-number-of-non-overlapping-subarrays-with-sum-equals-target]
 
@@ -548,58 +577,33 @@ private int dfs(int m, int n, int cuts, int i, int j, int[][] p) {
 }
 ```
 
-## Discrete
+## Discrete Prefix Sum
 
 [Maximum Fruits Harvested After at Most K Steps][maximum-fruits-harvested-after-at-most-k-steps]
 
-```java
-public int maxTotalFruits(int[][] fruits, int startPos, int k) {
-    int n = fruits.length, m = Math.max(startPos, fruits[n - 1][0]);
-
-    int[] p = new int[m + 2];
-    for (int i = 0, j = 0; i <= m; i++) {
+```c++
+int maxTotalFruits(vector<vector<int>>& fruits, int startPos, int k) {
+    int n = fruits.size(), end = max(startPos, fruits[n - 1][0]);
+    vector<int> p(end + 2);
+    for (int i = 0, j = 0; i <= end; i++) {
         p[i + 1] = p[i] + (j < n && fruits[j][0] == i ? fruits[j++][1] : 0);
     }
 
-    int max = 0;
-    // moves i steps to right, then turns left
-    for (int i = 0; i <= Math.min(k, m - startPos); i++) {
-        int left = Math.max(0, startPos - Math.max(0, k - 2 * i));
+    int mx = 0;
+    // Moves i steps to right, then turns left
+    for (int i = 0; i <= min(k, end - startPos); i++) {
+        int left = max(0, startPos - max(0, k - 2 * i));
         int right = startPos + i;
-        max = Math.max(max, p[right + 1] - p[left]);
+        mx = max(mx, p[right + 1] - p[left]);
     }
 
-    // moves i steps to left, then turns right
-    for (int i = 0; i <= Math.min(k, startPos); i++) {
-        int right = Math.min(m, startPos + Math.max(0, k - 2 * i));
+    // Moves i steps to left, then turns right
+    for (int i = 0; i <= min(k, startPos); i++) {
+        int right = min(end, startPos + max(0, k - 2 * i));
         int left = startPos - i;
-        max = Math.max(max, p[right + 1] - p[left]);
+        mx = max(mx, p[right + 1] - p[left]);
     }
-    return max;
-}
-```
-
-[Find Good Days to Rob the Bank][find-good-days-to-rob-the-bank]
-
-```java
-public List<Integer> goodDaysToRobBank(int[] security, int time) {
-    int n = security.length;
-    int[] p = new int[n], s = new int[n];
-    for (int i = 1; i < n; i++) {
-        p[i] = (security[i - 1] >= security[i]) ? p[i - 1] + 1 : 0;
-    }
-
-    for (int i = n - 1; i > 0; i--) {
-        s[i - 1] = (security[i - 1] <= security[i]) ? s[i] + 1 : 0;
-    }
-
-    List<Integer> list = new ArrayList<>();
-    for (int i = time; i < n - time; i++) {
-        if (p[i] >= time && s[i] >= time) {
-            list.add(i);
-        }
-    }
-    return list;
+    return mx;
 }
 ```
 
@@ -892,6 +896,33 @@ public int maxSumSubmatrix(int[][] matrix, int k) {
 
 This can be extended to a very useful technique: for each element `arr[i]` in an array, compute its `left[i]` and `right[i]` for a particular variable (e.g. sum, min, max, etc.). Eventually we get two auxiliary arrays `left` and `right`.
 
+[Find Good Days to Rob the Bank][find-good-days-to-rob-the-bank]
+
+```c++
+vector<int> goodDaysToRobBank(vector<int>& security, int time) {
+    int n = security.size();
+    vector<int> p(n), s(n);
+    for (int i = 1; i < n; i++) {
+        p[i] = (security[i] <= security[i - 1]) ? p[i - 1] + 1 : 0;
+    }
+
+    for (int i = n - 2; i >= 0; i--) {
+        s[i] = (security[i] <= security[i + 1]) ? s[i + 1] + 1 : 0;
+    }
+
+    vector<int> res;
+    for (int i = time; i < n - time; i++) {
+        if (p[i] >= time && s[i] >= time) {
+            res.push_back(i);
+        }
+    }
+    return res;
+}
+```
+
+{: .prompt-tip }
+> The array `p` is sized `n` instead of the usual `n + 1`. This is because `security[0]` does not have a preceding element (`security[-1]` doesn't exist). As a result, we ignore the corresponding value for `security[0]` in `p`, hence the reduced size.
+
 [Maximum Number of Ways to Partition an Array][maximum-number-of-ways-to-partition-an-array]
 
 ```java
@@ -940,36 +971,6 @@ public int waysToPartition(int[] nums, int k) {
         p.compute(left - right, (key, v) -> v == null ? 1 : v + 1);
     }
     return ways;
-}
-```
-
-## Expand Around Center
-
-[Count Subarrays With Median K][count-subarrays-with-median-k]
-
-```java
-public int countSubarrays(int[] nums, int k) {
-    int n = nums.length, kIndex = 0;
-    for (int i = 0; i < n; i++) {
-        if (nums[i] == k) {
-            kIndex = i;
-        }
-    }
-
-    int sum = 0;
-    Map<Integer, Integer> map = new HashMap<>();
-    for (int i = kIndex; i >= 0; i--) {
-        sum += (int)Math.signum(nums[i] - k);
-        map.put(sum, map.getOrDefault(sum, 0) + 1);
-    }
-
-    sum = 0;
-    int count = 0;
-    for (int i = kIndex; i < n; i++) {
-        sum += (int)Math.signum(nums[i] - k);
-        count += map.getOrDefault(-sum, 0) + map.getOrDefault(-sum + 1, 0);
-    }
-    return count;
 }
 ```
 

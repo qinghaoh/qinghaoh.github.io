@@ -272,6 +272,9 @@ map<int, int, greater<int>> mp;
 // string
 s.length() == s.size();
 basic_string(size_type count, CharT ch, const Allocator& alloc = Allocator())
+
+// find
+ranges::find(nums, k) - nums.begin()
 ```
 
 ```

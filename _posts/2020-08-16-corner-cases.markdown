@@ -206,36 +206,6 @@ public int numSteps(String s) {
 }
 ```
 
-[Maximum Length of a Concatenated String with Unique Characters][maximum-length-of-a-concatenated-string-with-unique-characters]
-
-```java
-public int maxLength(List<String> arr) {
-    List<Integer> list = new ArrayList<>();
-    list.add(0);
-
-    int max = 0;
-    for (String s : arr) {
-        int num = 0, hasDup = 0;
-        for (char c : s.toCharArray()) {
-            int mask = 1 << (c - 'a');
-            hasDup |= num & mask;
-            num |= mask;
-        }
-
-        if (hasDup == 0) {
-            for (int i = list.size() - 1; i >= 0; i--) {
-                if ((list.get(i) & num) == 0) {
-                    int concat = list.get(i) | num;
-                    list.add(concat);
-                    max = Math.max(max, Integer.bitCount(concat));
-                }
-            }
-        }
-    }
-    return max;
-}
-```
-
 [Count Number of Teams][count-number-of-teams]
 
 ```java
@@ -408,7 +378,6 @@ public List<String> removeComments(String[] source) {
 [count-number-of-teams]: https://leetcode.com/problems/count-number-of-teams/
 [count-of-matches-in-tournament]: https://leetcode.com/problems/count-of-matches-in-tournament/
 [heaters]: https://leetcode.com/problems/heaters/
-[maximum-length-of-a-concatenated-string-with-unique-characters]: https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/
 [maximum-score-from-removing-stones]: https://leetcode.com/problems/maximum-score-from-removing-stones/
 [minimum-time-difference]: https://leetcode.com/problems/minimum-time-difference/
 [most-visited-sector-in-a-circular-track]: https://leetcode.com/problems/most-visited-sector-in-a-circular-track/

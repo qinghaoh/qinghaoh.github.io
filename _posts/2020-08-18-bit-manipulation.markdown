@@ -934,6 +934,36 @@ public boolean validUtf8(int[] data) {
 }
 ```
 
+[Maximum Length of a Concatenated String with Unique Characters][maximum-length-of-a-concatenated-string-with-unique-characters]
+
+```c++
+int maxLength(vector<string>& arr) {
+    {% raw %}vector<bitset<26>> dp{{}};{% endraw %}
+    int res = 0;
+    for (const string& s : arr) {
+        bitset<26> mask;
+        for (const char& ch : s) {
+            mask.set(ch - 'a');
+        }
+
+        int n = mask.count();
+        // Duplicates exist; skip
+        if (n < s.size()) {
+            continue;
+        }
+
+        for (int i = dp.size() - 1; i >= 0; i--) {
+            // An visited element that has no overlap with mask is a candidate
+            if ((dp[i] & mask).none()) {
+                dp.push_back(dp[i] | mask);
+                res = max(res, static_cast<int>(dp[i].count()) + n);
+            }
+        }
+    }
+    return res;
+}
+```
+
 [apply-operations-on-array-to-maximize-sum-of-squares]: https://leetcode.com/problems/apply-operations-on-array-to-maximize-sum-of-squares/
 [binary-number-with-alternating-bits]: https://leetcode.com/problems/binary-number-with-alternating-bits/
 [bitwise-and-of-numbers-range]: https://leetcode.com/problems/bitwise-and-of-numbers-range/
@@ -947,6 +977,7 @@ public boolean validUtf8(int[] data) {
 [integer-replacement]: https://leetcode.com/problems/integer-replacement/
 [k-th-symbol-in-grammar]: https://leetcode.com/problems/k-th-symbol-in-grammar/
 [maximum-genetic-difference-query]: https://leetcode.com/problems/maximum-genetic-difference-query/
+[maximum-length-of-a-concatenated-string-with-unique-characters]: https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/
 [maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k]: https://leetcode.com/problems/maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k/
 [maximum-xor-product]: https://leetcode.com/problems/maximum-xor-product/
 [maximum-xor-of-two-numbers-in-an-array]: https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/

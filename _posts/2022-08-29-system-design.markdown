@@ -326,7 +326,7 @@ _Topic with 4 paritions_
 * Geo-Replication: MirrorMaker
 
 Brokers -> Cluster
-* Managed by Apache ZooKeeper
+* Managed by Kafka Raft (Kraft) Protocol
 * Each broker handles GB (~10^5 count) R/W /s
 * Broker leader election
 * Stateless
@@ -623,36 +623,40 @@ MapReduce
 * Shared hierarchical namespace (file system)
 * Data registers - znodes (files and directories)
 * Data are in-memory (high throughput, low latency)
+* Ordered: stamps each update with a number that reflects the order of all transactions
+* Single system image: a client's view of the service keeps the same regardless of the server that it connects to
 
-Replication:
-Ensemble: servers must all know about each other
+**Znodes**
+* Coordination Data
+  * Each node can have data associated with it (like a file system that allows a file to also be a directory)
+  * Data stored at each znode is usually small (B ~ KB)
+* R/W
+  * Atomic
+  * Works best for read-dominant workload: (r/w ratios = 10:1)
+* Client
+  * Client maintains a TCP connection to a znode
+  * Client can set a watch which will be triggered and removed when the znode changes
 
-* In-memory image: state
-* Persistent storage: transaction logs and snapshots
+* Persistent znodes
+* Ephemeral znodes: live only when the session that created the znode is alive
+* Sequential znodes: have a unique, monotonically increasing sequence number automatically appended to its name upon creation. Can be either persistent or ephemeral.
 
-ZooKeeper transactions (clients update data on znodes):
-
-* Sequential consistency: transactions are stamped with a number that reflects the order
-* Atomicity: Znode data reads/writes are atomic.
-* Single System Image: a client's view of the service keeps the same regardless of the server that it connects to
-* Reliability: an update persists from being applied until a client overwrites it
-* Timeliness: the clients view of the system is guaranteed to be up-to-date within a certain time bound
-
-Works best for read-dominant workload: (r/w ration = 10:1)
-
-Znode stat structure includes:
+Znode stat structure
 * Version numbers for data changes
 * ACL changes
 * Timestamps
 
-Znodes
-* Persistent Znodes
-* Ephemeral nodes are znodes that live only when the session that created the znode is alive
-* Sequential Znodes: appens an increasing counter to the path's end. Can be either persistent or ephemeral
+### Replication
+
+Ensemble: a set of hosts
+
+Servers must all know about each other
+* In-memory: image of state
+* Persistent storage: transaction logs and snapshots
+
+ZooKeeper is available if a majority of the servers are available 
 
 Leader election: Sequential feature??
-
-Client maintains a TCP connection to a znode. It can set a watch on a zonde that will be triggered when the znode changes.
 
 Read requests are serviced from the local replica of each server database. Requests that change the state of the service, write requests, are processed by an agreement protocol.
 
