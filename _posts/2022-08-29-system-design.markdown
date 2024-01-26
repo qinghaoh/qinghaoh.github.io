@@ -541,6 +541,9 @@ Time series data
 
 ## Apache Hadoop File System (HDFS)
 
+![Apache Hadoop](https://hadoop.apache.org/hadoop-logo.jpg)
+_Apache Hadoop_
+
 Availability
 Scalability
 Performance
@@ -648,7 +651,7 @@ Znode stat structure
 
 ### Replication
 
-Ensemble: a set of hosts
+_Ensemble_: a set of hosts
 
 Servers must all know about each other
 * In-memory: image of state
@@ -658,12 +661,19 @@ ZooKeeper is available if a majority of the servers are available
 
 Leader election: Sequential feature??
 
-Read requests are serviced from the local replica of each server database. Requests that change the state of the service, write requests, are processed by an agreement protocol.
+Leader-Follower
 
-All write requests from clients are forwarded to a single server, called the leader. The rest of the ZooKeeper servers, called followers, receive message proposals from the leader and agree upon message delivery. The messaging layer takes care of replacing leaders on failures and syncing followers with leaders.
+![ZooKeeper Components](https://zookeeper.apache.org/doc/current/images/zkcomponents.jpg)
+_ZooKeeper Components_
 
-custom atomic messaging protocol
+Client requests
+* Read: serviced from the local replica of each server database
+* Write: processed by an atomic agreement protocol
+  * All write requests from clients are forwarded to the leader
+  * The messaging layer takes care of replacing leaders on failures and syncing followers with leaders
+  * Local replicas never diverge
 
+## Others
 
 Counter-based algorithms
 * Count-min sketch
@@ -683,6 +693,8 @@ Jay Kreps, Apache Kafka
 _Apache Spark_
 
 ## Apache Flink
+![Apache Flink](https://flink.apache.org/img/logo/png/500/flink_squirrel_500.png){: w="150" }
+_Apache Flink_
 
 Front-end
 * Request valiation

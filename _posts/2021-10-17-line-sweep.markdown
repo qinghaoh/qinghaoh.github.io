@@ -165,20 +165,23 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
 
 **Array**
 
+### Range Update with Prefix Sum
+
 [Range Addition][range-addition]
 
 ```java
 public int[] getModifiedArray(int length, int[][] updates) {
     int[] arr = new int[length];
-    // finds pulses
+    // Finds pulses (diff array)
     for (int[] u : updates) {
         arr[u[0]] += u[2];
+        // +1 because the end is exclusive
         if (u[1] + 1 < length) {
             arr[u[1] + 1] -= u[2];
         }
     }
 
-    // accumulates pulses
+    // Accumulates pulses
     for (int i = 1; i < length; i++) {
         arr[i] += arr[i - 1];
     }
@@ -186,8 +189,6 @@ public int[] getModifiedArray(int length, int[][] updates) {
     return arr;
 }
 ```
-
-In the above solution, interval end is exclusive, so we need to +1 to the end position. So is the next problem:
 
 [Count Positions on Street With Required Brightness][count-positions-on-street-with-required-brightness]
 
@@ -207,6 +208,73 @@ public int meetRequirement(int n, int[][] lights, int[] requirement) {
         }
     }
     return count;
+}
+```
+
+[Count the Number of Houses at a Certain Distance II][count-the-number-of-houses-at-a-certain-distance-ii]
+
+```c++
+vector<long long> countOfPairs(int n, int x, int y) {
+    if (x > y) {
+        swap(x, y);
+    }
+
+    vector<long long> result(n);
+    // First, computes the diff array.
+    for (int i = 1; i <= n; i++) {
+        // Each house can always connect to its neighbors with distance 1,
+        // even if n = 2.
+        // The +1 on each side keeps contributing to the number of pairs at distance > 0,
+        // until it meets an end.
+        result[0] += 2;
+
+        // Min distance (denoted as m) between the current house (house[i]) and house[1].
+        // Direct path: i - 1
+        // Path i -> y -> x -> 1: (abs(i - y)) + (1) + (x - 1)
+        //
+        // house[i] doesn't have pairs distances > m,
+        // so, it no longer affects the count beyond the distance m,
+        // As a result, decrement the diff array at m to reflect this change.
+        result[min(i - 1, abs(i - y) + x)]--;
+
+        // Min distance between house[i] and house[n].
+        // Direct path: n - i
+        // Path i -> x -> y -> n: (abs(i - x)) + (1) + (n - 1)
+        result[min(n - i, abs(i - x) + 1 + n - y)]--;
+
+        // Min distance between house[i] and x
+        // Direct path: abs(x - i)
+        // i -> y -> x: (abs(y - i)) + 1
+        // After reaching x, the path diverges so beyond this point there's an additional pair.
+        result[min(abs(i - x), abs(y - i) + 1)]++;
+        // See above
+        result[min(abs(i - x) + 1, abs(y - i))]++;
+
+        // Distance to the cycle.
+        // If x <= i <= y, house[i] already on the cycle.
+        int r = max(x - i, 0) + max(i - y, 0);
+
+        // Previously, the path diverges when reaching x or y.
+        // There are two cases on the cycle:
+        // 1. x -> y using the additional street and then reverse back to x using the normal streets
+        //    and stop in the middle
+        // 2. x -> y using normal streets and stop in the middle
+        // There's a shorter path to nodes after the loop midpoint with the other path
+        // so, we should stop at the midpoint.
+
+        // If distance(x, y) = y - x is even, we need to reduce (2) of same instances.
+        // e.g. 4 / 2 == (4 + 1) / 2 == 2
+        // Otherwise (odd), we need to reduce 2 different instances.
+        // e.g. 5 / 2 == 2, (5 + 1) / 2 == 3
+        result[r + (y - x + 0) / 2]--;
+        result[r + (y - x + 1) / 2]--;
+    }
+
+    // Second, builds the cumulative prefix sum array from the diff array.
+    for (int i = 1; i < n; i++) {
+        result[i] += result[i - 1];
+    }
+    return result;
 }
 ```
 
@@ -328,6 +396,7 @@ public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> lo
 
 [average-height-of-buildings-in-each-segment]: https://leetcode.com/problems/average-height-of-buildings-in-each-segment/
 [count-positions-on-street-with-required-brightness]: https://leetcode.com/problems/count-positions-on-street-with-required-brightness/
+[count-the-number-of-houses-at-a-certain-distance-ii]: https://leetcode.com/problems/count-the-number-of-houses-at-a-certain-distance-ii/
 [describe-the-painting]: https://leetcode.com/problems/describe-the-painting/
 [maximum-number-of-darts-inside-of-a-circular-dartboard]: https://leetcode.com/problems/maximum-number-of-darts-inside-of-a-circular-dartboard/
 [maximum-number-of-visible-points]: https://leetcode.com/problems/maximum-number-of-visible-points/
