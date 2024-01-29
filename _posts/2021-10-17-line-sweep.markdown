@@ -262,10 +262,21 @@ vector<long long> countOfPairs(int n, int x, int y) {
         // There's a shorter path to nodes after the loop midpoint with the other path
         // so, we should stop at the midpoint.
 
-        // If distance(x, y) = y - x is even, we need to reduce (2) of same instances.
-        // e.g. 4 / 2 == (4 + 1) / 2 == 2
-        // Otherwise (odd), we need to reduce 2 different instances.
-        // e.g. 5 / 2 == 2, (5 + 1) / 2 == 3
+        // The additional street between x and y leads to path divergence at x or y. 
+        // There are two traversal scenarios on the cycle:
+        // 1. x -> y via the additional street, then returning towards x along the normal streets,
+        //    and halting at the cycle's midpoint.
+        //    (y - x + 1) / 2
+        // 2. x -> reaching y via normal streets, and stopping at the cycle's midpoint.
+        //    (y - x) / 2
+        // The shortest path to houses past the cycle's midpoint may vary
+        // due to alternate routes via the additional street or normal streets.
+        // Therefore, distance calculations should consider paths only up to the cycle's midpoint,
+        // where the alternate route becomes shorter.
+        //
+        // e.g.
+        // if distance(x, y) = y - x = 4 (even), then 4 / 2 == (4 + 1) / 2 == 2;
+        // if distance(x, y) = y - x = 5 (odd), then 5 / 2 == 2, (5 + 1) / 2 == 3
         result[r + (y - x + 0) / 2]--;
         result[r + (y - x + 1) / 2]--;
     }

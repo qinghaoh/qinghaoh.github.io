@@ -222,32 +222,33 @@ public int dieSimulator(int n, int[] rollMax) {
 
 [K Inverse Pairs Array][k-inverse-pairs-array]
 
-```java
-private static final int MOD = (int)1e9 + 7;
+```c++
+int kInversePairs(int n, int k) {
+    const int mod = 1e9 + 7;
+    // Denote an array with n elements as a(n).
+    // Obviously, a(1) = 1.
+    // To construct a(n) from a(n -1), we append n to a(n - 1), then left shift n to its position.
+    // e.g. [2, 4, 1, 3] is constructed in the following steps:
+    // [1]
+    // [1, 2] -> [2, 1]
+    // [2, 1, 3]
+    // [2, 1, 3, 4] -> [2, 1, 4, 3] -> [2, 4, 1, 3]
+    //
+    // The total number of left shifts equals the number of inverse pairs in the final array.
+    // In the above example, there are 3 left shifts in total, so the number of inverse pairs is 3.
 
-public int kInversePairs(int n, int k) {
-    // total number of displacements == number of inverse pairs
-    //
-    // e.g. a0 = [1, 2, 3, 4]
-    // 1) left shifts 2 by 1 position
-    //   [2, 1, 3, 4], #inv == 1
-    // 2) left shits 2 by 1 position and then 4 by 2 positions
-    //   [2, 4, 1, 3], #inv == 3
-    //
-    // dp[n - 1][] -> dp[n][]:
-    // appends the new number to the end
-    // e.g. [2, 4, 1, 3] -> [2, 4, 1, 3, 5]
-    // it adds no inverse pairs
-    // then left shifts 5 to achieve k
-    //
-    int[][] dp = new int[n + 1][k + 1];
+    // dp[i][j]: the number of arrays of length i with exactly j inverse pairs.
+    vector<vector<int>> dp(n + 1, vector<int>(k + 1));
+    dp[0][0] = 1;
     for (int i = 1; i <= n; i++) {
-        // there's only one array with no inverse pairs
+        // There's only one dp[i][] array with no inverse pairs
         dp[i][0] = 1;
         for (int j = 1; j <= k; j++) {
-            // p is the number of displacements
-            for (int p = 0; p <= Math.min(j, i - 1); p++) {
-                dp[i][j] = (dp[i][j] + dp[i - 1][j - p]) % MOD;
+            // s is the number of left shifts of i.
+            // It represents the number of new inverse pairs introduced.
+            // s <= i - 1 because i - 1 is the number of elements in a(i - 1).
+            for (int s = 0; s <= min(j, i - 1); s++) {
+                dp[i][j] = (dp[i][j] + dp[i - 1][j - s]) % mod;
             }
         }
     }
@@ -255,34 +256,46 @@ public int kInversePairs(int n, int k) {
 }
 ```
 
-If `j >= i - 1`,
-```
-dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1] + ... + dp[i - 1][j - i + 1]
-```
+The innermost loop can be removed by applying a recursive formula to the dynamic programming (DP) array, effectively optimizing the computation.
 
-Therefore if `j >= i`,
-```
-dp[i][j - 1] = dp[i - 1][j - 1] + dp[i - 1][j - 2] + ... + dp[i - 1][j - i]
-```
-```
-dp[i][j] - dp[i][j - 1] = dp[i - 1][j] - dp[i - 1][j - i]
-dp[i][j] = dp[i][j - 1] + dp[i - 1][j] - dp[i - 1][j - i]
-```
-
-```java
-int[][] dp = new int[n + 1][k + 1];
-dp[0][0] = 1;
-for (int i = 1; i <= n; i++) {
-    // there's only one array with no inverse pairs
-    dp[i][0] = 1;
-    for (int j = 1; j <= k; j++) {
-        dp[i][j] = (dp[i][j - 1] + dp[i - 1][j]) % MOD;
-        if (j - i >= 0) {
-            dp[i][j] = (dp[i][j] - dp[i - 1][j - i] + MOD) % MOD; 
+```c++
+int kInversePairs(int n, int k) {
+    vector<vector<int>> dp(n + 1, vector<int>(k + 1));
+    dp[0][0] = 1;
+    for (int i = 1; i <= n; i++) {
+        dp[i][0] = 1;
+        // dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1] + ... + dp[i - 1][j - i + 1]
+        // => dp[i][j - 1] = dp[i - 1][j - 1] + dp[i - 1][j - 2] + ... + dp[i - 1][j - i]
+        // => dp[i][j] = dp[i - 1][j] + dp[i][j - 1] - dp[i - 1][j - i]
+        for (int j = 1; j <= k; j++) {
+            dp[i][j] = (dp[i][j - 1] + dp[i - 1][j]) % mod;
+            if (j - i >= 0) {
+                dp[i][j] = (dp[i][j] - dp[i - 1][j - i] + mod) % mod;
+            }
         }
     }
+    return dp[n][k];
 }
-return dp[n][k];
+```
+
+By implementing the rolling DP technique, we can further optimize our solution and significantly reduce memory consumption.
+
+```c++
+int kInversePairs(int n, int k) {
+    const int mod = 1e9 + 7;
+    vector<vector<int>> dp(2, vector<int>(k + 1));
+    dp[0][0] = 1;
+    for (int i = 1; i <= n; i++) {
+        dp[i % 2][0] = 1;
+        for (int j = 1; j <= k; j++) {
+            dp[i % 2][j] = (dp[i % 2][j - 1] + dp[(i - 1) % 2][j]) % mod;
+            if (j - i >= 0) {
+                dp[i % 2][j] = (dp[i % 2][j] - dp[(i - 1) % 2][j - i] + mod) % mod;
+            }
+        }
+    }
+    return dp[n % 2][k];
+}
 ```
 
 [best-time-to-buy-and-sell-stock-iii]: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/

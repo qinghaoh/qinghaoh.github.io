@@ -450,17 +450,25 @@ int findMinMoves(vector<int>& machines) {
         return -1;
     }
 
-    // Minimum moves is the maximum dresses throughput of each single machine.
-    int moves = 0, deviation = 0, avg = sum / n;
+    // The algorithm abstracts away the specifics of dress transfers, focusing instead on the net effect.
+    int moves = 0, throughput = 0, avg = sum / n;
     for (const int& machine : machines) {
-        deviation += machine - avg;
-        // Max of running deviation and each deviation.
-        moves = max(max(moves, abs(deviation)), machine - avg);
+        // machine - avg: the net dresses to be transferred from this machine to achieve balance.
+        throughput += machine - avg;
+
+        // throughput: cumulative net dresses transferred: positive for outgoing, negative for incoming.
+        // e.g. if the "machine - avg" array is [-2, -3, 5], then the throughput at machines[1] is -5.
+        // Only if it gets 5 dresses can machines[0] and machines[1] have the same number of dresses in the end.
+        // So, the abs of throughput is one determining factor of the final result.
+        //
+        // At each move, a machine can give out at most 1 dress, but can get at most 2 dresses.
+        // So, the number of given out dresses is the bottleneck and we don't need abs on (machine - avg)
+        // e.g., the "machine - avg" array [-1, 2, -1] requires 2 moves, while [1, -2, 1] requires only one move
+        moves = max(max(moves, abs(throughput)), machine - avg);
     }
     return moves;
 }
 ```
-
 
 * Prefix Sum
 
