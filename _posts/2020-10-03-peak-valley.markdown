@@ -5,18 +5,12 @@ tag: array
 ---
 [Best Time to Buy and Sell Stock II][best-time-to-buy-and-sell-stock-ii]
 
-```
-[1,7,2,3,6,7,6,7]
-```
-
-![array](/assets/img/algorithm/best_time_to_buy_and_sell_stock_2.png)
-
-```java
-public int maxProfit(int[] prices) {
+```c++
+int maxProfit(vector<int>& prices) {
     int profit = 0;
-    for (int i = 1; i < prices.length; i++) {
-        // keeps on adding positive profit obtained from every consecutive transaction
-        profit += Math.max(0, prices[i] - prices[i - 1]);
+    for (int i = 1; i < prices.size(); i++) {
+        // Buys a stock at a valley and sells it at the next peak
+        profit += max(0, prices[i] - prices[i - 1]);
     }
     return profit;
 }

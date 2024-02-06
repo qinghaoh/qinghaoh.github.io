@@ -274,7 +274,10 @@ s.length() == s.size();
 basic_string(size_type count, CharT ch, const Allocator& alloc = Allocator())
 
 // find
-ranges::find(nums, k) - nums.begin()
+ranges::find(nums, k) - nums.begin();
+
+// regex
+regex_match(s, regex("-?\\d+"));
 ```
 
 ```

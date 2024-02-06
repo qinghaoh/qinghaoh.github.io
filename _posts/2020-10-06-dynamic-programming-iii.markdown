@@ -5,52 +5,54 @@ tag: dynamic programming
 ---
 [Best Time to Buy and Sell Stock IV][best-time-to-buy-and-sell-stock-iv]
 
-```
-dp[k][i] = max(dp[k][i - 1], prices[i] - prices[j] + dp[k - 1][j - 1]), j = [0, 1, ..., i - 1]
-```
-
-```java
-public int maxProfit(int k, int[] prices) {
-    int n = prices.length;
-
-    // we can make maximum number of transactions
+```c++
+int maxProfit(int k, vector<int>& prices) {
+    int n = prices.size();
+    // We can make maximum number of transactions
     if (k >= n / 2) {
         // 122. Best Time to Buy and Sell Stock II
         int profit = 0;
         for (int i = 1; i < n; i++) {
-            profit += Math.max(0, prices[i] - prices[i - 1]);
+            profit += max(0, prices[i] - prices[i - 1]);
         }
         return profit;
     }
 
-    // dp[i][j]: max profit on j-th day with i transactions
-    int[][] dp = new int[k + 1][n];
-    for (int m = 1; m <= k; m++) {
-        for (int i = 1; i < n; i++) {
-            int min = prices[0];
-            for (int j = 1; j <= i; j++) {
-                min = Math.min(min, prices[j] - dp[m - 1][j - 1]);
+    // dp[i][j]: max profit on j-th day with at most i transactions
+    vector<vector<int>> dp(k + 1, vector<int>(n));
+    for (int i = 1; i <= k; i++) {
+        for (int j = 1; j < n; j++) {
+            // Buy on day d
+            int mx = -prices[0];
+            for (int d = 1; d <= j; d++) {
+                mx = max(mx, dp[i - 1][d - 1] - prices[d]);
             }
-            dp[m][i] = Math.max(dp[m][i - 1], prices[i] - min);
+
+            // Case 1: don't buy or sell
+            // Case 2: sell the stock
+            //   prices[j] - prices[d]: profit of buying on day d and selling on day j
+            //     max(dp[i - 1][d - 1] + prices[j] - prices[d])
+            //   = prices[j] + max(dp[i - 1][d - 1] - prices[d])
+            dp[i][j] = max(dp[i][j - 1], prices[j] + mx);
         }
     }
     return dp[k][n - 1];
 }
 ```
 
-Reduces the repetitive calculation of min:
+Reduces the repetitive calculation of `mx`:
 
-```java
-for (int m = 1; m <= k; m++) {
-    int min = prices[0];
-    for (int i = 1; i < n; i++) {
-	min = Math.min(min, prices[i] - dp[m - 1][i - 1]);
-	dp[m][i] = Math.max(dp[m][i - 1], prices[i] - min);
+```c++
+for (int i = 1; i <= k; i++) {
+    int mx = -prices[0];
+    for (int j = 1; j < n; j++) {
+        mx = max(mx, dp[i - 1][j - 1] - prices[j]);
+        dp[i][j] = max(dp[i][j - 1], prices[j] + mx);
     }
 }
 ```
 
-Swaps the two for-loops. `min` becomes an array to store min of each transaction.
+Swaps the two for-loops. `mx` becomes an array to store mx of each transaction.
 
 ```java
 int[] min = new int[k + 1];

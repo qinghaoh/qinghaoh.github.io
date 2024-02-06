@@ -5,11 +5,11 @@ tags: sort
 ---
 [Sort an Array][sort-an-array]
 
-# Quicksort
+## Quicksort
 
 [Quicksort](https://en.wikipedia.org/wiki/Quicksort): not stable
 
-## Lomuto Partition Scheme
+### Lomuto Partition Scheme
 
 ```java
 public int[] sortArray(int[] nums) {
@@ -45,7 +45,7 @@ private void swap(int[] nums, int i, int j) {
 }
 ```
 
-## Hoare Partition Scheme
+### Hoare Partition Scheme
 
 ```java
 private int partition(int[] nums, int low, int high) {
@@ -69,7 +69,7 @@ private int partition(int[] nums, int low, int high) {
 }
 ```
 
-# Merge Sort
+## Merge Sort
 
 ```java
 // Top-down
@@ -415,7 +415,7 @@ pos: [1,2,0,4,3] -> [3,0,2,4,1]
 index: [2,0,1,4,1] -> [3,0,2,4,1]
 ```
 
-# Bubble Sort
+## Bubble Sort
 
 [Orderly Queue][orderly-queue];
 
@@ -439,7 +439,7 @@ public String orderlyQueue(String s, int k) {
 }
 ```
 
-# Bucket Sort
+## Bucket Sort
 
 [H-Index][h-index]
 
@@ -584,7 +584,7 @@ private int distance(int[] p1, int[] p2) {
 }
 ```
 
-# Counting Sort
+## Counting Sort
 
 [Counting sort](https://en.wikipedia.org/wiki/Counting_sort)
 
@@ -637,7 +637,7 @@ public int specialArray(int[] nums) {
 }
 ```
 
-# Dutch National Flag Problem
+## Dutch National Flag Problem
 
 [Dutch national flag problem](https://en.wikipedia.org/wiki/Dutch_national_flag_problem)
 
@@ -680,7 +680,7 @@ public void wiggleSort(int[] nums) {
 }
 ```
 
-# Multiple Dimensions
+## Multiple Dimensions
 
 [The Number of Weak Characters in the Game][the-number-of-weak-characters-in-the-game]
 
@@ -701,7 +701,27 @@ public int numberOfWeakCharacters(int[][] properties) {
 }
 ```
 
-# Index Mapping
+[Find the Number of Ways to Place People II][find-the-number-of-ways-to-place-people-ii]
+
+```c++
+int numberOfPairs(vector<vector<int>>& points) {
+    ranges::sort(points, [](const auto &p1, const auto &p2){
+        return p1[0] == p2[0] ? p1[1] > p2[1] : p1[0] < p2[0];
+    });
+
+    int cnt = 0, n = points.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1, y = numeric_limits<int>::min(); j < n; j++)
+        if (points[i][1] >= points[j][1] && y < points[j][1]) {
+            cnt++;
+            y = points[j][1];
+        }
+    }
+    return cnt;
+}
+```
+
+## Index Mapping
 
 [Wiggle Sort II][wiggle-sort-ii]
 
@@ -812,6 +832,7 @@ public int maxWidthRamp(int[] nums) {
 [count-of-smaller-numbers-after-self]: https://leetcode.com/problems/count-of-smaller-numbers-after-self/
 [create-target-array-in-the-given-order]: https://leetcode.com/problems/create-target-array-in-the-given-order/
 [find-lucky-integer-in-an-array]: https://leetcode.com/problems/find-lucky-integer-in-an-array/
+[find-the-number-of-ways-to-place-people-ii]: https://leetcode.com/problems/find-the-number-of-ways-to-place-people-ii/
 [h-index]: https://leetcode.com/problems/h-index/
 [maximum-gap]: https://leetcode.com/problems/maximum-gap/
 [maximum-width-ramp]: https://leetcode.com/problems/maximum-width-ramp/

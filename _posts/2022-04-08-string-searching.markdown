@@ -302,19 +302,19 @@ For example, `n = 2, s1 = "aa", s2 = "da", evil = "b"`
 
 ## Z-Function
 
-[Z-function and its calculation](https://cp-algorithms.com/string/z-function.html): `z[i]` is the length of the longest string that is, at the same time, a prefix of `s` and a prefix of `s.substring(i)`.
+[Z-function and its calculation](https://cp-algorithms.com/string/z-function.html): `z[i]` is the length of the longest string that is, at the same time, a prefix of `s` and a prefix of `s.substr(i)`.
 
-```java
+```c++
 // O(n)
-private int[] computeZ(String s) {
+vector<int> computeZ(const string& s) {
     int n = s.length();
-    int[] z = new int[n];
+    vector<int> z(n);
     for (int i = 1, l = 0, r = 0; i < n; i++) {
         if (i <= r) {
-            z[i] = Math.min(r - i + 1, z[i - l]);
+            z[i] = min(r - i + 1, z[i - l]);
         }
 
-        while (i + z[i] < n && s.charAt(z[i]) == s.charAt(i + z[i])) {
+        while (i + z[i] < n && s[z[i]] == s[i + z[i]]) {
             z[i]++;
         }
 
@@ -332,6 +332,22 @@ private int[] computeZ(String s) {
 ```java
 public long sumScores(String s) {
     return Arrays.stream(computeZ(s)).asLongStream().sum() + s.length();
+}
+```
+
+[Minimum Time to Revert Word to Initial State II][minimum-time-to-revert-word-to-initial-state-ii]
+
+```c++
+int minimumTimeToInitialState(string word, int k) {
+    int res = 1, n = word.size();
+    auto z = computeZ(word);
+    while (k * res < n) {
+        if (z[k * res] >= n - k * res) {
+            break;
+        }
+        res++;
+    }
+    return res;
 }
 ```
 
@@ -631,6 +647,7 @@ private void insert(TrieNode root, String word) {
 [longest-duplicate-substring]: https://leetcode.com/problems/longest-duplicate-substring/
 [longest-happy-prefix]: https://leetcode.com/problems/longest-happy-prefix/
 [maximum-deletions-on-a-string]: https://leetcode.com/problems/maximum-deletions-on-a-string/
+[minimum-time-to-revert-word-to-initial-state-ii]: https://leetcode.com/problems/minimum-time-to-revert-word-to-initial-state-ii/
 [remove-all-occurrences-of-a-substring]: https://leetcode.com/problems/remove-all-occurrences-of-a-substring/
 [shortest-palindrome]: https://leetcode.com/problems/shortest-palindrome/
 [string-matching-in-an-array]: https://leetcode.com/problems/string-matching-in-an-array

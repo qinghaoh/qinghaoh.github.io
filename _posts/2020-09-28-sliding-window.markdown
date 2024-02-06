@@ -445,8 +445,7 @@ string minWindow(string s, string t) {
         freqs[ch]++;
     }
 
-    int i = 0, j = 0, k = t.length(), mn = s.length();
-    string window = "";
+    int i = 0, j = 0, k = t.length(), minLen = numeric_limits<int>::max(), minStart = 0;
     while (j < s.length()) {
         // Counts of chars in the window:
         // * t-chars > 0
@@ -457,8 +456,9 @@ string minWindow(string s, string t) {
         }
 
         while (k == 0) {
-            if (j - i <= mn) {
-                window = s.substr(i, mn = j - i);
+            if (j - i <= minLen) {
+                minStart = i;
+                minLen = j - i;
             }
 
             // Counts of chars in the window:
@@ -470,7 +470,7 @@ string minWindow(string s, string t) {
             }
         }
     }
-    return window;
+    return minLen == numeric_limits<int>::max() ? "" : s.substr(minStart, minLen);
 }
 ```
 
