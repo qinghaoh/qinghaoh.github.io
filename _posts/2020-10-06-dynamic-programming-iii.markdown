@@ -40,7 +40,7 @@ int maxProfit(int k, vector<int>& prices) {
 }
 ```
 
-Reduces the repetitive calculation of `mx`:
+Reduce the repetitive calculation of `mx`:
 
 ```c++
 for (int i = 1; i <= k; i++) {
@@ -52,29 +52,26 @@ for (int i = 1; i <= k; i++) {
 }
 ```
 
-Swaps the two for-loops. `mx` becomes an array to store mx of each transaction.
+Swap the two for-loops and use an array to store the `mx` of each transaction:
 
-```java
-int[] min = new int[k + 1];
-Arrays.fill(min, prices[0]);      
+```c++
+vector<int> mxs(k + 1, -prices[0]);
 for (int i = 1; i < n; i++) {
     for (int j = 1; j <= k; j++) {
-	min[j] = Math.min(min[j], prices[i] - dp[j - 1][i - 1]);
-	dp[j][i] = Math.max(dp[j][i - 1], prices[i] - min[j]);
+        mxs[j] = max(mxs[j], dp[j - 1][i - 1] - prices[i]);
+        dp[j][i] = max(dp[j][i - 1], prices[i] + mxs[j]);
     }
 }
 ```
 
-Reduces to 1D:
+Reduce to 1D:
 
-```java
-int[] dp = new int[k + 1], min = new int[k + 1];
-Arrays.fill(min, prices[0]);      
-
-for (int i = 1; i < prices.length; i++) {
+```c++
+vector<int> dp(k + 1), mxs(k + 1, -prices[0]);
+for (int i = 1; i < n; i++) {
     for (int j = 1; j <= k; j++) {
-	min[j] = Math.min(min[j], prices[i] - dp[j - 1]);
-	dp[j] = Math.max(dp[j], prices[i] - min[j]);
+        mxs[j] = max(mxs[j], dp[j - 1] - prices[i]);
+        dp[j] = max(dp[j], prices[i] + mxs[j]);
     }
 }        
 return dp[k];

@@ -11,18 +11,15 @@ Majority element: an element that occurs repeatedly for more than half of the el
 
 [Majority Element][majority-element]
 
-```java
-public int majorityElement(int[] nums) {
-    int count = 0;
-    Integer candidate = null;
-
+```c++
+int majorityElement(vector<int>& nums) {
+    int cnt = 0, candidate = numeric_limits<int>::max();
     for (int num : nums) {
-        if (count == 0) {
+        if (cnt == 0) {
             candidate = num;
         }
-        count += (num == candidate) ? 1 : -1;
+        cnt += (num == candidate) ? 1 : -1;
     }
-
     return candidate;
 }
 ```

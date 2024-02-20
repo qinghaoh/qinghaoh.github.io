@@ -222,34 +222,33 @@ public int minimumTotal(List<List<Integer>> triangle) {
 
 [Cherry Pickup II][cherry-pickup-ii]
 
-```java
-public int cherryPickup(int[][] grid) {
-    int m = grid.length, n = grid[0].length;
-    int dp[][][] = new int[m][n][n];
+```c++
+int cherryPickup(vector<vector<int>>& grid) {
+    int m = grid.size(), n = grid[0].size();
+    vector<vector<vector<int>>> dp(m, vector<vector<int>>(n, vector<int>(n)));
 
     for (int r = m - 1; r >= 0; r--) {
         for (int c1 = 0; c1 < n; c1++) {
             for (int c2 = 0; c2 < n; c2++) {
-                // if c1 == c2, Robot #1 picks up the cherries
-                // do not double count
+                // If c1 == c2, Robot #1 picks up the cherries
+                // Do not double count
                 int cherries = grid[r][c1];
                 if (c1 != c2) {
                     cherries += grid[r][c2];
                 }
 
-                // finds the max from the line below
+                // Finds the max from the line below
                 if (r != m - 1) {
-                    int max = 0;
+                    int mx = 0;
                     for (int j1 = c1 - 1; j1 <= c1 + 1; j1++) {
                         for (int j2 = c2 - 1; j2 <= c2 + 1; j2++) {
                             if (j1 >= 0 && j1 < n && j2 >= 0 && j2 < n) {
-                                max = Math.max(max, dp[r + 1][j1][j2]);
+                                mx = max(mx, dp[r + 1][j1][j2]);
                             }
                         }
                     }
-                    cherries += max;
+                    cherries += mx;
                 }
-
                 dp[r][c1][c2] = cherries;
             }
         }

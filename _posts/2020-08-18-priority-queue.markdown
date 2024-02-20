@@ -95,25 +95,27 @@ public int minimumDeviation(int[] nums) {
 
 [Furthest Building You Can Reach][furthest-building-you-can-reach]
 
-```java
-public int furthestBuilding(int[] heights, int bricks, int ladders) {
-    Queue<Integer> pq = new PriorityQueue<>();
-    for (int i = 0; i < heights.length - 1; i++) {
+```c++
+int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
+    int n = heights.size();
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for (int i = 0; i < n - 1; i++) {
         int d = heights[i + 1] - heights[i];
         if (d > 0) {
-            pq.add(d);
+            pq.push(d);
         }
 
-        // it's optimal to use ladders in largest jumps
+        // It's optimal to use ladders in largest jumps
         if (pq.size() > ladders) {
-            bricks -= pq.poll();
+            bricks -= pq.top();
+            pq.pop();
         }
 
         if (bricks < 0) {
             return i;
         }
     }
-    return heights.length - 1;
+    return n - 1;
 }
 ```
 

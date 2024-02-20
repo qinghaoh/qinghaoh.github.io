@@ -82,6 +82,22 @@ public String shortestPalindrome(String s) {
 }
 ```
 
+[Number of Subarrays That Match a Pattern II][number-of-subarrays-that-match-a-pattern-ii]
+
+```c++
+int countMatchingSubarrays(vector<int>& nums, vector<int>& pattern) {
+    const int p = pattern.size();
+    // Delimiter
+    pattern.push_back(2);
+    for (int i = 1; i < nums.size(); i++) {
+        pattern.push_back(nums[i - 1] < nums[i] ? 1 : nums[i - 1] == nums[i] ? 0 : -1);
+    }
+
+    vector<int> lps = computeLps(pattern);
+    return accumulate(lps.begin(), lps.end(), 0, [&](int a, int b) { return a + (b == p); });
+}
+```
+
 [Find Beautiful Indices in the Given Array II][find-beautiful-indices-in-the-given-array-ii]
 
 ```c++
@@ -648,6 +664,7 @@ private void insert(TrieNode root, String word) {
 [longest-happy-prefix]: https://leetcode.com/problems/longest-happy-prefix/
 [maximum-deletions-on-a-string]: https://leetcode.com/problems/maximum-deletions-on-a-string/
 [minimum-time-to-revert-word-to-initial-state-ii]: https://leetcode.com/problems/minimum-time-to-revert-word-to-initial-state-ii/
+[number-of-subarrays-that-match-a-pattern-ii]: https://leetcode.com/problems/number-of-subarrays-that-match-a-pattern-ii/
 [remove-all-occurrences-of-a-substring]: https://leetcode.com/problems/remove-all-occurrences-of-a-substring/
 [shortest-palindrome]: https://leetcode.com/problems/shortest-palindrome/
 [string-matching-in-an-array]: https://leetcode.com/problems/string-matching-in-an-array

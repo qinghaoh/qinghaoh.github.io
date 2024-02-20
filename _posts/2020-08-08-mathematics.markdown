@@ -664,22 +664,21 @@ public String findDifferentBinaryString(String[] nums) {
 
 [Perfect Squares][perfect-squares]
 
-```java
-public int numSquares(int n) {
-    int dp[] = new int[n + 1];
-    Arrays.fill(dp, Integer.MAX_VALUE);
+```c++
+int numSquares(int n) {
+    vector<int> dp(n + 1, 1e4);
     dp[0] = 0;
 
-    // pre-calculates the square numbers
-    int[] squares = new int[(int)Math.sqrt(n) + 1];
-    for (int i = 1; i < squares.length; i++) {
+    // Pre-calculates the square numbers
+    vector<int> squares(sqrt(n) + 1);
+    for (int i = 1; i < squares.size(); i++) {
         squares[i] = i * i;
     }
 
     for (int i = 1; i <= n; i++) {
-        for (int j = 1; j < squares.length; j++) {
+        for (int j = 1; j < squares.size(); j++) {
             if (i >= squares[j]) {
-                dp[i] = Math.min(dp[i], dp[i - squares[j]] + 1);
+                dp[i] = min(dp[i], dp[i - squares[j]] + 1);
             }
         }
     }
