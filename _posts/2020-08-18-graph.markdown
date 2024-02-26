@@ -334,10 +334,10 @@ private int getDistance(String a, String b) {
 
 [Find the Town Judge][find-the-town-judge]
 
-```java
-public int findJudge(int n, int[][] trust) {
-    int[] degrees = new int[n];
-    for (int[] t : trust) {
+```c++
+int findJudge(int n, vector<vector<int>>& trust) {
+    vector<int> degrees(n);
+    for (const auto& t : trust) {
         degrees[t[0] - 1]--;
         degrees[t[1] - 1]++;
     }

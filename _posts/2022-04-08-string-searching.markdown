@@ -656,6 +656,42 @@ private void insert(TrieNode root, String word) {
 }
 ```
 
+## Trie
+
+[Count Prefix and Suffix Pairs II][count-prefix-and-suffix-pairs-ii]
+
+```c++
+truct TrieNode {
+    // key = s[i] * 128 + s[n - 1 - i]
+    unordered_map<int, TrieNode*> children;
+    // count of words that end at this node
+    int count = 0;
+};
+
+public:
+long long countPrefixSuffixPairs(vector<string>& words) {
+    TrieNode* root = new TrieNode();
+    long long cnt = 0;
+    for (const string& w : words) {
+        TrieNode* itr = root;
+        for (int i = 0, n = w.size(); i < n; i++) {
+            auto& child = itr->children.emplace(w[i] * 128 + w[n - 1 - i], nullptr).first->second;
+            if (!child) {
+                child = new TrieNode();
+            }
+            itr = child;
+            // Include all words that share a common prefix and suffix with 'w' up to this point.
+            // The unique key construction ensures that only words with matching prefixes and suffixes
+            // at corresponding positions are counted.
+            cnt += itr->count;
+        }
+        itr->count++;
+    }
+    return cnt;
+}
+```
+
+[count-prefix-and-suffix-pairs-ii]: https://leetcode.com/problems/count-prefix-and-suffix-pairs-ii/
 [find-all-good-strings]: https://leetcode.com/problems/find-all-good-strings/
 [find-beautiful-indices-in-the-given-array-ii]: https://leetcode.com/problems/find-beautiful-indices-in-the-given-array-ii/
 [length-of-the-longest-valid-substring]: https://leetcode.com/problems/length-of-the-longest-valid-substring/

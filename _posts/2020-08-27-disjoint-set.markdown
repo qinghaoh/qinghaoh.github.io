@@ -48,12 +48,31 @@ private boolean union(int u, int v) {
 }
 ```
 
-A very useful technique is *path compression*, which flattens the structure when `find` is called.
+**Path compression**
 
 ```java
 private int find(int u) {
     // path compression
     return parents[u] == 0 ? u : (parents[u] = find(parents[u]));
+}
+```
+
+**Union by rank**
+
+```c++
+void unionSets(int u, int v) {
+    int pu = find(u), pv = find(v);
+
+    if (pu != pv) {
+        if (ranks[pu] < ranks[pv]) {
+            parents[pu] = pv;
+        } else if (ranks[pu] > ranks[pv]) {
+            parents[pv] = pu;
+        } else {
+            parents[pu] = pv;
+            ranks[pv]++;
+        }
+    }
 }
 ```
 
@@ -752,44 +771,45 @@ public boolean[] friendRequests(int n, int[][] restrictions, int[][] requests) {
 
 [Find All People With Secret][find-all-people-with-secret]
 
-```java
-public List<Integer> findAllPeople(int n, int[][] meetings, int firstPerson) {
-    this.parents = new Integer[n];
+```c++
+vector<int> findAllPeople(int n, vector<vector<int>>& meetings, int firstPerson) {
+    parents = vector<int>(n, -1);
+    ranks = vector<int>(n);
 
-    Arrays.sort(meetings, Comparator.comparingInt(m -> m[2]));
-    union(0, firstPerson);
+    // Share the secret initially with firstPerson
+    unionSets(0, firstPerson);
 
-    // at the start of each time, all componenets in the graph is connected to Person 0
-    int m = meetings.length;
-    Set<Integer> people = new HashSet<>();
+    // Sort meetings by time
+    ranges::sort(meetings, {}, [&](const vector<int>& m){ return m[2]; });
+
+    int m = meetings.size();
+    // Track people involved in meetings at the current time
+    unordered_set<int> people;
     for (int i = 0; i < m; i++) {
-        // unions the two people in this meeting
-        // either person is possibly found not connected to Person 0 at the end of the current time
-        union(meetings[i][0], meetings[i][1]);
-        people.add(meetings[i][0]);
-        people.add(meetings[i][1]);
+        // Share secrets during the meeting
+        unionSets(meetings[i][0], meetings[i][1]);
+        people.insert(meetings[i][0]);
+        people.insert(meetings[i][1]);
 
-        // handles all the people at a particular time
+        // Process at the end of each time frame
         if (i == m - 1 || meetings[i][2] != meetings[i + 1][2]) {
             for (int p : people) {
-                // if a person is not connected to Person 0
-                // he doesn't know the secret
-                // so disconnects it from the disjoint set
+                // Disconnect people not knowing the secret from Person 0
                 if (find(p) != find(0)) {
-                    parents[p] = null;
+                    parents[p] = -1;
                 }
             }
             people.clear();
         }
     }
 
-    List<Integer> list = new ArrayList<>();
+    vector<int> v;
     for (int i = 0; i < n; i++) {
         if (find(i) == find(0)) {
-            list.add(i);
+            v.push_back(i);
         }
     }
-    return list;
+    return v;
 }
 ```
 

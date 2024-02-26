@@ -720,25 +720,25 @@ Given a contraint on sum of vertex values, minimize the sum of path values. In t
 
 [Cheapest Flights Within K Stops][cheapest-flights-within-k-stops]
 
-```java
-public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-    // builds graph
-    int[][] graph = new int[n][n];
-    for (int[] f : flights) {
+```c++
+int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+    vector<vector<int>> graph(n, vector<int>(n));
+    for (const auto& f : flights) {
         graph[f[0]][f[1]] = f[2];
     }
 
-    int[] prices = new int[n], stops = new int[n];
-    Arrays.fill(prices, Integer.MAX_VALUE);
-    Arrays.fill(stops, Integer.MAX_VALUE);
+    vector<int> prices(n, numeric_limits<int>::max()), stops(n, numeric_limits<int>::max());
 
     // {city, prices, stops}
-    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
-    int[] curr = {src, prices[src] = 0, stops[src] = 0};
-    pq.offer(curr);
+    auto cmp = [&](const array<int, 3>& a, const array<int, 3>& b) {
+        return a[1] > b[1];
+    };
+    priority_queue<array<int, 3>, vector<array<int, 3>>, decltype(cmp)> pq(cmp);
+    pq.push({src, prices[src] = 0, stops[src] = 0});
 
-    while (!pq.isEmpty()) {
-        curr = pq.poll();
+    while (!pq.empty()) {
+        const auto curr = pq.top();
+        pq.pop();
         int city = curr[0], p = curr[1], s = curr[2];
 
         if (city == dst) {
@@ -749,7 +749,7 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
             if (graph[city][neighbor] > 0 && s <= k) {
                 int alt = p + graph[city][neighbor];
                 if (alt < prices[neighbor]) {
-                    pq.offer(new int[]{neighbor, prices[neighbor] = alt, stops[neighbor] = s + 1});
+                    pq.push({neighbor, prices[neighbor] = alt, stops[neighbor] = s + 1});
                 } else if (s + 1 < stops[neighbor]) {
                     // although prices is not optimal at the moment, the number of stops is less than stops[neighbor]
                     // which means this path has the potential to be the optimal solution in later steps
@@ -760,13 +760,12 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
                     // iwo, currently it's possible that there exists a node where the stops are less than stops[node]
                     //
                     // stops[node] is a loose constraint
-                    pq.offer(new int[]{neighbor, alt, s + 1});
+                    pq.push({neighbor, alt, s + 1});
                 }
             }
         }
     }
-
-    return prices[dst] == Integer.MAX_VALUE ? -1 : prices[dst];
+    return prices[dst] == numeric_limits<int>::max() ? -1 : prices[dst];
 }
 ```
 
