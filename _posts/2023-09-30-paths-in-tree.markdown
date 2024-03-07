@@ -100,22 +100,23 @@ Aggregate paths from current node to all leaf nodes in its subtree.
 
 [Diameter of Binary Tree][diameter-of-binary-tree]
 
-```java
-private int diameter = 0;
+```c++
+int diameter = 0;
 
-public int diameterOfBinaryTree(TreeNode root) {
-    height(root);
-    return diameter;
-}
-
-private int height(TreeNode node) {
-    if (node == null) {
+int getHeight(TreeNode* node) {
+    if (node == nullptr) {
         return 0;
     }
 
-    int left = height(node.left), right = height(node.right);
-    diameter = Math.max(diameter, left + right);
-    return Math.max(left, right) + 1;
+    int left = getHeight(node->left), right = getHeight(node->right);
+    diameter = max(diameter, left + right);
+    return max(left, right) + 1;
+}
+
+public:
+int diameterOfBinaryTree(TreeNode* root) {
+    getHeight(root);
+    return diameter;
 }
 ```
 

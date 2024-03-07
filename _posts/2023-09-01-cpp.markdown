@@ -276,6 +276,9 @@ basic_string(size_type count, CharT ch, const Allocator& alloc = Allocator())
 // find
 ranges::find(nums, k) - nums.begin();
 
+// count
+count_if(nums.begin(), nums.end(), [k](int num) { return num < k; });
+
 // regex
 regex_match(s, regex("-?\\d+"));
 ```

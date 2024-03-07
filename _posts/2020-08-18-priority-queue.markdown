@@ -100,19 +100,24 @@ int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
     int n = heights.size();
     priority_queue<int, vector<int>, greater<int>> pq;
     for (int i = 0; i < n - 1; i++) {
-        int d = heights[i + 1] - heights[i];
-        if (d > 0) {
+        if (int d = heights[i + 1] - heights[i]; d > 0) {
             pq.push(d);
         }
 
-        // It's optimal to use ladders in largest jumps
+        // Use ladders for the largest height differences:
+        // Once we have more height differences than ladders,
+        // start using bricks for the smallest differences,
+        // until we run out of bricks.
         if (pq.size() > ladders) {
+            // Use bricks for the current smallest height difference
             bricks -= pq.top();
             pq.pop();
-        }
 
-        if (bricks < 0) {
-            return i;
+            // If we don't have enough bricks for even the smallest climb,
+            // the current building is the furthest we can reach.
+            if (bricks < 0) {
+                return i;
+            }
         }
     }
     return n - 1;

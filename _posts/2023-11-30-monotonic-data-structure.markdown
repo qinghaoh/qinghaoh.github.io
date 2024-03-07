@@ -14,7 +14,7 @@ The most commonly used **template** of monotonically strictly increasing stack i
 // Monotonically increasing stack (strict)
 stack<int> st;
 for (int i = 0; i < n; i++) {
-    while (!st.isEmpty() && nums[i] <= st.top()) {
+    while (!st.empty() && nums[i] <= st.top()) {
         st.pop();
     }
     // It's also very common to push the index: st.push(i);
@@ -23,9 +23,9 @@ for (int i = 0; i < n; i++) {
 ```
 
 Variants:
-* Monotonically *non-strictly* increasing stack: `nums[i] < nums[st.top()]`
-* Monotonically strictly *decreasing* stack: `nums[i] >= nums[st.top()]`
-* Monotonically *non-strictly decreasing* stack: `nums[i] > nums[st.top()]`
+* Monotonically *non-strictly* increasing stack: `nums[i] < st.top()`
+* Monotonically strictly *decreasing* stack: `nums[i] >= st.top()`
+* Monotonically *non-strictly decreasing* stack: `nums[i] > st.top()`
 
 Let's go over the algorithm with an example `[2,5,1,3,6,4]`. The algorithm maintains a monotonically strictly increasing stack while iterating from left to right:
 

@@ -585,6 +585,35 @@ private int dfs(int m, int n, int cuts, int i, int j, int[][] p) {
 }
 ```
 
+Running sum:
+
+[Count Submatrices with Top-Left Element and Sum Less Than k][count-submatrices-with-top-left-element-and-sum-less-than-k]
+
+```c++
+int countSubmatrices(vector<vector<int>>& grid, int k) {
+    int ans = 0;
+    for (int i = 0; i < grid.size(); i++) {
+        for (int j = 0; j < grid[0].size(); j++) {
+            if (i > 0) {
+                grid[i][j] += grid[i - 1][j];
+            }
+            if (j > 0) {
+                grid[i][j] += grid[i][j - 1];
+            }
+            if (i > 0 && j > 0) {
+                grid[i][j] -= grid[i - 1][j - 1];
+            }
+
+            if (grid[i][j] > k) {
+                break;
+            }
+            ans++;
+        }
+    }
+    return ans;
+}
+```
+
 ## Discrete Prefix Sum
 
 [Maximum Fruits Harvested After at Most K Steps][maximum-fruits-harvested-after-at-most-k-steps]
@@ -988,6 +1017,7 @@ public int waysToPartition(int[] nums, int k) {
 [count-increasing-quadruplets]: https://leetcode.com/problems/count-increasing-quadruplets/
 [count-subarrays-with-median-k]: https://leetcode.com/problems/count-subarrays-with-median-k/
 [count-subarrays-with-more-ones-than-zeros]: https://leetcode.com/problems/count-subarrays-with-more-ones-than-zeros/
+[count-submatrices-with-top-left-element-and-sum-less-than-k]: https://leetcode.com/problems/count-submatrices-with-top-left-element-and-sum-less-than-k/
 [count-triplets-that-can-form-two-arrays-of-equal-xor]: https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/
 [find-good-days-to-rob-the-bank]: https://leetcode.com/problems/find-good-days-to-rob-the-bank/
 [longest-well-performing-interval]: https://leetcode.com/problems/longest-well-performing-interval/

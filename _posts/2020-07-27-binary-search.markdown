@@ -2,7 +2,6 @@
 title:  "Binary Search"
 category: algorithm
 ---
-# Template
 
 [Binary Search][binary-search]
 
@@ -24,33 +23,53 @@ public int search(int[] nums, int target) {
 }
 ```
 
+# Template
+
+@zhijun_liao
+
+Minimize `x`, s.t. `condition(x) == true`
+
 ```java
-public int search(int[] nums, int target) {
-    int low = 0, high = nums.length - 1;
+public int binarySearch(int[] arr) {
+    int low = min(searchSpace), high = max(searchSpace);
     while (low < high) {
         int mid = (low + high) >>> 1;
-        if (nums[mid] < target) {
-            low = mid + 1;
-        } else {
+        if (condition(mid)) {
             high = mid;
+        } else {
+            low = mid + 1;
         }
     }
-    return nums[low] == target ? low : -1;
+    return low;
+}
+
+// f(x) is monotonically increasing
+private boolean condition(int x) {
+    return f(x) >= 0;
 }
 ```
 
+Similarly,
+
+Maximize `x`, s.t. `condition(x) == true`
+
 ```java
-public int search(int[] nums, int target) {
-    int low = 0, high = nums.length - 1;
+public int binarySearch(int[] arr) {
+    int low = min(searchSpace), high = max(searchSpace);
     while (low < high) {
-        int mid = low + (high - low + 1) / 2;
-        if (nums[mid] > target) {
-            high = mid - 1;
-        } else {
+        int mid = (low + high + 1) >>> 1;
+        if (condition(mid)) {
             low = mid;
+        } else {
+            high = mid - 1;
         }
     }
-    return nums[low] == target ? low : -1;
+    return low;
+}
+
+// f(x) is monotonically decreasing
+private boolean condition(int x) {
+    return f(x) >= 0;
 }
 ```
 
@@ -261,30 +280,6 @@ private int findMaxRow(int[][] mat, int col) {
 ```
 
 # Generalization
-
-@zhijun_liao
-
-Minimize `x`, s.t. `condition(x) == true`
-
-```java
-public int binarySearch(int[] arr) {
-    int low = min(searchSpace), high = max(searchSpace);
-    while (low < high) {
-        int mid = (low + high) >>> 1;
-        if (condition(mid)) {
-            high = mid;
-        } else {
-            low = mid + 1;
-        }
-    }
-    return low;
-}
-
-// f(x) is monotonically increasing
-private boolean condition(int x) {
-    return f(x) >= 0;
-}
-```
 
 [Search Insert Position][search-insert-position]
 
@@ -666,30 +661,6 @@ private boolean condition(int[] nums, int penalty, int maxOperations) {
 
     // (maxOperations - operations) is monotonically increasing with respect to penalty
     return operations <= maxOperations;
-}
-```
-
-Similarly,
-
-Maximize `x`, s.t. `condition(x) == true`
-
-```java
-public int binarySearch(int[] arr) {
-    int low = min(searchSpace), high = max(searchSpace);
-    while (low < high) {
-        int mid = (low + high + 1) >>> 1;
-        if (condition(mid)) {
-            low = mid;
-        } else {
-            high = mid - 1;
-        }
-    }
-    return low;
-}
-
-// f(x) is monotonically decreasing
-private boolean condition(int x) {
-    return f(x) >= 0;
 }
 ```
 

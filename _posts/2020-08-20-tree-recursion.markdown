@@ -174,29 +174,27 @@ public int getMinimumDifference(TreeNode root) {
 
 [Find Bottom Left Tree Value][find-bottom-left-tree-value]
 
-```java
-private int bottomLeft = 0;
-private int depth = -1;
+```c++
+int bottomLeft = 0, depth = -1;
 
-public int findBottomLeftValue(TreeNode root) {
-    dfs(root, 0);
-    return bottomLeft;
-}
-
-private void dfs(TreeNode node, int d) {
+void dfs(TreeNode* node, int d) {
     if (depth < d) {
-        bottomLeft = node.val;
+        bottomLeft = node->val;
         depth = d;
     }
 
-    if (node.left != null) {
-        dfs(node.left, d + 1);
+    if (node->left != nullptr) {
+        dfs(node->left, d + 1);
     }
-    if (node.right != null) {
-        dfs(node.right, d + 1);
+    if (node->right != nullptr) {
+        dfs(node->right, d + 1);
     }
+}
 
-    return;
+public:
+int findBottomLeftValue(TreeNode* root) {
+    dfs(root, 0);
+    return bottomLeft;
 }
 ```
 
