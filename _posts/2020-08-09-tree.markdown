@@ -8,6 +8,25 @@ tags: tree
 
 A tree is an undirected graph in which any two vertices are connected by *exactly one* path. In other words, any connected graph without simple cycles is a tree.
 
+[Find the Maximum Sum of Node Values][find-the-maximum-sum-of-node-values]
+
+```c++
+long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+    long long sum = 0, cnt = 0;
+    int amendment = numeric_limits<int>::max();
+    // Alice can actually update the values of any even number of nodes
+    for (const auto& num : nums) {
+        sum += max(num ^ k, num);
+        // Increment the counter if updating the node will increase its value.
+        cnt += (num ^ k) > num;
+        // If `cnt` is odd, we either undo a change on an updated node,
+        // or do a change on an unchanged node.
+        amendment = min(amendment, abs(num - (num ^ k)));
+    }
+    return sum - cnt % 2 * amendment;
+}
+```
+
 # Terminology
 
 [Terminology](https://en.wikipedia.org/wiki/Tree_(data_structure))
@@ -158,6 +177,7 @@ public int minBuildTime(int[] blocks, int split) {
 ```
 
 [count-complete-tree-nodes]: https://leetcode.com/problems/count-complete-tree-nodes/
+[find-the-maximum-sum-of-node-values]: https://leetcode.com/problems/find-the-maximum-sum-of-node-values/
 [height-of-binary-tree-after-subtree-removal-queries]: https://leetcode.com/problems/height-of-binary-tree-after-subtree-removal-queries/
 [maximum-binary-tree]: https://leetcode.com/problems/maximum-binary-tree/
 [minimum-time-to-build-blocks]: https://leetcode.com/problems/minimum-time-to-build-blocks/

@@ -17,6 +17,11 @@ subject to $$ \sum _{i=1}^{n}w_{i}x_{i}\leq W $$ and $$ x_{i}\in \{0,1\} $$
 
 ## Template
 
+Solving a Knapsack Problem effectively hinges on accurately defining three key components within the context of the specific problem and apply the template:
+* `weight`: the constrained resource
+* `value`: the benefit of selecting certain elements
+* `f`: the transition function, which dictates the optimal strategy for resource allocation.
+
 When the "weight" is an upper bound:
 
 ```c++
@@ -33,8 +38,6 @@ The generalized form of the transition function `f` is `dp = f(dp, pick current 
 
 Remember the essence of the function is _To pick, or not to pick_.
 
-The key point of solving Knapsack Problem is to identify the meaning of `weight`, `value` and `f` under a specific condition and apply the template.
-
 When the "weight" is a lower bound:
 
 ```c++
@@ -46,6 +49,22 @@ for (int elment : elements) {
 ```
 
 See the example [Profitable Schemes][profitable-schemes].
+
+[Find the Sum of the Power of All Subsequences][find-the-sum-of-the-power-of-all-subsequences]
+
+```c++
+int sumOfPower(vector<int>& nums, int k) {
+    const int mod = 1e9 + 7;
+    vector<int> dp(k + 1);
+    dp[0] = 1;
+    for (const int& num : nums) {
+        for (int sum = k; sum >= 0; sum--) {
+            dp[sum] = (2ll * dp[sum] + (sum >= num ? dp[sum - num] : 0)) % mod;
+        }
+    }
+    return dp[k];
+}
+```
 
 ## Subset Sum Problem
 
@@ -732,6 +751,7 @@ Even if `zero` and `one` are equal, they represent different base values. This i
 [combination-sum-iv]: https://leetcode.com/problems/combination-sum-iv/
 [count-of-sub-multisets-with-bounded-sum]: https://leetcode.com/problems/count-of-sub-multisets-with-bounded-sum/
 [count-ways-to-build-good-strings]: https://leetcode.com/problems/count-ways-to-build-good-strings/
+[find-the-sum-of-the-power-of-all-subsequences]: https://leetcode.com/problems/find-the-sum-of-the-power-of-all-subsequences/
 [form-largest-integer-with-digits-that-add-up-to-target]: https://leetcode.com/problems/form-largest-integer-with-digits-that-add-up-to-target/
 [last-stone-weight-ii]: https://leetcode.com/problems/last-stone-weight-ii/
 [maximum-profit-from-trading-stocks]: https://leetcode.com/problems/maximum-profit-from-trading-stocks/

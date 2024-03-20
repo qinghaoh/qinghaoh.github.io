@@ -61,22 +61,22 @@ private String helper(int a, int b, int c, String sa, String sb, String sc) {
 
 ![Schedule](/assets/img/algorithm/task_scheduler.png)
 
-```java
-public int leastInterval(char[] tasks, int n) {
-    int[] count = new int[26];
-    int maxFreq = 0, maxFreqCount = 0;  // count of the most frequent tasks
-    for (char c : tasks) {
-        count[c - 'A']++;
-        if (maxFreq == count[c - 'A']) {
+```c++
+int leastInterval(vector<char>& tasks, int n) {
+    vector<int> freqs(26);
+    int maxFreq = 0, maxFreqCount = 0;  // Count of the most frequent tasks
+    for (const char& ch : tasks) {
+        freqs[ch - 'A']++;
+        if (maxFreq == freqs[ch - 'A']) {
             maxFreqCount++;
-        } else if (maxFreq < count[c - 'A']) {
-            maxFreq = count[c - 'A'];
+        } else if (maxFreq < freqs[ch - 'A']) {
+            maxFreq = freqs[ch - 'A'];
             maxFreqCount = 1;
         }
     }
 
-    // no idle vs has idle
-    return Math.max(tasks.length, (maxFreq - 1) * (n + 1) + maxFreqCount);
+    // No idle vs has idle
+    return max(static_cast<int>(tasks.size()), (maxFreq - 1) * (n + 1) + maxFreqCount);
 }
 ```
 

@@ -99,8 +99,7 @@ int countSubarrays(vector<int>& nums, int k) {
 
 ```c++
 ListNode* removeZeroSumSublists(ListNode* head) {
-    ListNode* dummy = new ListNode();
-    dummy->next = head;
+    ListNode* dummy = new ListNode(0, head);
 
     // {prefix sum, last node with this value}
     {% raw %}unordered_map<int, ListNode*> mp{{0, dummy}};{% endraw %}
