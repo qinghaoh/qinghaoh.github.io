@@ -346,27 +346,25 @@ public int findMaxForm(String[] strs, int m, int n) {
 
 [Profitable Schemes][profitable-schemes]
 
-```java
-private static final int MOD = (int)1e9 + 7;
-
-public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
+```c++
+int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& profit) {
+    const int mod = 1e9 + 7;
     // dp[i][j]: count of schemes with profit >= j done by exactly i members
-    int[][] dp = new int[n + 1][minProfit + 1];
+    vector<vector<int>> dp(n + 1, vector<int>(minProfit + 1));
     dp[0][0] = 1;
 
-    for (int k = 0; k < group.length; k++) {
+    for (int k = 0; k < group.size(); k++) {
         for (int i = n; i >= group[k]; i--) {
             for (int j = minProfit; j >= 0; j--) {
-                dp[i][j] = (dp[i][j] + dp[i - group[k]][Math.max(0, j - profit[k])]) % MOD;
+                dp[i][j] = (dp[i][j] + dp[i - group[k]][max(0, j - profit[k])]) % mod;
             }
         }
     }
 
-    int count = 0;
-    for (int i = 0; i < dp.length; i++) {
-        count = (count + dp[i][minProfit]) % MOD;
-    }
-    return count;
+    return accumulate(dp.begin(), dp.end(), 0,
+                [minProfit, mod](int acc, const vector<int>& vec) {
+                    return (acc + vec[minProfit]) % mod;
+                });
 }
 ```
 

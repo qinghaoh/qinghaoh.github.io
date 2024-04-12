@@ -246,6 +246,12 @@ public int maxAbsValExpr(int[] arr1, int[] arr2) {
 }
 ```
 
+[Minimize Manhattan Distances][minimize-manhattan-distances]
+
+**Maximum Manhattan Distance**
+
+$$\max_{i,j}Manhattan(P_i,P_j) = \max_{i,j}(\max(|s_i - s_j|,|d_i - d_j|))$$
+
 ## Euclidean Distance
 
 [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance): \\(L^2\\)
@@ -725,5 +731,6 @@ public int minimumBoxes(int n) {
 [median-of-two-sorted-arrays]: https://leetcode.com/problems/median-of-two-sorted-arrays/
 [minimum-area-rectangle]: https://leetcode.com/problems/minimum-area-rectangle/
 [minimum-area-rectangle-ii]: https://leetcode.com/problems/minimum-area-rectangle-ii/
+[minimize-manhattan-distances]: https://leetcode.com/problems/minimize-manhattan-distances/
 [number-of-distinct-islands-ii]: https://leetcode.com/problems/number-of-distinct-islands-ii/
 [strange-printer-ii]: https://leetcode.com/problems/strange-printer-ii/

@@ -105,22 +105,21 @@ This algorithm can be used to detect duplicate elements in an array, too.
 
 [Find the Duplicate Number][find-the-duplicate-number]
 
-```java
-public int findDuplicate(int[] nums) {
-    // finds the first meeting point
+```c++
+int findDuplicate(vector<int>& nums) {
+    // Finds the first meeting point
     int tortoise = nums[0], hare = nums[0];
     do {
         tortoise = nums[tortoise];
         hare = nums[nums[hare]];
     } while (tortoise != hare);
 
-    // resets tortoise to head
+    // Resets `tortoise` to head
     tortoise = nums[0];
     while (tortoise != hare) {
         tortoise = nums[tortoise];
         hare = nums[hare];
     }
-
     return hare;
 }
 ```
@@ -154,44 +153,40 @@ private int getNext(int n) {
 
 [Palindrome Linked List][palindrome-linked-list]
 
-```java
-public boolean isPalindrome(ListNode head) {
-    ListNode fast = head, slow = head;
-    while (fast != null && fast.next != null) {
-        fast = fast.next.next;
-        slow = slow.next;
+```c++
+bool isPalindrome(ListNode* head) {
+    ListNode *fast = head, *slow = head;
+    while (fast && fast->next) {
+        fast = fast->next->next;
+        slow = slow->next;
     }
 
-    // if the number of nodes is even, fast == null
-    // else (odd) fast != null
-    if (fast != null) {
-        slow = slow.next;
+    // If there are n nodes in the list and the nodes are 0 indexed,
+    // then `slow` is at the (n / 2)-th node.
+    // Reverse the second half list: [n/2, n)
+    ListNode *prev = slow, *tmp = nullptr;
+    slow = slow->next;
+    prev->next = nullptr;
+
+    while (slow) {
+        tmp = slow->next;
+        slow->next = prev;
+        prev = slow;
+        slow = tmp;
     }
 
-    // slow is the head of the second half
-    // if the number of nodes is odd, the second half is shorter
-    slow = reverse(slow);
+    // First node
     fast = head;
-
-    while (slow != null) {
-        if (fast.val != slow.val) {
+    // Last node
+    slow = prev;
+    while (slow) {
+        if (fast->val != slow->val) {
             return false;
         }
-        fast = fast.next;
-        slow = slow.next;
+        fast = fast->next;
+        slow = slow->next;
     }
     return true;
-}
-
-private ListNode reverse(ListNode head) {
-    ListNode prev = null;
-    while (head != null) {
-        ListNode next = head.next;
-        head.next = prev;
-        prev = head;
-        head = next;
-    }
-    return prev;
 }
 ```
 

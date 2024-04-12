@@ -127,28 +127,28 @@ A direct conslusion of this corollary is: the condition `nums[i] <= st.top()` in
 
 [Remove K Digits][remove-k-digits]
 
-```java
-public String removeKdigits(String num, int k) {
-    StringBuilder sb = new StringBuilder();
-    for (char ch : num.toCharArray()) {
+```c++
+string removeKdigits(string num, int k) {
+    string t;
+    for (const char& ch : num) {
         // Monotonically increasing stack
-        while (k > 0 && sb.length() > 0 && ch < sb.charAt(sb.length() - 1)) {
-            sb.deleteCharAt(sb.length() - 1);
+        while (k && !t.empty() && ch < t.back()) {
+            t.pop_back();
             k--;
         }
 
         // To avoid leading 0, don't push '0' if the stack is empty
-        if (sb.length() > 0 || ch > '0') {
-            sb.append(ch);
+        if (!t.empty() || ch > '0') {
+            t += ch;
         }
     }
 
     // Uses up k digits
-    while (k > 0 && sb.length() > 0) {
-        sb.deleteCharAt(sb.length() - 1);
+    while (k && !t.empty()) {
+        t.pop_back();
         k--;
     }
-    return sb.length() == 0 ? "0" : sb.toString();
+    return t.empty() ? "0" : t;
 }
 ```
 

@@ -110,23 +110,22 @@ public int catchMaximumAmountofPeople(int[] team, int dist) {
 
 [Trapping Rain Water][trapping-rain-water]
 
-```java
-public int trap(int[] height) {
+```c++
+int trap(vector<int>& height) {
     int water = 0, leftMax = 0, rightMax = 0;
-    int left = 0, right = height.length - 1;
+    int left = 0, right = height.size() - 1;
     while (left < right) {
-        // moves pointer of one side if its height is lower
-        // this ensures left and right meet at max height
-        // in this way, we avoid one pass to find the max height
+        // Increment the pointer of the shorter side to converge towards the taller side.
+        // This approach helps the left and right pointers meet at the maximum height,
+        // thus eliminating the need for an additional pass to determine the highest point.
         if (height[left] < height[right]) {
-            leftMax = Math.max(leftMax, height[left]);
+            leftMax = max(leftMax, height[left]);
             water += leftMax - height[left++];
         } else {
-            rightMax = Math.max(rightMax, height[right]);
+            rightMax = max(rightMax, height[right]);
             water += rightMax - height[right--];
         }
     }
-
     return water;
 }
 ```

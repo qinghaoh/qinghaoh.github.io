@@ -281,4 +281,3 @@ public int numberOfArithmeticSlices(int[] nums) {
 [minimum-moves-to-make-array-complementary]: https://leetcode.com/problems/minimum-moves-to-make-array-complementary/
 [minimum-number-of-increments-on-subarrays-to-form-a-target-array]: https://leetcode.com/problems/minimum-number-of-increments-on-subarrays-to-form-a-target-array/
 [shortest-unsorted-continuous-subarray]: https://leetcode.com/problems/shortest-unsorted-continuous-subarray/
-[subarrays-with-k-different-integers]: https://leetcode.com/problems/subarrays-with-k-different-integers/

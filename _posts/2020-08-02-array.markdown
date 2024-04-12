@@ -179,13 +179,13 @@ If `0 <= a[i] <= max`, where max is not too big, then we can use `int[] count = 
 
 [First Missing Positive][first-missing-positive]
 
-```java
-public int firstMissingPositive(int[] nums) {
-    int n = nums.length;
-    // expected: nums[i] = i + 1
+```c++
+int firstMissingPositive(vector<int>& nums) {
+    int n = nums.size();
+    // Expected: nums[i] = i + 1
     for (int i = 0; i < n; i++) {
         while (nums[i] > 0 && nums[i] <= n && nums[i] != nums[nums[i] - 1]) {
-            swap(nums, i, nums[i] - 1);
+            swap(nums[i], nums[nums[i] - 1]);
         }
     }
 

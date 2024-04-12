@@ -247,27 +247,27 @@ public boolean canBeValid(String s, String locked) {
 
 [Minimum Remove to Make Valid Parentheses][minimum-remove-to-make-valid-parentheses]
 
-```java
-public String minRemoveToMakeValid(String s) {
-    StringBuilder sb = new StringBuilder(s);
-    Deque<Integer> st = new ArrayDeque<>();
+```c++
+string minRemoveToMakeValid(string s) {
+    stack<int> st;
     for (int i = 0; i < s.length(); i++) {
-        char c = s.charAt(i);
-        if (c == '(') {
+        if (s[i] == '(') {
             st.push(i);
-        } else if (c == ')') {
-            if (!st.isEmpty()) {
+        }
+        if (s[i] == ')') {
+            if (!st.empty()) {
                 st.pop();
             } else {
-                sb.setCharAt(i, '*');
+                s[i] = '*';
             }
         }
     }
-
-    while (!st.isEmpty()) {
-        sb.setCharAt(st.pop(), '*');
+    while (!st.empty()) {
+        s[st.top()] = '*';
+        st.pop();
     }
-    return sb.toString().replaceAll("\\*", "");
+    s.erase(remove(s.begin(), s.end(), '*'), s.end());
+    return s;
 }
 ```
 
