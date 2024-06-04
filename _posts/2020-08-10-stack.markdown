@@ -277,32 +277,31 @@ The problem [Largest Rectangle in Histogram][largest-rectangle-in-histogram] des
 
 [Maximal Rectangle][maximal-rectangle]
 
-```java
-public int maximalRectangle(char[][] matrix) {
-    int m = matrix.length, n = matrix[0].length;
-    int area = 0;
-    int[] heights = new int[n];
-
+```c++
+int maximalRectangle(vector<vector<char>>& matrix) {
+    int m = matrix.size(), n = matrix[0].size(), area = 0;
+    vector<int> heights(n);
+    stack<int> st;
     for (int i = 0; i < m; i++) {
-        Deque<Integer> st = new ArrayDeque<>();
+        stack<int>().swap(st);
         st.push(-1);
 
         for (int j = 0; j <= n; j++) {
-            // histogram height array in each row
+            // Histogram height array in each row
             if (j < n) {
                 heights[j] = matrix[i][j] == '0' ? 0 : heights[j] + 1;
             }
 
             // 84. Largest Rectangle in Histogram
-            while (st.peek() >= 0 && (j == n || heights[j] < heights[st.peek()])) {
-                int h = heights[st.pop()];
-                int w = j - 1 - st.peek();
-                area = Math.max(area, h * w);
+            while (st.top() >= 0 && (j == n || heights[j] < heights[st.top()])) {
+                int h = heights[st.top()];
+                st.pop();
+                int w = j - 1 - st.top();
+                area = max(area, h * w);
             }
             st.push(j);
         }
     }
-
     return area;
 }
 ```
