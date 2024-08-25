@@ -1,6 +1,6 @@
 ---
 title:  "C++"
-category: c++
+category: language
 tags: c++
 mermaid: true
 ---

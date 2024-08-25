@@ -1,6 +1,6 @@
 ---
 title:  "Java"
-category: java
+category: language
 tags: java
 ---
 [Underscores in Numeric Literals][underscores-literals]

@@ -546,17 +546,17 @@ For \\(n\\)-bit integers:
 * IND-CCA
 
 **Trapdoor Functions (TDF)**
-* \\(G,F,F^{-1}\\)
-  - \\(G() \rightarrow (pk, sk)\\)
-  - \\(F(pk,\cdot)\\)
-  - \\(F^{-1}(sk,\cdot)\\)
-* Secure if \\(F\\) is a one-way function
+* \$$ G,F,F^{-1} $$
+  - \$$ G() \rightarrow (pk, sk) $$
+  - \$$ F(pk,\cdot) $$
+  - \$$ F^{-1}(sk,\cdot) $$
+* Secure if $$ F $$ is a one-way function
 * Public-key encryption
-  - \\((G,E,D)\\): ISO standard
-  - \\(E(pk,m)\\): \\(x \xleftarrow{R} X\\), \\(y \leftarrow F(pk,x)\\), \\(k \leftarrow H(x)\\), \\(c \leftarrow E_s(k,m)\\); output \\((y,c)\\)
-  - \\(D(sk,(y,c)\\): \\(x \leftarrow F^{-1}(sk,y)\\), \\(k \leftarrow H(x)\\), \\(m \leftarrow D_s(k,c)\\); output \\(m\\)
-  - Secure TDF + \\((E_s,D_s)\\) auth. enc. + \\(H\\) is random oracle \\(\Rightarrow\\) \\((G,E,D)\\) is \\(CCA^{ro}\\) secure
-  - *Never* encrypt by applying \\(F\\) directly to plaintext! (e.g. Textbook RSA)
+  - $$ (G,E,D) $$: ISO standard
+  - $$ E(pk,m) $$: $$ x \xleftarrow{R} X $$, $$ y \leftarrow F(pk,x) $$, $$ k \leftarrow H(x) $$, $$ c \leftarrow E_s(k,m) $$; output $$ (y,c) $$
+  - $$ D(sk,(y,c) $$: $$ x \leftarrow F^{-1}(sk,y) $$, $$ k \leftarrow H(x) $$, $$ m \leftarrow D_s(k,c) $$; output $$ m$$
+  - Secure TDF + $$ (E_s,D_s) $$ auth. enc. + $$ H $$ is random oracle $$ \Rightarrow (G,E,D) $$ is $$ CCA^{ro} $$ secure
+  - *Never* encrypt by applying $$ F $$ directly to plaintext! (e.g. Textbook RSA)
     * Deterministic
     * Many attacks exist
 
@@ -568,40 +568,40 @@ For \\(n\\)-bit integers:
 ```
 
 **RSA Trapdoor Permutation**
-* \\(G()\\): \\(p,q \approx 1024\\) bits, \\(N = pq\\), \\(e \cdot d \equiv 1 \pmod{\varphi(N)})\\); output \\(pk = (N,e)\\), \\(sk = (N,d)\\)
-* \\(F(pk,x) = RSA(x) \equiv x^e \pmod{N}\\)
-* \\(F^{-1}(sk,x) \equiv y^d \pmod{N}\\)
+* $$ G() $$: $$ p,q \approx 1024 $$ bits, $$ N = pq $$, $$ e \cdot d \equiv 1 \pmod{\varphi(N)}) $$; output $$ pk = (N,e) $$, $$ sk = (N,d) $$
+* \$$ F(pk,x) = RSA(x) \equiv x^e \pmod{N} $$
+* \$$ F^{-1}(sk,x) \equiv y^d \pmod{N} $$
 * Attacks on textbook RSA
-  - Exhausive search: if \\(k = k_1 \cdot k_2\\) (prob. \\(\approx\\) 20%), \\(c/k_1^e \equiv k_2^e \pmod{N}\\)
+  - Exhausive search: if $$ k = k_1 \cdot k_2 $$ (prob. $$ \approx $$ 20%), $$ c/k_1^e \equiv k_2^e \pmod{N} $$
 
 **PKCS #1**
 * ISO standard is not often used
-* E.g. preprocess a symmetric key \\(k\\) to 2048 bit then use RSA() to encrypt it
+* E.g. preprocess a symmetric key $$ k $$ to 2048 bit then use RSA() to encrypt it
 * [PKCS1 v1.5](https://datatracker.ietf.org/doc/html/rfc2313#section-8.1)
   - Bleichenbacher Attack
     * Test if the 16 MSBs of plaintext = `02`
-    * \\(c' \leftarrow r^e \cdot c = (r \cdot PKCS1(m))^e\\)
+    * \$$ c' \leftarrow r^e \cdot c = (r \cdot PKCS1(m))^e $$
     * HTTPS Defense (RFC 5246): return a random string `R` of 46 bytes if decryption fails 
 * PKCS1 v2.0: OAEP
   - ![OAEP RFC 8017](https://upload.wikimedia.org/wikipedia/commons/8/8f/OAEP_encoding_schema.svg){: width="400"}
   - Check pad on decryption
-  - *RSA* is trapdoor permutation + MGFs are random oracles \\(\Rightarrow\\) RSA-OAEP is CCA secure
+  - *RSA* is trapdoor permutation + MGFs are random oracles $$ \Rightarrow $$ RSA-OAEP is CCA secure
     * The theorem is false if you use general trapdoor permutation
   - OAEP+
     * General trapdoor permutation
-    * During decryption validate \\(W(m,r)\\) field
+    * During decryption validate $$ W(m,r) $$ field
   - SAEP+
-    * RSA \\(e = 3\\)
+    * RSA $$ e = 3 $$
     * One MGF
-    * During decryption validate \\(W(m,r)\\) field
+    * During decryption validate $$ W(m,r) $$ field
   
 **RSA One-Way Function**
-* Best known algorithm to compute e'th roots modulo \\(N\\)
-  - Step 1: factor \\(N\\) (hard)
-  - Step 2: compute e'th roots modulo \\(p\\) and \\(q\\) (easy)
-* Reduction: efficient algorithm for e'th roots mod \\(N\\) \\(\Rightarrow\\) efficient algorithm for factoring \\(N\\)
+* Best known algorithm to compute e'th roots modulo $$ N $$
+  - Step 1: factor $$ N $$ (hard)
+  - Step 2: compute e'th roots modulo $$ p $$ and $$ q $$ (easy)
+* Reduction: efficient algorithm for e'th roots mod $$ N $$ $$ \Rightarrow $$ efficient algorithm for factoring $$ N $$
   - Unknown
-  - \\(e = 2 \Rightarrow\\) factoring \\(N\\), however, it can't be used in RSA
+  - $$ e = 2 \Rightarrow $$ factoring $$ N $$, however, it can't be used in RSA
 * Caveats
   - Wiener: if $$ d < N^{0.25} $$, then RSA is insecure
     * $$ \lvert e/N - k/d \rvert \le 1/2d^2 $$: difference is so small
@@ -640,22 +640,22 @@ For \\(n\\)-bit integers:
 
 **ElGamal Security**
 * Computational Diffie-Hellman (CDH) Assumption
-  - \\(\Pr[A(g,g^a,g^b) = g^{ab}] < negligible\\)
+  - \$$ \Pr[A(g,g^a,g^b) = g^{ab}] < negligible $$
 * Hash Diffie-Hellman (HDH) Assumption
-  - \\((g,g^a,g^b,H(g^b,g^{ab})) \approx_{p} (g,g^a,g^b,R)\\)
-  - Slightly stronger: CDH is easy in \\(G \Rightarrow\\) HDH is easy in \\((G,H) \enspace \forall H, \lvert Im(H) \rvert \ge 2\\)
+  - \$$ (g,g^a,g^b,H(g^b,g^{ab})) \approx_{p} (g,g^a,g^b,R) $$
+  - Slightly stronger: CDH is easy in $$ G \Rightarrow $$ HDH is easy in $$ (G,H) \enspace \forall H, \lvert Im(H) \rvert \ge 2 $$
   - ElGamal is sem. sec. under HDH
 * Interactive Diffie-Hellman (IDH)
   - Stronger; needed to prove CCA security
-  - Adv. can query \\(u_1,v_1\\) and Chal. returns 1 if \\((u_1)^a=v_1\\)
-  - IDH + \\((E_s,D_s)\\) auth. enc. + \\(H\\) random oracle \\(\Rightarrow\\) ElGamal is \\(CCA^{ro}\\) secure
+  - Adv. can query $$ u_1,v_1 $$ and Chal. returns 1 if $$ (u_1)^a=v_1 $$
+  - IDH + $$ (E_s,D_s) $$ auth. enc. + $$ H $$ random oracle $$ \Rightarrow $$ ElGamal is $$ CCA^{ro} $$ secure
 * Prove CCA security based on CDH?
   - Option 1: use group $$ G $$ where CDH = IDH (e.g. bilinear group)
   - Option 2: twin ElGamal
     * KeyGen: $$ g \xleftarrow{R} G $$, $$ a1,a2 \xleftarrow{R} [0,n) $$; output $$ sk=(a1,a2), pk=(g,h_1=g^{a1},h_2=g^{a2}) $$
     * $$ E(pk=(g,h_1,h_2),m) $$: $$ b \xleftarrow{R} [0,n) $$, $$ k \leftarrow H(g^b,h_1^b,h_2^b) $$, $$c \leftarrow E_s(k,m) $$; output $$ (u=g^b,c) $$
     * $$ D(sk=(a1,a2),(u,c)) $$: $$ k \leftarrow H(u,u^{a1},u^{a2}) $$, $$ m \leftarrow D_s(k,c) $$; output $$ m $$
-    * CDH + \\((E_s,D_s)\\) auth. enc. + \\(H\\) random oracle \\(\Rightarrow\\) twin ElGamal is \\(CCA^{ro}\\) secure
+    * CDH + $$ (E_s,D_s) $$ auth. enc. + $$ H $$ random oracle $$ \Rightarrow $$ twin ElGamal is $$ CCA^{ro} $$ secure
     * Cost: one more exp. during enc./dec.
     * No one knows if it is worth it...
 * Prove CCA security without random oracles
