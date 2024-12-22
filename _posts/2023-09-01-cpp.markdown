@@ -1,0 +1,309 @@
+---
+title:  "C++"
+category: language
+tags: c++
+mermaid: true
+---
+
+Dan Saks. (2001). _[Lvalues and Rvalues](https://www.embedded.com/lvalues-and-rvalues/)_
+: * Lvalue-ness is a compile-time property
+  * Every expression is either an lvalue or an rvalue
+  * An object is a manipulatable region of storage; an lvalue is an expression referring to an object
+  * Compilers can assume that rvalues don’t necessarily occupy storage
+    + Exception: in C++, rvalues of a class type do refer to objects
+  * Assignment
+    + The left operand must be an lvalue
+    + The right operand can be an lvalue (lvalue-to-rvalue conversion) or rvalue
+
+David Anderson. (1994). _[The ``Clockwise/Spiral Rule''](https://c-faq.com/decl/spiral.anderson.html)_
+: A technique to parse C declarations
+
+```mermaid
+classDiagram
+    ExpressionValue <|-- glvalue
+    ExpressionValue <|-- rvalue
+    glvalue <|-- lvalue
+    glvalue <|-- xvalue
+    rvalue <|-- prvalue
+    rvalue <|-- xvalue
+```
+
+* glvalue
+  + may be implicitly converted to prvalue
+  + may be polymorphic
+  + can have incomplete type
+
+* rvalue
+  + cannot be taken by address-of operator
+  + cannot be used as left-hand operand of assignment and compound assignment operator
+
+lvalue-to-rvalue conversion
+glvalue -> prvalue
+
+A reference is essentially a pointer that’s automatically dereferenced each time it’s used.
+
+# Object
+
+## Storage Duration
+
+[Storage duration](https://en.cppreference.com/w/cpp/language/storage_duration)
+
+```mermaid
+graph TD
+    subgraph Specifiers
+    no_specifier[no specifier]
+    static_sp[static]
+    extern
+    thread_local
+    classDef Specifier fill:#cad1af,stroke:#333,stroke-width:2px;
+    class auto,static_sp,extern,thread_local Specifier;
+    style no_specifier fill:#cad1af,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    end
+
+    subgraph Storage Duration
+    automatic
+    static_sd[static]
+    thread
+    dynamic
+    classDef StorageDuration fill:#ffa700,stroke:#333,stroke-width:2px;
+    class automatic,static_sd,thread,dynamic StorageDuration;
+    end
+
+    subgraph Linkage
+    internal
+    external
+    module
+    end
+
+    subgraph Scopes
+    block_sc[[block]]
+    namespace_sc[[namespace]]
+    classDef Scope fill:#ffb7c5,stroke:#333,stroke-width:2px;
+    class block_sc,namespace_sc Scope;
+    end
+    
+    no_specifier--->automatic
+    static_sp--->static_sd
+    static_sp--->thread
+    extern--->static_sd
+    extern--->thread
+    thread_local--->thread
+
+    internal---static_sp
+    internal-.extern names in <br> a. an unnamed namespace or <br>b. a namespace within an unnamed namespace.-extern
+    external-.static class members not in an unamed namespace.-static_sp
+    external---extern
+
+    automatic---block_sc
+    static_sd---namespace_sc
+```
+
+| Storage Duration | Duration | Object Initialization
+| ***automatic*** | Enclosing block scope | |
+| ***static*** | Program | |
+| ***thread*** | Thread | |
+| ***dynamic*** | Dynamic memory allocation | new-expression |
+
+```mermaid
+classDiagram
+    Container <|-- AllocatorAwareContainer
+    Container <|-- ReversibleContainer
+    AllocatorAwareContainer <|-- AssociativeContainer
+    AllocatorAwareContainer <|-- UnorderedAssociativeContainer
+    AssociativeContainer <|.. `std::map`
+    UnorderedAssociativeContainer <|.. `std::unordered_map`
+
+    AssociativeContainer o-- Compare
+    Predicate <|-- BinaryPredicate
+    Compare o-- BinaryPredicate
+
+    UnorderedAssociativeContainer o-- Hash
+    UnorderedAssociativeContainer o-- BinaryPredicate
+    FunctionObject <|-- Hash
+    CopyConstructible <|-- Hash
+    Destructible <|-- Hash
+
+    MoveConstructible <|-- CopyConstructible
+
+    class AssociativeContainer{
+        +Key
+        +Compare
+    }
+    class UnorderedAssociativeContainer{
+        +Key
+        +Hash
+        +BinaryPredicate
+    }
+    class ReversibleContainer{
+        +LegacyBidirectionalIterator
+        +LegacyRandomAccessIterator
+    }
+
+    class Compare{
+        +BinaryPredicate
+        +comp(a, b)
+        +equiv(a, b)
+    }
+    note for Compare "strict weak ordering"
+
+    class Predicate{
+        +pred(*iter)
+    }
+
+    class BinaryPredicate{
+        +bin_pred(*iter1, *iter2)
+        +bin_pred(*iter1, value)
+    }
+
+    class Hash{
+        +h(k)
+    }
+```
+
+```mermaid
+---
+title: Implicit conversion sequence
+---
+flowchart TD
+    A([start]) --> B{standard?}
+    B -->|Yes| C[standard conversion sequence]
+    B -->|No| D{user-defined?}
+    C --> D
+    D -->|Yes| E[user-defined conversion]
+    D -->|No| F([End])
+    E --> G[standard conversion sequence]
+    G --> F
+```
+
+```mermaid
+---
+title: Standard conversion sequence
+---
+flowchart LR
+    A([start]) --> B{conversion?}
+    B -->|Yes| C[lvalue-to-rvalue conversion\narray-to-pointer conversion\nfunction-to-pointer conversion]
+    B -->|No| D{numeric?}
+    C --> D
+    D -->|Yes| E[numeric promotion\nnumeric conversion]
+    D -->|No| F{function pointer?}
+    E --> F
+    F -->|Yes| G[function pointer conversion]
+    F -->|No| H{qualification?}
+    G --> H
+    H -->|Yes| I[qualification conversion]
+    H -->|No| J([End])
+    I --> J
+```
+
+```c++
+using ll = long long;
+
+// min
+min_element(v.begin(), v.end());
+min_element(v, v + n);
+min_element(begin(v), end(v));
+ranges::min_element(v);
+min({a,b,c});  // initializer list
+
+// index of max
+distance(v.begin(), ranges::max_element(v));
+
+// sort
+sort(v.begin(), v.end());
+// descending order
+sort(v.begin(), v.end(), greater{});
+ranges::sort(v);
+ranges::sort(v, ranges::greater());
+// sort with projection
+ranges::sort(indices, greater<int>(), [&](int i){ return *ranges::max_element(queries[i]); });
+
+// sum
+reduce(v.begin(), v.end());
+reduce(v.begin(), v.end(), 0);
+reduce(v.begin(), v.end(), 0ll);
+reduce(v.begin() + 1, v.end() + 3);
+
+// reverse
+ranges::reverse(v);
+
+// fill
+ranges::fill(v);
+
+// accumulate
+accumulate(dp.begin() + l, dp.begin() + r + 1, 0, [&](int a, int b){ return (a + b) % mod; });
+
+// set
+set<int> s(v.begin(), v.end());
+// set intersection
+set<int> common;
+set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(common, common.begin()));
+
+// binary search
+// lower_bound: iterator to first element >= v
+// upper_bound: iterator to first element > v
+auto it = upper_bound(rbegin(st), rend(st), a, [&](int i, int j){ return heights[i] < heights[j]; }); // reverse order
+res[i] = it == rend(st) ? -1 : *it;
+
+ranges::upper_bound(st, a, [&](int i, int j){ return heights[i] < heights[j]; });
+
+// bit count
+bitset<32> bs(num);
+bs.count();
+// or
+popcount(static_cast<unsigned_int>(num));
+// or, gcc
+__builtin_popcount(num);
+
+// min heap
+priority_queue<int, vector<int>, greater<int>> pq;
+
+// priority queue with lambda
+auto cmp = [&](const pair<int, int>& a, const pair<int, int>& b) {
+    return values[a.first][a.second] < values[b.first][b.second];
+};
+priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pq(cmp);
+
+// string
+if (string("aeiouAEIOU").find(ch) == string::npos) {}  // no matches were found
+
+// descending map
+map<int, int, greater<int>> mp;
+
+// string
+s.length() == s.size();
+basic_string(size_type count, CharT ch, const Allocator& alloc = Allocator())
+
+// find
+ranges::find(nums, k) - nums.begin();
+
+// count
+count(s.begin(), s.end(), c);
+count_if(nums.begin(), nums.end(), [k](int num) { return num < k; });
+
+// regex
+regex_match(s, regex("-?\\d+"));
+```
+
+```
+     |  0  |  1  |  2  |   3   |
+rend  begin              rbegin   end
+```
+
+Class type:
+* `class`
+* `struct`
+* `union`
+
+Enumeration type:
+* `enum`
+* `enum class`
+* `enum struct`
+
+Imcomplete types: `sizeof` is unknown.
+* `void`
+* Incompletely-defined object types
+  + class type: declared but not defined
+  + array of unkown bound
+  + array of elements of incomplete type
+  + enumeration type: from declaration until its underlying type is determined
+

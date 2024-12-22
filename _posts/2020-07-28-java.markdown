@@ -1,0 +1,215 @@
+---
+title:  "Java"
+category: language
+tags: java
+---
+[Underscores in Numeric Literals][underscores-literals]
+
+In Java SE 7 and later, any number of underscore characters (_) can appear anywhere between digits in a numerical literal. This feature enables you, for example, to separate groups of digits in numeric literals, which can improve the readability of your code.
+
+```java
+private static int MOD = 1_000_000_007
+```
+
+[Enhanced For][for]
+
+The for statement also has another form designed for iteration through *Collections* and *arrays* This form is sometimes referred to as the enhanced for statement, and can be used to make your loops more compact and easy to read.
+
+## Multidimensional Array
+```java
+int[][] matrix = new int[r][c];
+// r == matrix.length
+// c == matrix[0].length
+```
+
+[Remainder Operator %][remainder-operator]
+
+In C and C++, the remainder operator accepts only integral operands, but in the Java programming language, it also accepts floating-point operands.
+
+## Integer
+
+1. The remainder operation can be negative only if the dividend is negative, and can be positive only if the dividend is positive.
+2. The magnitude of the result is always less than the magnitude of the divisor.
+
+```java
+(a / b) * b + (a % b) == a
+```
+
+```java
+dividend / divisor
+result = Math.abs(dividend) / Math.abs(divisor)  // towards 0
+remainder = Integer.signum(dividend) * (Math.abs(dividend) % Math.abs(divisor))
+```
+
+```java
+int a = 5 % 3;  // 2
+int b = 5 / 3;  // 1
+
+int c = 5 % (-3);  // 2
+int d = 5 / (-3);  // -1
+
+int e = (-5) % 3;  // -2
+int f = (-5) / 3;  // -1
+
+int g = (-5) % (-3);  // -2
+int h = (-5) / (-3);  // 1
+```
+
+[floorDiv](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Math.html#floorDiv(int,int))
+
+Returns the largest (closest to positive infinity) int value that is less than or equal to the algebraic quotient.
+
+Special case:
+
+```java
+floorDiv(Integer.MIN_VALUE, -1) == Integer.MIN_VALUE
+```
+
+Examples:
+
+```java
+floorDiv(4, 3) == 1
+floorDiv(-4, 3) == -2
+```
+
+[floorMod](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Math.html#floorMod(int,int))
+
+```java
+floorDiv(x, y) * y + floorMod(x, y) == x
+```
+
+The difference in values between floorMod and the % operator is due to the difference between floorDiv that returns the integer less than or equal to the quotient and the / operator that returns the integer closest to zero.
+
+Examples:
+If the signs of the arguments are the same, the results of floorMod and the % operator are the same.
+
+```java
+floorMod(+4, +3) == +1;   and (+4 % +3) == +1
+floorMod(-4, -3) == -1;   and (-4 % -3) == -1
+```
+
+If the signs of the arguments are different, the results differ from the % operator.
+
+```java
+floorMod(+4, -3) == -2;   and (+4 % -3) == +1
+floorMod(-4, +3) == +2;   and (-4 % +3) == -1
+```
+
+# Division
+
+**Ceil**
+
+```java
+Math.ceil(a / (double)b) = (a + b - 1) / b
+```
+
+**By Zero**
+
+* Double/Float division: the output is Infinity, the basic reason behind that it implements the floating point arithmetic algorithm which specifies a special values like “Not a number” OR “infinity” for “divided by zero cases” as per IEEE 754 standards.
+* Integer division: throws ArithmeticException.
+
+**Floating-point**
+
+The Java programming language defines % on floating-point operations to behave in a manner analogous to that of the integer remainder operator.
+
+```java
+double a = 5.0 % 3.0;  // 2.0
+
+double b = 5.0 % (-3.0);  // 2.0
+
+double c = (-5.0) % 3.0;  // -2.0
+
+double d = (-5.0) % (-3.0);  // -2.0
+```
+
+# Queue
+[Queue][queue]
+
+Queue implementations generally do not allow insertion of ***null*** elements, although some implementations, such as **LinkedList**, do not prohibit insertion of null. Even in the implementations that permit it, null should not be inserted into a Queue, as null is also used as a special return value by the poll method to indicate that the queue contains no elements.
+
+# Local Variable Type Interface
+
+[Local variable type interface](https://docs.oracle.com/en/java/javase/13/language/local-variable-type-inference.html)
+
+# Boolean Logical Operators
+
+[Boolean Logical Operators &, ^, and \|](https://docs.oracle.com/javase/specs/jls/se15/html/jls-15.html#jls-15.22.2): no short-circuit
+
+# Points
+
+Generally speaking, we need an N-dimensional array to represent an N-dimensional point. There are a few ways of representing a point in Java.
+
+* `T[]`
+
+Arrays can't be used as map keys. Alternatively, the following can be used as map keys:
+
+* [Point](https://docs.oracle.com/en/java/javase/18/docs/api/java.desktop/java/awt/Point.html)
+* `List`
+* Special character delimited String, e.g. `(x, y)` can be represented as `x#y`, where `#` is the delimiter.
+
+[Perfect Rectangle][perfect-rectangle]
+
+```java
+public boolean isRectangleCover(int[][] rectangles) {
+    Set<String> set = new HashSet<String>();
+    int x1 = Integer.MAX_VALUE, x2 = Integer.MIN_VALUE, y1 = Integer.MAX_VALUE, y2 = Integer.MIN_VALUE;
+    int area = 0;
+    for (int[] r : rectangles) {
+        // computes the 4 corners
+        x1 = Math.min(r[0], x1);
+        y1 = Math.min(r[1], y1);
+        x2 = Math.max(r[2], x2);
+        y2 = Math.max(r[3], y2);
+
+        area += (r[2] - r[0]) * (r[3] - r[1]);
+
+        // xy, xb, ab, ay
+        // bottom-left, top-left, top-right, bottom-right
+        String k1 = r[0] + "#" + r[1], k2 = r[0] + "#" + r[3], k3 = r[2] + "#" + r[3], k4 = r[2] + "#" + r[1];
+
+        // count of all the points should be even
+        // cancels out even occurrences by:
+        // - adds if absent
+        // - removes if present
+        if (!set.add(k1)) {
+            set.remove(k1);
+        }
+        if (!set.add(k2)) {
+            set.remove(k2);
+        }
+        if (!set.add(k3)) {
+            set.remove(k3);
+        }
+        if (!set.add(k4)) {
+            set.remove(k4);
+        }
+    }
+
+    // count of all the four corner points should be one
+    if (!set.contains(x1 + "#" + y1) ||
+        !set.contains(x1 + "#" + y2) ||
+        !set.contains(x2 + "#" + y1) ||
+        !set.contains(x2 + "#" + y2) ||
+        set.size() != 4) {
+        return false;
+    }
+
+    return area == (x2-x1) * (y2-y1);
+}
+```
+
+# Comparator
+
+There are a few ways of using comparator as lamdba expression:
+
+```java
+Arrays.sort(pairs, (a, b) -> a[1] - b[1]);
+Arrays.sort(pairs, (a, b) -> Integer.compare(a[1], b[1]));
+Arrays.sort(pairs, Comparator.comparingInt(a -> a[1]);
+```
+
+[for]: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html
+[perfect-rectangle]: https://leetcode.com/problems/perfect-rectangle/
+[queue]: https://docs.oracle.com/javase/8/docs/api/java/util/Queue.html
+[remainder-operator]: https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.17.3
+[underscores-literals]: https://docs.oracle.com/javase/7/docs/technotes/guides/language/underscores-literals.html

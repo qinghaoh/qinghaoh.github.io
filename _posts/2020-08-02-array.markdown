@@ -1,0 +1,1052 @@
+---
+title:  "Array"
+category: algorithm
+tags: array
+---
+
+# Iteration
+
+while iterating through an array, keep a running state to some variables.
+
+[Maximum Value of an Ordered Triplet II][maximum-value-of-an-ordered-triplet-ii]
+
+```c++
+long long maximumTripletValue(vector<int>& nums) {
+    long long res = 0;
+    // maxi: max(nums[i])
+    // maxd: max(nums[i] - nums[j])
+    int maxi = 0, maxd = 0;
+    for (int& num : nums) {
+        // The order of "res -> maxd -> maxi" is a trick to make code concise
+        res = max(res, (long long)maxd * num);
+        maxd = max(maxd, maxi - num);
+        maxi = max(maxi, num);
+    }
+    return res;
+}
+```
+
+[Find Indices With Index and Value Difference II][find-indices-with-index-and-value-difference-ii]
+
+```c++
+vector<int> findIndices(vector<int>& nums, int indexDifference, int valueDifference) {
+    int n = nums.size(), mini = 0, maxi = 0;
+    for (int i = indexDifference; i < n; i++) {
+        if (nums[i - indexDifference] < nums[mini]) {
+            mini = i - indexDifference;
+        }
+        if (nums[i - indexDifference] > nums[maxi]) {
+            maxi = i - indexDifference;
+        }
+
+        // The key is to understand the relation between mini, maxi and current
+        if (nums[i] - nums[mini] >= valueDifference) {
+            return {mini, i};
+        }
+        if (nums[maxi] - nums[i] >= valueDifference) {
+            return {maxi, i};
+        }
+    }
+    return {-1, -1};
+}
+```
+
+[Minimum Money Required Before Transactions][minimum-money-required-before-transactions]
+
+```java
+public long minimumMoney(int[][] transactions) {
+    // the worst order is all losing transcations (cost > cashback) are before winning transactions
+    // (cost <= cashback)
+    // sum of lost money in losing transactions
+    long lost = 0;
+    int extra = 0;
+    for (int[] t : transactions) {
+        lost += Math.max(t[0] - t[1], 0);
+        extra = Math.max(extra, Math.min(t[0], t[1]));
+    }
+    return lost + extra;
+}
+```
+
+To understand the above solution, see the unfolded version:
+
+```java
+public long minimumMoney(int[][] transactions) {
+    // the worst order is all losing transcations (cost > cashback) are before winning transactions
+    // (cost <= cashback)
+    // sum of lost money in losing transactions
+    long lost = 0;
+    int i = 0, j = 0;
+    for (int[] t : transactions) {
+        // we can't use the cashback of the last losing transaction
+        // so we need to add this cashback to the initial money.
+        lost += Math.max(t[0] - t[1], 0);
+        if (t[0] - t[1] >= 0) {
+           // finds the max cashback we can get after all losing transactions
+           i = Math.max(i, t[1]);
+        } else {
+           // finds the max cost from all winning transactions
+           j = Math.max(j, t[0]);
+       }
+    }
+    // if the max cashback is in the last transaction,
+    // we have to add an extra of max(cachback) (= i)
+    return lost + i + Math.max(0, j - i);
+    // = lost + Math.max(i, j)
+    // = loat + Math.max(min(t[0], t[1]))
+}
+```
+
+[Patching Array][patching-array]
+
+```java
+public int minPatches(int[] nums, int n) {
+    int patches = 0, i = 0;
+    // [1, miss) is already covered,
+    // and `miss` is the smallest missing number
+    long miss = 1;
+    while (miss <= n) {
+        if (i < nums.length && nums[i] <= miss) {
+            // Extends the range to [1, miss + nums[i])
+            miss += nums[i++];
+        } else {
+            // In this branch, we've run out of numbers in the array that can possibily sum up to `n`.
+            // so, we need to patch a number x.
+            // After patching, [1, miss) and [x, x + miss) are both covered.
+            // x <= miss, otherwise `miss` still can't be covered after patching.
+            // Therefore, the new covered range is [1, x + miss).
+            // Pick x = miss to maximize the range.
+            miss += miss;
+            patches++;
+        }
+    }
+    return patches;
+}
+```
+
+# Circular
+
+[Josephus problem](https://en.wikipedia.org/wiki/Josephus_problem)
+
+[Find the Winner of the Circular Game][find-the-winner-of-the-circular-game]
+
+```java
+public int findTheWinner(int n, int k) {
+    // Josephus Problem
+    // f(n, k) = (f(n - 1, k) + k) % n
+    // where f(n, k) assumes we start from the first seat
+    int res = 0;
+    for (int i = 1; i <= n; i++) {
+        res = (res + k) % i;
+    }
+    return res + 1;
+}
+```
+
+# Brute Force
+
+[Count The Repetitions][count-the-repetitions]
+
+```java
+public int getMaxRepetitions(String s1, int n1, String s2, int n2) {
+    char[] array1 = s1.toCharArray(), array2 = s2.toCharArray();
+    int count1 = 0, count2 = 0, i = 0, j = 0;
+
+    while (count1 < n1) {
+        if (array1[i] == array2[j]) {
+            if (++j == array2.length) {
+                j = 0;
+                count2++;
+            }
+        }
+        if (++i == array1.length) {
+            i = 0;
+            count1++;
+        }
+    }
+
+    return count2 / n2;
+}
+```
+
+# Buckets
+
+Count each element in an array `int[] a`.
+
+If `0 <= a[i] <= max`, where max is not too big, then we can use `int[] count = new int[max + 1]` as buckets, instead of `Map<Integer, Integer>` 
+
+# Cycle
+
+[First Missing Positive][first-missing-positive]
+
+```c++
+int firstMissingPositive(vector<int>& nums) {
+    int n = nums.size();
+    // Expected: nums[i] = i + 1
+    for (int i = 0; i < n; i++) {
+        while (nums[i] > 0 && nums[i] <= n && nums[i] != nums[nums[i] - 1]) {
+            swap(nums[i], nums[nums[i] - 1]);
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (nums[i] != i + 1) {
+            return i + 1;
+        }
+    }
+    return n + 1;
+}
+```
+
+[Rotate Array][rotate-array]
+
+![Example](/assets/img/algorithm/rotate_array.png)
+
+```java
+public void rotate(int[] nums, int k) {
+    k %= nums.length;
+    int start = 0, count = 0;
+    while (count != nums.length) {
+        int index = start, curr = nums[index];
+        do {
+            index = (index + k) % nums.length;
+            int tmp = nums[index];
+            nums[index] = curr;
+            curr = tmp;
+            count++;
+        } while (index != start);
+        start++;
+    }
+    return;
+}
+```
+
+[Make K-Subarray Sums Equal][make-k-subarray-sums-equal]
+
+```java
+for (int i = 0; i < n; i++) {
+    for (int j = i; arr[j] > 0; j = (j + k) % n) {
+        ...
+        arr[j] = 0;
+    }
+    ...
+}
+```
+
+[Shift 2D Grid][shift-2d-grid]
+
+[Smallest Rotation with Highest Score][smallest-rotation-with-highest-score]
+
+```java
+public int arrayNesting(int[] nums) {
+    int max = 0;
+    for (int i = 0; i < nums.length; i++) {
+        int length = 0, j = i;
+        // finds cycles
+        while (nums[j] >= 0) {
+            int next = nums[j];
+            // marks nums[j] as visited
+            nums[j] = -1;
+            j = next;
+            length++;
+        }
+        max = Math.max(max, length);
+    }
+    return max;
+}
+```
+
+[Array Nesting][array-nesting]
+
+```java
+public int arrayNesting(int[] nums) {
+    int max = 0;
+    for (int i = 0; i < nums.length; i++) {
+        int length = 0, j = i;
+        // finds cycles
+        while (nums[j] >= 0) {
+            int next = nums[j];
+            // marks nums[j] as visited
+            nums[j] = -1;
+            j = next;
+            length++;
+        }
+        max = Math.max(max, length);
+    }
+    return max;
+}
+```
+
+[Reverse Words in a String II][reverse-words-in-a-string-ii]
+
+```java
+public void reverseWords(char[] s) {
+    reverse(s, 0, s.length);
+
+    int start = 0, end = 0;
+    while (end < s.length) {
+        if (s[end] == ' ') {
+            reverse(s, start, end);
+            start = end + 1;
+        }
+        end++;
+    }
+    reverse(s, start, end);
+}
+
+private void reverse(char[] s, int start, int end) {
+    int i = start, j = end - 1;
+    while (i < j) {
+        char tmp = s[i];
+        s[i++] = s[j];
+        s[j--] = tmp;
+    }
+}
+```
+
+[Sort Array by Moving Items to Empty Space][sort-array-by-moving-items-to-empty-space]
+
+```java
+public int sortArray(int[] nums) {
+    return Math.min(sortArray(nums, 0), sortArray(nums, 1));
+}
+
+private int sortArray(int[] nums, int s) {
+    int n = nums.length;
+    int[] indices = new int[n];
+    for (int i = 0; i < n; i++) {
+        indices[nums[i]] = i;
+    }
+
+    // sorted is the number of already sorted elements
+    int count = 0, sorted = 1;
+    while (true) {
+        // element to swap with 0
+        // if 0 is already in the right position, finds the first off-position element and swaps 0 with it
+        int num = indices[0] + s;
+        // otherwise swaps 0 with the element which is supposed to be here
+        if (indices[0] == s * (n - 1)) {
+            while (indices[sorted] == sorted - s) {
+                if (++sorted == n) {
+                    return count;
+                }
+            }
+            num = sorted;
+        }
+
+        int tmp = indices[0];
+        indices[0] = indices[num];
+        indices[num] = tmp;
+        count++;
+    }
+}
+```
+
+# Greedy
+
+[Gas Station][gas-station]
+
+```java
+public int canCompleteCircuit(int[] gas, int[] cost) {
+    int n = gas.length, tank = 0, minIndex = 0, min = Integer.MAX_VALUE;
+    // finds the station where the tank contains least gas,
+    // then the next station should be the start
+    for (int i = 0; i < n; i++) {
+        tank += (gas[i] - cost[i]);
+
+        if (tank < min) {
+            minIndex = i;
+            min = tank;
+        }
+    }
+
+    return tank < 0 ? -1 : (minIndex + 1) % n;
+}
+```
+
+# Flips
+
+[Maximum Matrix Sum][maximum-matrix-sum]
+
+1. If there is a pair of adjacent negative numbers, just flip both negative signs
+1. If the remaining negative numbers are isolated from each other, just flip them and their adjacent positive numbers, until negative numbers are adjacent. Then go back to #1
+1. In the end, if there will be at most negative sign
+
+[Minimum Number of Flips to Make the Binary String Alternating][minimum-number-of-flips-to-make-the-binary-string-alternating]
+
+```java
+public int minFlips(String s) {
+    int n = s.length();
+    // [parity][binary char]
+    int[][] count = new int[2][2]; 
+    for (int i = 0; i < s.length(); i++) {
+        count[i % 2][s.charAt(i) - '0']++;
+    }
+
+    // '0' at odd + '1' at even
+    // '0' at even + '1' at odd
+    int flips = Math.min(count[1][0] + count[0][1], count[0][0] + count[1][1]);
+
+    if (n % 2 == 0) {
+        // the only two cases are both covered already
+        return flips;
+    }
+
+    // rotates the String
+    // i is the original index of the char currently at the start
+    for (int i = 0; i < n; i++) {
+        // removes the first char
+        // swaps the parity of all the following (n - 1) chars
+        // n is odd so (n - 1) is even - they are in pairs
+        int[] tmp = count[0];
+        count[0] = count[1];
+        count[1] = tmp;
+
+        // since n is odd
+        count[1][s.charAt(i) - '0']--;  // removes the first char
+        count[0][s.charAt(i) - '0']++;  // appends the first char to the end
+
+        flips = Math.min(flips, Math.min(count[1][0] + count[0][1], count[0][0] + count[1][1]));
+    }
+    return flips;
+}
+```
+
+[Minimum Cost to Make All Characters Equal][minimum-cost-to-make-all-characters-equal]
+
+```java
+public long minimumCost(String s) {
+    long cost = 0;
+    int n = s.length();
+    for (int i = 1; i < n; i++) {
+        if (s.charAt(i) != s.charAt(i - 1)) {
+            cost += Math.min(i, n - i);
+        }
+    }
+    return cost;
+}
+```
+
+# Split
+
+[Smallest Range II][smallest-range-ii]
+
+```java
+public int smallestRangeII(int[] nums, int k) {
+    Arrays.sort(nums);
+
+    // for each index, left elements +k and right elements -k
+    int n = nums.length, diff = nums[n - 1] - nums[0];
+    for (int i = 0; i < n - 1; i++) {
+        // nums[0] + k is the min element of the left subarray
+        // nums[i + 1] - k is the min element of the right subarray
+        // min of the entire array must be one of these two candidates
+        int min = Math.min(nums[0] + k, nums[i + 1] - k);
+        // similar
+        int max = Math.max(nums[n - 1] - k, nums[i] + k);
+        diff = Math.min(diff, max - min);
+    }
+    return diff;
+}
+```
+
+# Distance
+
+[Shortest Distance to a Character][shortest-distance-to-a-character]
+
+```java
+public int[] shortestToChar(String s, char c) {
+    int n = s.length(), index = -n;
+    int[] d = new int[n];
+    // c on left
+    for (int i = 0; i < n; i++) {
+        if (s.charAt(i) == c) {
+            index = i;
+        }
+        d[i] = i - index;
+    }
+    // c on right
+    for (int i = n - 1; i >= 0; i--) {
+        if (s.charAt(i) == c) {
+            index = i;
+        }
+        d[i] = Math.min(d[i], Math.abs(index - i));
+    }
+    return d;
+}
+```
+
+### Pre-computed
+
+[Shortest Distance to Target Color][shortest-distance-to-target-color]
+
+[Max Chunks To Make Sorted II][max-chunks-to-make-sorted-ii]
+
+```java
+public int maxChunksToSorted(int[] arr) {
+    int n = arr.length;
+
+    int[] minOfRight = new int[n];
+    minOfRight[n - 1] = arr[n - 1];
+    for (int i = n - 2; i >= 0; i--) {
+        minOfRight[i] = Math.min(minOfRight[i + 1], arr[i]);
+    }
+
+    int chunks = 0, max = 0;
+    for (int i = 0; i < n - 1; i++) {
+        max = Math.max(max, arr[i]);
+        // splits if all elements to the left <= to all elements to the right
+        if (max <= minOfRight[i + 1]) {
+            chunks++;
+        }
+    }
+    return chunks + 1;
+}
+```
+
+[Removing Minimum Number of Magic Beans][removing-minimum-number-of-magic-beans]
+
+```java
+public long minimumRemoval(int[] beans) {
+    long min = Long.MAX_VALUE, sum = Arrays.stream(beans).mapToLong(Long::valueOf).sum();
+
+    Arrays.sort(beans);
+
+    int n = beans.length;
+    for (int i = 0; i < n; i++) {
+        min = Math.min(min, sum - (long)(n - i) * beans[i]);
+    }
+    return min;
+}
+```
+
+# Shift
+
+[Minimum Number of Operations to Reinitialize a Permutation][minimum-number-of-operations-to-reinitialize-a-permutation]
+
+```java
+public int reinitializePermutation(int n) {
+    // tracks 1's index
+    int operations = 0, index = 1;
+    while (operations == 0 || index > 1) {
+        index = index * 2 % (n - 1);
+        operations++;
+    }
+    return operations;
+}
+```
+
+[Minimum Deletions to Make Array Beautiful][minimum-deletions-to-make-array-beautiful]
+
+```java
+public int minDeletion(int[] nums) {
+    int n = nums.length, deletions = 0;
+    for (int i = 0; i < n - 1; i++) {
+        if (nums[i] == nums[i + 1] && (i - deletions) % 2 == 0) {
+            deletions++;
+        }
+    }
+    return deletions + (n - deletions) % 2;
+}
+```
+
+# Swapping
+
+Swap two elements in an array:
+
+```java
+public void swap(int[] nums, int i, int j) {
+    int tmp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = tmp;
+}
+```
+
+Minimum number of swaps to make an array sorted:
+
+[Minimum Number of Operations to Sort a Binary Tree by Level][minimum-number-of-operations-to-sort-a-binary-tree-by-level]
+
+```java
+    // greedy solution with a index array
+    int m = level.size();
+    Integer[] indices = new Integer[m];
+    for (int i = 0; i < m; i++) {
+        indices[i] = i;
+    }
+    Arrays.sort(indices, Comparator.comparingInt(i -> level.get(i)));
+
+    for (int i = 0; i < m; i++) {
+        // swaps if the value is not equal to the index
+        while (indices[i] != i) {
+            count++;
+            swap(indices, i, indices[i]);
+        }
+    }
+```
+
+The second approach is to find all the "cycles" in the array. The definition of a cycle is: start with an element `nums[i]`, find the next element `nums[nums[i]]`... repeat until it forms a periodic cycle.
+
+e.g. `[1, 3, 4, 0, 2, 5]`, there are 3 cycles:
+
+```
+1 -> 3 -> 0 (-> 1 ...)
+4 -> 2 (-> 4 ...)
+5 (-> 5 ...)
+```
+
+The minimum swaps is \\(\sum_c{(T_c - 1)}\\), where \\(T_c\\) is the period of cycle \\(c\\). In the above example, the value is `2 + 1 + 0 = 3`.
+
+[Array With Elements Not Equal to Average of Neighbors][array-with-elements-not-equal-to-average-of-neighbors]
+
+```java
+public int[] rearrangeArray(int[] nums) {
+    int n = nums.length;
+    int[] result = Arrays.copyOf(nums, n);
+    for (int i = 1; i < n - 1; i++) {
+        // increasing or decreasing
+        // if we swap if the middle num is an average of its neighbors
+        // we will need two passes: left -> right and right -> left
+        // e.g. [0, 1, 2, 3, 4, 5]
+        if ((result[i - 1] < result[i] && result[i] < result[i + 1]) || (result[i - 1] > result[i] && result[i] > result[i + 1])) {
+            swap(result, i, i + 1);
+        }
+    }
+    return result;
+}
+```
+
+[Swap Adjacent in LR String][swap-adjacent-in-lr-string]
+
+```java
+public boolean canTransform(String start, String end) {
+    int n = start.length();
+    // indexes of 'L' or 'R';
+    List<Integer> si = new ArrayList<>(), ei = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+        if (start.charAt(i) == 'L' || start.charAt(i) == 'R') {
+            si.add(i);
+        }
+        if (end.charAt(i) == 'L' || end.charAt(i) == 'R') {
+            ei.add(i);
+        }
+    }
+
+    // count of 'LR' chars should be equal in start and end
+    if (si.size() != ei.size()) {
+        return false;
+    }
+
+    for (int i = 0; i < si.size(); i++) {
+        int sIndex = si.get(i), eIndex = ei.get(i);
+        char sc = start.charAt(sIndex), ec = end.charAt(eIndex);
+        // swap LR -> RL is not allowed
+        if (sc != ec) {
+            return false;
+        }
+
+        // 'L' can move to left only
+        if (sc == 'L' && sIndex < eIndex) {
+            return false;
+        }
+
+        // 'R' can move to right only
+        if (sc == 'R' && sIndex > eIndex) {
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+[Minimum Total Cost to Make Arrays Unequal][minimum-total-cost-to-make-arrays-unequal]
+
+```java
+public long minimumTotalCost(int[] nums1, int[] nums2) {
+    int n = nums1.length;
+    long cost = 0;
+    int[] freqs = new int[n + 1];
+    int maxFreq = 0, maxFreqVal = 0, toDisplace = 0;
+
+    // index 0 is used as a "distribution center" to displace other elements
+    // e.g. [3, *, *, 1, *, 2]
+    //  swap #1: [1, *, *, 3, *, 2], cost += 0 + 3 = 3
+    //  swap #2: [2, *, *, 3, *, 1], cost += 0 + 5 = 5
+    //  although the two numbers 2 and 3 are not simply swapped with each other,
+    //  neither of them is in its original position, which is our goal
+    for (int i = 0; i < n; i++) {
+        // considers indices with equal values only
+        if (nums1[i] == nums2[i]) {
+            if (++freqs[nums1[i]] > maxFreq) {
+                maxFreqVal = nums1[i];
+            }
+            maxFreq = Math.max(maxFreq, freqs[nums1[i]]);
+            toDisplace++;
+            cost += i;
+        }
+    }
+
+    // if majority element exists, we can't move all to-displace elements to a position with a different value
+    // e.g. [3, 3, 3, 1], 3 is a majority element
+    //  all permutations are
+    //  [1, 3, 3, 3]
+    //  [3, 1, 3, 3]
+    //  [3, 3, 1, 3]
+    //  in any case, there exists a position of value 3 whose original value was also 3
+    // therefore, we need additional distribution centers to make the element not majority anymore
+    // and we start from lowest index to minimize cost
+    for (int i = 0; i < n; i++) {
+        if (maxFreq > toDisplace / 2 && nums1[i] != nums2[i] && nums1[i] != maxFreqVal && nums2[i] != maxFreqVal) {
+            toDisplace++;
+            cost += i;
+        }
+    }
+    return maxFreq > toDisplace / 2 ? -1 : cost;
+}
+```
+
+[Rearranging Fruits][rearranging-fruits]
+
+```java
+public long minCost(int[] basket1, int[] basket2) {
+    int minFruit = Integer.MAX_VALUE;
+    // basket1[i] - basket2[i]
+    Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
+    for (int f : basket1) {
+        map.put(f, map.getOrDefault(f, 0) + 1);
+        minFruit = Math.min(minFruit, f);
+    }
+    for (int f : basket2) {
+        map.put(f, map.getOrDefault(f, 0) - 1);
+        minFruit = Math.min(minFruit, f);
+    }
+
+    // 2 ways to swap a and b (a < b):
+    // - direct swap: swaps a and b. cost = a
+    // - indirect swaps: swaps x and a, then x and b, where x < a < b. cost = 2x
+
+    // number of swaps if all of them are direct
+    int toSwap = 0;
+    for (var v : map.values()) {
+        // diff should be even number
+        if (v % 2 > 0) {
+            return -1;
+        }
+        toSwap += Math.max(0, v / 2);
+    }
+
+    long cost = 0;
+    for (var e : map.entrySet()) {
+        int k = e.getKey(), v = e.getValue();
+
+        // number of k to be swapped in this round
+        int count = Math.min(toSwap, Math.abs(v) / 2);
+
+        // selects the smaller way
+        cost += (long)count * Math.min(k, 2 * minFruit);
+        toSwap -= count;
+    }
+    return cost;
+}
+```
+
+## Cyclic Swapping
+
+[Couples Holding Hands][couples-holding-hands]
+
+```java
+public int minSwapsCouples(int[] row) {
+    int n = row.length, min = 0;
+    int[] seat = new int[n];
+    for (int i = 0; i < n; i++) {
+        seat[row[i]] = i;
+    }
+
+    // fixes a person and swaps his partner in the seat by his side
+    for (int i = 0; i < n; i += 2) {
+        // the seat by side
+        int j = i + 1;
+        if (row[j] != partner(row[i])) {
+            // finds the seat of this person's partner
+            j = seat[partner(row[i])];
+            // swaps the partner to the seat
+            swap(row, i + 1, j);
+            swap(seat, row[i + 1], row[j]);
+            min++;
+        }
+    }
+    return min;
+}
+
+private int partner(int p) {
+    return p ^ 1;
+}
+```
+
+# Set
+
+[Longest Consecutive Sequence][longest-consecutive-sequence]
+
+```java
+public int longestConsecutive(int[] nums) {
+    Set<Integer> set = new HashSet<>();
+    for (int num : nums) {
+        set.add(num);
+    }
+
+    int length = 0;
+    for (int num : set) {
+        // only checks for one direction
+        if (!set.contains(num - 1)) {
+            int next = num + 1;
+            while (set.contains(next)) {
+                next++;
+            }
+            length = Math.max(length, next - num);
+        }
+    }
+    return length;
+}
+```
+
+# Division
+
+[Divide Array Into Increasing Sequences][divide-array-into-increasing-sequences]
+
+```java
+public boolean canDivideIntoSubsequences(int[] nums, int k) {
+    // m = the maximum frequency of any element in the array
+    // then number of sequences >= m
+
+    // a valid solution is possible iff m * k <= n
+    // e.g. groups[i % m] = nums[i]
+    int freq = 1, groups = 1, n = nums.length;
+    for (int i = 1; i < nums.length; i++) {
+        freq = nums[i - 1] < nums[i] ? 1 : freq + 1;
+        // groups = m
+        groups = Math.max(groups, freq);
+    }
+    return nums.length >= k * groups;
+}
+```
+
+# Two Passes
+
+[Candy][candy]
+
+```java
+public int candy(int[] ratings) {
+    int n = ratings.length;
+    int[] candies = new int[n];
+    // gives everyone one candy
+    Arrays.fill(candies, 1);
+
+    // left -> right
+    for (int i = 1; i < n; i++) {
+        if (ratings[i] > ratings[i - 1]) {
+            candies[i] = candies[i - 1] + 1;
+        }
+    }
+
+    int sum = candies[n - 1];
+    // right -> left
+    for (int i = n - 2; i >= 0; i--) {
+        if (ratings[i] > ratings[i + 1]) {
+            candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+        }
+        sum += candies[i];
+    }
+    return sum;
+}
+```
+
+[Maximum Building Height][maximum-building-height]
+
+```java
+public int maxBuilding(int n, int[][] restrictions) {
+    Arrays.sort(restrictions, Comparator.comparingInt(a -> a[0]));
+
+    // updates restrictions from left to right
+    // there are two implicit restrictions:
+    // [1, 0] and [n, n - 1]
+    int prevId = 1, prevHeight = 0;
+    for (int[] r : restrictions) {
+        r[1] = Math.min(r[1], prevHeight + r[0] - prevId);
+        prevId = r[0];
+        prevHeight = r[1];
+    }
+    int lastHeight = Math.min(n - 1, prevHeight + n - prevId);
+
+    // updates restrictions from right to left
+    for (int i = restrictions.length - 2; i >= 0; i--) {
+        restrictions[i][1] = Math.min(restrictions[i][1], restrictions[i + 1][1] + restrictions[i + 1][0] - restrictions[i][0]);
+    }
+
+    // calculates the max height between each adjacent restriction pair
+    // max height is the mountain peak between left and right restriction heights
+    //   hm - hr <= r - m
+    //   hm - hl <= m - l
+    // therefore,
+    //   hm <= (r - l + hl + hr) / 2
+    int left = 1, height = 0, max = 0;
+    for (int[] r : restrictions) {
+        max = Math.max(max, (r[0] - left + r[1] + height) / 2);
+        left = r[0];
+        height = r[1];
+    }
+    return Math.max(max, (n - left + lastHeight + height) / 2);
+}
+```
+
+# Marking
+
+[Find All Duplicates in an Array][find-all-duplicates-in-an-array]
+
+```java
+public List<Integer> findDuplicates(int[] nums) {
+    List<Integer> list = new ArrayList<>();
+    for (int num : nums) {
+        // 1 <= nums[i] <= n
+        int index = Math.abs(num) - 1;
+        if (nums[index] < 0) {
+            list.add(Math.abs(num));
+        } else {
+            // appears twice
+            nums[index] = -nums[index];
+        }
+    }
+    return list;
+}
+```
+
+# Sort
+
+[Car Fleet][car-fleet]
+
+```java
+public int carFleet(int target, int[] position, int[] speed) {
+    int n = position.length;
+    Integer[] indices = new Integer[n];
+    for (int i = 0; i < n; i++) {
+        indices[i] = i;
+    }
+
+    Arrays.sort(indices, Comparator.comparingInt(i -> -position[i]));
+
+    int count = 0;
+    // current largest time to reach target (slowest)
+    double curr = 0;
+    for (int i : indices) {
+        double time = (double)(target - position[i]) / speed[i];
+        if (time > curr) {
+            curr = time;
+            count++;
+        }
+    }
+    return count;
+}
+```
+
+[Happy Students][happy-students]
+
+```c++
+int countWays(vector<int>& nums) {
+    int n = nums.size();
+    nums.push_back(numeric_limits<int>::max());
+    // If i-th student is selected, all the students with nums[j] <= nums[i] must be selected
+    // If i-th student is not selected, all the students with nums[j] >= nums[i] must not be selected
+    ranges::sort(nums);
+
+    // If no one is selected and all students are happy,
+    // nums[0] > 0
+    int cnt = nums[0] != 0;
+    for (int i = 0; i < n; i++) {
+        // Checks if nums[i] should be selected
+        // If nums[i] is selected, the number of selected people will be (i + 1)
+        if (nums[i] < i + 1 and nums[i + 1] > i + 1) {
+            cnt++;
+        }
+    }
+    return cnt;
+}
+```
+
+# Parity
+
+[Subsequence of Size K With the Largest Even Sum][subsequence-of-size-k-with-the-largest-even-sum]
+
+```java
+public long largestEvenSum(int[] nums, int k) {
+    int n = nums.length;
+    // or quick select k largest elements, O(n)
+    Arrays.sort(nums);
+
+    // selects largest k elements
+    long sum = Arrays.stream(nums).asLongStream().skip(n - k).sum();
+    if (sum % 2 == 0) {
+        return sum;
+    }
+
+    // replaces the smallest odd with remaining largest even
+    // or replaces the smallest even with remaining largest odd
+    int[] max = new int[2], min = new int[2];
+    Arrays.fill(max, -1);
+    Arrays.fill(min, Integer.MAX_VALUE);
+
+    for (int i = 0; i < n; i++) {
+        if (i < n - k) {
+            max[nums[i] % 2] = Math.max(max[nums[i] % 2], nums[i]);
+        } else {
+            min[nums[i] % 2] = Math.min(min[nums[i] % 2], nums[i]);
+        }
+    }
+
+    long updatedSum = -1;
+    if (min[0] != Integer.MAX_VALUE && max[1] >= 0) {
+        updatedSum = sum - min[0] + max[1];
+    }
+    if (min[1] != Integer.MAX_VALUE && max[0] >= 0) {
+        updatedSum = Math.max(updatedSum, sum - min[1] + max[0]);
+    }
+    return updatedSum;
+}
+```
+
+[array-nesting]: https://leetcode.com/problems/array-nesting/
+[array-with-elements-not-equal-to-average-of-neighbors]: https://leetcode.com/problems/array-with-elements-not-equal-to-average-of-neighbors/
+[candy]: https://leetcode.com/problems/candy/
+[car-fleet]: https://leetcode.com/problems/car-fleet/
+[count-the-repetitions]: https://leetcode.com/problems/count-the-repetitions/
+[couples-holding-hands]: https://leetcode.com/problems/couples-holding-hands/
+[divide-array-into-increasing-sequences]: https://leetcode.com/problems/divide-array-into-increasing-sequences/
+[find-all-duplicates-in-an-array]: https://leetcode.com/problems/find-all-duplicates-in-an-array/
+[find-indices-with-index-and-value-difference-ii]: https://leetcode.com/problems/find-indices-with-index-and-value-difference-ii/
+[find-the-winner-of-the-circular-game]: https://leetcode.com/problems/find-the-winner-of-the-circular-game/
+[first-missing-positive]: https://leetcode.com/problems/first-missing-positive/
+[gas-station]: https://leetcode.com/problems/gas-station/
+[happy-students]: https://leetcode.com/problems/happy-students/
+[longest-consecutive-sequence]: https://leetcode.com/problems/longest-consecutive-sequence/
+[make-k-subarray-sums-equal]: https://leetcode.com/problems/make-k-subarray-sums-equal/
+[max-chunks-to-make-sorted-ii]: https://leetcode.com/problems/max-chunks-to-make-sorted-ii/
+[maximum-building-height]: https://leetcode.com/problems/maximum-building-height/
+[maximum-matrix-sum]: https://leetcode.com/problems/maximum-matrix-sum/
+[maximum-value-of-an-ordered-triplet-ii]: https://leetcode.com/problems/maximum-value-of-an-ordered-triplet-ii/
+[minimum-cost-to-make-all-characters-equal]: https://leetcode.com/problems/minimum-cost-to-make-all-characters-equal/
+[minimum-deletions-to-make-array-beautiful]: https://leetcode.com/problems/minimum-deletions-to-make-array-beautiful/
+[minimum-money-required-before-transactions]: https://leetcode.com/problems/minimum-money-required-before-transactions/
+[minimum-number-of-flips-to-make-the-binary-string-alternating]: https://leetcode.com/problems/minimum-number-of-flips-to-make-the-binary-string-alternating/
+[minimum-number-of-operations-to-reinitialize-a-permutation]: https://leetcode.com/problems/minimum-number-of-operations-to-reinitialize-a-permutation/
+[minimum-number-of-operations-to-sort-a-binary-tree-by-level]: https://leetcode.com/problems/minimum-number-of-operations-to-sort-a-binary-tree-by-level/
+[minimum-total-cost-to-make-arrays-unequal]: https://leetcode.com/problems/minimum-total-cost-to-make-arrays-unequal/
+[patching-array]: https://leetcode.com/problems/patching-array/
+[rearranging-fruits]: https://leetcode.com/problems/rearranging-fruits/
+[removing-minimum-number-of-magic-beans]: https://leetcode.com/problems/removing-minimum-number-of-magic-beans/
+[reverse-words-in-a-string-ii]: https://leetcode.com/problems/reverse-words-in-a-string-ii/
+[rotate-array]: https://leetcode.com/problems/rotate-array/
+[shift-2d-grid]: https://leetcode.com/problems/shift-2d-grid/
+[shortest-distance-to-a-character]: https://leetcode.com/problems/shortest-distance-to-a-character/
+[shortest-distance-to-target-color]: https://leetcode.com/problems/shortest-distance-to-target-color/
+[smallest-range-ii]: https://leetcode.com/problems/smallest-range-ii/
+[smallest-rotation-with-highest-score]: https://leetcode.com/problems/smallest-rotation-with-highest-score/
+[sort-array-by-moving-items-to-empty-space]: https://leetcode.com/problems/sort-array-by-moving-items-to-empty-space/
+[subsequence-of-size-k-with-the-largest-even-sum]: https://leetcode.com/problems/subsequence-of-size-k-with-the-largest-even-sum/
+[swap-adjacent-in-lr-string]: https://leetcode.com/problems/swap-adjacent-in-lr-string/

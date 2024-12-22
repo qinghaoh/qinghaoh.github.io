@@ -1,0 +1,666 @@
+---
+title:  "DFS"
+category: algorithm
+tags: [dfs, graph]
+---
+# Fundamentals
+
+The most commonly way of DFS is to call a helper function recursively. Due to the nature of recursion, we can instead use a Stack.
+
+[Keys and Rooms][keys-and-rooms]
+
+**Recursion**
+
+```java
+public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+    Set<Integer> visited = new HashSet<>();
+    dfs(rooms, 0, visited);
+    return visited.size() == rooms.size();
+}
+
+private void dfs(List<List<Integer>> rooms, int label, Set<Integer> visited) {
+    if (visited.add(label)) {
+        rooms.get(label).forEach(k -> dfs(rooms, k, visited));
+    }
+}
+```
+
+**Stack**
+
+```java
+public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+    Set<Integer> visited = new HashSet<>();
+    set.add(0);
+
+    Deque<Integer> st = new ArrayDeque<>();
+    st.push(0);
+
+    while (!st.isEmpty()) {
+        int room = st.pop();
+        for (int key : rooms.get(room)) {
+            if (visited.add(key)) {
+                st.push(key);
+            }
+        }
+    }
+
+    return visited.size() == rooms.size();
+}
+```
+
+**For-loop**
+
+This is for a special case where every node in the directed graph has at most one destination node.
+
+[Longest Cycle in a Graph][longest-cycle-in-a-graph]
+
+```java
+for (int i = 0; i < n; i++) {
+    // dfs until no destination node
+    for (int j = i, dist = 0; j >= 0; j = edges[i]) {
+        // or detects a loop
+        if (memo.containsKey(j)) {
+            return;
+        }
+    }
+}
+```
+
+Again, because of the recursive nature, recursion problems can be solved by DFS:
+
+[Clone Graph][clone-graph]
+
+```java
+private Map<Integer, Node> map = new HashMap<>();
+
+public Node cloneGraph(Node node) {
+    return dfs(node);
+}
+
+private Node dfs(Node node) {
+    if (node == null) {
+        return null;
+    }
+
+    if (map.containsKey(node.val)) {
+        return map.get(node.val);
+    }
+
+    Node copy = new Node(node.val, new ArrayList<>());
+    map.put(copy.val, copy);
+    node.neighbors.forEach(n -> copy.neighbors.add(dfs(n)));
+    return copy;
+}
+```
+
+[Pyramid Transition Matrix][pyramid-transition-matrix]
+
+```java
+private Map<String, Set<Character>> map;
+
+public boolean pyramidTransition(String bottom, List<String> allowed) {
+    map = new HashMap<>();
+    for (String s : allowed) {
+        map.computeIfAbsent(s.substring(0, 2), k -> new HashSet<>()).add(s.charAt(2));
+    }
+
+    return dfs(bottom, "", 1);
+}
+
+private boolean dfs(String row, String nextRow, int index) {
+    if (row.length() == 1) {
+        return true;
+    }
+
+    if (nextRow.length() + 1 == row.length()) {
+        return dfs(nextRow, "", 1);
+    }
+
+    String key = row.substring(index - 1, index + 1);
+    if (map.containsKey(key)) {
+        for (Character c : map.get(key)) {
+            if (dfs(row, nextRow + c, index + 1)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+```
+
+# Bottom-up
+
+[Time Needed to Inform All Employees][time-needed-to-inform-all-employees]
+
+```java
+public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+    int minutes = 0;
+    for (int i = 0; i < n; i++) {
+        minutes = Math.max(minutes, dfs(i, manager, informTime));
+    }
+    return minutes;
+}
+
+// bottom-up, this is essentially DFS with DP
+public int dfs(int i, int[] manager, int[] informTime) {
+    if (manager[i] != -1) {
+        informTime[i] += dfs(manager[i], manager, informTime);
+        // don't visit his manager twice
+        manager[i] = -1;
+    }
+    return informTime[i];
+}
+```
+
+# Tree
+
+DFS a tree usually follow the pattern:
+
+```java
+int dfs(List<Integer>[] tree, int node, int parent, ...)
+```
+
+[Create Components With Same Value][create-components-with-same-value]
+
+```java
+private List<Integer>[] tree;
+
+public int componentValue(int[] nums, int[][] edges) {
+    int n = nums.length;
+    this.tree = new List[n];
+    for (int i = 0; i < n; i++) {
+        tree[i] = new ArrayList<>();
+    }
+    for (int[] e : edges) {
+        tree[e[0]].add(e[1]);
+        tree[e[1]].add(e[0]);
+    }
+
+    int i = 1;
+    while (i < n) {
+        if (nums[i] != nums[i - 1]) {
+            break;
+        }
+        i++;
+    }
+    if (i == n) {
+        return n - 1;
+    }
+
+    int sum = 0, max = 0;
+    for (int num : nums) {
+        sum += num;
+        max = Math.max(max, num);
+    }
+
+    // factorization
+    // sum of each component >= max node value
+    for (int f = sum / max; f > 1; f--) {
+        if (sum % f == 0 && dfs(0, -1, nums, sum / f) == 0) {
+            return f - 1;
+        }
+    }
+    return 0;
+}
+
+private int dfs(int node, int parent, int[] nums, int componentSum) {
+    int sum = nums[node];
+    for (int i : tree[node]) {
+        if (i != parent) {
+            int val = dfs(i, node, nums, componentSum);
+            if (val < 0) {
+                return -1;
+            }
+            sum += val;
+        }
+    }
+
+    // not a valid path
+    if (sum > componentSum) {
+        return -1;
+    }
+
+    // if sum == componentSum, the component is complete
+    return sum % componentSum;
+}
+```
+
+# Pattern Signature
+
+[Number of Distinct Islands][number-of-distinct-islands]
+
+```java
+pattern.append(index);
+for (int k = 0; k < DIRECTIONS.length; k++) {
+    int[] d = DIRECTIONS[k];
+    dfs(i + d[0], j + d[1], (char)('0' + k), pattern);
+}
+pattern.append('#');
+```
+
+![Patterns](/assets/img/algorithm/number_of_distinct_islands.png)
+
+```
+#0#1##
+#03###
+```
+
+# Brute Force
+
+[Lexicographically Smallest String After Applying Operations][lexicographically-smallest-string-after-applying-operations]
+
+```java
+private String min;
+private int a, b;
+private Set<String> visited = new HashSet<>();
+
+public String findLexSmallestString(String s, int a, int b) {
+    this.min = s;
+    this.a = a;
+    this.b = b;
+
+    dfs(s);
+    return min;
+}
+
+private void dfs(String s) {
+    if (visited.add(s)) {
+        if (min.compareTo(s) > 0) {
+            min = s;
+        }
+
+        dfs(add(s));
+        dfs(rotate(s));
+    }
+}
+
+private String add(String s) {
+    char[] chars = s.toCharArray();
+    for (int i = 1; i < chars.length; i += 2) {
+        chars[i] = (char)((chars[i] - '0' + a) % 10 + '0');
+    }
+    return new String(chars);
+}
+
+privat String rotate(String s) {
+    int n = s.length();
+    return s.substring(n - b) + s.substring(0, n - b);
+}
+```
+
+This solution includes all possibilities, and uses a Set as termination condition.
+
+[Lexicographical Numbers][lexicographical-numbers]
+
+# Transitions
+
+[The Earliest and Latest Rounds Where Players Compete][the-earliest-and-latest-rounds-where-players-compete]
+
+```java
+private int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+
+public int[] earliestAndLatest(int n, int firstPlayer, int secondPlayer) {
+    dfs(firstPlayer, n - secondPlayer + 1, n, 1);
+    return new int[]{min, max};
+}
+
+// @param l length of [1, first player]
+// @param r length of [second player, n]
+private void dfs(int l, int r, int n, int round) {
+    if (l == r) {
+        min = Math.min(min, round);
+        max = Math.max(max, round);
+        return;
+    }
+
+    // makes sure l < r
+    if (l > r) {
+        int tmp = l;
+        l = r;
+        r = tmp;
+    }
+
+    // i players on the left win
+    for (int i = 1; i <= l; i++) {
+        // (l - i) palyers on the right win
+        // assumes second player is champion (+1)
+        // players in the next round: (n + 1) / 2
+        for (int j = l - i + 1; i + j <= Math.min(r, (n + 1) / 2); j++) {
+            // losers = (l - i) + (r - j)
+            if ((l - i) + (r - j) <= n / 2) {
+                dfs(i, j, (n + 1) / 2, round + 1);
+            }
+        }
+    }
+}
+```
+
+![Transition](/assets/img/algorithm/the_earliest_and_latest_rounds_where_players_compete.png)
+
+# Reverse
+
+[Bricks Falling When Hit][bricks-falling-when-hit]
+
+```java
+{% raw %}
+private static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+{% endraw %}
+private int[][] grid;
+
+public int[] hitBricks(int[][] grid, int[][] hits) {
+    this.grid = grid;
+
+    int m = grid.length, n = grid[0].length;
+    // modifies the grid by decrementing the value of hit bricks
+    for (int[] h : hits) {
+        grid[h[0]][h[1]]--;
+    }
+
+    for (int i = 0; i < n; i++) {
+        dfs(0, i);
+    }
+
+    // reversely adding the erased bricks
+    int[] result = new int[hits.length];
+    for (int k = hits.length - 1; k >= 0; k--) {
+        int[] h = hits[k];
+        int i = h[0], j = h[1];
+        // if the new brick can be stable after being added,
+        // adds it
+        if (grid[i][j]++ == 0 && isStable(i, j)) {
+            // minus the brick itself
+            result[k] = dfs(i, j) - 1;
+        }
+    }
+    return result;
+}
+
+// returns number of stable bricks in (self + its subtree)
+private int dfs(int i, int j) {
+    // now grid[i][j] means stable after erasing all hit bricks
+    if (i < 0 || i == grid.length || j < 0 || j == grid[0].length || grid[i][j] != 1) {
+        return 0;
+    }
+
+    // marks stable bricks
+    grid[i][j] = 2;
+    int count = 1;
+    for (int[] d : DIRECTIONS) {
+        count += dfs(i + d[0], j + d[1]);
+    }
+    return count;
+}
+
+private boolean isStable(int i, int j) {
+    // top row
+    if (i == 0) {
+        return true;
+    }
+
+    for (int[] d : DIRECTIONS) {
+        int r = i + d[0], c = j + d[1];
+        if (r >= 0 && r < grid.length && c >= 0 && c < grid[0].length && grid[r][c] == 2) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+# + BFS
+
+[Shortest Path in a Hidden Grid][shortest-path-in-a-hidden-grid]
+
+```java
+{% raw %}
+private static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+{% endraw %}
+private static final char[] CHARS = {'U', 'L', 'D', 'R'};
+private static final int N = 500;
+
+private enum Cell {
+    UNVISITED(-1),
+    BLOCKED(0),
+    EMPTY(1),
+    TARGET(2);
+
+    private int value;
+
+    Cell(int value) {
+        this.value = value;
+    }
+}
+
+public int findShortestPath(GridMaster master) {
+    // 4 x grid, and places starting cell at the centor
+    Cell[][] grid = new Cell[2 * N][2 * N];
+    for (int i = 0; i < grid.length; i++) {
+        Arrays.fill(grid[i], Cell.UNVISITED);
+    }
+
+    // (N, N) is the start
+    dfs(N, N, master, grid);
+
+    Queue<int[]> q = new LinkedList<>();
+    q.offer(new int[]{N, N});
+
+    // marks visited as BLOCKED
+    grid[N][N] = Cell.BLOCKED;
+
+    // bfs
+    int distance = 0;
+    while (!q.isEmpty()) {
+        for (int i = q.size(); i > 0; i--) {
+            int[] node = q.poll();
+            for (int[] d : DIRECTIONS) {
+                int r = node[0] + d[0], c = node[1] + d[1];
+                if (grid[r][c] == Cell.TARGET) {
+                    return distance + 1;
+                }
+
+                if (grid[r][c] != Cell.BLOCKED) {
+                    q.offer(new int[]{r, c});
+                    grid[r][c] = Cell.BLOCKED;
+                }
+            }
+        }
+        distance++;
+    }
+
+    return -1;
+}
+
+// explores the map
+private void dfs(int i, int j, GridMaster master, Cell[][] grid) {
+    if (grid[i][j] != Cell.UNVISITED) {
+        return;
+    }
+
+    grid[i][j] = master.isTarget() ? Cell.TARGET : Cell.EMPTY;
+
+    for (int k = 0; k < 4; k++) {
+        int r = i + DIRECTIONS[k][0], c = j + DIRECTIONS[k][1];
+        if (master.canMove(CHARS[k])) {
+            master.move(CHARS[k]);
+            dfs(r, c, master, grid);
+            // moves back
+            master.move(CHARS[(k + 2) % 4]);
+        } else {
+            grid[r][c] = Cell.BLOCKED;
+        }
+    }
+}
+```
+
+[Contain Virus][contain-virus]
+
+```java
+{% raw %}
+private static final int[][] DIRECTIONS = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+{% endraw %}
+private int m, n;
+// infected but not quarantined regions
+private Queue<Region> pq = new PriorityQueue<>(Comparator.comparingInt(r -> -r.neighbors.size()));
+
+public int containVirus(int[][] grid) {
+    this.m = grid.length;
+    this.n = grid[0].length;
+
+    int count = 0, day = 1;
+    add(grid, day);
+
+    while (!pq.isEmpty()) {
+        // finds the region that threatens the most neighbors
+        Region region = pq.poll();
+        count += region.walls;
+
+        // marks the region as quaratined (-1)
+        for (int cell : region.infected) {
+            grid[cell / n][cell % n] = -1;
+        }
+
+        // marks the neighbors as infected
+        day++;
+        while (!pq.isEmpty()) {
+            for (int cell : pq.poll().neighbors) {
+                grid[cell / n][cell % n] = day;
+            }
+        }
+
+        // enqueues remaining regions
+        add(grid, day);
+    }
+    return count;
+}
+
+private void add(int[][] grid, int day) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == day) {
+                Region region = new Region();
+                dfs(grid, i, j, region, day);
+                if (!region.neighbors.isEmpty()) {
+                    pq.offer(region);
+                }
+            }
+        }
+    }
+}
+
+public void dfs(int[][] grid, int i, int j, Region region, int day) {
+    if (i < 0 || i == m || j < 0 || j == n || grid[i][j] == -1 || grid[i][j] > day) {
+        return;
+    }
+
+    if (grid[i][j] == 0) {
+        // this is a neighbor cell of the region
+        region.walls++;
+        region.neighbors.add(i * n + j);
+    } else {
+        // increments the cell to mark it as visited
+        // conceptually it proceeds to next day
+        grid[i][j]++;
+        region.infected.add(i * n + j);
+        for (int[] d : DIRECTIONS) {
+            dfs(grid, i + d[0], j + d[1], region, day);
+        }
+    }
+}
+
+class Region {
+    int walls;
+    // infected cells in the region
+    // neighbors of the infected region
+    Set<Integer> infected, neighbors;
+
+    Region() {
+        walls = 0;
+        infected = new HashSet<>();
+        neighbors = new HashSet<>();
+    }
+}
+```
+
+# Multi-dimension
+
+[Number of Valid Move Combinations On Chessboard][number-of-valid-move-combinations-on-chessboard]
+
+```java
+{% raw %}
+private static final int[][] DIRECTIONS = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, -1}, {-1, 1}};
+{% endraw %}
+// board[p][i][j]: the steps for piece p to reach (i, j)
+//   if (i, j) is destination, its value is negative
+private int[][][] board = new int[4][8][8];
+
+public int countCombinations(String[] pieces, int[][] positions) {
+    return dfs(pieces, positions, 0);
+}
+
+public int dfs(String[] pieces, int[][] positions, int p) {
+    if (p >= pieces.length) {
+        return 1;
+    }
+
+    int count = 0;
+    for (int i = 0; i < DIRECTIONS.length; i++) {
+        if ((i < 4 && pieces[p].equals("bishop")) || (i >= 4 && pieces[p].equals("rook"))) {
+            continue;
+        }
+
+        boolean isBlocked = false;
+        // ensures only one direction marks the start position as step 1
+        int step = Math.min(2, count + 1);
+        while (!isBlocked) {
+            int r = (positions[p][0] - 1) + (step - 1) * DIRECTIONS[i][0];
+            int c = (positions[p][1] - 1) + (step - 1) * DIRECTIONS[i][1];
+
+            if (r < 0 || r >= board[0].length || c < 0 || c >= board[0][0].length) {
+                break;
+            }
+
+            boolean canStop = true;
+            for (int j = 0; j < p; j++) {
+                // no other pieces stopped at this position, and
+                // other pieces already passed by this position (or haven't reached this position (== 0))
+                canStop &= board[j][r][c] >= 0 && board[j][r][c] < step;
+
+                // another piece stopped at this position with <= steps to get there, or
+                // another piece passed by this position at the same time
+                isBlocked |= (board[j][r][c] < 0 && -board[j][r][c] <= step)
+                    || board[j][r][c] == step;
+            }
+
+            if (canStop)  {
+                // if this piece stops at current position
+                // marks destination by negative step
+                board[p][r][c] = -step;
+                count += dfs(pieces, positions, p + 1);
+            }
+
+            board[p][r][c] = step++;
+        }
+
+        // clears board to prepare for a new direction of this piece
+        board[p] = new int[8][8];
+    }
+    return count;
+}
+```
+
+[bricks-falling-when-hit]: https://leetcode.com/problems/bricks-falling-when-hit/
+[clone-graph]: https://leetcode.com/problems/clone-graph/
+[contain-virus]: https://leetcode.com/problems/contain-virus/
+[create-components-with-same-value]: https://leetcode.com/problems/create-components-with-same-value/
+[detect-cycles-in-2d-grid]: https://leetcode.com/problems/detect-cycles-in-2d-grid/
+[keys-and-rooms]: https://leetcode.com/problems/keys-and-rooms/
+[lexicographical-numbers]: https://leetcode.com/problems/lexicographical-numbers/
+[lexicographically-smallest-string-after-applying-operations]: https://leetcode.com/problems/lexicographically-smallest-string-after-applying-operations/
+[longest-cycle-in-a-graph]: https://leetcode.com/problems/longest-cycle-in-a-graph/
+[number-of-distinct-islands]: https://leetcode.com/problems/number-of-distinct-islands/
+[number-of-valid-move-combinations-on-chessboard]: https://leetcode.com/problems/number-of-valid-move-combinations-on-chessboard/
+[pyramid-transition-matrix]: https://leetcode.com/problems/pyramid-transition-matrix/
+[shortest-path-in-a-hidden-grid]: https://leetcode.com/problems/shortest-path-in-a-hidden-grid/
+[the-earliest-and-latest-rounds-where-players-compete]: https://leetcode.com/problems/the-earliest-and-latest-rounds-where-players-compete/
+[time-needed-to-inform-all-employees]: https://leetcode.com/problems/time-needed-to-inform-all-employees/

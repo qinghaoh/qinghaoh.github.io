@@ -1,0 +1,200 @@
+---
+title:  "Proof"
+category: algorithm
+---
+[Distant Barcodes][distant-barcodes]
+
+Let `n = barcodes.length`. Find the elements `barcodes[i]` with the most occurrences \\(o_{max}\\). Assume an element `barcodes[k]` has occurences \\(o_k\\).
+
+Steps:
+1. Put `barcodes[i]` to the first \\(o_{max}\\) even positions
+1. Arbitrarily pick another element `barcodes[j]` to the next \\(o_j\\) even positions
+1. Repeat Step 2 until all the even positions are filled. Wrap around the current element to the first few odd positions if it has remaining occurrences
+1. Fill odd positions with the remaining elements in any order
+
+* Time complexity: `O(N)`
+* Space complexity: `O(N)`
+
+For example,
+
+```
+[1, 1, 1, 2, 2, 3, 4, 5, 6]
+```
+```
+1. [1, *, 1, *, 1, *, *, *, *]
+2. [1, *, 1, *, 1, *, 3, *, *]
+3. [1, *, 1, *, 1, *, 3, *, 6]
+4. [1, 4, 1, *, 1, *, 3, *, 6]
+5. [1, 4, 1, 2, 1, 2, 3, *, 6]
+6. [1, 4, 1, 2, 1, 2, 3, 5, 6]
+```
+**Proof**
+
+It is guaranteed an answer exists, therefore:
+
+\\[1 <= o_{max} <= (\text{barcodes.length} + 1) / 2\\]
+
+As per the rule, `barcodes[j]` can be adjacent to an equal value only if \\(o_j > o_{max}\\).
+
+This can be illustrated by the example above. In Step 2, if we pick the second most frequent element `2` to put at index 6:
+```
+[1, *, 1, *, 1, *, 2, *, *]
+```
+
+Look at the left part before this `2`. Suppose another `2` can be placed adjacent to this `2`, then the empty positions between `1`'s have to be taken by `2`'s, i.e.:
+```
+[1, 2, 1, 2, 1, 2, 2, *, *]
+```
+
+Apparently now `2` has more occurrences than `1`. This is contradiction. Note this contradiction occurs although we haven't yet filled all the even positions.
+
+[Reorganize String][reorganize-string]
+
+[Arry Parition I][array-partition-i]
+
+* `max1`, `max2`: max and second max in `nums[]`
+* `P`: an n-pair partition for `nums[]`. `(max1, max2)` is a pair in partition `P`
+* `sum(P)`: sum of partition `P`
+
+If in partition `P'`, `max1` is not paired with `max2`, prove `sum(P') >= sum(P)`.
+
+**Proof**
+Let pairs `(max1, num1)` and `(max2, num2)` be in partition `P'`, `num1 <= max2` and `num2 <= max2`, then `P'` has the same pairs as `P` except `(max1, max2)` and `(num1, num2)`. We wiill need to prove the following inequality (1):
+```
+min(max1, max2) + min(num1, num2) >= min(max1, num1) + min(max2, num2).
+```
+
+Apparently (2):
+```
+max1 >= max2 >= max(num1, num2)
+```
+
+Therefore (1) becomes (3):
+```
+min(max1, max2) + min(num1 + num2) >= num1 + num2
+```
+
+From (2) we know:
+```
+min(max1, max2) >= max2 >= max(num1, num2)
+
+min(max1, max2) + min(num1, num2) >= max(num1, num2) + min(num1, num2) = num1 + num2
+```
+
+Q.E.D.
+
+[Airplane Seat Assignment Probability][airplane-seat-assignment-probability]
+
+Assume there are \\(n\\) seats in total.
+
+The probability that the \\(n\\)-th passenger takes his own seat when the first passenger takes:
+
+* his own seat: \\(\frac{1}{n}\\)
+* the \\(n\\)-th passenger's seat: \\(0\\)
+* the \\(i\\)-th passenger's seat where \\(1 < i < n\\): \\(\frac{1}{n} \cdot p(n + 1 - i)\\)
+
+\\[
+\begin{equation} \label{eq:1}
+p(n) = \frac{1}{n} \cdot (1 + \sum_{i = 2}^{n - 1} p(n + 1 - i) + 0)
+\end{equation}
+\\]
+
+Apprently:
+
+\\[p(1) = 1\\]
+
+Therefore \eqref{eq:1} becomes:
+
+\\[
+\begin{equation} \label{eq:2}
+p(n) = \frac{1}{n} \cdot \sum_{i = 1}^{n - 1} p(i)
+\end{equation}
+\\]
+
+So we know:
+
+\\[
+\begin{equation} \label{eq:3}
+n \cdot p(n) = \sum_{i = 1}^{n - 1} p(i)
+\end{equation}
+\\]
+
+\\[
+\begin{equation} \label{eq:4}
+(n - 1) \cdot p(n - 1) = \sum_{i = 1}^{n - 2} p(i), n > 2
+\end{equation}
+\\]
+
+\eqref{eq:3} - \eqref{eq:4}:
+
+\\[
+\begin{equation} \label{eq:5}
+n \cdot p(n) - (n - 1) \cdot p(n - 1) = p(n - 1), n > 2
+\end{equation}
+\\]
+
+\\[
+\begin{equation} \label{eq:6}
+p(n) = p(n - 1), n > 2
+\end{equation}
+\\]
+
+From \eqref{eq:2}, we have:
+
+\\[p(2) = \frac{1}{2} \cdot p(1) = 0.5\\]
+
+Therefore,
+
+\\[p(2) = p(3) = \cdots = 0.5\\]
+
+Q.E.D.
+
+[Maximum Running Time of N Computers][maximum-running-time-of-n-computers]
+
+```java
+public long maxRunTime(int n, int[] batteries) {
+    Arrays.sort(batteries);
+
+    long sum = Arrays.stream(batteries).mapToLong(i -> i).sum();
+    int i = 0, len = batteries.length;
+    // compares the max battery with average of the others
+    // if max > avg, then this battery can be used to charge a computer all the time
+    // the problem becomes: n - 1 computers with remaining batteries
+    while (batteries[len - 1 - i] > sum / (n - i)) {
+        sum -= batteries[len - ++i];
+    }
+
+    // if max <= avg, the charge can be distributed evenly
+    // in this case, a battery spans two computers at most, and the two parts won't overlap
+    return sum / (n - i);
+}
+```
+
+[Maximum Number of Groups With Increasing Length][maximum-number-of-groups-with-increasing-length]
+
+```java
+public int maxIncreasingGroups(List<Integer> usageLimits) {
+    Collections.sort(usageLimits);
+    int k = 0;
+    long sum = 0;
+    for (int limit : usageLimits) {
+        sum += limit;
+        if (sum >= (k + 1) * (k + 2) / 2) {
+            k++;
+        }
+    }
+    return k;
+}
+```
+
+[Find a Good Subset of the Matrix][find-a-good-subset-of-the-matrix]
+
+See [this proof](https://leetcode.com/problems/find-a-good-subset-of-the-matrix/solutions/3622824/easy-o-n-simple-greedy-with-math-proof/) by @hero080
+
+[airplane-seat-assignment-probability]: https://leetcode.com/problems/airplane-seat-assignment-probability/
+[array-partition-i]: https://leetcode.com/problems/array-partition-i/
+[distant-barcodes]: https://leetcode.com/problems/distant-barcodes/
+[find-a-good-subset-of-the-matrix]: https://leetcode.com/problems/find-a-good-subset-of-the-matrix/
+[maximum-number-of-groups-with-increasing-length]: https://leetcode.com/problems/maximum-number-of-groups-with-increasing-length/
+[maximum-running-time-of-n-computers]: https://leetcode.com/problems/maximum-running-time-of-n-computers/
+[reorganize-string]: https://leetcode.com/problems/reorganize-string/

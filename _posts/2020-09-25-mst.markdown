@@ -1,0 +1,281 @@
+---
+title:  "MST"
+category: algorithm
+tags: tree
+---
+A spanning tree `T` of an undirected graph `G` is a subgraph that is a tree which includes all of the vertices of `G`.
+
+A minimum spanning tree (MST) or minimum weight spanning tree is a spanning tree whose sum of edge weights is as small as possible.
+
+## Algorithms
+
+### Prim's
+
+[Prim's algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
+
+1. Initialize a tree with a single vertex, chosen arbitrarily from the graph.
+1. Grow the tree by one edge: of the edges that connect the tree to vertices not yet in the tree, find the minimum-weight edge, and transfer it to the tree.
+1. Repeat step 2 (until all vertices are in the tree).
+
+Time complexity (heap + adjacent list): `O(E log V)`
+
+[Min Cost to Connect All Points][min-cost-to-connect-all-points]
+
+```java
+// Prim's
+public int minCostConnectPoints(int[][] points) {
+    boolean[] mst = new boolean[points.length];
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));  // point, distance
+
+    int node = 0, count = 1, cost = 0;
+    while (count < points.length) {
+        mst[node] = true;
+
+        // adds edges of the current node to the heap
+        for (int i = 0; i < points.length; i++) {
+            if (!mst[i]) {
+                pq.offer(new int[]{i, Math.abs(points[node][0] - points[i][0]) + Math.abs(points[node][1] - points[i][1])});
+            }
+        }
+
+        // finds the vertex nearest to the tree
+        while (mst[pq.peek()[0]]) {
+            pq.poll();
+        }
+
+        int[] pair = pq.poll();
+        node = pair[0];
+        cost += pair[1];
+        count++;
+    }
+
+    return cost;
+}
+```
+
+For complete graph, the number edges is much more than point. Therefore, we can keep track of min distance of each point instead.
+
+```java
+private static final int MAX = 4_000_001;
+
+// Prim's (complete graph)
+public int minCostConnectPoints(int[][] points) {
+    int[] d = new int[points.length];  // min distance to the current point
+    Arrays.fill(d, MAX);
+
+    int node = 0, count = 1, cost = 0;
+    while (count < points.length) {
+        // marks the current point as in the forest
+        d[node] = Integer.MAX_VALUE;
+
+        // finds the nearest point and updates min distances
+        int minNode = node;
+        for (int i = 0; i < points.length; i++) {
+            if (d[i] != Integer.MAX_VALUE) {
+                d[i] = Math.min(d[i], Math.abs(points[node][0] - points[i][0]) + Math.abs(points[node][1] - points[i][1]));
+
+                if (d[i] < d[minNode]) {
+                    minNode = i;
+                }
+            }
+        }
+
+        cost += d[minNode];
+        node = minNode;
+        count++;
+    }
+
+    return cost;
+}
+```
+
+### Kruskal's
+
+[Kruskal's algorithm](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm)
+
+1. create a forest F (a set of trees), where each vertex in the graph is a separate tree
+1. create a set S containing all the edges in the graph
+1. while S is nonempty and F is not yet spanning
+   1. remove an edge with minimum weight from S
+   1. if the removed edge connects two different trees then add it to the forest F, combining two trees into a single tree
+
+Time complexity: `O(E log E)` = `O(E log V)`
+
+```java
+private int[] forest;
+
+// Kruskal's
+public int minCostConnectPoints(int[][] points) {
+    forest = new int[points.length];
+    Arrays.fill(forest, -1);
+
+    Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));  // i, j, distance
+    for (int i = 0; i < points.length; i++) {
+        for (int j = i + 1; j < points.length; j++) {
+            pq.offer(new int[]{i, j, Math.abs(points[i][0] - points[j][0]) + Math.abs(points[i][1] - points[j][1])});
+        }
+    }
+
+    int cost = 0;
+    while (!pq.isEmpty()) {
+        int[] tuple = pq.poll();
+        if (union(tuple[1], tuple[0])) {
+            cost += tuple[2];
+            // tree is already spanning
+            if (forest[tuple[0]] == -points.length) {
+                break;
+            }
+        }
+    }
+    return cost;
+}
+
+private int find(int u) {
+    return forest[u] < 0 ? u : find(forest[u]);
+}
+
+private boolean union(int u, int v) {
+    int uset = find(u), vset = find(v);
+
+    if (uset == vset) {
+        return false;
+    }
+
+    forest[vset] += forest[uset];  // records the number of points in the forest
+    forest[uset] = vset;
+    return true;
+}
+```
+
+[Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree][find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree]
+
+```java
+private int[] forest;
+private int[][] edges;
+
+public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
+    this.edges = edges;
+
+    int m = edges.length;
+    Integer[] index = new Integer[m];
+    for (int i = 0; i < m; i++) {
+        index[i] = i;
+    }
+
+    Arrays.sort(index, Comparator.comparingInt(i -> edges[i][2]));
+
+    List<Integer> critical = new ArrayList<>(), pseudo = new ArrayList<>();
+    int weight = mst(n, index, -1, -1);
+    for (int i : index) {
+        // if the edge is critical
+        // deletes it and gets a new MST
+        // the weight will increase
+        if (weight < mst(n, index, i, -1)) {
+            critical.add(i);
+        // adds the edge to the MST by force:
+        // - adds it to the MST edge set
+        // - runs the MST algorithm for the rest of the edges in the tree
+        // if the edge is pseudo-critical
+        // the weight doesn't change
+        } else if (weight == mst(n, index, -1, i)) {
+            pseudo.add(i);
+        }
+    }
+    return Arrays.asList(critical, pseudo);
+}
+
+// if there's no edge to delete, edgeToDelete < 0
+// so is edgeToForceAdd
+private int mst(int n, Integer[] index, int edgeToDelete, int edgeToForceAdd) {
+    forest = new int[n];
+    Arrays.fill(forest, -1);
+
+    // count is the number of edges in the edge set of the MST
+    int weight = 0, count = 0;
+    if (edgeToForceAdd >= 0) {
+        weight += edges[edgeToForceAdd][2];
+        union(edges[edgeToForceAdd][0], edges[edgeToForceAdd][1]);
+        count++;
+    }
+
+    for (int i : index) {
+        if (i == edgeToDelete || i == edgeToForceAdd) {
+            continue;
+        }
+
+        if (union(edges[i][0], edges[i][1])) {
+            weight += edges[i][2];
+            count++;
+        }
+
+        if (count == n - 1) {
+            break;
+        }
+    }
+
+    return count == n - 1 ? weight : Integer.MAX_VALUE;
+}
+
+private int find(int u) {
+    return forest[u] < 0 ? u : find(forest[u]);
+}
+
+private boolean union(int u, int v) {
+    int uset = find(u), vset = find(v);
+
+    if (uset == vset) {
+        return false;
+    }
+
+    forest[uset] = vset;
+    return true;
+}
+```
+
+[Optimize Water Distribution in a Village][optimize-water-distribution-in-a-village]
+
+```java
+private int[] forest;
+
+// Imagine there's a House 0 with a 0-weight well
+// The cost from House i to House 0 is wells[i - 1]
+// Now the problem is reduced to an MST problem
+// Kruscal's
+public int minCostToSupplyWater(int n, int[] wells, int[][] pipes) {
+    this.forest = new int[n + 1];
+
+    // {House i, House j, weight}
+    Queue<int[]> edges = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+    for (int i = 0; i < n; i++) {
+        this.forest[i + 1] = i + 1;
+        // edge between House 0 and House (i + 1)
+        edges.offer(new int[] {0, i + 1, wells[i]});
+    }
+
+    for (int[] p : pipes) {
+        edges.offer(p);
+    }
+
+    int cost = 0;
+    while (!edges.isEmpty()) {
+        int[] e = edges.poll();
+        int u = find(e[0]), v = find(e[1]);
+        if (u != v) {
+            cost += e[2];
+            forest[u] = v;
+            if (--n == 0) {
+                break;
+            }
+        }
+    }
+    return cost;
+}
+
+private int find(int u) {
+    return forest[u] == u ? u : find(forest[u]);
+}
+```
+
+[find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree]: https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/
+[min-cost-to-connect-all-points]: https://leetcode.com/problems/min-cost-to-connect-all-points/
+[optimize-water-distribution-in-a-village]: https://leetcode.com/problems/optimize-water-distribution-in-a-village/

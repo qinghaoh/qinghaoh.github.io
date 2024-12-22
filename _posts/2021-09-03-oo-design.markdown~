@@ -1,0 +1,223 @@
+---
+title:  "OO Design"
+tags: math
+---
+[Basic Calculator IV][basic-calculator-iv]
+
+```java
+// evaluation map
+private Map<String, Integer> map = new HashMap<>();
+
+class Term {
+    int coefficient = 1;
+    List<String> variables = new ArrayList<>();
+
+    Term(int coefficient) {
+        this.coefficient = coefficient;
+    }
+
+    Term(String s) {
+        if (map.containsKey(s)) {
+            coefficient = map.get(s);
+        } else {
+            variables.add(s);
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (coefficient == 0) {
+            return "";
+        }
+
+        return coefficient + (variables.isEmpty() ? "" : "*") + String.join("*", variables);
+    }
+
+    // two terms equal if they are like terms
+    boolean equals(Term t) {
+        if (variables.size() != t.variables.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < variables.size(); i++) {
+            if (!variables.get(i).equals(t.variables.get(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    int compareTo(Term t) {
+        // degree
+        if (variables.size() > t.variables.size()) {
+            return -1;
+        }
+
+        if (variables.size() < t.variables.size()) {
+            return 1;
+        }
+
+        // lexicographic order
+        for (int i = 0; i < variables.size(); i++) {
+            int value = variables.get(i).compareTo(t.variables.get(i));
+            if (value != 0)  {
+                return value;
+            }
+        }
+
+        return 0;
+    }
+
+    void sign(int sign) {
+        coefficient = sign * coefficient;
+    }
+
+    Term times(Term t) {
+        Term product = new Term(coefficient * t.coefficient);
+        variables.forEach(product.variables::add);
+        t.variables.forEach(product.variables::add);
+
+        Collections.sort(product.variables);
+        return product;
+    }
+}
+
+class Expression {
+    List<Term> terms = new ArrayList<>();
+    char operator = '+';
+
+    Expression(int number) {
+        terms.add(new Term(number));
+    }
+
+    Expression(String expr) {
+        terms.add(new Term(expr));
+    }
+
+    Expression(List<Term> terms) {
+        this.terms = terms;
+    }
+
+    Expression times(Expression e) {
+        List<Term> list = new ArrayList<>();
+        for (Term t1 : terms) {
+            for (Term t2 : e.terms) {
+                list.add(t1.times(t2));
+            }
+        }
+
+        return new Expression(combine(list));
+    }
+
+    Expression plus(Expression e, int sign) {
+        List<Term> list = new ArrayList<>();
+        terms.forEach(list::add);
+        e.terms.stream().peek(t -> t.sign(sign)).forEach(list::add);
+        return new Expression(combine(list));
+    }
+
+    Expression eval(Expression e) {
+        return operator == '*' ? times(e) : plus(e, operator == '+' ? 1 : -1);
+    }
+
+    List<String> toList() {
+        return terms.stream()
+            .map(t -> t.toString())
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.toList());
+    }
+}
+
+// combines like terms
+private List<Term> combine(List<Term> terms) {
+    Collections.sort(terms, (a, b) -> a.compareTo(b));
+
+    List<Term> list = new ArrayList<>();
+    for (Term t : terms) {
+        if (!list.isEmpty() && t.equals(list.get(list.size() - 1))) {
+            list.get(list.size() - 1).coefficient += t.coefficient;
+        } else {
+            list.add(t);
+        }
+    }
+    return list;
+}
+
+public List<String> basicCalculatorIV(String expression, String[] evalvars, int[] evalints) {
+    // builds evaluation map
+    for (int i = 0; i < evalvars.length; i++) {
+        map.put(evalvars[i], evalints[i]);
+    }
+
+    // expression stack
+    Deque<Expression> stack = new ArrayDeque<>();
+    stack.push(new Expression(0));
+
+    // priority stack
+    Deque<Integer> priorityStack = new ArrayDeque<>();
+    priorityStack.push(0);
+
+    int i = 0, n = expression.length();
+    int priority = 0;
+    while (i < n) {
+        char ch = expression.charAt(i);
+        if (Character.isDigit(ch)) {
+            int num = 0;
+            while (i < n && Character.isDigit(expression.charAt(i))) {
+                num = num * 10 + expression.charAt(i) - '0';
+                i++;
+            }
+            stack.push(new Expression(num));
+        } else if (Character.isLetter(ch)) {
+            StringBuilder sb = new StringBuilder();
+            while (i < n && Character.isLetter(expression.charAt(i))) {
+                sb.append(expression.charAt(i));
+                i++;
+            }
+            stack.push(new Expression(sb.toString()));
+        } else {
+            // priority
+            // +/-: +0
+            // *: +1
+            // (): +2
+            if (ch == '(') {
+                priority += 2;
+            }
+
+            if (ch == ')') {
+                priority -= 2;
+            }
+
+            if (ch == '+' || ch == '-' || ch == '*') {
+                int currPriority = priority;
+                if (ch == '*') {
+                    currPriority++;
+                }
+
+                // evaluates until curr prority is lower than priority stack
+                while (!priorityStack.isEmpty() && currPriority <= priorityStack.peek()) {
+                    Expression curr = stack.pop(), prev = stack.pop();
+                    priorityStack.pop();
+                    stack.push(prev.eval(curr));
+                }
+
+                // assigns operator to stack top
+                stack.peek().operator = ch;
+                priorityStack.push(currPriority);
+            }
+            i++;  
+        }
+    }
+
+    // evaluates the remaining expressions in stack
+    while (stack.size() > 1) {
+        Expression curr = stack.pop(), prev = stack.pop();
+        stack.push(prev.eval(curr));
+    }
+
+    return stack.peek().toList();
+}
+```
+
+[basic-calculator-iv]: https://leetcode.com/problems/basic-calculator-iv/

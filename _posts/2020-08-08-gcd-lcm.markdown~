@@ -1,0 +1,197 @@
+---
+title:  "GCD/LCM"
+category: algorithm
+tags: math
+---
+# Greatest Common Divisor
+
+[Euclidean algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm)
+
+```java
+public int gcd(int a, int b) {
+    while (b != 0) {
+        int tmp = b;
+        b = a % b;
+        a = tmp;
+    }
+    return a;
+}
+```
+
+## Variants
+
+[Greatest Common Divisor of Strings][greatest-common-divisor-of-strings]
+
+```java
+public String gcdOfStrings(String str1, String str2) {
+    if (str1.length() < str2.length()) {
+        return gcdOfStrings(str2, str1);
+    }
+
+    if (!str1.startsWith(str2)) {
+        return "";
+    }
+
+    if (str2.isEmpty()) {
+        return str1;
+    }
+
+    return gcdOfStrings(str1.substring(str2.length()), str2);
+}
+```
+
+[X of a Kind in a Deck of Cards][x-of-a-kind-in-a-deck-of-cards]
+
+[Number of Different Subsequences GCDs][number-of-different-subsequences-gcds]
+
+```java
+private static final int MAX = (int)2e5;
+
+public int countDifferentSubsequenceGCDs(int[] nums) {
+    // factor[i]: gcd of all nums that has a factor i
+    int[] factor = new int[MAX + 1];
+
+    for (int i = 0; i < nums.length; i++) {
+        // finds all factors of nums[i]
+        for (int j = 1; j * j <= nums[i]; j++) {
+            if (nums[i] % j == 0) {
+                int f1 = j;
+                int f2 = nums[i] / j;
+
+                // finds gcd of all nums[i] with factor1
+                factor[f1] = gcd(factor[f1], nums[i]);
+
+                // finds gcd of all nums[i] with factor2
+                factor[f2] = gcd(factor[f2], nums[i]);
+            }
+        }
+    }
+
+    int count = 0;
+    for (int i = 1; i <= MAX; i++) {
+        // this check guarantees the GCD's found are unique
+        if (factor[i] == i) {
+            count++;
+        }
+    }
+    return count;
+}
+```
+
+## Properties
+
+If `n1 * n2 % k == 0`, then `gcd(n1, k) * gcd(n2, k) % k == 0`
+
+[Bézout's identity](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity)
+
+Let $$ a $$ and $$ b $$ be integers with greatest common divisor $$ d $$. Then, there exist integers $$ x $$ and $$ y $$ such that $$ ax + by = d $$. More generally, the integers of the form $$ ax + by $$ are exactly the multiples of $$ d $$.
+
+[Check if Point Is Reachable][check-if-point-is-reachable]
+
+```java
+public boolean isReachable(int targetX, int targetY) {
+    // - first two options: gcd(x, y) remains the same (Bezout's identity)
+    // - last two options: gcd(x, y) either remains the same or gets doubled
+    //
+    // gcd(1, 1) == 1, so the target is reachable iff gcd is a power of 2
+    return Integer.bitCount(gcd(targetX, targetY)) == 1;
+}
+```
+
+# Least Common Multiple
+
+$$ {lcm} (a,b)={\frac {|a\cdot b|}{\gcd(a,b)}} $$
+
+[Minimize the Maximum of Two Arrays][minimize-the-maximum-of-two-arrays]
+
+```java
+public int minimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
+    long lcm = lcm(divisor1, divisor2);
+    int low = uniqueCnt1 + uniqueCnt2, high = Integer.MAX_VALUE;
+    while (low < high) {
+        int mid = (low + high) >>> 1;
+        if (mid - mid / divisor1 >= uniqueCnt1 && mid - mid / divisor2 >= uniqueCnt2 && mid - mid / lcm >= uniqueCnt1 + uniqueCnt2) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return low;
+}
+```
+
+[Lexicographically Smallest String After Applying Operations][lexicographically-smallest-string-after-applying-operations]
+
+```java
+public String findLexSmallestString(String s, int a, int b) {
+    int n = s.length();
+    String min = s, curr = s;
+
+    // lcm(b, n) / b
+    for (int i = 0; i < n / gcd(b, n); i++) {
+        curr = add(curr, a, b);
+        if (curr.compareTo(min) < 0) {
+            min = curr;
+        }
+        curr = rotate(curr, b);
+    }
+
+    return min;
+}
+
+// Gets the smallest possible head by adding a any number of times
+private char getSmallestHead(char c, int a) {
+    int i = c - '0';
+    return (char)((a == 5 ? Math.min(i, (i + 5) % 10) : (a % 2 == 0 ? i % 2 : 0)) + '0');
+}
+
+private String add(String s, int a, int b) {
+    char[] c = s.toCharArray();
+
+    // if b is even, only numbers at odd indices can be modified by the first operation (add)
+    int oddDiff = c[1] - getSmallestHead(c[1], a);
+
+    // if b is odd, numbers at even indices can be modified by the first operation (add), too
+    int evenDiff = b % 2 == 0 ? 0 : c[0] - getSmallestHead(c[0], a);
+
+    for (int i = 0; i < c.length; i++) {
+        int diff = i % 2 == 0 ? evenDiff : oddDiff;
+        c[i] = (char)((c[i] - '0' - diff + 10) % 10 + '0');
+    }
+
+    return new String(c);
+}
+
+private String rotate(String s, int b) {
+    int n = s.length();
+    return s.substring(n - b) + s.substring(0, n - b);
+}
+```
+
+[Nth Magical Number][nth-magical-number]
+
+```java
+public int nthMagicalNumber(int n, int a, int b) {
+    int lcm = a * b / gcd(a, b);
+
+    long low = 0, high = (long)n * Math.min(a, b);
+    while (low < high) {
+        long mid = (low + high) >>> 1;
+        if (mid / a + mid / b - mid / lcm >= n) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    return (int)(low % MOD);
+}
+```
+
+[check-if-point-is-reachable]: https://leetcode.com/problems/check-if-point-is-reachable/
+[greatest-common-divisor-of-strings]: https://leetcode.com/problems/greatest-common-divisor-of-strings/
+[lexicographically-smallest-string-after-applying-operations]: https://leetcode.com/problems/lexicographically-smallest-string-after-applying-operations/
+[minimize-the-maximum-of-two-arrays]: https://leetcode.com/problems/minimize-the-maximum-of-two-arrays/
+[nth-magical-number]: https://leetcode.com/problems/nth-magical-number/
+[number-of-different-subsequences-gcds]: https://leetcode.com/problems/number-of-different-subsequences-gcds/
+[x-of-a-kind-in-a-deck-of-cards]: https://leetcode.com/problems/x-of-a-kind-in-a-deck-of-cards/

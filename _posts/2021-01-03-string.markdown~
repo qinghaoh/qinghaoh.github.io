@@ -1,0 +1,253 @@
+---
+title:  "String"
+tags: string
+---
+# Transformation
+
+[String Transforms Into Another String][string-transforms-into-another-string]
+
+```java
+public boolean canConvert(String str1, String str2) {
+    if (str1.equals(str2)) {
+        return true;
+    }
+
+    Map<Character, Character> map = new HashMap<>();
+    for (int i = 0; i < str1.length(); i++) {
+        char c1 = str1.charAt(i), c2 = str2.charAt(i);
+        if (map.getOrDefault(c1, c2) != c2) {
+            return false;
+        }
+
+        map.put(c1, c2);
+    }
+
+    // checks if there's an available temporary char
+    return new HashSet<Character>(map.values()).size() < 26;
+}
+```
+
+Case 1:
+
+```
+"aca" -> "cec"
+key      value
+a    ->    c
+c    ->    e
+```
+There's no cycle, so we substitue the key with the value backwards in `str1`:
+```
+"aca" -> "aea" -> "cec"
+```
+
+Case 2:
+
+```
+"ace" -> "cea"
+key      value
+a    ->    c
+c    ->    e
+e    ->    a
+```
+There's a cycle, so we need to insert a temporary char to break the cycle, then convert `str1` backwards in two steps:
+```
+a -> x
+
+"ace" -> "xce"
+
+x -> c
+c -> e
+e -> a
+
+"xce" -> "xca" -> "xea" -> "cea"
+```
+# Lyndon Factorization
+
+[Lyndon factorization](https://cp-algorithms.com/string/lyndon_factorization.html): A string is called simple (or a Lyndon word), if it is strictly smaller than any of its own nontrivial suffixes. The Lyndon factorization of the string \\(s\\) is a factorization \\(s = w_1w_2 \ldots w_k\\) where all strings \\(w_i\\) are simple, and they are in non-increasing order \\(w_1 \ge w_2 \ge \ldots \ge w_k\\).
+
+A [Lyndon word](https://en.wikipedia.org/wiki/Lyndon_word) is a nonempty string that is strictly smaller in lexicographic order than all of its rotations.
+
+[Orderly Queue][orderly-queue]
+
+```java
+public String orderlyQueue(String s, int k) {
+    // bubble sort - swaps adjacent pairs
+    if (k > 1) {
+        char chars[] = s.toCharArray();
+        Arrays.sort(chars);
+        return new String(chars);
+    }
+
+    return lyndonWord(s);
+}
+
+// Duval algorithm, O(n)
+private String lyndonWord(String s) {
+    s += s;
+    int n = s.length(), index = 0, i = 0;
+    while (i < n / 2) {
+        index = i;
+        int j = i + 1, k = i;
+        while (j < n && s.charAt(k) <= s.charAt(j)) {
+            if (s.charAt(k) < s.charAt(j)) {
+                // s2 + s[j] becomes simple
+                k = i;
+            } else {
+                // s2 is still pre-simple
+                k++;
+            }
+            j++;
+        }
+
+        // s[j] < s[k], s2 + s[j] is no longer pre-simple
+        while (i <= k) {
+            i += j - k;
+        }
+    }
+    return s.substring(index, index + n / 2);
+}
+```
+
+[Sentence Screen Fitting][sentence-screen-fitting]
+
+```java
+public int wordsTyping(String[] sentence, int rows, int cols) {
+    String s = String.join(" ", sentence) + " ";
+
+    // puts s in one line repeatedly
+    // finds the start position (0 index) of each row
+    // e.g. rows = 4, cols = 6
+    // "abc de f abc de f abc de f ..."
+    //  0      7     13   18     25
+    int start = 0, n = s.length();
+    for (int i = 0; i < rows; i++) {
+        start += cols;
+
+        // adjustments
+        // moves the pointer backward to a space
+        while (start > 0 && s.charAt(start % n) != ' ') {
+            start--;
+        }
+        // moves the pointer forward from the current space to a letter
+        start++;
+    }
+
+    return start / n;
+}
+```
+
+We can preprocess the adjustment of every possible start:
+
+```java
+public int wordsTyping(String[] sentence, int rows, int cols) {
+    String s = String.join(" ", sentence) + " ";
+    int start = 0, n = s.length();
+
+    // move[i]: the number of moves forward to adjust the start in s
+    // if s[i] is a space, move[i] == 1 (next char)
+    // else, move[i] = move[i - 1] - 1 (moves to the first letter of the current word)
+    int[] move = new int[n];
+
+    // move[0] = 0 because the first char is always a letter
+    for (int i = 1; i < n; i++) {
+        move[i] = s.charAt(i) == ' ' ? 1 : move[i - 1] - 1;
+    }
+
+    for (int i = 0; i < rows; i++) {
+        start += cols;
+        start += move[start % n];
+    }
+
+    return start / n;
+}
+```
+
+[Decoded String at Index][decoded-string-at-index]
+
+```java
+public String decodeAtIndex(String S, int K) {
+    long len = 0;
+    int n = S.length();
+
+    // gets the length of decoded String
+    int i = 0;
+    while (i < n) {
+        char c = S.charAt(i);
+        if (Character.isDigit(c)) {
+            len *= c - '0';
+        } else {
+            len++;
+        }
+
+        if (len >= K) {
+            break;
+        }
+        i++;
+    }
+
+    // think backwards
+    while (i >= 0) {
+        char c = S.charAt(i);
+        if (Character.isDigit(c)) {
+            len /= c - '0';
+            K %= len;
+        } else {
+            if (K % len == 0) {
+                return Character.toString(c);
+            }
+            len--;
+        }
+        i--;
+    }
+
+    return "";
+}
+```
+
+For example, `s = "leet2code3", k = 10`
+
+# Swap
+
+[Check If String Is Transformable With Substring Sort Operations][check-if-string-is-transformable-with-substring-sort-operations]
+
+```java
+public boolean isTransformable(String s, String t) {
+    // we can move a char freely to the left until it hits a smaller char
+    // e.g. "0231" > "0213" > "0123"
+    // checks if we can move required char in s to the left to get t
+    Deque<Integer> indexes[] = new Deque[10];
+    for (int i = 0; i < indexes.length; i++) {
+        indexes[i] = new ArrayDeque<>();
+    }
+
+    // decreasing stack
+    int n = s.length();
+    for (int i = n - 1; i >= 0; i--) {
+        indexes[s.charAt(i) - '0'].push(i);
+    }
+
+    for (char ch : t.toCharArray()) {
+        // s has available d
+        int d = ch - '0';
+        if (indexes[d].isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < d; i++) {
+            // check if there is a digit < d on the left of d
+            // e.g. s = "12345", t = "12435"
+            if (!indexes[i].isEmpty() && indexes[i].peek() < indexes[d].peek()) {
+                return false;
+            }
+        }
+        indexes[d].pop();
+    }
+    return true;
+}
+```
+
+[check-if-string-is-transformable-with-substring-sort-operations]: https://leetcode.com/problems/check-if-string-is-transformable-with-substring-sort-operations/
+[decoded-string-at-index]: https://leetcode.com/problems/decoded-string-at-index/
+[orderly-queue]: https://leetcode.com/problems/orderly-queue/
+[sentence-screen-fitting]: https://leetcode.com/problems/sentence-screen-fitting/
+[string-transforms-into-another-string]: https://leetcode.com/problems/string-transforms-into-another-string/

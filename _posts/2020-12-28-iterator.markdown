@@ -1,0 +1,39 @@
+---
+title:  "Iterator"
+---
+
+[Zigzag Iterator][zigzag-iterator]
+
+```java
+public class ZigzagIterator {
+    private Queue<Iterator<Integer>> q;
+
+    public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
+        q = new LinkedList<>();
+        if (!v1.isEmpty()) {
+            q.offer(v1.iterator());
+        }
+        if (!v2.isEmpty()) {
+            q.offer(v2.iterator());
+        }   
+    }
+
+    public int next() {
+        if (hasNext()) {
+            Iterator<Integer> curr = q.poll();
+            int result = curr.next();
+            if (curr.hasNext()) {
+                q.offer(curr);
+            }
+            return result;
+        }
+        return -1;
+    }
+
+    public boolean hasNext() {
+        return !q.isEmpty();
+    }
+}
+```
+
+[zigzag-iterator]: https://leetcode.com/problems/zigzag-iterator/

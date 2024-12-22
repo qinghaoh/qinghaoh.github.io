@@ -1,0 +1,87 @@
+---
+title:  "Set"
+category: algorithm
+tag: set 
+---
+[NavigableSet](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/NavigableSet.html)
+
+| Prefix | Suffix | Parameter | Comparison |
+|-------|--------|---------|---------|
+| ceiling | | e | >= |
+| floor | | e | <= |
+| higher | | e | > |
+| lower | | e | < |
+| head | set | toElement | < |
+| head | set | toElement, inclusive | < or <= |
+| tail | set | fromElement | >= |
+| tail | set | fromElement, inclusive | > or >= |
+| pollFirst | | | lowest |
+| pollLast | | | highest |
+| descending | iterator | | |
+| descending | set | | |
+| sub | set | fromElement, fromInclusive, toElement, toInclusive | |
+
+[SortedSet](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/SortedSet.html)
+
+| Prefix | Suffix | Parameter | Comparison |
+|-------|--------|---------|---------|
+| head | set | toElement | < |
+| tail | set | fromElement | >= |
+| first | | | lowest |
+| last | | | highest |
+| sub | set | fromElement, toElement | [) |
+
+[BitSet](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/BitSet.html)
+
+[Distribute Candies][distribute-candies]
+
+```java
+private static final int MAX_NUM_TYPES = 2 * (int)1e5 + 1;
+
+public int distributeCandies(int[] candyType) {
+    BitSet bitset = new BitSet(MAX_NUM_TYPES);
+    for (int c : candyType) {
+        bitset.set(c + MAX_NUM_TYPES / 2);
+    }
+    return Math.min(candyType.length / 2, bitset.cardinality());
+}
+```
+
+[Closest Room][closest-room]
+
+```java
+public int[] closestRoom(int[][] rooms, int[][] queries) {
+    Arrays.sort(rooms, Comparator.comparingInt(r -> -r[1]));
+
+    int k = queries.length;
+    Integer[] qIndex = new Integer[k];
+    for (int i = 0; i < k; i++) {
+        qIndex[i] = i;
+    }
+    Arrays.sort(qIndex, Comparator.comparingInt(i -> -queries[i][1]));
+
+    TreeSet<Integer> ids = new TreeSet<>();
+    int j = 0;
+    int[] answer = new int[k];
+    for (int i : qIndex) {
+        int preferred = queries[i][0], minSize = queries[i][1];
+
+        while (j < rooms.length && rooms[j][1] >= minSize) {
+            ids.add(rooms[j++][0]);
+        }
+
+        Integer f = ids.floor(preferred), c = ids.ceiling(preferred);
+        answer[i] = -1;
+        if (c != null) {
+            answer[i] = c;
+        }
+        if (f != null && (answer[i] < 0 || Math.abs(f - preferred) <= Math.abs(answer[i] - preferred))) {
+            answer[i] = f;
+        }
+    }
+    return answer;
+}
+```
+
+[closest-room]:https://leetcode.com/problems/closest-room/
+[distribute-candies]:https://leetcode.com/problems/distribute-candies/

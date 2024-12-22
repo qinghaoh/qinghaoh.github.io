@@ -1,0 +1,532 @@
+---
+title:  "Map"
+category: algorithm
+tag: map 
+---
+# Java
+
+## Methods
+
+[NavigableMap](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/NavigableMap.html)
+
+| Prefix | Suffix | Parameter | Comparison |
+|-------|--------|---------|---------|
+| ceiling | entry/key | key | >= |
+| floor | entry/key | key | <= |
+| higher | entry/key | key | > |
+| lower | entry/key | key | < |
+| head | map | toKey | < |
+| head | map | toKey, inclusive | < or <= |
+| tail | map | fromKey | >= |
+| tail | map | fromKey, inclusive | > or >= |
+| (poll)first | entry | | least |
+| (poll)last | entry | | greatest |
+| descending | map | | |
+| sub | map | fromKey, fromInclusive, toKey, toInclusive | |
+| descending | keySet | | |
+| navigable | keySet | | |
+
+[SortedMap](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/SortedMap.html)
+
+| Prefix | Suffix | Parameter | Comparison |
+|-------|--------|---------|---------|
+| head | map | toKey | < |
+| tail | map | fromKey | >= |
+| first | key | | lowest |
+| last | key | | highest |
+| sub | map | fromKey, toKey | [) |
+
+Note that the ordering maintained by a sorted map (whether or not an explicit comparator is provided) must be consistent with equals if the sorted map is to correctly implement the Map interface.
+
+The ordering imposed by a comparator `c` on a set of elements `S` is said to be consistent with equals if and only if `c.compare(e1, e2)==0` has the same boolean value as `e1.equals(e2)` for every `e1` and `e2` in `S`.
+
+## Sort Map by Values
+
+### Ascending
+
+```java
+Map<String, Integer> unSortedMap = getUnSortedMap();
+LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+ 
+unSortedMap.entrySet()
+    .stream()
+    .sorted(Map.Entry.comparingByValue())
+    .forEachOrdered(e -> sortedMap.put(e.getKey(), e.getValue()));
+```
+
+### Descending
+
+```java
+Map<String, Integer> unSortedMap = getUnSortedMap();
+LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+ 
+unSortedMap.entrySet()
+    .stream()
+    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+    .forEachOrdered(e -> sortedMap.put(e.getKey(), e.getValue()));
+```
+
+## Sort Map by Values then Keys
+
+```java
+    .sorted(Comparator.comparing(Map.Entry<String, Integer>::getValue)
+            .thenComparing(Comparator.comparing(Map.Entry<String, Integer>::getKey)))
+```
+
+```java
+    .sorted(Map.Entry.<String, Integer>comparingByValue()
+            .thenComparing(Map.Entry.comparingByKey()))
+```
+
+## Key with the max value in a map
+```java
+Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
+```
+
+* [default V computeIfAbsent(K key, Function\<? super K, ? extends V\> mappingFunction)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Map.html#computeIfAbsent(K,java.util.function.Function))
+* [default boolean remove(Object key, Object value)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Map.html#remove(java.lang.Object,java.lang.Object))
+* [V put(K key, V value)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Map.html#put(K,V))
+  * Returns the previous value associated with key, or null if there was no mapping for key.
+* [default V replace(K key, V value)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Map.html#replace(K,V))
+```java
+ if (map.containsKey(key)) {
+     return map.put(key, value);
+ } else
+     return null;
+```
+
+## Map.Entry
+* [static \<K,V extends Comparable\<? super V\>\> Comparator\<Map.Entry\<K,V\>\> comparingByValue()](https://docs.oracle.com/javase/8/docs/api/java/util/Map.Entry.html#comparingByValue--)
+
+# C++
+
+## Methods
+
+* `iterator upper_bound(const key_type& k)` -> "higher"
+* `iterator lower_bound(const key_type& k)` -> "ceiling"
+
+* `map::operator[]`
+  - "find-or-add"
+  - Default constructible and assignable
+* `map::at`: same as `[]` except throws an exception when the key doesn't exist
+* `map::insert`: doesn't modify the map if the key exists
+* `map::emplace`: parameters are forwareded to the constructor of the object stored in the container. No copies.
+
+The following example is from [this](https://stackoverflow.com/a/17174245) post:
+```c++
+K t; V u;
+std::map<K,V> m;           // std::map<K,V>::value_type is std::pair<const K,V>
+    
+m.insert( std::pair<const K,V>(t,u) );
+m.insert( std::map<K,V>::value_type(t,u) );
+m.insert( std::make_pair<const K,V>(t,u) );
+
+m.insert( std::make_pair(t,u) );
+
+m.emplace(t,u);
+```
+
+@walletfox. (2018). _[Overview of std::map’s Insertion / Emplacement Methods in C++17](https://www.fluentcpp.com/2018/12/11/overview-of-std-map-insertion-emplacement-methods-in-cpp17/)_
+
+[Making File Names Unique][making-file-names-unique]
+
+```java
+public String[] getFolderNames(String[] names) {
+    String[] folders = new String[names.length];
+    // name: smallest valid integer
+    Map<String, Integer> map = new HashMap<>();
+    for (int i = 0; i < names.length; i++) {
+        String curr = names[i];
+        int count = map.getOrDefault(curr, 1);
+        while (map.containsKey(curr)) {
+            curr = names[i] + "(" + count++ + ")";
+        }
+        map.put(curr, 1);
+        map.put(names[i], count);
+        folders[i] = curr;
+    }
+    return folders;
+}
+```
+
+[Vowel Spellchecker][vowel-spellchecker]
+
+```java
+public String[] spellchecker(String[] wordlist, String[] queries) {
+    Set<String> words = new HashSet<>();
+    Map<String, String> cap = new HashMap<>(), vowel = new HashMap<>();
+
+    for (String w : wordlist) {
+        words.add(w);
+        String lower = w.toLowerCase(), devowel = lower.replaceAll("[aeiou]", "#");
+        cap.putIfAbsent(lower, w);
+        vowel.putIfAbsent(devowel, w);
+    }
+
+    int n = queries.length;
+    String[] result = new String[n];
+    for (int i = 0; i < n; i++) {
+        String q = queries[i];
+        if (words.contains(q)) {
+            result[i] = q;
+            continue;
+        }
+
+        String lower = q.toLowerCase(), devowel = lower.replaceAll("[aeiou]", "#");
+        if (cap.containsKey(lower)) {
+            result[i] = cap.get(lower);
+            continue;
+        }
+
+        if (vowel.containsKey(devowel)) {
+            result[i] = vowel.get(devowel);
+            continue;
+        }
+        result[i] = "";
+    }
+    return result;
+}
+```
+
+[Tuple with Same Product][tuple-with-same-product]
+
+```java
+public int tupleSameProduct(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int count = 0;
+    for (int i = 0; i < nums.length; i++) {
+        for (int j = i + 1; j < nums.length; j++) {
+            int p = nums[i] * nums[j];
+            int c = map.getOrDefault(p, 0);
+            // acculumates the count so we don't need a second pass
+            count += c * 8;
+            map.put(p, c + 1);
+        }
+    }
+    return count;
+}
+```
+
+# Buckets
+
+[Contains Duplicate III][contains-duplicate-iii]
+
+```java
+public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+    Map<Long, Long> buckets = new HashMap<>();
+    // capacity of each bucket
+    long capacity = (long)t + 1;
+
+    for (int i = 0; i < nums.length; i++) {
+        long bucket = Math.floorDiv(nums[i], capacity);
+
+        // checks if the bucket already contains a number
+        if (buckets.containsKey(bucket)) {
+            return true;
+        }
+
+        // checks the neighbor buckets
+        if (buckets.containsKey(bucket - 1) && Math.abs(nums[i] - buckets.get(bucket - 1)) < capacity) {
+            return true;
+        }
+
+        if (buckets.containsKey(bucket + 1) && Math.abs(nums[i] - buckets.get(bucket + 1)) < capacity) {
+            return true;
+        }
+
+        buckets.put(bucket, (long)nums[i]);
+
+        // removes out-of-window buckets
+        if (i >= k) {
+            buckets.remove(Math.floorDiv(nums[i - k], capacity));
+        }
+    }
+
+    return false;
+}
+```
+
+# TreeMap
+
+[Depth of BST Given Insertion Order][depth-of-bst-given-insertion-order]
+
+[Array of Doubled Pairs][array-of-doubled-pairs]
+
+```java
+public boolean canReorderDoubled(int[] arr) {
+    Map<Integer, Integer> count = new TreeMap<>();
+    for (int a : arr) {
+        count.put(a, count.getOrDefault(a, 0) + 1);
+    }
+
+    for (int a : count.keySet()) {
+        if (count.get(a) == 0) {
+            continue;
+        }
+
+        int pair = a < 0 ? a / 2 : a * 2;
+        // if a is an odd negative, we can't find a pair that pair * 2 == a
+        // if count(a) > count(pair), there's not enough pair to cancel a out
+        // since we are scanning in ascending order
+        if ((a < 0 && a % 2 != 0) || count.get(a) > count.getOrDefault(pair, 0)) {
+            return false;
+        }
+
+        count.put(pair, count.get(pair) - count.get(a));
+    }
+    return true;
+}
+```
+
+[Find Array Given Subset Sums][find-array-given-subset-sums]
+
+```java
+public int[] recoverArray(int n, int[] sums) {
+    Arrays.sort(sums);
+
+    return recover(sums).stream().mapToInt(i -> i).toArray();
+}
+
+private List<Integer> recover(int[] sums) {
+    if (sums.length == 1) {
+        return new ArrayList<>();
+    }
+
+    Map<Integer, Long> count = Arrays.stream(sums).boxed()
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+    // considers the subset sums of arr [x, y, z]
+    // sums can be split into two groups:
+    //     A             B
+    // [0, y, z] + [x, x + y, x + z]
+
+    // sorts sums
+    // d = sums[1] - sums[0]
+    // then x == -d or x == d
+
+    // proof:
+    // s0, s1, ..., s_k, where k = 2 ^ n
+    // since one of the subsets is empty, there always exists s_i == 0
+
+    // - if there's at least one negative subset sum s_0
+    //   - if there's only one negative subset sum
+    //     - d = arr[m], where arr[m] is the least non-negative
+    //       x = d
+    //       e.g. arr = [-3, 1]
+    //     - d = -arr[0], x = -d
+    //       e.g. arr = [-3, 4]
+    //   - if there're more than one negative subset sum
+    //     - d = -arr[m], where arr[m] < 0 and |arr[m]| is the least
+    //       x = -d
+    // - else
+    //   - if there're more than one subset sum == 0
+    //     d = 0, x = d = 0
+    //   - else
+    //     d = arr[m], where arr[m] is the least
+    //     x = d
+    int d = sums[1] - sums[0];
+
+    // splits the subset sums into two groups A and B
+    int[] groupA = new int[sums.length / 2], groupB = new int[sums.length / 2];
+    // by default, Group A + x == Group B
+    boolean toSwap = false;
+    // iterates the sums ascendingly, finds the matching b == a + d
+    int i = 0;
+    for (int a : sums) {
+        int b = a + d;
+        if (count.getOrDefault(a, 0l) > 0) {
+            count.put(b, count.get(b) - 1);
+            count.put(a, count.get(a) - 1);
+
+            // when b == 0, we can swap Group B and Group A
+            // and take -d as the new x
+            if (b == 0) {
+                toSwap = true;
+            }
+
+            groupA[i] = a;
+            groupB[i] = b;
+            i++;
+        }
+    }
+
+    // arr is sorted
+    List<Integer> arr = recover(toSwap ? groupB : groupA);
+    // arr.add(x)
+    arr.add(toSwap ? -d : d);
+
+    return arr;
+}
+```
+
+## Dynamic Programming
+
+[Odd Even Jump][odd-even-jump]
+
+```java
+public int oddEvenJumps(int[] arr) {
+    int n  = arr.length;
+    // whether has higher or lower later elements
+    boolean[] hasHigher = new boolean[n], hasLower = new boolean[n];
+    hasHigher[n - 1] = hasLower[n - 1] = true;
+
+    // {element, index}
+    TreeMap<Integer, Integer> map = new TreeMap<>();
+    map.put(arr[n - 1], n - 1);
+
+    // in reverse order
+    int count = 1;
+    for (int i = n - 2; i >= 0; i--) {
+        var c = map.ceilingEntry(arr[i]);
+        var f = map.floorEntry(arr[i]);
+        if (c != null) {
+            hasHigher[i] = hasLower[c.getValue()];
+        }
+        if (f != null) {
+            hasLower[i] = hasHigher[f.getValue()];
+        }
+
+        // odd numbered jumps are higher
+        if (hasHigher[i]) {
+            count++;
+        }
+        map.put(arr[i], i);
+    }
+    return count;
+}
+```
+
+Another solution is using Stack (next greater/less element).
+
+# Non Generic Map
+
+[Word Pattern][word-pattern]
+
+```java
+public boolean wordPattern(String pattern, String s) {
+    String[] words = s.split(" ");
+
+    if (words.length != pattern.length()) {
+        return false;
+    }
+
+    // non generic map
+    // <Object, Object>
+    Map map = new HashMap<>();
+    // the type of i must be Integer
+    // since there's no auto boxing for non generic map integer values
+    for (Integer i = 0; i < words.length; i++) {
+        char c = pattern.charAt(i);
+        String w = words[i];
+
+        map.putIfAbsent(c, i);
+        map.putIfAbsent(w, i);
+
+        if (map.get(c) != map.get(w)) {
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+# Monotonic Map
+
+[Maximum Balanced Subsequence Sum][maximum-balanced-subsequence-sum]
+
+```c++
+long long maxBalancedSubsequenceSum(vector<int>& nums) {
+    {% raw %}
+    map<int, long long> mp{{INT_MIN, 0}};
+    {% endraw %}
+    for (int i = 0; i < nums.size(); i++) {
+        // Considers positive num only
+        if (nums[i] > 0) {
+            auto it = mp.upper_bound(nums[i] - i);
+            long long sum = nums[i] + prev(it)->second;
+            mp.insert_or_assign(it, nums[i] - i, sum);
+            // Monotonically increasing values
+            // Because greater keys with less values are no better than current
+            while (it != end(mp) && it->second <= sum) {
+                mp.erase(it++);
+            }
+        }
+    }
+    return mp.size() > 1 ? rbegin(mp)->second : *max_element(begin(nums), end(nums));
+}
+```
+
+[Maximum Sum Queries][maximum-sum-queries]
+
+```java
+// {y: x + y}, ascending
+// candidates for the current query
+// monotonic map: keys are ascending, while values are descending
+private TreeMap<Integer, Integer> map = new TreeMap<>();
+
+public int[] maximumSumQueries(int[] nums1, int[] nums2, int[][] queries) {
+    int n = nums1.length, m = queries.length;
+    Integer[] numIndices = new Integer[n], queryIndices = new Integer[m];
+    for (int i = 0; i < n; i++) {
+        numIndices[i] = i;
+    }
+    for (int i = 0; i < m; i++) {
+        queryIndices[i] = i;
+    }
+
+    // iterates nums in descending order of x
+    // so we add candidate pairs to map as x decreases, rather than remove candiate pairs
+    Arrays.sort(numIndices, Comparator.comparingInt(i -> -nums1[i]));
+    Arrays.sort(queryIndices, Comparator.comparingInt(i -> -queries[i][0]));
+
+    int[] answer = new int[m];
+    for (int i = 0, j = 0; i < m; i++) {
+        int queryIndex = queryIndices[i];
+        // "nums1[j]" >= xi
+        while (j < n && nums1[numIndices[j]] >= queries[queryIndex][0]) {
+            int numIndex = numIndices[j];
+            update(nums2[numIndex], nums1[numIndex] + nums2[numIndex]);
+            j++;
+        }
+        // query(yi)
+        answer[queryIndices[i]] = query(queries[queryIndex][1]);
+    }
+    return answer;
+}
+
+private void update(int y, int xy) {
+    // if the candicates map already contains key y' >= y
+    // then x' + y' >= current x + y, as x is in descending order
+    // there is no need to put the current pair (y, x + y)
+    var e = map.ceilingEntry(y);
+    if (e != null && e.getValue() >= xy) {
+        return;
+    }
+
+    // maintains map values as monotically decreasing
+    // just like monotic stack
+    e = map.floorEntry(y);
+    while (e != null && e.getValue() <= xy) {
+        map.remove(e.getKey());
+        e = map.floorEntry(y);
+    }
+    map.put(y, xy);
+}
+
+// filters entries with key >= y only
+private int query(int y) {
+    var e = map.ceilingEntry(y);
+    return e == null ? -1 : e.getValue();
+}
+```
+
+[array-of-doubled-pairs]: https://leetcode.com/problems/array-of-doubled-pairs/
+[contains-duplicate-iii]: https://leetcode.com/problems/contains-duplicate-iii/
+[depth-of-bst-given-insertion-order]: https://leetcode.com/problems/depth-of-bst-given-insertion-order/
+[find-array-given-subset-sums]: https://leetcode.com/problems/find-array-given-subset-sums/
+[making-file-names-unique]: https://leetcode.com/problems/making-file-names-unique/
+[maximum-sum-queries]: https://leetcode.com/problems/maximum-sum-queries/
+[odd-even-jump]: https://leetcode.com/problems/odd-even-jump/
+[tuple-with-same-product]: https://leetcode.com/problems/tuple-with-same-product/
+[vowel-spellchecker]: https://leetcode.com/problems/vowel-spellchecker/
+[word-pattern]: https://leetcode.com/problems/word-pattern/

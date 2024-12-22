@@ -1,0 +1,185 @@
+---
+title:  "Tree"
+category: algorithm
+tags: tree
+---
+
+# Definition
+
+A tree is an undirected graph in which any two vertices are connected by *exactly one* path. In other words, any connected graph without simple cycles is a tree.
+
+[Find the Maximum Sum of Node Values][find-the-maximum-sum-of-node-values]
+
+```c++
+long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+    long long sum = 0, cnt = 0;
+    int amendment = numeric_limits<int>::max();
+    // Alice can actually update the values of any even number of nodes
+    for (const auto& num : nums) {
+        sum += max(num ^ k, num);
+        // Increment the counter if updating the node will increase its value.
+        cnt += (num ^ k) > num;
+        // If `cnt` is odd, we either undo a change on an updated node,
+        // or do a change on an unchanged node.
+        amendment = min(amendment, abs(num - (num ^ k)));
+    }
+    return sum - cnt % 2 * amendment;
+}
+```
+
+# Terminology
+
+[Terminology](https://en.wikipedia.org/wiki/Tree_(data_structure))
+
+*height*
+  * the length of the longest downward path to a leaf from the node
+  * the height of the root is the height of the tree
+  * leaf nodes have height zero
+
+*depth*
+  * the length of the path from the node to its root (i.e., its root path)
+  * the root node has depth zero
+
+*degree*
+  * number of children of a node
+  * a leaf has degree zero
+
+[Height of Binary Tree After Subtree Removal Queries][height-of-binary-tree-after-subtree-removal-queries]
+
+Pre-compute the depths and heights of all nodes. Also pre-compute the largest and second largest height of each depth.
+
+[Verify Preorder Serialization of a Binary Tree][verify-preorder-serialization-of-a-binary-tree]
+
+```java
+public boolean isValidSerialization(String preorder) {
+    // diff = outdegree - indegree
+    int diff = 1;
+    for (String node: preorder.split(",")) {
+        // node increases indegree by 1
+        // diff should never be negative
+        if (--diff < 0) {
+            return false;
+        }
+
+        // if node is not null, it increases outdegree by 2
+        if (!node.equals("#")) {
+            diff += 2;
+        }
+    }
+
+    // diff must be zero when complete
+    return diff == 0;
+}
+```
+
+# Complete Tree
+
+[Count Complete Tree Nodes][count-complete-tree-nodes]
+
+```java
+public int countNodes(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    TreeNode left = root, right = root;
+    int height = 0;
+    // computes height, and moves the right pointer under the rightmost leaf
+    while (right != null) {
+        left = left.left;
+        right = right.right;
+        height++;
+    }
+
+    // if left pointer is also null, then it's a complete tree
+    if (left == null) {
+        return (1 << height) - 1;
+    }
+
+    return 1 + countNodes(root.left) + countNodes(root.right);
+}
+```
+
+Iterative, no recomputation of `h`:
+
+```java
+public int countNodes(TreeNode root) {
+    int count = 0, h = height(root);
+    TreeNode node = root;
+    while (node != null) {
+        // left subtree is complete, and its height is (h - 1)
+        if (height(node.right) == h - 1) {
+            count += 1 << h;  // left subtree: 2 ^ h - 1, root: 1
+            node = node.right;
+        } else {  // right subtree is complete, and its height is (h - 2)
+            count += 1 << h - 1;  // right subtree: 2 ^ (h - 1) - 1, root: 1
+            node = node.left;
+        }
+        h--;
+    }
+    return count;
+}
+
+private int height(TreeNode node) {
+    // left subtree determines the height
+    return node == null ? -1 : 1 + height(node.left);
+}
+```
+
+# Cartesian Tree
+
+[Cartesian tree](https://en.wikipedia.org/wiki/Cartesian_tree)
+
+Cartesian tree is a binary tree derived from a sequence of numbers; it can be uniquely defined from the properties that it is heap-ordered and that a symmetric (in-order) traversal of the tree returns the original sequence. 
+
+[Maximum Binary Tree][maximum-binary-tree]
+
+```java
+public TreeNode constructMaximumBinaryTree(int[] nums) {
+    Deque<TreeNode> st = new ArrayDeque<>();
+    for (int num : nums) {
+        TreeNode node = new TreeNode(num);
+        // monotonically decreasing
+        while (!st.isEmpty() && num > st.peek().val) {
+            node.left = st.pop();
+        }
+        if (!st.isEmpty()) {
+            st.peek().right = node;
+        }
+        st.push(node);
+    }
+
+    return st.isEmpty() ? null : st.removeLast();
+}
+```
+
+# Huffman Coding
+
+[Huffman coding](https://en.wikipedia.org/wiki/Huffman_coding)
+
+[Minimum Time to Build Blocks][minimum-time-to-build-blocks]
+
+```java
+public int minBuildTime(int[] blocks, int split) {
+    // Huffman coding, greedy
+    Queue<Integer> pq = new PriorityQueue<>();
+    for (int b : blocks) {
+        pq.offer(b);
+    }
+
+    while (pq.size() > 1) {
+        int block1 = pq.poll(), block2 = pq.poll();
+        pq.offer(block2 + split);
+    }
+
+    return pq.peek();
+}
+```
+
+[count-complete-tree-nodes]: https://leetcode.com/problems/count-complete-tree-nodes/
+[find-the-maximum-sum-of-node-values]: https://leetcode.com/problems/find-the-maximum-sum-of-node-values/
+[height-of-binary-tree-after-subtree-removal-queries]: https://leetcode.com/problems/height-of-binary-tree-after-subtree-removal-queries/
+[maximum-binary-tree]: https://leetcode.com/problems/maximum-binary-tree/
+[minimum-time-to-build-blocks]: https://leetcode.com/problems/minimum-time-to-build-blocks/
+[queries-on-a-permutation-with-key]: https://leetcode.com/problems/queries-on-a-permutation-with-key/
+[verify-preorder-serialization-of-a-binary-tree]: https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/

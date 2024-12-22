@@ -1,0 +1,148 @@
+---
+title:  "Regex"
+tags: regex
+---
+
+# String
+* [public boolean matches(String regex)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/String.html#matches(java.lang.String))
+
+[Validate IP Address][validate-ip-address]
+
+```java
+public String validIPAddress(String IP) {
+    if (IP.matches("^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$")) {
+        return "IPv4";
+    }
+
+    if (IP.matches("^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$")) {
+        return "IPv6";
+    }
+    return "Neither";
+}
+```
+
+[Minimum Number of Buckets Required to Collect Rainwater from Houses][minimum-number-of-buckets-required-to-collect-rainwater-from-houses]
+
+```java
+public int minimumBuckets(String street) {
+    // s.equals("H") || s.startsWith("HH") || s.endsWith("HH") || s.contains("HHH")
+    // each house H needs one bucket: s.count('H')
+    // each 'H.H' can save one bucket by sharing one in the middle: s.count('H.H')
+    return street.matches("(.*H)?H(H.*)?") ? -1 : street.replace("H.H", "  ").length() - street.replace("H", "").length();
+}
+```
+
+Another solution: greedy
+
+```java
+public int minimumBuckets(String street) {
+    int n = street.length();
+    char[] s = street.toCharArray();
+    for (int i = 0; i < n; i++) {
+        if (s[i] == 'H') {
+            // skips already placed buckets
+            if (i > 0 && s[i - 1] == 'B') {
+                continue;
+            }
+
+            // tries with right position first, because it can be the pattern "H.H"
+            if (i < n - 1 && s[i + 1] == '.') {
+                s[i + 1] = 'B';
+            } else if (i > 0 && s[i - 1] == '.') {
+                s[i - 1] = 'B';
+            } else {
+                return -1;
+            }
+        }
+    }
+
+    return (int)new String(s).chars().filter(c -> c == 'B').count();
+}
+```
+
+# Quantifiers
+
+[Quantifiers](https://docs.oracle.com/javase/tutorial/essential/regex/quant.html)
+
+Greedy quantifiers are considered "greedy" because they force the matcher to read in, or eat, the entire input string prior to attempting the first match. If the first match attempt (the entire input string) fails, the matcher backs off the input string by one character and tries again, repeating the process until a match is found or there are no more characters left to back off from. Depending on the quantifier used in the expression, the last thing it will try matching against is 1 or 0 characters.
+
+The reluctant quantifiers, however, take the opposite approach: They start at the beginning of the input string, then reluctantly eat one character at a time looking for a match. The last thing they try is the entire input string.
+
+[Tag Validator][tag-validator]
+
+```java
+public boolean isValid(String code) {
+    if (code.equals("t")) {
+        return false;
+    }
+
+    // uses reluctant quantifiers .*? to match CDATA
+    code = code.replaceAll("<!\\[CDATA\\[.*?\\]\\]>", "c");
+
+    String prev = "";
+    while (!code.equals(prev)) {
+        prev = code;
+        // group matches the tag name
+        code = code.replaceAll("<([A-Z]{1,9})>[^<]*</\\1>", "t");
+    }
+
+    return code.equals("t");
+}
+```
+
+# Matcher
+
+[Matcher](https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/util/regex/Matcher.html)
+
+[Number of Atoms][number-of-atoms]
+
+```java
+public String countOfAtoms(String formula) {
+    Deque<Map<String, Integer>> st = new LinkedList<>();
+    st.push(new TreeMap<>());
+
+    Matcher matcher = Pattern.compile("([A-Z][a-z]*)(\\d*)|(\\()|(\\))(\\d*)").matcher(formula);
+    while (matcher.find()) {
+        String match = matcher.group();
+        if (match.equals("(")) {
+            // (\\()
+            st.push(new TreeMap<>());
+        } else if (match.startsWith(")")) {
+            // (\\))(\\d*)
+            for (var e : st.pop().entrySet()) {
+                // `1` is the ')'
+                int count = getCount(match, 1);
+                st.peek().compute(e.getKey(), (k, v) -> (v == null ? 0 : v) + e.getValue() * count);
+            }
+        } else {
+            // ([A-Z][a-z]*)(\\d*)
+            // finds the first digit char
+            int i = 1;
+            while (i < match.length() && Character.isLetter(match.charAt(i))) {
+                i++;
+            }
+            int count = getCount(match, i);
+            st.peek().compute(match.substring(0, i), (k, v) -> (v == null ? 0 : v) + count);
+        }
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (var e : st.peek().entrySet()) {
+        sb.append(e.getKey());
+        int v = e.getValue();
+        if (v > 1) {
+            sb.append(v);
+        }
+    }
+    return sb.toString();
+}
+
+private int getCount(String s, int start) {
+    return start < s.length() ? Integer.parseInt(s.substring(start)) : 1;
+}
+```
+
+[minimum-number-of-buckets-required-to-collect-rainwater-from-houses]: https://leetcode.com/problems/minimum-number-of-buckets-required-to-collect-rainwater-from-houses/
+[number-of-atoms]: https://leetcode.com/problems/number-of-atoms/
+[tag-validator]: https://leetcode.com/problems/tag-validator/
+[validate-ip-address]: https://leetcode.com/problems/validate-ip-address/
