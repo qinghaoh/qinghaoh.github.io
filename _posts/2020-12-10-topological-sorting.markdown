@@ -206,7 +206,7 @@ Number of topological orderings of a directed tree:
 
 $$ \frac{n!}{\prod{s_i}} $$
 
-where \\(s_i\\) is the size of the subtree at the i-th node.
+where $$ s_i $$ is the size of the subtree at the i-th node.
 
 # DAG
 
@@ -501,7 +501,7 @@ public List<Integer> findMinHeightTrees(int n, int[][] edges) {
         if (tree.get(i).size() == 1) {
             q.offer(i);
         }
-    } 
+    }
 
     // trims the leaves until centroids
     while (n > 2) {

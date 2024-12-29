@@ -9,15 +9,19 @@ tags: math
 
 Lagrange's four-square theorem, also known as Bachet's conjecture, states that every natural number can be represented as the sum of four integer squares. That is, the squares form an additive basis of order four.
 
-\\[p=a_{0}^{2}+a_{1}^{2}+a_{2}^{2}+a_{3}^{2}\\]
+$$
+p=a_{0}^{2}+a_{1}^{2}+a_{2}^{2}+a_{3}^{2}
+$$
 
 [Legendre's three-square theorem](https://en.wikipedia.org/wiki/Legendre%27s_three-square_theorem)
 
 Legendre's three-square theorem states that a natural number can be represented as the sum of three squares of integers
 
-\\[n=x^{2}+y^{2}+z^{2}\\]
+$$
+n=x^{2}+y^{2}+z^{2}
+$$
 
-if and only if \\(n\\) is not of the form \\(n = 4^a(8b + 7)\\) for nonnegative integers \\(a\\) and \\(b\\).
+if and only if $$ n $$ is not of the form $$ n = 4^a(8b + 7) $$ for nonnegative integers $$ a $$ and $$ b $$.
 
 [Sum of two squares theorem](https://en.wikipedia.org/wiki/Sum_of_two_squares_theorem)
 
@@ -28,19 +32,25 @@ An integer greater than one can be written as a sum of two squares if and only i
 Zeller's congruence is an algorithm devised by Christian Zeller to calculate the day of the week for any Julian or Gregorian calendar date.
 
 Gregorian calendar:
-\\[h=\left(q+\left\lfloor {\frac {13(m+1)}{5}}\right\rfloor +K+\left\lfloor {\frac {K}{4}}\right\rfloor +\left\lfloor {\frac {J}{4}}\right\rfloor -2J\right){\bmod {7}}\\]
+$$
+h=\left(q+\left\lfloor {\frac {13(m+1)}{5}}\right\rfloor +K+\left\lfloor {\frac {K}{4}}\right\rfloor +\left\lfloor {\frac {J}{4}}\right\rfloor -2J\right){\bmod {7}}
+$$
 
 [Floor and celing functions](https://en.wikipedia.org/wiki/Floor_and_ceiling_functions)
 
-\\[\left\lceil {\frac {n}{m}}\right\rceil =\left\lfloor {\frac {n+m-1}{m}}\right\rfloor =\left\lfloor {\frac {n-1}{m}}\right\rfloor +1\\]
+$$
+\left\lceil {\frac {n}{m}}\right\rceil =\left\lfloor {\frac {n+m-1}{m}}\right\rfloor =\left\lfloor {\frac {n-1}{m}}\right\rfloor +1
+$$
 
-\\[\left\lfloor {\frac {n}{m}}\right\rfloor =\left\lceil {\frac {n-m+1}{m}}\right\rceil =\left\lceil {\frac {n+1}{m}}\right\rceil -1\\]
+$$
+\left\lfloor {\frac {n}{m}}\right\rfloor =\left\lceil {\frac {n-m+1}{m}}\right\rceil =\left\lceil {\frac {n+1}{m}}\right\rceil -1
+$$
 
 [Inclusion–exclusion principle](https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle)
 
-\\[
+$$
 |A\cup B|=|A|+|B|-|A\cap B|
-\\]
+$$
 
 [4 Keys Keyboard][4-keys-keyboard]
 
@@ -62,9 +72,13 @@ public int maxA(int N) {
 
 [Fibonacci number](https://en.wikipedia.org/wiki/Fibonacci_number#Sequence_properties)
 
-\\[\sum_{i=0}^{n-1}F_{2i+1}=F_{2n}\\]
+$$
+\sum_{i=0}^{n-1}F_{2i+1}=F_{2n}
+$$
 
-\\[\sum_{i=1}^{n}F_{2i}=F_{2n+1}-1\\]
+$$
+\sum_{i=1}^{n}F_{2i}=F_{2n+1}-1
+$$
 
 [Sparse Matrix Multiplication][sparse-matrix-multiplication]
 
@@ -149,13 +163,13 @@ anything greater than 1010111 will not be allowed
 
 The nth Catalan number is given directly in terms of binomial coefficients by
 
-\\[
+$$
 C_{n}={\frac {1}{n+1}}{2n \choose n}={\frac {(2n)!}{(n+1)!\,n!}}=\prod \limits _{k=2}^{n}{\frac {n+k}{k}}\qquad {\text{for }}n\geq 0
-\\]
+$$
 
-\\[
+$$
 C_{0}=1\quad {\text{and}}\quad C_{n+1}={\frac {2(2n+1)}{n+2}}C_{n}
-\\]
+$$
 
 [Unique Binary Search Trees][unique-binary-search-trees]
 
@@ -195,14 +209,14 @@ x^{n}=
   \end{cases}
 $$
 
-If we write \\(n\\) in binary as \\(b_{k}\cdots b_{0}\\), then this is equivalent to defining a sequence \\(r_{k+1}, \ldots, r_{0}\\) by letting \\(r_{k+1} = 1\\) and then defining \\(r_{i}=r_{i+1}^{2}x^{b_{i}} \\) for \\(i = k, \ldots, 0\\), where \\(r_{0}\\) will equal \\(x^{n}\\).
+If we write $$ n $$ in binary as $$ b_{k}\cdots b_{0} $$, then this is equivalent to defining a sequence $$ r_{k+1}, \ldots, r_{0} $$ by letting $$ r_{k+1} = 1 $$ and then defining $$ r_{i}=r_{i+1}^{2}x^{b_{i}} $$ for $$ i = k, \ldots, 0 $$, where $$ r_{0} $$ will equal $$ x^{n} $$.
 
 [Pow(x, n)][powx-n]
 
-|$$ n=13 $$||$$ 1 $$|$$ 1 $$|$$ 0 $$|$$ 1 $$|
-|-|-|-|-|-|-|
-|$$ x $$||$$ x^8 $$|$$ x^4 $$|$$ x^2 $$|$$ x^1 $$|
-|$$ r $$|$$ x^{13} $$|$$ x^5 $$|$$ x^1 $$|$$ x^1 $$|$$ x^0 $$|
+| $$ n=13 $$ |              | $$ 1 $$   | $$ 1 $$   | $$ 0 $$   | $$ 1 $$   |
+| ---------- | ------------ | --------- | --------- | --------- | --------- |
+| $$ x $$    |              | $$ x^8 $$ | $$ x^4 $$ | $$ x^2 $$ | $$ x^1 $$ |
+| $$ r $$    | $$ x^{13} $$ | $$ x^5 $$ | $$ x^1 $$ | $$ x^1 $$ | $$ x^0 $$ |
 
 Iterative:
 
@@ -338,56 +352,56 @@ public int divide(int dividend, int divisor) {
 
 [Smallest Good Base][smallest-good-base]
 
-\\[
+$$
 \begin{equation} \label{eq:1}
 n = \sum_{i=0}^m{k}^i = k\sum_{i=0}^{m-1}{k}^i
 \end{equation}
-\\]
+$$
 
-\\[
+$$
 \begin{equation} \label{eq:2}
 n - k^m = \sum_{i=0}^{m-1}{k}^i
 \end{equation}
-\\]
+$$
 
 From \eqref{eq:1} and \eqref{eq:2},
 
-\\[
+$$
 n - 1 = k(n - k^m)
-\\]
+$$
 
-\\[
+$$
 \begin{equation} \label{eq:3}
 n = \frac{k^{m+1}-1}{k-1}
 \end{equation}
-\\]
+$$
 
 From \eqref{eq:3}
 
-\\[
+$$
 n > k^m
-\\]
-\\[
+$$
+$$
 \sqrt[m]{n} > k
-\\]
+$$
 
 From Binomial Thorem,
 
-\\[
+$$
 n = \sum_{i=0}^m{k}^i < (k+1)^m
-\\]
+$$
 
 Therefore,
 
-\\[
+$$
 \begin{equation} \label{eq:4}
 k < \sqrt[m]{n} < k + 1
 \end{equation}
-\\]
+$$
 
-\\[
-k = \left \lfloor{\sqrt[m]{n}}\right \rfloor 
-\\]
+$$
+k = \left \lfloor{\sqrt[m]{n}}\right \rfloor
+$$
 
 ```java
 

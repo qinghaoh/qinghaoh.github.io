@@ -29,14 +29,14 @@ Variants:
 
 Let's go over the algorithm with an example `[2,5,1,3,6,4]`. The algorithm maintains a monotonically strictly increasing stack while iterating from left to right:
 
-|index|element|stack|
-|-|-|-|
-|0|2|`[2]`|
-|1|5|`[2,5]`|
-|2|1|`[1]`|
-|3|3|`[1,3]`|
-|4|6|`[1,3,6]`|
-|5|4|`[1,3,4]`|
+| index | element | stack     |
+| ----- | ------- | --------- |
+| 0     | 2       | `[2]`     |
+| 1     | 5       | `[2,5]`   |
+| 2     | 1       | `[1]`     |
+| 3     | 3       | `[1,3]`   |
+| 4     | 6       | `[1,3,6]` |
+| 5     | 4       | `[1,3,4]` |
 
 ### Form-II Template
 
@@ -54,14 +54,14 @@ for (int i = 0; i < n; i++) {
 
 With the same example `[2,5,1,3,6,4]`, the stack of the algorithm changes as follows:
 
-|index|element|stack|
-|-|-|-|
-|0|2|`[2]`|
-|1|5|`[2,5]`|
-|2|1|`[2,5]`|
-|3|3|`[2,5]`|
-|4|6|`[2,5,6]`|
-|5|4|`[2,5,6]`|
+| index | element | stack     |
+| ----- | ------- | --------- |
+| 0     | 2       | `[2]`     |
+| 1     | 5       | `[2,5]`   |
+| 2     | 1       | `[2,5]`   |
+| 3     | 3       | `[2,5]`   |
+| 4     | 6       | `[2,5,6]` |
+| 5     | 4       | `[2,5,6]` |
 
 In another perspective, the stack in this template stores the cumulative maximum of the sequence. Cumulative maximum funtion is monotonically increasing, so is the stack.
 
@@ -91,7 +91,7 @@ public int maxWidthRamp(int[] nums) {
 
 ### Theorems and Corollaries
 
-Let \\(st(i)\\) denote the stack of *Form-I template* when the iteration at index $$ i $$ is complete, we have the following **theorem**[^1]:
+Let $$ st(i) $$ denote the stack of *Form-I template* when the iteration at index $$ i $$ is complete, we have the following **theorem**[^1]:
 
 Define a sequence $$ a_n = \min_{n \le j \le i}(\text{nums}[j]) $$, then $$ st(i) = \text{dedupe}(a_n) $$, where $$ \text{dedupe}(a_n) $$ is a function that de-duplicate the sequence $$ a_n $$ while preserving the order of sequence terms.
 
@@ -199,11 +199,11 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-|                | Previous < | Previous <= |  Next <  |  Next <=  |
-|----------------|------------|-------------|----------|-----------|
-|Monotonic Stack | Increasing | Increasing  |Increasing|Increasing |
-|Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
-|   Condition    |a[i] <= top | a[i] < top  |a[i] < top|a[i] <= top|
+|                  | Previous <  | Previous <= | Next <     | Next <=     |
+| ---------------- | ----------- | ----------- | ---------- | ----------- |
+| Monotonic Stack  | Increasing  | Increasing  | Increasing | Increasing  |
+| Stack Strictness | Strict      | Non-strict  | Non-strict | Strict      |
+| Condition        | a[i] <= top | a[i] < top  | a[i] < top | a[i] <= top |
 
 From the theorem, we have the following conclusions for PLE and NLE[^2]:
 
@@ -233,11 +233,11 @@ In Fig. 1, `a3` is the current element, and we have the following relations:
 
 Similarly, with monotonically decreasing stack, we can get PGE/NGE.
 
-|                | Previous > | Previous >= |  Next >  |  Next >=  |
-|----------------|------------|-------------|----------|-----------|
-|Monotonic Stack | Decreasing | Decreasing  |Decreasing|Decreasing |
-|Stack Strictness|   Strict   | Non-strict  |Non-strict|  Strict   |
-|   Condition    |a[i] >= top | a[i] > top  |a[i] > top|a[i] >= top|
+|                  | Previous >  | Previous >= | Next >     | Next >=     |
+| ---------------- | ----------- | ----------- | ---------- | ----------- |
+| Monotonic Stack  | Decreasing  | Decreasing  | Decreasing | Decreasing  |
+| Stack Strictness | Strict      | Non-strict  | Non-strict | Strict      |
+| Condition        | a[i] >= top | a[i] > top  | a[i] > top | a[i] >= top |
 
 [Final Prices With a Special Discount in a Shop][final-prices-with-a-special-discount-in-a-shop]
 
@@ -787,7 +787,7 @@ public int[] findMaximums(int[] nums) {
 
 ### Sliding Window Min/Max
 
-Similar to that in [sliding window](../sliding-window/#monotonically-decreasing-function), the constraint function \\(h(m)\\) is monotonically decreasing. Monoqueues can be used to find the min/max of a window constrained by a monotonically decreasing function.
+Similar to that in [sliding window](../sliding-window/#monotonically-decreasing-function), the constraint function $$ h(m) $$ is monotonically decreasing. Monoqueues can be used to find the min/max of a window constrained by a monotonically decreasing function.
 
 [Sliding Window Maximum][sliding-window-maximum]
 
@@ -977,7 +977,7 @@ Similar problem: [Constrained Subsequence Sum][constrained-subsequence-sum].
 
 ### Shortest Subarray With Sum >= k
 
-In this type of problems, there is a constraint \\(f(i,j) \ge 0\\), where \\(i\\) is the current index and \\(j\\) is a smaller index. For all indices \\(\in (j, i)\\), \\(f(i,j) \lt 0\\). Monoqueues can be used to find the largest \\(j\\) of each \\(i\\) which satisfies the constraint.
+In this type of problems, there is a constraint $$ f(i,j) \ge 0 $$, where $$ i $$ is the current index and $$ j $$ is a smaller index. For all indices $$ \in (j, i) $$, $$ f(i,j) \lt 0 $$. Monoqueues can be used to find the largest $$ j $$ of each $$ i $$ which satisfies the constraint.
 
 [Shortest Subarray with Sum at Least K][shortest-subarray-with-sum-at-least-k]
 

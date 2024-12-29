@@ -4,11 +4,11 @@ category: algorithm
 ---
 [Distant Barcodes][distant-barcodes]
 
-Let `n = barcodes.length`. Find the elements `barcodes[i]` with the most occurrences \\(o_{max}\\). Assume an element `barcodes[k]` has occurences \\(o_k\\).
+Let `n = barcodes.length`. Find the elements `barcodes[i]` with the most occurrences $$ o_{max} $$. Assume an element `barcodes[k]` has occurences $$ o_k $$.
 
 Steps:
-1. Put `barcodes[i]` to the first \\(o_{max}\\) even positions
-1. Arbitrarily pick another element `barcodes[j]` to the next \\(o_j\\) even positions
+1. Put `barcodes[i]` to the first $$ o_{max} $$ even positions
+1. Arbitrarily pick another element `barcodes[j]` to the next $$ o_j $$ even positions
 1. Repeat Step 2 until all the even positions are filled. Wrap around the current element to the first few odd positions if it has remaining occurrences
 1. Fill odd positions with the remaining elements in any order
 
@@ -32,9 +32,11 @@ For example,
 
 It is guaranteed an answer exists, therefore:
 
-\\[1 <= o_{max} <= (\text{barcodes.length} + 1) / 2\\]
+$$
+1 <= o_{max} <= (\text{barcodes.length} + 1) / 2
+$$
 
-As per the rule, `barcodes[j]` can be adjacent to an equal value only if \\(o_j > o_{max}\\).
+As per the rule, `barcodes[j]` can be adjacent to an equal value only if $$ o_j > o_{max} $$.
 
 This can be illustrated by the example above. In Step 2, if we pick the second most frequent element `2` to put at index 6:
 ```
@@ -85,67 +87,73 @@ Q.E.D.
 
 [Airplane Seat Assignment Probability][airplane-seat-assignment-probability]
 
-Assume there are \\(n\\) seats in total.
+Assume there are $$ n $$ seats in total.
 
-The probability that the \\(n\\)-th passenger takes his own seat when the first passenger takes:
+The probability that the $$ n $$-th passenger takes his own seat when the first passenger takes:
 
-* his own seat: \\(\frac{1}{n}\\)
-* the \\(n\\)-th passenger's seat: \\(0\\)
-* the \\(i\\)-th passenger's seat where \\(1 < i < n\\): \\(\frac{1}{n} \cdot p(n + 1 - i)\\)
+* his own seat: $$ \frac{1}{n} $$
+* the $$ n $$-th passenger's seat: $$ 0 $$
+* the $$ i $$-th passenger's seat where $$ 1 < i < n $$: $$ \frac{1}{n} \cdot p(n + 1 - i) $$
 
-\\[
+$$
 \begin{equation} \label{eq:1}
 p(n) = \frac{1}{n} \cdot (1 + \sum_{i = 2}^{n - 1} p(n + 1 - i) + 0)
 \end{equation}
-\\]
+$$
 
 Apprently:
 
-\\[p(1) = 1\\]
+$$
+p(1) = 1
+$$
 
 Therefore \eqref{eq:1} becomes:
 
-\\[
+$$
 \begin{equation} \label{eq:2}
 p(n) = \frac{1}{n} \cdot \sum_{i = 1}^{n - 1} p(i)
 \end{equation}
-\\]
+$$
 
 So we know:
 
-\\[
+$$
 \begin{equation} \label{eq:3}
 n \cdot p(n) = \sum_{i = 1}^{n - 1} p(i)
 \end{equation}
-\\]
+$$
 
-\\[
+$$
 \begin{equation} \label{eq:4}
 (n - 1) \cdot p(n - 1) = \sum_{i = 1}^{n - 2} p(i), n > 2
 \end{equation}
-\\]
+$$
 
 \eqref{eq:3} - \eqref{eq:4}:
 
-\\[
+$$
 \begin{equation} \label{eq:5}
 n \cdot p(n) - (n - 1) \cdot p(n - 1) = p(n - 1), n > 2
 \end{equation}
-\\]
+$$
 
-\\[
+$$
 \begin{equation} \label{eq:6}
 p(n) = p(n - 1), n > 2
 \end{equation}
-\\]
+$$
 
 From \eqref{eq:2}, we have:
 
-\\[p(2) = \frac{1}{2} \cdot p(1) = 0.5\\]
+$$
+p(2) = \frac{1}{2} \cdot p(1) = 0.5
+$$
 
 Therefore,
 
-\\[p(2) = p(3) = \cdots = 0.5\\]
+$$
+p(2) = p(3) = \cdots = 0.5
+$$
 
 Q.E.D.
 

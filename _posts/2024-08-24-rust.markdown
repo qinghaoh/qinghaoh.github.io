@@ -5,12 +5,12 @@ tags: rust
 mermaid: true
 ---
 
-| Feature           | Immutable Variable (`let`)               | Constants (`const`)                      |
-|-------------------|------------------------------------------|------------------------------------------|
-| **Evaluation**    | Runtime                                  | Compile-time                             |
-| **Type**          | Optional (inferred)                      | Required                                 |
-| **Scope**         | Block-local                              | Global or local                          |
-| **Use Case**      | Runtime values, immutable after assigned | Fixed values, known at compile time      |
+| Feature        | Immutable Variable (`let`)               | Constants (`const`)                 |
+| -------------- | ---------------------------------------- | ----------------------------------- |
+| **Evaluation** | Runtime                                  | Compile-time                        |
+| **Type**       | Optional (inferred)                      | Required                            |
+| **Scope**      | Block-local                              | Global or local                     |
+| **Use Case**   | Runtime values, immutable after assigned | Fixed values, known at compile time |
 
 
 Shadowing effectively creates a new variable with the same name as an existing one, allowing the reuse of the variable name while potentially altering its type or value.
@@ -18,4 +18,28 @@ Shadowing effectively creates a new variable with the same name as an existing o
 ```rust
 let spaces = "    ";
 let spaces = spaces.len();
+```
+
+# Ownership
+
+Each value in Rust has one and only one owner at a time.
+
+`drop`: RAII
+
+Variable bindings:
+* Move semantics: default
+* [Copy](https://doc.rust-lang.org/std/marker/trait.Copy.html) semantics: bit-wise copy
+
+The following actions can possibly transfer (*move*) ownership:
+* Assignment
+* Passing a variable to a function
+* Returning values
+
+# Enum
+
+```rust
+enum Option<T> {
+    None,
+    Some(T,
+}
 ```

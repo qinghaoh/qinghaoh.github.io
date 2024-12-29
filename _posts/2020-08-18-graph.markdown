@@ -84,7 +84,7 @@ private List<List<Integer>> bridges = new ArrayList<>();
 private int time = 0;
 
 // Tarjan's Algorithm
-public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {        
+public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
     this.graph = new ArrayList<>(n);
     for (int i = 0; i < n; i++) {
         graph.add(new ArrayList<>());
@@ -131,7 +131,7 @@ private void dfs(int[] dfn, int[] low, int node, int parent) {
 }
 ```
 
-![Example](https://assets.leetcode.com/uploads/2019/09/03/1537_ex1_2.png) 
+![Example](https://assets.leetcode.com/uploads/2019/09/03/1537_ex1_2.png)
 
 ```
 node: 0
@@ -184,7 +184,7 @@ low: 1,1,1,4
 
 [Held-Karp algorithm](https://en.wikipedia.org/wiki/Held%E2%80%93Karp_algorithm)
 
-Time complexity: \\(O(n^22^n)\\)
+Time complexity: $$ O(n^22^n) $$
 
 [Maximum Cost of Trip With K Highways][maximum-cost-of-trip-with-k-highways]
 
@@ -674,9 +674,9 @@ private int[] bfs(int n, List<Integer>[] graph, int src) {
 
 [Matching](https://en.wikipedia.org/wiki/Matching_(graph_theory)): a matching or independent edge set in an undirected graph is a set of edges without common vertices.
 
-A maximum matching (also known as maximum-cardinality matching) is a matching that contains the largest possible number of edges. 
+A maximum matching (also known as maximum-cardinality matching) is a matching that contains the largest possible number of edges.
 
-Time complexity: \\(O(\|V\|^3)\\)
+Time complexity: $$ O(\|V\|^3) $$
 
 [Hungarian algorithm](https://en.wikipedia.org/wiki/Hungarian_algorithm): The Hungarian method is a combinatorial optimization algorithm that solves the assignment problem in polynomial time and which anticipated later primal–dual methods. The algorithm is known also as the Kuhn–Munkres algorithm or Munkres assignment algorithm.
 

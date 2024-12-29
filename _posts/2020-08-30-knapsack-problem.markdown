@@ -7,7 +7,7 @@ tag: dynamic programming
 
 [Knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem)
 
-Backtracking takes \\(O(2^n)\\) time, so it's less preferable. Dynamic Programming is better, and its form is like `dp[i][j]`, which means the first i elements sums to j.
+Backtracking takes $$ O(2^n) $$ time, so it's less preferable. Dynamic Programming is better, and its form is like `dp[i][j]`, which means the first i elements sums to j.
 
 # 0-1 Knapsack Problem
 
@@ -148,15 +148,15 @@ public int findTargetSumWays(int[] nums, int target) {
     // sum(P) - (sum - sum(P)) == target
     // 2 * sum(P) == target + sum
     // sum(P) == (target + sum) / 2
-    return target + sum < 0 || (target + sum) % 2 > 0 ? 0 : subsetSum(nums, (target + sum) >>> 1); 
-}   
+    return target + sum < 0 || (target + sum) % 2 > 0 ? 0 : subsetSum(nums, (target + sum) >>> 1);
+}
 
 private int subsetSum(int[] nums, int target) {
     int[] dp = new int[target + 1];
     dp[0] = 1;
     for (int num : nums) {
         for (int i = target; i >= num; i--) {
-            dp[i] += dp[i - num]; 
+            dp[i] += dp[i - num];
         }
     }
     return dp[target];
@@ -634,7 +634,7 @@ public int change(int amount, int[] coins) {
     int[] dp = new int[amount + 1];
     dp[0] = 1;
 
-    for (int coin : coins) {  
+    for (int coin : coins) {
         for (int i = coin; i <= amount; i++) {
             dp[i] += dp[i - coin];
         }
@@ -739,9 +739,9 @@ Even if `zero` and `one` are equal, they represent different base values. This i
 
 # Summary
 
-|       | 2D     | 1D order |
-|-------|--------|----------|
-| 0-1 | `dp[i + 1][j] = dp[i][j] + dp[i][j - num]` | j: num <- target (decreasing) |
+|     | 2D                                             | 1D order                      |
+| --- | ---------------------------------------------- | ----------------------------- |
+| 0-1 | `dp[i + 1][j] = dp[i][j] + dp[i][j - num]`     | j: num <- target (decreasing) |
 | UKP | `dp[i + 1][j] = dp[i][j] + dp[i + 1][j - num]` | j: num -> target (increasing) |
 
 [coin-change]: https://leetcode.com/problems/coin-change/

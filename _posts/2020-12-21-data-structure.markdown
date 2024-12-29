@@ -136,26 +136,26 @@ class PhoneDirectory {
     public PhoneDirectory(int maxNumbers) {
         this.max = maxNumbers;
     }
-    
+
     /** Provide a number which is not assigned to anyone.
         @return - Return an available number. Return -1 if none is available. */
     public int get() {
         if (used.size() == max) {
             return -1;
         }
-        
+
         // always gets released number first
         // if the release pool is empty, the used pool must contain consective numbers [0, size)
         int number = released.isEmpty() ? used.size() : released.remove();
         used.add(number);
         return number;
     }
-    
+
     /** Check if a number is available or not. */
     public boolean check(int number) {
         return !used.contains(number);
     }
-    
+
     /** Recycle or release a number. */
     public void release(int number) {
         if (used.remove(number)) {
@@ -460,7 +460,7 @@ class DoubleLinkedList {
 
 # Skip List
 
-[Skip List](https://en.wikipedia.org/wiki/Skip_list): a probabilistic data structure that allows \\({\mathcal {O}}(\log n)\\) search complexity as well as \\({\mathcal {O}}(\log n)\\) insertion complexity within an ordered sequence of \\(n\\) elements.
+[Skip List](https://en.wikipedia.org/wiki/Skip_list): a probabilistic data structure that allows $$ {\mathcal {O}}(\log n) $$ search complexity as well as $$ {\mathcal {O}}(\log n) $$ insertion complexity within an ordered sequence of $$ n $$ elements.
 
 [Design Skiplist][design-skiplist]
 

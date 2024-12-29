@@ -95,7 +95,7 @@ private void swap(int[] nums, int i, int j) {
 
 $$\frac{n!}{\prod{\mathbf{card}(c)}!}$$
 
-where \\(n\\) is the number of characters, and \\(\mathbf{card}(c)\\) is the count of each unique character.
+where $$ n $$ is the number of characters, and $$ \mathbf{card}(c) $$ is the count of each unique character.
 
 https://www.geeksforgeeks.org/lexicographic-rank-string-duplicate-characters/
 

@@ -7,15 +7,17 @@ tags: math
 
 [Triangle area using coordinates](https://en.wikipedia.org/wiki/Triangle#Using_coordinates)
 
-\\[
+$$
 T={\frac {1}{2}}{\big |}(x_{A}-x_{C})(y_{B}-y_{A})-(x_{A}-x_{B})(y_{C}-y_{A}){\big |}
-\\]
+$$
 
 [Triangle inequality](https://en.wikipedia.org/wiki/Triangle_inequality#Normed_vector_space)
 
 In a normed vector space $$ V $$, one of the defining properties of the norm is the triangle inequality:
 
-\\[\|x+y\|\leq \|x\|+\|y\|\quad \forall \,x,y\in V\\]
+$$
+\|x+y\|\leq \|x\|+\|y\|\quad \forall \,x,y\in V
+$$
 
 [Escape The Ghosts][escape-the-ghosts]
 
@@ -34,7 +36,7 @@ public boolean escapeGhosts(int[][] ghosts, int[] target) {
 
 [Graham scan](https://en.wikipedia.org/wiki/Graham_scan)
 
-For three points \\(P_{1}=(x_{1},y_{1})\\), \\(P_{2}=(x_{2},y_{2})\\) and \\(P_{3}=(x_{3},y_{3})\\), compute the z-coordinate of the cross product of the two vectors \\(\overrightarrow {P_{1}P_{2}}\\) and \\(\overrightarrow {P_{1}P_{3}}\\), which is given by the expression \\((x_{2}-x_{1})(y_{3}-y_{1})-(y_{2}-y_{1})(x_{3}-x_{1})\\).
+For three points $$ P_{1}=(x_{1},y_{1}) $$, $$ P_{2}=(x_{2},y_{2}) $$ and $$ P_{3}=(x_{3},y_{3}) $$, compute the z-coordinate of the cross product of the two vectors $$ \overrightarrow {P_{1}P_{2}} $$ and $$ \overrightarrow {P_{1}P_{3}} $$, which is given by the expression $$ (x_{2}-x_{1})(y_{3}-y_{1})-(y_{2}-y_{1})(x_{3}-x_{1}) $$.
 
 [Convex Polygon][convex-polygon]
 
@@ -212,13 +214,13 @@ private String getKey(List<int[]> cells) {
 
 # Distance
 
-For a real number \\(p \ge 1\\), the \\(p\\)-norm or \\(L^{p}\\)-norm of \\(x\\) is defined by:
+For a real number $$ p \ge 1 $$, the $$ p $$-norm or $$ L^{p} $$-norm of $$ x $$ is defined by:
 
 $$\lVert x \rVert_{p}=(|x_{1}|^{p}+|x_{2}|^{p}+\dots +|x_{n}|^{p})^{1/p}$$
 
 ## Taxicab Distance
 
-[Taxicab distance](https://en.wikipedia.org/wiki/Taxicab_geometry) = Manhattan distance: \\(L^1\\)-norm
+[Taxicab distance](https://en.wikipedia.org/wiki/Taxicab_geometry) = Manhattan distance: $$ L^1 $$-norm
 
 [Maximum of Absolute Value Expression][maximum-of-absolute-value-expression]
 
@@ -254,11 +256,11 @@ $$\max_{i,j}Manhattan(P_i,P_j) = \max_{i,j}(\max(|s_i - s_j|,|d_i - d_j|))$$
 
 ## Euclidean Distance
 
-[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance): \\(L^2\\)
+[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance): $$ L^2 $$
 
 ## Chebyshev Distance
 
-[Chebyshev distance](https://en.wikipedia.org/wiki/Chebyshev_distance) = chessboard distance: \\(L^{\infty}\\)
+[Chebyshev distance](https://en.wikipedia.org/wiki/Chebyshev_distance) = chessboard distance: $$ L^{\infty} $$
 
 [Determine if a Cell Is Reachable at a Given Time][determine-if-a-cell-is-reachable-at-a-given-time]
 
@@ -278,7 +280,7 @@ bool isReachableAtTime(int sx, int sy, int fx, int fy, int t) {
 
 # Geometric Median
 
-[Geometric median](https://en.wikipedia.org/wiki/Geometric_median): \\(L^1\\) estimator.
+[Geometric median](https://en.wikipedia.org/wiki/Geometric_median): $$ L^1 $$ estimator.
 
 $${\underset {y\in \mathbb {R} ^{n}}{\operatorname {arg\,min} }}\sum _{i=1}^{m}\left\|x_{i}-y\right\|_{2}$$
 
@@ -290,11 +292,11 @@ $$y_{i+1}=(\sum_{j=1}^{m}{\frac{x_{j}}{\|x_{j}-y_{i}\|}})/(\sum_{j=1}^{m}{\frac{
 
 One-dimensional median is a special case of geometric median. It is the point about which the mean absolute deviation is minimized.
 
-Mean absolute deviation of a set \\(\\{x_1,x_2,\ldots,x_n\\}\\):
+Mean absolute deviation of a set $$ \\{x_1,x_2,\ldots,x_n\\} $$:
 
 $$\frac{1}{n}\sum _{i=1}^{n}|x_{i}-m(X)|$$
 
-Where \\(m(X)\\) is a measure of central tendency.
+Where $$ m(X) $$ is a measure of central tendency.
 
 * Mean minimizes total distance for Euclidean distance:
 * Mode minimizes distance for indicator function
@@ -477,18 +479,24 @@ double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
 
 [Circum Circle Cartesian equation](https://en.wikipedia.org/wiki/Circumscribed_circle#Cartesian_coordinates):
 
-$${\begin{aligned}
+$$
+{\begin{aligned}
 S_{x}&={\frac {1}{2}}\det {\begin{bmatrix}|\mathbf {A} |^{2}&A_{y}&1\\|\mathbf {B} |^{2}&B_{y}&1\\|\mathbf {C} |^{2}&C_{y}&1\end{bmatrix}},\\[5pt]
 S_{y}&={\frac {1}{2}}\det {\begin{bmatrix}A_{x}&|\mathbf {A} |^{2}&1\\B_{x}&|\mathbf {B} |^{2}&1\\C_{x}&|\mathbf {C} |^{2}&1\end{bmatrix}},\\[5pt]
 a&=\det {\begin{bmatrix}A_{x}&A_{y}&1\\B_{x}&B_{y}&1\\C_{x}&C_{y}&1\end{bmatrix}},\\[5pt]
 b&=\det {\begin{bmatrix}A_{x}&A_{y}&|\mathbf {A} |^{2}\\B_{x}&B_{y}&|\mathbf {B} |^{2}\\C_{x}&C_{y}&|\mathbf {C} |^{2}\end{bmatrix}}
-\end{aligned}}$$
+\end{aligned}}
+$$
 
 Circumcenter:
-\\[\frac{\mathbf{S}}{a}\\]
+$$
+\frac{\mathbf{S}}{a}
+$$
 
 Circumradius:
-\\[\sqrt{\frac{b}{a} + \frac{\|\mathbf{S}\|^2}{a ^ 2}}\\]
+$$
+\sqrt{\frac{b}{a} + \frac{\|\mathbf{S}\|^2}{a ^ 2}}
+$$
 
 [Erect the Fence II][erect-the-fence-ii]
 
@@ -621,7 +629,7 @@ for (int i = 0; i < m; i++) {
 
 # Convex Hull
 
-[Monotone Chain](https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain): Andrew's monotone chain convex hull algorithm constructs the convex hull of a set of 2-dimensional points in \\(O(n\log n)\\) time. It does so by first sorting the points lexicographically (first by x-coordinate, and in case of a tie, by y-coordinate), and then constructing upper and lower hulls of the points in \\(O(n)\\) time.
+[Monotone Chain](https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain): Andrew's monotone chain convex hull algorithm constructs the convex hull of a set of 2-dimensional points in $$ O(n\log n) $$ time. It does so by first sorting the points lexicographically (first by x-coordinate, and in case of a tie, by y-coordinate), and then constructing upper and lower hulls of the points in $$ O(n) $$ time.
 
 [Orientation of a Simple Polygon](https://en.wikipedia.org/wiki/Curve_orientation#Orientation_of_a_simple_polygon)
 

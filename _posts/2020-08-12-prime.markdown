@@ -7,11 +7,11 @@ tags: math
 
 ## Euclid-Euler Theorem
 
-The [Euclid-Euler theorem](https://en.wikipedia.org/wiki/Euclid%E2%80%93Euler_theorem) relates perfect numbers to Mersenne primes. It states that an even number is perfect if and only if it has the form \\(2^{p−1}(2^p − 1)\\), where \\(2^p − 1\\) is a prime number.
+The [Euclid-Euler theorem](https://en.wikipedia.org/wiki/Euclid%E2%80%93Euler_theorem) relates perfect numbers to Mersenne primes. It states that an even number is perfect if and only if it has the form $$ 2^{p−1}(2^p − 1) $$, where $$ 2^p − 1 $$ is a prime number.
 
 ## Relatively Prime
 
-Integers \\(a\\) and \\(b\\) are relatively prime iff there exists Bézout's identity \\(ax + by = 1\\).
+Integers $$ a $$ and $$ b $$ are relatively prime iff there exists Bézout's identity $$ ax + by = 1 $$.
 
 # Algorithm
 
@@ -44,7 +44,7 @@ Proof: [Divergence of the Sum of the Reciprocals of the Primes](https://en.wikip
 
 [Shor's algorithm](https://en.wikipedia.org/wiki/Shor's_algorithm): a polynomial-time quantum computer algorithm for integer factorization.
 
-[General number field sieve (GNFS)](https://en.wikipedia.org/wiki/General_number_field_sieve): the most efficient classical algorithm known for factoring integers larger than \\(10^{100}\\)
+[General number field sieve (GNFS)](https://en.wikipedia.org/wiki/General_number_field_sieve): the most efficient classical algorithm known for factoring integers larger than $$ 10^{100} $$
 
 [GCD Sort of an Array][gcd-sort-of-an-array]
 

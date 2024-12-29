@@ -6,7 +6,7 @@ tag: dynamic programming
 
 In this type of problem, we linear scan the elements one by one, and use `dp[i]` to store the state at a certain position. The DP array (1D) can usually be reduced to a DP variable (0D).
 
-The general form of the transaction function is a linear expression, i.e., \\(\sum_{0 \le k \le i}{c_k \cdot dp[i - k]}\\). With a linear scan from left to right, we don't need to care about indices to the right (`k < 0`), because they have been equivalently included when we deal with their counterparts to the left (`-k`). The key is to find the recurrence relation.
+The general form of the transaction function is a linear expression, i.e., $$ \sum_{0 \le k \le i}{c_k \cdot dp[i - k]} $$. With a linear scan from left to right, we don't need to care about indices to the right (`k < 0`), because they have been equivalently included when we deal with their counterparts to the left (`-k`). The key is to find the recurrence relation.
 
 The state `dp[i]` can be a single value, or an array (rolling array).
 

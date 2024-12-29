@@ -35,8 +35,12 @@ diff:     8   7  6  5 1  1  1  1
 
 # Dearrangement
 
-\\[!n=(n-1)({!(n-1)}+{!(n-2)})\\]
+$$
+!n=(n-1)({!(n-1)}+{!(n-2)})
+$$
 
-\\[!n=n!\sum _{i=0}^{n}{\frac {(-1)^{i}}{i!}}, \quad n\geq 0\\]
+$$
+!n=n!\sum _{i=0}^{n}{\frac {(-1)^{i}}{i!}}, \quad n\geq 0
+$$
 
 [beautiful-arrangement-ii]: https://leetcode.com/problems/beautiful-arrangement-ii/

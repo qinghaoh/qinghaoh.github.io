@@ -5,19 +5,21 @@ tags: math
 ---
 # Euler's Theorem
 
-In number theory, [Euler's theorem](https://en.wikipedia.org/wiki/Euler's_theorem) (also known as the Fermat–Euler theorem or Euler's totient theorem) states that if \\(n\\) and \\(a\\) are coprime positive integers, then \\(a\\) raised to the power of the totient of \\(n\\) is congruent to \\(1\\) modulo \\(n\\), or:
+In number theory, [Euler's theorem](https://en.wikipedia.org/wiki/Euler's_theorem) (also known as the Fermat–Euler theorem or Euler's totient theorem) states that if $$ n $$ and $$ a $$ are coprime positive integers, then $$ a $$ raised to the power of the totient of $$ n $$ is congruent to $$ 1 $$ modulo $$ n $$, or:
 
-\\[a^{\varphi (n)} \equiv 1 \pmod{n}\\]
+$$
+a^{\varphi (n)} \equiv 1 \pmod{n}
+$$
 
-where \\(\varphi (n)\\) is Euler's totient function.
+where $$ \varphi (n) $$ is Euler's totient function.
 
-**Euler's totient function** counts the positive integers up to a given integer \\(n\\) that are relatively prime to \\(n\\).
+**Euler's totient function** counts the positive integers up to a given integer $$ n $$ that are relatively prime to $$ n $$.
 
-If \\(n\\) is a prime
-* \\(\varphi (n) = n - 1\\)
-* \\(a^{-1} \equiv a^{n-2} \pmod{n}\\)
+If $$ n $$ is a prime:
+* \$$ \varphi (n) = n - 1 $$
+* \$$ a^{-1} \equiv a^{n-2} \pmod{n} $$
 
-Multiplicative: if \\(\gcd(m, n) = 1\\), then \\(\varphi (m) \varphi (n) = \varphi (mn)\\).
+Multiplicative: if $$ \gcd(m, n) = 1 $$, then $$ \varphi (m) \varphi (n) = \varphi (mn) $$.
 
 [Super Pow][super-pow]
 
@@ -53,9 +55,11 @@ private int pow(int a, int n, int mod) {
 }
 ```
 
-$$a^b \equiv a^{b \pmod{\varphi} + \varphi} \pmod{c}$$
+$$
+a^b \equiv a^{b \pmod{\varphi} + \varphi} \pmod{c}
+$$
 
-where \\(b>\varphi = \varphi(c)\\)
+where $$ b>\varphi = \varphi(c) $$
 
 A more straightforward solution:
 
@@ -76,18 +80,22 @@ private int pow(int a, int n, int mod) {
 
 # Group
 
-[Multiplicative group of integers modulo n](https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n): the integers coprime (relatively prime) to \\(n\\) from the set \\(\\{0,1,\dots ,n-1\\}\\) of \\(n\\) non-negative integers form a group under multiplication modulo \\(n\\).
+[Multiplicative group of integers modulo n](https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n): the integers coprime (relatively prime) to $$ n $$ from the set $$ \\{0,1,\dots ,n-1\\} $$ of $$ n $$ non-negative integers form a group under multiplication modulo $$ n $$.
 
-$$\lvert(\mathbb {Z} /n\mathbb {Z} )^{\times }\rvert = \varphi (n)$$
+$$
+\lvert(\mathbb {Z} /n\mathbb {Z} )^{\times }\rvert = \varphi (n)
+$$
 
-For prime \\(n\\) the group is cyclic.
+For prime $$ n $$ the group is cyclic.
 
-Generator: \\(\langle g \rangle = \\{g^k \| k \in \mathbb{Z}\\}\\)
+Generator: $$ \langle g \rangle = \\{g^k \| k \in \mathbb{Z}\\} $$
 
-[Lagrange's theorem](https://en.wikipedia.org/wiki/Lagrange%27s_theorem_(group_theory)): If \\(H\\) is a subgroup of a group \\(G\\), then
+[Lagrange's theorem](https://en.wikipedia.org/wiki/Lagrange%27s_theorem_(group_theory)): If $$ H $$ is a subgroup of a group $$ G $$, then
 
-$$\left|G\right|=\left[G:H\right]\cdot \left|H\right|$$
- 
+$$
+\left|G\right|=\left[G:H\right]\cdot \left|H\right|
+$$
+
 # Pigeonhole Principle
 
 [Modular arithmetic](https://en.wikipedia.org/wiki/Modular_arithmetic)
@@ -96,12 +104,14 @@ $$\left|G\right|=\left[G:H\right]\cdot \left|H\right|$$
 
 Evaluate these remainders:
 
-\\[1 \bmod k, 11 \bmod k, \cdots, \underbrace{11\cdots1}_{k} \bmod k\\]
+$$
+1 \bmod k, 11 \bmod k, \cdots, \underbrace{11\cdots1}_{k} \bmod k
+$$
 
 * If any remainder is 0, then the smallest number of them is the result
-* If none is 0, there must be dupliated remainders as per Pigeonhole Principle, as the \\(k\\) remainders can only take at most \\(k - 1\\) different values excluding 0
+* If none is 0, there must be dupliated remainders as per Pigeonhole Principle, as the $$ k $$ remainders can only take at most $$ k - 1 $$ different values excluding 0
 
-In the second case, if \\(a_{i} \bmod k\\) has a duplicate \\(a_{j} \bmod k\\), since \\(a_{i + 1} = 10a_{i} + 1\\), \\(a_{i + 1} \bmod k = a_{j + 1} \bmod k\\). Therefore, we will never see remainder = 0.
+In the second case, if $$ a_{i} \bmod k $$ has a duplicate $$ a_{j} \bmod k $$, since $$ a_{i + 1} = 10a_{i} + 1 $$, $$ a_{i + 1} \bmod k = a_{j + 1} \bmod k $$. Therefore, we will never see remainder = 0.
 
 ```java
 public int smallestRepunitDivByK(int k) {
@@ -122,7 +132,7 @@ public int smallestRepunitDivByK(int k) {
 
 # Modular Inverse
 
-\\(a\\) has modular inverse modulo \\(m\\) iff \\(gcd(a,m) = 1\\). Modular inverse can be computed by [Extended Euclidean algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm) in time \\(O(\log^2(m))\\).
+$$ a $$ has modular inverse modulo $$ m $$ iff $$ gcd(a,m) = 1 $$. Modular inverse can be computed by [Extended Euclidean algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm) in time $$ O(\log^2(m)) $$.
 
 
 [Fancy Sequence][fancy-sequence]
@@ -168,46 +178,54 @@ class Fancy {
 
 # Modular Kth Roots
 
-To compute \\(k^{th}\\) roots modulo \\(m\\):
+To compute $$ k^{th} $$ roots modulo $$ m $$:
 
 ## Easy Case
 
-If \\(gcd(b,m) = 1\\) and \\(gcd(k,\varphi(m)) = 1\\), the following steps find the congruence \\(x^{k} \equiv b \pmod{ma}\\)[^1]:
-1. Compute \\(\varphi(m)\\)
-1. Find positive integers \\(u\\) and \\(v\\) that satisfy \\(ku - \varphi(m)v = 1\\)
-1. Compute \\(x \equiv b^u \pmod{m}\\) by successive squaring
+If $$ gcd(b,m) = 1 $$ and $$ gcd(k,\varphi(m)) = 1 $$, the following steps find the congruence $$ x^{k} \equiv b \pmod{ma} $$[^1]:
+1. Compute $$ \varphi(m) $$
+1. Find positive integers $$ u $$ and $$ v $$ that satisfy $$ ku - \varphi(m)v = 1 $$
+1. Compute $$ x \equiv b^u \pmod{m} $$ by successive squaring
 
-As a special case: if \\(m\\) is a prime, \\(\forall c \in \mathbb {Z} /m\mathbb {Z}\\)
+As a special case: if $$ m $$ is a prime, $$ \forall c \in \mathbb {Z} /m\mathbb {Z} $$
 
-$$c^{1/k} \equiv c^d \pmod{m}$$
+$$
+c^{1/k} \equiv c^d \pmod{m}
+$$
 
-where \\(d \equiv k^{-1} \pmod{m-1}\\).
+where $$ d \equiv k^{-1} \pmod{m-1} $$.
 
 ## Quadratic Residue
 
-\\(k = 2\\).
+$$
+k = 2
+$$.
 
-[Euler's criterion](https://en.wikipedia.org/wiki/Euler%27s_criterion): Let \\(p\\) be an odd prime and \\(a\\) be an integer coprime to \\(p\\). Then
+[Euler's criterion](https://en.wikipedia.org/wiki/Euler%27s_criterion): Let $$ p $$ be an odd prime and $$ a $$ be an integer coprime to $$ p $$. Then
 
-$$ a^{\tfrac {p-1}{2}}\equiv {
+$$
+a^{\tfrac {p-1}{2}}\equiv {
 \begin{cases}
   1{\pmod {p}} & {\text{ if there is an integer }}x{\text{ such that }}x^{2}\equiv a{\pmod {p}}, \\
   -1{\pmod {p}} & {\text{ otherwise.}}
-\end{cases}}$$
+\end{cases}}
+$$
 
 Legendre symbol:
 
-$$ \left({\frac {a}{p}}\right)\equiv a^{\tfrac {p-1}{2}}{\pmod {p}}$$
+$$
+\left({\frac {a}{p}}\right)\equiv a^{\tfrac {p-1}{2}}{\pmod {p}}
+$$
 
-Modulo an odd prime \\(p\\), there are \\((p+1)/2\\) quadratic residues.
+Modulo an odd prime $$ p $$, there are $$ (p+1)/2 $$ quadratic residues.
 
-[Tonelli-Shanks algorithm](https://zerobone.net/blog/math/tonelli-shanks/): \\(O(\log^2(p))\\)
+[Tonelli-Shanks algorithm](https://zerobone.net/blog/math/tonelli-shanks/): $$ O(\log^2(p)) $$
 
-Special case: if \\(p \equiv 3 \pmod{4}\\), quadratic residue is \\(a^{\frac {p+1}{4}}{\pmod {p}}\\).
+Special case: if $$ p \equiv 3 \pmod{4} $$, quadratic residue is $$ a^{\frac {p+1}{4}}{\pmod {p}} $$.
 
 ## General Case
 
-If \\(m\\) is composite number and \\(k \gt 1\\), computing the root efficiently requires factorization of \\(m\\).
+If $$ m $$ is composite number and $$ k \gt 1 $$, computing the root efficiently requires factorization of $$ m $$.
 
 [fancy-sequence]: https://leetcode.com/problems/fancy-sequence/
 [smallest-integer-divisible-by-k]: https://leetcode.com/problems/smallest-integer-divisible-by-k/

@@ -7,7 +7,9 @@ tags: math
 
 [Permutations of multisets](https://en.wikipedia.org/wiki/Permutation#Permutations_of_multisets)
 
-\\[{n \choose m_{1},m_{2},\ldots ,m_{l}}={\frac {n!}{m_{1}!\,m_{2}!\,\cdots \,m_{l}!}}=\frac {\left(\sum_{i=1}^{l}{m_{i}}\right)!}{\prod_{i=1}^{l}{m_{i}!}}\\]
+$$
+{n \choose m_{1},m_{2},\ldots ,m_{l}}={\frac {n!}{m_{1}!\,m_{2}!\,\cdots \,m_{l}!}}=\frac {\left(\sum_{i=1}^{l}{m_{i}}\right)!}{\prod_{i=1}^{l}{m_{i}!}}
+$$
 
 [Probability of a Two Boxes Having The Same Number of Distinct Balls][probability-of-a-two-boxes-having-the-same-number-of-distinct-balls]
 
@@ -140,7 +142,9 @@ public int countVowelStrings(int n) {
 
 Equivalent to: `n + k - 1` points, `k` segments, not allowed to share endpoints.
 
-\\[{\binom {n + k - 1}{2 * k}}\\]
+$$
+{\binom {n + k - 1}{2 * k}}
+$$
 
 For example, `n = 4, k = 2`
 
@@ -148,9 +152,13 @@ For example, `n = 4, k = 2`
 
 ## Number of k-combinations
 
-\\[\binom {n}{k}=\prod _{i=1}^{k}{\frac {n+1-i}{i}}\\]
+$$
+\binom {n}{k}=\prod _{i=1}^{k}{\frac {n+1-i}{i}}
+$$
 
-\\[{\binom {n}{k}}={\binom {n-1}{k-1}}+{\binom {n-1}{k}}\\]
+$$
+{\binom {n}{k}}={\binom {n-1}{k-1}}+{\binom {n-1}{k}}
+$$
 
 ```java
 long[][] choose = new long[n][k];
@@ -197,9 +205,11 @@ public String kthSmallestPath(int[] destination, int k) {
 
 #### Theorem one
 
-Positivity: Place \\(n\\) objects into \\(k\\) bins, such that all bins contain at least one object. 
+Positivity: Place $$ n $$ objects into $$ k $$ bins, such that all bins contain at least one object.
 
-\\[\binom {n-1}{k-1}\\]
+$$
+\binom {n-1}{k-1}
+$$
 
 [Count the Number of Ideal Arrays][count-the-number-of-ideal-arrays]
 
@@ -234,7 +244,7 @@ public int idealArrays(int n, int maxValue) {
         }
     }
 
-    // dp[i][0]: total number of strictly increasing ideal arrays of length i 
+    // dp[i][0]: total number of strictly increasing ideal arrays of length i
     dp[1][0] = 0;
     for (int i = 1; i <= Math.min(n, MAX_NUM_UNIQUE); i++) {
         for (int j = 1; j <= maxValue; j++) {
@@ -269,15 +279,19 @@ public int idealArrays(int n, int maxValue) {
 
 [Number of combinations with repetition](https://en.wikipedia.org/wiki/Combination#Number_of_combinations_with_repetition)
 
-Non-negativity: Place \\(n\\) objects into \\(k\\) bins. Some bins can be empty.
+Non-negativity: Place $$ n $$ objects into $$ k $$ bins. Some bins can be empty.
 
-\\[\left({\binom {k}{n}}\right)={\binom {n+k-1}{n}}\\]
+$$
+\left({\binom {k}{n}}\right)={\binom {n+k-1}{n}}
+$$
 
 ## Distinguishable Objects, Indistinguishable Bins
 
 [Stirling numbers of the second kind](https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind): the number of ways to partition a set of n objects into k non-empty subsets.
 
-\\[S(n,k)={\frac {1}{k!}}\sum _{i=0}^{k}(-1)^{i}{\binom {k}{i}}(k-i)^{n}\\]
+$$
+S(n,k)={\frac {1}{k!}}\sum _{i=0}^{k}(-1)^{i}{\binom {k}{i}}(k-i)^{n}
+$$
 
 [Count Ways to Distribute Candies][count-ways-to-distribute-candies]
 

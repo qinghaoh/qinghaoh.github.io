@@ -47,16 +47,15 @@ If we are only interested in a shortest path between vertices source and target,
 
 [Indexed priority queue](https://algs4.cs.princeton.edu/24pq/IndexMinPQ.java.html), Fibonacci heap or Brodal queue offer optimal implementations for the above 3 min-priority queque operations.
 
-Time complexity: 
-\\(\Theta(|V|+|E|\log{|V|})\\)
+Time complexity: $$ \Theta(|V|+|E|\log{|V|}) $$
 
 Dijkstra's algorithm has some similarities with BFS:
 
-|       | BFS  | Dijkstra |
-|-------| ------------- | ------------- |
-| graph | unweighted  | weighted (non-negative) |
-| queue | queue  | priority queue  |
-| time complexity | O(V + E) | O(V + Elog(V)) |
+|                 | BFS        | Dijkstra                |
+| --------------- | ---------- | ----------------------- |
+| graph           | unweighted | weighted (non-negative) |
+| queue           | queue      | priority queue          |
+| time complexity | O(V + E)   | O(V + Elog(V))          |
 
 A common implementation with simple priority queue is as below:
 
@@ -84,7 +83,7 @@ public void dijkstra(int n, List<int[]>[] graph, int src) {
         // dequeues the best vertex
         curr = q.poll();
         int u = curr[0], du = curr[1];
-        
+
         // skips current if the vertex is visited
         // (and hence already has a shorter distance)
         if (du > dist[u]) {
@@ -107,10 +106,9 @@ public void dijkstra(int n, List<int[]>[] graph, int src) {
 
 See [Minimum Weighted Subgraph With the Required Paths][minimum-weighted-subgraph-with-the-required-paths], [Number of Ways to Arrive at Destination][number-of-ways-to-arrive-at-destination] as examples.
 
-Time Complexity:
-\\(\Theta((|V|+|E|)\log{|V|})\\)
+Time Complexity: $$ \Theta((|V|+|E|)\log{|V|}) $$
 
-To skip visited vertices, we can use an array or set to mark them. See [reachable-nodes-in-subdivided-graph]. 
+To skip visited vertices, we can use an array or set to mark them. See [reachable-nodes-in-subdivided-graph].
 
 ## Examples
 
@@ -355,7 +353,7 @@ public int minimumEffortPath(int[][] heights) {
         }
     }
 
-    return -1;        
+    return -1;
 }
 ```
 
@@ -936,7 +934,7 @@ for k from 1 to |V|
             end if
 ```
 
-Time complexity: \\(\Theta(V^3)\\)
+Time complexity: $$ \Theta(V^3) $$
 
 [Count Subtrees With Max Distance Between Cities][count-subtrees-with-max-distance-between-cities]
 

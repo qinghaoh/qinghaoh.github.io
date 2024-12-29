@@ -39,7 +39,7 @@ public int longestValidSubstring(String word, List<String> forbidden) {
 * Construct an auxiliary array `lps[]` of the same size as pattern
 * `lps[i]` is the length of the longest matching proper prefix of the sub-pattern `pat[0...i]`, which is also a suffix of the sub-pattern `pat[0...i]`. A proper prefix of a string is a prefix that is not equal to the string itself.
 
-For example, for the pattern `AABAACAABAA`, 
+For example, for the pattern `AABAACAABAA`,
 ```
 lps[] = [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
 ```
@@ -547,7 +547,7 @@ public class Solution {
             for (int c : path) {
                 extend(c);
             }
-            
+
             // LCS is the longest substring match for the first (shortest) path
             for (State s : states) {
                 s.lcs = s.len;
@@ -561,7 +561,7 @@ public class Solution {
 
             // state and len of the current matching part
             int p = 0, len = 0;
-            
+
             // for each position in `path`, finds the lcs of `path` and path0 ending in that position
             for (int c : path) {
                 // shortens the current matching part
@@ -569,7 +569,7 @@ public class Solution {
                     p = states[p].link;
                     len = states[p].len;
                 }
-                
+
                 if (states[p].next.containsKey(c)) {
                     p = states[p].next.get(c);
                     lcs[p] = Math.max(lcs[p], ++len);
@@ -584,7 +584,7 @@ public class Solution {
                 }
             }
 
-            // state[i].lcs is the min among LCS of all paths at the state 
+            // state[i].lcs is the min among LCS of all paths at the state
             for (int i = 0; i < size; i++) {
                 states[i].lcs = Math.min(states[i].lcs, lcs[i]);
             }
@@ -610,7 +610,7 @@ public class Solution {
 
 [Suffix Tree](https://en.wikipedia.org/wiki/Suffix_tree)
 
-[Ukkonen's Algorithm](https://cp-algorithms.com/string/suffix-tree-ukkonen.html): time complexity of tree construction: \\(O(nlog(k))\\)
+[Ukkonen's Algorithm](https://cp-algorithms.com/string/suffix-tree-ukkonen.html): time complexity of tree construction: $$ O(nlog(k)) $$
 
 [String Matching in an Array][string-matching-in-an-array]
 
@@ -641,7 +641,7 @@ class TrieNode {
     int count = 0;
 }
 
-private void insert(TrieNode root, String word) {        
+private void insert(TrieNode root, String word) {
     TrieNode node = root;
     for (char ch : word.toCharArray()) {
         if (node.children[ch - 'a'] == null) {

@@ -7,21 +7,27 @@ tag: sliding window
 
 The constraint can be expressed as:
 
-\\[f(v) \ge 0\\]
+$$
+f(v) \ge 0
+$$
 
-where \\(v\\) is called *contraint variable*. Constraint variable is determined by the position and size of the sliding window:
+where $$ v $$ is called *contraint variable*. Constraint variable is determined by the position and size of the sliding window:
 
-\\[v = g(s, m)\\]
+$$
+v = g(s, m)
+$$
 
-where \\(s\\) is the start index and \\(m\\) is the size of the window.
+where $$ s $$ is the start index and $$ m $$ is the size of the window.
 
-In this type of problems, when \\(s\\) is fixed and \\(m\\) increases, \\(f(v)\\) monotonically increases or decreases. More formally, the following function \\(h(m)\\) is a monotonic function:
+In this type of problems, when $$ s $$ is fixed and $$ m $$ increases, $$ f(v) $$ monotonically increases or decreases. More formally, the following function $$ h(m) $$ is a monotonic function:
 
-\\[f(v) = f(g(m)) = h(m) \ge 0\\]
+$$
+f(v) = f(g(m)) = h(m) \ge 0
+$$
 
 ## Monotonically Decreasing Function
 
-\\(h(m)\\) is a monotonically decreasing function (MDF). For example, the constraint is "**at most** k elements". Denote the number of elements in the sliding window as \\(v\\), then \\(f(v) = k - v \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) decreases.
+$$ h(m) $$ is a monotonically decreasing function (MDF). For example, the constraint is "**at most** k elements". Denote the number of elements in the sliding window as $$ v $$, then $$ f(v) = k - v \ge 0 $$. As the window grows, $$ v $$ tends to increase, so $$ f(v) $$ decreases.
 
 The common solution: expand the window; whenever the constraint is *not satisfied*, use a `while` loop to shrink the window util the constraint is *satisfied* again.
 
@@ -86,7 +92,7 @@ int maxSubarrayLength(vector<int>& nums, int k) {
         if (freqs[nums[j++]]++ == k) {
             freqsGtK++;
         }
-        
+
         if (freqsGtK > 0) {
             if (--freqs[nums[i++]] == k) {
                 freqsGtK--;
@@ -277,7 +283,7 @@ int subarraysWithKDistinct(vector<int>& nums, int k) {
             // so we need the following block to keep the window having exact k different integers.
             if (--k < 0) {
                 // Since i2 is the only occurrence of nums[i2] until j
-                // moving i2 right by one will decrement the number of different integers by one 
+                // moving i2 right by one will decrement the number of different integers by one
                 freqs[nums[i2]] = 0;
                 i1 = ++i2;
             }
@@ -289,7 +295,7 @@ int subarraysWithKDistinct(vector<int>& nums, int k) {
             while (freqs[nums[i2]] > 1) {
                 freqs[nums[i2++]]--;
             }
-            res += i2 - i1 + 1;   
+            res += i2 - i1 + 1;
         }
     }
     return res;
@@ -361,7 +367,7 @@ public int smallestDistancePair(int[] nums, int k) {
     return low;
 }
 
-private boolean condition(int[] nums, int distance, int k) {            
+private boolean condition(int[] nums, int distance, int k) {
     int i = 0, j = 0, count = 0;
     while (j < nums.length) {
         while (nums[j] - nums[i] > distance) {
@@ -412,7 +418,7 @@ int boxDelivering(vector<vector<int>>& boxes, int portsCount, int maxBoxes, int 
 
 ## Monotonically Increasing Function
 
-\\(h(m)\\) is a monotonically increasing function (MIF). For example, the constraint is "sum is **greater than or equal to** target". Denote the sum of elements in the sliding window as \\(v\\), then \\(f(v) = v - target \ge 0\\). As the window grows, \\(v\\) tends to increase, so \\(f(v)\\) increases.
+$$ h(m) $$ is a monotonically increasing function (MIF). For example, the constraint is "sum is **greater than or equal to** target". Denote the sum of elements in the sliding window as $$ v $$, then $$ f(v) = v - target \ge 0 $$. As the window grows, $$ v $$ tends to increase, so $$ f(v) $$ increases.
 
 The common solution is opposite compared to that for Monotonically Decreasing Function: expand the window; whenever the constraint is *satisfied*, use a `while` loop to shrink the window util the constraint is *not satisfied* again.
 
@@ -612,7 +618,7 @@ public int countCompleteSubarrays(int[] nums) {
 
 ## Non-monotonic Function
 
-\\(v = f(s, m)\\) is not a monotonic function of \\(m\\), e.g. "the frequency of each character in the substring is greater than or equal to k". When you anchor the start index, expanding the window will either make all chars in the window have more than k frequency, or introduce a new char so it doesn't approach the goal.
+$$ v = f(s, m) $$ is not a monotonic function of $$ m $$, e.g. "the frequency of each character in the substring is greater than or equal to k". When you anchor the start index, expanding the window will either make all chars in the window have more than k frequency, or introduce a new char so it doesn't approach the goal.
 
 [Longest Substring with At Least K Repeating Characters][longest-substring-with-at-least-k-repeating-characters]
 
@@ -662,11 +668,11 @@ private int slidingWindow(String s, int k, int uniqueCharsTarget) {
 
 ## Summary
 
-||Monotonically Decreasing Function (MDF)|Monotonically Increasing Function (MIF)|
-|-|-|-|
-|Loop|`while (!condition)`|`while (condition)`|
-|Length|`max(j - i)` or `j - i` (Non-shrinking Window)|`min(j - i)`|
-|#Subarrays|`+= j - i`|`+= i`|
+|            | Monotonically Decreasing Function (MDF)        | Monotonically Increasing Function (MIF) |
+| ---------- | ---------------------------------------------- | --------------------------------------- |
+| Loop       | `while (!condition)`                           | `while (condition)`                     |
+| Length     | `max(j - i)` or `j - i` (Non-shrinking Window) | `min(j - i)`                            |
+| #Subarrays | `+= j - i`                                     | `+= i`                                  |
 
 # Fixed-size Window
 
@@ -725,7 +731,7 @@ vector<int> findAnagrams(string s, string p) {
 }
 ```
 
-[Substring with Concatenation of All Words][substring-with-concatenation-of-all-words] is similar to this problem, but on word level. Both use the *frequency map* technique in [Minimum Window Substring][minimum-window-substring]. 
+[Substring with Concatenation of All Words][substring-with-concatenation-of-all-words] is similar to this problem, but on word level. Both use the *frequency map* technique in [Minimum Window Substring][minimum-window-substring].
 
 [Number of Equal Count Substrings][number-of-equal-count-substrings]
 

@@ -13,7 +13,7 @@ Efficient range query, while array modification is flexible.
 
 ### Recursive
 
-The [standard (recursive, top-down) Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html) requires \\(4n\\) vertices for working on an array of size \\(n\\).
+The [standard (recursive, top-down) Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html) requires $$ 4n $$ vertices for working on an array of size $$ n $$.
 
 ```java
 class SegmentTree {
@@ -28,7 +28,7 @@ class SegmentTree {
         this.arr = new int[4 * n];
         this.f = f;
     }
-    
+
     // In all the below methods:
     // v is the index of the segment tree array (`arr`)
     // tl, tr, pos, l, r are indices of the input array (`nums`)
@@ -337,7 +337,7 @@ public class BookMyShow {
 }
 ```
 
-With recursive segment tree implementation, the binary search will take \\(O(\log n)\\) time, because we can check the parent node value `node[1] >= k` (\\(O(1)\\)) in each level top-down, instead of calling `query` function (\\(O(\log n)\\)) in each loop iteration bottom-up.
+With recursive segment tree implementation, the binary search will take $$ O(\log n) $$ time, because we can check the parent node value `node[1] >= k` ($$ O(1) $$) in each level top-down, instead of calling `query` function ($$ O(\log n) $$) in each loop iteration bottom-up.
 
 ### Non-commutative
 
@@ -638,7 +638,7 @@ class SegmentTreeNode {
 
 # Range Updates (Lazy Propagation)
 
-Updates/Adds and queries an entire segment of contiguous elements. The time complexity of both operations are \\(O(\log n)\\).
+Updates/Adds and queries an entire segment of contiguous elements. The time complexity of both operations are $$ O(\log n) $$.
 
 It's more straightforward to implement lazy propagation with recursive segment tree.
 

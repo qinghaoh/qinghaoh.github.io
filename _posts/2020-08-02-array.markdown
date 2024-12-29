@@ -173,7 +173,7 @@ public int getMaxRepetitions(String s1, int n1, String s2, int n2) {
 
 Count each element in an array `int[] a`.
 
-If `0 <= a[i] <= max`, where max is not too big, then we can use `int[] count = new int[max + 1]` as buckets, instead of `Map<Integer, Integer>` 
+If `0 <= a[i] <= max`, where max is not too big, then we can use `int[] count = new int[max + 1]` as buckets, instead of `Map<Integer, Integer>`
 
 # Cycle
 
@@ -378,7 +378,7 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 public int minFlips(String s) {
     int n = s.length();
     // [parity][binary char]
-    int[][] count = new int[2][2]; 
+    int[][] count = new int[2][2];
     for (int i = 0; i < s.length(); i++) {
         count[i % 2][s.charAt(i) - '0']++;
     }
@@ -594,7 +594,7 @@ e.g. `[1, 3, 4, 0, 2, 5]`, there are 3 cycles:
 5 (-> 5 ...)
 ```
 
-The minimum swaps is \\(\sum_c{(T_c - 1)}\\), where \\(T_c\\) is the period of cycle \\(c\\). In the above example, the value is `2 + 1 + 0 = 3`.
+The minimum swaps is $$ \sum_c{(T_c - 1)} $$, where $$ T_c $$ is the period of cycle $$ c $$. In the above example, the value is `2 + 1 + 0 = 3`.
 
 [Array With Elements Not Equal to Average of Neighbors][array-with-elements-not-equal-to-average-of-neighbors]
 
