@@ -20,22 +20,24 @@ let spaces = "    ";
 let spaces = spaces.len();
 ```
 
-# Ownership
+## Ownership
 
 Each value in Rust has one and only one owner at a time.
 
 `drop`: RAII
 
 Variable bindings:
+
 * Move semantics: default
 * [Copy](https://doc.rust-lang.org/std/marker/trait.Copy.html) semantics: bit-wise copy
 
 The following actions can possibly transfer (*move*) ownership:
+
 * Assignment
 * Passing a variable to a function
 * Returning values
 
-# Enum
+## Enum
 
 ```rust
 enum Option<T> {
