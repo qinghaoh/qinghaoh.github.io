@@ -23,4 +23,3 @@ Media query: https://developer.mozilla.org/en-US/docs/Web/CSS/@media
   <div>Child</div>
 </div>
 ```
-

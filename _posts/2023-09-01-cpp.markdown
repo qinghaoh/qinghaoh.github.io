@@ -7,13 +7,14 @@ mermaid: true
 
 Dan Saks. (2001). _[Lvalues and Rvalues](https://www.embedded.com/lvalues-and-rvalues/)_
 : * Lvalue-ness is a compile-time property
-  * Every expression is either an lvalue or an rvalue
-  * An object is a manipulatable region of storage; an lvalue is an expression referring to an object
-  * Compilers can assume that rvalues don’t necessarily occupy storage
-    + Exception: in C++, rvalues of a class type do refer to objects
-  * Assignment
-    + The left operand must be an lvalue
-    + The right operand can be an lvalue (lvalue-to-rvalue conversion) or rvalue
+
+* Every expression is either an lvalue or an rvalue
+* An object is a manipulatable region of storage; an lvalue is an expression referring to an object
+* Compilers can assume that rvalues don’t necessarily occupy storage
+  * Exception: in C++, rvalues of a class type do refer to objects
+* Assignment
+  * The left operand must be an lvalue
+  * The right operand can be an lvalue (lvalue-to-rvalue conversion) or rvalue
 
 David Anderson. (1994). _[The ``Clockwise/Spiral Rule''](https://c-faq.com/decl/spiral.anderson.html)_
 : A technique to parse C declarations
@@ -29,22 +30,22 @@ classDiagram
 ```
 
 * glvalue
-  + may be implicitly converted to prvalue
-  + may be polymorphic
-  + can have incomplete type
+  * may be implicitly converted to prvalue
+  * may be polymorphic
+  * can have incomplete type
 
 * rvalue
-  + cannot be taken by address-of operator
-  + cannot be used as left-hand operand of assignment and compound assignment operator
+  * cannot be taken by address-of operator
+  * cannot be used as left-hand operand of assignment and compound assignment operator
 
 lvalue-to-rvalue conversion
 glvalue -> prvalue
 
 A reference is essentially a pointer that’s automatically dereferenced each time it’s used.
 
-# Object
+## Object
 
-## Storage Duration
+### Storage Duration
 
 [Storage duration](https://en.cppreference.com/w/cpp/language/storage_duration)
 
@@ -81,7 +82,7 @@ graph TD
     classDef Scope fill:#ffb7c5,stroke:#333,stroke-width:2px;
     class block_sc,namespace_sc Scope;
     end
-    
+
     no_specifier--->automatic
     static_sp--->static_sd
     static_sp--->thread
@@ -284,26 +285,28 @@ count_if(nums.begin(), nums.end(), [k](int num) { return num < k; });
 regex_match(s, regex("-?\\d+"));
 ```
 
-```
+```text
      |  0  |  1  |  2  |   3   |
 rend  begin              rbegin   end
 ```
 
 Class type:
+
 * `class`
 * `struct`
 * `union`
 
 Enumeration type:
+
 * `enum`
 * `enum class`
 * `enum struct`
 
 Imcomplete types: `sizeof` is unknown.
+
 * `void`
 * Incompletely-defined object types
-  + class type: declared but not defined
-  + array of unkown bound
-  + array of elements of incomplete type
-  + enumeration type: from declaration until its underlying type is determined
-
+  * class type: declared but not defined
+  * array of unkown bound
+  * array of elements of incomplete type
+  * enumeration type: from declaration until its underlying type is determined

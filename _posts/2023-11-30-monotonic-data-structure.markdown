@@ -23,6 +23,7 @@ for (int i = 0; i < n; i++) {
 ```
 
 Variants:
+
 * Monotonically *non-strictly* increasing stack: `nums[i] < st.top()`
 * Monotonically strictly *decreasing* stack: `nums[i] >= st.top()`
 * Monotonically *non-strictly decreasing* stack: `nums[i] > st.top()`
@@ -210,22 +211,27 @@ From the theorem, we have the following conclusions for PLE and NLE[^2]:
 * In the stack, each element is the PLE of the element on top of it.
 * After all iterations ($$ i = n $$), $$ st(n) $$ is the set of elements that don't have NLEs.
 * To get $$ S_{\text{NLE}}(\text{nums}, i) = \{a \mid \text{NLE}(a) = \text{nums[i]} \} $$, hold `nums[i]` and keep popping until $$ \text{PLE}(\text{nums[i]}) $$:
+
 ```c++
     while (!st.isEmpty() && nums[i] < nums[st.peek()]) {
         next[st.pop()] = i;
     }
 ```
+
 * To get $$ S_{\text{PLE}}(\text{nums}, i) = \{a \mid \text{PLE}(a) = \text{nums[i]} \} $$, iterate over `nums` from `i` until `nums[i]` is popped out of the stack, i.e., until $$ \text{NLE}(\text{nums[i]}) $$:
-```c++
+
+  ```c++
     prev[i] = st.isEmpty() ? -1 : st.peek();
-```
-  - Before `nums[i]` is popped, at most *one* element of $$ S_{\text{PLE}}(\text{nums}, i) $$ is found at each index.
-  - Since PLE is NLE in reverse, we can iterate over `nums` **backward** and find NLE instead. Thus we find all elements of the set by computation at only *one* index `i`, rather than a range of indices.
+  ```
+
+  * Before `nums[i]` is popped, at most *one* element of $$ S_{\text{PLE}}(\text{nums}, i) $$ is found at each index.
+  * Since PLE is NLE in reverse, we can iterate over `nums` **backward** and find NLE instead. Thus we find all elements of the set by computation at only *one* index `i`, rather than a range of indices.
 
 ![NLE & PLE](/assets/img/algorithm/monotonic_stack.png){: width="300" }
 _Fig. 1. Monotonically increasing stack_
 
 In Fig. 1, `a3` is the current element, and we have the following relations:
+
 * `a0 = PLE(a1) = PLE(a3)`
 * `a1 = PLE(a2)`
 * `a3 = NLE(a1) = NLE(a2)`
@@ -463,7 +469,7 @@ public int[] canSeePersonsCount(int[] heights) {
 Imagine each element is a node in a graph, and we connect node `u` to its NLE node `v` with an edge. The resulting graph is an [increasing spanning forest](https://users.math.msu.edu/users/bsagan/Papers/Old/isf-pub.pdf).
 
 ![Increasing Spanning Forest](/assets/img/algorithm/monotonic_stack_nle.png)
-_Fig. 2. Increasing/Decreasing spanning forest_
+*Fig. 2. Increasing/Decreasing spanning forest*
 
 [Online Stock Span][online-stock-span]
 
@@ -736,7 +742,7 @@ int largestRectangleArea(vector<int>& heights) {
 }
 ```
 
-```
+```text
 [2,1,5,6,2,3]
 i = 0	[0]				area = 0
 i = 1	[]		h * w = 2	area = 2

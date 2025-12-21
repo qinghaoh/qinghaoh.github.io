@@ -160,6 +160,7 @@ class SegmentTree {
 We generalize the implementation to support a commutative bi-function `f(x, y)`.
 
 Examples of commutative bi-functions:
+
 * Sum
 * Min
 * Max

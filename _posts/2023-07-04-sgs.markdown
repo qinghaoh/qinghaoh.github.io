@@ -359,13 +359,13 @@ $$ p(x) = \frac{1}{169}\sum_{i=1}^{13}C_{i,x} = \frac{1}{169}\sum_{i = 1}^{x-1}(
 
 最后，计算发动**鼓舌**后角色死亡的概率：
 
-$$ \Pr(K \ge 7-x) = 1-\Pr(K \le 6-x) = 1-F(6-x;n;1-p(x)) = 1-\sum_{i=0}^{6-x}\binom{n}{i}(1-p(x))^{i}p(x)^{n-i} $$
+$$ \mathbb{P}(K \ge 7-x) = 1-\mathbb{P}(K \le 6-x) = 1-F(6-x;n;1-p(x)) = 1-\sum_{i=0}^{6-x}\binom{n}{i}(1-p(x))^{i}p(x)^{n-i} $$
 
 其中$$ F $$为累积分布函数（Cumulative distribution function）。
 
 $$
 \begin{equation}
-  \Pr(K \ge 7-x) =
+  \mathbb{P}(K \ge 7-x) =
   \begin{cases}
     0 & \text{if $x \lt n$} \\
     1-\frac{1}{169^{n}}\sum_{i=0}^{6-x}\binom{n}{i}(91-x^2+x)^{i}(x^2-x+78)^{n-i} & \text{otherwise}
@@ -483,7 +483,7 @@ $$ \operatorname{Var}(X) = m(m-1)(1-\frac{2}{m})^{n}+m(1-\frac{1}{m})^{n}-m^2(1-
 
 PMF：
 
-$$p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right)$$
+$$p_{X}(n) = 1-\mathbb{P}od_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right)$$
 
 在此模型下，$$ m=4 $$。
 
@@ -499,7 +499,7 @@ $$p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right)$$
 
 为了方便讨论，我们首先求解这个问题的简化版本：求$$ n $$张手牌恰好可以凑成$$ r=n/2 $$对共有多少种方式。换句话说，求$$ n $$张手牌$$ m $$种花色中，若每种花色的数目都是偶数，共有多少种方式。
 
-根据论文[G. R. Franssens, On a number pyramid related to the binomial, Deleham, Eulerian, MacMahon and Stirling number triangles, Journal of Integer Sequences, Vol. 9 (2006), Article 06.4.1.](https://cs.uwaterloo.ca/journals/JIS/VOL9/Franssens/franssens13.html)，若以$$ \cosh^m(x) $$为指数母函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）进行麦克劳林（[Maclaurin](https://en.wikipedia.org/wiki/Taylor_series)）展开，可得**Even multinomial parity numbers**：
+根据论文[G. R. Franssens, On a number pyramid related to the binomial, Deleham, Eulerian, MacMahon and Stirling number triangles, Journal of Integer Sequences, Vol. 9 (2006), Article 06.4.1.](https://cs.uwaterloo.ca/journals/JIS/VOL9/Franssens/franssens13.html)，若以$$ \cosh^m(x) $$为指数生成函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）进行麦克劳林（[Maclaurin](https://en.wikipedia.org/wiki/Taylor_series)）展开，可得**Even multinomial parity numbers**：
 
 $$ e_{n}^{m} = \frac{1}{2^m}\sum_{j=0}^{m}{\binom{m}{j}(m-2j)^n} $$
 
@@ -513,7 +513,7 @@ $$ e_{2r}^{4} = 2t(t+1) $$
 
 该序列收录于[OEIS A092812](https://oeis.org/A092812)，其含义为在边长为$$ 2r $$的[超立方体](https://en.wikipedia.org/wiki/Tesseract) 封闭漫游（closed walk）的数目。
 
-若要求解$$ n $$张手牌$$ m $$种花色中，若每种花色的数目都是**奇数**，共有多少种方式，则可用类似的方法，对指数母函数$$ \sinh^m(x) $$进行麦克劳林展开，得：
+若要求解$$ n $$张手牌$$ m $$种花色中，若每种花色的数目都是**奇数**，共有多少种方式，则可用类似的方法，对指数生成函数$$ \sinh^m(x) $$进行麦克劳林展开，得：
 
 $$ o_{2r}^{4} = 2⋅4^{r-1}(4^{r−1}-1) = 2t(t-1) $$
 
@@ -749,7 +749,7 @@ polytope > print $p4->N_LATTICE_POINTS;
 
 $$ \operatorname{E}(K) = \frac{62272}{28561} \approxeq 2.1803, \quad \operatorname{Var}(K) = \frac{399322010}{815730721} \approxeq 0.4895 $$
 
-### 子集和问题
+### 随机子集和的可达性概率
 
 #### 糜竺（SP）
 
@@ -757,34 +757,99 @@ $$ \operatorname{E}(K) = \frac{62272}{28561} \approxeq 2.1803, \quad \operatorna
 
 **资援**：出牌阶段限一次，你可以将任意张点数之和为13的手牌交给一名其他角色，然后该角色回复1点体力。
 
-下面研究在手牌数为$$ X $$的情况下，可以发动**资援**的概率。这是典型的NP-hard的子集和问题（[Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)）。在目标总和数值较小的情况下，可以构造母函数来求解[^footnote2]，也可以用[Knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem)的动态规划法编程计算，程序如下：
+下面研究在手牌数为$$ X $$的情况下，可以发动**资援**的概率。这是典型的NP-hard的子集和问题（[Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)）。在目标总和数值较小的情况下，可以构造生成函数来求解[^footnote2]，也可以用[Knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem)的动态规划法编程计算，程序如下：
 
 ```python
-def ziyuan(n):
-    def is_subset_sum(nums, target):
-        dp = [False] * (target + 1)
-        dp[0] = True
+from collections import defaultdict
+from math import gcd
 
-        for num in nums:
-            for i in range(target, num - 1, -1):
-                dp[i] = dp[i] or dp[i - num]
+def subset_sum_probability(n, target=13, max_value=13):
+    """
+    Computes the exact probability that among n i.i.d. draws from {1,2,...,max_value},
+    there exists a nonempty subset whose sum equals `target`.
 
-        return dp[target]
+    The result is returned as a reduced fraction (numerator, denominator).
 
-    def multinomial_coefficient(nums):
-        coefficient, s = 1, 1
-        for c in Counter(nums).values():
-            for i in range(1, c + 1):
-                coefficient *= s
-                coefficient //= i
-                s += 1
-        return coefficient
+    Core idea:
+    - Track which subset sums (0..target) are achievable so far using a bitmask.
+    - Use dynamic programming over masks.
+    """
 
-    hands = list(itertools.combinations_with_replacement(range(1, 14), n))
-    return sum(multinomial_coefficient(hand) if is_subset_sum(hand, 13) else 0 for hand in hands)
+    # We only care about subset sums from 0 to `target`
+    # Bit i in the mask means: "sum i is achievable"
+    WIDTH = target + 1                     # number of bits we care about
+    FULL_MASK = (1 << WIDTH) - 1           # mask with bits 0..target set to 1
+    TARGET_BIT = 1 << target               # bit representing sum == target
+
+    # ------------------------------------------------------------------
+    # Precompute state transitions
+    #
+    # next_mask[mask][x] = new mask after adding value x to the multiset
+    #
+    # Transition rule:
+    #   new_sums = old_sums ∪ (old_sums + x)
+    #
+    # In bit operations:
+    #   new_mask = mask | (mask << x)
+    # and then we truncate to keep only bits <= target
+    # ------------------------------------------------------------------
+    next_mask = [[0] * (max_value + 1) for _ in range(FULL_MASK + 1)]
+    for mask in range(FULL_MASK + 1):
+        for x in range(1, max_value + 1):
+            shifted = (mask << x) & FULL_MASK
+            next_mask[mask][x] = mask | shifted
+
+    # ------------------------------------------------------------------
+    # DP array:
+    # dp[mask] = number of ordered sequences (x1,...,xk)
+    #            that produce exactly this subset-sum mask
+    #
+    # Initially, before seeing any numbers:
+    # - Only sum 0 is achievable
+    # - mask = 1 << 0 = 1
+    # ------------------------------------------------------------------
+    dp = [0] * (FULL_MASK + 1)
+    dp[1] = 1
+
+    # ------------------------------------------------------------------
+    # Main DP loop: add one draw at a time
+    # Each step corresponds to drawing one more number Xi ∈ {1..max_value}
+    # ------------------------------------------------------------------
+    for _ in range(n):
+        new_dp = [0] * (FULL_MASK + 1)
+
+        # For each current state (mask) and its count
+        for mask, count in enumerate(dp):
+            if count == 0:
+                continue
+
+            # Try all possible next values x
+            row = next_mask[mask]
+            for x in range(1, max_value + 1):
+                new_mask = row[x]
+                new_dp[new_mask] += count
+
+        dp = new_dp
+
+    # ------------------------------------------------------------------
+    # Count successful sequences:
+    # those whose final mask has the TARGET_BIT set,
+    # meaning "there exists a subset summing to target"
+    # ------------------------------------------------------------------
+    numerator = sum(
+        count for mask, count in enumerate(dp)
+        if mask & TARGET_BIT
+    )
+
+    # Total number of possible sequences
+    denominator = max_value ** n
+
+    # Reduce fraction
+    g = gcd(numerator, denominator)
+    return numerator // g, denominator // g
 ```
 
-该程序的时间复杂度为$$ \mathcal{O}(n^{13}) $$，空间复杂度为$$ \mathcal{O}(n^{12}) $$。由于计算量巨大，我们只计算$$ 0 \lt X \le 10 $$的情况：
+该程序的时间复杂度为$$ \mathcal{O}(n \cdot 2^{T+1} \cdot m) $$，空间复杂度为$$ \mathcal{O}(2^{T+1} \cdot m) $$。其中 $$ T $$ 为目标和（13），$$ m $$为卡牌最大值（13）。由于计算量大，我们只计算$$ 0 \lt X \le 10 $$的情况：
 
 ```text
 1
@@ -803,15 +868,230 @@ def ziyuan(n):
 
 ![资援概率](/assets/img/sgs/ziyuan.png)
 
-下面证明，可以发动**资援**的概率随着手牌数单调递增。
+---
 
-定义**样本空间$$ S $$**：考虑所有可能的无限序列$$ (\omega_1, \omega_2, \omega_3, \dots) $$，其中每个$$ \omega_i \in \{1, 2, \dots, 13\} $$，且各$$ \omega_i $$独立同分布，均匀分布于1到13之间。
+下面来说明该概率必然存在[封闭形式（Closed-form Expression）](https://en.wikipedia.org/wiki/Closed-form_expression).
 
-定义**事件$$ A_X $$**：在前$$ X $$张牌$$ (\omega_1, \omega_2, \dots, \omega_X) $$中，存在一个非空子集，其点数之和为13。
+我们研究的是概率
 
-对于所有$$ X \geq 1 $$，有$$ A_X \subseteq A_{X+1} $$。这是因为前$$ X $$张牌的取值在增加第$$ X+1 $$张牌后保持不变，原有的子集仍然存在。因此，如果$$ \omega \in A_X $$，则必有$$ \omega \in A_{X+1} $$。
+$$
+p_n
+= \mathbb{P}\Big(
+\exists\, I\subseteq\{1,\dots,n\},\ I\neq\varnothing:
+\sum_{i\in I} X_i = 13
+\Big)
+$$
 
-根据概率论中的[单调性原理](https://statproofbook.github.io/P/prob-mon.html)：如果事件$$ A \subseteq B $$，则有$$ P(A) \leq P(B) $$。因此，$$ P(A_X) \leq P(A_{X+1}) $$。
+其中, $$ X_i $$  独立同分布，取值于 $$ \{1,\dots,13\} $$
+
+核心问题是：**是否存在某个子集和等于 13**。这个“是否存在”的判定，并不依赖于所有历史细节，而只依赖于一件事：**当前已经“可达”的子集和有哪些（在 0 到 13 之间）**
+
+定义状态：
+
+$$
+R_n := \{\text{前 } n \text{ 个数能组成的所有子集和}\}\cap\{0,1,\dots,13\}
+$$
+
+每个状态可以用一个 **14 位二进制掩码（bitmask）**表示。第 $$ k $$  位为 1 表示“子集和 $$ k $$  是可达的”。那么，总状态数最多为：
+
+$$
+2^{14} = 16384
+$$
+
+即，状态空间是一个有限集合。
+
+当加入第 $$ n+1 $$  个随机变量 $$ X_{n+1}=x $$  时，状态更新规则是：
+
+$$
+R_{n+1}
+=
+R_n
+\;\cup\;
+\{ r+x : r\in R_n,\ r+x\le 13 \}
+$$
+
+该规则只依赖于 $$ s $$ ，与 $$ n $$  无关。其随机性只来自输入 $$ x $$，且 $$ x $$ 的分布在每一步都是相同的（均匀分布）。
+
+因此，这是一个[有限状态、时间齐次的马尔可夫链](https://en.wikipedia.org/wiki/Markov_chain#Time-homogeneous_Markov_chain_with_a_finite_state_space)。进而我们知道，该概率值必然存在封闭形式。
+
+下面举两个封闭形式的例子：
+
+一、[有限维线性递推](https://en.wikipedia.org/wiki/Linear_recurrence_with_constant_coefficients)
+
+由于状态演化可以写成
+
+$$
+\mathbf{v}_{n+1} = \mathbf{v}_n P
+$$
+
+其中，$$ \mathbf{v}_n $$ 为状态分布向量（有限维）， $$ P $$ 为固定的转移矩阵。
+
+由[Cayley–Hamilton 定理](https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem)可知：
+
+> $$ \mathbf{v}_n $$  的任意线性函数（例如 $$ p_n $$ ）
+> 都满足一个**有限阶、常系数的线性递推关系**
+
+即存在 $$ L<\infty $$  和常数 $$ c_1,\dots,c_L $$ ，使得
+
+$$
+p_n = c_1 p_{n-1} + \cdots + c_L p_{n-L}
+\quad (n\ \text{充分大})
+$$
+
+二、生成函数是有理函数
+
+定义生成函数：
+$$
+G(z) = \sum_{n\ge 0} p_n z^n
+$$
+
+由于系统是有限维线性的，可以证明：
+
+$$
+G(z) = \frac{A(z)}{B(z)}
+$$
+其中 $$ A,B $$  是多项式。
+
+---
+
+下面证明：可以发动**资援**的概率随着手牌数单调递增，且其极限为$$ 1 $$。
+
+**命题1：** 令
+
+$$
+E_n := \Big\{\exists\, I\subseteq\{1,2,\dots,n\},\ I\neq\varnothing:\ \sum_{i\in I}X_i = 13\Big\},
+\qquad
+p_n := \mathbb{P}(E_n)
+$$
+
+其中 $$ X_1,X_2,\dots $$ 为独立同分布随机变量，且
+
+$$
+X_i \sim \mathrm{Unif}\{1,2,\dots,13\}
+$$
+
+则序列 $$ (p_n)_{n\ge 1} $$ **严格单调递增**，即
+
+$$
+p_{n+1} > p_n \quad \text{对所有 } n\ge 1 \text{成立}
+$$
+
+**证明：**
+
+首先注意到对任意 $$ n $$，都有集合包含关系
+
+$$
+E_n \subseteq E_{n+1}
+$$
+
+因此由[概率单调性原理](https://statproofbook.github.io/P/prob-mon.html)或[测度单调性](https://en.wikipedia.org/wiki/Measure_(mathematics)#Monotonicity)，
+
+$$
+p_n \le p_{n+1}
+$$
+
+下面证明不等号是严格的。
+
+考虑如下事件：
+
+$$
+B_n := \Big\{
+\sum_{i\in I} X_i \neq 13 \text{ 对所有 } I\subseteq\{1,\dots,n\},\ I\neq\varnothing,
+\ \text{但 } X_{n+1}=13
+\Big\}
+$$
+
+在事件 $$ B_n $$ 中：
+
+- 前 $$ n $$ 个随机变量无法组成和为 13 的子集，因此 $$ E_n $$ 不发生；
+- 但由于 $$ X_{n+1}=13 $$，取单元素集合 $$ \{n+1\} $$ 即可得到和为 13，因此 $$ E_{n+1} $$ 发生。
+
+故
+
+$$
+B_n \subseteq E_{n+1}\setminus E_n
+$$
+
+由于
+
+$$
+\mathbb{P}(B_n)
+= \mathbb{P}\big(X_{n+1}=13\big)\,
+  \mathbb{P}\big(E_n^c\big)
+= \frac{1}{13}\,\mathbb{P}(E_n^c)
+> 0
+$$
+
+（注意 $$ \mathbb{P}(E_n^c)>0 $$，例如当 $$ X_1=\cdots=X_n=2 $$ 时，任意非空子集和都是偶数，不可能等于 13，所以$$ E_n^c $$必然发生），
+
+因此
+
+$$
+\mathbb{P}(E_{n+1}) - \mathbb{P}(E_n)
+= \mathbb{P}(E_{n+1}\setminus E_n)
+\ge \mathbb{P}(B_n)
+> 0
+$$
+
+从而
+
+$$
+p_{n+1} > p_n
+$$
+
+$$ \square $$
+
+**命题2：**
+$$
+\lim_{n\to\infty} p_n = 1
+$$
+
+**证明：**
+
+定义事件
+
+$$
+A_n := \{\exists\, i\in\{1,\dots,n\}: X_i = 13\}
+$$
+
+若 $$ A_n $$ 发生，则取单元素集合 $$ I=\{i\} $$ 就有
+$$ \sum_{j\in I}X_j = X_i = 13 $$，因此
+
+$$
+A_n \subseteq E_n
+$$
+
+于是
+
+$$
+p_n = \mathbb{P}(E_n) \ge \mathbb{P}(A_n)
+$$
+
+接下来计算 $$ \mathbb{P}(A_n) $$。由于各 $$ X_i $$ 独立且
+$$ \mathbb{P}(X_i\neq 13)=\frac{12}{13} $$，有
+
+$$
+\mathbb{P}(A_n)
+= 1-\mathbb{P}(\forall i,\ X_i\neq 13)
+= 1-\left(\frac{12}{13}\right)^n
+$$
+
+另一方面显然 $$ p_n\le 1 $$（因为是概率），因此得到[夹逼不等式](https://en.wikipedia.org/wiki/Squeeze_theorem)
+
+$$
+1-\left(\frac{12}{13}\right)^n \le p_n \le 1
+$$
+
+当 $$ n\to\infty $$ 时，
+$$ \left(\frac{12}{13}\right)^n \to 0 $$，从而左端趋于 1。由夹逼定理可得
+
+$$
+\lim_{n\to\infty} p_n = 1
+$$
+
+$$ \square $$
+
+从另一个角度看，可达子集和集合的演化构成一个有限状态、时间齐次的[吸收型马尔可夫链](https://en.wikipedia.org/wiki/Absorbing_Markov_chain)。所有包含目标值 $$ 13 $$ 的状态都是吸收态，一旦进入便无法离开。由于从初始状态出发进入吸收态的概率为正，且不存在非吸收的封闭类，该链以概率 $$ 1 $$ 最终被吸收。因此，目标事件的概率 $$ p_n $$ 随 $$ n $$ 增大必然趋于 $$ 1 $$。
 
 ## 技能比较
 

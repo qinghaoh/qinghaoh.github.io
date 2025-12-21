@@ -3,7 +3,7 @@ title:  "Number"
 category: algorithm
 tags: math
 ---
-# Count
+## Count
 
 [Numbers At Most N Given Digit Set][numbers-at-most-n-given-digit-set]
 
@@ -44,7 +44,7 @@ public int atMostNGivenDigitSet(String[] digits, int n) {
 }
 ```
 
-# Iteration per Digit
+## Iteration per Digit
 
 [Digit Count in Range][digit-count-in-range]
 
@@ -85,7 +85,7 @@ public int atMostNGivenDigitSet(String[] digits, int n) {
 }
 ```
 
-# Factor
+## Factor
 
 [Preimage Size of Factorial Zeroes Function][preimage-size-of-factorial-zeroes-function]
 
@@ -171,11 +171,11 @@ public int preimageSizeFZF(int k) {
 }
 ```
 
-# Sqaure
+## Sqaure
 
 [Maximum Element-Sum of a Complete Subset of Indices][maximum-element-sum-of-a-complete-subset-of-indices]
 
-```
+```c++
 long long maximumSum(vector<int>& nums) {
     int n = nums.size();
     long long res = 0;

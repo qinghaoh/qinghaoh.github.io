@@ -42,9 +42,9 @@ Null elements are prohibited.
 
 ```java
 Integer[] arr = {1, 2, 3};
-  
-// Sorts arr[] in descending order 
-Arrays.sort(arr, Collections.reverseOrder()); 
+
+// Sorts arr[] in descending order
+Arrays.sort(arr, Collections.reverseOrder());
 ```
 
 * [public static \<T\> void sort(List\<T\> list, Comparator\<? super T\> c)](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#sort-java.util.List-java.util.Comparator-): stable

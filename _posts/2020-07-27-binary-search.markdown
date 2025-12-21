@@ -555,7 +555,7 @@ public int splitArray(int[] nums, int m) {
         } else {
             low = mid + 1;
         }
-    }        
+    }
     return low;
 }
 

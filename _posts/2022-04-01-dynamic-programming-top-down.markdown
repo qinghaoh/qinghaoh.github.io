@@ -111,7 +111,7 @@ public double largestSumOfAverages(int[] nums, int k) {
 }
 ```
 
-```
+```text
 [0.0,0.0,0.0,0.0]
 [0.0,9.0,9.0,9.0]
 [0.0,5.0,10.0,10.0]
@@ -155,7 +155,7 @@ DP scans array from right to left:
 ```java
 public int maximumScore(int[] nums, int[] multipliers) {
     int n = nums.length, m = multipliers.length;
-    // dp[i][j]: left of array elements has index i, and j is the index of multipliers 
+    // dp[i][j]: left of array elements has index i, and j is the index of multipliers
     int[][] dp = new int[m + 1][m + 1];
 
     for (int i = m - 1; i >= 0; i--) {

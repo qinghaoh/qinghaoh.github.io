@@ -40,7 +40,8 @@ public int longestValidSubstring(String word, List<String> forbidden) {
 * `lps[i]` is the length of the longest matching proper prefix of the sub-pattern `pat[0...i]`, which is also a suffix of the sub-pattern `pat[0...i]`. A proper prefix of a string is a prefix that is not equal to the string itself.
 
 For example, for the pattern `AABAACAABAA`,
-```
+
+```text
 lps[] = [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
 ```
 

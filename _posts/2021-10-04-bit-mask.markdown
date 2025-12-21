@@ -3,7 +3,7 @@ title:  "Bit Mask"
 category: algorithm
 tags: bit
 ---
-# Tricks
+## Tricks
 
 * `(x >> i) & 1`: get the `i-th` bit in state `x`
 * `(x & y) == x`: check if `x` is a subset of `y`
@@ -55,7 +55,7 @@ private int dfs(int mask) {
 }
 ```
 
-# Enumeration
+## Enumeration
 
 [Iterator for Combination][iterator-for-combination]
 
@@ -296,7 +296,7 @@ private void backtrack(int width, int[] bricks, List<Integer> ways, int mask, in
 }
 ```
 
-# Set Cover Problem
+## Set Cover Problem
 
 [Set cover problem](https://en.wikipedia.org/wiki/Set_cover_problem): NP-complete
 
@@ -351,7 +351,7 @@ public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> peop
 }
 ```
 
-# Subsets of Mask
+## Subsets of Mask
 
 [Distribute Repeating Integers][distribute-repeating-integers]
 
@@ -524,7 +524,7 @@ public long minimumTime(int[] power) {
     // now gain == 2
     for (int i = 0; i < n; i++) {
         dp[1 << i] = power[i];
-    } 
+    }
 
     long[] dp2 = new long[1 << n];
     Arrays.fill(dp2, Long.MAX_VALUE);
@@ -597,13 +597,13 @@ public int maxStudents(char[][] seats) {
 }
 ```
 
-# Partitioning
+## Partitioning
 
 Partition a dataset into groups.
 
 Generally, each mask represents a state where `k` groups are complete and at most one group is incomplete. If there exists one incomplete group, then the new bit of the next mask will land in this group; otherwise, the new bit of the next mask will start a new group.
 
-## Iteration
+### Iteration
 
 [Minimum Incompatibility][minimum-incompatibility]
 
@@ -622,7 +622,7 @@ public int minimumIncompatibility(int[] nums, int k) {
     //     dp[mask][i] is the min sum of incompatibilities of the m arrays where i is the index of the last picked number
     //   - otherwise, there are m complete arrays and one incomplete array, and nums[i] is the last number of the incomplete array
     //     dp[mask][i] is the min sum of incompatibilities of the m arrays, minus the minimum number of the incomplete array, where i is the index of the last picked number
-    //    
+    //
     // dp[mask][n]: min of dp[mask][0...(n - 1)]
     int[][] dp = new int[1 << n][n + 1];
     int max = nums[n - 1] * n;
@@ -674,7 +674,7 @@ public int minimumIncompatibility(int[] nums, int k) {
 }
 ```
 
-## DFS
+### DFS
 
 Each DFS level iterates the mask bits and tentatively adds each unused bit.
 
@@ -955,7 +955,7 @@ int dfs(List<Integer>[] h2p, int n, int hat, int mask, Integer[][] memo) {
 }
 ```
 
-# Permutation
+## Permutation
 
 The idea is similar to Partitioning problems: each DFS level iterates the mask bits and tentatively adds each unused bit.
 
@@ -994,7 +994,7 @@ private int dfs(int[] nums, int mask, int lastIndex) {
 }
 ```
 
-# Multi-dimension
+## Multi-dimension
 
 [Maximize Grid Happiness][maximize-grid-happiness]
 
@@ -1073,7 +1073,7 @@ private int dfs(int m, int n, int p, int in, int ex, int inMask, int exMask) {
 }
 ```
 
-# Radix
+## Radix
 
 [Maximum AND Sum of Array][maximum-and-sum-of-array]
 

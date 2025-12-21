@@ -2,11 +2,11 @@
 title:  "Classic Problems"
 category: algorithm
 ---
-# Non-Overlapping Segments
+## Non-Overlapping Segments
 
 [Number of Sets of K Non-Overlapping Line Segments][number-of-sets-of-k-non-overlapping-line-segments]
 
-# Reverse Pairs
+## Reverse Pairs
 
 Examples:
 
@@ -21,7 +21,7 @@ Solutions:
 * Segment Tree
 * Binary Search Tree
 
-# Swim in Rising Water
+## Swim in Rising Water
 
 * [Swim in Rising Water][swim-in-rising-water]
 
@@ -34,7 +34,7 @@ Solutions:
 ```java
 ```
 
-# Subarray Sum Equals K
+## Subarray Sum Equals K
 
 [Count Number of Nice Subarrays][count-number-of-nice-subarrays]
 
@@ -48,4 +48,3 @@ Solutions:
 [reverse-pairs]: https://leetcode.com/problems/reverse-pairs/
 [subarray-sum-equals-k]: https://leetcode.com/problems/subarray-sum-equals-k/
 [swim-in-rising-water]: https://leetcode.com/problems/swim-in-rising-water/
-

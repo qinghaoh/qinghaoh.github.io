@@ -5,7 +5,7 @@ mermaid: true
 tags: graph
 ---
 
-# Acyclic Graph
+## Acyclic Graph
 
 ```mermaid
 flowchart LR
@@ -18,13 +18,14 @@ flowchart LR
 
 A topological sorting is possible iff the graph is a DAG.
 
-# Cyclic Graph
+## Cyclic Graph
 
 Common graph cycle problems:
+
 * Cycle detection
 * Cycle length
 
-## Khan's Algorithm
+### Khan's Algorithm
 
 See [Topological Sorting](../topological-sorting/#kahns-algorithm)
 
@@ -57,7 +58,7 @@ public int maximumInvitations(int[] favorite) {
     }
 
     // dp[i]: longest path from leaves to i exclusively
-    int[] dp = new int[n]; 
+    int[] dp = new int[n];
     while (!q.isEmpty()) {
         int node = q.poll(), to = favorite[node];
         dp[to] = Math.max(dp[to], dp[node] + 1);
@@ -95,7 +96,7 @@ public int maximumInvitations(int[] favorite) {
 }
 ```
 
-## White-Gray-Black DFS
+### White-Gray-Black DFS
 
 [Course Schedule II][course-schedule-ii]
 
@@ -223,7 +224,7 @@ This algorithm is very similar to Tarjan's Algorithm. The meaning of `rank` and 
 
 ![Example](https://assets.leetcode.com/uploads/2019/09/03/1537_ex1_2.png)
 
-```
+```text
 node: 0
 rank: 0,-2,-2,-2
 
@@ -262,7 +263,7 @@ minSub: 2
 rank: 0,1,2,2
 ```
 
-## BFS
+### BFS
 
 [Shortest Cycle in a Graph][shortest-cycle-in-a-graph]
 
@@ -317,4 +318,3 @@ private int bfs(List<Integer>[] graph, int node) {
 [detect-cycles-in-2d-grid]: https://leetcode.com/problems/detect-cycles-in-2d-grid/
 [maximum-employees-to-be-invited-to-a-meeting]: https://leetcode.com/problems/maximum-employees-to-be-invited-to-a-meeting/
 [shortest-cycle-in-a-graph]: https://leetcode.com/problems/shortest-cycle-in-a-graph/
-

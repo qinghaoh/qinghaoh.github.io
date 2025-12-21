@@ -190,7 +190,7 @@ Aggregate paths from current node to all ancestor nodes in its subtree.
                 // If cnt is updated after the for loop, there can be invalid paths
                 // e.g. 3-4-1-2, uses 1 as root
                 // When 1 is the current node, 1-3 and 1-4 would be viewed as valid segments
-                // which composes the path. But that is not valid, since 3 and 4 are from the same subtree. 
+                // which composes the path. But that is not valid, since 3 and 4 are from the same subtree.
                 cnt += (long long)np.first * p.second + (long long)np.second * p.first;
                 if (notPrime[node]) {
                     p.first += np.first;
@@ -233,4 +233,3 @@ public:
 [longest-univalue-path]: https://leetcode.com/problems/longest-univalue-path/
 [longest-zigzag-path-in-a-binary-tree]: https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/
 [number-of-good-leaf-nodes-pairs]: https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/
-

@@ -7,7 +7,7 @@ category: algorithm
 Line sweep is an algorithm to solve problems like [The Skyline Problem][the-skyline-problem]. The key idea is to keep track of every change (delta) at each position, then linear scan and process the positions in the line. This delta is very similar to the pulses in [Discrete Time](https://en.wikipedia.org/wiki/Discrete_time_and_continuous_time#Discrete_time) Signal Processing.
 
 There are two basic forms of algorithm. The first form is to use a list to record the deltas of all position, then sort the list with regard to positions. For each position, there can be more than one list element, and we consolidate them with another linear scan. For example:
- 
+
 [Average Height of Buildings in Each Segment][average-height-of-buildings-in-each-segment]
 
 ```java
@@ -262,7 +262,7 @@ vector<long long> countOfPairs(int n, int x, int y) {
         // There's a shorter path to nodes after the loop midpoint with the other path
         // so, we should stop at the midpoint.
 
-        // The additional street between x and y leads to path divergence at x or y. 
+        // The additional street between x and y leads to path divergence at x or y.
         // There are two traversal scenarios on the cycle:
         // 1. x -> y via the additional street, then returning towards x along the normal streets,
         //    and halting at the cycle's midpoint.
@@ -294,7 +294,7 @@ vector<long long> countOfPairs(int n, int x, int y) {
 [Describe the Painting][describe-the-painting]
 
 ```java
-public List<List<Long>> splitPainting(int[][] segments) { 
+public List<List<Long>> splitPainting(int[][] segments) {
     Map<Integer, Long> map = new TreeMap<>();
     for (int[] s : segments) {
         map.put(s[0], map.getOrDefault(s[0], 0l) + s[2]);

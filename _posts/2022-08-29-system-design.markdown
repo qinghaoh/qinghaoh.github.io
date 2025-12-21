@@ -8,8 +8,7 @@ mermaid: true
 ## Redis
 
 ![Redis](/assets/img/system_design/redis_logo.svg){: w="150" }
-_Redis (Remote Dictionary Server)_
-
+*Redis (Remote Dictionary Server)*
 
 * [Documentation](https://redis.io/docs/)
 * [Redis Cluster](https://redis.io/docs/reference/cluster-spec/)
@@ -38,6 +37,7 @@ Atomicity
 [CRDTs](https://redis.com/blog/diving-into-crdts/): Conflict-Free Replicated Data Types
 
 TCP ports
+
 * Redis TCP port: node to clients
 * Cluster bus port: node to node
   * Redis Cluster Bus
@@ -65,6 +65,7 @@ sequenceDiagram
 ```
 
 Heartbeat
+
 * `PING` and `PONG` packets
 * Every node:
   * pings a few random nodes every second
@@ -121,7 +122,8 @@ stateDiagram-v2
 [Scaling](https://redis.io/docs/manual/scaling/)
 
 Algorithmic sharding:
-```
+
+```text
 HASH_SLOT = CRC16(key) mod 16384
 ```
 
@@ -188,6 +190,7 @@ sequenceDiagram
 Synchronous replication is supported when absolutely needed, via `WAIT`. But it's always possible that a replica that was not able to receive the write will be elected as master. So it's *not* strong consistency.
 
 Actions that change master dataset:
+
 * client writes
 * keys expired or evicted
 * others
@@ -217,6 +220,7 @@ sequenceDiagram
 ### Failure Detection
 
 `NODE_TIMEOUT`
+
 * Unresponsive master node is considered to be failing and can be replaced by one of its replicas
 * If a master node cannot sense the majority of the other masters, it enters error state
 
@@ -235,6 +239,7 @@ Messages are *sharded*.
 Provides high availability for Redis when not using Redis Cluster.
 
 [Redis Sentinel](https://redis.io/docs/management/sentinel/)
+
 * Automatic failover: high availability
 * Monitoring
 * Notification
@@ -290,16 +295,19 @@ _Apache Kafka_
 File system + Page cache
 
 Persistent queue: simple reads and appends to files
+
 * All operations are O(1)
 * eads do not block writes or each other.
 
 Servers
+
 * Brokers
 * Kafka Connect: continuously import and export data as event streams to integrate Kafka with your existing systems such as relational databases as well as other Kafka clusters.
 
 **Event**: key, value, timestamp and ptional metadata headers
 
 **Topic**
+
 * Multi-publisher and multi-subscriber
 * Event retain is configurable (not deleted after consumption)
 * Partitioned
@@ -315,9 +323,10 @@ Servers
 > Event -> File; Topic -> Folder
 
 ![Topic](https://kafka.apache.org/images/streams-and-tables-p1_p4.png){: w="600" }
-_Topic with 4 paritions_
+*Topic with 4 paritions*
 
 ### Replication
+
 * A replica is the redundant element of a topic partition
 * Each partition contains one or more replicas across brokers
 * Each partition has Leader + Followers
@@ -326,6 +335,7 @@ _Topic with 4 paritions_
 * Geo-Replication: MirrorMaker
 
 Brokers -> Cluster
+
 * Managed by Kafka Raft (Kraft) Protocol
 * Each broker handles GB (~10^5 count) R/W /s
 * Broker leader election
@@ -339,11 +349,13 @@ Brokers -> Cluster
     * Partition reassignment tool
 
 Producers
+
 * Transmit JSON-format data to broker is in a compressed batch
   * Batch size
   * Liner duration
 
 Consumers -> Consumer Group
+
 * Pull model
 * For a topic, #(customers) == #(partitions) to ensure consumers keep up with producers
 
@@ -385,6 +397,7 @@ Message Delivery Semantics
 ### Data Versioning
 
 Vector clock
+
 * (node, count)
 * Clock truncation scheme
 
@@ -427,11 +440,13 @@ PiB+
 
 Column family: a container for an ordered collection of rows
 Row: an ordered collection of columns
+
 * Row key
 * Column keys
 * Column values
 
 Primary Key
+
 * Single Primary Key
 * Compound Primary Key
   * Partitioning Key + Clustering Key
@@ -454,10 +469,12 @@ The default partitioner is the Murmur3Partitioner ([MurmurHash](https://en.wikip
 ### Multi-Master Replication
 
 Replication strategy
+
 * `NetworkTopologyStrategy`: requires a specified `replication_factor` (RF) per datacenter; rack-aware (`Snitch`)
 * `SimpleStrategy`: allows a single RF to be defined; only for testing clusters
 
 **Replica synchronization**
+
 * Best effort
   * Read path: Read repair
     * Monotonic Quorum Reads (`BLOCKING`): in 2 successive quorum reads, it’s guaranteed the 2nd one won’t get something older than the 1st one
@@ -477,6 +494,7 @@ Mutation timestamp versioning: requires time synchronization (NTP.)
 #### Consistency
 
 Tunable:
+
 * `ONE`
 * `TWO`
 * `THREE`
@@ -488,6 +506,7 @@ Tunable:
 * `ANY`: a single replica may respond, or the coordinator may store a hint. Accepted for write operations only.
 
 Operations:
+
 * Write: always sent to all replicas, regardless of consistency level
 * Read: sent to enough replicas to satisfy the consistency level
   * One exception: when speculative retry may issue a redundant read request to an extra replica if the original replicas have not responded within a specified time window
@@ -497,19 +516,23 @@ Operations:
 #### Gossip Protocol
 
 Cluster bootstrapping information
+
 * State information: versioned with vector clock of (generation, version)
 * Token metadata
 * Schema version
 
 Seed nodes
+
 * Designated at cluster bootstrap
 * Hotspots for gossip
 
 Non-seed nodes
+
 * Must contact at least one seed node to bootstrap into the cluster.
 * Often contacts one seed node for each rack or datacenter.
 
 Every node, every second:
+
 1. Updates the local node’s heartbeat state (the version) and constructs the node’s local view of the cluster gossip endpoint state.
 1. Picks a random other node in the cluster to exchange gossip endpoint state with.
 1. Probabilistically attempts to gossip with any unreachable nodes (if one exists)
@@ -518,6 +541,7 @@ Every node, every second:
 ### Storage Engine
 
 [Log Structured Merge (LSM) Tree](https://en.wikipedia.org/wiki/Log-structured_merge-tree)
+
 * CommitLog: an append-only log of all mutations local to a node
 * MemTables: in-memory structures where Cassandra buffers writes
   * One active memtable per table
@@ -532,9 +556,11 @@ Every node, every second:
 ![MongoDB](/assets/img/system_design/mongodb_logo.svg){: w="150" }
 
 ## Apache HBase
+
 Wide column. Time series data
 
 ## InfluxDB
+
 Time series data
 
 # Distributed File System
@@ -551,56 +577,67 @@ Performance
 **CAP Theorem**: Consistency, Availability and Parition Tolerance
 
 Distributed cache:
+
 * Dedicated cache cluster
 * Co-located cache
 
 Shards: consistent hashing (cache client, server (Redis) or cache proxy (Twemproxy))
 
 Drawbacks:
+
 * Domino effect
 * Uneven server distribution
 
-Solution: 
-* add each server on the circle multiple times
+Solution:
+
+* Add each server on the circle multiple times
 * Jump Hash algorithm (Google)
 * Proportional Hash (Yahoo!)
 
 Possible problem: hot shard
 
 Hot partition solution:
+
 * Include event time to the parition key
 * Split hot parition into more partitions
 * Dedicated parition for popular items
 
 Configuration management tool
+
 * [Chef](https://docs.chef.io/)
 * Puppet
 
 Configuration Service:
+
 * Apache ZooKeeper
 
 Data replication: availability
 Protocols:
+
 * Probabilistic: gossip, epidemic broadcast tree, bimodal multicase
   * Eventual consistency
 * Consensus: 2 or 3 phase commit, Paxos, Raft, chain replication
   * Strong consistency
 
 Leader-Follower replication:
+
 * Leader: put, get
 * Follower: get (deals with hot shards problem)
 
 Leader election:
+
 * Configuration service (Apache ZooKeeper, Redis Sentinel)
 * Implement in cluster
 
 Data replication is asynchronous, which may cause failures or inconsistency
 
 Source of inconsistency:
+
 * Asynchronous data replication
 * Inconsistent server list
 
 Expired items:
+
 * Passive expire: remove when read them
 * Active expire: a thread runs periodically to clean. If dataset is too big, test a several items use probablistic algorithms at every run
 
@@ -630,6 +667,7 @@ MapReduce
 * Single system image: a client's view of the service keeps the same regardless of the server that it connects to
 
 **Znodes**
+
 * Coordination Data
   * Each node can have data associated with it (like a file system that allows a file to also be a directory)
   * Data stored at each znode is usually small (B ~ KB)
@@ -645,6 +683,7 @@ MapReduce
 * Sequential znodes: have a unique, monotonically increasing sequence number automatically appended to its name upon creation. Can be either persistent or ephemeral.
 
 Znode stat structure
+
 * Version numbers for data changes
 * ACL changes
 * Timestamps
@@ -654,19 +693,21 @@ Znode stat structure
 _Ensemble_: a set of hosts
 
 Servers must all know about each other
+
 * In-memory: image of state
 * Persistent storage: transaction logs and snapshots
 
-ZooKeeper is available if a majority of the servers are available 
+ZooKeeper is available if a majority of the servers are available
 
 Leader election: Sequential feature??
 
 Leader-Follower
 
 ![ZooKeeper Components](https://zookeeper.apache.org/doc/current/images/zkcomponents.jpg)
-_ZooKeeper Components_
+*ZooKeeper Components*
 
 Client requests
+
 * Read: serviced from the local replica of each server database
 * Write: processed by an atomic agreement protocol
   * All write requests from clients are forwarded to the leader
@@ -676,6 +717,7 @@ Client requests
 ## Others
 
 Counter-based algorithms
+
 * Count-min sketch
 * Lossy counting
 * Sapce saving
@@ -690,13 +732,15 @@ Jay Kreps, Apache Kafka
 ## Apache Spark
 
 ![Apache Spark](https://upload.wikimedia.org/wikipedia/commons/f/f3/Apache_Spark_logo.svg){: w="200" }
-_Apache Spark_
+*Apache Spark*
 
 ## Apache Flink
+
 ![Apache Flink](https://flink.apache.org/img/logo/png/500/flink_squirrel_500.png){: w="150" }
-_Apache Flink_
+*Apache Flink*
 
 Front-end
+
 * Request valiation
 * Authentication/Authorization
 * TLS termination
@@ -723,24 +767,28 @@ SQL:
 Normalization
 Sharding, Cluster proxy (configuration service),
 shard proxy
+
 * Cache
 * Monitor health
 * Publish metris
-* Terminate long queries 
+* Terminate long queries
 Vitess (YouTube)
 
 SQL
+
 * ACID transactions
 * Complex dynamic queries
 * Data analytics
 * Data warehousing
 
 NoSQL
+
 * Easy scaling for both writes and reads
 * Highly available
 * Tolerate network partitions
 
 Some keywords:
+
 * Scalable: partitioning
 * Reliable: replication and checkpointing
 * Fast: in-memory
@@ -749,40 +797,48 @@ Data enrichment
 Embedded database (LinkedIn): RocksDB
 
 Client
+
 * blocking: create one thread for each new connection, easy to debug
 * non-blocking I/O
 
 Batching:
+
 * increases throughput
 * saves on cost
 * request compression
 
 Timeouts
-* connection timeout: tens of ms
-* request timeout: exponential backoff and jitter
+
+* Connection timeout: tens of ms
+* Request timeout: exponential backoff and jitter
   * Circuite Breaker: prevents repeat retries
 
 Resource dispatching
+
 * Bulkhead pattern: isolates elements of an application into pools.
 
 Load balancers
+
 * Round robin
 * Least connections
 * Least response time
 * Hash-based
 
 Service discovery:
+
 * Server-side: load balancer
 * Client-side
   * Service registry (e.g. Apache ZooKeeper, Netflix Eureka)
   * Gossip protocol
 
 Replication
+
 * Single leader: SQL scaling
 * Multi leader: (TBD)
 * Leaderless: Apache Cassandra
 
 Binary formats:
+
 * Thrift: tag
 * Protocol buffers: tag
 * Avro
@@ -792,40 +848,48 @@ Hot/Cold storage
 Data federation
 
 Clients:
+
 * Netty: Non-blocking I/O
 * Netflix Hystrix
 * Polly
 
 Load balancer:
+
 * NetScaler: hardware
 * NGINX: software
 
 Performace testing
+
 * Load testing
 * Stress testing: find break point
 * Soak testing: find leaking resources
 Apache JMeter to generate load
 
 Monitoring:
+
 * Latency
 * Traffic
 * Errors
 * Saturation
 
 Audit System:
+
 * Weak: Canary
 * Strong: Different path, Lambda Architecture
 
 Queue message deletion:
+
 * Offset (Apache Kafka)
 * Mark as invisible so other cosumers won't see it. The consumer who retrieved the message deletes it explicitly, otherwise it becomes visible again (AWS SQS)
 
 Message delivery:
+
 * At most once
 * At least once
 * Exactly once (hard to achieve)
 
 Message sharing
+
 * Broadcasting (full mesh)
 * Gossip protocol (< several thousands)
 * Redis
@@ -836,4 +900,3 @@ Service + Daemon
 maxmemory: write commands starts to fail or evict keys
 
 [Twitter Snowflake](https://github.com/twitter-archive/snowflake/tree/b3f6a3c6ca8e1b6847baa6ff42bf72201e2c2231): Unique ID generator
-
