@@ -483,7 +483,7 @@ $$ \operatorname{Var}(X) = m(m-1)(1-\frac{2}{m})^{n}+m(1-\frac{1}{m})^{n}-m^2(1-
 
 PMF：
 
-$$p_{X}(n) = 1-\mathbb{P}od_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right)$$
+$$p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right)$$
 
 在此模型下，$$ m=4 $$。
 
@@ -491,73 +491,323 @@ $$p_{X}(n) = 1-\mathbb{P}od_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right)$$
 
 ![乱击1概率](/assets/img/sgs/luanji1.png)
 
-对于袁绍的技能**乱击**，有个更有意思的课题：当手牌数为$$ n $$时，可以发动**乱击**的次数（见[下一节“级数”](#级数)）。
+对于袁绍的技能**乱击**，有个更有意思的课题：当手牌数为$$ n $$时，可以发动**乱击**的次数（见[下一节“最大配对数”](#最大配对数)）。
 
-### 级数
+### 最大配对数
 
-【引理】
+求 $$ m $$ 种花色的 $$ n $$ 张手牌中,最大配对数的期望。
 
-为了方便讨论，我们首先求解这个问题的简化版本：求$$ n $$张手牌恰好可以凑成$$ r=n/2 $$对共有多少种方式。换句话说，求$$ n $$张手牌$$ m $$种花色中，若每种花色的数目都是偶数，共有多少种方式。
+设 $$ m \ge 2 $$，$$ n \in \mathbb{N} $$。
 
-根据论文[G. R. Franssens, On a number pyramid related to the binomial, Deleham, Eulerian, MacMahon and Stirling number triangles, Journal of Integer Sequences, Vol. 9 (2006), Article 06.4.1.](https://cs.uwaterloo.ca/journals/JIS/VOL9/Franssens/franssens13.html)，若以$$ \cosh^m(x) $$为指数生成函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）进行麦克劳林（[Maclaurin](https://en.wikipedia.org/wiki/Taylor_series)）展开，可得**Even multinomial parity numbers**：
+令
 
-$$ e_{n}^{m} = \frac{1}{2^m}\sum_{j=0}^{m}{\binom{m}{j}(m-2j)^n} $$
+$$
+X_1, X_2, \dots, X_n
+$$
 
-在此模型下，$$ m=4 $$。
+为相互独立同分布的随机变量，且
 
-$$ e_{2r}^{4} = 2⋅4^{r-1}(4^{r−1}+1) $$
+$$
+\mathbb{P}(X_i = j) = \frac{1}{m}, \quad j = 1,2,\dots,m.
+$$
 
-令$$ t=4^{p-1} $$，则
+对每一个取值 $$ j $$，定义出现次数
 
-$$ e_{2r}^{4} = 2t(t+1) $$
+$$
+N_j := \#\{ i \in \{1,\dots,n\} : X_i = j \}.
+$$
 
-该序列收录于[OEIS A092812](https://oeis.org/A092812)，其含义为在边长为$$ 2r $$的[超立方体](https://en.wikipedia.org/wiki/Tesseract) 封闭漫游（closed walk）的数目。
+若两个元素取值相同，则可构成一对；每个元素最多只能使用一次。因此，对取值 $$ j $$ 最多能形成的配对数为
 
-若要求解$$ n $$张手牌$$ m $$种花色中，若每种花色的数目都是**奇数**，共有多少种方式，则可用类似的方法，对指数生成函数$$ \sinh^m(x) $$进行麦克劳林展开，得：
+$$
+\left\lfloor \frac{N_j}{2} \right\rfloor.
+$$
 
-$$ o_{2r}^{4} = 2⋅4^{r-1}(4^{r−1}-1) = 2t(t-1) $$
+整个样本中能形成的最大配对数为
 
-$$ e_{2r}^4+o_{2r}^4 = 4^{n-1} $$
+$$
+P_{\max}
+:= \sum_{j=1}^{m} \left\lfloor \frac{N_j}{2} \right\rfloor.
+$$
 
-【概率及期望计算】
+目标是计算最大配对数的期望
 
-有了以上引理，可以求解当手牌数为$$ n $$时，可发动**乱击**次数$$ X $$的PMF：
+$$
+\mathbb{E}[P_{\max}].
+$$
 
-当$$ n $$为奇数时，$$ k $$的可能取值为：$$ \frac{n-3}{2} \enspace (n \ge 3) $$和$$ \frac{n-1}{2} $$。
+虽然随机变量 $$ N_1,\dots,N_m $$ 彼此相关，但期望具有线性性，因此
 
-$$ p_{X}(k = \frac{n-1}{2}) = p_{X}(k = \frac{n+1}{2}) = \frac{e_{n+1}^{4}}{4^n} $$
+$$
+\mathbb{E}[P_{\max}]
+= \sum_{j=1}^{m} \mathbb{E}\!\left[\left\lfloor \frac{N_j}{2} \right\rfloor\right].
+$$
 
-以上第一个等式成立的原因是：只有一张牌未配对，而我们可以加入一张与之花色相同的牌。两者结果完全等价。
+由于对称性，
 
-$$ p_{X}(k = \frac{n-3}{2}) = 1-p_{X}(k = \frac{n-1}{2}) = 1-\frac{e_{n+1}^{4}}{4^n} $$
+$$
+\mathbb{E}[P_{\max}]
+= m \, \mathbb{E}\!\left[\left\lfloor \frac{N_1}{2} \right\rfloor\right].
+$$
 
-其数学期望：
+注意到
 
-$$ \operatorname{E}(X) = \frac{1}{2^{n}}+\frac{n}{2}-1, \quad n \in \mathbb{N}_o $$
+$$
+N_1 \sim \mathrm{Bin}\!\left(n,\frac{1}{m}\right).
+$$
 
-当$$ n $$为偶数时，$$ k $$的可能取值为：$$ \frac{n}{2}-2 \enspace (n \ge 4) $$，$$ \frac{n}{2}-1 \enspace (n \ge 2) $$和$$ \frac{n}{2} $$。
+对任意整数 $$ k $$，有恒等式
 
-$$ p_{X}(k = \frac{n}{2}) = \frac{e_{n}^{4}}{4^n} $$
+$$
+\left\lfloor \frac{k}{2} \right\rfloor
+= \frac{k}{2} - \frac{1}{2}\mathbf{1}_{\{k \text{ 为奇数}\}}.
+$$
 
-$$ p_{X}(k = \frac{n}{2}-2) = \frac{o_{n}^{4}}{4^{n}} = \frac{1}{4}-\frac{e_{n}^{4}}{4^n} $$
+因此
 
-另一种解法：
+$$
+\mathbb{E}\!\left[\left\lfloor \frac{B}{2} \right\rfloor\right]
+= \frac{\mathbb{E}[B]}{2}
+- \frac{1}{2}\mathbb{P}(B \text{ 为奇数}),
+\quad B \sim \mathrm{Bin}\!\left(n,\frac{1}{m}\right).
+$$
 
-$$ p_{X}(k = \frac{n}{2}-2) = \frac{\#(k = \frac{(n-1)-3}{2})}{4^n} = \frac{1}{4}-\frac{e_{n}^{4}}{4^n} $$
+对于 $$ B \sim \mathrm{Bin}(n,p) $$，有
 
-$$ p_{X}(k = \frac{n}{2}-1) = 1-p_{X}(k = \frac{n}{2})-p_{X}(k = \frac{n}{2}-2) = \frac{3}{4} $$
+$$
+\mathbb{P}(B \text{ 为奇数})
+= \frac{1 - (1 - 2p)^n}{2}.
+$$
 
-其数学期望：
+在此问题中 $$ p = \frac{1}{m} $$，因此
 
-$$ \operatorname{E}(X) = \frac{1}{2^{n}}+\frac{n}{2}-1, \quad n \in \mathbb{N}_e $$
+$$
+\mathbb{P}(B \text{ 为奇数})
+= \frac{1 - \left(1 - \frac{2}{m}\right)^n}{2}.
+$$
 
-可见：
+由于
 
-$$ \operatorname{E}(X) = \frac{1}{2^{n}}+\frac{n}{2}-1, \quad n \in \mathbb{N}_0 $$
+$$
+\mathbb{E}[B] = \frac{n}{m},
+$$
+
+可得
+
+$$
+\mathbb{E}\!\left[\left\lfloor \frac{B}{2} \right\rfloor\right]
+= \frac{n}{2m}
+- \frac{1}{4}
++ \frac{1}{4}\left(1 - \frac{2}{m}\right)^n.
+$$
+
+最终得到最大配对数的期望：
+
+$$
+\boxed{
+\mathbb{E}[P_{\max}]
+= \frac{n}{2}
+- \frac{m}{4}
++ \frac{m}{4}\left(1 - \frac{2}{m}\right)^n
+}
+$$
+
+当 $$ m=4 $$ 时，
+
+$$
+\mathbb{E}[P_{\max}]
+= \frac{n}{2}
+- \frac{4}{4}
++ \frac{4}{4}\left(1 - \frac{2}{4}\right)^n
+= \frac{n}{2} - 1 + \frac{1}{2^{n}}
+$$
 
 该期望曲线为：
 
 ![乱击2期望](/assets/img/sgs/luanji2.png)
+
+下面计算最大配对数的方差。
+
+对任意整数 $$ u\ge 0 $$，有恒等式
+
+$$
+\left\lfloor\frac u2\right\rfloor=\frac u2-\frac12\mathbf 1_{\{u\text{ 为奇数}\}}.
+$$
+
+因此
+
+$$
+P_{\max}
+=\sum_{j=1}^m\left(\frac{N_j}{2}-\frac12\mathbf 1_{\{N_j\text{ 奇}\}}\right)
+=\frac12\sum_{j=1}^m N_j-\frac12\sum_{j=1}^m \mathbf 1_{\{N_j\text{ 奇}\}}
+=\frac n2-\frac12\,O,
+$$
+
+其中
+$$
+O:=\sum_{j=1}^m I_j,\qquad I_j:=\mathbf 1_{\{N_j\text{ 为奇数}\}}.
+$$
+
+于是
+
+$$
+\operatorname{Var}(P_{\max})=\frac14\,\operatorname{Var}(O).
+$$
+
+因此关键变成：计算 $$ O=\sum_{j=1}^m I_j $$ 的方差。
+
+注意到对任意整数随机变量 $$ Y $$，有
+
+$$
+\mathbf 1_{\{Y\text{ 奇}\}}=\frac{1-(-1)^Y}{2}.
+$$
+
+所以
+
+$$
+\mathbb E[I_1]=\mathbb P(N_1\text{ 奇})
+=\frac{1-\mathbb E[(-1)^{N_1}]}{2}.
+$$
+
+而 $$ N_1\sim\mathrm{Bin}(n,\tfrac1m) $$。利用二项分布的概率生成函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）（或直接二项式展开）：
+
+$$
+\mathbb E[t^{N_1}]=(1-p+pt)^n,\quad p=\frac1m.
+$$
+
+取 $$ t=-1 $$ 得到
+
+$$
+\mathbb E[(-1)^{N_1}]=(1-p-p)^n=(1-2p)^n=\left(1-\frac{2}{m}\right)^n.
+$$
+
+定义
+$$
+a:=\left(1-\frac{2}{m}\right)^n
+$$，于是
+
+$$
+\mathbb E[I_1]=\frac{1-a}{2}.
+$$
+
+因为 $$ I_1 $$ 是 $$ 0/1 $$ 变量，
+
+$$
+\operatorname{Var}(I_1)=\mathbb E[I_1](1-\mathbb E[I_1])
+=\frac{1-a}{2}\cdot\frac{1+a}{2}
+=\frac{1-a^2}{4}.
+$$
+
+计算协方差 $$ \operatorname{Cov}(I_1,I_2) $$，需要 $$ \mathbb E[I_1I_2] $$：
+
+$$
+I_j=\frac{1-(-1)^{N_j}}{2}
+\quad\Longrightarrow\quad
+I_1I_2=\frac{1-(-1)^{N_1}-(-1)^{N_2}+(-1)^{N_1+N_2}}{4}.
+$$
+
+取期望：
+
+$$
+\mathbb E[I_1I_2]
+=\frac{1-\mathbb E[(-1)^{N_1}]-\mathbb E[(-1)^{N_2}]+\mathbb E[(-1)^{N_1+N_2}}{4}.
+$$
+
+由对称性 $$ \mathbb E[(-1)^{N_1}]=\mathbb E[(-1)^{N_2}]=a $$，所以
+
+$$
+\mathbb E[I_1I_2]=\frac{1-2a+\mathbb E[(-1)^{N_1+N_2}]}{4}.
+$$
+
+现在计算 $$ \mathbb E[(-1)^{N_1+N_2}] $$。令
+$$
+S:=N_1+N_2.
+$$
+
+由于每次抽牌落在 $$ \{1,2\} $$ 的概率是 $$ \frac{2}{m} $$，因此
+
+$$
+S\sim\mathrm{Bin}\!\left(n,\frac{2}{m}\right).
+$$
+
+并且
+
+$$
+(-1)^{N_1+N_2}=(-1)^S.
+$$
+
+于是
+
+$$
+\mathbb E[(-1)^{N_1+N_2}]
+=\mathbb E[(-1)^S]
+=\left(1-\frac{4}{m}\right)^n.
+$$
+
+定义
+$$
+b:=\left(1-\frac{4}{m}\right)^n
+$$
+，代回得到
+
+$$
+\mathbb E[I_1I_2]=\frac{1-2a+b}{4}.
+$$
+
+于是
+
+$$
+\operatorname{Cov}(I_1,I_2)
+=\mathbb E[I_1I_2]-\mathbb E[I_1]^2
+=\frac{1-2a+b}{4}-\left(\frac{1-a}{2}\right)^2
+=\frac{b-a^2}{4}.
+$$
+
+因为 $$ O=\sum_{j=1}^m I_j $$，且各 $$ I_j $$ 交换对称，所以
+
+$$
+\operatorname{Var}(O)
+= m\,\operatorname{Var}(I_1)+m(m-1)\,\operatorname{Cov}(I_1,I_2).
+$$
+
+代入上面的结果：
+
+$$
+\operatorname{Var}(O)
+= m\cdot\frac{1-a^2}{4}+m(m-1)\cdot\frac{b-a^2}{4}
+=\frac{m}{4}(1-a^2)+\frac{m(m-1)}{4}(b-a^2).
+$$
+
+因此
+
+$$
+\boxed{
+\operatorname{Var}(P_{\max})
+=\frac14\,\operatorname{Var}(O)
+= \frac{m}{16}(1-a^2)+\frac{m(m-1)}{16}(b-a^2),
+}
+$$
+
+其中
+
+$$
+a=\left(1-\frac{2}{m}\right)^n,\qquad
+b=\left(1-\frac{4}{m}\right)^n.
+$$
+
+当 $$ m=4 $$ 时
+
+$$
+a=\left(\frac12\right)^n,\qquad b=(1-1)^n=0\quad(n\ge 1).
+$$
+
+代入得到
+
+$$
+\operatorname{Var}(P_{\max})
+=\frac{4}{16}\left(1-2^{-2n}\right)+\frac{12}{16}\left(0-2^{-2n}\right)
+=\frac14-2^{-2n},
+$$
 
 ### 凸多胞形
 
@@ -757,7 +1007,7 @@ $$ \operatorname{E}(K) = \frac{62272}{28561} \approxeq 2.1803, \quad \operatorna
 
 **资援**：出牌阶段限一次，你可以将任意张点数之和为13的手牌交给一名其他角色，然后该角色回复1点体力。
 
-下面研究在手牌数为$$ X $$的情况下，可以发动**资援**的概率。这是典型的NP-hard的子集和问题（[Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)）。在目标总和数值较小的情况下，可以构造生成函数来求解[^footnote2]，也可以用[Knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem)的动态规划法编程计算，程序如下：
+下面研究在手牌数为$$ X $$的情况下，可以发动**资援**的概率。这是典型的NP-hard的子集和问题（[Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)）。程序如下：
 
 ```python
 from collections import defaultdict
@@ -870,7 +1120,9 @@ def subset_sum_probability(n, target=13, max_value=13):
 
 ---
 
-下面来说明该概率必然存在[封闭形式（Closed-form Expression）](https://en.wikipedia.org/wiki/Closed-form_expression).
+【封闭形势】
+
+下面来说明该概率必然存在封闭形式（[Closed-form Expression](https://en.wikipedia.org/wiki/Closed-form_expression)）.
 
 我们研究的是概率
 
@@ -912,7 +1164,7 @@ $$
 
 该规则只依赖于 $$ s $$ ，与 $$ n $$  无关。其随机性只来自输入 $$ x $$，且 $$ x $$ 的分布在每一步都是相同的（均匀分布）。
 
-因此，这是一个[有限状态、时间齐次的马尔可夫链](https://en.wikipedia.org/wiki/Markov_chain#Time-homogeneous_Markov_chain_with_a_finite_state_space)。进而我们知道，该概率值必然存在封闭形式。
+因此，这是一个有限状态、时间齐次的马尔可夫链（[Time-homogeneous Markov chain with a finite state space](https://en.wikipedia.org/wiki/Markov_chain#Time-homogeneous_Markov_chain_with_a_finite_state_space)）。进而我们知道，该概率值必然存在封闭形式。
 
 下面举两个封闭形式的例子：
 
@@ -954,6 +1206,8 @@ $$
 
 ---
 
+【证明】
+
 下面证明：可以发动**资援**的概率随着手牌数单调递增，且其极限为$$ 1 $$。
 
 **命题1：** 令
@@ -984,7 +1238,7 @@ $$
 E_n \subseteq E_{n+1}
 $$
 
-因此由[概率单调性原理](https://statproofbook.github.io/P/prob-mon.html)或[测度单调性](https://en.wikipedia.org/wiki/Measure_(mathematics)#Monotonicity)，
+因此由[概率单调性原理](https://statproofbook.github.io/P/prob-mon.html)或测度单调性（[Measure Monotonicity](https://en.wikipedia.org/wiki/Measure_(mathematics)#Monotonicity)），
 
 $$
 p_n \le p_{n+1}
@@ -1076,14 +1330,14 @@ $$
 = 1-\left(\frac{12}{13}\right)^n
 $$
 
-另一方面显然 $$ p_n\le 1 $$（因为是概率），因此得到[夹逼不等式](https://en.wikipedia.org/wiki/Squeeze_theorem)
+另一方面显然 $$ p_n\le 1 $$（因为是概率），因此得到夹逼不等式
 
 $$
 1-\left(\frac{12}{13}\right)^n \le p_n \le 1
 $$
 
 当 $$ n\to\infty $$ 时，
-$$ \left(\frac{12}{13}\right)^n \to 0 $$，从而左端趋于 1。由夹逼定理可得
+$$ \left(\frac{12}{13}\right)^n \to 0 $$，从而左端趋于 1。由夹逼定理（[Squeeze Theorem](https://en.wikipedia.org/wiki/Squeeze_theorem)）可得
 
 $$
 \lim_{n\to\infty} p_n = 1
@@ -1091,7 +1345,7 @@ $$
 
 $$ \square $$
 
-从另一个角度看，可达子集和集合的演化构成一个有限状态、时间齐次的[吸收型马尔可夫链](https://en.wikipedia.org/wiki/Absorbing_Markov_chain)。所有包含目标值 $$ 13 $$ 的状态都是吸收态，一旦进入便无法离开。由于从初始状态出发进入吸收态的概率为正，且不存在非吸收的封闭类，该链以概率 $$ 1 $$ 最终被吸收。因此，目标事件的概率 $$ p_n $$ 随 $$ n $$ 增大必然趋于 $$ 1 $$。
+从另一个角度看，可达子集和集合的演化构成一个有限状态、时间齐次的吸收型马尔可夫链（[Absorbing Markov Chain](https://en.wikipedia.org/wiki/Absorbing_Markov_chain)）。所有包含目标值 $$ 13 $$ 的状态都是吸收态，一旦进入便无法离开。由于从初始状态出发进入吸收态的概率为正，且不存在非吸收的封闭类，该链以概率 $$ 1 $$ 最终被吸收。因此，目标事件的概率 $$ p_n $$ 随 $$ n $$ 增大必然趋于 $$ 1 $$。
 
 ## 技能比较
 
@@ -1126,4 +1380,3 @@ $$ \square $$
 ## 脚注
 
 [^footnote1]: 实际上，卡牌的点数并非均匀分布。【2】和【Q】这两种点数的概率为$$ 7/80 $$，而其它的点数概率为$$ 3/40 $$。由于这种差异对计算结果的影响可以忽略不记，我们还是认为所有卡牌点数是均匀分布的。
-[^footnote2]: <https://mathworld.wolfram.com/SubsetSumProblem.html>
