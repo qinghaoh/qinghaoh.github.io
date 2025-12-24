@@ -7,7 +7,7 @@ tag: sgs
 
 本文的主体内容取自于本人十年前在百度帖吧三国杀吧的一篇帖子：[【理论】数学与三国杀——三国杀武将技能概率](https://tieba.baidu.com/p/2450798324)。现加以整理、改进和删增。
 
-本文通过对三国杀某些武将技能相关的概率及期望的研究，使这些技能的强度和收益可以精确量化，从而对玩家在特定游戏局中选将、发动技能、出牌顺序等起到帮助作用。
+本文通过研究《三国杀》中部分武将技能所涉及的概率与期望，对这些技能的强度与收益进行定量刻画，从而为玩家在特定对局中的选将、技能发动时机及出牌顺序提供决策参考。
 
 ## 研究范围
 
@@ -25,17 +25,21 @@ tag: sgs
 
 ### 数学模型
 
+为便于统一讨论，本文将技能效果抽象为随机变量，并对其概率分布及数学期望进行分析。文中所称“期望”，均指技能触发结果或收益函数所对应随机变量的数学期望。
+
 #### 理想模型
 
-若无特殊说明，本文所采用的数学模型均为理想模型，即假设任意一个时刻，牌堆中的卡牌数量无限多，且某牌按照其在上述军争篇中的概率均匀分布。例如：
+若无特殊说明，本文所采用的数学模型均为理想模型，即假设任意一个时刻，牌堆中的卡牌数量无限多，且某牌按照其在上述军争篇中的概率均匀分布（并假设各次抽牌在概率意义上相互独立）。例如：
 
-- 任一花色的概率为$$ 1/4 $$
-- 任一点数的概率为$$ 1/13 $$[^footnote1]
-- 普通（非延时类）锦囊牌的概率为$$ 43/160 $$
+- 任一花色的概率为$1/4$
+- 任一点数的概率为$1/13$[^footnote1]
+- 普通（非延时类）锦囊牌的概率为$43/160$
+
+该假设并非对真实牌堆的物理描述，而是用于简化计算、刻画长期平均行为的数学近似。
 
 无限牌堆模型实际上意味着**有放回**抽样。
 
-在此基础上，关于拼点，我们进一步假设拼点双方亮出的牌的点数均匀分布。易知，拼点赢的概率为$$ \frac{6}{13} $$。
+在此基础上，关于拼点，我们进一步假设拼点双方亮出的牌的点数均匀分布。由对称性或直接计数易知，拼点赢的概率为$\frac{6}{13}$。
 
 此外，本文中所有的小数结果仅保留四位有效数字。
 
@@ -45,7 +49,14 @@ tag: sgs
 
 - 游戏模式为军争篇八人场
 - **不放回**抽样
-- 假设在整局游戏过程中，场上存活角色平均为4名，每名角色平均有手牌2张，装备牌2张；场上平均有1张判定牌。这样，牌堆中的牌数平均为：$$ 160-4*(2+2)-1=143 $$。
+- 假设在整局游戏过程中：
+  - 场上平均存活角色数为 4
+  - 每名角色平均拥有手牌 2 张、装备牌 2 张
+  - 场上平均存在 1 张判定牌。
+
+这样，牌堆中的牌数平均为：$160-4*(2+2)-1=143$。
+
+理想模型用于刻画技能的统计平均强度与内在概率结构，而现实模型则用于评估这些结论在标准军争局中的数值偏差。
 
 ### 武将
 
@@ -60,20 +71,24 @@ tag: sgs
 
 另外，有些武将技能的概率计算过于简单直白，也不在本篇的讨论之列，如:
 
-- 夏侯惇**刚烈**（成功概率$$ 3/4 $$）
-- 神关羽**武魂**（失败概率$$ 13/160 = 0.08125 $$）
-- 顾雍**秉壹**（摸牌概率$$ 1/2^{X-1} $$）
-- 辛宪英（原创之魂2017）**忠鉴**（手牌上限减少概率$$ 1/2*12/13 = 6/13 \approxeq 0.4615 $$）。
+- 夏侯惇**刚烈**（成功概率$3/4$）
+- 神关羽**武魂**（失败概率$13/160 = 0.08125$）
+- 顾雍**秉壹**（摸牌概率$1/2^{X-1}$）
+- 辛宪英（原创之魂2017）**忠鉴**（手牌上限减少概率$1/2*12/13 = 6/13 \approxeq 0.4615$）。
 - 张星彩**枪舞**（参考下表【杀】的点数分布）
 
 |点数|A|2|3|4|5|6|7|8|9|10|J|Q|K|
 |【杀】数量|0|1|1|4|4|4|6|7|5|8|3|0|1|
 
-- 秦宓**天辩**（拼点赢概率$$ 3/52*1/13\sum_{i=0}^{11}i+16/52 = 203/338 \approxeq 0.6006 $$）
+- 秦宓**天辩**（拼点赢概率可拆解为若干互斥情形的加权和，其计算结果为：$3/52*1/13\sum_{i=0}^{11}i+16/52 = 203/338 \approxeq 0.6006$）
+
+上述技能要么概率结构过于直接，要么计算不涉及复杂的条件依赖，因此不作为本文重点讨论对象。
 
 ## 武将技能概率
 
 ### 伯努利试验
+
+本文采用负二项分布“在达到固定成功次数$$r$$前所经历的失败次数（或总试验次数）”的参数化方式。
 
 有一些武将技能概率问题符合典型的伯努利试验下的概率分布。我们以邓艾、甄姬和孟获三名武将的技能为例一一说明。对每名武将都会采用理想模型（有放回）和现实模型（不放回）进行分析。
 
@@ -89,19 +104,21 @@ tag: sgs
 
 【理想模型】
 
-定义发动觉醒技**凿险**时所需的**屯田**次数为$$ X $$，并定义一次伯努利试验（[Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial)）的“成功”为判定非♥，而“失败”为判定♥。由此可知，$$ X $$为成功和失败次数之和。若定义成功次数为$$ r $$，则$$ X $$符合负二项分布（[Negative binomial distribution](https://en.wikipedia.org/wiki/Negative_binomial_distribution))。
+定义发动觉醒技**凿险**时所需的**屯田**次数为$X$，并定义一次伯努利试验（[Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial)）的“成功”为判定非♥，而“失败”为判定♥。由此可知，$X$为成功和失败次数之和。若定义成功次数为$r$，则$X$符合负二项分布（[Negative binomial distribution](https://en.wikipedia.org/wiki/Negative_binomial_distribution)）。
 
 概率质量函数（PMF, Probability mass function）:
 
-$$ p_{X}(n) = {\binom{n-1}{k}}p^{r}(1-p)^{k}, \quad n = k+r \enspace \text{and} \enspace k \in \mathbb{N}_0 $$
+$$ p_{X}(n) = {\binom{n-1}{k}}p^{r}(1-p)^{k}, \quad n = k+r \enspace \text{and} \enspace k \in \{\,0,1,2,\dots\,\} $$
 
-其中$$ p $$为判定为♥的概率。在此模型下，$$ r=3, \enspace p=3/4 $$。
+注：此处采用负二项分布的“以失败概率$p$入式”的参数化；即$p$表示判定为♥的概率，$r$表示达到$r$次非♥所需总试验次数。
+
+在此模型下，$r=3, \enspace p=3/4$。
 
 其概率曲线为：
 
 ![屯田概率](/assets/img/sgs/tuntian.png)
 
-重点观察$$ n $$较小时的概率散点图：
+重点观察$n$较小时的概率散点图：
 
 ![屯田概率2](/assets/img/sgs/tuntian2.png)
 
@@ -113,13 +130,13 @@ $$ \mathbb E[X] = \frac{r}{p} = 4, \quad \operatorname{Var}(X) = \frac{r(1-p)}{p
 
 【现实模型】
 
-定义发动觉醒技**凿险**时所需的**屯田**次数为$$ X $$，牌堆中的牌数为$$ N $$，牌堆中♥的牌数为$$ K $$ ($$ K \le N $$)，并定义一次伯努利试验的“成功”为判定♥，而“失败”为判定非♥（注意：此处的定义与理想模型下刚好相反）。若定义失败次数为$$ r $$，则成功次数符合负超几何分布（[Negative hypergeometric distribution](https://en.wikipedia.org/wiki/Negative_hypergeometric_distribution)）。
+定义发动觉醒技**凿险**时所需的**屯田**次数为$X$，牌堆中的牌数为$N$，牌堆中♥的牌数为$K$ ($K \le N$)，并定义一次伯努利试验的“成功”为判定♥，而“失败”为判定非♥（注意：此处为方便使用负超几何分布的标准形式，成功与失败的定义与理想模型下相反）。若定义失败次数为$r$，则成功次数符合负超几何分布（[Negative hypergeometric distribution](https://en.wikipedia.org/wiki/Negative_hypergeometric_distribution)）。
 
 PMF：
 
-$$ p_{X}(k)=\frac{\binom{K+r-1}{k}\binom{N-r-K}{K-k}}{\binom{N}{K}}, \quad k=0,1,\ldots,K $$
+$$ p_{X}(k)=\frac{\binom{K+r-1}{k}\binom{N-r-K}{K-k}}{\binom{N}{K}}, \quad k=0,1,\dots,K $$
 
-在此模型下，$$ r=3 $$。
+在此模型下，$r=3$。
 
 数学期望和方差分别为：
 
@@ -127,13 +144,13 @@ $$ \mathbb E[X] = \frac{rK}{N-K+1}+r = \frac{rN+r}{N-K+1} = \frac{3N+3}{N-K+1} $
 
 $$ \operatorname{Var}(X) = \frac{rK(N+1)(N-K-r+1)}{(N-K+1)^{2}(N-K+2)} = \frac{3K(N+1)(N-K-2)}{(N-K+1)^{2}(N-K+2)} $$
 
-如果我们假定$$ K = N/4 $$，那么：
+如果我们假定$K = N/4$，那么：
 
-$$ \mathbb E[X] = 4-\frac{4}{3N+4} \lt 4 $$
+$$ \mathbb E[X] = 4-\frac{4}{3N+4} < 4 $$
 
 $$ \operatorname{Var}(X) = \frac{12N(N+1)(3N-8)}{(3N+4)^{2}(3N+8)} $$
 
-可见，$$ \mathbb E[X] $$与$$ N $$正相关，且小于理想模型下**屯田**次数的数学期望。
+可见，$\mathbb E[X]$与$N$正相关，且小于理想模型下**屯田**次数的数学期望。
 
 #### 甄姬（标准版）
 
@@ -141,23 +158,23 @@ $$ \operatorname{Var}(X) = \frac{12N(N+1)(3N-8)}{(3N+4)^{2}(3N+8)} $$
 
 **洛神**：回合开始阶段，你可以进行判定：若为♠或♣，立即获得此牌，并可以再次使用洛神——如此反复，直到出现♥或♦为止。
 
-下面我们来研究**洛神**所获得的牌数。
+下面我们考虑**洛神**所获得的牌数。
 
 【理想模型】
 
-定义**洛神**获得的牌数为$$ Y $$，并定义一次伯努利试的“成功”为判定红牌，而“失败”为判定黑牌。很显然，$$ Y $$属于失败次数，且其概率分布符合几何分布（[Geometric distribution](https://en.wikipedia.org/wiki/Geometric_distribution)）的第二种形式。
+定义**洛神**获得的牌数为$Y$，并定义一次伯努利试的“成功”为判定红牌，而“失败”为判定黑牌。很显然，$Y$属于失败次数，且其概率分布符合几何分布（[Geometric distribution](https://en.wikipedia.org/wiki/Geometric_distribution)）的第二种形式。
 
 PMF：
 
-$$ p_{Y}(k) = (1-p)^{k}p, \quad k \in \mathbb{N}_0 $$
+$$ p_{Y}(k) = (1-p)^{k}p, \quad k \in \{\,0,1,2,\dots\,\} $$
 
-其中$$ p $$为“失败”的概率，在此模型下$$ p = 1/2 $$。
+其中$p$为“失败”的概率，在此模型下$p = 1/2$。
 
 其概率曲线为：
 
 ![洛神概率](/assets/img/sgs/luoshen.png)
 
-重点观察$$ k $$较小时的概率散点图：
+重点观察$k$较小时的概率散点图：
 
 ![洛神概率2](/assets/img/sgs/luoshen2.png)
 
@@ -179,27 +196,27 @@ $$ p_{Y}(k \ge 8) = 1 - \sum_{k = 0}^7{p_Y(k)} = \frac{1}{256} \approxeq 0.00390
 
 【现实模型】
 
-定义**洛神**获得的牌数为$$ X $$，牌堆中的牌数为$$ N $$，牌堆中红牌数为$$ K $$ ($$ K \le N $$)，并定义一次伯努利试验的“成功”为判定黑牌，而“失败”为判定红牌（注意：此处的定义与理想模型下刚好相反）。我们已经知道几何分布是负二项分布的特例，所以成功次数符合负超几何分布（[Negative hypergeometric distribution](https://en.wikipedia.org/wiki/Negative_hypergeometric_distribution)），且失败次数$$ r=1 $$。
+定义**洛神**获得的牌数仍为$Y$，牌堆中的牌数为$N$，牌堆中红牌数为$K$ ($K \le N$)，并定义一次伯努利试验的“成功”为判定黑牌，而“失败”为判定红牌（注意：此处的定义与理想模型下刚好相反）。我们已经知道几何分布是负二项分布的特例，所以成功次数符合负超几何分布（[Negative hypergeometric distribution](https://en.wikipedia.org/wiki/Negative_hypergeometric_distribution)），且失败次数$r=1$。
 
 数学期望和方差分别为：
 
-$$ \mathbb E[X] = \frac{rK}{N-K+1} = \frac{rN+r}{N-K+1} = \frac{K}{N-K+1} $$
+$$ \mathbb E[Y] = \frac{rK}{N-K+1} = \frac{rN+r}{N-K+1} = \frac{K}{N-K+1} $$
 
-$$ \operatorname{Var}(X) = \frac{rK(N+1)(N-K-r+1)}{(N-K+1)^{2}(N-K+2)} = \frac{K(N+1)(N-K)}{(N-K+1)^{2}(N-K+2)} $$
+$$ \operatorname{Var}(Y) = \frac{rK(N+1)(N-K-r+1)}{(N-K+1)^{2}(N-K+2)} = \frac{K(N+1)(N-K)}{(N-K+1)^{2}(N-K+2)} $$
 
-我们也可以通过[Stars and bars](https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics))的方法来直观地得到上述数学期望。设想有$$ N $$个球，其中$$ K $$个为黑色，那么红色球有$$ N-K $$个。把这些红球看作隔板，它们把空间分成了$$ N-K+1 $$个区域。每个黑球在某一个区域的概率都相同，为$$ \frac{1}{N-K+1} $$。因此，$$ K $$个黑球在第一个区域的期望为$$ \frac{K}{N-M+1}$$。
+我们也可以通过[Stars and bars](https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics))的方法来直观地得到上述数学期望。设想有$N$个球，其中$K$个为黑色，那么红色球有$N-K$个。把这些红球看作隔板，它们把空间分成了$N-K+1$个区域。每个黑球在某一个区域的概率都相同，为$\frac{1}{N-K+1}$。因此，$K$个黑球在第一个区域的期望为$\frac{K}{N-K+1}$。
 
-如果我们假定$$ K = N/2 $$，那么：
+如果我们假定$K = N/2$，那么：
 
-$$ \mathbb E[X] = \frac{1}{1+\frac{2}{N}} \lt 1 $$
+$$ \mathbb E[Y] = \frac{1}{1+\frac{2}{N}} < 1 $$
 
-$$ \operatorname{Var}(X) = \frac{N^2(N+1)}{(N+2)(N+4)} $$
+$$ \operatorname{Var}(Y) = \frac{N^2(N+1)}{(N+2)(N+4)} $$
 
-可见，$$ \mathbb E[X] $$与$$ N $$正相关，且小于理想模型下**洛神**牌的数学期望。
+可见，$\mathbb E[Y]$与$N$正相关，且小于理想模型下**洛神**牌的数学期望。
 
 前文对军争篇模型的介绍中已经提到，我们假设某一时刻，牌堆平均有143张牌。那么：
 
-$$ \overline{\operatorname{E}} = \frac{1}{1+\frac{2}{143}} \approxeq 0.9862 $$
+$$ \mathbb E_{\text{avg}} = \frac{1}{1+\frac{2}{143}} \approxeq 0.9862 $$
 
 #### 孟获（神话再临·林）
 
@@ -207,23 +224,23 @@ $$ \overline{\operatorname{E}} = \frac{1}{1+\frac{2}{143}} \approxeq 0.9862 $$
 
 **再起**：摸牌阶段，若你已受伤，你可以放弃摸牌并展示牌堆顶的X张牌，X为你已损失的体力值，其中每有一张♥牌，你回复1点体力，然后弃掉这些♥牌，将其余的牌收入手牌。
 
-下面我们来研究**再起**获得的体力值。
+接下来我们来研究**再起**获得的体力值。
 
 【理想模型】
 
-定义在损失$$ X \enspace (0 \lt X \le 4) $$体力值的情况下，**再起**所获得的体力值为$$ H $$，并定义一次伯努利试验的“成功”为判定♥，而“失败”为判定非♥。很显然，$$ H $$属于成功次数，且其概率分布符合二项分布（[Binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution)）$$ H \sim \operatorname{B}(n,p) $$。
+定义在损失$X \enspace (0 < X \le 4)$体力值的情况下，**再起**所获得的体力值为$H$，并定义一次伯努利试验的“成功”为判定♥，而“失败”为判定非♥。很显然，$H$属于成功次数，且其概率分布符合二项分布（[Binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution)）$H \sim \operatorname{B}(n,p)$。
 
 PMF：
 
-$$ p_{H}(k) = {\binom{n}{k}}p^{k}(1-p)^{n-k}, \quad k \in \mathbb{N} \enspace \text{and} \enspace k=0,1,2,\ldots,n $$
+$$ p_{H}(k) = {\binom{n}{k}}p^{k}(1-p)^{n-k}, \quad k \in \mathbb{N} \enspace \text{and} \enspace k=0,1,2,\dots,n $$
 
-其中$$ n $$为伯努利试验的次数，$$ p $$为判定为♥的概率。在此模型下，$$ n=X, \enspace p=1/4 $$。
+其中$n$为伯努利试验的次数，$p$为判定为♥的概率。在此模型下，$n=X, \enspace p=1/4$。
 
 其概率散点图为：
 
 ![再起概率n](/assets/img/sgs/zaiqi_n.png)
 
-以$$ X = 3 $$为例：
+以$X = 3$为例：
 
 ![再起概率](/assets/img/sgs/zaiqi.png)
 
@@ -231,23 +248,23 @@ $$ p_{H}(k) = {\binom{n}{k}}p^{k}(1-p)^{n-k}, \quad k \in \mathbb{N} \enspace \t
 
 $$ \mathbb E[H] = \frac{X}{4}, \quad \operatorname{Var}(H) = np(1-p) = \frac{3X}{16} $$
 
-同理，定义所获得手牌为$$ C $$，则$$ C \sim \operatorname{B}(X,3/4) $$。
+同理，定义所获得手牌为$C$，则$C \sim \operatorname{B}(X,3/4)$。
 
 $$ \mathbb E[C] = \frac{3X}{4}, \quad \operatorname{Var}(C) = np(1-p) = \frac{3X}{16} $$
 
-这里我们继续讨论一个问题：$$ X=? $$时发动**再起**收益最高？
+这里我们继续讨论一个问题：$X=?$时发动**再起**收益最高？
 
-我们需要首先定义“收益”的概念。如果认为一点体力值等价于$$ R $$张牌，那么我们可以将**再起**的收益用牌数来表示：
+我们需要首先定义“收益”的概念。如果认为一点体力值等价于$R$张牌，那么我们可以将**再起**的收益用牌数来表示：
 
 $$ P = C + HR $$
 
 $$ \mathbb E[P] = \mathbb E[C]+R\mathbb E[H] = \frac{X}{4}(3+R) $$
 
-一般认为，$$ R \approxeq 2 $$，即“一血=两牌”理论（郭嘉**遗计**、黄盖**苦肉**、钟会**排异**等都是佐证）。该理论经大量游戏实践验证而一度在玩家中非常流行。当然，不少玩家对此理论也持不同观点，因此我们要讨论在**再起**技能的情况下，$$ R $$值的合理范围。
+一般认为，$R \approxeq 2$，即“一血=两牌”理论（郭嘉**遗计**、黄盖**苦肉**、钟会**排异**等都是佐证）。该理论经大量游戏实践验证而一度在玩家中非常流行。当然，不少玩家对此理论也持不同观点，因此我们要讨论在**再起**技能的情况下，$R$值的合理范围。
 
-如果不发动**再起**，摸牌阶段会获得$$ 2 $$张牌。若要使发动**再起**的收益优于不发动，那么：
+如果不发动**再起**，摸牌阶段会获得$2$张牌。若要使发动**再起**的收益优于不发动，那么：
 
-$$ \mathbb E[P] \gt 2 $$
+$$ \mathbb E[P] > 2 $$
 
 $$ X = \lceil \frac{8}{3+R} \rceil $$
 
@@ -255,17 +272,17 @@ $$ X = \lceil \frac{8}{3+R} \rceil $$
 
 ![再起R值](/assets/img/sgs/zaiqi_r.png)
 
-可见，在**再起**的背景下，$$ 0 \lt R \le 2 $$。
+可见，在**再起**的背景下，$0 < R \le 2$。
 
 【现实模型】
 
-定义牌堆中的牌数为$$ N $$，牌堆中♥牌数为$$ K $$ ($$ K \le N $$)。在此模型下，伯努利试验是不放回的取样，此时成功次数符合超几何分布（[Hypergeometric distribution](https://en.wikipedia.org/wiki/Hypergeometric_distribution)） $$ H \sim HG_{N,K,n}(k) $$。
+定义牌堆中的牌数为$N$，牌堆中♥牌数为$K$ ($K \le N$)。在此模型下，伯努利试验是不放回的取样，此时成功次数符合超几何分布（[Hypergeometric distribution](https://en.wikipedia.org/wiki/Hypergeometric_distribution)）$H \sim HG_{N,K,n}(k)$。
 
 PMF：
 
-$$ p_{H}(k)=\frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}, \quad k \in \mathbb{N}_0 \enspace \text{and} \enspace \max(0,n+K-N)\leq k\leq \min(K,n) $$
+$$ p_{H}(k)=\frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}, \quad k \in \{\,0,1,2,\dots\,\} \enspace \text{and} \enspace \max(0,n+K-N)\leq k\leq \min(K,n) $$
 
-其中$$ n $$为伯努利试验的次数，$$ n=X $$。
+其中$n$为伯努利试验的次数，$n=X$。
 
 数学期望和方差分别为：
 
@@ -273,13 +290,13 @@ $$ \mathbb E[H] = np = Xp $$
 
 $$ \operatorname{Var}(H) = \frac{np(1-p)(N-n)}{N-1} = \frac{Xp(1-p)(N-X)}{N-1} $$
 
-其中，$$ p = K/N $$。
+其中，$p = K/N$。
 
-如果我们假定$$ K = N/4 $$，则$$ p=1/4 $$，那么：
+如果我们假定$K = N/4$，则$p=1/4$，那么：
 
 $$ \mathbb E[H] = \frac{X}{4} $$
 
-$$ \operatorname{Var}(H) = \frac{3X}{16}\frac{N-X}{N-1} \lt \frac{3X}{16} $$
+$$ \operatorname{Var}(H) = \frac{3X}{16}\frac{N-X}{N-1} < \frac{3X}{16} $$
 
 实际上，超几何分布和负超几何分布有以下联系：
 
@@ -303,11 +320,11 @@ $$ NHG_{N,K,r}(k)=1-HG_{N,N-K,k+r}(r-1) $$
 
 **集智**：当你使用普通锦囊牌时，你可以摸一张牌。
 
-假设当前手牌中的普通锦囊牌有$$ r $$张，并定义本回合内可发动**集智**的次数为$$ X $$（假设每当使用普通锦囊牌时都会发动**集智**；不考虑【无中生有】和【五谷丰登】的影响），则$$ X $$符合负二项分布：
+假设当前手牌中的普通锦囊牌有$r$张，并定义本回合内可发动**集智**的次数为$X$（假设每当使用普通锦囊牌时都会发动**集智**；不考虑【无中生有】和【五谷丰登】的影响），则$X$符合负二项分布：
 
 $$ X \sim NB(r,p) $$
 
-其中$$ p $$为判定为非普通锦囊牌的概率。在此模型下，$$ p=\frac{117}{160} $$。
+其中$p$为判定为非普通锦囊牌的概率。在此模型下，$p=\frac{117}{160}$。
 
 数学期望和方差分别为：
 
@@ -323,23 +340,27 @@ $$ \mathbb E[X] = \frac{r}{p} = \frac{160}{117}r \approxeq 1.3675r, \quad \opera
 
 **激词**：当你发动“**鼓舌**”拼点的牌亮出后，若点数小于X，你可令点数+X；若点数等于X，你可以令你本回合发动“**鼓舌**”的次数上限+1。（X为你“饶舌”标记的数量）
 
-下面考察发动**激词**的情况下拼点赢的概率。定义王朗玩家的拼点牌点数为$$ T $$，“饶舌”标记数量为$$ x $$，则拼点赢的可能情况数为：
+下面考察发动**激词**的情况下拼点赢的概率。定义王朗玩家的拼点牌点数为$T$，“饶舌”标记数量为$x$，则拼点赢的可能情况数为：
 
 $$
-\begin{equation}
-  C_{T,x} =
-  \begin{cases}
-    T + x - 1 & \text{if $T \lt x$} \\
-    T - 1 & \text{otherwise}
-  \end{cases}
-\end{equation}
+C_{T,x} = \min\{13,\; T + x\mathbf{1}_{\{T<x\}}\} - 1
 $$
 
 拼点赢的概率：
 
-$$ p(x) = \frac{1}{169}\sum_{i=1}^{13}C_{i,x} = \frac{1}{169}\sum_{i = 1}^{x-1}(i+x-1)+\sum_{x}{13}(i-1) = \frac{x^2-x+78}{169} $$
+$$
+\begin{aligned}
+p(x)
+&= \mathbb E_T\!\left[\mathbb P\!\left(U < T + \mathbf{1}_{\{T<x\}}x \mid T\right)\right] \\
+&= \frac{1}{13}\sum_{T=1}^{13}\frac{C_{T,x}}{13} \\
+&= \frac{1}{169}\left(\sum_{i=1}^{x-1}(i+x-1)+\sum_{i=x}^{13}(i-1)\right) \\
+&= \frac{x^2-x+78}{169}.
+\end{aligned}
+$$
 
-其中$$ 0 \le x \le 6 $$。
+其中$U$表示对手的拼点牌点数，$0 \le x \le 6$。
+
+由于对$T<x$的区间求和产生了等差数列求和项，故$p(x)$关于$x$为二次函数。
 
 其概率散点图如下：
 
@@ -347,13 +368,13 @@ $$ p(x) = \frac{1}{169}\sum_{i=1}^{13}C_{i,x} = \frac{1}{169}\sum_{i = 1}^{x-1}(
 
 可见，随着“饶舌”标记的增多，拼点赢的概率连续增大。
 
-接下来研究“饶舌”标记数量为$$ x $$时，发动**鼓舌**而获得“饶舌”标记数量$$ K $$。假设发动**鼓舌**时与$$ n $$名角色同时拼点，其中$$ 0 \lt n \le 3 $$。很明显，其概率符合二项分布$$ K \sim \operatorname{B}(n,1-p(x)) $$，数学期望$$ \mathbb E[K;x] = n(1-p(x)) = \frac{n}{169}(91-x^2+x) $$。
+接下来研究“饶舌”标记数量为$x$时，发动**鼓舌**而获得“饶舌”标记数量$K$。假设发动**鼓舌**时与$n$名角色同时拼点，其中$0 < n \le 3$。很明显，其概率符合二项分布$K \sim \operatorname{B}(n,1-p(x))$，数学期望$\mathbb E[K;x] = n(1-p(x)) = \frac{n}{169}(91-x^2+x)$。
 
 其期望散点图如下：
 
 ![鼓舌获得标记数期望n](/assets/img/sgs/gushe_n.png)
 
-以$$ n = 3 $$为例：
+以$n = 3$为例：
 
 ![鼓舌获得标记数期望](/assets/img/sgs/gushe.png)
 
@@ -361,23 +382,23 @@ $$ p(x) = \frac{1}{169}\sum_{i=1}^{13}C_{i,x} = \frac{1}{169}\sum_{i = 1}^{x-1}(
 
 $$ \mathbb{P}(K \ge 7-x) = 1-\mathbb{P}(K \le 6-x) = 1-F(6-x;n;1-p(x)) = 1-\sum_{i=0}^{6-x}\binom{n}{i}(1-p(x))^{i}p(x)^{n-i} $$
 
-其中$$ F $$为累积分布函数（Cumulative distribution function）。
+其中$F$为累积分布函数（Cumulative distribution function）。
 
 $$
-\begin{equation}
+\begin{aligned}
   \mathbb{P}(K \ge 7-x) =
   \begin{cases}
-    0 & \text{if $x \lt n$} \\
+    0 & \text{if $x \le 6-n$} \\
     1-\frac{1}{169^{n}}\sum_{i=0}^{6-x}\binom{n}{i}(91-x^2+x)^{i}(x^2-x+78)^{n-i} & \text{otherwise}
   \end{cases}
-\end{equation}
+\end{aligned}
 $$
 
 其概率散点图如下：
 
 ![鼓舌死亡概率n](/assets/img/sgs/gushe2_n.png)
 
-以$$ n = 3 $$为例：
+以$n = 3$为例：
 
 ![鼓舌死亡概率](/assets/img/sgs/gushe2.png)
 
@@ -391,15 +412,15 @@ $$
 
 **瑰藻**：若你于弃牌阶段弃置过至少两张牌且这些牌花色均不相同，则你可以回复1点体力或摸一张牌。
 
-下面我们来研究**瑰藻**可以回复体力或摸牌的概率。
+下面我们来计算**瑰藻**可以回复体力或摸牌的概率。
 
-定义弃牌阶段弃置的牌数为$$ n \enspace (n \gt 1) $$，一副牌中不同的花色数为$$ m $$。此问题为典型的生日问题（[Birthday problem](https://en.wikipedia.org/wiki/Birthday_problem)）：
+定义弃牌阶段弃置的牌数为$n \enspace (n > 1)$，一副牌中不同的花色数为$m$。在理想模型下，可将弃置牌的花色近似视为独立均匀分布于$m$类。此问题为典型的生日问题（[Birthday problem](https://en.wikipedia.org/wiki/Birthday_problem)）：
 
-$$ {\bar {p}}(n) = \frac{m!}{(m-n)!m^{n}}, \quad 1 \lt n \le m $$
+$$ {\bar {p}}(n) = \frac{m!}{(m-n)!m^{n}}, \quad 1 < n \le m $$
 
-根据鸽巢原理（[Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle)），当$$ n \gt m $$时，$$ {\bar {p}}(n) = 0 $$。
+根据鸽巢原理（[Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle)），当$n > m$时，${\bar {p}}(n) = 0$。
 
-在此模型下，$$ m=4 $$。
+在此模型下，$m=4$。
 
 其概率散点图为：
 
@@ -413,13 +434,13 @@ $$ {\bar {p}}(n) = \frac{m!}{(m-n)!m^{n}}, \quad 1 \lt n \le m $$
 
 **不屈**：**锁定技**，当你处于濒死状态时，你将牌堆顶的一张牌置于你的武将牌上，称为“创”，若此牌的点数与已有的“创”点数均不同，则你将体力回复至1点。若出现相同点数则将此牌置入弃牌堆，若你的武将牌上有“创”，则你的手牌上限与“创”的数量相等。
 
-下面我们来研究**不屈**失败时的“创”数。定义其为$$ X $$，一副牌中不同的点数为$$ M $$。此问题可用生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Average_number_of_people_to_get_at_least_one_shared_birthday)来描述。
+我们考虑**不屈**失败时的“创”数。定义$X$为出现首次点数重复所需翻牌次数（包含触发重复的那一次），一副牌中不同的点数为$M$。此问题可用生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Average_number_of_people_to_get_at_least_one_shared_birthday)来描述。
 
 PMF：
 
 $$ p_{X}(k) = \frac{m!(k-1)}{m^{k}(m-k+1)!}, \quad k \in \mathbb{Z} \enspace \text{and} \enspace 1 \le k \le m + 1 $$
 
-在此模型下，$$ m=13 $$。
+在此模型下，$m=13$。
 
 其概率散点图为：
 
@@ -439,7 +460,7 @@ $$ \mathbb E[X] \sim \sqrt{\frac{\pi m}{2}}+\frac {2}{3} \approxeq 5.1856 $$
 
 $$ p_{X}(k \ge 9) = 1 - \sum_{k = 2}^8{p_X(k)} \approxeq 0.06361 $$
 
-【理想模型】
+【点数非均匀修正】
 
 若考虑【2】与【Q】的概率较于其他点数略高，我们可以对PMF做细微修正，得到更加准确的数学期望：
 
@@ -453,19 +474,19 @@ $$ \mathbb E[X] \approxeq 5.2065 $$
 
 **涉猎**：摸牌阶段，你可选择采取以下行动来取代摸牌：从牌堆顶亮出五张牌，拿走不同花色的牌各一张，弃掉其余的。
 
-下面我们来研究**涉猎**获得的牌数$$ X $$，则根据第二类斯特林数（[Stirling numbers of the second kind](https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind)）的定义：
+下面我们研究**涉猎**获得的牌数$X$。该问题是生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Number_of_people_with_a_shared_birthday)。根据第二类斯特林数（[Stirling numbers of the second kind](https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind)）的定义：
 
 PMF：
 
 $$ p_{X}(k) = \frac{m^{\underline k}}{m^{n}}\begin{Bmatrix}n\\k\end{Bmatrix} $$
 
-其中$$ n $$为亮出的牌数，$$ m $$为一副牌中不同的花色数。在此模型下，$$ n=5, \enspace m=4 $$。
+其中$n$为亮出的牌数，$m$为一副牌中不同的花色数。在此模型下，$n=5, \enspace m=4$。
 
 其概率散点图为：
 
 ![涉猎概率](/assets/img/sgs/shelie.png)
 
-该问题是生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Number_of_people_with_a_shared_birthday)。数学期望和方差分别为：
+数学期望和方差分别为：
 
 $$ \mathbb E[X] = m(1-(1-\frac{1}{m})^n) = \frac{781}{256} \approxeq 3.0508 $$
 
@@ -477,27 +498,25 @@ $$ \operatorname{Var}(X) = m(m-1)(1-\frac{2}{m})^{n}+m(1-\frac{1}{m})^{n}-m^2(1-
 
 **乱击**：出牌阶段，你可以将任意两张相同花色的手牌当【万箭齐发】使用。
 
-下面我们来研究可以发动**乱击**的概率。
+下面研究可以发动**乱击**的概率。
 
-定义手牌数为$$ X $$，一副牌中不同的花色数为$$ M $$。可以发动**乱击**的概率可用生日问题的[另一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Probability_of_a_shared_birthday_(collision))来表示。
+定义手牌数为$X$，一副牌中不同的花色数为$m$。可以发动**乱击**的概率可用生日问题的[另一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Probability_of_a_shared_birthday_(collision))来表示：
 
-PMF：
+$$ p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right) $$
 
-$$p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right)$$
-
-在此模型下，$$ m=4 $$。
+在此模型下，$m=4$。
 
 其概率散点图为：
 
 ![乱击1概率](/assets/img/sgs/luanji1.png)
 
-对于袁绍的技能**乱击**，有个更有意思的课题：当手牌数为$$ n $$时，可以发动**乱击**的次数（见[下一节“最大配对数”](#最大配对数)）。
+对于袁绍的技能**乱击**，有个更有意思的课题：当手牌数为$n$时，可以发动**乱击**的次数（见[下一节“最大配对数”](#最大配对数)）。
 
 ### 最大配对数
 
-求 $$ m $$ 种花色的 $$ n $$ 张手牌中,最大配对数的期望。
+求 $m$ 种花色的 $n$ 张手牌中,最大配对数的期望。
 
-设 $$ m \ge 2 $$，$$ n \in \mathbb{N} $$。令
+设 $m \ge 2$，$n \in \mathbb{N}$。令
 
 $$
 X_1, X_2, \dots, X_n
@@ -509,13 +528,13 @@ $$
 \mathbb{P}(X_i = j) = \frac{1}{m}, \quad j = 1,2,\dots,m
 $$
 
-对每一个取值 $$ j $$，定义出现次数
+对每一个取值$j$，定义出现次数
 
 $$
 N_j := \#\{ i \in \{1,\dots,n\} : X_i = j \}
 $$
 
-若两个元素取值相同，则可构成一对；每个元素最多只能使用一次。因此，对取值 $$ j $$ 最多能形成的配对数为
+若两个元素取值相同，则可构成一对；每个元素最多只能使用一次。因此，对取值$j$最多能形成的配对数为
 
 $$
 \left\lfloor \frac{N_j}{2} \right\rfloor
@@ -534,7 +553,7 @@ $$
 \mathbb{E}[P_{\max}]
 $$
 
-虽然随机变量 $$ N_1,\dots,N_m $$ 彼此相关，但期望具有线性性，因此
+虽然随机变量 $N_1,\dots,N_m$ 彼此相关，但期望具有线性性，因此
 
 $$
 \mathbb{E}[P_{\max}]
@@ -554,7 +573,7 @@ $$
 N_1 \sim \mathrm{Bin}\!\left(n,\frac{1}{m}\right)
 $$
 
-对任意整数 $$ k $$，有恒等式
+对任意整数 $k$，有恒等式
 
 $$
 \left\lfloor \frac{k}{2} \right\rfloor
@@ -570,14 +589,14 @@ $$
 \quad B \sim \mathrm{Bin}\!\left(n,\frac{1}{m}\right)
 $$
 
-对于 $$ B \sim \mathrm{Bin}(n,p) $$，有
+对于 $B \sim \mathrm{Bin}(n,p)$，有
 
 $$
 \mathbb{P}(B \text{ 为奇数})
 = \frac{1 - (1 - 2p)^n}{2}
 $$
 
-在此问题中 $$ p = \frac{1}{m} $$，因此
+在此问题中 $p = \frac{1}{m}$，因此
 
 $$
 \mathbb{P}(B \text{ 为奇数})
@@ -610,7 +629,7 @@ $$
 }
 $$
 
-当 $$ m=4 $$ 时，
+当 $m=4$ 时，
 
 $$
 \mathbb{E}[P_{\max}]
@@ -626,7 +645,7 @@ $$
 
 下面计算最大配对数的方差。
 
-对任意整数 $$ u\ge 0 $$，有恒等式
+对任意整数 $u\ge 0$，有恒等式
 
 $$
 \left\lfloor\frac u2\right\rfloor=\frac u2-\frac12\mathbf 1_{\{u\text{ 为奇数}\}}
@@ -652,9 +671,9 @@ $$
 \operatorname{Var}(P_{\max})=\frac14\,\operatorname{Var}(O)
 $$
 
-因此关键变成：计算 $$ O=\sum_{j=1}^m I_j $$ 的方差。
+因此关键变成：计算 $O=\sum_{j=1}^m I_j$ 的方差。
 
-注意到对任意整数随机变量 $$ Y $$，有
+注意到对任意整数随机变量 $Y$，有
 
 $$
 \mathbf 1_{\{Y\text{ 奇}\}}=\frac{1-(-1)^Y}{2}
@@ -667,13 +686,13 @@ $$
 =\frac{1-\mathbb E[(-1)^{N_1}]}{2}
 $$
 
-而 $$ N_1\sim\mathrm{Bin}(n,\tfrac1m) $$。利用二项分布的概率生成函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）（或直接二项式展开）：
+而 $N_1\sim\mathrm{Bin}(n,\tfrac1m)$。利用二项分布的概率生成函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）（或直接二项式展开）：
 
 $$
 \mathbb E[t^{N_1}]=(1-p+pt)^n,\quad p=\frac1m
 $$
 
-取 $$ t=-1 $$ 得到
+取 $t=-1$ 得到
 
 $$
 \mathbb E[(-1)^{N_1}]=(1-p-p)^n=(1-2p)^n=\left(1-\frac{2}{m}\right)^n
@@ -688,7 +707,7 @@ $$
 \mathbb E[I_1]=\frac{1-a}{2}
 $$
 
-因为 $$ I_1 $$ 是 $$ 0/1 $$ 变量，
+因为 $I_1$ 是 $0/1$ 变量，
 
 $$
 \operatorname{Var}(I_1)=\mathbb E[I_1](1-\mathbb E[I_1])
@@ -696,7 +715,7 @@ $$
 =\frac{1-a^2}{4}
 $$
 
-计算协方差 $$ \operatorname{Cov}(I_1,I_2) $$，需要 $$ \mathbb E[I_1I_2] $$：
+计算协方差 $\operatorname{Cov}(I_1,I_2)$，需要 $\mathbb E[I_1I_2]$：
 
 $$
 I_j=\frac{1-(-1)^{N_j}}{2}
@@ -708,21 +727,21 @@ $$
 
 $$
 \mathbb E[I_1I_2]
-=\frac{1-\mathbb E[(-1)^{N_1}]-\mathbb E[(-1)^{N_2}]+\mathbb E[(-1)^{N_1+N_2}}{4}
+=\frac{1-\mathbb E[(-1)^{N_1}]-\mathbb E[(-1)^{N_2}]+\mathbb E[(-1)^{N_1+N_2}]}{4}
 $$
 
-由对称性 $$ \mathbb E[(-1)^{N_1}]=\mathbb E[(-1)^{N_2}]=a $$，所以
+由对称性 $\mathbb E[(-1)^{N_1}]=\mathbb E[(-1)^{N_2}]=a$，所以
 
 $$
 \mathbb E[I_1I_2]=\frac{1-2a+\mathbb E[(-1)^{N_1+N_2}]}{4}
 $$
 
-现在计算 $$ \mathbb E[(-1)^{N_1+N_2}] $$。令
+现在计算 $\mathbb E[(-1)^{N_1+N_2}]$。令
 $$
 S:=N_1+N_2.
 $$
 
-由于每次抽牌落在 $$ \{1,2\} $$ 的概率是 $$ \frac{2}{m} $$，因此
+由于每次抽牌落在 $\{1,2\}$ 的概率是 $\frac{2}{m}$，因此
 
 $$
 S\sim\mathrm{Bin}\!\left(n,\frac{2}{m}\right)
@@ -761,7 +780,7 @@ $$
 =\frac{b-a^2}{4}
 $$
 
-因为 $$ O=\sum_{j=1}^m I_j $$，且各 $$ I_j $$ 交换对称，所以
+因为 $O=\sum_{j=1}^m I_j$，且各 $I_j$ 交换对称，所以
 
 $$
 \operatorname{Var}(O)
@@ -793,7 +812,7 @@ a=\left(1-\frac{2}{m}\right)^n,\qquad
 b=\left(1-\frac{4}{m}\right)^n
 $$
 
-当 $$ m=4 $$ 时
+当 $m=4$ 时
 
 $$
 a=\left(\frac12\right)^n,\qquad b=(1-1)^n=0\quad(n\ge 1)
@@ -817,21 +836,21 @@ $$
 
 **称象**：当你受到伤害后，你可以亮出牌堆顶的四张牌，然后你获得其中的任意张点数之和不大于13的牌。
 
-下面我们来研究**称象**获得的牌数。
+下面我们考虑**称象**获得的牌数。
 
 【Ehrhart】
 
-用$$ \mathbf{x} = \begin{pmatrix}
+用$\mathbf{x} = \begin{pmatrix}
 x1 & x2 & x3 & x4
-\end{pmatrix}^{T} $$表示亮出的四张牌的点数，其中$$ x_i \in \mathbb{Z}_{\gt 0} $$。定义**称象**获得的牌数为$$ K $$，则：
+\end{pmatrix}^{T}$表示亮出的四张牌的点数，其中$x_i \in \mathbb{Z}_{> 0}$。定义**称象**获得的牌数为$K$，则：
 
-当$$ K = 4 $$时：
+当$K = 4$时：
 
 $$ \mathbf{J}_{1,4}\mathbf{x} \le 13 $$
 
-运用Stars and bars法，可知上式的整数解组数为$$ \binom{13}{4} = 715 $$。
+运用Stars and bars法，可知上式的整数解组数为$\binom{13}{4} = 715$。
 
-当$$ K = 1 $$时：
+当$K = 1$时：
 
 $$
 \begin{pmatrix}
@@ -866,9 +885,9 @@ polytope > print $p->EHRHART_POLYNOMIAL;
 2592*x^4 + 1296*x^3 + 252*x^2 + 24*x + 1
 ```
 
-所以，该凸多胞形内晶格点的个数为$$ 2592+1296+252+24+1=4165 $$。
+所以，该凸多胞形内晶格点的个数为$2592+1296+252+24+1=4165$。
 
-当$$ K = 3 $$时，可用几个不等式组表示不同的情况：
+当$K = 3$时，可用几个不等式组表示不同的情况：
 
 $$
 \begin{pmatrix}
@@ -933,7 +952,7 @@ $$
 \end{pmatrix}
 $$
 
-根据对称性，以上每种情况所得的结果应乘以相对应的系数，分别为：$$ \binom{4}{4} = 1 $$、$$ \binom{4}{3} = 4 $$、$$ \binom{4}{2} = 6 $$和$$ \binom{4}{1} = 4 $$。
+根据对称性，以上每种情况所得的结果应乘以相对应的系数，分别为：$\binom{4}{4} = 1$、$\binom{4}{3} = 4$、$\binom{4}{2} = 6$和$\binom{4}{1} = 4$。
 
 再次利用polymake的计算可知，以上四种情况对应的四个凸多胞形均为有理多胞形（Rational polytope）而非整多胞形。因此，只能通过求解其Ehrhart准多项式（[Ehrhart quasi-polynomial](https://en.wikipedia.org/wiki/Ehrhart_polynomial#Ehrhart_quasi-polynomials)）来求解其所包含的晶格点：
 
@@ -987,9 +1006,9 @@ polytope > print $p4->N_LATTICE_POINTS;
 1298
 ```
 
-在乘以相应的系数后，此类整数解组数为$$ 445+136*4+284*6+1298*4=7885 $$。
+在乘以相应的系数后，此类整数解组数为$445+136*4+284*6+1298*4=7885$。
 
-当$$ K = 2 $$时，整数解组数为$$ 13^4-\#(K=4)-\#(K=1)-\#(K=3)=15796 $$。
+当$K = 2$时，整数解组数为$13^4-\#(K=4)-\#(K=1)-\#(K=3)=15796$。
 
 其概率散点图为：
 
@@ -1035,7 +1054,7 @@ $$
 
 因此，只需分别计数事件 $K\ge 2$、$K\ge 3$、$K\ge 4$ 对应的**有序四元组**数量。
 
-引入形式变量 $y_1,\dots,y_{13}$。
+引入形式变量 $y_1,\dots,y_{13}$。 $y_j$记录点数为 $j$ 的牌出现次数（用于后续从多重集合升标号到有序四元组）。
 对任意大小为 $4$ 的多重集合
 
 $$
@@ -1047,8 +1066,6 @@ $$
 $$
 y^M:=\prod_{j=1}^{13}y_j^{m_j}.
 $$
-
-此处引入 $y_j$：记录点数为 $j$ 的牌出现次数（用于后续从多重集合升标号到有序四元组）。
 
 对于任一仅依赖多重集合（即对置换对称）的性质 $\mathcal P$，定义**无序多重集合枚举多项式**
 
@@ -1155,6 +1172,8 @@ $$
 \frac{u\,y_c\,z^c}{1-u\,y_c\,z^c},
 $$
 
+(此因子是点数 $c$ 的生成函数，表示其在前三张牌中**至少出现一次**；这是由恒等式 $X+X^2+X^3+\cdots=X/(1-X)$ 直接得到的，并且恰好刻画了“第三小值等于 $c$”所需的必要且充分条件。)
+
 并通过取 $[u^3]$ 强制“前三张恰好三张”，再通过截断 $[z^{\le 13}]$ 强制“前三张和不超过 13”即可得。它枚举“第三小值恰为 $c$ 且前三小之和不超过 $13$”的多重集合（仅含前三个元素）。
 
 第四张牌必须满足 $A_4\ge c$，因此得到
@@ -1249,7 +1268,7 @@ U(y)\left(\sum_{j=1}^{13}y_j^{-1}\right)^4
 \right]
 $$
 
-其中 $$\mathrm{CT}_{y}$$ 表示取 $$y_1^0\cdots y_{13}^0$$ 的系数。
+其中 $\mathrm{CT}_{y}$ 表示取 $y_1^0\cdots y_{13}^0$ 的系数。
 
 该恒等式表明：常数项运算自动为每个多重集合插入正确的排列权重
 
@@ -1267,7 +1286,7 @@ $$
 
 **资援**：出牌阶段限一次，你可以将任意张点数之和为13的手牌交给一名其他角色，然后该角色回复1点体力。
 
-下面研究在手牌数为$$ X $$的情况下，可以发动**资援**的概率。这是典型的NP-hard的子集和问题（[Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)）。程序如下：
+下面研究在手牌数为 $X$ 的情况下，可以发动**资援**的概率。这是典型的NP-hard的子集和问题（[Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)）。程序如下：
 
 ```python
 from collections import defaultdict
@@ -1359,7 +1378,7 @@ def subset_sum_probability(n, target=13, max_value=13):
     return numerator // g, denominator // g
 ```
 
-该程序的时间复杂度为$$ \mathcal{O}(n \cdot 2^{T+1} \cdot m) $$，空间复杂度为$$ \mathcal{O}(2^{T+1} \cdot m) $$。其中 $$ T $$ 为目标和（13），$$ m $$为卡牌最大值（13）。由于计算量大，我们只计算$$ 0 \lt X \le 10 $$的情况：
+该程序的时间复杂度为 $\mathcal{O}(n \cdot 2^{T+1} \cdot m)$，空间复杂度为 $\mathcal{O}(2^{T+1} \cdot m)$。其中 $T$ 为目标和（$13$），$m$为卡牌最大值（$13$）。由于计算量大，我们只计算 $0 < X \le 10$ 的情况：
 
 ```text
 1
@@ -1394,7 +1413,7 @@ p_n
 \Big)
 $$
 
-其中, $$ X_i $$  独立同分布，取值于 $$ \{1,\dots,13\} $$
+其中, $X_i$ 独立同分布，取值于 $\{1,\dots,13\}$
 
 核心问题是：**是否存在某个子集和等于 13**。这个“是否存在”的判定，并不依赖于所有历史细节，而只依赖于一件事：**当前已经“可达”的子集和有哪些（在 0 到 13 之间）**
 
@@ -1404,7 +1423,7 @@ $$
 R_n := \{\text{前 } n \text{ 个数能组成的所有子集和}\}\cap\{0,1,\dots,13\}
 $$
 
-每个状态可以用一个 **14 位二进制掩码（bitmask）**表示。第 $$ k $$  位为 1 表示“子集和 $$ k $$  是可达的”。那么，总状态数最多为：
+每个状态可以用一个 **14 位二进制掩码（bitmask）**表示。第 $k$  位为 1 表示“子集和 $k$  是可达的”。那么，总状态数最多为：
 
 $$
 2^{14} = 16384
@@ -1412,7 +1431,7 @@ $$
 
 即，状态空间是一个有限集合。
 
-当加入第 $$ n+1 $$  个随机变量 $$ X_{n+1}=x $$  时，状态更新规则是：
+当加入第 $n+1$ 个随机变量 $X_{n+1}=x$  时，状态更新规则是：
 
 $$
 R_{n+1}
@@ -1422,7 +1441,7 @@ R_n
 \{ r+x : r\in R_n,\ r+x\le 13 \}
 $$
 
-该规则只依赖于 $$ s $$ ，与 $$ n $$  无关。其随机性只来自输入 $$ x $$，且 $$ x $$ 的分布在每一步都是相同的（均匀分布）。
+该规则只依赖于 $s$ ，与 $n$  无关。其随机性只来自输入 $x$，且 $x$ 的分布在每一步都是相同的（均匀分布）。
 
 因此，这是一个有限状态、时间齐次的马尔可夫链（[Time-homogeneous Markov chain with a finite state space](https://en.wikipedia.org/wiki/Markov_chain#Time-homogeneous_Markov_chain_with_a_finite_state_space)）。进而我们知道，该概率值必然存在封闭形式。
 
@@ -1436,14 +1455,14 @@ $$
 \mathbf{v}_{n+1} = \mathbf{v}_n P
 $$
 
-其中，$$ \mathbf{v}_n $$ 为状态分布向量（有限维）， $$ P $$ 为固定的转移矩阵。
+其中，$\mathbf{v}_n$ 为状态分布向量（有限维）， $P$ 为固定的转移矩阵。
 
 由[Cayley–Hamilton 定理](https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem)可知：
 
-> $$ \mathbf{v}_n $$  的任意线性函数（例如 $$ p_n $$ ）
+> $\mathbf{v}_n$  的任意线性函数（例如 $p_n$ ）
 > 都满足一个**有限阶、常系数的线性递推关系**
 
-即存在 $$ L<\infty $$  和常数 $$ c_1,\dots,c_L $$ ，使得
+即存在 $L<\infty$ 和常数 $c_1,\dots,c_L$ ，使得
 
 $$
 p_n = c_1 p_{n-1} + \cdots + c_L p_{n-L}
@@ -1462,13 +1481,13 @@ $$
 $$
 G(z) = \frac{A(z)}{B(z)}
 $$
-其中 $$ A,B $$  是多项式。
+其中 $A,B$  是多项式。
 
 ---
 
 【证明】
 
-下面证明：可以发动**资援**的概率随着手牌数单调递增，且其极限为$$ 1 $$。
+下面证明：可以发动**资援**的概率随着手牌数单调递增，且其极限为$1$。
 
 **命题1：** 令
 
@@ -1478,13 +1497,13 @@ E_n := \Big\{\exists\, I\subseteq\{1,2,\dots,n\},\ I\neq\varnothing:\ \sum_{i\in
 p_n := \mathbb{P}(E_n)
 $$
 
-其中 $$ X_1,X_2,\dots $$ 为独立同分布随机变量，且
+其中 $X_1,X_2,\dots$ 为独立同分布随机变量，且
 
 $$
 X_i \sim \mathrm{Unif}\{1,2,\dots,13\}
 $$
 
-则序列 $$ (p_n)_{n\ge 1} $$ **严格单调递增**，即
+则序列 $(p_n)_{n\ge 1}$ **严格单调递增**，即
 
 $$
 p_{n+1} > p_n \quad \text{对所有 } n\ge 1 \text{成立}
@@ -1492,7 +1511,7 @@ $$
 
 **证明：**
 
-首先注意到对任意 $$ n $$，都有集合包含关系
+首先注意到对任意 $n$，都有集合包含关系
 
 $$
 E_n \subseteq E_{n+1}
@@ -1515,10 +1534,10 @@ B_n := \Big\{
 \Big\}
 $$
 
-在事件 $$ B_n $$ 中：
+在事件 $B_n$ 中：
 
-- 前 $$ n $$ 个随机变量无法组成和为 13 的子集，因此 $$ E_n $$ 不发生；
-- 但由于 $$ X_{n+1}=13 $$，取单元素集合 $$ \{n+1\} $$ 即可得到和为 13，因此 $$ E_{n+1} $$ 发生。
+- 前 $n$ 个随机变量无法组成和为 $13$ 的子集，因此 $E_n$ 不发生；
+- 但由于 $X_{n+1}=13$，取单元素集合 $\{n+1\}$ 即可得到和为 $13$ ，因此 $E_{n+1}$ 发生。
 
 故
 
@@ -1536,7 +1555,7 @@ $$
 > 0
 $$
 
-（注意 $$ \mathbb{P}(E_n^c)>0 $$，例如当 $$ X_1=\cdots=X_n=2 $$ 时，任意非空子集和都是偶数，不可能等于 13，所以$$ E_n^c $$必然发生），
+（注意 $\mathbb{P}(E_n^c)>0$，例如当 $X_1=\cdots=X_n=2$ 时，任意非空子集和都是偶数，不可能等于 $13$，所以 $E_n^c$ 必然发生），
 
 因此
 
@@ -1568,8 +1587,8 @@ $$
 A_n := \{\exists\, i\in\{1,\dots,n\}: X_i = 13\}
 $$
 
-若 $$ A_n $$ 发生，则取单元素集合 $$ I=\{i\} $$ 就有
-$$ \sum_{j\in I}X_j = X_i = 13 $$，因此
+若 $A_n$ 发生，则取单元素集合 $I=\{i\}$ 就有
+$\sum_{j\in I}X_j = X_i = 13$，因此
 
 $$
 A_n \subseteq E_n
@@ -1581,8 +1600,8 @@ $$
 p_n = \mathbb{P}(E_n) \ge \mathbb{P}(A_n)
 $$
 
-接下来计算 $$ \mathbb{P}(A_n) $$。由于各 $$ X_i $$ 独立且
-$$ \mathbb{P}(X_i\neq 13)=\frac{12}{13} $$，有
+接下来计算 $\mathbb{P}(A_n)$。由于各 $X_i$ 独立且
+$\mathbb{P}(X_i\neq 13)=\frac{12}{13}$，有
 
 $$
 \mathbb{P}(A_n)
@@ -1590,14 +1609,14 @@ $$
 = 1-\left(\frac{12}{13}\right)^n
 $$
 
-另一方面显然 $$ p_n\le 1 $$（因为是概率），因此得到夹逼不等式
+另一方面显然 $p_n\le 1$（因为是概率），因此得到夹逼不等式
 
 $$
 1-\left(\frac{12}{13}\right)^n \le p_n \le 1
 $$
 
-当 $$ n\to\infty $$ 时，
-$$ \left(\frac{12}{13}\right)^n \to 0 $$，从而左端趋于 1。由夹逼定理（[Squeeze Theorem](https://en.wikipedia.org/wiki/Squeeze_theorem)）可得
+当 $n\to\infty$ 时，
+$\left(\frac{12}{13}\right)^n \to 0$，从而左端趋于 $1$。由夹逼定理（[Squeeze Theorem](https://en.wikipedia.org/wiki/Squeeze_theorem)）可得
 
 $$
 \lim_{n\to\infty} p_n = 1
@@ -1605,7 +1624,7 @@ $$
 
 $$ \square $$
 
-从另一个角度看，可达子集和集合的演化构成一个有限状态、时间齐次的吸收型马尔可夫链（[Absorbing Markov Chain](https://en.wikipedia.org/wiki/Absorbing_Markov_chain)）。所有包含目标值 $$ 13 $$ 的状态都是吸收态，一旦进入便无法离开。由于从初始状态出发进入吸收态的概率为正，且不存在非吸收的封闭类，该链以概率 $$ 1 $$ 最终被吸收。因此，目标事件的概率 $$ p_n $$ 随 $$ n $$ 增大必然趋于 $$ 1 $$。
+从另一个角度看，可达子集和集合的演化构成一个有限状态、时间齐次的吸收型马尔可夫链（[Absorbing Markov Chain](https://en.wikipedia.org/wiki/Absorbing_Markov_chain)）。所有包含目标值 $13$ 的状态都是吸收态，一旦进入便无法离开。由于从初始状态出发进入吸收态的概率为正，且不存在非吸收的封闭类，该链以概率 $1$ 最终被吸收。因此，目标事件的概率 $p_n$ 随 $n$ 增大必然趋于 $1$。
 
 ## 技能比较
 
@@ -1615,13 +1634,16 @@ $$ \square $$
 
 ||英姿|闭月|洛神|涉猎|再起|
 |期望|1|1|1|1.0508|0.25X|
-|方差|0|0|0.25|0.4232|0.1875X|
+|方差|0|0|2|0.4232|0.1875X|
+
+注1：再起中的$X$表示已损失体力值。
+注2：方差越大表示收益波动越大，越不稳定。
 
 1. **英姿**和**闭月**带来稳定的额外摸牌收益
-1. **洛神**、**涉猎**和**再起**的额外摸牌不稳定
-1. **洛神**、**涉猎**和**再起**的额外摸牌有花色的限制
-1. **涉猎**和**再起**需要亮出所得的牌
-1. **再起**的摸牌数一般小于1，但有一定概率可以回复体力
+2. **洛神**、**涉猎**和**再起**的额外摸牌不稳定
+3. **洛神**、**涉猎**和**再起**的额外摸牌受到花色条件的约束
+4. **涉猎**和**再起**需要亮出所得的牌
+5. **再起**的摸牌数一般小于1，但有一定概率可以回复体力
 
 ### 受到伤害后摸牌
 
@@ -1630,7 +1652,7 @@ $$ \square $$
 |方差|0|0.4895|
 
 1. **遗计**的摸牌数稳定
-1. **称象**的摸牌数不稳定
+1. **称象**的期望略高，但摸牌数不稳定
 1. **称象**的摸牌有点数的限制
 
 ### 总结
@@ -1639,4 +1661,4 @@ $$ \square $$
 
 ## 脚注
 
-[^footnote1]: 实际上，卡牌的点数并非均匀分布。【2】和【Q】这两种点数的概率为$$ 7/80 $$，而其它的点数概率为$$ 3/40 $$。由于这种差异对计算结果的影响可以忽略不记，我们还是认为所有卡牌点数是均匀分布的。
+[^footnote1]: 实际上，卡牌的点数并非均匀分布。点数【2】和【Q】的概率为$7/80$，而其它的点数概率为$3/40$。由于这种差异对计算结果的影响可以忽略不记，我们还是认为所有卡牌点数是均匀分布的。
