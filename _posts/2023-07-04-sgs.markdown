@@ -124,7 +124,21 @@ $$ p_{X}(n) = {\binom{n-1}{k}}p^{r}(1-p)^{k}, \quad n = k+r \enspace \text{and} 
 
 数学期望（Expected value）和方差（Variance）分别为：
 
-$$ \mathbb E[X] = \frac{r}{p} = 4, \quad \operatorname{Var}(X) = \frac{r(1-p)}{p^{2}} = \frac{4}{3} $$
+$$
+\boxed{
+  \mathbb E[X]
+  = \frac{r}{p}
+  = 4
+}
+$$
+
+$$
+\boxed{
+  \operatorname{Var}(X)
+  = \frac{r(1-p)}{p^{2}}
+  = \frac{4}{3}
+}
+$$
 
 这说明在理想情况下，发动觉醒技**凿险**时所需的**屯田**次数平均为4次。
 
@@ -140,9 +154,22 @@ $$ p_{X}(k)=\frac{\binom{K+r-1}{k}\binom{N-r-K}{K-k}}{\binom{N}{K}}, \quad k=0,1
 
 数学期望和方差分别为：
 
-$$ \mathbb E[X] = \frac{rK}{N-K+1}+r = \frac{rN+r}{N-K+1} = \frac{3N+3}{N-K+1} $$
+$$
+\boxed{
+  \mathbb E[X]
+  = \frac{rK}{N-K+1}+r
+  = \frac{rN+r}{N-K+1}
+  = \frac{3N+3}{N-K+1}
+}
+$$
 
-$$ \operatorname{Var}(X) = \frac{rK(N+1)(N-K-r+1)}{(N-K+1)^{2}(N-K+2)} = \frac{3K(N+1)(N-K-2)}{(N-K+1)^{2}(N-K+2)} $$
+$$
+\boxed{
+  \operatorname{Var}(X)
+  = \frac{rK(N+1)(N-K-r+1)}{(N-K+1)^{2}(N-K+2)}
+  = \frac{3K(N+1)(N-K-2)}{(N-K+1)^{2}(N-K+2)}
+}
+$$
 
 如果我们假定$K = N/4$，那么：
 
@@ -180,7 +207,21 @@ $$ p_{Y}(k) = (1-p)^{k}p, \quad k \in \{\,0,1,2,\dots\,\} $$
 
 数学期望和方差分别为：
 
-$$ \mathbb E[Y] = {\frac{1-p}{p}} = 1,\qquad \operatorname{Var}(Y)={\frac {1-p}{p^{2}}} = 2 $$
+$$
+\boxed{
+  \mathbb E[Y]
+  = {\frac{1-p}{p}}
+  = 1
+}
+$$
+
+$$
+\boxed{
+  \operatorname{Var}(Y)
+  ={\frac {1-p}{p^{2}}}
+  = 2
+}
+$$
 
 这说明在理想情况下，**洛神**所得的牌数平均为1张。
 
@@ -200,9 +241,22 @@ $$ p_{Y}(k \ge 8) = 1 - \sum_{k = 0}^7{p_Y(k)} = \frac{1}{256} \approxeq 0.00390
 
 数学期望和方差分别为：
 
-$$ \mathbb E[Y] = \frac{rK}{N-K+1} = \frac{rN+r}{N-K+1} = \frac{K}{N-K+1} $$
+$$
+\boxed{
+  \mathbb E[Y]
+  = \frac{rK}{N-K+1}
+  = \frac{rN+r}{N-K+1}
+  = \frac{K}{N-K+1}
+}
+$$
 
-$$ \operatorname{Var}(Y) = \frac{rK(N+1)(N-K-r+1)}{(N-K+1)^{2}(N-K+2)} = \frac{K(N+1)(N-K)}{(N-K+1)^{2}(N-K+2)} $$
+$$
+\boxed{
+  \operatorname{Var}(Y)
+  = \frac{rK(N+1)(N-K-r+1)}{(N-K+1)^{2}(N-K+2)}
+  = \frac{K(N+1)(N-K)}{(N-K+1)^{2}(N-K+2)}
+}
+$$
 
 我们也可以通过[Stars and bars](https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics))的方法来直观地得到上述数学期望。设想有$N$个球，其中$K$个为黑色，那么红色球有$N-K$个。把这些红球看作隔板，它们把空间分成了$N-K+1$个区域。每个黑球在某一个区域的概率都相同，为$\frac{1}{N-K+1}$。因此，$K$个黑球在第一个区域的期望为$\frac{K}{N-K+1}$。
 
@@ -228,7 +282,7 @@ $$ \mathbb E_{\text{avg}} = \frac{1}{1+\frac{2}{143}} \approxeq 0.9862 $$
 
 【理想模型】
 
-定义在损失$X \enspace (0 < X \le 4)$体力值的情况下，**再起**所获得的体力值为$H$，并定义一次伯努利试验的“成功”为判定♥，而“失败”为判定非♥。很显然，$H$属于成功次数，且其概率分布符合二项分布（[Binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution)）$H \sim \operatorname{B}(n,p)$。
+定义在损失$X \enspace (0 < X \le 4)$体力值的情况下，**再起**所获得的体力值为$H$，并定义一次伯努利试验的“成功”为判定♥，而“失败”为判定非♥。很显然，$H$属于成功次数，且其概率分布符合二项分布（[Binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution)）$H \sim \operatorname{Bin}(n,p)$。
 
 PMF：
 
@@ -246,11 +300,15 @@ $$ p_{H}(k) = {\binom{n}{k}}p^{k}(1-p)^{n-k}, \quad k \in \mathbb{N} \enspace \t
 
 数学期望和方差分别为：
 
-$$ \mathbb E[H] = \frac{X}{4}, \quad \operatorname{Var}(H) = np(1-p) = \frac{3X}{16} $$
+$$ \boxed{\mathbb E[H] = \frac{X}{4}} $$
 
-同理，定义所获得手牌为$C$，则$C \sim \operatorname{B}(X,3/4)$。
+$$ \boxed{\operatorname{Var}(H) = np(1-p) = \frac{3X}{16}} $$
 
-$$ \mathbb E[C] = \frac{3X}{4}, \quad \operatorname{Var}(C) = np(1-p) = \frac{3X}{16} $$
+同理，定义所获得手牌为$C$，则$C \sim \operatorname{Bin}(X,3/4)$。
+
+$$ \boxed{\mathbb E[C] = \frac{3X}{4}} $$
+
+$$ \boxed{\operatorname{Var}(C) = np(1-p) = \frac{3X}{16}} $$
 
 这里我们继续讨论一个问题：$X=?$时发动**再起**收益最高？
 
@@ -286,9 +344,9 @@ $$ p_{H}(k)=\frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}, \quad k \in \{\,0
 
 数学期望和方差分别为：
 
-$$ \mathbb E[H] = np = Xp $$
+$$ \boxed{\mathbb E[H] = np = Xp} $$
 
-$$ \operatorname{Var}(H) = \frac{np(1-p)(N-n)}{N-1} = \frac{Xp(1-p)(N-X)}{N-1} $$
+$$ \boxed{\operatorname{Var}(H) = \frac{np(1-p)(N-n)}{N-1} = \frac{Xp(1-p)(N-X)}{N-1}} $$
 
 其中，$p = K/N$。
 
@@ -328,169 +386,23 @@ $$ X \sim NB(r,p) $$
 
 数学期望和方差分别为：
 
-$$ \mathbb E[X] = \frac{r}{p} = \frac{160}{117}r \approxeq 1.3675r, \quad \operatorname{Var}(X) = \frac{r(1-p)}{p^{2}} = \frac{6880}{13689}r \approxeq 0.5026r $$
-
-### 二次函数
-
-#### 王朗（SP）
-
-![王朗](/assets/img/sgs/lang_wang.webp)
-
-**鼓舌**：出牌阶段限一次，你可以用一张手牌与至多三名角色同时拼点，然后依次结算拼点结果，没赢的角色选择一项：1. 弃置一张牌；2. 令你摸一张牌。若拼点没赢的角色是你，你需先获得一个“饶舌”标记（你有7个“饶舌”标记时，你死亡）。
-
-**激词**：当你发动“**鼓舌**”拼点的牌亮出后，若点数小于X，你可令点数+X；若点数等于X，你可以令你本回合发动“**鼓舌**”的次数上限+1。（X为你“饶舌”标记的数量）
-
-下面考察发动**激词**的情况下拼点赢的概率。定义王朗玩家的拼点牌点数为$T$，“饶舌”标记数量为$x$，则拼点赢的可能情况数为：
-
 $$
-C_{T,x} = \min\{13,\; T + x\mathbf{1}_{\{T<x\}}\} - 1
+\boxed{
+  \mathbb E[X]
+  = \frac{r}{p}
+  = \frac{160}{117}r
+  \approxeq 1.3675r
+}
 $$
 
-拼点赢的概率：
-
 $$
-\begin{aligned}
-p(x)
-&= \mathbb E_T\!\left[\mathbb P\!\left(U < T + \mathbf{1}_{\{T<x\}}x \mid T\right)\right] \\
-&= \frac{1}{13}\sum_{T=1}^{13}\frac{C_{T,x}}{13} \\
-&= \frac{1}{169}\left(\sum_{i=1}^{x-1}(i+x-1)+\sum_{i=x}^{13}(i-1)\right) \\
-&= \frac{x^2-x+78}{169}.
-\end{aligned}
+\boxed{
+  \operatorname{Var}(X)
+  = \frac{r(1-p)}{p^{2}}
+  = \frac{6880}{13689}r
+  \approxeq 0.5026r
+}
 $$
-
-其中$U$表示对手的拼点牌点数，$0 \le x \le 6$。
-
-由于对$T<x$的区间求和产生了等差数列求和项，故$p(x)$关于$x$为二次函数。
-
-其概率散点图如下：
-
-![激词拼点赢概率](/assets/img/sgs/jici.png)
-
-可见，随着“饶舌”标记的增多，拼点赢的概率连续增大。
-
-接下来研究“饶舌”标记数量为$x$时，发动**鼓舌**而获得“饶舌”标记数量$K$。假设发动**鼓舌**时与$n$名角色同时拼点，其中$0 < n \le 3$。很明显，其概率符合二项分布$K \sim \operatorname{B}(n,1-p(x))$，数学期望$\mathbb E[K;x] = n(1-p(x)) = \frac{n}{169}(91-x^2+x)$。
-
-其期望散点图如下：
-
-![鼓舌获得标记数期望n](/assets/img/sgs/gushe_n.png)
-
-以$n = 3$为例：
-
-![鼓舌获得标记数期望](/assets/img/sgs/gushe.png)
-
-最后，计算发动**鼓舌**后角色死亡的概率：
-
-$$ \mathbb{P}(K \ge 7-x) = 1-\mathbb{P}(K \le 6-x) = 1-F(6-x;n;1-p(x)) = 1-\sum_{i=0}^{6-x}\binom{n}{i}(1-p(x))^{i}p(x)^{n-i} $$
-
-其中$F$为累积分布函数（Cumulative distribution function）。
-
-$$
-\begin{aligned}
-  \mathbb{P}(K \ge 7-x) =
-  \begin{cases}
-    0 & \text{if $x \le 6-n$} \\
-    1-\frac{1}{169^{n}}\sum_{i=0}^{6-x}\binom{n}{i}(91-x^2+x)^{i}(x^2-x+78)^{n-i} & \text{otherwise}
-  \end{cases}
-\end{aligned}
-$$
-
-其概率散点图如下：
-
-![鼓舌死亡概率n](/assets/img/sgs/gushe2_n.png)
-
-以$n = 3$为例：
-
-![鼓舌死亡概率](/assets/img/sgs/gushe2.png)
-
-### 生日问题
-
-#### 孙资&刘放（原创之魂2016）
-
-![孙资刘放](/assets/img/sgs/zi_sun_and_fang_liu.webp){: width="400" }
-
-（图片来源：<https://www.bilibili.com/read/cv16369119>）
-
-**瑰藻**：若你于弃牌阶段弃置过至少两张牌且这些牌花色均不相同，则你可以回复1点体力或摸一张牌。
-
-下面我们来计算**瑰藻**可以回复体力或摸牌的概率。
-
-定义弃牌阶段弃置的牌数为$n \enspace (n > 1)$，一副牌中不同的花色数为$m$。在理想模型下，可将弃置牌的花色近似视为独立均匀分布于$m$类。此问题为典型的生日问题（[Birthday problem](https://en.wikipedia.org/wiki/Birthday_problem)）：
-
-$$ {\bar {p}}(n) = \frac{m!}{(m-n)!m^{n}}, \quad 1 < n \le m $$
-
-根据鸽巢原理（[Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle)），当$n > m$时，${\bar {p}}(n) = 0$。
-
-在此模型下，$m=4$。
-
-其概率散点图为：
-
-![瑰藻概率](/assets/img/sgs/guizao.png)
-
-#### 周泰（神话再临·风）
-
-![周泰](/assets/img/sgs/tai_zhou.webp){: width="400" }
-
-（图片来源：<https://www.bilibili.com/read/cv15635764>）
-
-**不屈**：**锁定技**，当你处于濒死状态时，你将牌堆顶的一张牌置于你的武将牌上，称为“创”，若此牌的点数与已有的“创”点数均不同，则你将体力回复至1点。若出现相同点数则将此牌置入弃牌堆，若你的武将牌上有“创”，则你的手牌上限与“创”的数量相等。
-
-我们考虑**不屈**失败时的“创”数。定义$X$为出现首次点数重复所需翻牌次数（包含触发重复的那一次），一副牌中不同的点数为$M$。此问题可用生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Average_number_of_people_to_get_at_least_one_shared_birthday)来描述。
-
-PMF：
-
-$$ p_{X}(k) = \frac{m!(k-1)}{m^{k}(m-k+1)!}, \quad k \in \mathbb{Z} \enspace \text{and} \enspace 1 \le k \le m + 1 $$
-
-在此模型下，$m=13$。
-
-其概率散点图为：
-
-![不屈概率](/assets/img/sgs/buqu.png)
-
-数学期望为：
-
-$$ \mathbb E[X] = 1 + \sum_{k=1}^{m}{\frac{m!}{(m-k)!m^{k}}} \approxeq 5.2124 $$
-
-我们也可以将右式进行拉马努金渐近展开，从而得到简化的近似表达式：
-
-$$ \mathbb E[X] \sim \sqrt{\frac{\pi m}{2}}+\frac {2}{3} \approxeq 5.1856 $$
-
-由此我们可知，周泰的“创”数平均约为5.2张。
-
-接下来我们考察周泰的Online战功“金枪不倒”：使用周泰在一局游戏中拥有过至少9张“不屈”牌并且未死。
-
-$$ p_{X}(k \ge 9) = 1 - \sum_{k = 2}^8{p_X(k)} \approxeq 0.06361 $$
-
-【点数非均匀修正】
-
-若考虑【2】与【Q】的概率较于其他点数略高，我们可以对PMF做细微修正，得到更加准确的数学期望：
-
-$$ \mathbb E[X] \approxeq 5.2065 $$
-
-可见，此结果的差异完全可以忽略。
-
-#### 神吕蒙（神话再临·风）
-
-![神吕蒙](/assets/img/sgs/shen_meng_lv.png)
-
-**涉猎**：摸牌阶段，你可选择采取以下行动来取代摸牌：从牌堆顶亮出五张牌，拿走不同花色的牌各一张，弃掉其余的。
-
-下面我们研究**涉猎**获得的牌数$X$。该问题是生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Number_of_people_with_a_shared_birthday)。根据第二类斯特林数（[Stirling numbers of the second kind](https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind)）的定义：
-
-PMF：
-
-$$ p_{X}(k) = \frac{m^{\underline k}}{m^{n}}\begin{Bmatrix}n\\k\end{Bmatrix} $$
-
-其中$n$为亮出的牌数，$m$为一副牌中不同的花色数。在此模型下，$n=5, \enspace m=4$。
-
-其概率散点图为：
-
-![涉猎概率](/assets/img/sgs/shelie.png)
-
-数学期望和方差分别为：
-
-$$ \mathbb E[X] = m(1-(1-\frac{1}{m})^n) = \frac{781}{256} \approxeq 3.0508 $$
-
-$$ \operatorname{Var}(X) = m(m-1)(1-\frac{2}{m})^{n}+m(1-\frac{1}{m})^{n}-m^2(1-\frac{1}{m})^{2n} = \frac{27735}{65536} \approxeq 0.4232 $$
 
 #### 袁绍（神话再临·火）
 
@@ -498,19 +410,7 @@ $$ \operatorname{Var}(X) = m(m-1)(1-\frac{2}{m})^{n}+m(1-\frac{1}{m})^{n}-m^2(1-
 
 **乱击**：出牌阶段，你可以将任意两张相同花色的手牌当【万箭齐发】使用。
 
-下面研究可以发动**乱击**的概率。
-
-定义手牌数为$X$，一副牌中不同的花色数为$m$。可以发动**乱击**的概率可用生日问题的[另一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Probability_of_a_shared_birthday_(collision))来表示：
-
-$$ p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right) $$
-
-在此模型下，$m=4$。
-
-其概率散点图为：
-
-![乱击1概率](/assets/img/sgs/luanji1.png)
-
-对于袁绍的技能**乱击**，有个更有意思的课题：当手牌数为$n$时，可以发动**乱击**的次数（见[下一节“最大配对数”](#最大配对数)）。
+本节研究当手牌数为$n$时，可以发动**乱击**的次数。这里采用的方法基于二项分布。
 
 ### 最大配对数
 
@@ -570,7 +470,7 @@ $$
 注意到
 
 $$
-N_1 \sim \mathrm{Bin}\!\left(n,\frac{1}{m}\right)
+N_1 \sim \operatorname{Bin}\!\left(n,\frac{1}{m}\right)
 $$
 
 对任意整数 $k$，有恒等式
@@ -586,10 +486,10 @@ $$
 \mathbb{E}\!\left[\left\lfloor \frac{B}{2} \right\rfloor\right]
 = \frac{\mathbb{E}[B]}{2}
 - \frac{1}{2}\mathbb{P}(B \text{ 为奇数}),
-\quad B \sim \mathrm{Bin}\!\left(n,\frac{1}{m}\right)
+\quad B \sim \operatorname{Bin}\!\left(n,\frac{1}{m}\right)
 $$
 
-对于 $B \sim \mathrm{Bin}(n,p)$，有
+对于 $B \sim \operatorname{Bin}(n,p)$，有
 
 $$
 \mathbb{P}(B \text{ 为奇数})
@@ -686,7 +586,7 @@ $$
 =\frac{1-\mathbb E[(-1)^{N_1}]}{2}
 $$
 
-而 $N_1\sim\mathrm{Bin}(n,\tfrac1m)$。利用二项分布的概率生成函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）（或直接二项式展开）：
+而 $N_1\sim\operatorname{Bin}(n,\tfrac1m)$。利用二项分布的概率生成函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）（或直接二项式展开）：
 
 $$
 \mathbb E[t^{N_1}]=(1-p+pt)^n,\quad p=\frac1m
@@ -744,7 +644,7 @@ $$
 由于每次抽牌落在 $\{1,2\}$ 的概率是 $\frac{2}{m}$，因此
 
 $$
-S\sim\mathrm{Bin}\!\left(n,\frac{2}{m}\right)
+S\sim\operatorname{Bin}\!\left(n,\frac{2}{m}\right)
 $$
 
 并且
@@ -825,6 +725,204 @@ $$
 =\frac{4}{16}\left(1-2^{-2n}\right)+\frac{12}{16}\left(0-2^{-2n}\right)
 =\frac14-2^{-2n}
 $$
+
+对于袁绍的技能**乱击**，我们还会研究另一个课题。见[“生日问题”一节](#生日问题)）。
+
+### 二次函数
+
+#### 王朗（SP）
+
+![王朗](/assets/img/sgs/lang_wang.webp)
+
+**鼓舌**：出牌阶段限一次，你可以用一张手牌与至多三名角色同时拼点，然后依次结算拼点结果，没赢的角色选择一项：1. 弃置一张牌；2. 令你摸一张牌。若拼点没赢的角色是你，你需先获得一个“饶舌”标记（你有7个“饶舌”标记时，你死亡）。
+
+**激词**：当你发动“**鼓舌**”拼点的牌亮出后，若点数小于X，你可令点数+X；若点数等于X，你可以令你本回合发动“**鼓舌**”的次数上限+1。（X为你“饶舌”标记的数量）
+
+下面考察发动**激词**的情况下拼点赢的概率。定义王朗玩家的拼点牌点数为$T$，“饶舌”标记数量为$x$，则拼点赢的可能情况数为：
+
+$$
+C_{T,x} = \min\{13,\; T + x\mathbf{1}_{\{T<x\}}\} - 1
+$$
+
+拼点赢的概率：
+
+$$
+\begin{aligned}
+p(x)
+&= \mathbb E_T\!\left[\mathbb P\!\left(U < T + \mathbf{1}_{\{T<x\}}x \mid T\right)\right] \\
+&= \frac{1}{13}\sum_{T=1}^{13}\frac{C_{T,x}}{13} \\
+&= \frac{1}{169}\left(\sum_{i=1}^{x-1}(i+x-1)+\sum_{i=x}^{13}(i-1)\right) \\
+&= \frac{x^2-x+78}{169}.
+\end{aligned}
+$$
+
+其中$U$表示对手的拼点牌点数，$0 \le x \le 6$。
+
+由于对$T<x$的区间求和产生了等差数列求和项，故$p(x)$关于$x$为二次函数。
+
+其概率散点图如下：
+
+![激词拼点赢概率](/assets/img/sgs/jici.png)
+
+可见，随着“饶舌”标记的增多，拼点赢的概率连续增大。
+
+接下来研究“饶舌”标记数量为$x$时，发动**鼓舌**而获得“饶舌”标记数量$K$。假设发动**鼓舌**时与$n$名角色同时拼点，其中$0 < n \le 3$。很明显，其概率符合二项分布$K \sim \operatorname{Bin}(n,1-p(x))$，数学期望$\mathbb E[K;x] = n(1-p(x)) = \frac{n}{169}(91-x^2+x)$。
+
+其期望散点图如下：
+
+![鼓舌获得标记数期望n](/assets/img/sgs/gushe_n.png)
+
+以$n = 3$为例：
+
+![鼓舌获得标记数期望](/assets/img/sgs/gushe.png)
+
+最后，计算发动**鼓舌**后角色死亡的概率：
+
+$$ \mathbb{P}(K \ge 7-x) = 1-\mathbb{P}(K \le 6-x) = 1-F(6-x;n;1-p(x)) = 1-\sum_{i=0}^{6-x}\binom{n}{i}(1-p(x))^{i}p(x)^{n-i} $$
+
+其中$F$为累积分布函数（Cumulative distribution function）。
+
+$$
+\begin{aligned}
+  \mathbb{P}(K \ge 7-x) =
+  \begin{cases}
+    0 & \text{if $x \le 6-n$} \\
+    1-\frac{1}{169^{n}}\sum_{i=0}^{6-x}\binom{n}{i}(91-x^2+x)^{i}(x^2-x+78)^{n-i} & \text{otherwise}
+  \end{cases}
+\end{aligned}
+$$
+
+其概率散点图如下：
+
+![鼓舌死亡概率n](/assets/img/sgs/gushe2_n.png)
+
+以$n = 3$为例：
+
+![鼓舌死亡概率](/assets/img/sgs/gushe2.png)
+
+### 生日问题
+
+#### 孙资&刘放（原创之魂2016）
+
+![孙资刘放](/assets/img/sgs/zi_sun_and_fang_liu.webp){: width="400" }
+
+（图片来源：<https://www.bilibili.com/read/cv16369119>）
+
+**瑰藻**：若你于弃牌阶段弃置过至少两张牌且这些牌花色均不相同，则你可以回复1点体力或摸一张牌。
+
+下面我们来计算**瑰藻**可以回复体力或摸牌的概率。
+
+定义弃牌阶段弃置的牌数为$n \enspace (n > 1)$，一副牌中不同的花色数为$m$。在理想模型下，可将弃置牌的花色近似视为独立均匀分布于$m$类。此问题为典型的生日问题（[Birthday problem](https://en.wikipedia.org/wiki/Birthday_problem)）：
+
+$$ {\bar {p}}(n) = \frac{m!}{(m-n)!m^{n}}, \quad 1 < n \le m $$
+
+根据鸽巢原理（[Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle)），当$n > m$时，${\bar {p}}(n) = 0$。
+
+在此模型下，$m=4$。
+
+其概率散点图为：
+
+![瑰藻概率](/assets/img/sgs/guizao.png)
+
+#### 周泰（神话再临·风）
+
+![周泰](/assets/img/sgs/tai_zhou.webp){: width="400" }
+
+（图片来源：<https://www.bilibili.com/read/cv15635764>）
+
+**不屈**：**锁定技**，当你处于濒死状态时，你将牌堆顶的一张牌置于你的武将牌上，称为“创”，若此牌的点数与已有的“创”点数均不同，则你将体力回复至1点。若出现相同点数则将此牌置入弃牌堆，若你的武将牌上有“创”，则你的手牌上限与“创”的数量相等。
+
+我们考虑**不屈**失败时的“创”数。定义$X$为出现首次点数重复所需翻牌次数（包含触发重复的那一次），一副牌中不同的点数为$M$。此问题可用生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Average_number_of_people_to_get_at_least_one_shared_birthday)来描述。
+
+PMF：
+
+$$ p_{X}(k) = \frac{m!(k-1)}{m^{k}(m-k+1)!}, \quad k \in \mathbb{Z} \enspace \text{and} \enspace 1 \le k \le m + 1 $$
+
+在此模型下，$m=13$。
+
+其概率散点图为：
+
+![不屈概率](/assets/img/sgs/buqu.png)
+
+数学期望为：
+
+$$
+\boxed{
+  \mathbb E[X]
+  = 1 + \sum_{k=1}^{m}{\frac{m!}{(m-k)!m^{k}}}
+  \approxeq 5.2124
+}
+$$
+
+我们也可以将右式进行拉马努金渐近展开，从而得到简化的近似表达式：
+
+$$ \mathbb E[X] \sim \sqrt{\frac{\pi m}{2}}+\frac {2}{3} \approxeq 5.1856 $$
+
+由此我们可知，周泰的“创”数平均约为5.2张。
+
+接下来我们考察周泰的Online战功“金枪不倒”：使用周泰在一局游戏中拥有过至少9张“不屈”牌并且未死。
+
+$$ p_{X}(k \ge 9) = 1 - \sum_{k = 2}^8{p_X(k)} \approxeq 0.06361 $$
+
+【点数非均匀修正】
+
+若考虑【2】与【Q】的概率较于其他点数略高，我们可以对PMF做细微修正，得到更加准确的数学期望：
+
+$$ \mathbb E[X] \approxeq 5.2065 $$
+
+可见，此结果的差异完全可以忽略。
+
+#### 神吕蒙（神话再临·风）
+
+![神吕蒙](/assets/img/sgs/shen_meng_lv.png)
+
+**涉猎**：摸牌阶段，你可选择采取以下行动来取代摸牌：从牌堆顶亮出五张牌，拿走不同花色的牌各一张，弃掉其余的。
+
+下面我们研究**涉猎**获得的牌数$X$。该问题是生日问题的[一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Number_of_people_with_a_shared_birthday)。根据第二类斯特林数（[Stirling numbers of the second kind](https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind)）的定义：
+
+PMF：
+
+$$ p_{X}(k) = \frac{m^{\underline k}}{m^{n}}\begin{Bmatrix}n\\k\end{Bmatrix} $$
+
+其中$n$为亮出的牌数，$m$为一副牌中不同的花色数。在此模型下，$n=5, \enspace m=4$。
+
+其概率散点图为：
+
+![涉猎概率](/assets/img/sgs/shelie.png)
+
+数学期望和方差分别为：
+
+$$
+\boxed{
+  \mathbb E[X]
+  = m(1-(1-\frac{1}{m})^n)
+  = \frac{781}{256}
+  \approxeq 3.0508
+}
+$$
+
+$$
+\boxed{
+  \operatorname{Var}(X)
+  = m(m-1)(1-\frac{2}{m})^{n}+m(1-\frac{1}{m})^{n}-m^2(1-\frac{1}{m})^{2n}
+  = \frac{27735}{65536}
+  \approxeq 0.4232
+}
+$$
+
+#### 袁绍（神话再临·火）
+
+对于袁绍的**乱击**，除了前面提到的最大配对数，我们还可以研究发动**乱击**的概率。
+
+定义手牌数为$X$，一副牌中不同的花色数为$m$。可以发动**乱击**的概率可用生日问题的[另一种形式](https://en.wikipedia.org/wiki/Birthday_problem#Probability_of_a_shared_birthday_(collision))来表示：
+
+$$ p_{X}(n) = 1-\prod_{k=1}^{n-1}\left(1-{\frac{\min(k, m)}{m}}\right) $$
+
+在此模型下，$m=4$。
+
+其概率散点图为：
+
+![乱击1概率](/assets/img/sgs/luanji1.png)
 
 ### 和约束下可选子集最大规模的期望
 
@@ -1006,9 +1104,9 @@ polytope > print $p4->N_LATTICE_POINTS;
 1298
 ```
 
-在乘以相应的系数后，此类整数解组数为$445+136*4+284*6+1298*4=7885$。
+在乘以相应的系数后，此类整数解组数为$$ 445+136*4+284*6+1298*4=7885 $$。
 
-当$K = 2$时，整数解组数为$13^4-\#(K=4)-\#(K=1)-\#(K=3)=15796$。
+当$K = 2$时，整数解组数为$$ 13^4-\#(K=4)-\#(K=1)-\#(K=3)=15796 $$。
 
 其概率散点图为：
 
@@ -1016,7 +1114,9 @@ polytope > print $p4->N_LATTICE_POINTS;
 
 数学期望和方差分别为：
 
-$$ \mathbb E[K] = \frac{62272}{28561} \approxeq 2.1803, \quad \operatorname{Var}(K) = \frac{399322010}{815730721} \approxeq 0.4895 $$
+$$ \boxed{\mathbb E[K] = \frac{62272}{28561} \approxeq 2.1803} $$
+
+$$ \boxed{\operatorname{Var}(K) = \frac{399322010}{815730721} \approxeq 0.4895} $$
 
 【生成函数 + 升标号】
 
