@@ -1618,35 +1618,29 @@ $$
 
 因此，只需分别计数事件 $K\ge 2$、$K\ge 3$、$K\ge 4$ 对应的**有序四元组**数量。
 
-引入形式变量 $y_1,\dots,y_{13}$。 $y_j$记录点数为 $j$ 的牌出现次数（用于后续从多重集合升标号到有序四元组）。
+#### 多重集合的单项式表示
+
+引入形式变量 $y_1,\dots,y_{13}$，用于**标记**各点数的出现情况。
+
 对任意大小为 $4$ 的多重集合
 
 $$
 M=\{1^{m_1}2^{m_2}\cdots 13^{m_{13}}\},\qquad \sum_{j=1}^{13}m_j=4
 $$
 
-定义其对应单项式
+其中 $m_j$ 表示点数 $j$ 在多重集合中的**重数**（出现次数）。定义其对应单项式
 
 $$
-y^M:=\prod_{j=1}^{13}y_j^{m_j}.
+y^M:=\prod_{j=1}^{13}y_j^{m_j}
 $$
 
-对于任一仅依赖多重集合（即对置换对称）的性质 $\mathcal P$，定义**无序多重集合枚举多项式**
+**例**：多重集合 $\{1,1,2,5\}$ 对应 $m_1=2, m_2=1, m_5=1$（其余 $m_j=0$），其单项式为 $y_1^2 y_2 y_5$。
 
-$$
-U_{\mathcal P}(y_1,\dots,y_{13})
-:=\sum_{\substack{M:\ \sum m_j=4\\ \mathcal P(M)\ \text{成立}}} y^M
-$$
+#### 升标号算子
 
-定义升标号线性算子
+**升标号**（Labeling）是指将无序的多重集合分配到有序的位置上。
 
-$$
-\mathrm{Lab}_4:\ \mathbb{Q}[y_1,\dots,y_{13}]_{\text{齐次次数 }4}
-\longrightarrow
-\mathbb{Q}[y_1,\dots,y_{13}]_{\text{齐次次数 }4}
-$$
-
-在基单项式上的作用为
+定义升标号线性算子 $\mathrm{Lab}_4$，其在基单项式上的作用为
 
 $$
 \mathrm{Lab}_4\!\left(\prod_{j=1}^{13}y_j^{m_j}\right)
@@ -1656,9 +1650,26 @@ $$
 
 并线性延拓。
 
-**解释**：$\dfrac{4!}{\prod m_j!}$ 正是将该多重集合分配到 $4$ 个有序位置的排列数。
+**组合意义**：系数 $\dfrac{4!}{\prod m_j!}$ 正是多项式系数（multinomial coefficient）
 
-因此，有序四元组的计数可由下式给出：
+$$
+\binom{4}{m_1, m_2, \dots, m_{13}} = \frac{4!}{\prod_{j=1}^{13} m_j!}
+$$
+
+它计算的是将该多重集合的 $4$ 个元素分配到 $4$ 个**有区分的**位置上的排列数。
+
+**例**：多重集合 $\{1,1,2\}$ 的升标号系数为 $\dfrac{3!}{2!\cdot 1!}=3$，对应的 $3$ 个有序排列为 $(1,1,2), (1,2,1), (2,1,1)$。
+
+#### 从多重集合到有序四元组的计数
+
+对于任一仅依赖多重集合（即对置换对称）的性质 $\mathcal P$，定义**多重集合枚举多项式**
+
+$$
+U_{\mathcal P}(y_1,\dots,y_{13})
+:=\sum_{\substack{M:\ \sum m_j=4\\ \mathcal P(M)\ \text{成立}}} y^M
+$$
+
+则满足性质 $\mathcal P$ 的**有序四元组**数量为
 
 $$
 \#\{(x_1,x_2,x_3,x_4):\mathcal P\}
@@ -1666,181 +1677,346 @@ $$
 \Big(\mathrm{Lab}_4(U_{\mathcal P})\Big)\Big|_{y_1=\cdots=y_{13}=1}
 $$
 
-现在构造 $K\ge 3$ 的多重集合枚举多项式
+#### 构造 $K\ge k$ 的多重集合枚举多项式
 
-事件
+**按第 $k$ 小值分层**
 
-$$
-K\ge 3 \iff A_1+A_2+A_3\le 13
-$$
+事件 $K\ge k$ 等价于 $A_1+A_2+\cdots+A_k\le 13$，这仅依赖多重集合结构。
 
-仅依赖多重集合结构。
+按第 $k$ 小值 $A_k=c$ 进行分层。对于固定的 $c\in\{1,2,\dots,13\}$：
 
-为了计数满足 $A_1+A_2+A_3\le 13$ 的情形，一个自然的思路是按第三小值 $A_3$ 分层。令
+- 前 $k$ 张牌满足 $A_1\le A_2\le \cdots \le A_k = c$，即都取自 $\{1,\dots,c\}$ 且最大值恰为 $c$
+- 第 $k$ 张牌之后的牌（若有）满足 $\ge c$
 
-$$
-A_3=c,\qquad c\in\{1,2,\dots,13\}
-$$
+**生成函数构造**
 
-那么前三张（即 $A_1,A_2,A_3$）满足
+为了用生成函数同时记录**张数**与**点数和**，引入标记变量：
 
-$$
-1\le A_1\le A_2\le A_3=c
-$$
+- $u$：记录取了多少张牌
+- $z$：记录点数之和
 
-因此 $A_1,A_2$ 只能从集合 $\{1,2,\dots,c-1\}$ 中取值（允许重复），而 $c$ 至少出现一次。
+对每个点数 $j$，若它在多重集合中出现 $t$ 次，则贡献单项式 $(u\,y_j\,z^j)^t$。
 
-为了用生成函数“同时记录张数与点数和”，我们引入两个标记变量：
-
-- $u$：记录取了多少张（即计数元素个数）
-- $z$：记录点数和
-
-对每个点数 $j\le c-1$，它在多重集合里可以出现 $0,1,2,\dots$ 次。若点数 $j$ 出现了 $t$ 次，则贡献为
+**点数 $j$ 可出现任意多次**（包括 $0$ 次）的生成函数为几何级数：
 
 $$
-(u\,y_j\,z^j)^t
+\sum_{t=0}^{\infty}(u\,y_j\,z^j)^t = \frac{1}{1-u\,y_j\,z^j}
 $$
 
-因此点数 $j$ 的贡献生成函数为几何级数
+**点数 $j$ 至少出现一次**的生成函数为：
 
 $$
-1+(u\,y_j\,z^j)+(u\,y_j\,z^j)^2+\cdots=\frac{1}{1-u\,y_j\,z^j}
+\sum_{t=1}^{\infty}(u\,y_j\,z^j)^t = \frac{u\,y_j\,z^j}{1-u\,y_j\,z^j}
 $$
 
-把所有 $j=1,2,\dots,c-1$ 的可能性独立相乘，就得到
+**$\Theta_k(c)$ 的定义**
+
+定义辅助生成函数
 
 $$
 B_{c-1}(u,z):=\prod_{j=1}^{c-1}\frac{1}{1-u\,y_j\,z^j}
 $$
 
-这正是在“第三小为 $c$”的情形下，前三张中**小于 $c$ 的部分**（即 $A_1,A_2$ 以及可能出现的更多小牌）所对应的多重集合生成函数。
+它枚举所有点数**严格小于 $c$** 的牌的任意组合。
 
-并定义截断算子
+定义截断算子 $[z^{\le 13}]$，表示只保留 $z$ 的幂次不超过 $13$ 的项：
 
 $$
 [z^{\le 13}]\Phi(z):=\sum_{s=0}^{13}[z^s]\Phi(z)
 $$
 
-设
+则按 $A_k=c$ 分层的前 $k$ 张牌的多重集合枚举多项式为
+
 $$
-\Theta_3(c)
+\Theta_k(c)
 :=
-[z^{\le 13}]\,[u^3]\;
+[z^{\le 13}]\,[u^k]\;
 \left(\frac{u\,y_c\,z^c}{1-u\,y_c\,z^c}\right)
 B_{c-1}(u,z)
 $$
 
-即为按 $A_3=c$ 分层的计数表达式。此表达式正是在辅助生成函数的基础上，再额外乘上一个“至少一个 $c$”的因子
+**解释**：
+
+- $\dfrac{u\,y_c\,z^c}{1-u\,y_c\,z^c}$：点数 $c$ **至少出现一次**（保证 $A_k=c$）
+- $B_{c-1}(u,z)$：点数 $1,\dots,c-1$ 各出现**任意多次**
+- $[u^k]$：恰好取 $k$ 张牌
+- $[z^{\le 13}]$：前 $k$ 张牌的点数和不超过 $13$
+
+**$K\ge k$ 的完整公式**
+
+剩余的 $4-k$ 张牌（即 $A_{k+1}, \dots, A_4$）必须满足 $\ge A_k = c$，即取自 $\{c, c+1, \dots, 13\}$。
+
+因此，完整的多重集合枚举多项式为
 
 $$
-\frac{u\,y_c\,z^c}{1-u\,y_c\,z^c},
-$$
-
-（此因子是点数 $c$ 的生成函数，表示其在前三张牌中**至少出现一次**；这是由恒等式 $X+X^2+X^3+\cdots=X/(1-X)$ 直接得到的，并且恰好刻画了“第三小值等于 $c$”所需的必要且充分条件。）
-
-并通过取 $[u^3]$ 强制“前三张恰好三张”，再通过截断 $[z^{\le 13}]$ 强制“前三张和不超过 13”即可得。它枚举“第三小值恰为 $c$ 且前三小之和不超过 $13$”的多重集合（仅含前三个元素）。
-
-第四张牌必须满足 $A_4\ge c$，因此得到
-
-$$
-U_{\ge 3}(y)
+U_{\ge k}(y)
 =
-\sum_{c=1}^{13}\left(\sum_{d=c}^{13}y_d\right)\Theta_3(c)
+\sum_{c=1}^{13}\Theta_k(c) \cdot \left(\sum_{d=c}^{13}y_d\right)^{4-k}
 $$
 
 对应的**有序四元组计数**为
 
 $$
-\#(K\ge 3)
+\#(K\ge k)
 =
-\Big(\mathrm{Lab}_4(U_{\ge 3})\Big)\Big|_{y_1=\cdots=y_{13}=1}
+\Big(\mathrm{Lab}_4(U_{\ge k})\Big)\Big|_{y_1=\cdots=y_{13}=1}
 $$
 
-类似地，对$K\ge 2$可构造
+#### 代码及计算结果
 
-$$
-\Theta_2(c)
-:=
-[z^{\le 13}]\,[u^2]\;
-\left(\frac{u\,y_c\,z^c}{1-u\,y_c\,z^c}\right)
-B_{c-1}(u,z)
-$$
+代码：
 
-并得到
+```python
+"""
+Compute #(K >= k) using generating functions directly.
 
-$$
-U_{\ge 2}(y)
-=
-\sum_{c=1}^{13}\left(\sum_{d=c}^{13}y_d\right)^2\Theta_2(c)
-$$
+Key formula:
+Theta_k(c) = [z^{<=13}][u^k] * (u*y_c*z^c / (1-u*y_c*z^c)) * prod_{j=1}^{c-1} 1/(1-u*y_j*z^j)
 
-从而
+The y_j variables track multiplicities, enabling:
+1. Decoding of concrete multisets from coefficients
+2. Direct computation of labeling coefficient Lab_n = n! / prod(m_j!)
+"""
 
-$$
-\#(K\ge 2)
-=
-\Big(\mathrm{Lab}_4(U_{\ge 2})\Big)\Big|_{y_1=\cdots=y_{13}=1}
-$$
+from collections import defaultdict
+from math import factorial
+from itertools import combinations_with_replacement
 
-此外
 
-$$
-\#(K\ge 4)=\binom{13}{4}
-$$
+def multiply_poly(p1, p2, c, max_u, max_z):
+    """
+    Multiply two polynomials p1 * p2.
 
-由差分关系
+    Polynomial representation: {(u_power, z_power, y_tuple): coefficient}
+    where y_tuple = (m_1, ..., m_c) records multiplicity of each card value.
+    """
+    result = defaultdict(int)
+    for (u1, z1, y1), c1 in p1.items():
+        for (u2, z2, y2), c2 in p2.items():
+            u_new = u1 + u2
+            z_new = z1 + z2
+            if u_new <= max_u and z_new <= max_z:
+                y_new = tuple(y1[i] + y2[i] for i in range(c))
+                result[(u_new, z_new, y_new)] += c1 * c2
+    return dict(result)
 
-$$
-\#(K=3)=\#(K\ge 3)-\#(K\ge 4)
-$$
 
-$$
-\#(K=2)=\#(K\ge 2)-\#(K\ge 3)
-$$
+def at_least_one_geometric(j, c, max_u, max_z):
+    """
+    Compute u*y_j*z^j / (1 - u*y_j*z^j) truncated.
 
-$$
-\#(K=1)=13^4-\#(K\ge 2)
-$$
+    This represents "at least one card with value j".
+    """
+    result = {}
+    for t in range(1, max_u + 1):
+        z_power = t * j
+        if z_power <= max_z:
+            y_tuple = tuple(t if idx == j - 1 else 0 for idx in range(c))
+            result[(t, z_power, y_tuple)] = 1
+    return result
 
-即可得到 $K$ 的完整分布。
 
-由于 $c$ 仅在 $1\le c\le 13$ 上求和，且所有生成函数只需截断到 $z^{13}$，上述所有系数抽取均为**有限代数运算**。计算这些有限系数可得
+def geometric_series(j, c, max_u, max_z):
+    """
+    Compute 1 / (1 - u*y_j*z^j) truncated.
 
-$$
-\#(K=1)=4165,\quad
-\#(K=2)=15796,\quad
-\#(K=3)=7885,\quad
-\#(K=4)=715
-$$
+    This represents "any number (including 0) of cards with value j".
+    """
+    result = {}
+    for t in range(0, max_u + 1):
+        z_power = t * j
+        if z_power <= max_z:
+            y_tuple = tuple(t if idx == j - 1 else 0 for idx in range(c))
+            result[(t, z_power, y_tuple)] = 1
+    return result
 
-从而
 
-$$
-\mathbb E[K]=\frac{62272}{28561},\qquad
-\mathrm{Var}(K)=\frac{399322010}{815730721}.
-$$
+def compute_theta(c, k, max_z=13):
+    """
+    Compute Theta_k(c) using generating functions.
 
-【备注】与常数项（CT）表示的等价性
+    Returns: list of multisets (as sorted tuples) where A_k = c and sum <= max_z.
+    """
+    max_u = k
 
-上述升标号算子 $\mathrm{Lab}_4$ 可等价地用常数项算子表示。对任意齐次 $4$ 次多项式 $U(y)$，有
+    # Start with: at least one card with value c
+    poly = at_least_one_geometric(c, c, max_u, max_z)
 
-$$
-\left.\mathrm{Lab}_4(U)\right|_{y_1=\cdots=y_{13}=1}
-=
-\mathrm{CT}_{y}\!\left[
-U(y)\left(\sum_{j=1}^{13}y_j^{-1}\right)^4
-\right]
-$$
+    # Multiply by 1/(1-u*y_j*z^j) for each j < c
+    for j in range(1, c):
+        factor = geometric_series(j, c, max_u, max_z)
+        poly = multiply_poly(poly, factor, c, max_u, max_z)
 
-其中 $$ \mathrm{CT}_{y} $$ 表示取 $y_1^0\cdots y_{13}^0$ 的系数。
+    # Extract [u^k][z^{<=max_z}] and decode multisets from y-tuples
+    multisets = []
+    for (u_pow, z_pow, y_tuple), coef in poly.items():
+        if u_pow == k and z_pow <= max_z:
+            elements = []
+            for j in range(c):
+                elements.extend([j + 1] * y_tuple[j])
+            elements.sort()
+            multisets.append(tuple(elements))
 
-该恒等式表明：常数项运算自动为每个多重集合插入正确的排列权重
+    return sorted(multisets)
 
-$$
-\frac{4!}{\prod m_j!}
-$$
 
-从而在形式上等价于升标号算子。本文主文采用 $\mathrm{Lab}_4$ 以增强直观性；CT 表示可视为其代数化实现。
+def labeling_coefficient(multiset, n):
+    """
+    Compute Lab_n = n! / prod(m_j!)
+    """
+    from collections import Counter
+    counter = Counter(multiset)
+    result = factorial(n)
+    for m in counter.values():
+        result //= factorial(m)
+    return result
+
+
+def compute_K_ge_k(k, n_cards=4, max_z=13):
+    """
+    Compute #(K >= k) for n_cards total cards.
+    """
+    total_count = 0
+    details_by_c = {}
+    remaining_cards = n_cards - k
+
+    for c in range(1, 14):
+        theta_multisets = compute_theta(c, k, max_z)
+
+        if not theta_multisets:
+            continue
+
+        c_count = 0
+
+        for first_k_multiset in theta_multisets:
+            for extra in combinations_with_replacement(range(c, 14), remaining_cards):
+                full_multiset = tuple(sorted(first_k_multiset + extra))
+                lab = labeling_coefficient(full_multiset, n_cards)
+                c_count += lab
+
+        details_by_c[c] = {
+            'theta_multisets': theta_multisets,
+            'count': c_count
+        }
+        total_count += c_count
+
+    return total_count, details_by_c
+
+
+# =============================================================================
+# Main computation
+# =============================================================================
+
+print("=" * 70)
+print("Computing #(K >= k) using Generating Functions")
+print("=" * 70)
+
+for k in [2, 3]:
+    print(f"\n{'=' * 70}")
+    print(f"K >= {k}  (A_1 + A_2 + ... + A_{k} <= 13)")
+    print(f"{'=' * 70}")
+
+    result, details = compute_K_ge_k(k)
+
+    print(f"\n[Breakdown by A_{k} = c]")
+    print(f"{'c':<4} {'|Theta|':<8} {'Contribution':<14} {'Cumulative':<12} Theta_{k}(c)")
+    print("-" * 70)
+
+    cumsum = 0
+    for c in sorted(details.keys()):
+        cumsum += details[c]['count']
+        theta_size = len(details[c]['theta_multisets'])
+        multisets_str = str(details[c]['theta_multisets'])
+        print(f"{c:<4} {theta_size:<8} {details[c]['count']:<14} {cumsum:<12} {multisets_str}")
+
+    print(f"\n#(K >= {k}) = {result}")
+    print(f"P(K >= {k}) = {result}/28561 = {result/28561:.6f}")
+
+# =============================================================================
+# Summary
+# =============================================================================
+
+print("\n" + "=" * 70)
+print("Summary")
+print("=" * 70)
+
+k2, _ = compute_K_ge_k(2)
+k3, _ = compute_K_ge_k(3)
+k4, _ = compute_K_ge_k(4)
+
+print(f"\n{'k':<5} {'#(K >= k)':<12} {'P(K >= k)':<12} {'#(K = k)':<12} {'P(K = k)':<12}")
+print("-" * 55)
+
+total = 13**4
+print(f"{1:<5} {total:<12} {total/total:<12.6f} {total - k2:<12} {(total-k2)/total:<12.6f}")
+print(f"{2:<5} {k2:<12} {k2/total:<12.6f} {k2 - k3:<12} {(k2-k3)/total:<12.6f}")
+print(f"{3:<5} {k3:<12} {k3/total:<12.6f} {k3 - k4:<12} {(k3-k4)/total:<12.6f}")
+print(f"{4:<5} {k4:<12} {k4/total:<12.6f} {k4:<12} {k4/total:<12.6f}")
+```
+
+计算结果：
+
+```text
+======================================================================
+Computing #(K >= k) using Generating Functions
+======================================================================
+
+======================================================================
+K >= 2  (A_1 + A_2 + ... + A_2 <= 13)
+======================================================================
+
+[Breakdown by A_2 = c]
+c    |Theta|  Contribution   Cumulative   Theta_2(c)
+----------------------------------------------------------------------
+1    1        913            913          [(1, 1)]
+2    2        2359           3272         [(1, 2), (2, 2)]
+3    3        3289           6561         [(1, 3), (2, 3), (3, 3)]
+4    4        3775           10336        [(1, 4), (2, 4), (3, 4), (4, 4)]
+5    5        3889           14225        [(1, 5), (2, 5), (3, 5), (4, 5), (5, 5)]
+6    6        3703           17928        [(1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6)]
+7    6        3048           20976        [(1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7)]
+8    5        1820           22796        [(1, 8), (2, 8), (3, 8), (4, 8), (5, 8)]
+9    4        976            23772        [(1, 9), (2, 9), (3, 9), (4, 9)]
+10   3        444            24216        [(1, 10), (2, 10), (3, 10)]
+11   2        152            24368        [(1, 11), (2, 11)]
+12   1        28             24396        [(1, 12)]
+
+#(K >= 2) = 24396
+P(K >= 2) = 24396/28561 = 0.854172
+
+======================================================================
+K >= 3  (A_1 + A_2 + ... + A_3 <= 13)
+======================================================================
+
+[Breakdown by A_3 = c]
+c    |Theta|  Contribution   Cumulative   Theta_3(c)
+----------------------------------------------------------------------
+1    1        49             49           [(1, 1, 1)]
+2    3        319            368          [(1, 1, 2), (1, 2, 2), (2, 2, 2)]
+3    6        793            1161         [(1, 1, 3), (1, 2, 3), (1, 3, 3), (2, 2, 3), (2, 3, 3), (3, 3, 3)]
+4    10       1399           2560         [(1, 1, 4), (1, 2, 4), (1, 3, 4), (1, 4, 4), (2, 2, 4), (2, 3, 4), (2, 4, 4), (3, 3, 4), (3, 4, 4), (4, 4, 4)]
+5    13       1932           4492         [(1, 1, 5), (1, 2, 5), (1, 3, 5), (1, 4, 5), (1, 5, 5), (2, 2, 5), (2, 3, 5), (2, 4, 5), (2, 5, 5), (3, 3, 5), (3, 4, 5), (3, 5, 5), (4, 4, 5)]
+6    12       1798           6290         [(1, 1, 6), (1, 2, 6), (1, 3, 6), (1, 4, 6), (1, 5, 6), (1, 6, 6), (2, 2, 6), (2, 3, 6), (2, 4, 6), (2, 5, 6), (3, 3, 6), (3, 4, 6)]
+7    9        1170           7460         [(1, 1, 7), (1, 2, 7), (1, 3, 7), (1, 4, 7), (1, 5, 7), (2, 2, 7), (2, 3, 7), (2, 4, 7), (3, 3, 7)]
+8    6        660            8120         [(1, 1, 8), (1, 2, 8), (1, 3, 8), (1, 4, 8), (2, 2, 8), (2, 3, 8)]
+9    4        324            8444         [(1, 1, 9), (1, 2, 9), (1, 3, 9), (2, 2, 9)]
+10   2        126            8570         [(1, 1, 10), (1, 2, 10)]
+11   1        30             8600         [(1, 1, 11)]
+
+#(K >= 3) = 8600
+P(K >= 3) = 8600/28561 = 0.301110
+
+======================================================================
+Summary
+======================================================================
+
+k     #(K >= k)    P(K >= k)    #(K = k)     P(K = k)
+-------------------------------------------------------
+1     28561        1.000000     4165         0.145828
+2     24396        0.854172     15796        0.553062
+3     8600         0.301110     7885         0.276076
+4     715          0.025034     715          0.025034
+```
 
 ## 脚注
 
