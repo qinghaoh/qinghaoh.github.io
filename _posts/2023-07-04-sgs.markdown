@@ -591,11 +591,13 @@ $$
 =\frac{1-\mathbb E[(-1)^{N_1}]}{2}
 $$
 
-而 $N_1\sim\operatorname{Bin}(n,\tfrac1m)$。利用二项分布的概率生成函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）（或直接二项式展开）：
+而 $N_1\sim\operatorname{Bin}(n,\tfrac1m)$。对于二项分布随机变量，其概率生成函数（[Probability-generating function](https://en.wikipedia.org/wiki/Probability-generating_function)）为
 
 $$
-\mathbb E[t^{N_1}]=(1-p+pt)^n,\quad p=\frac1m
+\mathbb E[t^{N_1}]=\sum_{k=0}^{n} t^k \binom{n}{k} p^k (1-p)^{n-k} = (1-p+pt)^n,\quad p=\frac1m
 $$
+
+其中最后一步由二项式定理得到。
 
 取 $t=-1$ 得到
 
@@ -612,12 +614,18 @@ $$
 \mathbb E[I_1]=\frac{1-a}{2}
 $$
 
-因为 $I_1$ 是 $0/1$ 变量，
+由于 $I_1$ 是 $0/1$ 变量，有 $I_1^2 = I_1$，因此$\mathbb{E}[I_1^2] = \mathbb{E}[I_1]$
+
+所以
 
 $$
-\operatorname{Var}(I_1)=\mathbb E[I_1](1-\mathbb E[I_1])
-=\frac{1-a}{2}\cdot\frac{1+a}{2}
-=\frac{1-a^2}{4}
+\begin{aligned}
+\operatorname{Var}(I_1)
+&= \mathbb{E}[I_1^2] - (\mathbb{E}[I_1])^2 \\
+&= \mathbb E[I_1](1-\mathbb E[I_1]) \\
+&= \frac{1-a}{2}\cdot\frac{1+a}{2} \\
+&= \frac{1-a^2}{4}
+\end{aligned}
 $$
 
 计算协方差 $\operatorname{Cov}(I_1,I_2)$，需要 $\mathbb E[I_1I_2]$：
@@ -646,23 +654,17 @@ $$
 S:=N_1+N_2.
 $$
 
-由于每次抽牌落在 $\{1,2\}$ 的概率是 $\frac{2}{m}$，因此
+由于每张牌的花色独立地以概率 $\frac{1}{m}$ 取每个值，故花色落在 $$ \{1,2\} $$ 的概率为 $\frac{2}{m}$。因此
 
 $$
-S\sim\operatorname{Bin}\!\left(n,\frac{2}{m}\right)
+S = N_1 + N_2 \sim\operatorname{Bin}\!\left(n,\frac{2}{m}\right)
 $$
 
-并且
+利用前面的概率生成函数结果（取 $p = \frac{2}{m}$，$t = -1$）：
 
 $$
-(-1)^{N_1+N_2}=(-1)^S
-$$
-
-于是
-
-$$
-\mathbb E[(-1)^{N_1+N_2}]
-=\mathbb E[(-1)^S]
+\mathbb E[(-1)^S]
+=\left(1-2 \cdot \frac{2}{m}\right)^n
 =\left(1-\frac{4}{m}\right)^n
 $$
 
@@ -688,8 +690,11 @@ $$
 因为 $O=\sum_{j=1}^m I_j$，且各 $I_j$ 交换对称，所以
 
 $$
+\begin{aligned}
 \operatorname{Var}(O)
-= m\,\operatorname{Var}(I_1)+m(m-1)\,\operatorname{Cov}(I_1,I_2)
+&= \sum_{j=1}^m \operatorname{Var}(I_j) + \sum_{j \neq k} \operatorname{Cov}(I_j, I_k) \\
+&= m\,\operatorname{Var}(I_1)+m(m-1)\,\operatorname{Cov}(I_1,I_2)
+\end{aligned}
 $$
 
 代入上面的结果：
@@ -728,7 +733,7 @@ $$
 $$
 \operatorname{Var}(P_{\max})
 =\frac{4}{16}\left(1-2^{-2n}\right)+\frac{12}{16}\left(0-2^{-2n}\right)
-=\frac14-2^{-2n}
+=\frac{1}{4}-\frac{1}{4^n}
 $$
 
 对于袁绍的技能**乱击**，我们还会研究另一个课题。见[“生日问题”一节](#生日问题)）。
@@ -1197,7 +1202,7 @@ $$ \boxed{\mathbb E[K] = \frac{62272}{28561} \approxeq 2.1803} $$
 
 $$ \boxed{\operatorname{Var}(K) = \frac{399322010}{815730721} \approxeq 0.4895} $$
 
-该问题亦可通过组合生成函数与次序统计量进行纯组合论推导（参见附录）。但在本问题规模下，该方法并不能显著降低计算复杂度；相反，将计数问题转化为凸多胞形中的晶格点计数，并借助 Ehrhart 理论与 polymake 实现自动化计算，更有利于保证结果的完整性与可复现性。
+该问题亦可通过组合生成函数（[Generating function](https://en.wikipedia.org/wiki/Generating_function)）与次序统计量进行纯组合论推导（参见附录）。但在本问题规模下，该方法并不能显著降低计算复杂度；相反，将计数问题转化为凸多胞形中的晶格点计数，并借助 Ehrhart 理论与 polymake 实现自动化计算，更有利于保证结果的完整性与可复现性。
 
 ### 随机子集和的可达性概率
 
