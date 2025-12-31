@@ -1385,7 +1385,7 @@ $$
 
 由[Cayley–Hamilton 定理](https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem)可知：
 
-> $\mathbf{v}_n$  的任意线性函数（例如 $p_n$ ）
+> $\mathbf{v}_n$ 的任意线性函数（例如 $p_n$ ）
 > 都满足一个**有限阶、常系数的线性递推关系**
 
 即存在 $L<\infty$ 和常数 $c_1,\dots,c_L$ ，使得
@@ -1495,10 +1495,8 @@ $$
 从而
 
 $$
-p_{n+1} > p_n
+p_{n+1} > p_n \tag*{$\square$}
 $$
-
-$$ \square $$
 
 **命题2：**
 $$
@@ -1545,10 +1543,8 @@ $$
 $\left(\frac{12}{13}\right)^n \to 0$，从而左端趋于 $1$。由夹逼定理（[Squeeze Theorem](https://en.wikipedia.org/wiki/Squeeze_theorem)）可得
 
 $$
-\lim_{n\to\infty} p_n = 1
+\lim_{n\to\infty} p_n = 1 \tag*{$\square$}
 $$
-
-$$ \square $$
 
 从另一个角度看，可达子集和集合的演化构成一个有限状态、时间齐次的吸收型马尔可夫链（[Absorbing Markov Chain](https://en.wikipedia.org/wiki/Absorbing_Markov_chain)）。所有包含目标值 $13$ 的状态都是吸收态，一旦进入便无法离开。由于从初始状态出发进入吸收态的概率为正，且不存在非吸收的封闭类，该链以概率 $1$ 最终被吸收。因此，目标事件的概率 $p_n$ 随 $n$ 增大必然趋于 $1$。
 
@@ -2025,7 +2021,7 @@ k     #(K >= k)    P(K >= k)    #(K = k)     P(K = k)
 
 ### **资援**牌数期望问题
 
-现在我们进一步研究：**在能够发动资援时，交出的牌数期望是多少？**
+现在我们进一步研究：定义无法发动**资援**时交牌数为 0，求交牌数的无条件期望。
 
 考虑两种策略：
 
@@ -2076,7 +2072,7 @@ $$M_n^{\min} := \begin{cases} \min_{I \in \mathcal{S}_n} |I| & \text{if } \mathc
 
 #### 代码及计算结果
 
-在原代码基础上进行最小改动。核心变化是：将 bitmask 替换为记录极值牌数的元组。
+在原代码基础上进行最小改动。核心变化是：将二进制掩码替换为记录极值牌数的元组（tuple）。该元组的状态是 $\mathbf d=(d_0,\dots,d_T)$，用字典计数，实际遍历的是可达状态集合$\Omega_T := \{\mathbf d \text{ 在转移闭包下可达}\}$。
 
 ```python
 from collections import defaultdict
@@ -2171,15 +2167,262 @@ def extremal_cards_probability(n, target=13, max_value=13, mode='max'):
 
 ![资援期望](/assets/img/sgs/ziyuan2.png)
 
-1. **最大化策略** $\mathbb{E}[M_n^{\max}]$：随 $n$ 单调递增，渐近线性增长。手牌越多，越可能找到牌数更多的组合。
+根据以上计算结果及图像，我们可以得出以下结论：
 
-2. **最小化策略** $\mathbb{E}[M_n^{\min}]$：先增后减，最终趋于常数约 $1$。这是因为当手牌足够多时，几乎必然抽到一张点数为13的牌，从而最小组合就是单张牌。
+**【最大化策略】**
 
-3. **区间宽度**：随 $n$ 单调递增，反映了组合多样性的增加。
+$\mathbb{E}[M_n^{\max}]$：随 $n$ 单调递增，渐近线性增长。手牌越多，越可能找到牌数更多的组合。
 
-由于状态空间有限且与 $n$ 无关，这两个问题都满足有限阶线性递推关系，生成函数是有理函数。
+**命题**
+
+$$
+\mathbb E[M_{n+1}^{\max}] \ge \mathbb E[M_n^{\max}]
+$$
+
+**证明**
+
+对任意确定的手牌序列 $(x_1,\ldots,x_n)$ 以及任意 $x_{n+1}\in\{1,\ldots,13\}$，都有逐点不等式
+
+$$
+M_{n+1}^{\max}(x_1,\ldots,x_n,x_{n+1})
+\ge
+M_n^{\max}(x_1,\ldots,x_n)
+$$
+
+其原因在于：在 $n+1$ 张牌的问题中，可以选择不使用第 $n+1$ 张牌，因此 $n$ 张牌问题中的最优解对应的子集仍然是一个可行解。
+
+由于期望保持逐点不等式，上式对随机变量取期望即可得到
+
+$$
+\mathbb E[M_{n+1}^{\max}] \ge \mathbb E[M_n^{\max}] \tag*{$\square$}
+$$
 
 ---
+
+**【最小化策略】**
+
+$\mathbb{E}[M_n^{\min}]$：数值上呈单峰：先增后减，并趋于$1$。趋于$1$的原因是$n$足够大时几乎必然抽到$13$，使得最小可行子集为单张。
+
+**命题1**
+
+$$
+\lim_{n\to\infty}\mathbb E[M_n^{\min}] = 1
+$$
+
+**证明**
+
+令事件
+
+$$
+A_n=\{\text{手牌中至少出现一张点数为 }13\}
+$$
+
+则
+
+$$
+\mathbb P(A_n)=1-\left(\frac{12}{13}\right)^n
+$$
+
+当事件 $A_n$ 发生时，单张点数为 $13$ 的牌即可构成一个子集和为 $13$ 的可行解，因此
+
+$$
+M_n^{\min}=1
+$$
+
+当事件 $A_n^c$ 发生时，未必存在子集和为 $13$ 的可行解；在本文的约定下，此时 $M_n^{\min}$ 取值为 $0$。无论是否存在可行解，随机变量 $M_n^{\min}$ 都满足一致有界性
+
+$$
+0 \le M_n^{\min} \le 13
+$$
+
+因此对所有样本点均成立逐点不等式
+
+$$
+\mathbf 1_{A_n}
+\le
+M_n^{\min}
+\le
+\mathbf 1_{A_n}+13\,\mathbf 1_{A_n^c}
+$$
+
+对上式取期望，得到夹逼关系
+
+$$
+\mathbb P(A_n)
+\le
+\mathbb E[M_n^{\min}]
+\le
+\mathbb P(A_n)+13\,\mathbb P(A_n^c)
+$$
+
+代入 $\mathbb P(A_n^c)=\left(\frac{12}{13}\right)^n$，可得
+
+$$
+1-\left(\frac{12}{13}\right)^n
+\le
+\mathbb E[M_n^{\min}]
+\le
+1+12\left(\frac{12}{13}\right)^n
+$$
+
+令 $n\to\infty$，两端同趋于 $1$，由夹逼定理得到
+
+$$
+\lim_{n\to\infty}\mathbb E[M_n^{\min}] = 1 \tag*{$\square$}
+$$
+
+---
+
+**命题2**
+
+令 $M_n=M_n^{\min}$，并约定若无法凑出 $13$ 则取 $M_n=0$。则序列 $\mathbb E[M_n]$ 是单峰的。更具体地，存在某个 $n^\*$ 使得
+
+$$
+\mathbb E[M_1]\le\cdots\le \mathbb E[M_{n^{*}}]\ge \mathbb E[M_{n^{*}+1}]\ge\cdots
+$$
+
+并且在本文参数下峰值出现在 $n^\*=7$
+
+**证明**
+
+记事件
+
+$$
+E_n=\{\text{前 }n\text{ 张牌存在子集和为 }13\}
+$$
+
+以及
+
+$$
+A_n=\{\text{前 }n\text{ 张牌至少出现一张 }13\}
+$$
+
+显然 $A_n\subseteq E_n$
+
+设
+
+$$
+\Delta_n=\mathbb E[M_{n+1}]-\mathbb E[M_n]
+$$
+
+将差分分解为
+
+$$
+\Delta_n=\mathbb E[(M_{n+1}-M_n)\mathbf 1_{E_n}]+\mathbb E[(M_{n+1}-M_n)\mathbf 1_{E_n^c}]
+$$
+
+首先，在 $E_n$ 发生时，前 $n$ 张牌已经存在一个可行解。加入第 $n+1$ 张牌后仍可选择不使用新牌，因此最小可行张数不会增大，即
+
+$$
+M_{n+1}\le M_n
+$$
+
+从而
+
+$$
+\mathbb E[(M_{n+1}-M_n)\mathbf 1_{E_n}]\le 0
+$$
+
+其次，在 $E_n^c$ 上按约定 $M_n=0$，并且恒有 $0\le M_{n+1}\le 13$，因此
+
+$$
+0\le (M_{n+1}-M_n)\mathbf 1_{E_n^c}=M_{n+1}\mathbf 1_{E_n^c}\le 13\mathbf 1_{E_n^c}
+$$
+
+从而
+
+$$
+\mathbb E[(M_{n+1}-M_n)\mathbf 1_{E_n^c}]\le 13\mathbb P(E_n^c)
+$$
+
+另一方面，考虑事件 $E_n\cap A_n^c\cap\{X_{n+1}=13\}$。在 $E_n\cap A_n^c$ 上，前 $n$ 张牌可凑出 13 但不含 13，因此任何可行解至少需要两张牌，从而 $M_n\ge 2$。若再抽到 $X_{n+1}=13$，则单张 13 立即给出大小为 1 的可行解，因此 $M_{n+1}=1$。于是该事件上有
+
+$$
+M_{n+1}-M_n\le -1
+$$
+
+从而
+
+$$
+\mathbb E[(M_{n+1}-M_n)\mathbf 1_{E_n}]
+\le
+-\mathbb P(E_n\cap A_n^c\cap\{X_{n+1}=13\})
+$$
+
+由于 $X_{n+1}$ 与前 $n$ 张独立且 $\mathbb P(X_{n+1}=13)=1/13$，有
+
+$$
+\mathbb P(E_n\cap A_n^c\cap\{X_{n+1}=13\})
+=\frac{1}{13}\mathbb P(E_n\cap A_n^c)
+$$
+
+并且由 $A_n\subseteq E_n$ 得
+
+$$
+\mathbb P(E_n\cap A_n^c)=\mathbb P(A_n^c)-\mathbb P(E_n^c)
+$$
+
+因此
+
+$$
+\mathbb E[(M_{n+1}-M_n)\mathbf 1_{E_n}]
+\le
+-\frac{1}{13}\mathbb P(A_n^c)+\frac{1}{13}\mathbb P(E_n^c)
+$$
+
+综合以上估计得到
+
+$$
+\Delta_n\le -\frac{1}{13}\mathbb P(A_n^c)+\frac{170}{13}\mathbb P(E_n^c)
+$$
+
+其中 $\frac{170}{13}$ 来自对 $\mathbb E[(M_{n+1}-M_n)\mathbf 1_{E_n^c}]$ 的系数合并
+
+下面估计两项概率。首先
+
+$$
+\mathbb P(A_n^c)=\left(\frac{12}{13}\right)^n
+$$
+
+其次，对 $\mathbb P(E_n^c)$ 给出一个粗上界。将互补点数组成 6 对
+
+$$
+\{1,12\},\{2,11\},\{3,10\},\{4,9\},\{5,8\},\{6,7\}
+$$
+
+若手牌中同时出现某一对互补点数，则两张牌即可凑出 13，因此 $E_n$ 发生。于是 $E_n^c$ 蕴含：不出现 13，且对每一对互补点数至少有一个点数完全缺失。对每对互补点数选择一个缺失者，共有 $2^6=64$ 种选择方案。固定一种方案后，所有牌必须落在某个至多含 6 个点数的集合中，从而
+
+$$
+\mathbb P(E_n^c)\le 64\left(\frac{6}{13}\right)^n
+$$
+
+代入得到
+
+$$
+\Delta_n
+\le
+-\frac{1}{13}\left(\frac{12}{13}\right)^n+\frac{170}{13}\cdot 64\left(\frac{6}{13}\right)^n
+$$
+
+提取公共因子 $\frac{1}{13}\left(\frac{6}{13}\right)^n$ 可得
+
+$$
+\Delta_n\le \frac{1}{13}\left(\frac{6}{13}\right)^n\Bigl(-2^n+10880\Bigr)
+$$
+
+由于 $2^{14}=16384>10880$，从而对所有 $n\ge 14$ 有 $\Delta_n<0$，即
+
+$$
+\mathbb E[M_{n+1}]<\mathbb E[M_n]
+$$
+
+对所有 $n\ge 14$ 成立。
+
+因此序列在尾部 $n\ge 14$ 时严格递减。另一方面，本文已用 DP 精确计算了 $1\le n\le 10$ 的 $\mathbb E[M_n]$，并验证它在该范围内先递增后递减，且峰值出现在 $n=7$。由于峰值点 $7$ 位于 $[1,10]$ 之内，并且在 $n\ge 14$ 时序列严格递减，故其后不可能再出现第二个峰值点。于是 $\mathbb E[M_n]$ 在全体 $n\ge 1$ 上单峰，且唯一峰值为 $n^\*=7$。$\square$
+
+---
+
+由于状态空间有限且与 $n$ 无关，这两个问题都满足有限阶线性递推关系，生成函数是有理函数。
 
 #### 均匀随机选择组合
 
@@ -2208,7 +2451,7 @@ $$C_n := |I^*|$$
 
 状态表示为 $((c_0, t_0), (c_1, t_1), \ldots, (c_{13}, t_{13}))$。
 
-$c_k$ 的取值范围是 $\{0, 1, \ldots, 2^n\}$，随 $n$ 指数增长。这意味着状态空间大小**不再有限**，不能用 bitmask 方法。
+$c_k$ 的取值范围是 $\{0, 1, \ldots, 2^n\}$，随 $n$ 指数增长。这意味着状态空间大小**不再有限**，不能用动态规划方法。
 
 由于状态空间无限，这**不是有限状态马尔可夫链**，因此：
 - 不保证存在有限阶线性递推
@@ -2219,15 +2462,28 @@ $c_k$ 的取值范围是 $\{0, 1, \ldots, 2^n\}$，随 $n$ 指数增长。这意
 
 尽管此问题难以精确求解，但我们可以利用极值问题给出上下界。
 
-**定理**（夹逼不等式）：
-$$\mathbb{E}[M_n^{\min}] \le \mathbb{E}[C_n] \le \mathbb{E}[M_n^{\max}]$$
+设在事件 $E_n=\{\mathcal S_n\neq\varnothing\}$ 上，从所有满足子集和为 13 的子集中**等概率随机选择一个**，
+并记其所用牌数为随机变量 $C_n$。
 
-**证明**：对任意手牌配置，若 $\mathcal{S}_n \neq \varnothing$，则：
-$$\min_{I \in \mathcal{S}_n} |I| \le \frac{\sum_{I \in \mathcal{S}_n} |I|}{|\mathcal{S}_n|} \le \max_{I \in \mathcal{S}_n} |I|$$
+显然有逐点不等式：
 
-这是因为算术平均必然介于最小值和最大值之间。对所有手牌配置取期望，不等式保持。$\square$
+$$
+M_n^{\min} \;\le\; C_n \;\le\; M_n^{\max},
+$$
 
-数值计算表明，$\mathbb{E}[C_n]$ 始终位于区间 $[\mathbb{E}[M_n^{\min}], \mathbb{E}[M_n^{\max}]$ 的**约50%位置**：
+根据期望的单调性，以下关系成立：
+
+$$
+\mathbb E[M_n^{\min}] \;\le\; \mathbb E[C_n] \;\le\; \mathbb E[M_n^{\max}].
+$$
+
+进一步地，数值计算显示，在若干中等规模的 $n$（例如 $n=5,8,10$）下，$\mathbb E[C_n]$ 与区间中点
+
+$$
+\frac{1}{2}\bigl(\mathbb E[M_n^{\min}]+\mathbb E[M_n^{\max}]\bigr)
+$$
+
+非常接近，误差相对较小。所以极值问题提供了研究均匀随机问题的有效工具：通过计算简单的上下界，我们可以在不穷举所有组合的情况下，得到复杂问题的精确范围和良好近似。
 
 | $n$ | $\mathbb{E}[M_n^{\min}]$ | $\mathbb{E}[C_n]$ | $\mathbb{E}[M_n^{\max}]$ | 相对位置 |
 | --- | ------------------------ | ----------------- | ------------------------ | -------- |
@@ -2235,15 +2491,8 @@ $$\min_{I \in \mathcal{S}_n} |I| \le \frac{\sum_{I \in \mathcal{S}_n} |I|}{|\mat
 | 8   | $1.526$                  | $2.219$           | $2.877$                  | $51.3\%$ |
 | 10  | $1.453$                  | $2.454$           | $3.386$                  | $51.8\%$ |
 
-因此，可以用以下公式**近似估计** $\mathbb{E}[C_n]$：
-
-$$\mathbb{E}[C_n] \approx \frac{\mathbb{E}[M_n^{\min}] + \mathbb{E}[M_n^{\max}]}{2}$$
-
-这个近似的优势在于：
-
-1. 只需计算两个有限状态问题
-2. 计算复杂度较低
-3. 给出的范围是**精确**的，真实值必然落在其中
+需要强调的是，这一现象目前仅是**经验性**的数值观察。均匀随机选择可行子集所诱导的牌数分布，取决于不同大小子集在 $\mathcal S_n$ 中的数量分布，
+该分布并无显然的对称性保证。
 
 ---
 
@@ -2252,12 +2501,10 @@ $$\mathbb{E}[C_n] \approx \frac{\mathbb{E}[M_n^{\min}] + \mathbb{E}[M_n^{\max}]}
 | 问题           | 状态数                                   | 时间复杂度                                                       | 空间复杂度                                       | 封闭形式 | 方法        |
 | -------------- | ---------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------ | -------- | ----------- |
 | 原问题（概率） | $\mathcal{O}(2^{T+1})$                   | $\mathcal{O}(n \cdot 2^{T+1} \cdot m)$                           | $\mathcal{O}(2^{T+1})$                           | 存在     | Bitmask DP  |
-| 极值问题       | $\mathcal{O}(2^{T+1})$                   | $\mathcal{O}(n \cdot 2^{T+1} \cdot m \cdot T)$                   | $\mathcal{O}(2^{T+1} \cdot T)$                   | 存在     | 极值追踪 DP |
+| 极值问题       | $\mathcal{O}(2^{T+1})$                   | $\mathcal{O}(n\cdot \lvert \Omega_T \rvert \cdot m\cdot T)$      | $\mathcal{O}( \lvert \Omega_T \rvert )$          | 存在     | 极值追踪 DP |
 | 均匀随机       | $\mathcal{O}\left(\binom{n+T}{T}\right)$ | $\mathcal{O}\left(\binom{n+T}{T} \cdot n \cdot m \cdot T\right)$ | $\mathcal{O}\left(\binom{n+T}{T} \cdot T\right)$ | 不太可能 | 夹逼近似    |
 
 其中 $T=13$（目标和），$m=13$（牌值范围）。
-
-极值问题提供了研究均匀随机问题的有效工具：通过计算简单的上下界，我们可以在不穷举所有组合的情况下，得到复杂问题的精确范围和良好近似。
 
 ## 脚注
 
