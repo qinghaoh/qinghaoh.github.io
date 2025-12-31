@@ -1212,7 +1212,7 @@ $$ \boxed{\operatorname{Var}(K) = \frac{399322010}{815730721} \approxeq 0.4895} 
 
 **资援**：出牌阶段限一次，你可以将任意张点数之和为13的手牌交给一名其他角色，然后该角色回复1点体力。
 
-下面研究在手牌数为 $X$ 的情况下，可以发动**资援**的概率。这是典型的NP完备（NP-Complete）的子集和问题（[Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)）。程序如下：
+下面研究在手牌数为 $X$ 的情况下，可以发动**资援**的概率。这是典型的NP完备（NP-Complete）的子集和问题（[Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)）。但在手牌数和目标和都固定的情况下，存在多项式时间的算法，其程序如下：
 
 ```python
 from collections import defaultdict
@@ -1304,7 +1304,7 @@ def subset_sum_probability(n, target=13, max_value=13):
     return numerator // g, denominator // g
 ```
 
-该程序的时间复杂度为 $\mathcal{O}(n \cdot 2^{T+1} \cdot m)$，空间复杂度为 $\mathcal{O}(2^{T+1} \cdot m)$。其中 $T$ 为目标和（$13$），$m$为卡牌最大值（$13$）。由于计算量大，我们只计算 $0 < X \le 10$ 的情况：
+该程序的时间复杂度为 $\mathcal{O}(n \cdot 2^{T+1} \cdot m)$，空间复杂度为 $\mathcal{O}(2^{T+1})$。其中 $T$ 为目标和（$13$），$m$为卡牌最大值（$13$）。由于计算量大，我们只计算 $0 < X \le 10$ 的情况：
 
 ```text
 1
@@ -2022,6 +2022,242 @@ k     #(K >= k)    P(K >= k)    #(K = k)     P(K = k)
 3     8600         0.301110     7885         0.276076
 4     715          0.025034     715          0.025034
 ```
+
+### **资援**牌数期望问题
+
+现在我们进一步研究：**在能够发动资援时，交出的牌数期望是多少？**
+
+考虑两种策略：
+
+- **最大化策略**：在所有和为13的组合中，选择牌数**最多**的组合
+- **最小化策略**：在所有和为13的组合中，选择牌数**最少**的组合
+
+例如，手牌为 $\{1, 1, 11, 12, 13\}$ 时，和为13的组合有：
+- $\{13\}$（1张牌）
+- $\{1, 12\}$（2张牌，有两种选法）
+- $\{1, 1, 11\}$（3张牌）
+
+最大化策略选择 $\{1, 1, 11\}$，交出3张牌；最小化策略选择 $\{13\}$，交出1张牌。
+
+> **极值牌数问题**：在 $n$ 张随机手牌的情况下，选择牌数极值（最大或最小）的和为13组合，交出牌数的数学期望是多少？
+
+设 $X_1, X_2, \ldots, X_n$ 为独立同分布随机变量，$X_i \sim \mathrm{Unif}\{1, 2, \ldots, 13\}$。
+
+定义**可行子集族**：
+$$\mathcal{S}_n := \left\{I \subseteq \{1,\ldots,n\} : I \neq \varnothing,\ \sum_{i \in I} X_i = 13\right\}$$
+
+定义**极值牌数**：
+$$M_n^{\max} := \begin{cases} \max_{I \in \mathcal{S}_n} |I| & \text{if } \mathcal{S}_n \neq \varnothing \\ 0 & \text{otherwise} \end{cases}$$
+
+$$M_n^{\min} := \begin{cases} \min_{I \in \mathcal{S}_n} |I| & \text{if } \mathcal{S}_n \neq \varnothing \\ 0 & \text{otherwise} \end{cases}$$
+
+**目标**：计算 $\mathbb{E}[M_n^{\max}]$ 和 $\mathbb{E}[M_n^{\min}]$。
+
+#### 状态定义
+
+与原问题类似，我们用动态规划追踪可达子集和的信息。但这里需要记录的不是"是否可达"，而是"达到该和的极值牌数"。
+
+**状态**：$\mathbf{d} = (d_0, d_1, \ldots, d_{13})$
+
+- 对于**最大化问题**：$d_k$ 表示达到子集和 $k$ 所能使用的**最大**牌数，$-1$ 表示不可达
+- 对于**最小化问题**：$d_k$ 表示达到子集和 $k$ 所需的**最小**牌数，$\infty$ 表示不可达
+
+**状态转移**（加入一张值为 $x$ 的新牌）：
+
+- 最大化：$$ d'_k = \max(d_k, d_{k-x} + 1) $$
+- 最小化：$$ d'_k = \min(d_k, d_{k-x} + 1) $$
+
+**关键性质**：状态空间是**有限**的！
+
+- 对于最大化：$d_k \in \{-1, 0, 1, \ldots, k\}$，因为和为 $k$ 最多用 $k$ 张点数为1的牌
+- 对于最小化：$d_k \in \{1, 2, \ldots, k, \infty\}$，同理
+
+因此，这仍然是有限状态时齐马尔可夫链，存在封闭形式。
+
+#### 代码及计算结果
+
+在原代码基础上进行最小改动。核心变化是：将 bitmask 替换为记录极值牌数的元组。
+
+```python
+from collections import defaultdict
+from math import gcd
+
+def extremal_cards_probability(n, target=13, max_value=13, mode='max'):
+    """
+    Computes the expected number of cards when choosing the subset
+    with extremal (max or min) cardinality that sums to `target`.
+
+    Args:
+        n: Number of cards in hand
+        target: Target sum (default 13)
+        max_value: Maximum card value (default 13)
+        mode: 'max' for maximum cardinality, 'min' for minimum cardinality
+
+    Returns:
+        (numerator, denominator): Reduced fraction of expected value
+    """
+
+    WIDTH = target + 1
+
+    if mode == 'max':
+        # d[k] = max cards to reach sum k, -1 means unreachable
+        UNREACHABLE = -1
+        initial_state = tuple([0] + [UNREACHABLE] * target)
+
+        def update(old_val, new_val):
+            if old_val == UNREACHABLE:
+                return new_val
+            return max(old_val, new_val)
+
+        def is_reachable(val):
+            return val >= 0
+    else:  # mode == 'min'
+        # d[k] = min cards to reach sum k, n+1 means unreachable
+        UNREACHABLE = n + 1
+        initial_state = tuple([0] + [UNREACHABLE] * target)
+
+        def update(old_val, new_val):
+            return min(old_val, new_val)
+
+        def is_reachable(val):
+            return val <= n
+
+    # DP: dp[state] = count of sequences reaching this state
+    dp = defaultdict(int)
+    dp[initial_state] = 1
+
+    # Main DP loop: add one card at a time
+    for _ in range(n):
+        new_dp = defaultdict(int)
+
+        for state, count in dp.items():
+            for x in range(1, max_value + 1):
+                new_state = list(state)
+                # Update from high to low to avoid using same card twice
+                for k in range(target, x - 1, -1):
+                    if is_reachable(state[k - x]):
+                        new_state[k] = update(new_state[k], state[k - x] + 1)
+                new_dp[tuple(new_state)] += count
+
+        dp = new_dp
+
+    # Compute expected value
+    numerator = sum(
+        state[target] * count
+        for state, count in dp.items()
+        if is_reachable(state[target])
+    )
+
+    denominator = max_value ** n
+
+    g = gcd(numerator, denominator)
+    return numerator // g, denominator // g
+```
+
+计算结果（以$n \le 10$为例）：
+
+| $n$ | $\mathbb{E}[M_n^{\min}]$       | $\mathbb{E}[M_n^{\max}]$       | 区间宽度 |
+| --- | ------------------------------ | ------------------------------ | -------- |
+| 1   | $\frac{1}{13} \approx 0.077$   | $\frac{1}{13} \approx 0.077$   | $0$      |
+| 2   | $\frac{49}{169} \approx 0.290$ | $\frac{49}{169} \approx 0.290$ | $0$      |
+| 3   | $0.664$                        | $0.680$                        | $0.016$  |
+| 4   | $1.109$                        | $1.210$                        | $0.102$  |
+| 5   | $1.418$                        | $1.744$                        | $0.326$  |
+| 6   | $1.533$                        | $2.194$                        | $0.661$  |
+| 7   | $1.549$                        | $2.565$                        | $1.016$  |
+| 8   | $1.526$                        | $2.877$                        | $1.351$  |
+| 9   | $1.490$                        | $3.147$                        | $1.657$  |
+| 10  | $1.453$                        | $3.386$                        | $1.933$  |
+
+![资援期望](/assets/img/sgs/ziyuan2.png)
+
+1. **最大化策略** $\mathbb{E}[M_n^{\max}]$：随 $n$ 单调递增，渐近线性增长。手牌越多，越可能找到牌数更多的组合。
+
+2. **最小化策略** $\mathbb{E}[M_n^{\min}]$：先增后减，最终趋于常数约 $1$。这是因为当手牌足够多时，几乎必然抽到一张点数为13的牌，从而最小组合就是单张牌。
+
+3. **区间宽度**：随 $n$ 单调递增，反映了组合多样性的增加。
+
+由于状态空间有限且与 $n$ 无关，这两个问题都满足有限阶线性递推关系，生成函数是有理函数。
+
+---
+
+#### 均匀随机选择组合
+
+如果我们不总是选择极值组合，而是在所有可行组合中**均匀随机**选择一个，期望交出多少张牌？
+
+例如，手牌 $\{1, 1, 12, 13\}$ 时，可行组合有：
+- $\{1, 12\}$（用第一个1）：2张
+- $\{1, 12\}$（用第二个1）：2张
+- $\{13\}$：1张
+
+均匀随机选择，期望牌数为 $\frac{2 + 2 + 1}{3} = \frac{5}{3}$。
+
+定义 $$ N_n := \lvert \mathcal{S}_n \rvert $$ 为和为13的子集个数，$T_n := \sum_{I \in \mathcal{S}_n}\lvert I\rvert$ 为这些子集的总牌数。
+
+若 $N_n > 0$，从 $\mathcal{S}_n$ 中均匀随机选取 $I^*$，则：
+
+$$C_n := |I^*|$$
+
+**目标**：计算 $\mathbb{E}[C_n] = \mathbb{E}\left[\frac{T_n}{N_n} \cdot \mathbf{1}_{N_n > 0}\right]$
+
+---
+
+要计算 $\mathbb{E}[T_n / N_n]$，我们需要追踪 $(N_n, T_n)$ 的**联合分布**，即对每个和 $k$，记录：
+- $c_k$：和为 $k$ 的子集**个数**
+- $t_k$：这些子集的**总牌数**
+
+状态表示为 $((c_0, t_0), (c_1, t_1), \ldots, (c_{13}, t_{13}))$。
+
+$c_k$ 的取值范围是 $\{0, 1, \ldots, 2^n\}$，随 $n$ 指数增长。这意味着状态空间大小**不再有限**，不能用 bitmask 方法。
+
+由于状态空间无限，这**不是有限状态马尔可夫链**，因此：
+- 不保证存在有限阶线性递推
+- 生成函数可能不是有理函数
+- 不太可能有简单的封闭形式
+
+**用极值问题界定均匀随机问题**
+
+尽管此问题难以精确求解，但我们可以利用极值问题给出上下界。
+
+**定理**（夹逼不等式）：
+$$\mathbb{E}[M_n^{\min}] \le \mathbb{E}[C_n] \le \mathbb{E}[M_n^{\max}]$$
+
+**证明**：对任意手牌配置，若 $\mathcal{S}_n \neq \varnothing$，则：
+$$\min_{I \in \mathcal{S}_n} |I| \le \frac{\sum_{I \in \mathcal{S}_n} |I|}{|\mathcal{S}_n|} \le \max_{I \in \mathcal{S}_n} |I|$$
+
+这是因为算术平均必然介于最小值和最大值之间。对所有手牌配置取期望，不等式保持。$\square$
+
+数值计算表明，$\mathbb{E}[C_n]$ 始终位于区间 $[\mathbb{E}[M_n^{\min}], \mathbb{E}[M_n^{\max}]$ 的**约50%位置**：
+
+| $n$ | $\mathbb{E}[M_n^{\min}]$ | $\mathbb{E}[C_n]$ | $\mathbb{E}[M_n^{\max}]$ | 相对位置 |
+| --- | ------------------------ | ----------------- | ------------------------ | -------- |
+| 5   | $1.418$                  | $1.582$           | $1.744$                  | $50.2\%$ |
+| 8   | $1.526$                  | $2.219$           | $2.877$                  | $51.3\%$ |
+| 10  | $1.453$                  | $2.454$           | $3.386$                  | $51.8\%$ |
+
+因此，可以用以下公式**近似估计** $\mathbb{E}[C_n]$：
+
+$$\mathbb{E}[C_n] \approx \frac{\mathbb{E}[M_n^{\min}] + \mathbb{E}[M_n^{\max}]}{2}$$
+
+这个近似的优势在于：
+
+1. 只需计算两个有限状态问题
+2. 计算复杂度较低
+3. 给出的范围是**精确**的，真实值必然落在其中
+
+---
+
+#### 总结
+
+| 问题           | 状态数                                   | 时间复杂度                                                       | 空间复杂度                                       | 封闭形式 | 方法        |
+| -------------- | ---------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------ | -------- | ----------- |
+| 原问题（概率） | $\mathcal{O}(2^{T+1})$                   | $\mathcal{O}(n \cdot 2^{T+1} \cdot m)$                           | $\mathcal{O}(2^{T+1})$                           | 存在     | Bitmask DP  |
+| 极值问题       | $\mathcal{O}(2^{T+1})$                   | $\mathcal{O}(n \cdot 2^{T+1} \cdot m \cdot T)$                   | $\mathcal{O}(2^{T+1} \cdot T)$                   | 存在     | 极值追踪 DP |
+| 均匀随机       | $\mathcal{O}\left(\binom{n+T}{T}\right)$ | $\mathcal{O}\left(\binom{n+T}{T} \cdot n \cdot m \cdot T\right)$ | $\mathcal{O}\left(\binom{n+T}{T} \cdot T\right)$ | 不太可能 | 夹逼近似    |
+
+其中 $T=13$（目标和），$m=13$（牌值范围）。
+
+极值问题提供了研究均匀随机问题的有效工具：通过计算简单的上下界，我们可以在不穷举所有组合的情况下，得到复杂问题的精确范围和良好近似。
 
 ## 脚注
 
