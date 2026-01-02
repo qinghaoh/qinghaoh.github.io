@@ -1219,12 +1219,19 @@ $$ \boxed{\operatorname{Var}(K) = \frac{399322010}{815730721} \approxeq 0.4895} 
 from collections import defaultdict
 from math import gcd
 
+
 def subset_sum_probability(n, target=13, max_value=13):
     """
     Computes the exact probability that among n i.i.d. draws from {1,2,...,max_value},
     there exists a nonempty subset whose sum equals `target`.
 
-    The result is returned as a reduced fraction (numerator, denominator).
+    Args:
+        n: Number of draws
+        target: Target sum (default 13)
+        max_value: Maximum value per draw (default 13)
+
+    Returns:
+        (numerator, denominator): Reduced fraction representing the probability
 
     Core idea:
     - Track which subset sums (0..target) are achievable so far using a bitmask.
@@ -1232,54 +1239,34 @@ def subset_sum_probability(n, target=13, max_value=13):
     """
 
     # We only care about subset sums from 0 to `target`
-    # Bit i in the mask means: "sum i is achievable"
-    WIDTH = target + 1                     # number of bits we care about
-    FULL_MASK = (1 << WIDTH) - 1           # mask with bits 0..target set to 1
-    TARGET_BIT = 1 << target               # bit representing sum == target
+    # Bit i in the mask means "sum i is achievable"
+    WIDTH = target + 1
+    FULL_MASK = (1 << WIDTH) - 1
+    TARGET_BIT = 1 << target
 
-    # ------------------------------------------------------------------
     # Precompute state transitions
-    #
-    # next_mask[mask][x] = new mask after adding value x to the multiset
-    #
-    # Transition rule:
-    #   new_sums = old_sums ∪ (old_sums + x)
-    #
-    # In bit operations:
-    #   new_mask = mask | (mask << x)
-    # and then we truncate to keep only bits <= target
-    # ------------------------------------------------------------------
+    # next_mask[mask][x] = new mask after adding value x
+    # Transition: new_sums = old_sums ∪ (old_sums + x)
     next_mask = [[0] * (max_value + 1) for _ in range(FULL_MASK + 1)]
     for mask in range(FULL_MASK + 1):
         for x in range(1, max_value + 1):
             shifted = (mask << x) & FULL_MASK
             next_mask[mask][x] = mask | shifted
 
-    # ------------------------------------------------------------------
-    # DP array:
-    # dp[mask] = number of ordered sequences (x1,...,xk)
-    #            that produce exactly this subset-sum mask
-    #
-    # Initially, before seeing any numbers:
-    # - Only sum 0 is achievable
-    # - mask = 1 << 0 = 1
-    # ------------------------------------------------------------------
+    # DP state: mask where bit k means "sum k is achievable"
+    # dp[mask] = count of sequences producing this mask
+    # Initially only sum 0 is achievable (mask = 1)
     dp = [0] * (FULL_MASK + 1)
     dp[1] = 1
 
-    # ------------------------------------------------------------------
     # Main DP loop: add one draw at a time
-    # Each step corresponds to drawing one more number Xi ∈ {1..max_value}
-    # ------------------------------------------------------------------
     for _ in range(n):
         new_dp = [0] * (FULL_MASK + 1)
 
-        # For each current state (mask) and its count
         for mask, count in enumerate(dp):
             if count == 0:
                 continue
 
-            # Try all possible next values x
             row = next_mask[mask]
             for x in range(1, max_value + 1):
                 new_mask = row[x]
@@ -1287,20 +1274,14 @@ def subset_sum_probability(n, target=13, max_value=13):
 
         dp = new_dp
 
-    # ------------------------------------------------------------------
-    # Count successful sequences:
-    # those whose final mask has the TARGET_BIT set,
-    # meaning "there exists a subset summing to target"
-    # ------------------------------------------------------------------
+    # Count successful sequences: those with TARGET_BIT set
     numerator = sum(
         count for mask, count in enumerate(dp)
         if mask & TARGET_BIT
     )
 
-    # Total number of possible sequences
     denominator = max_value ** n
 
-    # Reduce fraction
     g = gcd(numerator, denominator)
     return numerator // g, denominator // g
 ```
@@ -1781,7 +1762,7 @@ The y_j variables track multiplicities, enabling:
 2. Direct computation of labeling coefficient Lab_n = n! / prod(m_j!)
 """
 
-from collections import defaultdict
+from collections import defaultdict, Counter
 from math import factorial
 from itertools import combinations_with_replacement
 
@@ -1789,6 +1770,16 @@ from itertools import combinations_with_replacement
 def multiply_poly(p1, p2, c, max_u, max_z):
     """
     Multiply two polynomials p1 * p2.
+
+    Args:
+        p1: First polynomial
+        p2: Second polynomial
+        c: Number of card values tracked in y_tuple
+        max_u: Maximum u power to keep
+        max_z: Maximum z power to keep
+
+    Returns:
+        Product polynomial as dict {(u_power, z_power, y_tuple): coefficient}
 
     Polynomial representation: {(u_power, z_power, y_tuple): coefficient}
     where y_tuple = (m_1, ..., m_c) records multiplicity of each card value.
@@ -1808,7 +1799,14 @@ def at_least_one_geometric(j, c, max_u, max_z):
     """
     Compute u*y_j*z^j / (1 - u*y_j*z^j) truncated.
 
-    This represents "at least one card with value j".
+    Args:
+        j: Card value
+        c: Number of card values tracked in y_tuple
+        max_u: Maximum u power to keep
+        max_z: Maximum z power to keep
+
+    Returns:
+        Polynomial representing "at least one card with value j"
     """
     result = {}
     for t in range(1, max_u + 1):
@@ -1823,7 +1821,14 @@ def geometric_series(j, c, max_u, max_z):
     """
     Compute 1 / (1 - u*y_j*z^j) truncated.
 
-    This represents "any number (including 0) of cards with value j".
+    Args:
+        j: Card value
+        c: Number of card values tracked in y_tuple
+        max_u: Maximum u power to keep
+        max_z: Maximum z power to keep
+
+    Returns:
+        Polynomial representing "any number (including 0) of cards with value j"
     """
     result = {}
     for t in range(0, max_u + 1):
@@ -1838,7 +1843,13 @@ def compute_theta(c, k, max_z=13):
     """
     Compute Theta_k(c) using generating functions.
 
-    Returns: list of multisets (as sorted tuples) where A_k = c and sum <= max_z.
+    Args:
+        c: The value that A_k must equal
+        k: Number of elements in the subset
+        max_z: Maximum sum allowed (default 13)
+
+    Returns:
+        List of multisets (as sorted tuples) where A_k = c and sum <= max_z
     """
     max_u = k
 
@@ -1865,9 +1876,15 @@ def compute_theta(c, k, max_z=13):
 
 def labeling_coefficient(multiset, n):
     """
-    Compute Lab_n = n! / prod(m_j!)
+    Compute Lab_n = n! / prod(m_j!).
+
+    Args:
+        multiset: Tuple of card values
+        n: Total number of cards
+
+    Returns:
+        Number of ways to arrange n cards with given multiset structure
     """
-    from collections import Counter
     counter = Counter(multiset)
     result = factorial(n)
     for m in counter.values():
@@ -1878,6 +1895,14 @@ def labeling_coefficient(multiset, n):
 def compute_K_ge_k(k, n_cards=4, max_z=13):
     """
     Compute #(K >= k) for n_cards total cards.
+
+    Args:
+        k: Minimum subset size
+        n_cards: Total number of cards (default 4)
+        max_z: Maximum sum allowed (default 13)
+
+    Returns:
+        (total_count, details_by_c): Total count and breakdown by c value
     """
     total_count = 0
     details_by_c = {}
@@ -1906,20 +1931,21 @@ def compute_K_ge_k(k, n_cards=4, max_z=13):
     return total_count, details_by_c
 
 
-# =============================================================================
-# Main computation
-# =============================================================================
+def print_detailed_results(k):
+    """
+    Print detailed breakdown for a specific k value.
 
-print("=" * 70)
-print("Computing #(K >= k) using Generating Functions")
-print("=" * 70)
+    Args:
+        k: The k value to analyze
 
-for k in [2, 3]:
-    print(f"\n{'=' * 70}")
-    print(f"K >= {k}  (A_1 + A_2 + ... + A_{k} <= 13)")
-    print(f"{'=' * 70}")
-
+    Returns:
+        The computed result for #(K >= k)
+    """
     result, details = compute_K_ge_k(k)
+
+    print("=" * 70)
+    print(f"K >= {k}  (A_1 + A_2 + ... + A_{k} <= 13)")
+    print("=" * 70)
 
     print(f"\n[Breakdown by A_{k} = c]")
     print(f"{'c':<4} {'|Theta|':<8} {'Contribution':<14} {'Cumulative':<12} Theta_{k}(c)")
@@ -1935,26 +1961,39 @@ for k in [2, 3]:
     print(f"\n#(K >= {k}) = {result}")
     print(f"P(K >= {k}) = {result}/28561 = {result/28561:.6f}")
 
-# =============================================================================
-# Summary
-# =============================================================================
+    return result
 
-print("\n" + "=" * 70)
-print("Summary")
-print("=" * 70)
 
-k2, _ = compute_K_ge_k(2)
-k3, _ = compute_K_ge_k(3)
-k4, _ = compute_K_ge_k(4)
+def print_summary():
+    """Print summary table of all k values."""
+    k2, _ = compute_K_ge_k(2)
+    k3, _ = compute_K_ge_k(3)
+    k4, _ = compute_K_ge_k(4)
 
-print(f"\n{'k':<5} {'#(K >= k)':<12} {'P(K >= k)':<12} {'#(K = k)':<12} {'P(K = k)':<12}")
-print("-" * 55)
+    print("=" * 70)
+    print("Summary")
+    print("=" * 70)
 
-total = 13**4
-print(f"{1:<5} {total:<12} {total/total:<12.6f} {total - k2:<12} {(total-k2)/total:<12.6f}")
-print(f"{2:<5} {k2:<12} {k2/total:<12.6f} {k2 - k3:<12} {(k2-k3)/total:<12.6f}")
-print(f"{3:<5} {k3:<12} {k3/total:<12.6f} {k3 - k4:<12} {(k3-k4)/total:<12.6f}")
-print(f"{4:<5} {k4:<12} {k4/total:<12.6f} {k4:<12} {k4/total:<12.6f}")
+    total = 13**4
+    print(f"\n{'k':<5} {'#(K >= k)':<12} {'P(K >= k)':<12} {'#(K = k)':<12} {'P(K = k)':<12}")
+    print("-" * 55)
+    print(f"{1:<5} {total:<12} {total/total:<12.6f} {total - k2:<12} {(total-k2)/total:<12.6f}")
+    print(f"{2:<5} {k2:<12} {k2/total:<12.6f} {k2 - k3:<12} {(k2-k3)/total:<12.6f}")
+    print(f"{3:<5} {k3:<12} {k3/total:<12.6f} {k3 - k4:<12} {(k3-k4)/total:<12.6f}")
+    print(f"{4:<5} {k4:<12} {k4/total:<12.6f} {k4:<12} {k4/total:<12.6f}")
+
+
+if __name__ == "__main__":
+    print("=" * 70)
+    print("Computing #(K >= k) using Generating Functions")
+    print("=" * 70)
+
+    for k in [2, 3]:
+        print()
+        print_detailed_results(k)
+
+    print()
+    print_summary()
 ```
 
 计算结果：
@@ -2080,6 +2119,7 @@ $$M_n^{\min} := \begin{cases} \min_{I \in \mathcal{S}_n} |I| & \text{if } \mathc
 from collections import defaultdict
 from math import gcd
 
+
 def extremal_cards_probability(n, target=13, max_value=13, mode='max'):
     """
     Computes the expected number of cards when choosing the subset
@@ -2093,12 +2133,19 @@ def extremal_cards_probability(n, target=13, max_value=13, mode='max'):
 
     Returns:
         (numerator, denominator): Reduced fraction of expected value
+
+    Core idea:
+    - Track the extremal (max or min) number of cards needed to reach each sum.
+    - Use dynamic programming over states, where each state records
+      the best cardinality to achieve each possible sum from 0 to target.
     """
 
     WIDTH = target + 1
 
+    # Mode-specific configuration
+    # For 'max': find largest subset, UNREACHABLE = -1
+    # For 'min': find smallest subset, UNREACHABLE = n+1
     if mode == 'max':
-        # d[k] = max cards to reach sum k, -1 means unreachable
         UNREACHABLE = -1
         initial_state = tuple([0] + [UNREACHABLE] * target)
 
@@ -2110,7 +2157,6 @@ def extremal_cards_probability(n, target=13, max_value=13, mode='max'):
         def is_reachable(val):
             return val >= 0
     else:  # mode == 'min'
-        # d[k] = min cards to reach sum k, n+1 means unreachable
         UNREACHABLE = n + 1
         initial_state = tuple([0] + [UNREACHABLE] * target)
 
@@ -2120,7 +2166,8 @@ def extremal_cards_probability(n, target=13, max_value=13, mode='max'):
         def is_reachable(val):
             return val <= n
 
-    # DP: dp[state] = count of sequences reaching this state
+    # DP state: tuple where state[k] = extremal card count to reach sum k
+    # dp[state] = count of sequences producing this state
     dp = defaultdict(int)
     dp[initial_state] = 1
 
@@ -2131,15 +2178,17 @@ def extremal_cards_probability(n, target=13, max_value=13, mode='max'):
         for state, count in dp.items():
             for x in range(1, max_value + 1):
                 new_state = list(state)
-                # Update from high to low to avoid using same card twice
+
+                # Update high to low to avoid reusing the same card
                 for k in range(target, x - 1, -1):
                     if is_reachable(state[k - x]):
                         new_state[k] = update(new_state[k], state[k - x] + 1)
+
                 new_dp[tuple(new_state)] += count
 
         dp = new_dp
 
-    # Compute expected value
+    # Compute expected value: sum of (cardinality × count) for reachable states
     numerator = sum(
         state[target] * count
         for state, count in dp.items()
