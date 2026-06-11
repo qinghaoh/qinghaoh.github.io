@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delta, ITM, ATM & OTM Explainer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f5f5f3;
+      --text: #1a1a18;
+      --text-secondary: #5f5e5a;
+      --border: rgba(0,0,0,0.12);
+      --border-secondary: rgba(0,0,0,0.2);
+      --radius: 8px;
+      --radius-lg: 12px;
+      --teal: #1D9E75;
+      --teal-light: #E1F5EE;
+      --teal-dark: #085041;
+      --coral: #D85A30;
+      --coral-light: #FAECE7;
+      --amber-light: #FAEEDA;
+      --amber-dark: #633806;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1c1a;
+        --bg-secondary: #252523;
+        --text: #e8e7e2;
+        --text-secondary: #888780;
+        --border: rgba(255,255,255,0.1);
+        --border-secondary: rgba(255,255,255,0.18);
+        --teal-light: #04342C;
+        --teal-dark: #9FE1CB;
+        --coral-light: #4A1B0C;
+        --amber-light: #412402;
+        --amber-dark: #FAC775;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container { max-width: 720px; margin: 0 auto; }
+
+    h1 { font-size: 22px; font-weight: 500; margin-bottom: 0.4rem; }
+    .subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.6; }
+
+    .section { margin-bottom: 2rem; }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 1rem;
+      padding-bottom: 6px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .ctrl-row { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; flex-wrap: wrap; }
+    .ctrl-row label { font-size: 13px; color: var(--text-secondary); width: 120px; flex-shrink: 0; }
+    .ctrl-row input[type=range] { flex: 1; min-width: 120px; accent-color: var(--teal); cursor: pointer; }
+    .ctrl-row span { font-size: 14px; font-weight: 500; min-width: 48px; text-align: right; color: var(--text); }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+    .card { border-radius: var(--radius); padding: 12px 14px; border: 0.5px solid var(--border); background: var(--bg-secondary); }
+    .card-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+    .card-val { font-size: 19px; font-weight: 500; }
+    .card-sub { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+
+    .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+    .badge-itm { background: var(--teal-light); color: var(--teal-dark); }
+    .badge-atm { background: var(--amber-light); color: var(--amber-dark); }
+    .badge-otm { background: var(--coral-light); color: #712B13; }
+
+    .chart-wrap { position: relative; width: 100%; height: 240px; margin-bottom: 0.75rem; }
+
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 0.75rem; }
+    .leg { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+    .swatch { width: 20px; height: 3px; border-radius: 2px; }
+
+    .insight {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding: 10px 14px;
+      border-left: 3px solid var(--teal);
+      margin-bottom: 1rem;
+    }
+
+    .divider { height: 0.5px; background: var(--border); margin: 2rem 0; }
+
+    .example-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .ex-card { border: 0.5px solid var(--border); border-radius: var(--radius); padding: 12px; background: var(--bg); }
+    .ex-title { font-size: 12px; font-weight: 500; margin-bottom: 8px; }
+    .ex-row { font-size: 12px; color: var(--text-secondary); line-height: 1.9; }
+    .ex-row b { color: var(--text); font-weight: 500; }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 0.5px solid var(--border);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 480px) {
+      .example-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Delta, ITM, ATM & OTM Explainer</h1>
+  <p class="subtitle">Drag the sliders to see how the stock price, strike price, and time to expiry affect Delta and option moneyness in real time.</p>
+
+  <div class="section">
+    <div class="section-title">Live Delta calculator</div>
+
+    <div class="ctrl-row">
+      <label>Stock price S</label>
+      <input type="range" min="140" max="260" step="1" value="200" id="spot" oninput="update()">
+      <span id="spot-out">$200</span>
+    </div>
+    <div class="ctrl-row">
+      <label>Strike price K</label>
+      <input type="range" min="140" max="260" step="1" value="200" id="strike" oninput="update()">
+      <span id="strike-out">$200</span>
+    </div>
+    <div class="ctrl-row">
+      <label>Days to expiry</label>
+      <input type="range" min="1" max="180" step="1" value="60" id="dte" oninput="update()">
+      <span id="dte-out">60 days</span>
+    </div>
+
+    <div class="cards" id="cards"></div>
+
+    <div class="legend">
+      <div class="leg"><div class="swatch" style="background:#1D9E75"></div><span>Call Delta</span></div>
+      <div class="leg"><div class="swatch" style="background:#D85A30;"></div><span>|Put Delta| (absolute value)</span></div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="deltaChart" role="img" aria-label="Delta curve chart showing Call and Put Delta values across a range of stock prices. The S-shaped curves cross at approximately Delta 0.5 when the stock price equals the strike price.">Call Delta rises from near 0 (deep OTM) to near 1 (deep ITM). Put Delta mirrors it below zero.</canvas>
+    </div>
+
+    <div class="insight" id="insight"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-title">Side-by-side comparison (K = $200, 60 days, IV = 30%)</div>
+    <div class="example-grid" id="examples"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-title">Market maker Delta hedging</div>
+
+    <div class="ctrl-row">
+      <label>Contracts sold</label>
+      <input type="range" min="10" max="500" step="10" value="100" id="contracts" oninput="updateHedge()">
+      <span id="contracts-out">100</span>
+    </div>
+
+    <div class="cards" id="hedge-cards"></div>
+    <div class="insight" id="hedge-insight"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-title">Key rules to remember</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+      <div class="ex-card">
+        <div class="ex-title">ITM — In the Money</div>
+        <div class="ex-row">Call: S &gt; K → has intrinsic value</div>
+        <div class="ex-row">Put: S &lt; K → has intrinsic value</div>
+        <div class="ex-row">Delta closer to <b>1.0</b> (Call) or <b>−1.0</b> (Put)</div>
+        <div class="ex-row">High exercise probability</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-title">ATM — At the Money</div>
+        <div class="ex-row">S ≈ K → intrinsic value ≈ $0</div>
+        <div class="ex-row">All value is time value</div>
+        <div class="ex-row">Delta ≈ <b>±0.5</b></div>
+        <div class="ex-row">~50% exercise probability</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-title">OTM — Out of the Money</div>
+        <div class="ex-row">Call: S &lt; K → intrinsic value = $0</div>
+        <div class="ex-row">Put: S &gt; K → intrinsic value = $0</div>
+        <div class="ex-row">Delta closer to <b>0</b></div>
+        <div class="ex-row">Low exercise probability</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Built for learning purposes · implied volatility fixed at 30% · prices are illustrative only</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+let deltaChart;
+
+function normCDF(x) {
+  const t = 1 / (1 + 0.2316419 * Math.abs(x));
+  const d = 0.3989423 * Math.exp(-x * x / 2);
+  const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.7814779 + t * (-1.8212560 + t * 1.3302744))));
+  return x >= 0 ? 1 - p : p;
+}
+
+function bsDelta(S, K, T, sigma, type) {
+  if (T <= 0) return type === 'call' ? (S > K ? 1 : 0) : (S < K ? -1 : 0);
+  const d1 = (Math.log(S / K) + 0.5 * sigma * sigma * T) / (sigma * Math.sqrt(T));
+  return type === 'call' ? normCDF(d1) : normCDF(d1) - 1;
+}
+
+function getStatus(S, K) {
+  const diff = S - K;
+  if (Math.abs(diff) <= 2) return 'ATM';
+  return diff > 0 ? 'ITM' : 'OTM';
+}
+
+function statusBadge(s) {
+  if (s === 'ITM') return '<span class="badge badge-itm">ITM</span>';
+  if (s === 'ATM') return '<span class="badge badge-atm">ATM</span>';
+  return '<span class="badge badge-otm">OTM</span>';
+}
+
+function update() {
+  const S = parseInt(document.getElementById('spot').value);
+  const K = parseInt(document.getElementById('strike').value);
+  const dte = parseInt(document.getElementById('dte').value);
+  document.getElementById('spot-out').textContent = '$' + S;
+  document.getElementById('strike-out').textContent = '$' + K;
+  document.getElementById('dte-out').textContent = dte + ' days';
+
+  const T = dte / 365;
+  const sigma = 0.3;
+  const callDelta = bsDelta(S, K, T, sigma, 'call');
+  const putDelta = bsDelta(S, K, T, sigma, 'put');
+  const status = getStatus(S, K);
+  const intrinsic = Math.max(S - K, 0);
+
+  document.getElementById('cards').innerHTML = `
+    <div class="card">
+      <div class="card-label">Moneyness (Call)</div>
+      <div class="card-val">${statusBadge(status)}</div>
+      <div class="card-sub">S ${S > K ? '>' : S < K ? '<' : '='} K · intrinsic value $${intrinsic}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Call Delta</div>
+      <div class="card-val" style="color:#0F6E56">${callDelta.toFixed(2)}</div>
+      <div class="card-sub">Stock up $1 → Call up ~$${callDelta.toFixed(2)}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Put Delta</div>
+      <div class="card-val" style="color:#993C1D">${putDelta.toFixed(2)}</div>
+      <div class="card-sub">Stock up $1 → Put down ~$${Math.abs(putDelta).toFixed(2)}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Exercise probability</div>
+      <div class="card-val">~${Math.round(callDelta * 100)}%</div>
+      <div class="card-sub">Approx. from Call Delta</div>
+    </div>
+  `;
+
+  const insightMap = {
+    ITM: `S = $${S}, K = $${K}. The stock price is $${S - K} above the strike — this Call is In the Money (ITM). Intrinsic value = $${intrinsic}. You could exercise right now for a profit. Delta = ${callDelta.toFixed(2)}, close to 1: the option moves almost in lockstep with the stock, and the market prices in a high probability of exercise.`,
+    ATM: `S ≈ K ≈ $${K}. The stock price is right at the strike — this Call is At the Money (ATM). Intrinsic value = $0; all value is time value. Delta ≈ 0.5 is the textbook ATM reading: roughly 50% chance of expiring in the money, and the option is most sensitive to stock price moves.`,
+    OTM: `S = $${S}, K = $${K}. The stock price is $${K - S} below the strike — this Call is Out of the Money (OTM). Intrinsic value = $0; exercising now would mean buying at $${K} what trades at $${S}. Delta = ${callDelta.toFixed(2)}, close to 0: small stock moves barely affect the option price. The premium is pure time value — a bet that the stock recovers before expiry.`,
+  };
+  document.getElementById('insight').textContent = insightMap[status];
+
+  const prices = [];
+  for (let p = 140; p <= 260; p += 2) prices.push(p);
+  const callDeltas = prices.map(p => bsDelta(p, K, T, sigma, 'call'));
+  const putDeltas = prices.map(p => Math.abs(bsDelta(p, K, T, sigma, 'put')));
+
+  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)';
+  const textColor = isDark ? '#888780' : '#5F5E5A';
+
+  const datasets = [
+    { label: 'Call Delta', data: callDeltas, borderColor: '#1D9E75', borderWidth: 2.5, pointRadius: 0, tension: 0.3, fill: false },
+    { label: '|Put Delta|', data: putDeltas, borderColor: '#D85A30', borderWidth: 2.5, pointRadius: 0, tension: 0.3, fill: false, borderDash: [5, 4] },
+    { label: 'Current price', data: prices.map(p => p === S ? 0.5 : null), borderColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)', backgroundColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.25)', pointRadius: 7, pointHoverRadius: 9, showLine: false, type: 'scatter' },
+  ];
+
+  if (deltaChart) {
+    deltaChart.data.labels = prices;
+    deltaChart.data.datasets = datasets;
+    deltaChart.update();
+  } else {
+    deltaChart = new Chart(document.getElementById('deltaChart'), {
+      type: 'line',
+      data: { labels: prices, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: {
+            title: ctx => 'Stock price: $' + ctx[0].parsed.x,
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}`
+          }}
+        },
+        scales: {
+          x: { type: 'linear', min: 140, max: 260,
+            ticks: { color: textColor, font: { size: 11 }, callback: v => '$' + v, stepSize: 20 },
+            grid: { color: gridColor },
+            title: { display: true, text: 'Stock price', color: textColor, font: { size: 12 } }
+          },
+          y: { min: 0, max: 1,
+            ticks: { color: textColor, font: { size: 11 }, stepSize: 0.25 },
+            grid: { color: gridColor },
+            title: { display: true, text: 'Delta (absolute value)', color: textColor, font: { size: 12 } }
+          }
+        }
+      }
+    });
+  }
+
+  updateHedge();
+  updateExamples();
+}
+
+function updateExamples() {
+  const K = 200, T = 60 / 365, sigma = 0.3;
+  const cases = [
+    { label: 'Deep OTM', S: K - 40, desc: 'Stock well below strike' },
+    { label: 'ATM', S: K, desc: 'Stock equals strike' },
+    { label: 'Deep ITM', S: K + 40, desc: 'Stock well above strike' },
+  ];
+  document.getElementById('examples').innerHTML = cases.map(c => {
+    const cd = bsDelta(c.S, K, T, sigma, 'call');
+    const pd = bsDelta(c.S, K, T, sigma, 'put');
+    const iv = Math.max(c.S - K, 0);
+    const st = getStatus(c.S, K);
+    return `<div class="ex-card">
+      <div class="ex-title">${c.label} ${statusBadge(st)}</div>
+      <div class="ex-row">Stock price <b>$${c.S}</b> · Strike <b>$${K}</b></div>
+      <div class="ex-row">Intrinsic value <b>$${iv}</b></div>
+      <div class="ex-row" style="color:#0F6E56">Call Δ <b>${cd.toFixed(2)}</b></div>
+      <div class="ex-row" style="color:#993C1D">Put Δ <b>${pd.toFixed(2)}</b></div>
+      <div class="ex-row">Exercise probability <b>~${Math.round(cd * 100)}%</b></div>
+    </div>`;
+  }).join('');
+}
+
+function updateHedge() {
+  const S = parseInt(document.getElementById('spot').value);
+  const K = parseInt(document.getElementById('strike').value);
+  const dte = parseInt(document.getElementById('dte').value);
+  const n = parseInt(document.getElementById('contracts').value);
+  document.getElementById('contracts-out').textContent = n;
+
+  const T = dte / 365, sigma = 0.3;
+  const delta = bsDelta(S, K, T, sigma, 'call');
+  const shares = Math.round(n * delta);
+  const exposure = (n * delta).toFixed(0);
+
+  document.getElementById('hedge-cards').innerHTML = `
+    <div class="card">
+      <div class="card-label">Call Delta</div>
+      <div class="card-val" style="color:#0F6E56">${delta.toFixed(2)}</div>
+      <div class="card-sub">At current S and K</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Total short exposure</div>
+      <div class="card-val">${n} × ${delta.toFixed(2)} = ${exposure}</div>
+      <div class="card-sub">Equivalent to short ${exposure} shares</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Shares to buy (hedge)</div>
+      <div class="card-val" style="color:#1D9E75">${shares} shares</div>
+      <div class="card-sub">Buys ${shares} shares → Delta = 0</div>
+    </div>
+    <div class="card">
+      <div class="card-label">P&L if stock moves $1</div>
+      <div class="card-val">≈ $0</div>
+      <div class="card-sub">Net flat after hedge</div>
+    </div>
+  `;
+
+  document.getElementById('hedge-insight').textContent =
+    `The market maker sold ${n} Call contracts with Delta = ${delta.toFixed(2)}, creating a short exposure of ${exposure} shares. Buying ${shares} shares of stock neutralises this — Delta = 0. If the stock then rises, Delta drifts higher (toward 1.0), and the market maker must buy more shares to stay flat. If it falls, Delta drops and shares are sold. This continuous rebalancing is why it's called dynamic hedging.`;
+}
+
+update();
+</script>
+</body>
+</html>
