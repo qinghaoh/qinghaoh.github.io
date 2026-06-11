@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Options Payoff Simulator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f5f5f3;
+      --text: #1a1a18;
+      --text-secondary: #5f5e5a;
+      --border: rgba(0,0,0,0.12);
+      --border-secondary: rgba(0,0,0,0.2);
+      --radius: 8px;
+      --radius-lg: 12px;
+      --teal: #1D9E75;
+      --teal-light: #E1F5EE;
+      --teal-dark: #085041;
+      --coral: #D85A30;
+      --coral-light: #FAECE7;
+      --blue: #378ADD;
+      --blue-light: #E6F1FB;
+      --amber: #BA7517;
+      --amber-light: #FAEEDA;
+      --purple: #7F77DD;
+      --purple-light: #EEEDFE;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1c1a;
+        --bg-secondary: #252523;
+        --text: #e8e7e2;
+        --text-secondary: #888780;
+        --border: rgba(255,255,255,0.1);
+        --border-secondary: rgba(255,255,255,0.18);
+        --teal-light: #04342C;
+        --teal-dark: #9FE1CB;
+        --coral-light: #4A1B0C;
+        --blue-light: #042C53;
+        --amber-light: #412402;
+        --purple-light: #26215C;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container { max-width: 720px; margin: 0 auto; }
+
+    h1 { font-size: 22px; font-weight: 500; margin-bottom: 0.4rem; }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .tab-group-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 6px;
+    }
+
+    .tab-row { display: flex; gap: 6px; margin-bottom: 0.5rem; flex-wrap: wrap; }
+
+    .tab {
+      padding: 6px 16px;
+      border: 0.5px solid var(--border-secondary);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      background: var(--bg);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tab:hover { background: var(--bg-secondary); }
+
+    .tab.active {
+      background: var(--bg-secondary);
+      color: var(--text);
+      font-weight: 500;
+      border-color: var(--border-secondary);
+    }
+
+    .divider { height: 0.5px; background: var(--border); margin: 1rem 0; }
+
+    .controls { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 1.5rem; }
+
+    .ctrl { display: flex; align-items: center; gap: 12px; }
+
+    .ctrl label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      width: 110px;
+      flex-shrink: 0;
+    }
+
+    .ctrl input[type=range] { flex: 1; accent-color: var(--teal); cursor: pointer; }
+
+    .ctrl span {
+      font-size: 14px;
+      font-weight: 500;
+      min-width: 44px;
+      text-align: right;
+      color: var(--text);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 1.25rem;
+    }
+
+    .scard { background: var(--bg-secondary); border-radius: var(--radius); padding: 10px 14px; }
+    .scard-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+    .scard-val { font-size: 18px; font-weight: 500; }
+    .pos { color: var(--teal); }
+    .neg { color: var(--coral); }
+    .neu { color: var(--text); }
+
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 0.75rem; }
+    .leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+    .leg-swatch { width: 24px; height: 3px; border-radius: 2px; }
+
+    .chart-wrap { position: relative; width: 100%; height: 280px; margin-bottom: 1rem; }
+
+    .insight {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding: 10px 14px;
+      border-left: 3px solid var(--teal);
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 2rem 0 1rem;
+      padding-bottom: 6px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .rule-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 2rem;
+    }
+
+    .rule-card {
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+    }
+
+    .rule-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+
+    .rule-card ul {
+      list-style: none;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.9;
+    }
+
+    .rule-card ul li::before { content: "→ "; color: var(--teal); }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+
+    .tag-teal   { background: var(--teal-light);   color: #085041; }
+    .tag-coral  { background: var(--coral-light);  color: #712B13; }
+    .tag-blue   { background: var(--blue-light);   color: #0C447C; }
+    .tag-amber  { background: var(--amber-light);  color: #633806; }
+    .tag-purple { background: var(--purple-light); color: #3C3489; }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 0.5px solid var(--border);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 480px) {
+      .rule-grid { grid-template-columns: 1fr; }
+      .tab { padding: 6px 12px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Options Payoff Simulator</h1>
+  <p class="subtitle">Drag the sliders to see how strike price, premium, and stock price at expiry shape the profit and loss of each position. Dashed lines show individual legs of combination strategies.</p>
+
+  <div class="tab-group-label">Basic positions</div>
+  <div class="tab-row">
+    <button class="tab active" onclick="setMode('call_buy')">Long Call</button>
+    <button class="tab" onclick="setMode('call_sell')">Short Call</button>
+    <button class="tab" onclick="setMode('put_buy')">Long Put</button>
+    <button class="tab" onclick="setMode('put_sell')">Short Put</button>
+  </div>
+
+  <div style="margin-top:10px;" class="tab-group-label">Combination strategies</div>
+  <div class="tab-row">
+    <button class="tab" onclick="setMode('covered_call')">Covered Call</button>
+    <button class="tab" onclick="setMode('covered_put')">Covered Put</button>
+    <button class="tab" onclick="setMode('protective_put')">Protective Put</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="controls">
+    <div class="ctrl">
+      <label>Strike price K</label>
+      <input type="range" min="140" max="260" step="1" value="200" id="strike" oninput="update()">
+      <span id="strike-out">$200</span>
+    </div>
+    <div class="ctrl">
+      <label>Premium P</label>
+      <input type="range" min="1" max="30" step="1" value="10" id="premium" oninput="update()">
+      <span id="premium-out">$10</span>
+    </div>
+    <div class="ctrl" id="cost-row" style="display:none;">
+      <label>Stock cost C</label>
+      <input type="range" min="100" max="260" step="1" value="180" id="cost" oninput="update()">
+      <span id="cost-out">$180</span>
+    </div>
+    <div class="ctrl">
+      <label>Price at expiry S</label>
+      <input type="range" min="140" max="260" step="1" value="210" id="spot" oninput="update()">
+      <span id="spot-out">$210</span>
+    </div>
+  </div>
+
+  <div class="summary" id="summary"></div>
+  <div class="legend" id="legend"></div>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Options payoff diagram showing profit and loss versus stock price at expiry"></canvas>
+  </div>
+
+  <div class="insight" id="insight"></div>
+
+  <div class="section-title">Quick reference</div>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="tag tag-teal">Long Call</div>
+      <h3>Bullish · limited loss</h3>
+      <ul>
+        <li>Pay premium, gain right to buy</li>
+        <li>Max loss = premium</li>
+        <li>Upside is unlimited</li>
+        <li>Breakeven = K + P</li>
+      </ul>
+    </div>
+    <div class="rule-card">
+      <div class="tag tag-coral">Short Call</div>
+      <h3>Neutral · limited gain</h3>
+      <ul>
+        <li>Collect premium, obligated to sell</li>
+        <li>Max gain = premium</li>
+        <li>Loss is unlimited</li>
+        <li>Breakeven = K + P</li>
+      </ul>
+    </div>
+    <div class="rule-card">
+      <div class="tag tag-blue">Long Put</div>
+      <h3>Bearish · limited loss</h3>
+      <ul>
+        <li>Pay premium, gain right to sell</li>
+        <li>Max loss = premium</li>
+        <li>Max gain = K − P</li>
+        <li>Breakeven = K − P</li>
+      </ul>
+    </div>
+    <div class="rule-card">
+      <div class="tag tag-amber">Short Put</div>
+      <h3>Neutral · limited gain</h3>
+      <ul>
+        <li>Collect premium, obligated to buy</li>
+        <li>Max gain = premium</li>
+        <li>Max loss = K − P</li>
+        <li>Breakeven = K − P</li>
+      </ul>
+    </div>
+    <div class="rule-card">
+      <div class="tag tag-teal">Covered Call</div>
+      <h3>Long stock + short call</h3>
+      <ul>
+        <li>Premium boosts income</li>
+        <li>Upside capped at K</li>
+        <li>Downside risk remains</li>
+        <li>Breakeven = C − P</li>
+      </ul>
+    </div>
+    <div class="rule-card">
+      <div class="tag tag-coral">Covered Put</div>
+      <h3>Short stock + short put</h3>
+      <ul>
+        <li>Premium boosts short income</li>
+        <li>Downside capped at K</li>
+        <li>Upside risk remains</li>
+        <li>Breakeven = C + P</li>
+      </ul>
+    </div>
+    <div class="rule-card" style="grid-column: span 2;">
+      <div class="tag tag-purple">Protective Put</div>
+      <h3>Long stock + long put · insurance strategy</h3>
+      <ul>
+        <li>Put acts as downside insurance on your stock</li>
+        <li>Max loss locked in at C − K + P</li>
+        <li>Full upside retained</li>
+        <li>Breakeven = C + P</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>Built for learning purposes · prices are illustrative only</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+let mode = 'call_buy';
+let chart;
+
+const COMBO = ['covered_call','covered_put','protective_put'];
+
+const LABELS = {
+  call_buy:'Long Call', call_sell:'Short Call',
+  put_buy:'Long Put',   put_sell:'Short Put',
+  covered_call:'Covered Call', covered_put:'Covered Put',
+  protective_put:'Protective Put'
+};
+
+const COLORS = {
+  call_buy:'#1D9E75', call_sell:'#D85A30',
+  put_buy:'#378ADD',  put_sell:'#BA7517',
+  covered_call:'#1D9E75', covered_put:'#D85A30',
+  protective_put:'#7F77DD'
+};
+
+function setMode(m){
+  mode = m;
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.classList.toggle('active', t.textContent.trim() === LABELS[m]);
+  });
+  document.getElementById('cost-row').style.display = COMBO.includes(m) ? 'flex' : 'none';
+  update();
+}
+
+function basePnl(S,K,P,type,side){
+  let raw = type==='call' ? Math.max(S-K,0)-P : Math.max(K-S,0)-P;
+  return side==='sell' ? -raw : raw;
+}
+
+function getPnl(S,K,P,C,m){
+  if(m==='call_buy')       return basePnl(S,K,P,'call','buy');
+  if(m==='call_sell')      return basePnl(S,K,P,'call','sell');
+  if(m==='put_buy')        return basePnl(S,K,P,'put','buy');
+  if(m==='put_sell')       return basePnl(S,K,P,'put','sell');
+  if(m==='covered_call')   return (S-C) + basePnl(S,K,P,'call','sell');
+  if(m==='covered_put')    return (C-S) + basePnl(S,K,P,'put','sell');
+  if(m==='protective_put') return (S-C) + basePnl(S,K,P,'put','buy');
+}
+
+function getComponents(K,P,C,m){
+  if(m==='covered_call') return [
+    {label:'Long stock P&L', color:'#378ADD', fn:S=>S-C},
+    {label:'Short Call P&L', color:'#D85A30', fn:S=>basePnl(S,K,P,'call','sell')},
+  ];
+  if(m==='covered_put') return [
+    {label:'Short stock P&L', color:'#378ADD', fn:S=>C-S},
+    {label:'Short Put P&L',   color:'#BA7517', fn:S=>basePnl(S,K,P,'put','sell')},
+  ];
+  if(m==='protective_put') return [
+    {label:'Long stock P&L', color:'#378ADD', fn:S=>S-C},
+    {label:'Long Put P&L',   color:'#7F77DD', fn:S=>basePnl(S,K,P,'put','buy')},
+  ];
+  return [];
+}
+
+function getStats(K,P,C,m){
+  if(m==='call_buy')       return {maxG:'Unlimited',      maxL:'−$'+P,         bep:'$'+(K+P)};
+  if(m==='call_sell')      return {maxG:'$'+P,            maxL:'Unlimited',     bep:'$'+(K+P)};
+  if(m==='put_buy')        return {maxG:'$'+(K-P),        maxL:'−$'+P,          bep:'$'+(K-P)};
+  if(m==='put_sell')       return {maxG:'$'+P,            maxL:'−$'+(K-P),      bep:'$'+(K-P)};
+  if(m==='covered_call')   return {maxG:'$'+(K-C+P),      maxL:'Unlimited',     bep:'$'+(C-P)};
+  if(m==='covered_put')    return {maxG:'$'+(C-K+P),      maxL:'Unlimited',     bep:'$'+(C+P)};
+  if(m==='protective_put') return {maxG:'Unlimited',      maxL:'−$'+(C-K+P),   bep:'$'+(C+P)};
+}
+
+const INSIGHTS = {
+  call_buy:  (K,P,C)=>`Bullish. Pay $${P} premium for the right to buy at $${K}. Profitable above $${K+P}. Max loss is the premium ($${P}); upside is unlimited.`,
+  call_sell: (K,P,C)=>`Neutral to bearish. Collect $${P} premium, obligated to sell at $${K} if exercised. Profitable as long as price stays below $${K+P}. Max gain $${P}; max loss is unlimited.`,
+  put_buy:   (K,P,C)=>`Bearish. Pay $${P} premium for the right to sell at $${K}. Profitable below $${K-P}. Max loss is the premium ($${P}); max gain is $${K-P} (if stock falls to zero).`,
+  put_sell:  (K,P,C)=>`Neutral to bullish. Collect $${P} premium, obligated to buy at $${K} if exercised. Profitable as long as price stays above $${K-P}. Max gain $${P}; max loss $${K-P}.`,
+  covered_call:(K,P,C)=>`Hold stock (cost $${C}) + sell Call at $${K}. The $${P} premium boosts income but caps upside at $${K}. Max gain $${K-C+P} if stock reaches $${K}. Downside remains, partially cushioned by premium. Breakeven $${C-P}.`,
+  covered_put: (K,P,C)=>`Short stock (at $${C}) + sell Put at $${K}. The $${P} premium boosts short-side income but caps downside gain at $${K}. Max gain $${C-K+P} if stock falls to $${K}. Upside risk remains. Breakeven $${C+P}.`,
+  protective_put:(K,P,C)=>`Hold stock (cost $${C}) + buy Put at $${K} — effectively insurance on your position. Below $${K}, the Put pays out and losses are capped at $${C-K+P}. Full upside retained above breakeven $${C+P}.`,
+};
+
+function update(){
+  const K=parseInt(document.getElementById('strike').value);
+  const P=parseInt(document.getElementById('premium').value);
+  const C=parseInt(document.getElementById('cost').value);
+  const S=parseInt(document.getElementById('spot').value);
+  document.getElementById('strike-out').textContent='$'+K;
+  document.getElementById('premium-out').textContent='$'+P;
+  document.getElementById('cost-out').textContent='$'+C;
+  document.getElementById('spot-out').textContent='$'+S;
+
+  const prices=[];
+  for(let s=140;s<=260;s+=2) prices.push(s);
+  const mainData=prices.map(s=>getPnl(s,K,P,C,mode));
+  const curPnL=getPnl(S,K,P,C,mode);
+  const color=COLORS[mode];
+  const stats=getStats(K,P,C,mode);
+
+  document.getElementById('summary').innerHTML=`
+    <div class="scard"><div class="scard-label">P&L at S = $${S}</div><div class="scard-val ${curPnL>0?'pos':curPnL<0?'neg':'neu'}">${curPnL>=0?'+':''}$${curPnL}</div></div>
+    <div class="scard"><div class="scard-label">Max gain</div><div class="scard-val pos">${stats.maxG}</div></div>
+    <div class="scard"><div class="scard-label">Max loss</div><div class="scard-val neg">${stats.maxL}</div></div>
+    <div class="scard"><div class="scard-label">Breakeven</div><div class="scard-val neu">${stats.bep}</div></div>
+  `;
+
+  document.getElementById('insight').textContent=INSIGHTS[mode](K,P,C);
+
+  const components=getComponents(K,P,C,mode);
+  const isCombo=COMBO.includes(mode);
+
+  document.getElementById('legend').innerHTML=`
+    <div class="leg-item"><div class="leg-swatch" style="background:${color}"></div><span>${LABELS[mode]} (combined)</span></div>
+    ${isCombo ? components.map(c=>`<div class="leg-item"><div class="leg-swatch" style="background:${c.color};opacity:.6"></div><span>${c.label}</span></div>`).join('') : ''}
+  `;
+
+  const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+  const gridColor=isDark?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.07)';
+  const textColor=isDark?'#888780':'#5F5E5A';
+
+  const datasets=[
+    {label:LABELS[mode],data:mainData,borderColor:color,borderWidth:2.5,pointRadius:0,tension:0,fill:false,order:1},
+    ...components.map(comp=>({
+      label:comp.label,data:prices.map(s=>comp.fn(s)),
+      borderColor:comp.color,borderWidth:1.5,borderDash:[5,4],
+      pointRadius:0,tension:0,fill:false,order:2
+    })),
+    {label:'Current price',data:prices.map(p=>p===S?curPnL:null),
+      borderColor:color,backgroundColor:color,pointRadius:7,pointHoverRadius:9,
+      showLine:false,type:'scatter',order:0}
+  ];
+
+  if(chart){
+    chart.data.labels=prices;
+    chart.data.datasets=datasets;
+    chart.update();
+  } else {
+    chart=new Chart(document.getElementById('chart'),{
+      type:'line',
+      data:{labels:prices,datasets},
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{
+          legend:{display:false},
+          tooltip:{callbacks:{
+            title:ctx=>'Stock price: $'+ctx[0].parsed.x,
+            label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y>=0?'+':''}$${Math.round(ctx.parsed.y)}`
+          }}
+        },
+        scales:{
+          x:{type:'linear',min:140,max:260,
+            ticks:{color:textColor,font:{size:11},callback:v=>'$'+v,stepSize:20},
+            grid:{color:gridColor},
+            title:{display:true,text:'Stock price at expiry',color:textColor,font:{size:12}}},
+          y:{ticks:{color:textColor,font:{size:11},callback:v=>(v>=0?'+':'')+'$'+v},
+            grid:{color:gridColor},
+            title:{display:true,text:'Profit / Loss',color:textColor,font:{size:12}}}
+        }
+      }
+    });
+  }
+}
+
+update();
+</script>
+</body>
+</html>
