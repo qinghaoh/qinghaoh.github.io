@@ -2,6 +2,7 @@
 title:  "Linear Algebra"
 category: math
 tags: math
+mathjax_font: mathjax-pagella
 mermaid: true
 ---
 
@@ -29,5 +30,6 @@ flowchart LR
 ### Examples
 
 * $ \mathbf{F}^S $
-* $ \mathcal{p}(\mathbf{R}) $
-
+* $ \mathcal{P}(\mathbf{F}) $
+* $ \mathcal{P}_m(\mathbf{F}) $
+* $ \mathcal{L}(V, W)$
