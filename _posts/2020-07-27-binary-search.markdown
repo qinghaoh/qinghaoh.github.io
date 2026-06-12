@@ -23,7 +23,7 @@ public int search(int[] nums, int target) {
 }
 ```
 
-# Template
+## Template
 
 @zhijun_liao
 
@@ -80,19 +80,19 @@ There can be variants of this template. For example: [First Bad Version][first-b
 * `high = mid - 1`, `high = mid`, ...
 * `return -1`, `return low`, `return high`, ...
 
-## Function
+### Function
 
 The function must be monotonic (or at least locally monotonic).
 
-## While Condition
+### While Condition
 
 `while (low < high)` is a better choice. The while loop only exits when `low == high`, which means there's only one element left.
 
-## Boundary
+### Boundary
 
 The initial boundary `[low, high]` should include ***all*** possible answers. When each loop begins, any value within the range `[low, high]` could be the answer.
 
-## Mid
+### Mid
 
 ```java
 mid = low + (high - low) / 2;  // lower mid
@@ -104,7 +104,7 @@ To avoid infinite loop, here's a rule of thumb:
 * lower mid: `low = mid + 1` and `high = mid`
 * upper mid: `low = mid` and `high = mid - 1`
 
-## Boundary Update
+### Boundary Update
 
 Rule of thumb: always use a logic that you can exclude `mid`.
 
@@ -126,7 +126,7 @@ if (nums[mid] < target) {
 
 To understand the corner cases, test your code with these examples: `[0]`, `[0, 1]`, `[0, 1, 2]` and `[0, 1, 2, 3]`.
 
-# Variants
+## Variants
 
 [Find Minimum in Rotated Sorted Array][find-minimum-in-rotated-sorted-array]
 
@@ -228,7 +228,7 @@ private int findMinIndex(int[] nums) {
 
 [Search in Rotated Sorted Array II][search-in-rotated-sorted-array-ii]
 
-## Local Monotocity
+### Local Monotocity
 
 [Find Peak Element][find-peak-element]
 
@@ -267,7 +267,7 @@ public int[] findPeakGrid(int[][] mat) {
     return new int[]{findMaxRow(mat, low), low};
 }
 
-// finds the max row in column mid
+// Finds the max row in column mid
 private int findMaxRow(int[][] mat, int col) {
     int row = 0;
     for (int i = 0; i < mat.length; i++) {
@@ -279,7 +279,7 @@ private int findMaxRow(int[][] mat, int col) {
 }
 ```
 
-# Generalization
+## Generalization
 
 [Search Insert Position][search-insert-position]
 
@@ -820,7 +820,7 @@ public int maxWidthRamp(int[] A) {
 
 Binary Search + BFS/DFS
 
-## Fraction
+### Fraction
 
 [Maximum Average Subarray II][maximum-average-subarray-ii]
 
@@ -919,7 +919,7 @@ private boolean condition(int[] stations, int k, double penalty) {
 }
 ```
 
-## Geometry
+### Geometry
 
 [Minimum Time For K Virus Variants to Spread][minimum-time-for-k-virus-variants-to-spread]
 
@@ -974,7 +974,7 @@ private boolean condition(int[] buckets, int loss, double w) {
 }
 ```
 
-## Greedy
+### Greedy
 
 [Maximum Number of Tasks You Can Assign][maximum-number-of-tasks-you-can-assign]
 
@@ -1036,11 +1036,11 @@ private boolean condition(int[] tasks, int[] workers, int pills, int strength, i
 }
 ```
 
-## Combination
+### Combination
 
 [Ways to Split Array Into Three Subarrays][ways-to-split-array-into-three-subarrays]
 
-## Nested Binary Search
+### Nested Binary Search
 
 [Median of a Row Wise Sorted Matrix][median-of-a-row-wise-sorted-matrix]
 
@@ -1069,7 +1069,7 @@ public int matrixMedian(int[][] grid) {
     return low;
 }
 
-// binary searches for the min index so that nums[index] >= target.
+// Binary searches for the min index so that nums[index] >= target.
 // if all nums elements < target, returns n
 private int binarySearch(int[] nums, int target) {
     int n = nums.length, low = 0, high = n - 1;
@@ -1085,9 +1085,9 @@ private int binarySearch(int[] nums, int target) {
 }
 ```
 
-# Java
+## Java
 
-## Arrays
+### Arrays
 
 [public static \<T\> int binarySearch(T\[\] a, int fromIndex, int toIndex, T key, Comparator\<? super T\> c)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Arrays.html#binarySearch(T%5B%5D,int,int,T,java.util.Comparator))
 
@@ -1157,7 +1157,7 @@ The key is to understand the computation of `cost[i]`:
 
 ![cost array](/assets/img/algorithm/maximum_total_beauty_of_gardens.png)
 
-## Collections
+### Collections
 
 [public static \<T\> int binarySearch(List\<? extends T\> list, T key, Comparator\<? super T\> c)](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Collections.html#binarySearch(java.util.List,T,java.util.Comparator))
 
@@ -1203,7 +1203,7 @@ public long goodTriplets(int[] nums1, int[] nums2) {
 
 For example, `nums1 = [2,0,1,3], nums2 = [0,1,2,3]`
 
-```
+```text
 indices = [2,0,1,3]
 i = 0, list = [2]
 i = 1, list = [0, 2], insertionPoint = 0
@@ -1224,7 +1224,7 @@ for (int i = 0; i < n - 1; i++) {
 return count;
 ```
 
-# Minimax
+## Minimax
 
 [House Robber IV][house-robber-iv]
 
@@ -1234,8 +1234,8 @@ public int minCapability(int[] nums, int k) {
     while (low < high) {
         int mid = (low + high) >>> 1;
 
-        // greedy
-        // if two adjacent houses are both <= mid, selecting the left house is no worse than the right one
+        // Greedy
+        // If two adjacent houses are both <= mid, selecting the left house is no worse than the right one
         int robbedHouses = 0;
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] <= mid) {
