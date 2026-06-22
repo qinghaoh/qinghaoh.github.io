@@ -1,0 +1,25 @@
+---
+---
+
+/* prettier-ignore */
+@use 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* append your custom style below */
+
+blockquote.prompt-proof {
+  background-color: rgb(128 128 128 / 8%);
+
+  &::before {
+    content: '\f303';
+    color: var(--text-muted-color);
+    font: var(--fa-font-solid);
+  }
+}
+
+html[data-mode='dark'] blockquote.prompt-proof {
+  background-color: rgb(128 128 128 / 14%);
+}

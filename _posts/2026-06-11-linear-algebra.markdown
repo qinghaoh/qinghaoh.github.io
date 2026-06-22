@@ -33,8 +33,8 @@ flowchart LR
 * $ \mathbf{F}^S $
 * $ \mathcal{P}(\mathbf{F}) $
 * $ \mathcal{P}_m(\mathbf{F}) $
-* $ \mathcal{L}(V, W) $
-* $ \mathbf{F}^{m,n} $ ($\dim = mn $)
+* $ \mathcal{L}(V, W) $ ($ \dim = (\dim V)(\dim W) $)
+* $ \mathbf{F}^{m,n} $ ($ \dim = mn $)
 
 ### Subspace
 
@@ -85,7 +85,11 @@ A direct-sum decomposition of $ V $ is the same thing as a partition of a basis 
 
 ![basis partition](/assets/img/math/basis_partition_equals_direct_sum.png)
 
+---
+
 ## Linear Maps
+
+A linear map may be prescribed freely on a basis:
 
 $ \forall \ \text{basis} \ v_1, \ldots, v_n \in V $ and $ \forall w_1, \ldots, w_n \in W $, $ \exists! T \in \mathcal{L}(V, W) \ \text{s.t.} $
 
@@ -96,7 +100,7 @@ for each $k = 1, \ldots, n$
 {: .prompt-info }
 > Extension
 
-Finite-dimensional $V$:
+$ V $ is finite-dimensional:
 
 $ U \subseteq V $, $ S \in \mathcal{L}(U, W) \Rightarrow \exists T \in \mathcal{L}(V, W) \ \text{s.t.} \ T \vert _U = S $
 
@@ -112,63 +116,105 @@ Extend a basis $ u_1,\dots,u_m$ of $U $ to a basis $ u_1,\dots,u_m,\,v_1,\dots,v
 ![linear map](https://upload.wikimedia.org/wikipedia/commons/8/89/Kernel_and_image_of_linear_map.svg){: w="400" h="200" }
 
 {: .prompt-info }
-> Fundamental theorem of linear maps
-
-Finite-dimensional $V$, $ T \in \mathcal{L}(V, W) $:
-
-$$ \dim V = \dim \text{null} \, T + \dim \text{range} \, T $$
+> **Fundamental theorem of linear maps**
+>
+> Suppose $V$ is finite-dimensional. $ T \in \mathcal{L}(V, W) $:
+>
+> $$ \dim V = \dim \operatorname{null} T + \dim \operatorname{range} T $$
 
 {: .prompt-tip }
-> Generalization
-
-Finite-dimensional $V$, $ T \in \mathcal{L}(V, W) $, $ U \subseteq W $:
-
-$$ \dim \{ v \in V : Tv \in U \} = \dim \text{null} \, T + \dim (U \cap \text{range} \, T) $$
+> *Generalization*
+>
+> Suppose $V$ is finite-dimensional. $ T \in \mathcal{L}(V, W) $, $ U \subseteq W $:
+>
+> $$ \dim \{ v \in V : Tv \in U \} = \dim \operatorname{null} T + \dim (U \cap \operatorname{range} T) $$
 
 {: .prompt-info }
 > Injectivity, Surjectivity and Invertibility
 
-Finite-dimensional $V$, $ T \in \mathcal{L}(V, W) $:
+| $ T \in \mathcal{L}(V, W) $           | Injective                       | Surjective                     | Invertible (Isomorphic)                    |
+| ------------------------------------- | ------------------------------- | ------------------------------ | ------------------------------------------ |
+| Definition $ \Leftrightarrow $        | $ \operatorname{null} T = {0} $ | $ \operatorname{range} T = W $ | $ T $ is injective and $ T $ is surjective |
+| Preservation $ \Leftrightarrow $      | linear independence             | spanning                       | basis                                      |
+| Dimensions (Finite)  $ \Rightarrow $  | $ \dim V \leq \dim W $          | $ \dim V \geq \dim W $         | $ \dim V = \dim W $                        |
+| **$\dim V = \dim W$** $ \Rightarrow $ | (all three coincide)            | (all three coincide)           | (all three coincide)                       |
 
-* $ T $ is injective $ \Leftrightarrow \text{null} \, T = {0} $
-* $ T $ is surjective $ \Leftrightarrow \text{range} \, T = W $
-* $ T $ is invertible $ \Leftrightarrow $ $ T $ is injective and $ T $ is surjective
+### Product
 
-Finite-dimensional $V$, $W$, $ T \in \mathcal{L}(V, W) $:
+Finite-dimensional $U$, $V$, $ S \in \mathcal{L}(V, W) $ and $ T \in \mathcal{L}(U, V) $:
 
-* $ T $ is injective $ \Rightarrow \dim V \leq \dim W $
-* $ T $ is surjective $ \Rightarrow \dim V \geq \dim W $
-* $ T $ is invertible $ \Leftrightarrow $ $ T $ is injective $ \Leftrightarrow $ $ T $ is surjective $ \Leftrightarrow \dim V = \dim W $
+* $ \operatorname{null} T \subseteq \operatorname{null} ST $
+* $ \operatorname{range} ST \subseteq \operatorname{range} S $
 
-Finite-dimensional $W$, $ T \in \mathcal{L}(V, W) $:
+ $ U $ and $ V $ are finite-dimensional. $ S \in \mathcal{L}(V, W) $ and $ T \in \mathcal{L}(U, V) $:
 
-* $ T $ is injective $ \Rightarrow \exists S \in \mathcal{L}(W, V) \ \text{s.t.} \ ST = E $
-* $ T $ is surjective $ \Rightarrow \exists S \in \mathcal{L}(W, V) \ \text{s.t.} \ TS = E $
+* $ \dim \operatorname{null} ST \leq \dim \operatorname{null} S + \dim \operatorname{null} T $
+* $ \dim \operatorname{range} ST \leq \min(\dim \operatorname{range} S + \dim \operatorname{range} T) $
+
+ $ W $ is finite-dimensional. $ T \in \mathcal{L}(V, W) $:
+
+* $ T $ is injective $ \Rightarrow \exists S \in \mathcal{L}(W, V) \ \text{s.t.} \ ST = I $
+* $ T $ is surjective $ \Rightarrow \exists S \in \mathcal{L}(W, V) \ \text{s.t.} \ TS = I $
+
+### Factorization
 
 {: .prompt-info }
-> Product
+> Suppose $W$ is finite-dimensional. $ S, T \in \mathcal{L}(V, W) $. $ \operatorname{null} S \subseteq \operatorname{null} T \Leftrightarrow \exists E \in \mathcal{L}(W) \ \text{s.t.} \ T = ES $
 
-{: .prompt-tip }
-> $ ST $ is a linear map
+{: .prompt-proof }
+> We build $E : W \to W$ with $E(Sv) = Tv$ for all $v$.
+>
+> For $w \in \operatorname{range} S$, write $w = Sv$ and set $Ew := Tv$.
+> This is well-defined: if $Sv_1 = Sv_2$, then
+> $v_1 - v_2 \in \operatorname{null} S \subseteq \operatorname{null} T$,
+> so $Tv_1 = Tv_2$.
+> It's linear on $\operatorname{range} S$ since $E(aSv_1 + bSv_2) = E(\bigl(S(av_1+bv_2)\bigr)) = T(av_1+bv_2) = aEw_1 + bEw_2$.
+>
+> Because $W$ is finite-dimensional,
+> $\operatorname{range} S$ has a complement:
+>
+> $$
+> W = \operatorname{range} S \oplus U
+> $$
+>
+> Define $E$ to be $0$ on $U$ and extend linearly. Hence $ES = T$.
+> $\blacksquare$
 
-Finite-dimensional $U$, $V$, $ S \in \mathcal{L}(V, W) $ and $ T \in \mathcal{L}(U, V) $:
+{: .prompt-info }
+> Suppose $V$ is finite-dimensional. $ S, T \in \mathcal{L}(V, W) $. $ \operatorname{range} S \subseteq \operatorname{range} T \Leftrightarrow \exists E \in \mathcal{L}(V) \ \text{s.t.} \ S = TE $
 
-* $ \text{null} \, T \subseteq \text{null} \, ST $
-* $ \text{range} \, ST \subseteq \text{range} \, S $
+{: .prompt-proof }
+> Because $V$ is finite-dimensional, pick a basis $v_1, \dots, v_n$ of $V$. For each $j$, the vector $Sv_j$ lies in $\operatorname{range} S \subseteq \operatorname{range} T$, so there exists $u_j \in V$ with
+>
+> $$T u_j = S v_j.$$
+>
+> (The preimage $u_j$ lives in $V$ because $T$ starts at $V$ — which is exactly why $E$ ends up being an operator *on* $V$.) Define $E \in \mathcal{L}(V)$ to be the unique linear map with $E v_j = u_j$ for every $j$. Then for each basis vector,
+>
+> $$(TE)(v_j) = T(E v_j) = T(u_j) = S v_j.$$
+>
+> So $TE$ and $S$ agree on a basis of $V$, hence $TE = S$.
+> $\blacksquare$
 
-Finite-dimensional $U$, $V$, $ S \in \mathcal{L}(V, W) $ and $ T \in \mathcal{L}(U, V) $:
+| relationship                                              | factorization                               | $E$ acts on                |
+| --------------------------------------------------------- | ------------------------------------------- | -------------------------- |
+| $\operatorname{range} S \subseteq \operatorname{range} T$ | $S = TE$, $E \in \mathcal{L}(V)$            | domain (one-directional)   |
+| $\operatorname{null} S \subseteq \operatorname{null} T$   | $T = ES$, $E \in \mathcal{L}(W)$            | codomain (one-directional) |
+| $\operatorname{range} S = \operatorname{range} T$         | $S = TE$, $E \in \mathcal{L}(V)$ invertible | domain (isomorphism)       |
+| $\operatorname{null} S = \operatorname{null} T$           | $S = ET$, $E \in \mathcal{L}(W)$ invertible | codomain (isomorphism)     |
 
-* $ \dim \text{null} \, ST \leq \dim \text{null} \, S + \dim \text{null} \, T $
-* $ \dim \text{range} \, ST \leq \min(\dim \text{range} \, S + \dim \text{range} \, T) $
+---
 
 ## Matrices
 
 $ \mathcal{M}(T,(v_1,\ldots,v_n),(w_1,\ldots,w_m)) \in \mathbf{F}^{m,n} $ is the matrix *representation* of $ T $ with respect to the chosen bases.
 
+{: .prompt-tip }
+> $ \mathcal{L}(V, W) $ and $ \mathbf{F}^{m,n} $ are *isomorphic*.
+
 $$ Tv_k = \sum_{j=1}^m {A_{j,k}w_j} $$
 
 {: .prompt-tip }
-> $ T \in \mathcal{L}(\mathbf{F}^n, \mathbf{F}^m) $, $ \mathcal{M}(T)_{\cdot,k} = Te_k $
+> $ T \in \mathcal{L}(\mathbf{F}^n, \mathbf{F}^m) $, $ \mathcal{M}(T,(e_1, \ldots, e_n), (e_1, \ldots, e_m))_{\cdot,k} = Te_k $
 
 {: .prompt-info }
 > Column of matrix product equals matrix times column
@@ -180,6 +226,8 @@ $$ Tv_k = \sum_{j=1}^m {A_{j,k}w_j} $$
 
 ![linear combination of columns](../assets/img/math/Ab_as_linear_combination_of_columns.png)
 
+$ \dim \operatorname{range} S = \text{rank} \, \mathcal{M}(T) $
+
 {: .prompt-info }
 > Column–row factorization
 
@@ -189,3 +237,12 @@ $ C $ is a *basis* of the column space.
 
 {: .prompt-tip }
 > $ A \mapsto A^T $ is a linear map
+
+{: .prompt-info }
+> Change-of-basis
+
+$$ \mathcal{M}(I,(u_1,\ldots,u_n),(v_1,\ldots,v_n))\mathcal{M}(I,(v_1,\ldots,v_n),(u_1,\ldots,u_n)) = I $$
+
+$ T \in \mathcal{L}(V) $, $ A = \mathcal{M}(T,(u_1,\ldots,u_n)), B = \mathcal{M}(T,(v_1,\ldots,v_n)), C = \mathcal{M}(I,(u_1,\ldots,u_n),(v_1,\ldots,v_n))$:
+
+$$ A = C^{-1}BC $$
