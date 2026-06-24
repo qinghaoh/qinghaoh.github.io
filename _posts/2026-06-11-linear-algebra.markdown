@@ -35,6 +35,8 @@ flowchart LR
 * $ \mathcal{P}_m(\mathbf{F}) $
 * $ \mathcal{L}(V, W) $ ($ \dim = (\dim V)(\dim W) $)
 * $ \mathbf{F}^{m,n} $ ($ \dim = mn $)
+* $ V_1 \times \ldots \times V_m $ ($ \dim = \dim V_1 + \ldots \dim V_m $)
+* $ V/U $
 
 ### Subspace
 
@@ -45,7 +47,7 @@ flowchart LR
 * $ V_1 \cup V_2 $ ($ \Leftrightarrow V1 \subseteq V2 $ or $ V1 \supseteq V2 $)
 * $ V_1 + \ldots + V_m $ (smallest containing subspace)
 
-Finite-dimensional $V$, $ U \subset V $:
+Suppose $V$ is finite-dimensional. $ U $ is a subspace of $ V $:
 
 * $ \dim U \leq \dim V $
 * $ \dim U = \dim V \Leftrightarrow U = V $
@@ -85,9 +87,20 @@ A direct-sum decomposition of $ V $ is the same thing as a partition of a basis 
 
 ![basis partition](/assets/img/math/basis_partition_equals_direct_sum.png)
 
+A sum is a direct sum iff dimensions add up.
+
 ---
 
 ## Linear Maps
+
+{: .prompt-tip }
+> Examples
+
+* $ T : V \to W $
+* $ \Gamma : V_1 \times \ldots \times V_m \to V_1 + \ldots + V_m $ (Invertible iff $ V_1, \ldots, V_m $ is a direct sum)
+* Quotient map: $ \pi : V \to V/U $, $ \pi(v) = v + U $
+  * $ \tilde{T} ∶ V/(\operatorname{null} T) \to W $, $ \tilde{T}(v + \operatorname{null} T) = Tv $
+  * $ \tilde{T} \circ \pi = T $
 
 A linear map may be prescribed freely on a basis:
 
@@ -99,12 +112,12 @@ for each $k = 1, \ldots, n$
 
 {: .prompt-info }
 > Extension
-
-$ V $ is finite-dimensional:
-
-$ U \subseteq V $, $ S \in \mathcal{L}(U, W) \Rightarrow \exists T \in \mathcal{L}(V, W) \ \text{s.t.} \ T \vert _U = S $
-
-Extend a basis $ u_1,\dots,u_m$ of $U $ to a basis $ u_1,\dots,u_m,\,v_1,\dots,v_n $ of $ V $. Define $ T u_i = S u_i $ and $ T v_j = $ anything in $ W $; extend linearly.
+>
+> $ V $ is finite-dimensional:
+>
+> $ U $ is a subspace of $ V $, $ S \in \mathcal{L}(U, W) \Rightarrow \exists T \in \mathcal{L}(V, W) \ \text{s.t.} \ T \vert _U = S $
+>
+> Extend a basis $ u_1,\dots,u_m$ of $U $ to a basis $ u_1,\dots,u_m,\,v_1,\dots,v_n $ of $ V $. Define $ T u_i = S u_i $ and $ T v_j = $ anything in $ W $; extend linearly.
 
 ### Algebraic Operations
 
@@ -125,7 +138,7 @@ Extend a basis $ u_1,\dots,u_m$ of $U $ to a basis $ u_1,\dots,u_m,\,v_1,\dots,v
 {: .prompt-tip }
 > *Generalization*
 >
-> Suppose $V$ is finite-dimensional. $ T \in \mathcal{L}(V, W) $, $ U \subseteq W $:
+> Suppose $V$ is finite-dimensional. $ T \in \mathcal{L}(V, W) $, $ U $ is a subspace of $ W $:
 >
 > $$ \dim \{ v \in V : Tv \in U \} = \dim \operatorname{null} T + \dim (U \cap \operatorname{range} T) $$
 
@@ -141,20 +154,24 @@ Extend a basis $ u_1,\dots,u_m$ of $U $ to a basis $ u_1,\dots,u_m,\,v_1,\dots,v
 
 ### Product
 
-Finite-dimensional $U$, $V$, $ S \in \mathcal{L}(V, W) $ and $ T \in \mathcal{L}(U, V) $:
+Suppose $U$ and $V$ are finite-dimensional. $ S \in \mathcal{L}(V, W) $ and $ T \in \mathcal{L}(U, V) $:
 
 * $ \operatorname{null} T \subseteq \operatorname{null} ST $
 * $ \operatorname{range} ST \subseteq \operatorname{range} S $
 
- $ U $ and $ V $ are finite-dimensional. $ S \in \mathcal{L}(V, W) $ and $ T \in \mathcal{L}(U, V) $:
+Suppose $ U $ and $ V $ are finite-dimensional. $ S \in \mathcal{L}(V, W) $ and $ T \in \mathcal{L}(U, V) $:
 
 * $ \dim \operatorname{null} ST \leq \dim \operatorname{null} S + \dim \operatorname{null} T $
 * $ \dim \operatorname{range} ST \leq \min(\dim \operatorname{range} S + \dim \operatorname{range} T) $
 
- $ W $ is finite-dimensional. $ T \in \mathcal{L}(V, W) $:
+Suppose $ W $ is finite-dimensional. $ T \in \mathcal{L}(V, W) $:
 
 * $ T $ is injective $ \Rightarrow \exists S \in \mathcal{L}(W, V) \ \text{s.t.} \ ST = I $
 * $ T $ is surjective $ \Rightarrow \exists S \in \mathcal{L}(W, V) \ \text{s.t.} \ TS = I $
+
+Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $:
+
+* $ ST $ is invertible $\Leftrightarrow$ $ S $ and $ T $ are invertible.
 
 ### Factorization
 
@@ -202,14 +219,26 @@ Finite-dimensional $U$, $V$, $ S \in \mathcal{L}(V, W) $ and $ T \in \mathcal{L}
 | $\operatorname{range} S = \operatorname{range} T$         | $S = TE$, $E \in \mathcal{L}(V)$ invertible | domain (isomorphism)       |
 | $\operatorname{null} S = \operatorname{null} T$           | $S = ET$, $E \in \mathcal{L}(W)$ invertible | codomain (isomorphism)     |
 
+### Quotient Map
+
+Two translates of a subspace are equal or disjoint.
+
+Suppose $ V $ is finite-dimensional. $ U $ is a subspace of $ V $:
+
+$$ \dim V/U = \dim V − \dim U. $$
+
+### Isomorphism
+
+* $ V/\operatorname{null} T \cong \operatorname{range} T $
+* $ \mathcal{L}(V, W) \cong_\tilde{T} \mathbf{F}^{m,n} $
+* $ V \cong \mathcal{L}(\mathbf{F}, V) $
+* $ V^m \cong \mathcal{L}(\mathbf{F}^m, V) $
+
 ---
 
 ## Matrices
 
 $ \mathcal{M}(T,(v_1,\ldots,v_n),(w_1,\ldots,w_m)) \in \mathbf{F}^{m,n} $ is the matrix *representation* of $ T $ with respect to the chosen bases.
-
-{: .prompt-tip }
-> $ \mathcal{L}(V, W) $ and $ \mathbf{F}^{m,n} $ are *isomorphic*.
 
 $$ Tv_k = \sum_{j=1}^m {A_{j,k}w_j} $$
 
@@ -246,3 +275,7 @@ $$ \mathcal{M}(I,(u_1,\ldots,u_n),(v_1,\ldots,v_n))\mathcal{M}(I,(v_1,\ldots,v_n
 $ T \in \mathcal{L}(V) $, $ A = \mathcal{M}(T,(u_1,\ldots,u_n)), B = \mathcal{M}(T,(v_1,\ldots,v_n)), C = \mathcal{M}(I,(u_1,\ldots,u_n),(v_1,\ldots,v_n))$:
 
 $$ A = C^{-1}BC $$
+
+## Dual Space and Dual Map
+
+![dual map](/assets/img/math/dual_map.png){: w="600" h="300" }
