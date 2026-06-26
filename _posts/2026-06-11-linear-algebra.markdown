@@ -35,17 +35,18 @@ flowchart LR
 * $ \mathcal{P}_m(\mathbf{F}) $
 * $ \mathcal{L}(V, W) $ ($ \dim = (\dim V)(\dim W) $)
 * $ \mathbf{F}^{m,n} $ ($ \dim = mn $)
-* $ V_1 \times \ldots \times V_m $ ($ \dim = \dim V_1 + \ldots \dim V_m $)
-* $ V/U $
+* $ V_1 \times \dots \times V_m $ ($ \dim = \dim V_1 + \dots + \dim V_m $)
+* $ V/U $ ($ \dim = \dim V - \dim U $)
 
 ### Subspace
 
 {: .prompt-tip }
 > Examples
 
-* $ V_1 \cap \ldots \cap V_m $
+* $ V_1 \cap \dots \cap V_m $
 * $ V_1 \cup V_2 $ ($ \Leftrightarrow V1 \subseteq V2 $ or $ V1 \supseteq V2 $)
-* $ V_1 + \ldots + V_m $ (smallest containing subspace)
+* $ V_1 + \dots + V_m $ (smallest containing subspace)
+* $ U^0 $ ($ \dim = \dim V - \dim U $)
 
 Suppose $V$ is finite-dimensional. $ U $ is a subspace of $ V $:
 
@@ -97,18 +98,19 @@ A sum is a direct sum iff dimensions add up.
 > Examples
 
 * $ T : V \to W $
-* $ \Gamma : V_1 \times \ldots \times V_m \to V_1 + \ldots + V_m $ (Invertible iff $ V_1, \ldots, V_m $ is a direct sum)
+* $ \Gamma : V_1 \times \dots \times V_m \to V_1 + \dots + V_m $ (Invertible iff $ V_1, \dots, V_m $ is a direct sum)
 * Quotient map: $ \pi : V \to V/U $, $ \pi(v) = v + U $
   * $ \tilde{T} ∶ V/(\operatorname{null} T) \to W $, $ \tilde{T}(v + \operatorname{null} T) = Tv $
   * $ \tilde{T} \circ \pi = T $
+* $ T \to T' $
 
 A linear map may be prescribed freely on a basis:
 
-$ \forall \ \text{basis} \ v_1, \ldots, v_n \in V $ and $ \forall w_1, \ldots, w_n \in W $, $ \exists! T \in \mathcal{L}(V, W) \ \text{s.t.} $
+$ \forall \ \text{basis} \ v_1, \dots, v_n \in V $ and $ \forall w_1, \dots, w_n \in W $, $ \exists! T \in \mathcal{L}(V, W) \ \text{s.t.} $
 
 $$ Tv_k = w_k $$
 
-for each $k = 1, \ldots, n$
+for each $k = 1, \dots, n$
 
 {: .prompt-info }
 > Extension
@@ -219,13 +221,22 @@ Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $:
 | $\operatorname{range} S = \operatorname{range} T$         | $S = TE$, $E \in \mathcal{L}(V)$ invertible | domain (isomorphism)       |
 | $\operatorname{null} S = \operatorname{null} T$           | $S = ET$, $E \in \mathcal{L}(W)$ invertible | codomain (isomorphism)     |
 
-### Quotient Map
+### Translate
 
-Two translates of a subspace are equal or disjoint.
+{: .prompt-info }
+> Re-basing
+>
+> $ x \in v + U \Leftrightarrow x + U = v + U $
 
-Suppose $ V $ is finite-dimensional. $ U $ is a subspace of $ V $:
+{: .prompt-tip }
+> Corollary: Two translates of a subspace are equal or disjoint.
 
-$$ \dim V/U = \dim V − \dim U. $$
+Suppose $ T \in \mathcal{L}(V,W) $ and $ c \ in W $:
+
+$ {x \in V : Tx = c} $ is either the empty set or is a translate of $ \operatorname{null} T $
+
+{: .prompt-tip }
+> Special case: system of linear equations
 
 ### Isomorphism
 
@@ -238,12 +249,12 @@ $$ \dim V/U = \dim V − \dim U. $$
 
 ## Matrices
 
-$ \mathcal{M}(T,(v_1,\ldots,v_n),(w_1,\ldots,w_m)) \in \mathbf{F}^{m,n} $ is the matrix *representation* of $ T $ with respect to the chosen bases.
+$ \mathcal{M}(T,(v_1,\dots,v_n),(w_1,\dots,w_m)) \in \mathbf{F}^{m,n} $ is the matrix *representation* of $ T $ with respect to the chosen bases.
 
 $$ Tv_k = \sum_{j=1}^m {A_{j,k}w_j} $$
 
 {: .prompt-tip }
-> $ T \in \mathcal{L}(\mathbf{F}^n, \mathbf{F}^m) $, $ \mathcal{M}(T,(e_1, \ldots, e_n), (e_1, \ldots, e_m))_{\cdot,k} = Te_k $
+> $ T \in \mathcal{L}(\mathbf{F}^n, \mathbf{F}^m) $, $ \mathcal{M}(T,(e_1, \dots, e_n), (e_1, \dots, e_m))_{\cdot,k} = Te_k $
 
 {: .prompt-info }
 > Column of matrix product equals matrix times column
@@ -270,12 +281,21 @@ $ C $ is a *basis* of the column space.
 {: .prompt-info }
 > Change-of-basis
 
-$$ \mathcal{M}(I,(u_1,\ldots,u_n),(v_1,\ldots,v_n))\mathcal{M}(I,(v_1,\ldots,v_n),(u_1,\ldots,u_n)) = I $$
+$$ \mathcal{M}(I,(u_1,\dots,u_n),(v_1,\dots,v_n))\mathcal{M}(I,(v_1,\dots,v_n),(u_1,\dots,u_n)) = I $$
 
-$ T \in \mathcal{L}(V) $, $ A = \mathcal{M}(T,(u_1,\ldots,u_n)), B = \mathcal{M}(T,(v_1,\ldots,v_n)), C = \mathcal{M}(I,(u_1,\ldots,u_n),(v_1,\ldots,v_n))$:
+$ T \in \mathcal{L}(V) $, $ A = \mathcal{M}(T,(u_1,\dots,u_n)), B = \mathcal{M}(T,(v_1,\dots,v_n)), C = \mathcal{M}(I,(u_1,\dots,u_n),(v_1,\dots,v_n))$:
 
 $$ A = C^{-1}BC $$
 
 ## Dual Space and Dual Map
 
 ![dual map](/assets/img/math/dual_map.png){: w="600" h="300" }
+
+* $ T $ is injective $ \Leftrightarrow $ $ T' $ is surjective
+* $ T $ is surjective $ \Leftrightarrow $ $ T' $ is injective
+
+* $ \operatorname{null} T' = (\operatorname{range} T)^0 $
+* $ \operatorname{range} T' = (\operatorname{null} T)^0 $
+
+* $ \dim \operatorname{null} T' = \dim \operatorname{null} T + \dim W - \dim V $
+* $ \dim \operatorname{range} T' = \dim \operatorname{range} T $
