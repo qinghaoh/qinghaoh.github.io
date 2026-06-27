@@ -107,11 +107,11 @@ $$a_1 v_1 + \cdots + a_m v_m + c_1 u_1 + \cdots + c_n u_n = 0. \tag{1}$$
 
 Move the $u$-terms to the other side:
 
-$$a_1 v_1 + \cdots + a_m v_m = -(c_1 u_1 + \cdots + c_n u_n).$$
+$$a_1 v_1 + \cdots + a_m v_m = -(c_1 u_1 + \cdots + c_n u_n) \in U.$$
 
-The right-hand side lies in $U$, so $a_1 v_1 + \cdots + a_m v_m \in U$. Passing to the quotient, this says
+Passing to the quotient, this says
 
-$$a_1(v_1 + U) + \cdots + a_m(v_m + U) = (a_1 v_1 + \cdots + a_m v_m) + U = 0.$$
+$$a_1(v_1 + U) + \cdots + a_m(v_m + U) = (a_1 v_1 + \cdots + a_m v_m) + U = 0 + U.$$
 
 Since $v_1 + U, \dots, v_m + U$ is a basis of $V/U$, it is **linearly independent**, forcing
 

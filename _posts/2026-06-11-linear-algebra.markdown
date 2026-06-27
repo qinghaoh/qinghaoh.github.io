@@ -45,7 +45,7 @@ flowchart LR
 
 * $ V_1 \cap \dots \cap V_m $
 * $ V_1 \cup V_2 $ ($ \Leftrightarrow V1 \subseteq V2 $ or $ V1 \supseteq V2 $)
-* $ V_1 + \dots + V_m $ (smallest containing subspace)
+* $ V_1 + \dots + V_m $ (Smallest containing subspace)
 * $ U^0 $ ($ \dim = \dim V - \dim U $)
 
 Suppose $V$ is finite-dimensional. $ U $ is a subspace of $ V $:
@@ -103,6 +103,8 @@ A sum is a direct sum iff dimensions add up.
   * $ \tilde{T} ∶ V/(\operatorname{null} T) \to W $, $ \tilde{T}(v + \operatorname{null} T) = Tv $
   * $ \tilde{T} \circ \pi = T $
 * $ T \to T' $
+* $ P_U \in \mathcal{L}(V) $
+* $ (\operatorname{null} T)^{\perp} \to \operatorname{range} T $ (Invertable)
 
 A linear map may be prescribed freely on a basis:
 
@@ -153,6 +155,7 @@ for each $k = 1, \dots, n$
 | Preservation $ \Leftrightarrow $      | linear independence             | spanning                       | basis                                      |
 | Dimensions (Finite)  $ \Rightarrow $  | $ \dim V \leq \dim W $          | $ \dim V \geq \dim W $         | $ \dim V = \dim W $                        |
 | **$\dim V = \dim W$** $ \Rightarrow $ | (all three coincide)            | (all three coincide)           | (all three coincide)                       |
+| Pseudoinverse $ \Rightarrow $         | $ TT^{\dagger} = I $            | $ T^{\dagger}T = I $           | $ TT^{\dagger} = T^{\dagger}T = I $        |
 
 ### Product
 
@@ -224,19 +227,82 @@ Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $:
 ### Translate
 
 {: .prompt-info }
-> Re-basing
+> *Re-basing*
 >
-> $ x \in v + U \Leftrightarrow x + U = v + U $
+> Suppose $ U $ is a subspace of $ V $ and $ v,w \in V $. Then
+>
+> $$ x \in v + U \Leftrightarrow x + U = v + U. $$
 
 {: .prompt-tip }
 > Corollary: Two translates of a subspace are equal or disjoint.
+>
+> $$ v - w \in U \Leftrightarrow v + U = w + U \Leftrightarrow (v + U) \cap (w + U) \ne \emptyset $$
+>
+> $$ v \in U \Leftrightarrow v + U = 0 + U. $$
 
-Suppose $ T \in \mathcal{L}(V,W) $ and $ c \ in W $:
-
-$ {x \in V : Tx = c} $ is either the empty set or is a translate of $ \operatorname{null} T $
+{: .prompt-info }
+> Suppose $ T \in \mathcal{L}(V,W) $ and $ c \in W $:
+>
+> $ {x \in V : Tx = c} $ is either the empty set or is a translate of $ \operatorname{null} T $.
 
 {: .prompt-tip }
 > Special case: system of linear equations
+
+#### Affine
+
+{: .prompt-tip }
+> *affine* = linear structure with the origin forgotten
+>
+> An operation on points commutes with every translation $ x \mapsto x + t $ if and only if its coefficients sum to 1
+
+Two precise questions. Let me take them in turn, because (2) hides an ambiguity in the word "closed" that's worth surfacing.
+
+{: .prompt-proof }
+> Take a combination $\sum_i \lambda_i v_i$ and translate every input point by a fixed $t$ (i.e. move the origin by $-t$). The output translates by:
+>
+> $$\sum_i \lambda_i (v_i + t) = \sum_i \lambda_i v_i + \Big(\sum_i \lambda_i\Big) t.$$
+>
+> For the whole construction to **shift by exactly $t$** — so that the pattern of points looks identical regardless of where the origin sits — we need the extra term to be $\big(\sum_i \lambda_i\big)t = t$ for all $t$, i.e.
+>
+> $$\sum_i \lambda_i = 1.$$
+
+{: .prompt-tip }
+> *affine subspace* (closed under lines):
+>
+> For any two points of $ A $, the entire line through them lies in $ A $.
+>
+> $ \lambda v + (1 - \lambda)w \in A \forall v,w \in A $ and $ \forall \lambda \in \mathbf{F} $
+
+{: .prompt-info }
+> *Affine subspaces are exactly translates of linear subspaces*
+
+{: .prompt-proof }
+> ($\Rightarrow$) Suppose $A = x + U$ for a subspace $U$. For $v, w \in A$, write $v = x + u_1$, $w = x + u_2$ with $u_1, u_2 \in U$. Then for any $\lambda \in \mathbf{F}$,
+>
+> $$\lambda v + (1-\lambda)w = x + \big(\lambda u_1 + (1-\lambda)u_2\big) \in x + U = A,$$
+>
+> since $\lambda u_1 + (1-\lambda)u_2 \in U$.
+>
+> ($\Leftarrow$) Suppose $A \neq \emptyset$ satisfies $\lambda v + (1-\lambda)w \in A$ for all $v, w \in A$, $\lambda \in \mathbf{F}$. Fix $p \in A$ and define $U := A - p$. We show $U$ is a subspace; then $A = p + U$.
+>
+> *Zero:* $0 = p - p \in U$.
+>
+> *Scalar multiplication:* Let $a - p \in U$ (with $a \in A$) and $\mu \in \mathbf{F}$. Then
+>
+> $$\mu(a-p) + p = \mu a + (1-\mu)p \in A,$$
+>
+> by the hypothesis applied to $a, p$ with $\lambda = \mu$. Hence $\mu(a - p) \in A - p = U$.
+>
+> *Addition:* Let $a_1 - p,\ a_2 - p \in U$. By the hypothesis with $\lambda = \tfrac12$, the point $c := \tfrac12 a_1 + \tfrac12 a_2 \in A$. By scalar closure just proved, $2(c - p) + p = 2c - p \in A$. Since $2c - p = a_1 + a_2 - p$,
+>
+> $$(a_1 - p) + (a_2 - p) = (a_1 + a_2 - p) - p \in A - p = U.$$
+>
+> So $U$ is closed under addition and scalar multiplication and contains $0$: it is a subspace, and $A = p + U$. $\blacksquare$
+
+{: .prompt-tip }
+> *affine null* (closed under *affine combinations*):
+>
+> $ A = \\{\lambda{_1} v_1 + \dots + \lambda{_m} v_m : v_1, \dots, v_m \in V, \lamda{_1}, \dots, \lamda{_m} \in \mathbf{F} \ \text{and} \ \lambda{_1} + \dots + \lambda{_m} = 1 \\} $
 
 ### Isomorphism
 
