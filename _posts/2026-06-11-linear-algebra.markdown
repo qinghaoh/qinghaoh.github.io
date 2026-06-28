@@ -253,9 +253,7 @@ Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $:
 {: .prompt-tip }
 > *affine* = linear structure with the origin forgotten
 >
-> An operation on points commutes with every translation $ x \mapsto x + t $ if and only if its coefficients sum to 1
-
-Two precise questions. Let me take them in turn, because (2) hides an ambiguity in the word "closed" that's worth surfacing.
+> An operation on points commutes with every translation $ x \mapsto x + t $ if and only if its coefficients sum to 1.
 
 {: .prompt-proof }
 > Take a combination $\sum_i \lambda_i v_i$ and translate every input point by a fixed $t$ (i.e. move the origin by $-t$). The output translates by:
@@ -299,10 +297,24 @@ Two precise questions. Let me take them in turn, because (2) hides an ambiguity 
 >
 > So $U$ is closed under addition and scalar multiplication and contains $0$: it is a subspace, and $A = p + U$. $\blacksquare$
 
+{: .prompt-info }
+> *An affine subspace is closed under every finite affine combination* ("Closed under lines" is the $ k = 2 $ case).
+>
+> If $ a_1, \dots, a_k \in A $ and $ \sum \lambda_i = 1 $, then $ \sum \lambda_i a_i \in A $.
+
+{: .prompt-proof }
+> *Proof by induction on $k$.*
+>
+> For $ k = 1 $, $ \lambda_1 = 1 $ gives $ a_1 \in A $. For the step, given $ \sum_{i=1}^{k}\lambda_i = 1 $ with $ k \ge 2 $, at least one coefficient — say $ \lambda_k $ — satisfies $ \lambda_k \neq 1 $. Set $ s = \lambda_1 + \dots + \lambda_{k-1} = 1 - \lambda_k \neq 0 $. Then
+>
+> $$\sum_{i=1}^k \lambda_i a_i = s\underbrace{\left(\sum_{i=1}^{k-1}\tfrac{\lambda_i}{s} a_i\right)}_{=:b} + \lambda_k a_k.$$
+>
+> The inner combination $c$ has coefficients $ \tfrac{\lambda_i}{s} $ summing to $ \tfrac{s}{s} = 1 $, so by induction $ b \in A $. Then $ s\,b + \lambda_k a_k $ is an affine combination of the two points $ b, a_k \in A $ (coefficients $ s + \lambda_k = 1 $), so it lies in $ A $ by the line condition. $\blacksquare$.
+
 {: .prompt-tip }
 > *affine null* (closed under *affine combinations*):
 >
-> $ A = \\{\lambda{_1} v_1 + \dots + \lambda{_m} v_m : v_1, \dots, v_m \in V, \lamda{_1}, \dots, \lamda{_m} \in \mathbf{F} \ \text{and} \ \lambda{_1} + \dots + \lambda{_m} = 1 \\} $
+> $ A = \\{\lambda_1 v_1 + \dots + \lambda_m v_m : v_1, \dots, v_m \in V, \lambda_1, \dots, \lambda_m \in \mathbf{F} \ \text{and} \ \lambda_1 + \dots + \lambda_m = 1 \\} $
 
 ### Isomorphism
 
