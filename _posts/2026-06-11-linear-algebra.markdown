@@ -105,6 +105,7 @@ A sum is a direct sum iff dimensions add up.
 * $ T \to T' $
 * $ P_U \in \mathcal{L}(V) $
 * $ (\operatorname{null} T)^{\perp} \to \operatorname{range} T $ (Invertable)
+* $ T^{\ast} $
 
 A linear map may be prescribed freely on a basis:
 
@@ -240,6 +241,11 @@ Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $:
 >
 > $$ v \in U \Leftrightarrow v + U = 0 + U. $$
 
+{: .prompt-tip }
+>  Suppose $ A_1 = v + U_1 $ and $ A_2 = w + U_2 $ for some $ v,w \in V $ and some subspaces $ U_1,U_2 $ of $ V $.
+>
+> $$ \forall x \in A_1 \cap A_2, \ A_1 \cap A_2 = (x + U_1) \cap (x + U_2) = x + (U_1 \cap U_2). $$
+
 {: .prompt-info }
 > Suppose $ T \in \mathcal{L}(V,W) $ and $ c \in W $:
 >
@@ -247,81 +253,66 @@ Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $:
 
 {: .prompt-tip }
 > Special case: system of linear equations
+>
+> general solution = particular solution + homogeneous solution
+>
+> $ V/\operatorname{null} T \cong_\tilde{T} \operatorname{range} T $
 
-#### Affine
-
-{: .prompt-tip }
-> *affine* = linear structure with the origin forgotten
->
-> An operation on points commutes with every translation $ x \mapsto x + t $ if and only if its coefficients sum to 1.
-
-{: .prompt-proof }
-> Take a combination $\sum_i \lambda_i v_i$ and translate every input point by a fixed $t$ (i.e. move the origin by $-t$). The output translates by:
->
-> $$\sum_i \lambda_i (v_i + t) = \sum_i \lambda_i v_i + \Big(\sum_i \lambda_i\Big) t.$$
->
-> For the whole construction to **shift by exactly $t$** — so that the pattern of points looks identical regardless of where the origin sits — we need the extra term to be $\big(\sum_i \lambda_i\big)t = t$ for all $t$, i.e.
->
-> $$\sum_i \lambda_i = 1.$$
-
-{: .prompt-tip }
-> *affine subspace* (closed under lines):
->
-> For any two points of $ A $, the entire line through them lies in $ A $.
->
-> $ \lambda v + (1 - \lambda)w \in A \forall v,w \in A $ and $ \forall \lambda \in \mathbf{F} $
+#### Bases
 
 {: .prompt-info }
-> *Affine subspaces are exactly translates of linear subspaces*
-
-{: .prompt-proof }
-> ($\Rightarrow$) Suppose $A = x + U$ for a subspace $U$. For $v, w \in A$, write $v = x + u_1$, $w = x + u_2$ with $u_1, u_2 \in U$. Then for any $\lambda \in \mathbf{F}$,
->
-> $$\lambda v + (1-\lambda)w = x + \big(\lambda u_1 + (1-\lambda)u_2\big) \in x + U = A,$$
->
-> since $\lambda u_1 + (1-\lambda)u_2 \in U$.
->
-> ($\Leftarrow$) Suppose $A \neq \emptyset$ satisfies $\lambda v + (1-\lambda)w \in A$ for all $v, w \in A$, $\lambda \in \mathbf{F}$. Fix $p \in A$ and define $U := A - p$. We show $U$ is a subspace; then $A = p + U$.
->
-> *Zero:* $0 = p - p \in U$.
->
-> *Scalar multiplication:* Let $a - p \in U$ (with $a \in A$) and $\mu \in \mathbf{F}$. Then
->
-> $$\mu(a-p) + p = \mu a + (1-\mu)p \in A,$$
->
-> by the hypothesis applied to $a, p$ with $\lambda = \mu$. Hence $\mu(a - p) \in A - p = U$.
->
-> *Addition:* Let $a_1 - p,\ a_2 - p \in U$. By the hypothesis with $\lambda = \tfrac12$, the point $c := \tfrac12 a_1 + \tfrac12 a_2 \in A$. By scalar closure just proved, $2(c - p) + p = 2c - p \in A$. Since $2c - p = a_1 + a_2 - p$,
->
-> $$(a_1 - p) + (a_2 - p) = (a_1 + a_2 - p) - p \in A - p = U.$$
->
-> So $U$ is closed under addition and scalar multiplication and contains $0$: it is a subspace, and $A = p + U$. $\blacksquare$
+> Suppose $ U $ and $ W $ are subspaces of $ V $ and $ V = U \oplus W $. $\pi\|_W : W \to V/U$ is an **isomorphism**.
 
 {: .prompt-info }
-> *An affine subspace is closed under every finite affine combination* ("Closed under lines" is the $ k = 2 $ case).
+> *Duality (Project, function)*
 >
-> If $ a_1, \dots, a_k \in A $ and $ \sum \lambda_i = 1 $, then $ \sum \lambda_i a_i \in A $.
+> Suppose $ U $ and $ W $ are subspaces of $ V $ and $ V = U \oplus W $. Suppose $ w_1, \dots, w_m $ is a basis of $ W $. Then $ w_1 + U, \dots, w_m + U $ is a basis of $ V/U $.
+
+{: .prompt-info }
+> *Duality (Lift, one-to-many)*
+>
+> Suppose that $ U $ is a subspace of $ V $ such that $ V/U $ is finite-dimensional.
+> There exists a finite-dimensional subspace $ W $ of $ V $ such that $ \dim W = \dim V/U $ and $ V = U \oplus W $.
 
 {: .prompt-proof }
-> *Proof by induction on $k$.*
+> Since $V/U$ is finite-dimensional, pick a basis
 >
-> For $ k = 1 $, $ \lambda_1 = 1 $ gives $ a_1 \in A $. For the step, given $ \sum_{i=1}^{k}\lambda_i = 1 $ with $ k \ge 2 $, at least one coefficient — say $ \lambda_k $ — satisfies $ \lambda_k \neq 1 $. Set $ s = \lambda_1 + \dots + \lambda_{k-1} = 1 - \lambda_k \neq 0 $. Then
+> $$v_1 + U,\ \dots,\ v_m + U \quad (m = \dim V/U),$$
 >
-> $$\sum_{i=1}^k \lambda_i a_i = s\underbrace{\left(\sum_{i=1}^{k-1}\tfrac{\lambda_i}{s} a_i\right)}_{=:b} + \lambda_k a_k.$$
+> with chosen representatives $v_1, \dots, v_m \in V$. **Define**
 >
-> The inner combination $c$ has coefficients $ \tfrac{\lambda_i}{s} $ summing to $ \tfrac{s}{s} = 1 $, so by induction $ b \in A $. Then $ s\,b + \lambda_k a_k $ is an affine combination of the two points $ b, a_k \in A $ (coefficients $ s + \lambda_k = 1 $), so it lies in $ A $ by the line condition. $\blacksquare$.
+> $$W := \operatorname{span}(v_1, \dots, v_m).$$
+>
+> We show this $W$ works: it's finite-dimensional, $\dim W = m = \dim V/U$, and $V = U \oplus W$.
+>
+> **The $v_k$ are linearly independent (so $\dim W = m$).** Suppose $\sum_k a_k v_k = 0$. Apply $\pi$:
+>
+> $$0 + U = \pi\Big(\sum_k a_k v_k\Big) = \sum_k a_k (v_k + U).$$
+>
+> Since $v_1 + U, \dots, v_m + U$ is a basis of $V/U$, it's independent, so all $a_k = 0$. Thus $v_1, \dots, v_m$ is independent and $\dim W = m = \dim V/U$.
+>
+> **$U + W = V$.** Let $v \in V$. Expand its coset in the basis: $v + U = \sum_k a_k (v_k + U) = \big(\sum_k a_k v_k\big) + U$. Equal cosets differ by an element of $U$:
+>
+> $$v - \sum_k a_k v_k \in U \quad\Longrightarrow\quad v = \underbrace{\Big(v - \sum_k a_k v_k\Big)}_{\in\, U} + \underbrace{\sum_k a_k v_k}_{\in\, W} \in U + W.$$
+>
+> **$U \cap W = \{0\}$.** Let $x \in U \cap W$. Since $x \in W$, write $x = \sum_k a_k v_k$. Since $x \in U$, $\pi(x) = 0$:
+>
+> $$0 + U = \pi(x) = \sum_k a_k (v_k + U).$$
+>
+> Independence of the basis forces all $a_k = 0$, so $x = 0$.
+>
+> Therefore $V = U \oplus W$ with $\dim W = \dim V/U$. $\blacksquare$
 
-{: .prompt-tip }
-> *affine null* (closed under *affine combinations*):
->
-> $ A = \\{\lambda_1 v_1 + \dots + \lambda_m v_m : v_1, \dots, v_m \in V, \lambda_1, \dots, \lambda_m \in \mathbf{F} \ \text{and} \ \lambda_1 + \dots + \lambda_m = 1 \\} $
+{: .prompt-info }
+> Suppose $ U $ is a subspace of $ V $ and $ v_1 + U, \dots, v_m + U $ is a basis of $ V/U $ and $ u_1, \dots, u_n $ is a basis of $ U $. Then $ v_1, \dots, v_m, u_1, \dots, u_n $ is a basis of 𝑉.
 
 ### Isomorphism
 
-* $ V/\operatorname{null} T \cong \operatorname{range} T $
-* $ \mathcal{L}(V, W) \cong_\tilde{T} \mathbf{F}^{m,n} $
+* $ V/\operatorname{null} T \cong_\tilde{T} \operatorname{range} T $
+* $ \mathcal{L}(V, W) \cong \mathbf{F}^{m,n} $
 * $ V \cong \mathcal{L}(\mathbf{F}, V) $
 * $ V^m \cong \mathcal{L}(\mathbf{F}^m, V) $
+* $ V \cong U \times V/U $
 
 ---
 
