@@ -1,7 +1,7 @@
 ---
 title:  "Linear Algebra"
 category: math
-tags: math
+tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 mermaid: true
 ---
@@ -150,13 +150,22 @@ for each $k = 1, \dots, n$
 {: .prompt-info }
 > Injectivity, Surjectivity and Invertibility
 
-| $ T \in \mathcal{L}(V, W) $           | Injective                       | Surjective                     | Invertible (Isomorphic)                    |
-| ------------------------------------- | ------------------------------- | ------------------------------ | ------------------------------------------ |
-| Definition $ \Leftrightarrow $        | $ \operatorname{null} T = {0} $ | $ \operatorname{range} T = W $ | $ T $ is injective and $ T $ is surjective |
-| Preservation $ \Leftrightarrow $      | linear independence             | spanning                       | basis                                      |
-| Dimensions (Finite)  $ \Rightarrow $  | $ \dim V \leq \dim W $          | $ \dim V \geq \dim W $         | $ \dim V = \dim W $                        |
-| **$\dim V = \dim W$** $ \Rightarrow $ | (all three coincide)            | (all three coincide)           | (all three coincide)                       |
-| Pseudoinverse $ \Rightarrow $         | $ TT^{\dagger} = I $            | $ T^{\dagger}T = I $           | $ TT^{\dagger} = T^{\dagger}T = I $        |
+$ \Leftrightarrow $
+
+| $ T \in \mathcal{L}(V, W) $ | Injective                            | Surjective                            | Invertible (Isomorphic)                          |
+| --------------------------- | ------------------------------------ | ------------------------------------- | ------------------------------------------------ |
+| Definition                  | $ \operatorname{null} T = {0} $      | $ \operatorname{range} T = W $        | $ T $ is injective and $ T $ is surjective       |
+| Preservation                | linear independence                  | spanning                              | basis                                            |
+| Inverse                     | $ T $ has a left inverse: $ ST = I $ | $ T $ has a right inverse: $ TS = I $ | $ T $ has the inverse: $ ST = I $ and $ TS = I $ |
+
+
+$ \Rightarrow $
+
+| $ T \in \mathcal{L}(V, W) $ | Injective              | Surjective             | Invertible (Isomorphic)             |
+| --------------------------- | ---------------------- | ---------------------- | ----------------------------------- |
+| Dimensions (Finite)         | $ \dim V \leq \dim W $ | $ \dim V \geq \dim W $ | $ \dim V = \dim W $                 |
+| **$\dim V = \dim W$**       | (all three coincide)   | (all three coincide)   | (all three coincide)                |
+| Pseudoinverse               | $ TT^{\dagger} = I $   | $ T^{\dagger}T = I $   | $ TT^{\dagger} = T^{\dagger}T = I $ |
 
 ### Product
 
@@ -170,60 +179,9 @@ Suppose $ U $ and $ V $ are finite-dimensional. $ S \in \mathcal{L}(V, W) $ and 
 * $ \dim \operatorname{null} ST \leq \dim \operatorname{null} S + \dim \operatorname{null} T $
 * $ \dim \operatorname{range} ST \leq \min(\dim \operatorname{range} S + \dim \operatorname{range} T) $
 
-Suppose $ W $ is finite-dimensional. $ T \in \mathcal{L}(V, W) $:
-
-* $ T $ is injective $ \Rightarrow \exists S \in \mathcal{L}(W, V) \ \text{s.t.} \ ST = I $
-* $ T $ is surjective $ \Rightarrow \exists S \in \mathcal{L}(W, V) \ \text{s.t.} \ TS = I $
-
 Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $:
 
 * $ ST $ is invertible $\Leftrightarrow$ $ S $ and $ T $ are invertible.
-
-### Factorization
-
-{: .prompt-info }
-> Suppose $W$ is finite-dimensional. $ S, T \in \mathcal{L}(V, W) $. $ \operatorname{null} S \subseteq \operatorname{null} T \Leftrightarrow \exists E \in \mathcal{L}(W) \ \text{s.t.} \ T = ES $
-
-{: .prompt-proof }
-> We build $E : W \to W$ with $E(Sv) = Tv$ for all $v$.
->
-> For $w \in \operatorname{range} S$, write $w = Sv$ and set $Ew := Tv$.
-> This is well-defined: if $Sv_1 = Sv_2$, then
-> $v_1 - v_2 \in \operatorname{null} S \subseteq \operatorname{null} T$,
-> so $Tv_1 = Tv_2$.
-> It's linear on $\operatorname{range} S$ since $E(aSv_1 + bSv_2) = E(\bigl(S(av_1+bv_2)\bigr)) = T(av_1+bv_2) = aEw_1 + bEw_2$.
->
-> Because $W$ is finite-dimensional,
-> $\operatorname{range} S$ has a complement:
->
-> $$
-> W = \operatorname{range} S \oplus U
-> $$
->
-> Define $E$ to be $0$ on $U$ and extend linearly. Hence $ES = T$.
-> $\blacksquare$
-
-{: .prompt-info }
-> Suppose $V$ is finite-dimensional. $ S, T \in \mathcal{L}(V, W) $. $ \operatorname{range} S \subseteq \operatorname{range} T \Leftrightarrow \exists E \in \mathcal{L}(V) \ \text{s.t.} \ S = TE $
-
-{: .prompt-proof }
-> Because $V$ is finite-dimensional, pick a basis $v_1, \dots, v_n$ of $V$. For each $j$, the vector $Sv_j$ lies in $\operatorname{range} S \subseteq \operatorname{range} T$, so there exists $u_j \in V$ with
->
-> $$T u_j = S v_j.$$
->
-> (The preimage $u_j$ lives in $V$ because $T$ starts at $V$ — which is exactly why $E$ ends up being an operator *on* $V$.) Define $E \in \mathcal{L}(V)$ to be the unique linear map with $E v_j = u_j$ for every $j$. Then for each basis vector,
->
-> $$(TE)(v_j) = T(E v_j) = T(u_j) = S v_j.$$
->
-> So $TE$ and $S$ agree on a basis of $V$, hence $TE = S$.
-> $\blacksquare$
-
-| relationship                                              | factorization                               | $E$ acts on                |
-| --------------------------------------------------------- | ------------------------------------------- | -------------------------- |
-| $\operatorname{range} S \subseteq \operatorname{range} T$ | $S = TE$, $E \in \mathcal{L}(V)$            | domain (one-directional)   |
-| $\operatorname{null} S \subseteq \operatorname{null} T$   | $T = ES$, $E \in \mathcal{L}(W)$            | codomain (one-directional) |
-| $\operatorname{range} S = \operatorname{range} T$         | $S = TE$, $E \in \mathcal{L}(V)$ invertible | domain (isomorphism)       |
-| $\operatorname{null} S = \operatorname{null} T$           | $S = ET$, $E \in \mathcal{L}(W)$ invertible | codomain (isomorphism)     |
 
 ### Translate
 
