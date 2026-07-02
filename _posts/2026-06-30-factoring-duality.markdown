@@ -49,13 +49,6 @@ mermaid: true
 ![factoring](/assets/img/math/factoring.png)
 
 {: .prompt-tip }
-> *Extension and Lift are transposes.*
->
-> The two laws are one statement seen through the dual map $M \mapsto M'$. Transpose the Extension data — $S : V \to W_1$ and $T : V \to W_2$, sharing the domain $V$ — to get $S' : W_1' \to V'$ and $T' : W_2' \to V'$, now sharing the *codomain* $V'$, which is a Lift configuration. The conclusion transposes with it, $T = ES \mapsto T' = S'E'$, turning "$T$ factors through $S$ on the left" into "$T'$ factors through $S'$ on the right."
->
-> And the hypotheses correspond: since $\operatorname{range} M' = (\operatorname{null} M)^0$, and since $U \mapsto U^0$ is an inclusion-reversing **bijection** on subspaces (its inverse is $U^0 \mapsto U^{00} = U$, the double-annihilator identity), $$ \operatorname{null} S \subseteq \operatorname{null} T \iff (\operatorname{null} T)^0 \subseteq (\operatorname{null} S)^0 \iff \operatorname{range} T' \subseteq \operatorname{range} S'. $$ So the Extension problem for $(S, T)$ is exactly the Lift problem for its transposes $(T', S')$.
-
-{: .prompt-tip }
 > *Removing the finite-dimensional hypotheses*
 >
 > Both laws hold in **every** dimension under the Axiom of Choice; the
@@ -66,6 +59,38 @@ mermaid: true
 >
 > The reverse ($\Leftarrow$) directions use neither a complement nor a basis, so they are choice-free in all dimensions. Structurally, the two facts being invoked are that in $\mathbf{Vect}$ every object is both **injective** (extension along monos) and **projective** (lifting along epis).
 
+### Extension and Lift are Transposes
+
+The two laws are one statement seen through the dual map $M \mapsto M'$. Transpose the Extension data — $S : V \to W_1$ and $T : V \to W_2$, sharing the domain $V$ — to get $S' : W_1' \to V'$ and $T' : W_2' \to V'$, now sharing the *codomain* $V'$, which is a Lift configuration. The conclusion transposes with it, $T = ES \mapsto T' = S'E'$, turning "$T$ factors through $S$ on the left" into "$T'$ factors through $S'$ on the right."
+
+And the hypotheses correspond: since $\operatorname{range} M' = (\operatorname{null} M)^0$, and since $U \mapsto U^0$ is an inclusion-reversing **bijection** on subspaces (its inverse is $U^0 \mapsto U^{00} = U$, the double-annihilator identity), $$ \operatorname{null} S \subseteq \operatorname{null} T \iff (\operatorname{null} T)^0 \subseteq (\operatorname{null} S)^0 \iff \operatorname{range} T' \subseteq \operatorname{range} S'. $$ So the Extension problem for $(S, T)$ is exactly the Lift problem for its transposes $(T', S')$.
+
+### Freedom in $E$
+
+Both constructions made an arbitrary choice: the extension off a complement, or the preimages of a basis. In each case the set of *all* valid factors is a **translate**: fix one solution $E_0$, and every other differs from it by a solution of the homogeneous equation. Measuring that homogeneous space measures the freedom.
+
+{: .prompt-info }
+> *Extension: forced on $\operatorname{range} S$, free on a complement.*
+
+The defining equation $ T = ES $ constrains $E$ only through the vectors $Sv$, i.e. only on $\operatorname{range} S$, where it is *forced* to be $E(Sv) = Tv$. On a complement $U$ in $W_1 = \operatorname{range} S \oplus U$ the equation says nothing, so $ \left. E \right\rvert_U$ can be **any** linear map $U \to W_2$. The proof took $0$, but that was one choice among many. Concretely, if $E_1 S = E_2 S = T$ and $ F = (E_1 - E_2) $, then $ FS = 0 $, i.e. $ F $ vanishes on $\operatorname{range} S$; such $ F $ factor through the quotient, so the freedom is exactly
+
+$$ \{ F : FS = 0 \} \cong \mathcal{L}(W_1 / \operatorname{range} S, W_2), $$
+
+$$ \dim = \big(\dim W_1 - \dim \operatorname{range} S\big)\cdot \dim W_2. $$
+
+The factor $E$ is *unique* $ \iff $ $ S $ is *surjective* ($ \operatorname{range} S = W_1 $): only then is there no complement to be free on. The freedom lives on the **source** of $E$, precisely where $S$ fails to fill $W_1$.
+
+{: .prompt-info }
+> *Lift: determined modulo $\operatorname{null} T$.*
+
+Here $TE = S$ fixes each value $Ev_j$ only up to a preimage of $Sv_j$, and any two preimages differ by an element of $\operatorname{null} T$. So the choice of preimages is the freedom. Concretely, if $TE_1 = TE_2 = S$ and $G = E_1 - E_2$, then $ TG = 0 $, i.e. $\operatorname{range} G \subseteq \operatorname{null} T$; the freedom is exactly
+
+$$ \{ G : TG = 0 \} \cong \mathcal{L}(V_1, \operatorname{null} T), $$
+
+$$ \dim = \dim V_1 \cdot \dim \operatorname{null} T. $$
+
+The factor $E$ is *unique* $ \iff$ $T$ is *injective* ($\operatorname{null} T = \{0\}$): only then is there a single preimage to choose. The freedom lives on the **target** of $E$, precisely where $T$ collapses.
+
 ## Left and Right Inverse
 
 Setting one given map to an **identity** collapses each law into a one-sided inverse:
@@ -74,7 +99,10 @@ Setting one given map to an **identity** collapses each law into a one-sided inv
 
 **Lift.** Put $S = I_W$. The hypothesis $W = \operatorname{range} I_W \subseteq \operatorname{range} T$ says $T$ is **surjective**, and $I_W = TE$ makes $E$ a **right inverse** of $T$. A right inverse is called a **section** of $T$, and a surjective map that admits one is a **split epimorphism**.
 
-So *injective $\iff$ has a retraction* and *surjective $\iff$ has a section*.
+So,
+
+{: .prompt-info }
+> *injective $\iff$ has a retraction* and *surjective $\iff$ has a section*.
 
 A retraction is automatically surjective and a section automatically injective, so the two constructions say that in $\mathbf{Vect}$ **every injective map splits** (has a retraction) and **every surjective map splits** (has a section) — the linear-algebra form of "every mono and every epi splits."
 
@@ -87,12 +115,38 @@ A retraction is automatically surjective and a section automatically injective, 
 >
 > So the transpose swaps injective with surjective in the very stroke that swaps retraction with section: "$T$ is injective, hence has a retraction" read on the dual side is exactly "$T'$ is surjective, hence has a section." The left/right asymmetry is one phenomenon, seen through $M \mapsto M'$.
 
-| relationship                                              | factorization                               | $E$ acts on                |
-| --------------------------------------------------------- | ------------------------------------------- | -------------------------- |
-| $\operatorname{range} S \subseteq \operatorname{range} T$ | $S = TE$, $E \in \mathcal{L}(V)$            | domain (one-directional)   |
-| $\operatorname{null} S \subseteq \operatorname{null} T$   | $T = ES$, $E \in \mathcal{L}(W)$            | codomain (one-directional) |
-| $\operatorname{range} S = \operatorname{range} T$         | $S = TE$, $E \in \mathcal{L}(V)$ invertible | domain (isomorphism)       |
-| $\operatorname{null} S = \operatorname{null} T$           | $S = ET$, $E \in \mathcal{L}(W)$ invertible | codomain (isomorphism)     |
+## Equal Range, Equal Null Space
+
+Strengthening either inclusion to an **equality** upgrades the factor $E$ from a one-directional map into an **isomorphism**. Where setting a map to the identity made $E$ a *one-sided* inverse of one map, equality makes $E$ a *two-sided* invertible map that relates the *two* maps. The equality is just the inclusion holding in both directions, and those two directions are the two sides of $E$'s invertibility.
+
+{: .prompt-info }
+> *Equal null space — differ by a codomain automorphism*
+>
+> Suppose $W$ is finite-dimensional and $S, T \in \mathcal{L}(V, W)$. Then
+> $$ \operatorname{null} S = \operatorname{null} T \iff \exists\, \text{invertible } E \in \mathcal{L}(W) \ \text{s.t.}\ S = ET \ (\text{equivalently } T = E^{-1}S). $$
+
+{: .prompt-info }
+> *Equal range — differ by a domain automorphism*
+>
+> Suppose $V$ is finite-dimensional and $S, T \in \mathcal{L}(V, W)$. Then
+> $$ \operatorname{range} S = \operatorname{range} T \iff \exists\, \text{invertible } E \in \mathcal{L}(V) \ \text{s.t.}\ S = TE \ (\text{equivalently } T = SE^{-1}). $$
+
+{: .prompt-proof }
+> ($\Leftarrow$) Both directions are immediate: if $S = TE$ with $E$ invertible then $\operatorname{range} S \subseteq \operatorname{range} T$ and $\operatorname{range} T = \operatorname{range}(SE^{-1}) \subseteq \operatorname{range} S$; the null space case is dual.
+>
+> ($\Rightarrow$, equal null space) Let $N = \operatorname{null} S = \operatorname{null} T$. Define $E$ on $\operatorname{range} T$ by $E(Tv) := Sv$. This is well-defined and injective: $Tv = Tv' \iff v - v' \in N \iff Sv = Sv'$. So $E : \operatorname{range} T \to \operatorname{range} S$ is an isomorphism. By rank–nullity the two ranges have equal dimension, hence so do their complements $W = \operatorname{range} T \oplus U_T = \operatorname{range} S \oplus U_S$; extend $E$ by any isomorphism $U_T \to U_S$. Then $E \in \mathcal{L}(W)$ is invertible and $ET = S$.
+>
+> ($\Rightarrow$, equal range) Dual: decompose $V = \operatorname{null} S \oplus C_S = \operatorname{null} T \oplus C_T$, send $C_S \to C_T$ by $(\left. T \right\rvert_{C_T})^{-1}(\left. S \right\rvert_{C_S})$ and $\operatorname{null} S \to \operatorname{null} T$ by any isomorphism (equal dimension by rank–nullity). The resulting $E \in \mathcal{L}(V)$ is invertible with $TE = S$.
+> $\blacksquare$
+
+The reading is clean: **same range means $S$ and $T$ agree up to a change of coordinates on the source**, and **same null space means they agree up to a change of coordinates on the target.** In group-action language, two maps share a range exactly when they lie in one orbit of $\mathrm{GL}(V)$ acting by precomposition, and share a null space exactly when they lie in one orbit of $\mathrm{GL}(W)$ acting by postcomposition.
+
+![automorphism_factoring](/assets/img/math/automorphism_factoring.png)
+
+{: .prompt-warning }
+> *These two rows are genuinely finite-dimensional.*
+>
+> Unlike the inclusion laws — which survive to any dimension under the Axiom of Choice — the equality rows do **not**. Both proofs use rank–nullity to turn equal range into equal nullity (and vice versa), and that step fails in infinite dimensions: equal range no longer forces equal null space. For a counterexample, take $S = I$ and $T$ the left shift on the space of finitely-supported sequences. Both are surjective, so $\operatorname{range} S = \operatorname{range} T$, yet $\operatorname{null} S = \{0\} \neq \operatorname{null} T$. No invertible $E$ can satisfy $S = TE$, since that would force $T$ injective.
 
 ## References
 

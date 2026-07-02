@@ -107,13 +107,14 @@ A sum is a direct sum iff dimensions add up.
 * $ (\operatorname{null} T)^{\perp} \to \operatorname{range} T $ (Invertable)
 * $ T^{\ast} $
 
-A linear map may be prescribed freely on a basis:
-
-$ \forall \ \text{basis} \ v_1, \dots, v_n \in V $ and $ \forall w_1, \dots, w_n \in W $, $ \exists! T \in \mathcal{L}(V, W) \ \text{s.t.} $
-
-$$ Tv_k = w_k $$
-
-for each $k = 1, \dots, n$
+{: .prompt-info }
+> A linear map may be prescribed freely on a *basis*:
+>
+> $ \forall \ \text{basis} \ v_1, \dots, v_n \in V $ and $ \forall w_1, \dots, w_n \in W $, $ \exists! T \in \mathcal{L}(V, W) \ \text{s.t.} $
+>
+> $$ Tv_k = w_k $$
+>
+> for each $k = 1, \dots, n$
 
 {: .prompt-info }
 > Extension
@@ -147,8 +148,14 @@ for each $k = 1, \dots, n$
 >
 > $$ \dim \{ v \in V : Tv \in U \} = \dim \operatorname{null} T + \dim (U \cap \operatorname{range} T) $$
 
+###  Injectivity, Surjectivity and Invertibility
+
 {: .prompt-info }
-> Injectivity, Surjectivity and Invertibility
+> Suppose $ T \in \mathcal{L}(V, W) $.
+>
+> (a) If $ T $ is injective, then it's invertible from $ V $ to $ \operatorname{range} T $.
+>
+> (b) Decompose $ V = \operatorname{null} T \oplus U $, then $(\left. T \right\rvert_{U})$ is invertible.
 
 $ \Leftrightarrow $
 
