@@ -78,13 +78,17 @@ Finite fields exist precisely for prime-power sizes $q = p^k$.
 
 ![Basis](/assets/img/math/basis.png)
 
-A list is a basis if it satisfies any two of the following three conditions:
+![Basis Triangle](/assets/img/math/basis_two_of_three_triangle.png)
 
-* It is linearly independent
-* It spans $V$
-* Its length equals $ \dim(V) $
+{: .prompt-warning }
+> Suppose we allow infinite families, read "spans/independent" in the finite-linear-combination sense, and read "length $= \dim V$" as "cardinality equals $\dim V$" (a Hamel basis).
+>
+> (a) Take $V = \mathcal P(\mathbb F)$, polynomials, with basis $1, x, x^2, \dots$ so $\dim V = \aleph_0$. Then $\{x, x^2, x^3, \dots\}$ (drop the constant) is linearly independent with cardinality $\aleph_0 = \dim V$, yet it can't produce the constant $1$, so it doesn't span — independent, right size, not a basis.
+>
+> (b) $\{1, x, x^2, \dots\} \cup \{1+x\}$ spans and still has cardinality $\aleph_0$, but it's dependent — spanning, right size, not a basis.
 
-A direct-sum decomposition of $ V $ is the same thing as a partition of a basis of $ V $.
+{: .prompt-info }
+> A direct-sum decomposition of $ V $ is the same thing as a partition of a basis of $ V $.
 
 ![basis partition](/assets/img/math/basis_partition_equals_direct_sum.png)
 
@@ -110,11 +114,14 @@ A sum is a direct sum iff dimensions add up.
 {: .prompt-info }
 > A linear map may be prescribed freely on a *basis*:
 >
-> $ \forall \ \text{basis} \ v_1, \dots, v_n \in V $ and $ \forall w_1, \dots, w_n \in W $, $ \exists! T \in \mathcal{L}(V, W) \ \text{s.t.} $
+> Suppose $ v_1, \dots, v_n \in V $ is a basis of $ V $ and $ w_1, \dots, w_n \in W $, $ \exists! T \in \mathcal{L}(V, W) \ \text{s.t.} $
 >
 > $$ Tv_k = w_k $$
 >
 > for each $k = 1, \dots, n$
+
+{: .prompt-tip }
+> $ T(c_1v_1 + \dots + c_nv_n) = c_1w_1 + \dots + c_nw_n $
 
 {: .prompt-info }
 > Extension
@@ -150,12 +157,18 @@ A sum is a direct sum iff dimensions add up.
 
 ###  Injectivity, Surjectivity and Invertibility
 
+![Inveritibility Triangle](/assets/img/math/invertibility_two_of_three_triangle.png)
+_Inveritibility Triangle_
+
+{: .prompt-warning }
+> In infinite dimensions $ST = I$ does **not** imply $TS = I$. The standard counterexample is the shift operators on infinite sequences: left‑shift $L$ and right‑shift $R$ satisfy $LR = I$ but $RL \ne I$, and neither is invertible.
+
 {: .prompt-info }
 > Suppose $ T \in \mathcal{L}(V, W) $.
 >
-> (a) If $ T $ is injective, then it's invertible from $ V $ to $ \operatorname{range} T $.
+> (a) If $ T $ is injective, the co-restriction $ \tilde T : V \to \operatorname{range} T $, $ v \mapsto Tv $, is a bijection.
 >
-> (b) Decompose $ V = \operatorname{null} T \oplus U $, then $(\left. T \right\rvert_{U})$ is invertible.
+> (b) Decompose $ V = \operatorname{null} T \oplus U $, then $T\rvert_U : U \to \operatorname{range} T$ is an isomorphism.
 
 $ \Leftrightarrow $
 
@@ -164,7 +177,6 @@ $ \Leftrightarrow $
 | Definition                  | $ \operatorname{null} T = {0} $      | $ \operatorname{range} T = W $        | $ T $ is injective and $ T $ is surjective       |
 | Preservation                | linear independence                  | spanning                              | basis                                            |
 | Inverse                     | $ T $ has a left inverse: $ ST = I $ | $ T $ has a right inverse: $ TS = I $ | $ T $ has the inverse: $ ST = I $ and $ TS = I $ |
-
 
 $ \Rightarrow $
 
@@ -333,3 +345,11 @@ $$ A = C^{-1}BC $$
 
 * $ \dim \operatorname{null} T' = \dim \operatorname{null} T + \dim W - \dim V $
 * $ \dim \operatorname{range} T' = \dim \operatorname{range} T $
+
+| $ T \in \mathcal{L}(V, W) $ | Inverse                                         |
+| --------------------------- | ----------------------------------------------- |
+| Existence                   | _Inveritibility Triangle_                       |
+| Uniqueness                  | Unique: $ T^{-1} \in \mathcal{L}(W, V) $        |
+| Matrix                      | $ \mathcal{M}(T^{-1}) = (\mathcal{M}(T))^{-1} $ |
+| Involution                  | $ (T^{-1})^{-1} = T $                           |
+| Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^(-1) $                    |
