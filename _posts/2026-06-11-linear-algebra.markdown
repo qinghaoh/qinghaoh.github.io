@@ -37,6 +37,7 @@ flowchart LR
 * $ \mathbf{F}^{m,n} $ ($ \dim = mn $)
 * $ V_1 \times \dots \times V_m $ ($ \dim = \dim V_1 + \dots + \dim V_m $)
 * $ V/U $ ($ \dim = \dim V - \dim U $)
+* $ V' $ ($ \dim = \dim V $)
 
 ### Subspace
 
@@ -170,15 +171,16 @@ _Inveritibility Triangle_
 >
 > (b) Decompose $ V = \operatorname{null} T \oplus U $, then $T\rvert_U : U \to \operatorname{range} T$ is an isomorphism.
 
-$ \Leftrightarrow $
+$ \iff $
 
 | $ T \in \mathcal{L}(V, W) $ | Injective                            | Surjective                            | Invertible (Isomorphic)                          |
 | --------------------------- | ------------------------------------ | ------------------------------------- | ------------------------------------------------ |
 | Definition                  | $ \operatorname{null} T = {0} $      | $ \operatorname{range} T = W $        | $ T $ is injective and $ T $ is surjective       |
 | Preservation                | linear independence                  | spanning                              | basis                                            |
 | Inverse                     | $ T $ has a left inverse: $ ST = I $ | $ T $ has a right inverse: $ TS = I $ | $ T $ has the inverse: $ ST = I $ and $ TS = I $ |
+| Dual map                    | $ T' $ is surjective                 | $ T' $ is injective                   | $ T' $ is invertible                             |
 
-$ \Rightarrow $
+$ \implies $
 
 | $ T \in \mathcal{L}(V, W) $ | Injective              | Surjective             | Invertible (Isomorphic)             |
 | --------------------------- | ---------------------- | ---------------------- | ----------------------------------- |
@@ -337,19 +339,54 @@ $$ A = C^{-1}BC $$
 
 ![dual map](/assets/img/math/dual_map.png){: w="600" h="300" }
 
-* $ T $ is injective $ \Leftrightarrow $ $ T' $ is surjective
-* $ T $ is surjective $ \Leftrightarrow $ $ T' $ is injective
-
 * $ \operatorname{null} T' = (\operatorname{range} T)^0 $
 * $ \operatorname{range} T' = (\operatorname{null} T)^0 $
 
 * $ \dim \operatorname{null} T' = \dim \operatorname{null} T + \dim W - \dim V $
 * $ \dim \operatorname{range} T' = \dim \operatorname{range} T $
 
-| $ T \in \mathcal{L}(V, W) $ | Inverse                                         |
-| --------------------------- | ----------------------------------------------- |
-| Existence                   | _Inveritibility Triangle_                       |
-| Uniqueness                  | Unique: $ T^{-1} \in \mathcal{L}(W, V) $        |
-| Matrix                      | $ \mathcal{M}(T^{-1}) = (\mathcal{M}(T))^{-1} $ |
-| Involution                  | $ (T^{-1})^{-1} = T $                           |
-| Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^(-1) $                    |
+## Annihilator
+
+{: .prompt-tip }
+> Denote the collection of all subspaces of $V$ by $\mathrm{Sub}(V)$.
+>
+> $(\mathrm{Sub}(V), \subseteq)$ is a *lattice*, with $(\wedge, \vee) = (\cap, +)$.
+>
+> The annihilator map $ U \mapsto U^0 $ is an order-reversing *bijection* between $ \mathrm{Sub}(V) $ and $ \mathrm{Sub}(V') $.
+
+{: .prompt-info }
+> Suppose $ V $ is finite-dimensional and $ U $ and $ W $ are subspaces of $ V $.
+>
+> * $ (U^0)^0 = U $
+> * Antitone: $ W^0 \subseteq U^0 \Leftrightarrow U \subseteq W $
+
+{: .prompt-proof }
+> $W^0 \subseteq U^0 \implies U \subseteq W$
+>
+> Prove the contrapositive: if $U \not\subseteq W$, then $W^0 \not\subseteq U^0$.
+>
+> Suppose $U \not\subseteq W$, so there exists $u \in U$ with $u \notin W$. The goal is to produce a functional that lives in $W^0$ but not $U^0$ — one that kills all of $W$ yet doesn't kill $u$.
+>
+> Let $w_1, \dots, w_k$ be a basis of $W$. Since $u \notin W = \operatorname{span}(w_1,\dots,w_k)$, the list
+>
+> $$w_1, \dots, w_k,\, u$$
+>
+> is linearly independent. Using finite-dimensionality, extend it to a basis $w_1, \dots, w_k,\, u,\, v_1, \dots, v_j$ of $V$. Now define $\varphi \in V'$ on this basis by
+>
+> $$\varphi(w_i) = 0 \ (\text{all } i), \qquad \varphi(u) = 1, \qquad \varphi(v_\ell) = 0 \ (\text{all } \ell),$$
+>
+> extended linearly. Since $\varphi$ vanishes on a basis of $W$, it vanishes on all of $W$, so $\varphi \in W^0$. But $u \in U$ and $\varphi(u) = 1 \neq 0$, so $\varphi \notin U^0$. Therefore $W^0 \not\subseteq U^0$, completing the contrapositive. $\blacksquare$
+
+{: .prompt-info }
+> Lattice anti-homomorphism:
+>
+> * $ (U + W)^0 = U^0 \cap W^0 $
+> * $ (U \cap W)^0 = U^0 + W^0 $
+
+| $ T \in \mathcal{L}(V, W) $ | Inverse                                         | Dual Map                                 |
+| --------------------------- | ----------------------------------------------- | ---------------------------------------- |
+| Existence                   | _Inveritibility Triangle_                       |                                          |
+| Uniqueness                  | $ T^{-1} \in \mathcal{L}(W, V) $                |                                          |
+| Matrix                      | $ \mathcal{M}(T^{-1}) = (\mathcal{M}(T))^{-1} $ | $ \mathcal{M}(T') = (\mathcal{M}(T))^t $ |
+| Involution                  | $ (T^{-1})^{-1} = T $                           |                                          |
+| Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^(-1) $                    | $ (ST) = T'S' $                          |
