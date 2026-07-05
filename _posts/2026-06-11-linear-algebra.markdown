@@ -70,10 +70,11 @@ $$\#(\text{vectors}) = \lvert \mathbf{F} \rvert ^n$$
 
 Finite fields exist precisely for prime-power sizes $q = p^k$.
 
-|                      | over $\mathbb{R}$ or $\mathbb{C}$ | over $\mathbf{F}_q$ |
-| -------------------- | --------------------------------- | ------------------- |
-| trivial space        | $1$                               | $1$                 |
-| dimension $n \geq 1$ | $\infty$                          | $q^n$               |
+|                      | over $\mathbb{R}$ or $\mathbb{C}$ | over $\mathbf{F}_q$                                                   |
+| -------------------- | --------------------------------- | --------------------------------------------------------------------- |
+| trivial space        | $1$                               | $1$                                                                   |
+| dimension $n \geq 1$ | $\infty$                          | $q^n$                                                                 |
+| #{ordered bases}     | $\infty$                          | $$ \lvert GL_n(\mathbf{F}_q) \rvert = \prod_{k=0}^{n-1}(q^n - q^k) $$ |
 
 ## Bases
 
@@ -90,6 +91,9 @@ Finite fields exist precisely for prime-power sizes $q = p^k$.
 
 {: .prompt-info }
 > A direct-sum decomposition of $ V $ is the same thing as a partition of a basis of $ V $.
+
+{: .prompt-tip }
+> $ \dim (V_1 + \dots + V_m) \le \dim V_1 + \dots + \dim V_m $
 
 ![basis partition](/assets/img/math/basis_partition_equals_direct_sum.png)
 
@@ -335,54 +339,6 @@ $ T \in \mathcal{L}(V) $, $ A = \mathcal{M}(T,(u_1,\dots,u_n)), B = \mathcal{M}(
 
 $$ A = C^{-1}BC $$
 
-## Dual Space and Dual Map
-
-![dual map](/assets/img/math/dual_map.png){: w="600" h="300" }
-
-* $ \operatorname{null} T' = (\operatorname{range} T)^0 $
-* $ \operatorname{range} T' = (\operatorname{null} T)^0 $
-
-* $ \dim \operatorname{null} T' = \dim \operatorname{null} T + \dim W - \dim V $
-* $ \dim \operatorname{range} T' = \dim \operatorname{range} T $
-
-## Annihilator
-
-{: .prompt-tip }
-> Denote the collection of all subspaces of $V$ by $\mathrm{Sub}(V)$.
->
-> $(\mathrm{Sub}(V), \subseteq)$ is a *lattice*, with $(\wedge, \vee) = (\cap, +)$.
->
-> The annihilator map $ U \mapsto U^0 $ is an order-reversing *bijection* between $ \mathrm{Sub}(V) $ and $ \mathrm{Sub}(V') $.
-
-{: .prompt-info }
-> Suppose $ V $ is finite-dimensional and $ U $ and $ W $ are subspaces of $ V $.
->
-> * $ (U^0)^0 = U $
-> * Antitone: $ W^0 \subseteq U^0 \Leftrightarrow U \subseteq W $
-
-{: .prompt-proof }
-> $W^0 \subseteq U^0 \implies U \subseteq W$
->
-> Prove the contrapositive: if $U \not\subseteq W$, then $W^0 \not\subseteq U^0$.
->
-> Suppose $U \not\subseteq W$, so there exists $u \in U$ with $u \notin W$. The goal is to produce a functional that lives in $W^0$ but not $U^0$ — one that kills all of $W$ yet doesn't kill $u$.
->
-> Let $w_1, \dots, w_k$ be a basis of $W$. Since $u \notin W = \operatorname{span}(w_1,\dots,w_k)$, the list
->
-> $$w_1, \dots, w_k,\, u$$
->
-> is linearly independent. Using finite-dimensionality, extend it to a basis $w_1, \dots, w_k,\, u,\, v_1, \dots, v_j$ of $V$. Now define $\varphi \in V'$ on this basis by
->
-> $$\varphi(w_i) = 0 \ (\text{all } i), \qquad \varphi(u) = 1, \qquad \varphi(v_\ell) = 0 \ (\text{all } \ell),$$
->
-> extended linearly. Since $\varphi$ vanishes on a basis of $W$, it vanishes on all of $W$, so $\varphi \in W^0$. But $u \in U$ and $\varphi(u) = 1 \neq 0$, so $\varphi \notin U^0$. Therefore $W^0 \not\subseteq U^0$, completing the contrapositive. $\blacksquare$
-
-{: .prompt-info }
-> Lattice anti-homomorphism:
->
-> * $ (U + W)^0 = U^0 \cap W^0 $
-> * $ (U \cap W)^0 = U^0 + W^0 $
-
 | $ T \in \mathcal{L}(V, W) $ | Inverse                                         | Dual Map                                 |
 | --------------------------- | ----------------------------------------------- | ---------------------------------------- |
 | Existence                   | _Inveritibility Triangle_                       |                                          |
@@ -390,3 +346,28 @@ $$ A = C^{-1}BC $$
 | Matrix                      | $ \mathcal{M}(T^{-1}) = (\mathcal{M}(T))^{-1} $ | $ \mathcal{M}(T') = (\mathcal{M}(T))^t $ |
 | Involution                  | $ (T^{-1})^{-1} = T $                           |                                          |
 | Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^(-1) $                    | $ (ST) = T'S' $                          |
+
+## Eigenvectors
+
+{: .prompt-info }
+> _fundamental theorem of algebra, first version_
+>
+> Every nonconstant polynomial with complex coefficients has a zero in $ \mathbb(C) $.
+
+### Existence
+
+{: .prompt-info }
+> Every operator on a finite-dimensional nonzero _complex_ vector space has an eigenvalue.
+
+{: .prompt-info }
+> Suppose $ T \in \mathcal(V) $. Then every list of eigenvectors of $ T $ corresponding to distinct eigenvalues of $ T $ is _linearly independent_.
+
+{: .prompt-info }
+> Null space and range of $ p(T) $ are invariant under $ T $.
+
+## Minimal Polynomial
+
+{: .prompt-info }
+> Suppose $ V $ is finite-dimensional and $ T \in \mathcal{L}(V) $. The minimal polynomial of $ T $ is the _unique_ monic polynomial $ p \in \mathcal{P}(\mathbf{F}) $ of smallest degree such that $ p(T) = 0 $.
+>
+> $ \deg p \le \dim V $.
