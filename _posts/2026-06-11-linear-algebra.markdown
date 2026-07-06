@@ -339,13 +339,13 @@ $ T \in \mathcal{L}(V) $, $ A = \mathcal{M}(T,(u_1,\dots,u_n)), B = \mathcal{M}(
 
 $$ A = C^{-1}BC $$
 
-| $ T \in \mathcal{L}(V, W) $ | Inverse                                         | Dual Map                                 |
-| --------------------------- | ----------------------------------------------- | ---------------------------------------- |
-| Existence                   | _Inveritibility Triangle_                       |                                          |
-| Uniqueness                  | $ T^{-1} \in \mathcal{L}(W, V) $                |                                          |
-| Matrix                      | $ \mathcal{M}(T^{-1}) = (\mathcal{M}(T))^{-1} $ | $ \mathcal{M}(T') = (\mathcal{M}(T))^t $ |
-| Involution                  | $ (T^{-1})^{-1} = T $                           |                                          |
-| Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^(-1) $                    | $ (ST) = T'S' $                          |
+| $ T \in \mathcal{L}(V, W) $ | Inverse                                         | Dual Map                                 | Adjoint                                         |
+| --------------------------- | ----------------------------------------------- | ---------------------------------------- | ----------------------------------------------- |
+| Existence                   | _Inveritibility Triangle_                       |                                          |                                                 |
+| Uniqueness                  | $ T^{-1} \in \mathcal{L}(W, V) $                |                                          |                                                 |
+| Matrix                      | $ \mathcal{M}(T^{-1}) = (\mathcal{M}(T))^{-1} $ | $ \mathcal{M}(T') = (\mathcal{M}(T))^t $ | $ \mathcal{M}(T^{\*}) = (\mathcal{M}(T))^{\*} $ |
+| Involution                  | $ (T^{-1})^{-1} = T $                           |                                          | $ (T^{\*})^{\*} = T $                           |
+| Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^(-1) $                    | $ (ST) = T'S' $                          | $ (ST)^{\*} = T^{\*}S^{\*} $                    |
 
 ## Eigenvectors
 

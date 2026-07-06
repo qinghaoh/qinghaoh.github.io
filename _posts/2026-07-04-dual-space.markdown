@@ -10,13 +10,80 @@ mermaid: true
 
 ![dual map](/assets/img/math/dual_map.png){: w="600" h="300" }
 
+{: .prompt-tip }
+> Suppose $V$ is finite-dimensional. Then $ V \cong V' $, but finding an isomorphism from $V$ onto $V'$ generally requires choosing a basis of $V$.
+
+* $ \dim U^0 = \dim V - \dim U $
+
 * $ \operatorname{null} T' = (\operatorname{range} T)^0 $
 * $ \operatorname{range} T' = (\operatorname{null} T)^0 $
 
 * $ \dim \operatorname{null} T' = \dim \operatorname{null} T + \dim W - \dim V $
 * $ \dim \operatorname{range} T' = \dim \operatorname{range} T $
 
+## Double Dual Space
+
+{: .prompt-info }
+> The _double dual space_ of $V$, denoted by $V''$, is defined to be the dual space of $V'$, i.e., $ V'' = (V')' $.
+>
+> Define $ \Lambda : V \to V'' $ by
+>
+> $$ (\Lambda v)(\varphi) = \varphi (v) $$
+>
+> for each $ v \in V $ and each $ \varphi \in V' $.
+
+{: .prompt-info }
+> If $ T \in \mathcal(V) $, then $ T'' \circ \Lambda = \Lambda \circ T $, where $ T'' = (T')' $.
+
+{: .prompt-proof }
+> Both sides are maps $V \to V''$, so fix $v \in V$ and show the two functionals $T''(\Lambda v)$ and $\Lambda(Tv)$ agree — i.e. give the same scalar on every $\varphi \in V'$.
+>
+> $$
+> \big(T''(\Lambda v)\big)(\varphi)
+> = \big((\Lambda v)\circ T'\big)(\varphi)
+> = (\Lambda v)(T'\varphi)
+> = (T'\varphi)(v)
+> = (\varphi\circ T)(v)
+> = \varphi(Tv).
+> $$
+>
+> And the other side, straight from the definition of $\Lambda$:
+>
+> $$
+> \big(\Lambda(Tv)\big)(\varphi) = \varphi(Tv).
+> $$
+>
+> They match for all $\varphi$, so $T''(\Lambda v) = \Lambda(Tv)$ for all $v$, i.e. $T'' \circ \Lambda = \Lambda \circ T$. $\blacksquare$
+
+{: .prompt-info }
+> If $V$ is finite-dimensional, then $ V \cong_{\Lambda} V'' $. This isomorphism does not require a choice of basis and thus is considered more natural (_canonical_).
+
+{: .prompt-proof }
+> Suppose $\Lambda v = 0$, meaning $\varphi(v) = 0$ for *every* $\varphi \in V'$. So $v = 0$, and $\operatorname{null}\Lambda = \{0\}$: $\Lambda$ is _injective_.
+>
+> In finite dimensions $\dim V' = \dim V$, and applying this twice gives
+>
+> $$\dim V'' = \dim V' = \dim V.$$
+>
+> So $\Lambda$ is bijective, hence an isomorphism $V \xrightarrow{\sim} V''$. $\blacksquare$
+
+![double dual space](/assets/img/math/double_dual_space.png)
+
 ## Annihilator
+
+{: .prompt-info }
+> _Annihilator_
+>
+> For $ U \subseteq V $,
+>
+> $$ U^0 = \{\varphi \in V' : \varphi(u) = 0 \ \forall u \in U \}. $$
+
+{: .prompt-info }
+> _Pre-annihilator_
+>
+> Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$,
+>
+> $$ U = \{v \in V : \varphi(v) = 0 \ \forall \varphi \in U^0 \}. $$
 
 {: .prompt-tip }
 > Denote the collection of all subspaces of $V$ by $\mathrm{Sub}(V)$.
@@ -28,7 +95,7 @@ mermaid: true
 {: .prompt-info }
 > Suppose $ V $ is finite-dimensional and $ U $ and $ W $ are subspaces of $ V $.
 >
-> * $ (U^0)^0 = U $
+> * Double annihilator: $ (U^0)^0 = U $
 > * Antitone: $ W^0 \subseteq U^0 \Leftrightarrow U \subseteq W $
 
 {: .prompt-proof }
@@ -62,6 +129,17 @@ mermaid: true
 > Now annihilate both sides and use $(A^0)^0 = A$ once more on the left:
 >
 > $$U^0 + W^0 = \big((U^0 + W^0)^0\big)^0 = (U \cap W)^0.$$
+> $\blacksquare$
+
+{: .prompt-info }
+> Suppose $ V $ is finite-dimensional and $ \varphi_1, \dots, \varphi_m \in V' $. Let $ N = \operatorname{null}\varphi_1 \cap \cdots \cap \operatorname{null}\varphi_m \subseteq V$, $U = \operatorname{span}(\varphi_1,\dots,\varphi_m) \subseteq V'$. Then $ U = N^0$.
+
+{: .prompt-proof }
+> $N$ is the **pre-annihilator** of $U$ — the annihilator of $U$ taken back in $V$ under $V \cong V''$:
+>
+> $$v \in N \iff \varphi_i(v) = 0 \ \forall i \iff \varphi(v) = 0 \ \forall \varphi \in U \iff v \in U^0,$$
+>
+> So $N = U^0$ and $N^0 = U$. $\blacksquare$
 
 ## Duality Swaps Spanning and Independence
 
