@@ -69,6 +69,49 @@ mermaid: true
 
 ![double dual space](/assets/img/math/double_dual_space.png)
 
+## Bases
+
+{: .prompt-info }
+> Suppose $ v_1, \dots, v_n $ is a basis of $V$ and $ \varphi_1, \dots, \varphi_n $ is the corresponding dual basis of $V'$.
+>
+> * vector: $ v = \varphi_1(v)\,v_1 + \cdots + \varphi_n(v)\,v_n \in V $
+> * covector: $ \psi = \psi(v_1)\,\varphi_1 + \cdots + \psi(v_n)\,\varphi_n \in V' $
+>
+> The two bases are *coordinate-readers for each other.*
+
+{: .prompt-tip }
+> There's a single expansion fact. For *any* space $W$ with basis $b_1,\dots,b_n$ and dual basis $\beta_1,\dots,\beta_n \in W'$:
+>
+> $$
+> w = \sum_i \beta_i(w)\,b_i \qquad \text{for all } w\in W.
+> $$
+>
+> **Coordinate = evaluate the dual basis vector.**
+>
+> **Apply it to $W = V$.** Basis $v_i$, dual basis $\varphi_i \in V'$.
+>
+> $$
+> v = \sum_i \varphi_i(v)\,v_i.
+> $$
+>
+> **Apply it to $W = V'$.** Now the basis is $\varphi_1,\dots,\varphi_n$, and its dual basis does *not* live in $V$ — it lives in $(V')' = V''$. Call it $\varphi_1'',\dots,\varphi_n'' \in V''$, defined by $\varphi_i''(\varphi_j) = \delta_{ij}$. The template spits out
+>
+> $$
+> \psi = \sum_i \varphi_i''(\psi)\,\varphi_i.
+> $$
+>
+> By the double-dual identification $V\cong V''$
+>
+> $$
+> \varphi_i''(\psi) = (\Lambda v_i)(\psi) = \psi(v_i).
+> $$
+>
+> Therefore
+>
+> $$
+> \psi = \sum_i \psi(v_i)\,\varphi_i.
+> $$
+
 ## Annihilator
 
 {: .prompt-info }
@@ -201,3 +244,16 @@ $$\operatorname{null}(R') = (\operatorname{range} R)^0 = \big(\operatorname{span
 Annihilating both sides yields
 
 $$\operatorname{span}(\varphi_i) = \big(\operatorname{null}\varphi_1 \cap \cdots \cap \operatorname{null}\varphi_m\big)^0.$$
+
+{: .prompt-info }
+> Suppose $V$ is finite-dimensional and $ \varphi_1, \dots, \varphi_n $ is a basis of $V'$. Then there exists a basis of $V$  whose dual basis is $ \varphi_1, \dots, \varphi_n $.
+
+{: .prompt-proof }
+> Define
+>
+> $$
+> \Gamma:V\to\mathbb{F}^n,\qquad \Gamma(v)=\big(\varphi_1(v),\dots,\varphi_n(v)\big).
+> $$
+>
+> This is an isomorphism. Now set $v_k=\Gamma^{-1}(e_k)$, where $e_1,\dots,e_n$ is the standard basis of $\mathbb{F}^n$. These form a basis of $V$, and $\Gamma(v_k)=e_k$ unpacks to $\varphi_j(v_k)=\delta_{jk}$, as required.
+> $\blacksquare$
