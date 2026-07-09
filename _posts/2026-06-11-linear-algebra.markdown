@@ -45,14 +45,17 @@ flowchart LR
 > Examples
 
 * $ V_1 \cap \dots \cap V_m $
-* $ V_1 \cup V_2 $ ($ \Leftrightarrow V1 \subseteq V2 $ or $ V1 \supseteq V2 $)
+* $ V_1 \cup V_2 $ ($ \Leftrightarrow V_1 \subseteq V_2 $ or $ V_1 \supseteq V_2 $)
 * $ V_1 + \dots + V_m $ (Smallest containing subspace)
-* $ U^0 $ ($ \dim = \dim V - \dim U $)
+* $ E(\lambda, T) $
 
-Suppose $V$ is finite-dimensional. $ U $ is a subspace of $ V $:
+Suppose $V$ is finite-dimensional and $ U $ is a subspace of $ V $:
 
-* $ \dim U \leq \dim V $
-* $ \dim U = \dim V \Leftrightarrow U = V $
+|               | $ \dim $                                  |
+| ------------- | ----------------------------------------- |
+| $ U $         | $ \leq \dim V $ ($ = \dim V \iff U = V $) |
+| $ U^0 $       | $ \dim V - \dim U $                       |
+| $ U^{\perp} $ | $ \dim V - \dim U $                       |
 
 ### Sum
 
@@ -177,12 +180,14 @@ _Inveritibility Triangle_
 
 $ \iff $
 
-| $ T \in \mathcal{L}(V, W) $ | Injective                            | Surjective                            | Invertible (Isomorphic)                          |
-| --------------------------- | ------------------------------------ | ------------------------------------- | ------------------------------------------------ |
-| Definition                  | $ \operatorname{null} T = {0} $      | $ \operatorname{range} T = W $        | $ T $ is injective and $ T $ is surjective       |
-| Preservation                | linear independence                  | spanning                              | basis                                            |
-| Inverse                     | $ T $ has a left inverse: $ ST = I $ | $ T $ has a right inverse: $ TS = I $ | $ T $ has the inverse: $ ST = I $ and $ TS = I $ |
-| Dual map                    | $ T' $ is surjective                 | $ T' $ is injective                   | $ T' $ is invertible                             |
+| $ T \in \mathcal{L}(V, W) $             | Injective                                                                                           | Surjective                                                                                          | Invertible (Isomorphic)                                                          |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Definition                              | $ \operatorname{null} T = {0} $                                                                     | $ \operatorname{range} T = W $                                                                      | $ T $ is injective and $ T $ is surjective                                       |
+| Preservation                            | linear independence                                                                                 | spanning                                                                                            | basis                                                                            |
+| Inverse                                 | $ T $ has a left inverse: $ ST = I $                                                                | $ T $ has a right inverse: $ TS = I $                                                               | $ T $ has the inverse: $ ST = I $ and $ TS = I $                                 |
+| Dual map                                | $ T' $ is surjective                                                                                | $ T' $ is injective                                                                                 | $ T' $ is invertible                                                             |
+| $ \mathcal{M}(T) \in \mathbf{F}^{m,n} $ | columns linearly independent; <br> rows span $ \mathbf{F}^{1,n} $; <br> $ \operatorname{rank} = n $ | rows linearly independent; <br> columns span $ \mathbf{F}^{m,1} $; <br> $ \operatorname{rank} = m $ | columns are a basis; <br> rows are a basis; <br> $ \operatorname{rank} = m = n $ |
+| Singular value                          | $ 0 $ is not a singular value of $ T $                                                              | \#(positive singular values of $ T $) = $ \dim W $                                                  |                                                                                  |
 
 $ \implies $
 
@@ -191,6 +196,9 @@ $ \implies $
 | Dimensions (Finite)         | $ \dim V \leq \dim W $ | $ \dim V \geq \dim W $ | $ \dim V = \dim W $                 |
 | **$\dim V = \dim W$**       | (all three coincide)   | (all three coincide)   | (all three coincide)                |
 | Pseudoinverse               | $ TT^{\dagger} = I $   | $ T^{\dagger}T = I $   | $ TT^{\dagger} = T^{\dagger}T = I $ |
+
+{: .prompt-info }
+> $ \lambda $ is an eigenvalue of $ T \iff T - \lambda I $ is not invertible
 
 ### Product
 
@@ -204,9 +212,10 @@ Suppose $ U $ and $ V $ are finite-dimensional. $ S \in \mathcal{L}(V, W) $ and 
 * $ \dim \operatorname{null} ST \leq \dim \operatorname{null} S + \dim \operatorname{null} T $
 * $ \dim \operatorname{range} ST \leq \min(\dim \operatorname{range} S + \dim \operatorname{range} T) $
 
-Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $:
-
-* $ ST $ is invertible $\Leftrightarrow$ $ S $ and $ T $ are invertible.
+{: .prompt-info }
+> Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $, then
+>
+> $ ST $ is invertible $\iff$ $ S $ and $ T $ are invertible.
 
 ### Translate
 
@@ -229,8 +238,15 @@ Suppose $ V $ is finite-dimensional and $ S, T \in \mathcal{L}(V, W) $:
 >
 > $$ \forall x \in A_1 \cap A_2, \ A_1 \cap A_2 = (x + U_1) \cap (x + U_2) = x + (U_1 \cap U_2). $$
 
+### System of linear equations
+
 {: .prompt-info }
-> Suppose $ T \in \mathcal{L}(V,W) $ and $ c \in W $:
+> For $A \in \mathbf{F}^{m\times n}$ and one particular $b \in \mathbf{F}^n$, then
+>
+> $Ax = b$ has exactly one solution $\iff$ ($ A $ injective) and ($ b \in \operatorname{range} A $).
+
+{: .prompt-info }
+> Suppose $ T \in \mathcal{L}(V,W) $ and $ c \in W $, then
 >
 > $ {x \in V : Tx = c} $ is either the empty set or is a translate of $ \operatorname{null} T $.
 
@@ -318,7 +334,8 @@ $$ Tv_k = \sum_{j=1}^m {A_{j,k}w_j} $$
 
 ![linear combination of columns](../assets/img/math/Ab_as_linear_combination_of_columns.png)
 
-$ \dim \operatorname{range} S = \text{rank} \, \mathcal{M}(T) $
+{: .prompt-info }
+> $ \dim \operatorname{range} T = \operatorname{rank} \mathcal{M}(T) $
 
 {: .prompt-info }
 > Column–row factorization
@@ -345,14 +362,14 @@ $$ A = C^{-1}BC $$
 | Uniqueness                  | $ T^{-1} \in \mathcal{L}(W, V) $                |                                          |                                                 |
 | Matrix                      | $ \mathcal{M}(T^{-1}) = (\mathcal{M}(T))^{-1} $ | $ \mathcal{M}(T') = (\mathcal{M}(T))^t $ | $ \mathcal{M}(T^{\*}) = (\mathcal{M}(T))^{\*} $ |
 | Involution                  | $ (T^{-1})^{-1} = T $                           |                                          | $ (T^{\*})^{\*} = T $                           |
-| Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^(-1) $                    | $ (ST) = T'S' $                          | $ (ST)^{\*} = T^{\*}S^{\*} $                    |
+| Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^{-1} $                    | $ (ST) = T'S' $                          | $ (ST)^{\*} = T^{\*}S^{\*} $                    |
+
+|                                     | $ \mathbb{C} $                                  | $ \mathbb{R} $                                                                           |
+| ----------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Polynomial factorization (_unique_) | $ p(z) = c(z - \lambda_1)\dots(z - \lambda_m) $ | $ p(x) = c(x - \lambda_1)\dots(x - \lambda_m)(x^2 + b_1x + c_1)\dots(x^2 + b_Mx + c_M) $ |
+| \#(zeros with multiplicity)         | $ m = \deg p $                                  | $ \le \deg p $                                                                           |
 
 ## Eigenvectors
-
-{: .prompt-info }
-> _fundamental theorem of algebra, first version_
->
-> Every nonconstant polynomial with complex coefficients has a zero in $ \mathbb(C) $.
 
 ### Existence
 
@@ -371,3 +388,45 @@ $$ A = C^{-1}BC $$
 > Suppose $ V $ is finite-dimensional and $ T \in \mathcal{L}(V) $. The minimal polynomial of $ T $ is the _unique_ monic polynomial $ p \in \mathcal{P}(\mathbf{F}) $ of smallest degree such that $ p(T) = 0 $.
 >
 > $ \deg p \le \dim V $.
+
+{: .prompt-tip }
+> Computation ($O((\dim V)^2)$)
+>
+> Find the smallest positive integer $m such that the equation
+>
+> $$ c_0I + c_1T + \dots + c_{m-1}T^{m-1} = -T^m $$
+>
+> has a solution $c_0, c_1, \dots, c_{m-1} \in \mathbf{F}$.
+>
+> Pick a basis of $V$ and replace $T$ in the equation above with the matrix of $T$, then the equation above can be thought of as a system of $(\dim V)^2$ linear equations in the $m$ unknowns $c_0, c_1, \dots, c_{m-1} \in \mathbf{F}$.
+>
+> Use Gaussian elimination or another fast method of solving systems of linear equations can tell us whether a solution exists, testing successive values $m = 1, 2, \dots, \dim V $ until a solution exists.
+>
+> A _usually_ faster way ($O((\dim V))$):
+>
+> Pick $v \in V$ with $v \ne 0$ and consider the equation
+>
+> to check whether the following system of $\dim V$ linear equations has a unique solution:
+>
+> $$ c_0v + c_1Tv + \dots + c_{\dim V-1}T^{\dim V-1}v = -T^{\dim V}v. $$
+>
+> Use a basis of $V$ to convert the equation above to a system of $\dim V$ linear equations in $\dim V$ unknowns $c_0, c_1, \dots, c_{\dim V -1} $.
+>
+> If this system of equations has a _unique_ solution $\dim V$ unknowns $c_0, c_1, \dots, c_{\dim V -1} $ (as happens most of the time), then the scalars $\dim V$ unknowns $c_0, c_1, \dots, c_{\dim V -1}, 1 $ are the coefficients of the minimal polynomial of $T$.
+
+{: .prompt-info }
+> Eigenvalues are the zeros of the minimal polynomial.
+>
+> _complex_ vector space
+>
+> Minimal polynomial of $T$ has the form
+>
+> $$ (z - \lambda_1)\dots(z - \lambda_m), $$
+>
+> where $ \lambda_1, \dots, \lambda_m $ is a list of all eigen values of $T$, possibly with repetitions.
+
+| $ T \in \mathcal{L}(V, W) $ | null space                           | range                               | $ \dim \operatorname{null} $                     | $ \dim \operatorname{range} $   |
+| --------------------------- | ------------------------------------ | ----------------------------------- | ------------------------------------------------ |
+| $ T' $                      | $ (\operatorname{range} T)^0 $       | $ (\operatorname{null} T)^0 $       | $ \dim \operatorname{null} T + \dim W - \dim V $ | $ \dim \operatorname{range} T $ |
+| $ T^{\*} $                  | $ (\operatorname{range} T)^{\perp} $ | $ (\operatorname{null} T)^{\perp} $ |                                                  |                                 |
+| $ T^{\*}T $                 | $ \operatorname{null} T $            | $ \operatorname{range} T^{\*} $     |                                                  | $ \dim T = \dim T^{\*} $        |
