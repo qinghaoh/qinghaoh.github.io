@@ -36,7 +36,6 @@ flowchart LR
 * $ \mathcal{L}(V, W) $ ($ \dim = (\dim V)(\dim W) $)
 * $ \mathbf{F}^{m,n} $ ($ \dim = mn $)
 * $ V_1 \times \dots \times V_m $ ($ \dim = \dim V_1 + \dots + \dim V_m $)
-* $ V/U $ ($ \dim = \dim V - \dim U $)
 * $ V' $ ($ \dim = \dim V $)
 
 ### Subspace
@@ -54,6 +53,7 @@ Suppose $V$ is finite-dimensional and $ U $ is a subspace of $ V $:
 |               | $ \dim $                                  |
 | ------------- | ----------------------------------------- |
 | $ U $         | $ \leq \dim V $ ($ = \dim V \iff U = V $) |
+| $ V/U $       | $ \dim V - \dim U $                       |
 | $ U^0 $       | $ \dim V - \dim U $                       |
 | $ U^{\perp} $ | $ \dim V - \dim U $                       |
 
@@ -364,17 +364,15 @@ $$ A = C^{-1}BC $$
 | Involution                  | $ (T^{-1})^{-1} = T $                           |                                          | $ (T^{\*})^{\*} = T $                           |
 | Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^{-1} $                    | $ (ST) = T'S' $                          | $ (ST)^{\*} = T^{\*}S^{\*} $                    |
 
-|                                     | $ \mathbb{C} $                                  | $ \mathbb{R} $                                                                           |
-| ----------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Polynomial factorization (_unique_) | $ p(z) = c(z - \lambda_1)\dots(z - \lambda_m) $ | $ p(x) = c(x - \lambda_1)\dots(x - \lambda_m)(x^2 + b_1x + c_1)\dots(x^2 + b_Mx + c_M) $ |
-| \#(zeros with multiplicity)         | $ m = \deg p $                                  | $ \le \deg p $                                                                           |
+|                                                       | $ \mathbb{C} $                                  | $ \mathbb{R} $                                                                           |
+| ----------------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Polynomial factorization (_unique_)                   | $ p(z) = c(z - \lambda_1)\dots(z - \lambda_m) $ | $ p(x) = c(x - \lambda_1)\dots(x - \lambda_m)(x^2 + b_1x + c_1)\dots(x^2 + b_Mx + c_M) $ |
+| \#{zeros of a polynomial} (counted with multiplicity) | $ m = \deg p $                                  | $ \le \deg p $                                                                           |
+| Existence of eigenvalues ($ \forall T $)              | Nonzero complex vector space                    | Odd-dimension real vector space                                                          |
 
 ## Eigenvectors
 
 ### Existence
-
-{: .prompt-info }
-> Every operator on a finite-dimensional nonzero _complex_ vector space has an eigenvalue.
 
 {: .prompt-info }
 > Suppose $ T \in \mathcal(V) $. Then every list of eigenvectors of $ T $ corresponding to distinct eigenvalues of $ T $ is _linearly independent_.
@@ -382,51 +380,42 @@ $$ A = C^{-1}BC $$
 {: .prompt-info }
 > Null space and range of $ p(T) $ are invariant under $ T $.
 
-## Minimal Polynomial
-
-{: .prompt-info }
-> Suppose $ V $ is finite-dimensional and $ T \in \mathcal{L}(V) $. The minimal polynomial of $ T $ is the _unique_ monic polynomial $ p \in \mathcal{P}(\mathbf{F}) $ of smallest degree such that $ p(T) = 0 $.
->
-> $ \deg p \le \dim V $.
-
-{: .prompt-tip }
-> Computation ($O((\dim V)^2)$)
->
-> Find the smallest positive integer $m such that the equation
->
-> $$ c_0I + c_1T + \dots + c_{m-1}T^{m-1} = -T^m $$
->
-> has a solution $c_0, c_1, \dots, c_{m-1} \in \mathbf{F}$.
->
-> Pick a basis of $V$ and replace $T$ in the equation above with the matrix of $T$, then the equation above can be thought of as a system of $(\dim V)^2$ linear equations in the $m$ unknowns $c_0, c_1, \dots, c_{m-1} \in \mathbf{F}$.
->
-> Use Gaussian elimination or another fast method of solving systems of linear equations can tell us whether a solution exists, testing successive values $m = 1, 2, \dots, \dim V $ until a solution exists.
->
-> A _usually_ faster way ($O((\dim V))$):
->
-> Pick $v \in V$ with $v \ne 0$ and consider the equation
->
-> to check whether the following system of $\dim V$ linear equations has a unique solution:
->
-> $$ c_0v + c_1Tv + \dots + c_{\dim V-1}T^{\dim V-1}v = -T^{\dim V}v. $$
->
-> Use a basis of $V$ to convert the equation above to a system of $\dim V$ linear equations in $\dim V$ unknowns $c_0, c_1, \dots, c_{\dim V -1} $.
->
-> If this system of equations has a _unique_ solution $\dim V$ unknowns $c_0, c_1, \dots, c_{\dim V -1} $ (as happens most of the time), then the scalars $\dim V$ unknowns $c_0, c_1, \dots, c_{\dim V -1}, 1 $ are the coefficients of the minimal polynomial of $T$.
-
 {: .prompt-info }
 > Eigenvalues are the zeros of the minimal polynomial.
->
-> _complex_ vector space
->
-> Minimal polynomial of $T$ has the form
->
-> $$ (z - \lambda_1)\dots(z - \lambda_m), $$
->
-> where $ \lambda_1, \dots, \lambda_m $ is a list of all eigen values of $T$, possibly with repetitions.
 
-| $ T \in \mathcal{L}(V, W) $ | null space                           | range                               | $ \dim \operatorname{null} $                     | $ \dim \operatorname{range} $   |
-| --------------------------- | ------------------------------------ | ----------------------------------- | ------------------------------------------------ |
-| $ T' $                      | $ (\operatorname{range} T)^0 $       | $ (\operatorname{null} T)^0 $       | $ \dim \operatorname{null} T + \dim W - \dim V $ | $ \dim \operatorname{range} T $ |
-| $ T^{\*} $                  | $ (\operatorname{range} T)^{\perp} $ | $ (\operatorname{null} T)^{\perp} $ |                                                  |                                 |
-| $ T^{\*}T $                 | $ \operatorname{null} T $            | $ \operatorname{range} T^{\*} $     |                                                  | $ \dim T = \dim T^{\*} $        |
+{: .prompt-info }
+> Suppose $ T \in \mathcal{L}(V) $. Suppose $ S \in \mathcal{L}(V) $ is invertible.
+>
+> $$S:\; E(\lambda,\, S^{-1}TS)\;\xrightarrow{\ \sim\ }\; E(\lambda,\, T).$$
+
+{: .prompt-tip }
+> $S^{-1}TS$ (conjugation) is just $T$ "viewed in a different basis", and $S$ is the dictionary translating vectors from the new coordinates back to the old. Eigenvalues are basis-independent facts about the operator, so they're untouched; eigenvectors are genuine vectors, so they get translated by the dictionary $S$.
+
+| $ T \in \mathcal{L}(V, W) $ | null space                           | range                               | $ \dim \operatorname{null} $                     | $ \dim \operatorname{range} $   | norm                           |
+| --------------------------- | ------------------------------------ | ----------------------------------- | ------------------------------------------------ | ------------------------------- |
+| $ T' $                      | $ (\operatorname{range} T)^0 $       | $ (\operatorname{null} T)^0 $       | $ \dim \operatorname{null} T + \dim W - \dim V $ | $ \dim \operatorname{range} T $ |                                |
+| $ T^{\*} $                  | $ (\operatorname{range} T)^{\perp} $ | $ (\operatorname{null} T)^{\perp} $ |                                                  |                                 | $ \left\lVert T \right\rVert $ |
+| $ T^{\*}T $                 | $ \operatorname{null} T $            | $ \operatorname{range} T^{\*} $     |                                                  | $ \dim T = \dim T^{\*} $        |                                |
+
+## Upper-Triangular Matrices
+
+{: .prompt-info }
+> $ \mathcal{M}(T, (v_1, \dots, v_n)) \implies (T - \lambda_1I)\dots(T - \lambda_nI) = 0 $, where $ \lambda_1, \dots, \lambda_n $ are diagonal entries.
+
+{: .prompt-info }
+> Sum of eigenspaces is a direct sum.
+
+## Diagonalizability
+
+{: .prompt-info }
+> $ T $ is diagonalizable
+>
+> $ \iff V = \operatorname{null} (T - \lambda I) \oplus \operatorname{range} (T - \lambda I) $.
+
+| $T \in \mathcal{L}(V)$ | Basis                                                                          | Subspaces                                                                                    | Dimensions                            | Minimal polynomial                                                                                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Upper-triangularizable | $ Tv_k \in \operatorname{span}(v_1, \dots, v_k) $ for each $ k = 1, \dots, n $ | $ \operatorname{span}(v_1, \dots, v_k) $ is invariant under $T$ for each $ k = 1, \dots, n $ |                                       | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ (repetitions allowed; $ m = \deg p \le \dim V $)       |
+| Diagonalizable         | $\exists$ a basis of $V$ consisting of eigenvectors of $T$                     | $V = E(\lambda_1,T)\oplus\cdots\oplus E(\lambda_m,T)$                                        | $\sum_k \dim E(\lambda_k,T) = \dim V$ | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some list of _distinct_ numbers $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ ($ m = \deg p \le \dim V $) |
+
+{: .prompt-tip }
+> diagonalizable means the eigenspaces are *as big as they can be* — big enough to fill $V$. Each column says "fill $V$" in a different dialect: enough eigenvectors for a basis, eigenspaces summing directly to $V$, dimensions adding to $\dim V$, and — the min poly one — no eigenvalue needing a repeated factor to be annihilated (a repeat is exactly the symptom of an eigenspace that came up short, like the $(0,1)$ vector that $(T-5I)$ couldn't kill in one step).

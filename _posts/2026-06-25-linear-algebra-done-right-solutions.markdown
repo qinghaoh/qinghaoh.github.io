@@ -78,3 +78,42 @@ $$\mathbf{F}^\infty / U \text{ is infinite-dimensional.} \qquad \blacksquare$$
 Conceptually, $U$ is the subspace of sequences that eventually vanish, so passing to $\mathbf{F}^\infty/U$ discards everything except a sequence's long-run "tail." The vectors $v_j$ were designed to have persistent, non-overlapping tails: each lives forever on its own block $S_j$, and disjointness — distilled in equation $(\dagger)$ — means a linear combination reads off coefficient $a_j$ across the whole of $S_j$, with no way for different vectors to interfere and cancel. So no nontrivial combination can die out, giving infinitely many independent directions in the quotient.
 
 ---
+
+## 4
+
+{: .prompt-info }
+> 12\. Suppose $m$ is a nonnegative integer and $ p \in \mathcal{p}(\mathbb{C}) $ is such that there are distinct real numbers $ x_0, x_1, \dots, x_m $ with $ p(x_k) \in \mathbb{R} $ for each $ k = 0, 1, \dots, m $. Prove that all coefficients of $p$ are real.
+
+Write $p(z) = a_0 + a_1 z + \cdots + a_m z^m$ with $a_j \in \mathbf{C}$. Define its **coefficient-conjugate**
+
+$$
+\bar p(z) := \overline{a_0} + \overline{a_1} z + \cdots + \overline{a_m} z^m,
+$$
+
+For any $z$,
+
+$$
+\overline{p(z)} = \overline{\sum_j a_j z^j} = \sum_j \overline{a_j}\,\overline{z}^{\,j} = \bar p(\overline{z}).
+$$
+
+Now specialize to a **real** input $x$, where $\overline{x} = x$:
+
+$$
+\bar p(x) = \overline{p(x)} \qquad \text{for every } x \in \mathbf{R}.
+$$
+
+By assumption $p(x_k) \in \mathbf{R}$, which means $\overline{p(x_k)} = p(x_k)$. Feeding each real point $x_k$ into the identity above:
+
+$$
+\bar p(x_k) = \overline{p(x_k)} = p(x_k) \qquad k = 0, 1, \dots, m.
+$$
+
+So $p$ and $\bar p$ **agree at the $m+1$ distinct points** $x_0,\dots,x_m$.
+
+Consider the difference $q := p - \bar p$. It lies in $\mathcal{P}_m(\mathbf{C})$, so $\deg q \le m$. But $q(x_k) = 0$ for all $m+1$ distinct values $x_0,\dots,x_m$ — that's $m+1$ distinct zeros. By 4.8, a nonzero polynomial of degree $\le m$ has *at most $m$* zeros. Having $m+1$ is one too many, so the only escape is
+
+$$
+q = 0, \qquad\text{i.e.}\qquad p = \bar p.
+$$
+
+Hence $a_j = \overline{a_j}$ for every $j$, so all coefficients of $p$ are real. $\blacksquare$
