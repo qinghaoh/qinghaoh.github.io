@@ -182,11 +182,13 @@ $ \iff $
 
 | $ T \in \mathcal{L}(V, W) $             | Injective                                                                                           | Surjective                                                                                          | Invertible (Isomorphic)                                                          |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Definition                              | $ \operatorname{null} T = {0} $                                                                     | $ \operatorname{range} T = W $                                                                      | $ T $ is injective and $ T $ is surjective                                       |
+| Definition                              | $ \operatorname{null} T = \\{ 0 \\} $                                                               | $ \operatorname{range} T = W $                                                                      | $ T $ is injective and $ T $ is surjective                                       |
 | Preservation                            | linear independence                                                                                 | spanning                                                                                            | basis                                                                            |
 | Inverse                                 | $ T $ has a left inverse: $ ST = I $                                                                | $ T $ has a right inverse: $ TS = I $                                                               | $ T $ has the inverse: $ ST = I $ and $ TS = I $                                 |
+| Complexification                        | $ T_{\mathbb{C}} $ is injective                                                                     | $ T_{\mathbb{C}} $ is surjective                                                                    | $ T_{\mathbb{C}} $ is invertible                                                 |
 | Dual map                                | $ T' $ is surjective                                                                                | $ T' $ is injective                                                                                 | $ T' $ is invertible                                                             |
 | $ \mathcal{M}(T) \in \mathbf{F}^{m,n} $ | columns linearly independent; <br> rows span $ \mathbf{F}^{1,n} $; <br> $ \operatorname{rank} = n $ | rows linearly independent; <br> columns span $ \mathbf{F}^{m,1} $; <br> $ \operatorname{rank} = m $ | columns are a basis; <br> rows are a basis; <br> $ \operatorname{rank} = m = n $ |
+| $ T^m $                                 | $ T^m $ is injective                                                                                | $ T^m $ is surjective                                                                               | $ T^m $ is invertible                                                            |
 | Singular value                          | $ 0 $ is not a singular value of $ T $                                                              | \#(positive singular values of $ T $) = $ \dim W $                                                  |                                                                                  |
 
 $ \implies $
@@ -370,52 +372,8 @@ $$ A = C^{-1}BC $$
 | \#{zeros of a polynomial} (counted with multiplicity) | $ m = \deg p $                                  | $ \le \deg p $                                                                           |
 | Existence of eigenvalues ($ \forall T $)              | Nonzero complex vector space                    | Odd-dimension real vector space                                                          |
 
-## Eigenvectors
-
-### Existence
-
-{: .prompt-info }
-> Suppose $ T \in \mathcal(V) $. Then every list of eigenvectors of $ T $ corresponding to distinct eigenvalues of $ T $ is _linearly independent_.
-
-{: .prompt-info }
-> Null space and range of $ p(T) $ are invariant under $ T $.
-
-{: .prompt-info }
-> Eigenvalues are the zeros of the minimal polynomial.
-
-{: .prompt-info }
-> Suppose $ T \in \mathcal{L}(V) $. Suppose $ S \in \mathcal{L}(V) $ is invertible.
->
-> $$S:\; E(\lambda,\, S^{-1}TS)\;\xrightarrow{\ \sim\ }\; E(\lambda,\, T).$$
-
-{: .prompt-tip }
-> $S^{-1}TS$ (conjugation) is just $T$ "viewed in a different basis", and $S$ is the dictionary translating vectors from the new coordinates back to the old. Eigenvalues are basis-independent facts about the operator, so they're untouched; eigenvectors are genuine vectors, so they get translated by the dictionary $S$.
-
 | $ T \in \mathcal{L}(V, W) $ | null space                           | range                               | $ \dim \operatorname{null} $                     | $ \dim \operatorname{range} $   | norm                           |
 | --------------------------- | ------------------------------------ | ----------------------------------- | ------------------------------------------------ | ------------------------------- |
 | $ T' $                      | $ (\operatorname{range} T)^0 $       | $ (\operatorname{null} T)^0 $       | $ \dim \operatorname{null} T + \dim W - \dim V $ | $ \dim \operatorname{range} T $ |                                |
 | $ T^{\*} $                  | $ (\operatorname{range} T)^{\perp} $ | $ (\operatorname{null} T)^{\perp} $ |                                                  |                                 | $ \left\lVert T \right\rVert $ |
 | $ T^{\*}T $                 | $ \operatorname{null} T $            | $ \operatorname{range} T^{\*} $     |                                                  | $ \dim T = \dim T^{\*} $        |                                |
-
-## Upper-Triangular Matrices
-
-{: .prompt-info }
-> $ \mathcal{M}(T, (v_1, \dots, v_n)) \implies (T - \lambda_1I)\dots(T - \lambda_nI) = 0 $, where $ \lambda_1, \dots, \lambda_n $ are diagonal entries.
-
-{: .prompt-info }
-> Sum of eigenspaces is a direct sum.
-
-## Diagonalizability
-
-{: .prompt-info }
-> $ T $ is diagonalizable
->
-> $ \iff V = \operatorname{null} (T - \lambda I) \oplus \operatorname{range} (T - \lambda I) $.
-
-| $T \in \mathcal{L}(V)$ | Basis                                                                          | Subspaces                                                                                    | Dimensions                            | Minimal polynomial                                                                                                                                     |
-| ---------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Upper-triangularizable | $ Tv_k \in \operatorname{span}(v_1, \dots, v_k) $ for each $ k = 1, \dots, n $ | $ \operatorname{span}(v_1, \dots, v_k) $ is invariant under $T$ for each $ k = 1, \dots, n $ |                                       | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ (repetitions allowed; $ m = \deg p \le \dim V $)       |
-| Diagonalizable         | $\exists$ a basis of $V$ consisting of eigenvectors of $T$                     | $V = E(\lambda_1,T)\oplus\cdots\oplus E(\lambda_m,T)$                                        | $\sum_k \dim E(\lambda_k,T) = \dim V$ | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some list of _distinct_ numbers $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ ($ m = \deg p \le \dim V $) |
-
-{: .prompt-tip }
-> diagonalizable means the eigenspaces are *as big as they can be* — big enough to fill $V$. Each column says "fill $V$" in a different dialect: enough eigenvectors for a basis, eigenspaces summing directly to $V$, dimensions adding to $\dim V$, and — the min poly one — no eigenvalue needing a repeated factor to be annihilated (a repeat is exactly the symptom of an eigenspace that came up short, like the $(0,1)$ vector that $(T-5I)$ couldn't kill in one step).
