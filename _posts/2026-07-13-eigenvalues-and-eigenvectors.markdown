@@ -9,6 +9,9 @@ mermaid: true
 ## Invariant Subspaces
 
 {: .prompt-info }
+> Null space and range of $ p(T) $ are invariant under $ T $.
+
+{: .prompt-info }
 > Suppose $ T \in \mathcal{L}(V) $ and $ U $ is a subspace of $ V $ invariant under $ T $. Then $ U $ is invariant under $ p(T) $ for every polynomial $ p \in \mathcal{P}(\mathbf{F}) $.
 
 {: .prompt-info }
@@ -35,7 +38,7 @@ mermaid: true
 {: .prompt-tip }
 > "Every $k$-dimensional subspace is invariant" collapses to "every line is invariant"** — i.e. all the way down to $k=1$ — because a line is recoverable as the intersection of the $k$-subspaces sitting above it.
 
-## Eigenvectors
+## Eigen-*
 
 {: .prompt-info }
 > Every eigenvector for a _nonzero_ eigenvalue lies in $\operatorname{range} T$.
@@ -77,9 +80,6 @@ mermaid: true
 > - If $0$ **is** an eigenvalue: $r \le n - 1$, so $1 + r \le n = \dim V$. Now the range bound is the *stronger* (smaller, better) one.
 >
 > So the range bound $1 + r$ is the better bound exactly when $0$ is an eigenvalue — which is the whole point of the problem: it *improves* on $\dim V$ precisely in the non-injective case, by using the range to corral the nonzero eigenvalues and spending only "+1" on zero.
-
-{: .prompt-info }
-> Null space and range of $ p(T) $ are invariant under $ T $.
 
 {: .prompt-info }
 > Suppose $ T \in \mathcal{L}(V) $ is such that every nonzero vector in $ V $ is an eigenvector of $ T $. Then $ T $ is a scalar multiple of the identity operator.
@@ -177,13 +177,73 @@ mermaid: true
 {: .prompt-tip }
 > Diagonalizable means the eigenspaces are *as big as they can be* — big enough to fill $V$. Each column says "fill $V$" in a different dialect: enough eigenvectors for a basis, eigenspaces summing directly to $V$, dimensions adding to $\dim V$, and — the min poly one — no eigenvalue needing a repeated factor to be annihilated (a repeat is exactly the symptom of an eigenspace that came up short, like the $(0,1)$ vector that $(T-5I)$ couldn't kill in one step).
 
-## Commutativity
+## Nilpotent
 
 {: .prompt-info }
-> If $AB = BA$, then $B$ maps each eigenspace of $A$ into itself. Every $E(\lambda, A)$ is invariant under $B$.
+> Let $W$ be a finite-dimensional vector space, let $R \in \mathcal{L}(W)$ be nilpotent, and let $c \in \mathbb{F}$ with $c \neq 0$. Then $cI + R$ is invertible.
 
 {: .prompt-proof }
-> For $v \in E(\lambda, A)$, $A(Bv) = B(Av) = B(\lambda v) = \lambda(Bv)$, so $Bv \in E(\lambda, A)$. ∎
+> **Lemma** *Let $A \in \mathcal{L}(W)$, $c \in \mathbb{F}$, and set $B = cI + A$. If $\mu$ is an eigenvalue of $B$, then $\mu - c$ is an eigenvalue of $A$.*
+>
+> *Proof.* Let $v \neq 0$ satisfy $Bv = \mu v$. Then
+>
+> $$Av = (B - cI)v = Bv - cv = \mu v - cv = (\mu - c)v ,$$
+>
+> and $v \neq 0$, so $\mu - c$ is an eigenvalue of $A$. $\blacksquare$
+>
+> **Proof of the Theorem.**
+>
+> If $W = \{0\}$ the statement is trivial, so assume $W \neq \{0\}$.
+>
+> Now we prove $0$ is not an eigenvalue of $cI + R$. Suppose toward a contradiction that it is. Applying the Lemma with $A = R$, $B = cI + R$, and $\mu = 0$, we conclude that $0 - c = -c$ is an eigenvalue of $R$. The only eigenvalue of $R$ is $0$, hence $-c = 0$, i.e. $c = 0$ — contradicting the hypothesis $c \neq 0$.
+>
+> Therefore, $cI + R$ is injective and thus invertible. $\blacksquare$
+
+## Eigenspace
+
+{: .prompt-info }
+> An eigenvalue $\lambda$ of $T$ is called **defective** when its **geometric multiplicity is strictly less than its algebraic multiplicity**:
+>
+> $$\dim E(\lambda, T) \;<\; \dim G(\lambda, T).$$
+
+{: .prompt-tip }
+> $\lambda$ is defective exactly when
+>
+> $$\operatorname{null}(T - \lambda I) \subsetneq \operatorname{null}(T - \lambda I)^2,$$
+>
+> i.e. there exists a *generalized* eigenvector that is not an honest eigenvector. In Jordan-form > terms, $\lambda$ is defective iff at least one Jordan block for $\lambda$ has size $\geq 2$.
+>
+> An operator with no defective eigenvalues is diagonalizable, and vice versa. So "defective" is precisely the local obstruction to diagonalizability — it flags the eigenvalues where the nilpotent part on that block is nonzero.
+
+{: .prompt-info }
+> Suppose $ \mathbf{F} = \mathbb{C}$, $ T \in \mathcal{L}(V) $, $ p \in \mathcal{P}(\mathbb{C}) $ is a nonconstant polynomial, and $ \alpha \in \mathbb{C} $, then
+>
+> (a) $G(\alpha,\, p(T)) \;=\; \bigoplus_{\lambda:\, p(\lambda) = \alpha} G(\lambda,\, T).$
+>
+> (b) $E(\alpha, p(T)) \;\supseteq\; \bigoplus_{\lambda:\,p(\lambda)=\alpha} E(\lambda, T)$, with equality iff $p'(\lambda) \neq 0$ for every defective $\lambda$ in that fiber.
+
+{: .prompt-proof }
+> (a) Each $G(\lambda, T)$ is $T$-invariant, hence $p(T)$-invariant. On $G(\lambda, T)$, write $T = \lambda I + N$ where $N$ is nilpotent. Since $\lambda I$ and $N$ commute, the algebraic Taylor expansion of $p$ around $\lambda$ holds:
+>
+> $$p(T)\big|_{G(\lambda,T)} \;=\; \sum_{k=0}^{\deg p} \frac{p^{(k)}(\lambda)}{k!}\, N^k \;=\; p(\lambda)\,I \;+\; \underbrace{\Big(p'(\lambda)N + \tfrac{p''(\lambda)}{2}N^2 + \cdots\Big)}_{=:\,M}.$$
+>
+> The remainder $M$ is a polynomial in $N$ with **zero constant term**, so it's nilpotent. That means $p(T)$ acts on $G(\lambda, T)$ as $p(\lambda)I + (\text{nilpotent})$ — its *only* eigenvalue there is $p(\lambda)$, and the whole block sits inside $G(p(\lambda), p(T))$. Summing over all $\lambda$ with $p(\lambda) = \alpha$ and counting dimensions (both sides decompose $V$) upgrades the inclusion to equality.
+>
+> (b) Now zoom in from $G$ to $E$ inside a single block. The ordinary eigenspace of $p(T)$ for $\alpha = p(\lambda)$, intersected with $G(\lambda, T)$, is $\operatorname{null}(M)$, whereas $E(\lambda, T) = \operatorname{null}(N)$. Factor $M = N \cdot Q$ with
+>
+> $$Q = p'(\lambda) I + \tfrac{p''(\lambda)}{2}N + \cdots.$$
+>
+> Two cases:
+>
+> - **If $p'(\lambda) \neq 0$**, then $Q$ is (scalar) + (nilpotent), hence invertible, so $\operatorname{null}(M) = \operatorname{null}(N)$. The eigenspace matches exactly.
+> - **If $p'(\lambda) = 0$**, then $M$ starts at $N^2$ or higher, so $\operatorname{null}(M) \supseteq \operatorname{null}(N^2) \supsetneq \operatorname{null}(N)$ — provided $N$ has a Jordan block of size $\geq 2$.
+>
+> So the precise condition for strict growth of the ordinary eigenspace is: **$\lambda$ is a critical point of $p$ (i.e. $p'(\lambda)=0$) *and* $\lambda$ is a defective eigenvalue of $T$ (has a nontrivial Jordan block).**
+
+{: .prompt-tip }
+> *Jordan chains*: on a chain $v_k \mapsto v_{k-1} \mapsto \cdots \mapsto v_1 \mapsto 0$, the nilpotent operator $N$ pushes each basis vector one step *down* the chain, and drops the bottom one to $0$. Nothing gets rescaled — every vector is *displaced along the chain*. A vector could only be an eigenvector if this downshift landed it back on a multiple of itself, and the sole way that happens is the bottom vector going to $0 = 0 \cdot v_1$. Hence a nilpotent has eigenvalue $0$ only.
+
+## Commutativity
 
 {: .prompt-tip }
 > $A$ and $B$ commute iff $B$ preserves every generalized eigenspace of $A$ *and*, within each, is compatible with $A$'s Jordan structure.

@@ -104,3 +104,78 @@ mermaid: true
 
 {: .prompt-info }
 > The minimal polynomial of $ T $ is a polynomial multiple of the minimal polynomial of $ \left. T \right\rvert u $.
+
+{: .prompt-info }
+> For every polynomial $q$,
+>
+> $$T\, q(ST) \;=\; q(TS)\, T.$$
+
+{: .prompt-proof }
+> First for monomials: $T(ST)^k = (TS)^k T$, by induction on $k$. The case $k=0$ is $T = T$. Assuming it for $k$,
+>
+> $$T(ST)^{k+1} = \big(T S\big) T (ST)^{k} = (TS)\,(TS)^k T = (TS)^{k+1}T,$$
+>
+> where the first step just regroups $T(ST)(ST)^k$. Both sides of the identity are linear in $q$, so it extends from monomials to all polynomials. $\square$
+
+{: .prompt-info }
+> If $q$ annihilates $ST$, then $z\,q(z)$ annihilates $TS$.
+
+{: .prompt-proof }
+> Suppose $q(ST) = 0$. By the identity, $q(TS)\,T = T\,q(ST) = 0$. Multiply on the right by $S$:
+>
+> $$q(TS)\,TS = 0.$$
+>
+> Since $q(TS)$ is a polynomial in $TS$, it commutes with $TS$, so this says exactly that the polynomial $z\,q(z)$ evaluated at $TS$ is zero. $\square$
+
+{: .prompt-info }
+> Suppose $V$ is finite-dimensional, $ T \in \mathcal{L}(V) $, and $ v \in V $. Then
+>
+> $$\operatorname{span}(v, Tv, \dots, T^m v) = \operatorname{span}(v, Tv, \dots, T^{\dim V - 1}v). \qquad \blacksquare$$
+>
+> for all integers $ m \ge \dim V - 1 $.
+
+{: .prompt-proof }
+> Write $n = \dim V$ and
+>
+> $$U_m := \operatorname{span}(v, Tv, \dots, T^m v).$$
+>
+> Since each list extends the previous one, the chain is increasing:
+>
+> $$U_0 \subseteq U_1 \subseteq U_2 \subseteq \cdots$$
+>
+> The goal is: $U_m = U_{n-1}$ for all $m \geq n-1$.
+>
+> **Claim 1 (stabilizing chain).** If $U_k = U_{k-1}$ for some $k \geq 1$, then $U_m = U_{k-1}$ for all $m \geq k-1$.
+>
+> *Proof.* It suffices to show $U_{k+1} = U_k$, then induct.
+>
+> $U_k = U_{k-1}$ says $T^k v \in U_{k-1} = \operatorname{span}(v, Tv, \dots, T^{k-1}v)$, so write
+>
+> $$T^k v = a_0 v + a_1 Tv + \cdots + a_{k-1}T^{k-1}v.$$
+>
+> Apply $T$ to both sides:
+>
+> $$T^{k+1}v = a_0 Tv + a_1 T^2 v + \cdots + a_{k-1}T^{k}v \in U_k.$$
+>
+> So the one new vector in the list for $U_{k+1}$ already lies in $U_k$, giving $U_{k+1} \subseteq U_k$, hence $U_{k+1} = U_k$. Induction extends this to all $m \geq k$. $\square$
+>
+> **Claim 2.** There exists $k$ with $1 \leq k \leq n$ and $U_k = U_{k-1}$. (Treat the case $v = 0$ separately: then every $U_m = \{0\}$ and the exercise is trivial. So assume $v \neq 0$.)
+>
+> *Proof.* The list $v, Tv, \dots, T^n v$ has $n+1$ vectors in the $n$-dimensional space $V$, so it is **linearly dependent**. Therefore, some vector in the list lies in the span of the ones preceding it: there is $k$ with $0 \le k \leq n$ and
+>
+> $$T^k v \in \operatorname{span}(v, Tv, \dots, T^{k-1}v) = U_{k-1}.$$
+>
+> Since $v \ne 0$, we have $k \geq 1$. And $T^kv \in U_{k-1}$ gives $U_k \subseteq U_{k-1}$, i.e. $U_k = U_{k-1}$. $\square$
+>
+> Take the $k \leq n$ from Claim 2. By Claim 1, $U_m = U_{k-1}$ for **all** $m \geq k-1$. Since $k - 1 \leq n-1$, the index $n-1$ is itself in that range, so $U_{n-1} = U_{k-1}$. Therefore, for every $m \geq n-1 \; (\geq k-1)$,
+>
+> $$U_m = U_{k-1} = U_{n-1},$$
+>
+> which is exactly
+>
+> $$\operatorname{span}(v, Tv, \dots, T^m v) = \operatorname{span}(v, Tv, \dots, T^{\dim V - 1}v). \qquad \blacksquare$$
+
+{: .prompt-tip }
+> **$U_{n-1}$ is $T$-invariant.** Since $T(U_{n-1}) \subseteq U_n = U_{n-1}$. In fact $U_{n-1}$ is the *smallest* $T$-invariant subspace containing $v$ — any such subspace must contain all $T^jv$. So, closing $v$ up under $T$ never requires more than $\dim V$ terms.
+>
+> **$k$ is the degree of the minimal polynomial of $T$ relative to $v$.** The dependence found in Claim 2, $T^kv = \sum_{j<k} a_j T^j v$, rearranges to $q(T)v = 0$ with $q(z) = z^k - a_{k-1}z^{k-1} - \cdots - a_0$ monic of degree $k$ — and minimality of $k$ makes $q$ the least-degree monic polynomial with $q(T)v = 0$.

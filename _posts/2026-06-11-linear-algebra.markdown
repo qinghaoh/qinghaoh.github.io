@@ -199,6 +199,12 @@ $ \implies $
 | **$\dim V = \dim W$**       | (all three coincide)   | (all three coincide)   | (all three coincide)                |
 | Pseudoinverse               | $ TT^{\dagger} = I $   | $ T^{\dagger}T = I $   | $ TT^{\dagger} = T^{\dagger}T = I $ |
 
+$ \iff $
+
+| $ T \in \mathcal{L}(V) $ | Invertible               |
+| ------------------------ | ------------------------ |
+| Minimal polynomial       | Constant term is not $0$ |
+
 {: .prompt-info }
 > $ \lambda $ is an eigenvalue of $ T \iff T - \lambda I $ is not invertible
 
