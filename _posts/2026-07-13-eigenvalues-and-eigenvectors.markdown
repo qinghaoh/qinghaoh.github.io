@@ -82,6 +82,18 @@ mermaid: true
 > So the range bound $1 + r$ is the better bound exactly when $0$ is an eigenvalue — which is the whole point of the problem: it *improves* on $\dim V$ precisely in the non-injective case, by using the range to corral the nonzero eigenvalues and spending only "+1" on zero.
 
 {: .prompt-info }
+> For any invertible $T$ with minimal polynomial $p$ of degree $m$:
+>
+> $$p_{T^{-1}}(z) = \frac{z^m\, p(1/z)}{p(0)}.$$
+
+{: .prompt-tip }
+> $Tv = \lambda v \iff T^{-1}v = \lambda^{-1}v$
+>
+> (a) The eigenvalues of $T^{-1}$ are exactly the reciprocals of those of $T$.
+>
+> (b) The eigenvectors of $T^{-1}$ and $T$ are the same.
+
+{: .prompt-info }
 > Suppose $ T \in \mathcal{L}(V) $ is such that every nonzero vector in $ V $ is an eigenvector of $ T $. Then $ T $ is a scalar multiple of the identity operator.
 
 {: .prompt-info }

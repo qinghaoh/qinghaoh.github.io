@@ -106,6 +106,14 @@ mermaid: true
 > The minimal polynomial of $ T $ is a polynomial multiple of the minimal polynomial of $ \left. T \right\rvert u $.
 
 {: .prompt-info }
+> Every monic polynomial is the minimal polynomial of some operator.
+
+{: .prompt-tip }
+> See
+> * https://en.wikipedia.org/wiki/Companion_matrix
+> * https://mathworld.wolfram.com/CompanionMatrix.html
+
+{: .prompt-info }
 > For every polynomial $q$,
 >
 > $$T\, q(ST) \;=\; q(TS)\, T.$$
@@ -179,3 +187,15 @@ mermaid: true
 > **$U_{n-1}$ is $T$-invariant.** Since $T(U_{n-1}) \subseteq U_n = U_{n-1}$. In fact $U_{n-1}$ is the *smallest* $T$-invariant subspace containing $v$ — any such subspace must contain all $T^jv$. So, closing $v$ up under $T$ never requires more than $\dim V$ terms.
 >
 > **$k$ is the degree of the minimal polynomial of $T$ relative to $v$.** The dependence found in Claim 2, $T^kv = \sum_{j<k} a_j T^j v$, rearranges to $q(T)v = 0$ with $q(z) = z^k - a_{k-1}z^{k-1} - \cdots - a_0$ monic of degree $k$ — and minimality of $k$ makes $q$ the least-degree monic polynomial with $q(T)v = 0$.
+
+{: .prompt-info }
+> Suppose $ V$ is finite-dimensional and $ T \in \mathcal{L}(V) $. Let $ \mathcal{E} $ be the subspace of $ \mathcal{L}(V) $ defined by
+>
+> $$ \mathcal{E} = \{ q(T) : q \in \mathcal{P}(\mathbf{F}) \} $$.
+>
+> Then the list $I, T, T^2, \dots, T^{m-1}$ is a basis of $\mathcal{E}$, where $m = \deg p_T$.
+
+{: .prompt-proof }
+> $\mathcal{E}$ is indeed a subspace: it's closed under addition and scalar multiplication because $q_1(T) + q_2(T) = (q_1 + q_2)(T)$ and $c\,q(T) = (cq)(T)$. In fact $\mathcal{E}$ is the image of the linear map $\mathcal{P}(\mathbf{F}) \to \mathcal{L}(V)$, $q \mapsto q(T)$.
+>
+> Consider the linear map $\Phi : \mathcal{P}(\mathbf{F}) \to \mathcal{L}(V)$, $\Phi(q) = q(T)$. Then $\operatorname{range}\Phi = \mathcal{E}$ and $\operatorname{null}\Phi = \{q : q(T) = 0\}$ — exactly the multiples of $p$. So $\mathcal{E} \cong \mathcal{P}(\mathbf{F})/\langle p\rangle$, and the quotient has the remainders of degree $< m$ as canonical representatives — $m$ dimensions' worth.

@@ -33,10 +33,14 @@ flowchart LR
 * $ \mathbf{F}^S $
 * $ \mathcal{P}(\mathbf{F}) $
 * $ \mathcal{P}_m(\mathbf{F}) $
-* $ \mathcal{L}(V, W) $ ($ \dim = (\dim V)(\dim W) $)
-* $ \mathbf{F}^{m,n} $ ($ \dim = mn $)
-* $ V_1 \times \dots \times V_m $ ($ \dim = \dim V_1 + \dots + \dim V_m $)
-* $ V' $ ($ \dim = \dim V $)
+
+|                                 | $ \dim $                        |
+| ------------------------------- | ------------------------------- |
+| $ \mathcal{L}(V, W) $           | $ (\dim V)(\dim W) $            |
+| $ \mathbf{F}^{m,n} $            | $ mn $                          |
+| $ V_1 \times \dots \times V_m $ | $ \dim V_1 + \dots + \dim V_m $ |
+| $ V' $                          | $ \dim V $                      |
+| $ \mathcal{B}(V, W) $           | $ (\dim V)(\dim W) $            |
 
 ### Subspace
 
@@ -245,25 +249,6 @@ Suppose $ U $ and $ V $ are finite-dimensional. $ S \in \mathcal{L}(V, W) $ and 
 >  Suppose $ A_1 = v + U_1 $ and $ A_2 = w + U_2 $ for some $ v,w \in V $ and some subspaces $ U_1,U_2 $ of $ V $.
 >
 > $$ \forall x \in A_1 \cap A_2, \ A_1 \cap A_2 = (x + U_1) \cap (x + U_2) = x + (U_1 \cap U_2). $$
-
-### System of linear equations
-
-{: .prompt-info }
-> For $A \in \mathbf{F}^{m\times n}$ and one particular $b \in \mathbf{F}^n$, then
->
-> $Ax = b$ has exactly one solution $\iff$ ($ A $ injective) and ($ b \in \operatorname{range} A $).
-
-{: .prompt-info }
-> Suppose $ T \in \mathcal{L}(V,W) $ and $ c \in W $, then
->
-> $ {x \in V : Tx = c} $ is either the empty set or is a translate of $ \operatorname{null} T $.
-
-{: .prompt-tip }
-> Special case: system of linear equations
->
-> general solution = particular solution + homogeneous solution
->
-> $ V/\operatorname{null} T \cong_\tilde{T} \operatorname{range} T $
 
 #### Bases
 
