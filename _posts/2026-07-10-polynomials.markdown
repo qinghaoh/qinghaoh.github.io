@@ -8,15 +8,51 @@ mermaid: true
 
 ## Polynomials
 
+| $ T \in \mathcal{L}(V) $                                          | $ \ q \in \mathcal{P}(\mathbf{F}) $                                     | Minimal polynomial                                    |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| $ T/U $                                                           | $ q(T/U) = q(T)/U $                                                     | $ p_{T/U} \mid p_{T} $                                |
+| $ T                                                     \vert_U $ | $ q(T \vert_U) = q(T) \vert_U $                                         | $ p_{T \vert_U} \mid p_{T} $                          |
+|                                                                   |                                                                         | $ p_T \mid p_{T              \vert_U} \cdot p_{T/U} $ |
+| $ \mathbf{F} = \mathbb{R} $, $ T_{\mathbb{C}} $                   | $ q(T_{\mathbb{C}}) = (q(T))_{\mathbb{C}} $ ($q$ has real coefficients) | $ p_{T_{\mathbb{C}}} = p_T $                          |
+| $ T' $                                                            | $ q(T') = (q(T))' $                                                     | $ p_{T'} = p_T $                                      |
+
+{: .prompt-info }
+> _Complexification_
+>
+> $V_{\mathbb{C}} = V \oplus iV$ with elements $u + iw$ ($u, w \in V$), and $T_{\mathbb{C}}(u + iw) = Tu + iTw$.
+
+{: .prompt-proof }
+> Write $p = p_T$ and $q = p_{T_{\mathbb{C}}}$.
+>
+> **Direction 1: $q \mid p$**
+>
+> $p$ has real coefficients and $p(T) = 0$, so $p(T_{\mathbb{C}}) = 0$. Thus $p$ annihilates $T_{\mathbb{C}}$, giving $q \mid p$. In particular $\deg q \le \deg p$.
+>
+> **Direction 2: $p \mid q$**
+>
+>$q$ a priori has *complex* coefficients, so **split $q$ into real and imaginary parts.**
+>
+> Write $q(z) = g(z) + i\,h(z)$, where $g, h \in \mathcal{P}(\mathbb{R})$ are obtained by taking the real and imaginary parts of each coefficient of $q$. Since $g, h$ have real coefficients:
+>
+> $$0 = q(T_{\mathbb{C}}) = g(T_{\mathbb{C}}) + i\,h(T_{\mathbb{C}}) = (g(T))_{\mathbb{C}} + i\,(h(T))_{\mathbb{C}}.$$
+>
+> Evaluate at $u + i\cdot 0 = u, \ \forall u \in V$: $$(g(T))_{\mathbb{C}}u = g(T)u \in V$$ and $i(h(T))_{\mathbb{C}}u = i\,h(T)u \in iV$. These lie in the complementary summands $V$ and $iV$, so both must vanish:
+>
+> $$g(T)u = 0 \quad\text{and}\quad h(T)u = 0 \quad\text{for all } u,$$
+>
+> i.e. $g(T) = 0$ and $h(T) = 0$.
+>
+> Now $q$ is **monic**, so its leading coefficient is $1 = 1 + i\cdot 0$; hence $g$ is monic of degree $\deg q$, while $\deg h < \deg q$. Since $g(T) = 0$ and $g$ is a monic real annihilator of $T$, minimality gives $p \mid g. \blacksquare$
+
 {: .prompt-info }
 > _Bézout identity_
 >
-> Suppose $ p, q \in \mathcal{P}(\mathbf{C}) $ are nonconstant polynomials with no zeros in common. Let $ m = \deg p $ and $ n = \deg q $. There exist $ r \in \mathcal{P}_{n - 1}(\mathbf{C}) $ and $ s \in \mathcal{P}_{m - 1}(\mathbf{C}) $ such that
+> Suppose $ p, q \in \mathcal{P}(\mathbf{C}) $ are nonconstant polynomials with no zeros in common. Let $ m = \deg p $ and $ n = \deg q $. There exist $$ r \in \mathcal{P}_{n - 1}(\mathbf{C}) $$ and $$ s \in \mathcal{P}_{m - 1}(\mathbf{C}) $$ such that
 >
 > $$ rp + sq = 1.$$
 
 {: .prompt-proof }
-> Define $ T: \mathcal{P}_{n - 1}(\mathbf{C}) \times \mathcal{P}_{m - 1}(\mathbf{C}) \to \mathcal{P}_{m + n - 1}(\mathbf{C}) $ by
+> Define $$ T: \mathcal{P}_{n - 1}(\mathbf{C}) \times \mathcal{P}_{m - 1}(\mathbf{C}) \to \mathcal{P}_{m + n - 1}(\mathbf{C}) $$ by
 >
 > $$ T(r,s) = rp + sq $$.
 >
@@ -56,7 +92,7 @@ mermaid: true
 >
 > It's easy to show $T$ is invertible since $T$ is an operator.
 >
-> The constant polynomial $1$ lives in the codomain $\mathcal{P}_{m+n-1}(\mathbf{C})$ (its degree $0$ is $\le m + n - 1$, using that $p, q$ nonconstant gives $m, n \ge 1$, so $m + n - 1 \ge 1 \ge 0$). By surjectivity from (b), $1$ is hit: there exist $r \in \mathcal{P}_{n-1}(\mathbf{C})$ and $s \in \mathcal{P}_{m-1}(\mathbf{C})$ with
+> The constant polynomial $1$ lives in the codomain $$ \mathcal{P}_{m+n-1}(\mathbf{C}) $$ (its degree $0$ is $\le m + n - 1$, using that $p, q$ nonconstant gives $m, n \ge 1$, so $m + n - 1 \ge 1 \ge 0$). By surjectivity from (b), $1$ is hit: there exist $$ r \in \mathcal{P}_{n-1}(\mathbf{C}) $$ and $s \in \mathcal{P}_{m-1}(\mathbf{C})$ with
 >
 > $$
 > T(r,s) = rp + sq = 1. \qquad\blacksquare
@@ -103,9 +139,6 @@ mermaid: true
 > If this system of equations has a _unique_ solution $\dim V$ unknowns $c_0, c_1, \dots, c_{\dim V -1} $ (as happens most of the time), then the scalars $\dim V$ unknowns $c_0, c_1, \dots, c_{\dim V -1}, 1 $ are the coefficients of the minimal polynomial of $T$.
 
 {: .prompt-info }
-> The minimal polynomial of $ T $ is a polynomial multiple of the minimal polynomial of $ \left. T \right\rvert u $.
-
-{: .prompt-info }
 > Every monic polynomial is the minimal polynomial of some operator.
 
 {: .prompt-tip }
@@ -134,6 +167,20 @@ mermaid: true
 > $$q(TS)\,TS = 0.$$
 >
 > Since $q(TS)$ is a polynomial in $TS$, it commutes with $TS$, so this says exactly that the polynomial $z\,q(z)$ evaluated at $TS$ is zero. $\square$
+
+{: .prompt-info }
+> Suppose $ V$ is finite-dimensional and $ T \in \mathcal{L}(V) $. Let $ \mathcal{E} $ be the subspace of $ \mathcal{L}(V) $ defined by
+>
+> $$ \mathcal{E} = \{ q(T) : q \in \mathcal{P}(\mathbf{F}) \} $$.
+>
+> Then the list $I, T, T^2, \dots, T^{m-1}$ is a basis of $\mathcal{E}$, where $m = \deg p_T$.
+
+{: .prompt-proof }
+> $\mathcal{E}$ is indeed a subspace: it's closed under addition and scalar multiplication because $q_1(T) + q_2(T) = (q_1 + q_2)(T)$ and $c\,q(T) = (cq)(T)$. In fact $\mathcal{E}$ is the image of the linear map $\mathcal{P}(\mathbf{F}) \to \mathcal{L}(V)$, $q \mapsto q(T)$.
+>
+> Consider the linear map $\Phi : \mathcal{P}(\mathbf{F}) \to \mathcal{L}(V)$, $\Phi(q) = q(T)$. Then $\operatorname{range}\Phi = \mathcal{E}$ and $\operatorname{null}\Phi = \{q : q(T) = 0\}$ — exactly the multiples of $p$. So $\mathcal{E} \cong \mathcal{P}(\mathbf{F})/\langle p\rangle$, and the quotient has the remainders of degree $< m$ as canonical representatives — $m$ dimensions' worth.
+
+## Smallest $T$-invariant Subspace Containing $v$
 
 {: .prompt-info }
 > Suppose $V$ is finite-dimensional, $ T \in \mathcal{L}(V) $, and $ v \in V $. Then
@@ -189,13 +236,11 @@ mermaid: true
 > **$k$ is the degree of the minimal polynomial of $T$ relative to $v$.** The dependence found in Claim 2, $T^kv = \sum_{j<k} a_j T^j v$, rearranges to $q(T)v = 0$ with $q(z) = z^k - a_{k-1}z^{k-1} - \cdots - a_0$ monic of degree $k$ — and minimality of $k$ makes $q$ the least-degree monic polynomial with $q(T)v = 0$.
 
 {: .prompt-info }
-> Suppose $ V$ is finite-dimensional and $ T \in \mathcal{L}(V) $. Let $ \mathcal{E} $ be the subspace of $ \mathcal{L}(V) $ defined by
+> Suppose $ V $ is finite-dimensional, $ T \in \mathcal{L}(V) $, and $ v \in V $. Then there exists a unique monic polynomial $ p_v $ of smallest degree such that $ p_v(T)v = 0 $.
 >
-> $$ \mathcal{E} = \{ q(T) : q \in \mathcal{P}(\mathbf{F}) \} $$.
->
-> Then the list $I, T, T^2, \dots, T^{m-1}$ is a basis of $\mathcal{E}$, where $m = \deg p_T$.
+> $ p_v $ is the minimal polynomial of the smallets $T$-invariant subspace $U$ containing $v$, and $ \deg p_v = \dim U $.
 
-{: .prompt-proof }
-> $\mathcal{E}$ is indeed a subspace: it's closed under addition and scalar multiplication because $q_1(T) + q_2(T) = (q_1 + q_2)(T)$ and $c\,q(T) = (cq)(T)$. In fact $\mathcal{E}$ is the image of the linear map $\mathcal{P}(\mathbf{F}) \to \mathcal{L}(V)$, $q \mapsto q(T)$.
+{: .prompt-tip }
+> Suppose $ V $ is finite-dimensional, $ T \in \mathcal{L}(V) $, $ q \in \mathcal{P}(\mathbf{F}) $ and $ q(T) = 0 $, then
 >
-> Consider the linear map $\Phi : \mathcal{P}(\mathbf{F}) \to \mathcal{L}(V)$, $\Phi(q) = q(T)$. Then $\operatorname{range}\Phi = \mathcal{E}$ and $\operatorname{null}\Phi = \{q : q(T) = 0\}$ — exactly the multiples of $p$. So $\mathcal{E} \cong \mathcal{P}(\mathbf{F})/\langle p\rangle$, and the quotient has the remainders of degree $< m$ as canonical representatives — $m$ dimensions' worth.
+> $$ p_v \mid p_T \mid q. $$

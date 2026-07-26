@@ -36,7 +36,7 @@ mermaid: true
 > That's $v$ together with $k-1$ of the $x_i$'s, so $\dim U = k$, and $v \in U$. But $w \notin U$: the vectors $v, x_3, \dots, x_{k+1}$ are part of a basis that also includes $w$, so $w$ is independent of them and hence not in their span. This $U$ contains $v$, has dimension $k$, and misses $w$. $\blacksquare$
 
 {: .prompt-tip }
-> "Every $k$-dimensional subspace is invariant" collapses to "every line is invariant"** — i.e. all the way down to $k=1$ — because a line is recoverable as the intersection of the $k$-subspaces sitting above it.
+> "Every $k$-dimensional subspace is invariant" collapses to "every line is invariant" — i.e. all the way down to $k=1$ — because a line is recoverable as the intersection of the $k$-subspaces sitting above it.
 
 ## Eigen-*
 
@@ -123,7 +123,7 @@ mermaid: true
 {: .prompt-info }
 > Suppose $ \mathbf{F} = \mathbb{R} $, $ T \in \mathcal{L}(V) $, and $ \lambda \in \mathbb{C} $.
 >
-> $\lambda$ is an eigenvalue of the complexification $T_{\mathbb{C}} \iff \bar{\lambda} $ is an eigenvalue of $ T_{\mathbb{C}}. $
+> $\lambda$ is an eigenvalue of the complexification $T_{\mathbb{C}} \iff \bar{\lambda} $ is an eigenvalue of $ T_{\mathbb{C}} $.
 
 {: .prompt-proof }
 > Recall $V_{\mathbb{C}} = \\{ u + iv : u, v \in V \\}$ with $T_{\mathbb{C}}(u+iv) = Tu + iTv$. Define **conjugation** $C : V_{\mathbb{C}} \to V_{\mathbb{C}}$ by
