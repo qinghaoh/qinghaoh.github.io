@@ -117,3 +117,101 @@ q = 0, \qquad\text{i.e.}\qquad p = \bar p.
 $$
 
 Hence $a_j = \overline{a_j}$ for every $j$, so all coefficients of $p$ are real. $\blacksquare$
+
+---
+
+## 5D
+
+{: .prompt-info }
+> 16\. Suppose that $ T \in \mathcal{L}(V) $ is diagonalizable. Let $ \lambda_1, \cdots, \lambda_m $ denote the distinct eigenvalues of $ T $. Prove that a subspace $ U $ of $ V $ is invariant under $ T $ if and only if there exist subspaces 𝑈1,…,𝑈𝑚 of 𝑉 such that 𝑈𝑘 ⊆ 𝐸(𝜆𝑘,𝑇) for each $ k $ and $ U = U_1 \oplus \cdots \oplus U_m $.
+
+{: .prompt-proof }
+> *($\Rightarrow$)*
+>
+> **Step 1: the projections, built out of $T$.**
+>
+> For each $k$ define
+>
+> $$q_k = \prod_{j \neq k} (T - \lambda_j I) \in \mathcal{L}(V)$$
+>
+> (the product over all $j \in \{1,\dots,m\}$ with $j \neq k$; if $m = 1$ this is the empty product, $q_1 = I$). If $v \in E(\lambda_i, T)$, then each factor acts on $v$ as multiplication by $\lambda_i - \lambda_j$, so
+>
+> $$q_k v = \Big(\prod_{j\neq k}(\lambda_i - \lambda_j)\Big) v .$$
+>
+> When $i \neq k$ the index $j = i$ occurs in the product, so the scalar is $0$ and $q_k v = 0$. When $i = k$ the scalar is
+>
+> $$c_k = \prod_{j \neq k}(\lambda_k - \lambda_j) \neq 0,$$
+>
+> nonzero because the eigenvalues are distinct. So $q_k$ annihilates every eigenspace but the $k$-th, and acts as multiplication by $c_k$ on $E(\lambda_k, T)$.
+>
+>**Step 2: the construction.**
+>
+> Assume $U$ is invariant under $T$, and set
+>
+> $$U_k = U \cap E(\lambda_k, T).$$
+>
+> Each $U_k$ is a subspace of $V$ (intersection of subspaces) with $U_k \subseteq E(\lambda_k,T)$, as required.
+>
+> *$U \subseteq U_1 + \cdots + U_m$.* Let $u \in U$. Since $T$ is diagonalizable, $V = E(\lambda_1,T) \oplus \cdots \oplus E(\lambda_m,T)$, so we may write
+>
+> $$u = u_1 + \cdots + u_m, \qquad u_k \in E(\lambda_k, T).$$
+>
+> Apply $q_k$ and use Step 1:
+>
+> $$q_k u = \sum_{i=1}^m q_k u_i = c_k u_k .$$
+>
+> $U$ is invariant under every polynomial in $T$, so $q_k u \in U$; since $c_k \neq 0$, this gives $u_k = c_k^{-1} q_k u \in U$. As also $u_k \in E(\lambda_k,T)$, we conclude $u_k \in U_k$. Hence $u \in U_1 + \cdots + U_m$.
+>
+> *$U_1 + \cdots + U_m \subseteq U$.* Each $U_k \subseteq U$ and $U$ is a subspace.
+>
+> *The sum is direct.* Suppose $u_1 + \cdots + u_m = 0$ with $u_k \in U_k \subseteq E(\lambda_k, T)$. Directness of $E(\lambda_1,T) \oplus \cdots \oplus E(\lambda_m,T)$ forces every $u_k = 0$.
+>
+> Therefore $U = U_1 \oplus \cdots \oplus U_m$.
+>
+> *($\Leftarrow$)* If $U = U_1 \oplus \cdots \oplus U_m$ with $U_k \subseteq E(\lambda_k,T)$, take $u \in U$ and write $u = \sum u_k$; then $Tu = \sum \lambda_k u_k \in U_1 + \cdots + U_m = U$. $\blacksquare$
+
+{: .prompt-tip }
+> The operator $q_k/c_k$ is the projection onto $E(\lambda_k,T)$ along the other eigenspaces, expressed as a *polynomial in $T$*. It's Lagrange interpolation in disguise: $p_k(x) = \prod_{j\neq k}\frac{x - \lambda_j}{\lambda_k - \lambda_j}$ is the polynomial with $p_k(\lambda_i) = \delta_{ik}$, and $p_k(T)$ is the projection.
+
+{: .prompt-tip }
+> The $T$-invariant subspaces of a diagonalizable operator are exactly the spans of sets of eigenvectors.
+
+{: .prompt-info }
+> 17\. Suppose $ V $ is finite-dimensional. Prove that $ \mathcal{L}(V) $ has a basis consisting of diagonalizable operators.
+
+{: .prompt-proof }
+> **Setup.** Assume $n = \dim V \geq 1$ (if $V = \{0\}$ then $\mathcal{L}(V) = \{0\}$ and the empty list is a basis). Fix a basis $v_1, \dots, v_n$ of $V$ and let $E_{j,k} \in \mathcal{L}(V)$ be the operator determined by
+>
+> $$E_{j,k} v_k = v_j, \qquad E_{j,k}v_i = 0 \ \text{ for } i \neq k,$$
+>
+> i.e. its matrix has a $1$ in row $j$, column $k$, and zeros elsewhere. These $n^2$ operators are the standard basis of $\mathcal{L}(V)$, so $\dim \mathcal{L}(V) = n^2$.
+>
+> **The candidate list.** Define
+>
+> $$\mathcal{B} = \{\, E_{j,j} : 1 \le j \le n \,\} \cup \{\, E_{j,j} + E_{j,k} : j \neq k \,\}.$$
+>
+> It has $n + n(n-1) = n^2$ elements.
+>
+> **Step 1: every element of $\mathcal{B}$ is diagonalizable.**
+>
+> Each $E_{j,j}$ is already diagonal with respect to $v_1,\dots,v_n$: it fixes $v_j$ and kills the other basis vectors.
+>
+> Now fix $j \neq k$ and put $T = E_{j,j} + E_{j,k}$, so that
+>
+> $$Tv_j = v_j, \qquad Tv_k = v_j, \qquad Tv_i = 0 \ \text{ for } i \notin \{j,k\}.$$
+>
+> Consider the list
+>
+> $$v_j, \quad v_j - v_k, \quad (v_i)_{i \notin \{j,k\}}.$$
+>
+> Every vector in it is an eigenvector of $T$: the first has eigenvalue $1$, and the rest have eigenvalue $0$, since $T(v_j - v_k) = v_j - v_j = 0$ and $Tv_i = 0$ for $i \notin \{j,k\}$. The list has $n$ vectors and spans $V$, because $v_k = v_j - (v_j - v_k)$ recovers the one missing basis vector. So it is a basis of $V$ consisting of eigenvectors of $T$, and $T$ is diagonalizable.
+>
+> **Step 2: $\mathcal{B}$ spans $\mathcal{L}(V)$.**
+>
+> For $j \neq k$,
+>
+> $$E_{j,k} = (E_{j,j} + E_{j,k}) - E_{j,j} \in \operatorname{span}\mathcal{B},$$
+>
+> and each $E_{j,j} \in \mathcal{B}$. So $\operatorname{span}\mathcal{B}$ contains all $n^2$ matrix units, hence equals $\mathcal{L}(V)$.
+>
+> **Step 3: conclude.** $\mathcal{B}$ is a spanning list of $\mathcal{L}(V)$ of length $n^2 = \dim\mathcal{L}(V)$, so it is a basis (a spanning list of the right length is automatically independent). Its elements are diagonalizable by Step 1. $\blacksquare$

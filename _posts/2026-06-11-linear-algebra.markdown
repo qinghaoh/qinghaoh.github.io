@@ -106,7 +106,11 @@ Finite fields exist precisely for prime-power sizes $q = p^k$.
 
 A sum is a direct sum iff dimensions add up.
 
----
+{: .prompt-info }
+> If $v_1,\dots,v_n$ is a basis, then replacing $v_i$ by $v_i + c\,v_j$ for any $j \neq i$ and any scalar $c$ again gives a basis. (
+
+{: .prompt-tip }
+> It's an elementary column operation; invertibility is obvious because you can undo it.
 
 ## Linear Maps
 
@@ -273,12 +277,12 @@ $ C $ is a *basis* of the column space.
 
 {: .prompt-info }
 > Change-of-basis
-
-$$ \mathcal{M}(I,(u_1,\dots,u_n),(v_1,\dots,v_n))\mathcal{M}(I,(v_1,\dots,v_n),(u_1,\dots,u_n)) = I $$
-
-$ T \in \mathcal{L}(V) $, $ A = \mathcal{M}(T,(u_1,\dots,u_n)), B = \mathcal{M}(T,(v_1,\dots,v_n)), C = \mathcal{M}(I,(u_1,\dots,u_n),(v_1,\dots,v_n))$:
-
-$$ A = C^{-1}BC $$
+>
+> $$ \mathcal{M}(I,(u_1,\dots,u_n),(v_1,\dots,v_n))\mathcal{M}(I,(v_1,\dots,v_n),(u_1,\dots,u_n)) = I $$
+>
+> $ T \in \mathcal{L}(V) $, $ A = \mathcal{M}(T,(u_1,\dots,u_n)), B = \mathcal{M}(T,(v_1,\dots,v_n)), C = \mathcal{M}(I,(u_1,\dots,u_n),(v_1,\dots,v_n))$:
+>
+> $$ A = C^{-1}BC $$
 
 | $ T \in \mathcal{L}(V, W) $ | Inverse                                         | Dual Map                                 | Adjoint                                         |
 | --------------------------- | ----------------------------------------------- | ---------------------------------------- | ----------------------------------------------- |

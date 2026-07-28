@@ -9,9 +9,6 @@ mermaid: true
 ## Invariant Subspaces
 
 {: .prompt-info }
-> Null space and range of $ p(T) $ are invariant under $ T $.
-
-{: .prompt-info }
 > Suppose $ T \in \mathcal{L}(V) $ and $ U $ is a subspace of $ V $ invariant under $ T $. Then $ U $ is invariant under $ p(T) $ for every polynomial $ p \in \mathcal{P}(\mathbf{F}) $.
 
 {: .prompt-info }
@@ -41,14 +38,11 @@ mermaid: true
 ## Eigen-*
 
 {: .prompt-info }
-> Every eigenvector for a _nonzero_ eigenvalue lies in $\operatorname{range} T$.
-
-{: .prompt-proof }
-> Suppose $\lambda \ne 0$ is an eigenvalue with eigenvector $v$: $Tv = \lambda v$. Then divide by $\lambda$ (legal since $\lambda \ne 0$):
+> Suppose $ T \in \mathcal{L}(V) $, then
 >
-> $$v = \tfrac{1}{\lambda}(\lambda v) = \tfrac{1}{\lambda} Tv = T\!\left(\tfrac{1}{\lambda}v\right) \in \operatorname{range} T.$$
+> $ E(0, T) \subseteq \operatorname{null} T $,
 >
-> For $\lambda = 0$ the eigenvectors are in $\operatorname{null} T$, and there's no reason they'd be in the range. $\blacksquare$
+> $ E(\lambda, T) \subseteq \operatorname{range} T $, where $ \lambda \ne 0 $.
 
 {: .prompt-info }
 > Suppose $ T \in \mathcal{L}(V) $. Then every list of eigenvectors of $ T $ corresponding to distinct eigenvalues of $ T $ is _linearly independent_.
@@ -91,24 +85,10 @@ mermaid: true
 >
 > (a) The eigenvalues of $T^{-1}$ are exactly the reciprocals of those of $T$.
 >
-> (b) The eigenvectors of $T^{-1}$ and $T$ are the same.
+> (b) $ E(\lambda, T) = E(\frac{1}{\lambda}, T^{-1}) $.
 
 {: .prompt-info }
 > Suppose $ T \in \mathcal{L}(V) $ is such that every nonzero vector in $ V $ is an eigenvector of $ T $. Then $ T $ is a scalar multiple of the identity operator.
-
-{: .prompt-info }
-> Suppose $ T \in \mathcal{L}(V) $. Suppose $ S \in \mathcal{L}(V) $ is invertible.
->
-> (a) $ p(STS^{-1}) = Sp(T)S^{-1} $.
->
-> (b) $ S:\; E(\lambda,\, S^{-1}TS)\;\xrightarrow{\ \sim\ }\; E(\lambda,\, T) $.
-
-{: .prompt-tip }
-> $S^{-1}TS$ (conjugation) is just $T$ "viewed in a different basis", and $S$ is the dictionary translating vectors from the new coordinates back to the old.
->
-> (a) *Polynomials of $T$ transform the same way* — $p$ of the conjugate is the conjugate of $p(T)$. In particular, taking $p$ to be the minimal polynomial of $T$: $p(STS^{-1}) = Sp(T)S^{-1} = S\cdot 0\cdot S^{-1} = 0$, which reproves that $T$ and $STS^{-1}$ share the same minimal polynomial. So, eigenvalues are basis-independent facts about the operator.
->
-> (b) Eigenvaluees are untouched; eigenvectors are genuine vectors, so they get translated by the dictionary $S$.
 
 {: .prompt-info }
 > Suppose $V$ is finite-dimensional, $ T \in \mathcal{L}(V) $, and $ \lambda \in \mathbf{F} $.
@@ -167,27 +147,54 @@ mermaid: true
 > Sum of eigenspaces is a direct sum.
 
 {: .prompt-info }
-> Eigenspace is invariant under commuting operator.
-
-{: .prompt-info }
-> $ T $ is diagonalizable
->
-> $ \iff V = \operatorname{null} (T - \lambda I) \oplus \operatorname{range} (T - \lambda I) $.
-
-{: .prompt-info }
 > In an upper-triangular matrix,
 >
 > $$\{\text{distinct diagonal entries}\} = \{\text{zeros of min poly}\} = \{\text{eigenvalues}\}.$$
 >
-> $$1 \le (\text{min-poly exponent of } \lambda) \le (\text{times } \lambda \text{ appears on the diagonal}),$$
+> $$1 \le (\text{min-poly exponent of } \lambda) \le (\text{times } \lambda \text{ appears on the diagonal}) = \dim E{\lambda, T}. $$
 
-| $T \in \mathcal{L}(V)$ | Basis                                                                          | Subspaces                                                                                    | Dimensions                            | Minimal polynomial ($ m = \deg p \le \dim V $)                                                                             |
-| ---------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Upper-triangularizable | $ Tv_k \in \operatorname{span}(v_1, \dots, v_k) $ for each $ k = 1, \dots, n $ | $ \operatorname{span}(v_1, \dots, v_k) $ is invariant under $T$ for each $ k = 1, \dots, n $ |                                       | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ (repetitions allowed)      |
-| Diagonalizable         | $\exists$ a basis of $V$ consisting of eigenvectors of $T$                     | $V = E(\lambda_1,T)\oplus\cdots\oplus E(\lambda_m,T)$                                        | $\sum_k \dim E(\lambda_k,T) = \dim V$ | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some list of _distinct_ numbers $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ |
+| $T \in \mathcal{L}(V)$ | Basis                                                                          | Subspaces                                                                                    | Dimensions                            | Minimal polynomial ($ m = \deg p \le \dim V $)                                                                             | Nullspace and range                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Upper-triangularizable | $ Tv_k \in \operatorname{span}(v_1, \dots, v_k) $ for each $ k = 1, \dots, n $ | $ \operatorname{span}(v_1, \dots, v_k) $ is invariant under $T$ for each $ k = 1, \dots, n $ |                                       | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ (repetitions allowed)      |                                                                                         |
+| Lower-triangularizable | $ Tv_k \in \operatorname{span}(v_k, \dots, v_n) $ for each $ k = 1, \dots, n $ | $ \operatorname{span}(v_k, \dots, v_n) $ is invariant under $T$ for each $ k = 1, \dots, n $ |                                       | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ (repetitions allowed)      |                                                                                         |
+| Diagonalizable         | $\exists$ a basis of $V$ consisting of eigenvectors of $T$                     | $V = E(\lambda_1,T)\oplus\cdots\oplus E(\lambda_m,T)$                                        | $\sum_k \dim E(\lambda_k,T) = \dim V$ | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some list of _distinct_ numbers $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ | $ V = \operatorname{null} (T - \lambda I) \oplus \operatorname{range} (T - \lambda I) $ |
 
 {: .prompt-tip }
 > Diagonalizable means the eigenspaces are *as big as they can be* — big enough to fill $V$. Each column says "fill $V$" in a different dialect: enough eigenvectors for a basis, eigenspaces summing directly to $V$, dimensions adding to $\dim V$, and — the min poly one — no eigenvalue needing a repeated factor to be annihilated (a repeat is exactly the symptom of an eigenspace that came up short, like the $(0,1)$ vector that $(T-5I)$ couldn't kill in one step).
+
+{: .prompt-proof }
+> Let $n = \dim V$.
+>
+> *($\Rightarrow$)* If $T$ is diagonalizable, a basis of eigenvectors of $T$ is also a basis of eigenvectors of $T - \lambda I$ (eigenvalue $\lambda_j - \lambda$), so $T - \lambda I$ is diagonalizable.
+>
+> *($\Leftarrow$)* Assume $V = \operatorname{null}(T-\lambda I) \oplus \operatorname{range}(T-\lambda I)$ for every $\lambda \in \mathbf{C}$. Fix $\lambda$ and write $S = T - \lambda I$.
+>
+> **Step 1: $\operatorname{null} S = \operatorname{null} S^2$.** The inclusion $\subseteq$ always holds. Conversely, if $v \in \operatorname{null} S^2$ then $S(Sv) = 0$, so $Sv \in \operatorname{null} S$; also $Sv \in \operatorname{range} S$. Directness of the sum forces $\operatorname{null} S \cap \operatorname{range} S = \{0\}$, so $Sv = 0$.
+>
+> **Step 2: $G(\lambda, T) = E(\lambda, T)$.** By the result on equality in the sequence of null spaces, Step 1 with $m = 1$ gives $\operatorname{null} S = \operatorname{null} S^k$ for every $k \geq 1$. Taking $k = n$ and using the definition $G(\lambda,T) = \operatorname{null}(T-\lambda I)^{n}$:
+>
+> $$G(\lambda, T) = \operatorname{null} S^{n} = \operatorname{null} S = E(\lambda, T).$$
+>
+> **Step 3: conclude.** Let $\lambda_1, \dots, \lambda_m$ be the distinct eigenvalues of $T$ (there is at least one, as $V \neq \{0\}$ is complex; if $V = \{0\}$ the claim is trivial). The generalized eigenspace decomposition says
+>
+> $$V = G(\lambda_1, T) \oplus \cdots \oplus G(\lambda_m, T).$$
+>
+> By Step 2 each summand equals $E(\lambda_j, T)$, so
+>
+> $$V = E(\lambda_1, T) \oplus \cdots \oplus E(\lambda_m, T),$$
+>
+> which is one of the standard equivalent conditions for diagonalizability. Hence $T$ is diagonalizable. $\blacksquare$
+
+{: .prompt-info }
+> *Dense* for every $T \in \mathcal{L}(V)$ and every $\varepsilon > 0$ there is a diagonalizable $D$ with $\|T - D\| < \varepsilon$.
+
+{: .prompt-info }
+> Over $\mathbf{C}$, the diagonalizable operators are dense in $\mathcal{L}(V)$.
+
+{: .prompt-proof }
+> Let $T \in \mathcal{L}(V)$, $n = \dim V$. Since $\mathbf{F} = \mathbf{C}$, there is a basis $v_1,\dots,v_n$ with respect to which $\mathcal{M}(T)$ is upper triangular, with diagonal entries $\lambda_1,\dots,\lambda_n$. Given $\varepsilon > 0$, choose $\varepsilon_1,\dots,\varepsilon_n \in \mathbf{C}$ with $|\varepsilon_j| < \varepsilon$ such that $\lambda_1 + \varepsilon_1, \dots, \lambda_n + \varepsilon_n$ are pairwise distinct — always possible, since each $\varepsilon_j$ needs only to avoid finitely many values, and any disc is infinite.
+>
+> Define $D \in \mathcal{L}(V)$ by $Dv_j = \varepsilon_j v_j$. Then $\mathcal{M}(T + D)$ is upper triangular with the distinct entries $\lambda_j + \varepsilon_j$ on the diagonal. The diagonal of a triangular matrix lists the eigenvalues, so $T + D$ has $n$ distinct eigenvalues in a space of dimension $n$, hence is diagonalizable. And $D$ is small: in the norm making $v_1,\dots,v_n$ orthonormal, $\|D\| = \max_j |\varepsilon_j| < \varepsilon$. $\blacksquare$
 
 ## Nilpotent
 
@@ -255,10 +262,27 @@ mermaid: true
 {: .prompt-tip }
 > *Jordan chains*: on a chain $v_k \mapsto v_{k-1} \mapsto \cdots \mapsto v_1 \mapsto 0$, the nilpotent operator $N$ pushes each basis vector one step *down* the chain, and drops the bottom one to $0$. Nothing gets rescaled — every vector is *displaced along the chain*. A vector could only be an eigenvector if this downshift landed it back on a multiple of itself, and the sole way that happens is the bottom vector going to $0 = 0 \cdot v_1$. Hence a nilpotent has eigenvalue $0$ only.
 
-## Commutativity
+## Commuting Operators
+
+{: .prompt-info }
+> *simultaneous diagonalizability $\iff$ commutativity*
+>
+> Suppose $ \mathcal{E} $ is a subset of $ \mathcal{L}(V) $ and every element of $ \mathcal{E} $ is diagonalizable.
+>
+> There exists a basis of $ V $ with respect to which every element of $ \mathcal{E} $ has a diagonal matrix $\iff$ every pair of elements of $ \mathcal{E} $ commutes.
+
+{: .prompt-info }
+> Suppose $ S,T \in \mathcal{L}(V) $ are such that $ ST = TS $. Suppose $ p \in \mathcal{P}(\mathbf{F}) $. Then
+>
+> $ \operatorname{null} p(S) $ and $ \operatorname{range} p(S) $ are invariant under $ T $.
 
 {: .prompt-tip }
-> $A$ and $B$ commute iff $B$ preserves every generalized eigenspace of $A$ *and*, within each, is compatible with $A$'s Jordan structure.
+> Special cases:
 >
-> - **Diagonalizable pair:** commute $\iff$ simultaneously diagonalizable (common eigenbasis). ← the one to know.
-> - **General pair:** no clean iff; the operative fact is the lemma — commuting means **each preserves the other's eigenspaces**.
+> * $ p(z) = z - \lambda $, then $ E(\lambda, S) $ is invariant under $ T $.
+> * $ p(z) = (z - \lambda)^{\dim V} $, then $ G(\lambda, S) $ is invariant under $ T $.
+
+{: .prompt-info }
+> Over $\mathbf{C}$, write $V = \bigoplus_\lambda G(\lambda, T)$. On $G(\lambda,T)$ we have $T = \lambda I + N_\lambda$ with $N_\lambda = \left. (T-\lambda I) \right\rvert_{G(\lambda,T)}$ nilpotent.
+>
+> $ST = TS \iff G(\lambda,T) $ is invariant under $S$ **and** $\left. S \right\rvert_{G(\lambda,T)}$ commutes with $N_\lambda$ for every $\lambda$.

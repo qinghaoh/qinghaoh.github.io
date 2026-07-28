@@ -15,6 +15,7 @@ mermaid: true
 |                                                                   |                                                                         | $ p_T \mid p_{T              \vert_U} \cdot p_{T/U} $ |
 | $ \mathbf{F} = \mathbb{R} $, $ T_{\mathbb{C}} $                   | $ q(T_{\mathbb{C}}) = (q(T))_{\mathbb{C}} $ ($q$ has real coefficients) | $ p_{T_{\mathbb{C}}} = p_T $                          |
 | $ T' $                                                            | $ q(T') = (q(T))' $                                                     | $ p_{T'} = p_T $                                      |
+| $ S \in \mathcal{L}(V) $ is invertible, $ STS^{-1} $              | $ q(STS^{-1}) = q(T) $                                                  | $ p_{STS^{-1}} = p_T $                                |
 
 {: .prompt-info }
 > _Complexification_
