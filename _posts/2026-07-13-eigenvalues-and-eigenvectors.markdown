@@ -283,6 +283,12 @@ mermaid: true
 > * $ p(z) = (z - \lambda)^{\dim V} $, then $ G(\lambda, S) $ is invariant under $ T $.
 
 {: .prompt-info }
-> Over $\mathbf{C}$, write $V = \bigoplus_\lambda G(\lambda, T)$. On $G(\lambda,T)$ we have $T = \lambda I + N_\lambda$ with $N_\lambda = \left. (T-\lambda I) \right\rvert_{G(\lambda,T)}$ nilpotent.
+> Suppose $\mathbf{F} = \mathbb{C}$ and $V = \bigoplus_{\lambda_k} G(\lambda_k, T)$.
 >
-> $ST = TS \iff G(\lambda,T) $ is invariant under $S$ **and** $\left. S \right\rvert_{G(\lambda,T)}$ commutes with $N_\lambda$ for every $\lambda$.
+> $ST = TS \iff G(\lambda_k,T) $ is invariant under $S$ **and** $\left. S \right\rvert_{G(\lambda_k,T)}$ commutes with $\left. (T-\lambda_k I) \right\rvert_{G(\lambda_k,T)}$ for each $ k = 1, \cdots, m $.
+
+{: .prompt-info }
+> For any $T$, the commutant equals $\mathbf{F}[T]$ precisely when the minimal and characteristic polynomials coincide.
+
+{: .prompt-info }
+> For a nilpotent operator $N$, the commutant equals $\mathbf{F}[N] \iff N $ has a single Jordan block.

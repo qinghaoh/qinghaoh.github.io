@@ -171,6 +171,16 @@ A sum is a direct sum iff dimensions add up.
 >
 > $$ \dim \{ v \in V : Tv \in U \} = \dim \operatorname{null} T + \dim (U \cap \operatorname{range} T) $$
 
+{: .prompt-info }
+> *Cokernel*
+>
+> Suppose $ T \in \mathcal{L}(V,W) $,
+>
+> $$\operatorname{coker}T = W/\operatorname{range}T.$$
+
+{: .prompt-tip }
+> Cokernel is the dual of the null space: $\operatorname{null}T$ measures failure of injectivity, $\operatorname{coker}T$ measures failure of surjectivity, and $T$ is onto iff $\operatorname{coker}T = 0$.
+
 ###  Injectivity, Surjectivity and Invertibility
 
 ![Inveritibility Triangle](/assets/img/math/invertibility_two_of_three_triangle.png)
