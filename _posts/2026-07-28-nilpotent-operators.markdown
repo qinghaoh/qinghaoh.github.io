@@ -27,39 +27,39 @@ mermaid: true
 {: .prompt-tip }
 > Sorted into decreasing order, the chain lengths form a **partition** of $\dim V$:
 >
-> $$\lambda = (m_1 \ge m_2 \ge \dots \ge m_k), \qquad m_1 + \dots + m_k = \dim V.$$
+> $$\mu = (m_1 \ge m_2 \ge \dots \ge m_k), \qquad m_1 + \dots + m_k = \dim V.$$
 >
 > The individual $m_i$ are its **parts**. In the array above, each part is the height of one column, because one column is one chain.
 >
 > Now read the same boxes across instead of down. Row $j$ contains one box from every chain tall enough to reach it, so its width is
 >
-> $$\lambda'_j \;:=\; \#\{\,i : m_i \ge j\,\}.$$
+> $$\mu'_j \;:=\; \#\{\,i : m_i \ge j\,\}.$$
 >
-> The sequence $\lambda' = (\lambda'_1, \lambda'_2, \dots)$ is again a partition of $\dim V$, called the **conjugate** of $\lambda$. It has $m_1$ parts, and conjugating twice returns $\lambda$.
+> The sequence $\mu' = (\mu'_1, \mu'_2, \dots)$ is again a partition of $\dim V$, called the **conjugate** of $\mu$. It has $m_1$ parts, and conjugating twice returns $\mu$.
 >
-> One set of boxes, two partitions: $\lambda$ counts down the columns, $\lambda'$ counts across the rows.
+> One set of boxes, two partitions: $\mu$ counts down the columns, $\mu'$ counts across the rows.
 
 {: .prompt-tip }
 > *Example.* Two chains, of lengths $3$ and $2$ — the running example of this post:
 >
 > $$\begin{array}{cc} x^2 & \\ 2x & xy \\ 2 & y \end{array}$$
 >
-> The columns have heights $3$ and $2$, so $\lambda = (3,2)$. The rows, read from the bottom up, have widths $2$, $2$, $1$, so $\lambda' = (2,2,1)$. Both sum to $5 = \dim V$, as they must — they count the same five boxes.
+> The columns have heights $3$ and $2$, so $\mu = (3,2)$. The rows, read from the bottom up, have widths $2$, $2$, $1$, so $\mu' = (2,2,1)$. Both sum to $5 = \dim V$, as they must — they count the same five boxes.
 >
-> Most references draw a partition with its parts as *rows*; the conventional [Young diagram](https://en.wikipedia.org/wiki/Young_tableau#Diagrams) of $\lambda$ is therefore this array reflected across a diagonal. Nothing below depends on the choice. Parts are columns here because $N$ acts down them.
+> Most references draw a partition with its parts as *rows*; the conventional [Young diagram](https://en.wikipedia.org/wiki/Young_tableau#Diagrams) of $\mu$ is therefore this array reflected across a diagonal. Nothing below depends on the choice. Parts are columns here because $N$ acts down them.
 
 {: .prompt-tip }
 > Row $j$ is exactly **level** $j$: the vectors killed by $N^j$ but not by $N^{j-1}$. A chain of length $m_i$ contributes its entry $N^{m_i - j}v_i$ to row $j$ whenever $m_i \ge j$, and nothing above row $m_i$.
 >
-> That is what bottom alignment buys, and it is why $\lambda'$, not $\lambda$, is the sequence the rest of this post counts. Cumulatively, the boxes in the bottom $j$ rows are a basis of $\operatorname{null}N^j$:
+> That is what bottom alignment buys, and it is why $\mu'$, not $\mu$, is the sequence the rest of this post counts. Cumulatively, the boxes in the bottom $j$ rows are a basis of $\operatorname{null}N^j$:
 >
-> $$d_j \;:=\; \dim\operatorname{null}N^j \;=\; \lambda'_1 + \dots + \lambda'_j .$$
+> $$d_j \;:=\; \dim\operatorname{null}N^j \;=\; \mu'_1 + \dots + \mu'_j .$$
 >
-> So $d$ is the partial-sum sequence of $\lambda'$, and differencing recovers it:
+> So $d$ is the partial-sum sequence of $\mu'$, and differencing recovers it:
 >
-> $$\lambda'_j = d_j - d_{j-1}.$$
+> $$\mu'_j = d_j - d_{j-1}.$$
 >
-> On the example: $\lambda' = (2,2,1)$ gives $(d_1,d_2,d_3) = (2,4,5)$, matching $\operatorname{null}N = \operatorname{span}(1,y)$, $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$, and $\operatorname{null}N^3 = V$.
+> On the example: $\mu' = (2,2,1)$ gives $(d_1,d_2,d_3) = (2,4,5)$, matching $\operatorname{null}N = \operatorname{span}(1,y)$, $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$, and $\operatorname{null}N^3 = V$.
 
 {: .prompt-info }
 > The span of one Jordan chain is one Jordan block. The whole space is the direct sum of the chain-spans.
@@ -81,8 +81,6 @@ mermaid: true
 > $\dim\operatorname{null}N^m = \sum_j \min(m, m_j)$.
 
 {: .prompt-proof }
-> The chain vector $N^tv_i$ sits at level $m_i - t$, so $N^m$ kills it exactly when its level is at most $m$. Hence $\operatorname{null}N^m$ is spanned by the boxes in the bottom $m$ rows, and the claim is a count of that region.
->
 > Column $i$ contributes $\min(m, m_i)$ boxes to it. Whichever runs out first wins:
 >
 > - **Short column** ($m_i \le m$): the reach of $N^m$ exceeds the column, so the *whole* column dies — $m_i$ boxes.
@@ -90,38 +88,29 @@ mermaid: true
 >
 > Summing over columns gives $\dim\operatorname{null}N^m = \sum_i \min(m,m_i)$. $\blacksquare$
 
-{: .prompt-tip }
-> Let $N$ be nilpotent on $V$ and $d_j = \dim\operatorname{null}N^j$. Every Jordan basis of $N$ decomposes $V$ into chains whose lengths form a partition $\lambda$ of $\dim V$, and
->
-> $$\lambda'_j = d_j - d_{j-1}, \qquad \#\{i : m_i = j\} = \lambda'_j - \lambda'_{j+1} = 2d_j - d_{j-1} - d_{j+1}, \qquad k = \lambda'_1 = d_1.$$
->
-> The first is differencing the partial sums. The second is "columns ending exactly at row $j$" = width of row $j$ minus width of row $j+1$. The third is the width of the bottom row.
->
-> Since the $d_j$ are defined without reference to a basis, so is $\lambda'$, hence so is $\lambda$ — a complete invariant of $N$ up to similarity.
-
 {: .prompt-info }
-> Let $N$ be nilpotent on $V$. The partition $\lambda$ does not depend on which Jordan basis produced it, and two nilpotent operators are similar if and only if their partitions agree.
+> Let $N$ be nilpotent on $V$. The partition $\mu$ does not depend on which Jordan basis produced it, and two nilpotent operators are similar if and only if their partitions agree.
 
 {: .prompt-proof }
-> **Independence of the basis.** A Jordan basis fills in the diagram, and the diagram determines $\lambda'$ as its row widths. But those row widths are $d_j - d_{j-1}$, and $d_j = \dim\operatorname{null}N^j$ makes no reference to a basis. So $\lambda'$ is forced by $N$ alone, and therefore so is $\lambda$. Different Jordan bases genuinely differ — the vectors are choices, and Step 1 of the algorithm below makes them — but the shape they fill is fixed before any choice is made.
+> **Independence of the basis.** A Jordan basis fills in the diagram, and the diagram determines $\mu'$ as its row widths. But those row widths are $d_j - d_{j-1}$, and $d_j = \dim\operatorname{null}N^j$ makes no reference to a basis. So $\mu'$ is forced by $N$ alone, and therefore so is $\mu$. Different Jordan bases genuinely differ — the vectors are choices, and Step 1 of the algorithm below makes them — but the shape they fill is fixed before any choice is made.
 >
-> **Similar operators agree.** If $N' = ANA^{-1}$ then $(N')^j = AN^jA^{-1}$, so $A$ restricts to an isomorphism $\operatorname{null}N^j \to \operatorname{null}(N')^j$. The two towers have equal dimensions, hence equal $\lambda'$, hence equal $\lambda$.
+> **Similar operators agree.** If $N' = ANA^{-1}$ then $(N')^j = AN^jA^{-1}$, so $A$ restricts to an isomorphism $\operatorname{null}N^j \to \operatorname{null}(N')^j$. The two towers have equal dimensions, hence equal $\mu'$, hence equal $\mu$.
 >
-> **Agreeing operators are similar.** Each of $N$ and $N'$ admits a Jordan basis in which its matrix is $J_{m_1}(0)\oplus\dots\oplus J_{m_k}(0)$. Equal $\lambda$ means this is literally the same matrix, so each is similar to it and hence to the other. $\blacksquare$
+> **Agreeing operators are similar.** Each of $N$ and $N'$ admits a Jordan basis in which its matrix is $J_{m_1}(0)\oplus\dots\oplus J_{m_k}(0)$. Equal $\mu$ means this is literally the same matrix, so each is similar to it and hence to the other. $\blacksquare$
 
 {: .prompt-tip }
 > A column ends at row $j$ exactly when it reaches row $j$ and fails to reach row $j+1$, so
 >
-> $$\#\{\,i : m_i = j\,\} \;=\; \lambda'_j - \lambda'_{j+1} \;=\; 2d_j - d_{j-1} - d_{j+1},$$
+> $$\#\{\,i : m_i = j\,\} \;=\; \mu'_j - \mu'_{j+1} \;=\; 2d_j - d_{j-1} - d_{j+1},$$
 >
-> with the convention $\lambda'_{p+1} = 0$. Together with $k = \lambda'_1 = d_1 = \dim\operatorname{null}N$ for the number of chains, this recovers $\lambda$ from the null-space tower by pure arithmetic.
+> with the convention $\mu'_{p+1} = 0$. Together with $k = \mu'_1 = d_1 = \dim\operatorname{null}N$ for the number of chains, this recovers $\mu$ from the null-space tower by pure arithmetic.
 
 {: .prompt-tip }
 > Since $\\#\\{i : m_i = j\\} \ge 0$, the identity above says the sequence $(d_j)$ is **concave**:
 >
 > $$2d_j \ge d_{j-1} + d_{j+1}.$$
 >
-> Equivalently, its increments $\lambda'_j$ are non-increasing — the picture's "rows widen as you descend". A hand-computed tower violating this has an error in the tower itself, and it is worth checking before running the algorithm rather than after.
+> Equivalently, its increments $\mu'_j$ are non-increasing — the picture's "rows widen as you descend". A hand-computed tower violating this has an error in the tower itself, and it is worth checking before running the algorithm rather than after.
 
 {: .prompt-tip }
 > Any two Jordan bases of $N$ give matrices that differ only by a permutation of the diagonal blocks.
@@ -136,7 +125,7 @@ $$N = \begin{pmatrix}0&1&0&0&0\\ &0&1&0&0\\ & &0&1&0\\ & & &0&1\\ & & & &0\end{p
 
 Then $N^4$ has a single $1$ in the top-right corner, and $N^5 = 0$.
 
-In the bottom-to-top ordering $u_1 = N^{m-1}v, \dots, u_m = v$, we have $Nu_j = u_{j-1}$, hence $N^ru_j = u_{j-r}$, with $u_i := 0$ for $i \le 0$. Column $j$ therefore has its $1$ in row $j - r$, which is the $r$-th superdiagonal. The entries with $j - r \le 0$ fall off the top, leaving $m - r$ ones.
+In the bottom-to-top ordering $u_1 = N^{m-1}v, \dots, u_m = v$, we have $Nu_j = u_{j-1}$, hence $N^ru_j = u_{j-r}$, with $u_i := 0$ for $i \le 0$. Column $j$ therefore has its $1$ in row $j - r$, which is the $r$-th superdiagonal. The entries with $j - r \le 0$ fall off the top, leaving $\max(0, m - r)$ ones.
 
 The columns that vanish are $j \le r$, so
 
@@ -165,9 +154,9 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > $$\{0\} = K_0 \subsetneq K_1 \subsetneq \dots \subsetneq K_p = V, \qquad K_j := \operatorname{null}N^j, \quad d_j := \dim K_j,$$
 >
-> where $p$ is the smallest exponent with $N^p = 0$. Keep an explicit basis of each $K_j$. Write
+> where $p$ is the smallest exponent with $N^p = 0$. Keep an explicit basis of each $K_j$.
 >
-> Recall $\lambda'_j = d_j - d_{j-1}$, the width of row $j$ from the Jordan Basis section. The algorithm reconstructs the diagram row by row from the bottom up, so this is the number of vectors it must produce at level $j$.
+> Recall $$\mu'_j = d_j - d_{j-1}$$, the width of row $j$ from the Jordan Basis section. The algorithm reconstructs the diagram row by row from the bottom up, so this is the number of vectors it must produce at level $j$.
 >
 > **State carried between levels.** As the loop runs it carries a list $H_j$ of vectors sitting in $K_j$, pushed down from the level above. It also outputs a list $T_j$ of *new chain tops* at each level.
 >
@@ -187,7 +176,7 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > $$v,\; Nv,\; \dots,\; N^{j-1}v.$$
 >
-> Count check: $\lvert H_j \rvert + \lvert T_j \rvert = \delta_j$. Every vector of $H_j$ should survive as a pivot; if one doesn't, there is an arithmetic error upstream.
+> Count check: $\lvert H_j \rvert + \lvert T_j \rvert = \mu'_j$. Every vector of $H_j$ should survive as a pivot; if one doesn't, there is an arithmetic error upstream.
 >
 > **Step 2 (push down).** Set
 >
@@ -233,7 +222,7 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > Free consequence, useful for hand-checking: $\pi_j(H_j \cup T_j)$ is a basis and $\bar N_j$ is injective, so pushing down neither merges two chains nor loses one:
 >
-> $$\lvert H_{j-1}\rvert = \lvert H_j\rvert + \lvert T_j\rvert = \delta_j.$$
+> $$\lvert H_{j-1}\rvert = \lvert H_j\rvert + \lvert T_j\rvert = \mu'_j.$$
 >
 > **Chains have the advertised length.** Each $v \in T_j$ has $\pi_j(v) \neq 0$, i.e. $v \notin K_{j-1}$, so $N^{j-1}v \neq 0$ while $N^jv = 0$. Passing to the quotient is what rules out a chain dying early; plain linear independence would not.
 >
@@ -241,7 +230,7 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > **The counts.** Two facts combine. First, Step 1 makes $\pi_j(H_j \cup T_j)$ a basis of $K_j/K_{j-1}$, so the level is exactly as wide as the dimension jump:
 >
-> $$\lvert H_j \cup T_j\rvert = \dim\left(K_j/K_{j-1}\right) = \delta_j.$$
+> $$\lvert H_j \cup T_j\rvert = \dim\left(K_j/K_{j-1}\right) = \mu'_j.$$
 >
 > Second, each chain visits each level at most once. Let a chain have top $v \in T_i$, so $N^{i-1}v \neq 0$ and $N^iv = 0$. Its member $N^tv$ then satisfies
 >
@@ -249,13 +238,13 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > so $N^tv$ lies in $K_{i-t}$ but not in $K_{i-t-1}$, putting it at level $i-t$. As $t$ runs from $0$ to $i-1$ the level runs from $i$ down to $1$: one member at each level from $1$ to $i$, and nothing above level $i$. Step 2 files that member into $T_j$ if $j = i$ and into $H_j$ if $j < i$. Hence $H_j \cup T_j$ is in bijection with the chains of length $\ge j$, and
 >
-> $$\#\{\text{chains of length} \ge j\} = \delta_j.$$
+> $$\#\{\text{chains of length} \ge j\} = \mu'_j.$$
 >
 > Subtracting consecutive levels isolates the chains that stop at level $j$, which are exactly the ones born there, namely $T_j$:
 >
-> $$\lvert T_j\rvert = \#\{\text{chains of length } = j\} = \delta_j - \delta_{j+1} = 2d_j - d_{j-1} - d_{j+1},$$
+> $$\lvert T_j\rvert = \#\{\text{chains of length } = j\} = \mu'_j - \mu'_{j+1} = 2d_j - d_{j-1} - d_{j+1},$$
 >
-> with the convention $\delta_{p+1} = 0$.
+> with the convention $\mu'_{p+1} = 0$.
 >
 > The same subtraction reads as a statement about $\bar N_{j+1}$. Start from Step 2 one level up, which sets $H_j = N(H_{j+1} \cup T_{j+1})$. Pushing that definition through the commuting square gives
 >
@@ -263,7 +252,7 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > and by Step 1 at level $j+1$ the list inside the parentheses is a basis of $K_{j+1}/K_j$. An injective map carries a basis of its domain to a basis of its range, so
 >
-> $$\pi_j(H_j) \ \text{ is a basis of } \ \operatorname{range}\bar N_{j+1}, \qquad \dim\operatorname{range}\bar N_{j+1} = \delta_{j+1}.$$
+> $$\pi_j(H_j) \ \text{ is a basis of } \ \operatorname{range}\bar N_{j+1}, \qquad \dim\operatorname{range}\bar N_{j+1} = \mu'_{j+1}.$$
 >
 > Now recall the general principle: if a basis of a subspace $W' \subseteq W$ is extended to a basis of $W$, the added vectors represent a basis of $W/W'$. Step 1 at level $j$ performs exactly such an extension, with
 >
@@ -273,7 +262,7 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > $$W/W' = \big(K_j/K_{j-1}\big)\big/\operatorname{range}\bar N_{j+1} = \operatorname{coker}\bar N_{j+1},$$
 >
-> of dimension $\delta_j - \delta_{j+1} = \lvert T_j\rvert$. Level $j+1$ sends $\delta_{j+1}$ independent directions down into level $j$, level $j$ has $\delta_j$ directions to fill, and the new tops fill the shortfall. The cokernel is the part of level $j$ that nothing above it reaches. At $j = p$ there is no level above, so read $\operatorname{range}\bar N_{p+1} = \{0\}$, consistent with $\delta_{p+1} = 0$.
+> of dimension $$\mu'_j - \mu'_{j+1} = \lvert T_j\rvert$$. Level $j+1$ sends $$\mu'_{j+1}$$ independent directions down into level $j$, level $j$ has $$\mu'_j$$ directions to fill, and the new tops fill the shortfall. The cokernel is the part of level $j$ that nothing above it reaches. At $j = p$ there is no level above, so read $\operatorname{range}\bar N_{p+1} = \{0\}$, consistent with $$\mu'_{p+1} = 0$$.
 
 {: .prompt-warning }
 > Do not run this bottom-up. Most vectors of $\operatorname{null}N$ are not in $\operatorname{range}N$, so choosing a basis of $\operatorname{null}N$ first and hunting for preimages typically fails. Top-down, low-level vectors are *manufactured* by pushing down, never guessed.
@@ -281,9 +270,9 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 {: .prompt-tip }
 > *The algorithm's count is the diagram's count.*
 >
-> Level $j$ of the algorithm carries $\lvert H_j \cup T_j\rvert = d_j - d_{j-1}$ vectors, and row $j$ of the diagram has width $\lambda'_j = d_j - d_{j-1}$. They agree because both are the same dimension jump, computed once from the null-space tower and once from the chain lengths. Neither derivation assumed the other.
+> Level $j$ of the algorithm carries $\lvert H_j \cup T_j\rvert = d_j - d_{j-1}$ vectors, and row $j$ of the diagram has width $\mu'_j = d_j - d_{j-1}$. They agree because both are the same dimension jump, computed once from the null-space tower and once from the chain lengths. Neither derivation assumed the other.
 >
-> The monotonicity $\lambda'_p \le \dots \le \lambda'_1$ then has two independent proofs: rows widen as you descend, and $\bar N_{j}$ is injective.
+> The monotonicity $$\mu'_p \le \dots \le \mu'_1$$ then has two independent proofs: rows widen as you descend, and $\bar N_{j}$ is injective.
 
 **Worked example**
 
@@ -293,7 +282,7 @@ $$1 \mapsto 0,\quad x \mapsto 1,\quad y \mapsto 0,\quad x^2 \mapsto 2x,\quad xy 
 
 Precompute: $\operatorname{null}N = \operatorname{span}(1, y)$, $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$, $\operatorname{null}N^3 = V$. So $p = 3$ and $(d_0,d_1,d_2,d_3) = (0,2,4,5)$.
 
-So $\lambda' = (d_1 - d_0,\; d_2 - d_1,\; d_3 - d_2) = (2, 2, 1)$, whose conjugate is $\lambda = (3,2)$: one chain of length $3$ and one of length $2$. The algorithm below recovers exactly this, but the shape is already determined by the null-space tower alone.
+So $\mu' = (d_1 - d_0,\; d_2 - d_1,\; d_3 - d_2) = (2, 2, 1)$, whose conjugate is $\mu = (3,2)$: one chain of length $3$ and one of length $2$. The algorithm above recovers exactly this, but the shape is already determined by the null-space tower alone.
 
 | $j$ | $H_j$ (pushed down) | need $d_j - d_{j-1}$ | new tops $T_j$ |
 | --- | ------------------- | -------------------- | -------------- |
@@ -326,7 +315,7 @@ giving $\mathcal{M}(N) = J_3(0)\oplus J_2(0)$. Checks: $\lvert T_3 \rvert = 1 = 
 >
 > $$T_2 = \{xy\},$$
 >
-> which matches what was found by hand. The count check holds: $\lvert H_2\rvert + \lvert T_2\rvert = 1 + 1 = 2 = \delta_2$.
+> which matches what was found by hand. The count check holds: $\lvert H_2\rvert + \lvert T_2\rvert = 1 + 1 = 2 = \mu'_2$.
 
 {: .prompt-tip }
 > - Full reduced echelon form is unnecessary. Forward elimination to echelon form already reveals the pivot positions, which is all you need.
@@ -366,12 +355,12 @@ So the constraint is precisely what's needed at the *bottom* of each chain, and 
 
 $$\{S : SN = NS\} \;\cong\; \operatorname{null}N^{m_1} \times \dots \times \operatorname{null}N^{m_k}, \qquad S \mapsto (Sv_1,\dots,Sv_k),$$
 
-$$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j) = \sum_j \delta_j^2.$$
+$$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j) = \sum_j \mu'_{j^2}.$$
 
 {: .prompt-tip }
 > The same box counting evaluates the double sum. Writing $\min(m_i,m_j) = \\#\\{l : l \le m_i \text{ and } l \le m_j\\}$ turns it into a count of triples $(i,j,l)$:
 >
-> $$\sum_{i,j}\min(m_i,m_j) \;=\; \sum_{l \ge 1}\\#\\{i : m_i \ge l\\}\cdot\\#\\{j : m_j \ge l\\} \;=\; \sum_{l\ge1}\left(\lambda'_l\right)^2 ,$$
+> $$\sum_{i,j}\min(m_i,m_j) \;=\; \sum_{l \ge 1}\#\{i : m_i \ge l\}\cdot\#\{j : m_j \ge l\} \;=\; \sum_{l\ge1}\left(\mu'_l\right)^2 ,$$
 >
 > the sum of squares of the row widths. So the commutant is large exactly when the diagram is short and wide — many chains of similar length — and smallest, of dimension $\dim V$, when the diagram is a single column.
 
@@ -422,7 +411,7 @@ $$S(xy) = 2x, \quad S(y) = N(2x) = 2.$$
 
 Spot-check: $SN(x^2) = S(2x) = y$ and $NS(x^2) = N(xy) = y$; also $SN(xy) = S(y) = 2$ and $NS(xy) = N(2x) = 2$.
 
-Dimension check: $\dim\operatorname{null}N^3 + \dim\operatorname{null}N^2 = 5 + 4 = 9$, agreeing with $\sum_{i,j}\min(m_i,m_j) = 3+2+2+2$ and with $\sum_l(\lambda'_l)^2 = 4 + 4 + 1$, out of $25$ for all of $\mathcal{L}(V)$.
+Dimension check: $\dim\operatorname{null}N^3 + \dim\operatorname{null}N^2 = 5 + 4 = 9$, agreeing with $\sum_{i,j}\min(m_i,m_j) = 3+2+2+2$ and with $\sum_l(\mu'_l)^2 = 4 + 4 + 1$, out of $25$ for all of $\mathcal{L}(V)$.
 
 The isomorphism also handles the **basis** of the commutant for free: run over a basis of $\operatorname{null}N^{m_i}$ for one index with the other $w$'s set to $0$. Here that gives $5 + 4 = 9$ explicit commuting operators spanning the commutant.
 
@@ -535,11 +524,11 @@ $$S = \begin{pmatrix} c&b&a\\ 0&c&b\\ 0&0&c\end{pmatrix} = cI + bN + aN^2.$$
 {: .prompt-tip }
 > *Consistency with the block formula.*
 >
-> The Non-nilpotent Block section gives $A^r = \sum_{t}\binom{r}{t}\lambda^{r-t}N^t$ for $r \ge 0$. Read that at $r = -1$, where $\binom{-1}{t} = (-1)^t$:
+> The Non-nilpotent Block section gives $A^r = \sum_{t}\binom{r}{t}\mu^{r-t}N^t$ for $r \ge 0$. Read that at $r = -1$, where $\binom{-1}{t} = (-1)^t$:
 >
 > $$A^{-1} = \sum_{t=0}^{m-1}(-1)^t\lambda^{-1-t}N^t,$$
 >
-> which is the formula above with $c = \lambda$. So the upper-triangular Toeplitz picture extends to negative exponents, and the geometric series is what proves the case $r = -1$.
+> which is the formula above with $c = \mu$. So the upper-triangular Toeplitz picture extends to negative exponents, and the geometric series is what proves the case $r = -1$.
 
 {: .prompt-tip }
 > *The same proof gives more.* If $S$ is invertible, $N$ is nilpotent, and $SN = NS$, then $S + N$ is invertible with
