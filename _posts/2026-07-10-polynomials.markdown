@@ -48,23 +48,23 @@ mermaid: true
 {: .prompt-info }
 > _Bézout identity_
 >
-> Suppose $ p, q \in \mathcal{P}(\mathbf{C}) $ are nonconstant polynomials with no zeros in common. Let $ m = \deg p $ and $ n = \deg q $. There exist $$ r \in \mathcal{P}_{n - 1}(\mathbf{C}) $$ and $$ s \in \mathcal{P}_{m - 1}(\mathbf{C}) $$ such that
+> Suppose $ p, q \in \mathcal{P}(\mathbb{C}) $ are nonconstant polynomials with no zeros in common. Let $ m = \deg p $ and $ n = \deg q $. There exist $$ r \in \mathcal{P}_{n - 1}(\mathbb{C}) $$ and $$ s \in \mathcal{P}_{m - 1}(\mathbb{C}) $$ such that
 >
 > $$ rp + sq = 1.$$
 
 {: .prompt-proof }
-> Define $$ T: \mathcal{P}_{n - 1}(\mathbf{C}) \times \mathcal{P}_{m - 1}(\mathbf{C}) \to \mathcal{P}_{m + n - 1}(\mathbf{C}) $$ by
+> Define $$ T: \mathcal{P}_{n - 1}(\mathbb{C}) \times \mathcal{P}_{m - 1}(\mathbb{C}) \to \mathcal{P}_{m + n - 1}(\mathbb{C}) $$ by
 >
 > $$ T(r,s) = rp + sq $$.
 >
 > $T$ is a *square* map:
 >
 > $$
-> \dim\big(\mathcal{P}_{n-1}(\mathbf{C}) \times \mathcal{P}_{m-1}(\mathbf{C})\big) = n + m,
+> \dim\big(\mathcal{P}_{n-1}(\mathbb{C}) \times \mathcal{P}_{m-1}(\mathbb{C})\big) = n + m,
 > $$
 >
 > $$
-> \dim \mathcal{P}_{m+n-1}(\mathbf{C}) = m+n.
+> \dim \mathcal{P}_{m+n-1}(\mathbb{C}) = m+n.
 > $$
 >
 > Equal. And $T$ is linear: $T(r,s) = rp + sq$ is linear in $(r,s)$ since $p, q$ are fixed.
@@ -75,7 +75,7 @@ mermaid: true
 > rp + sq = 0, \qquad\text{so}\qquad rp = -sq. \tag{$\ast$}
 > $$
 >
-> We want to force $r = 0$ and $s = 0$. The **no-common-zeros** hypothesis enters here, through unique factorization / the divisibility structure of $\mathbf{C}[z]$.
+> We want to force $r = 0$ and $s = 0$. The **no-common-zeros** hypothesis enters here, through unique factorization / the divisibility structure of $\mathbb{C}[z]$.
 >
 > From $(\ast)$, $q$ divides $rp$. Now list the zeros of $q$: by the FTA, $q$ factors as $q(z) = c\prod_{i}(z - \mu_i)$ over its roots $\mu_i$ (with multiplicity). Each root $\mu_i$ of $q$ is a zero of the left side $rp$, hence a zero of $r$ or of $p$. But $p$ and $q$ share **no** zeros, so $\mu_i$ is *not* a zero of $p$ — therefore $\mu_i$ must be a zero of $r$, and by matching multiplicities (a root of $q$ of multiplicity $t$ is not absorbed by $p$ at all, so all $t$ copies must come from $r$), the **full factor** $q$ divides $r$:
 >
@@ -83,7 +83,7 @@ mermaid: true
 > q \mid r.
 > $$
 >
-> But now degrees: $r \in \mathcal{P}_{n-1}(\mathbf{C})$ so $\deg r \le n - 1 < n = \deg q$. The only multiple of $q$ with degree below $\deg q$ is the zero polynomial. Hence
+> But now degrees: $r \in \mathcal{P}_{n-1}(\mathbb{C})$ so $\deg r \le n - 1 < n = \deg q$. The only multiple of $q$ with degree below $\deg q$ is the zero polynomial. Hence
 >
 > $$
 > r = 0.
@@ -93,14 +93,14 @@ mermaid: true
 >
 > It's easy to show $T$ is invertible since $T$ is an operator.
 >
-> The constant polynomial $1$ lives in the codomain $$ \mathcal{P}_{m+n-1}(\mathbf{C}) $$ (its degree $0$ is $\le m + n - 1$, using that $p, q$ nonconstant gives $m, n \ge 1$, so $m + n - 1 \ge 1 \ge 0$). By surjectivity from (b), $1$ is hit: there exist $$ r \in \mathcal{P}_{n-1}(\mathbf{C}) $$ and $s \in \mathcal{P}_{m-1}(\mathbf{C})$ with
+> The constant polynomial $1$ lives in the codomain $$ \mathcal{P}_{m+n-1}(\mathbb{C}) $$ (its degree $0$ is $\le m + n - 1$, using that $p, q$ nonconstant gives $m, n \ge 1$, so $m + n - 1 \ge 1 \ge 0$). By surjectivity from (b), $1$ is hit: there exist $$ r \in \mathcal{P}_{n-1}(\mathbb{C}) $$ and $s \in \mathcal{P}_{m-1}(\mathbb{C})$ with
 >
 > $$
 > T(r,s) = rp + sq = 1. \qquad\blacksquare
 > $$
 
 {: .prompt-tip }
-> "no common zeros" is the $\mathbf{C}[z]$-analogue of "coprime," and $rp + sq = 1$ is exactly the statement that the gcd is a unit.
+> "no common zeros" is the $\mathbb{C}[z]$-analogue of "coprime," and $rp + sq = 1$ is exactly the statement that the gcd is a unit.
 
 {: .prompt-info }
 > Suppose $ p \in \mathcal{P}(\mathbb{C}) $ has degree $ m $.
@@ -197,7 +197,7 @@ mermaid: true
 >
 > Since each list extends the previous one, the chain is increasing:
 >
-> $$U_0 \subseteq U_1 \subseteq U_2 \subseteq \cdots$$
+> $$U_0 \subseteq U_1 \subseteq U_2 \subseteq \dots$$
 >
 > The goal is: $U_m = U_{n-1}$ for all $m \geq n-1$.
 >
@@ -207,11 +207,11 @@ mermaid: true
 >
 > $U_k = U_{k-1}$ says $T^k v \in U_{k-1} = \operatorname{span}(v, Tv, \dots, T^{k-1}v)$, so write
 >
-> $$T^k v = a_0 v + a_1 Tv + \cdots + a_{k-1}T^{k-1}v.$$
+> $$T^k v = a_0 v + a_1 Tv + \dots + a_{k-1}T^{k-1}v.$$
 >
 > Apply $T$ to both sides:
 >
-> $$T^{k+1}v = a_0 Tv + a_1 T^2 v + \cdots + a_{k-1}T^{k}v \in U_k.$$
+> $$T^{k+1}v = a_0 Tv + a_1 T^2 v + \dots + a_{k-1}T^{k}v \in U_k.$$
 >
 > So the one new vector in the list for $U_{k+1}$ already lies in $U_k$, giving $U_{k+1} \subseteq U_k$, hence $U_{k+1} = U_k$. Induction extends this to all $m \geq k$. $\square$
 >
@@ -242,7 +242,7 @@ mermaid: true
 > $ p_v $ is the minimal polynomial of the smallets $T$-invariant subspace $U$ containing $v$, and $ \deg p_v = k = \dim U $.
 
 {: .prompt-proof }
-> In Claim 2, $T^kv = \sum_{j<k} a_j T^j v$, rearranges to $q(T)v = 0$ with $q(z) = z^k - a_{k-1}z^{k-1} - \cdots - a_0$ monic of degree $k$ — and minimality of $k$ makes $q$ the least-degree monic polynomial with $q(T)v = 0$.
+> In Claim 2, $T^kv = \sum_{j<k} a_j T^j v$, rearranges to $q(T)v = 0$ with $q(z) = z^k - a_{k-1}z^{k-1} - \dots - a_0$ monic of degree $k$ — and minimality of $k$ makes $q$ the least-degree monic polynomial with $q(T)v = 0$.
 
 {: .prompt-tip }
 > Suppose $ V $ is finite-dimensional, $ T \in \mathcal{L}(V) $, $ q \in \mathcal{P}(\mathbf{F}) $ and $ q(T) = 0 $, then
@@ -263,16 +263,16 @@ so $p_u \mid p_w r$, and coprimality gives $p_u \mid r$. Symmetrically $p_w \mid
 > There exists $v \in V$ with $p_v = p$.
 
 {: .prompt-proof }
-> Factor $p = q_1^{m_1}\cdots q_k^{m_k}$ into powers of distinct monic irreducibles. Fix $i$.
+> Factor $p = q_1^{m_1}\dots q_k^{m_k}$ into powers of distinct monic irreducibles. Fix $i$.
 >
 > Since $\deg(p/q_i) < \deg p$, minimality of $p$ gives $(p/q_i)(T) \neq 0$, so choose $u_i$ with $(p/q_i)(T)u_i \neq 0$. Set
 $$w_i = \big(p/q_i^{m_i}\big)(T)\,u_i.$$
 >
 > Then $q_i^{m_i}(T)w_i = p(T)u_i = 0$, so $p_{w_i} \mid q_i^{m_i}$; and $q_i^{m_i-1}(T)w_i = (p/q_i)(T)u_i \neq 0$, so $p_{w_i} \nmid q_i^{m_i-1}$. As $q_i$ is irreducible, the only possibility is $p_{w_i} = q_i^{m_i}$.
 >
-> The polynomials $q_1^{m_1},\dots,q_k^{m_k}$ are pairwise coprime, so $v = w_1 + \cdots + w_k$ gives
+> The polynomials $q_1^{m_1},\dots,q_k^{m_k}$ are pairwise coprime, so $v = w_1 + \dots + w_k$ gives
 >
-> $$p_v = p_{w_1}\cdots p_{w_k} = q_1^{m_1}\cdots q_k^{m_k} = p. \qquad \blacksquare$$
+> $$p_v = p_{w_1}\dots p_{w_k} = q_1^{m_1}\dots q_k^{m_k} = p. \qquad \blacksquare$$
 
 {: .prompt-tip }
 > **Over $\mathbb{C}$ this is the Jordan statement in disguise.** There $q_i = z - \lambda_i$, and $\deg p = \sum m_i$ while $n = \sum \dim G(\lambda_i, T)$. Since always $m_i \le \dim G(\lambda_i,T)$, the hypothesis $\deg p = n$ forces $m_i = \dim G(\lambda_i,T)$ for every $i$ — that is, **one Jordan block per eigenvalue**. The $w_i$ above is precisely a vector at the *top* of the $i$-th block's chain, and $v$ is their sum.
@@ -281,4 +281,4 @@ $$w_i = \big(p/q_i^{m_i}\big)(T)\,u_i.$$
 > If $p_v = p$ and $\deg p = n$, then $v, Tv, \dots, T^{n-1}v$ is a basis.
 
 {: .prompt-proof }
-> Suppose $a_0 v + a_1 Tv + \cdots + a_{n-1}T^{n-1}v = 0$ with the $a_j$ not all zero. Then $q(z) = a_0 + a_1 z + \cdots + a_{n-1}z^{n-1}$ is a nonzero polynomial with $q(T)v = 0$, so $p_v \mid q$ — impossible, since $\deg q < n = \deg p_v$. So the list is linearly independent, and $n$ independent vectors in an $n$-dimensional space form a basis. $\square$
+> Suppose $a_0 v + a_1 Tv + \dots + a_{n-1}T^{n-1}v = 0$ with the $a_j$ not all zero. Then $q(z) = a_0 + a_1 z + \dots + a_{n-1}z^{n-1}$ is a nonzero polynomial with $q(T)v = 0$, so $p_v \mid q$ — impossible, since $\deg q < n = \deg p_v$. So the list is linearly independent, and $n$ independent vectors in an $n$-dimensional space form a basis. $\square$

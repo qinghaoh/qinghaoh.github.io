@@ -74,8 +74,8 @@ mermaid: true
 {: .prompt-info }
 > Suppose $ v_1, \dots, v_n $ is a basis of $V$ and $ \varphi_1, \dots, \varphi_n $ is the corresponding dual basis of $V'$.
 >
-> * vector: $ v = \varphi_1(v)\,v_1 + \cdots + \varphi_n(v)\,v_n \in V $
-> * covector: $ \psi = \psi(v_1)\,\varphi_1 + \cdots + \psi(v_n)\,\varphi_n \in V' $
+> * vector: $ v = \varphi_1(v)\,v_1 + \dots + \varphi_n(v)\,v_n \in V $
+> * covector: $ \psi = \psi(v_1)\,\varphi_1 + \dots + \psi(v_n)\,\varphi_n \in V' $
 >
 > The two bases are *coordinate-readers for each other.*
 
@@ -175,7 +175,7 @@ mermaid: true
 > $\blacksquare$
 
 {: .prompt-info }
-> Suppose $ V $ is finite-dimensional and $ \varphi_1, \dots, \varphi_m \in V' $. Let $ N = \operatorname{null}\varphi_1 \cap \cdots \cap \operatorname{null}\varphi_m \subseteq V$, $U = \operatorname{span}(\varphi_1,\dots,\varphi_m) \subseteq V'$. Then $ U = N^0$.
+> Suppose $ V $ is finite-dimensional and $ \varphi_1, \dots, \varphi_m \in V' $. Let $ N = \operatorname{null}\varphi_1 \cap \dots \cap \operatorname{null}\varphi_m \subseteq V$, $U = \operatorname{span}(\varphi_1,\dots,\varphi_m) \subseteq V'$. Then $ U = N^0$.
 
 {: .prompt-proof }
 > $N$ is the **pre-annihilator** of $U$ — the annihilator of $U$ taken back in $V$ under $V \cong V''$:
@@ -188,7 +188,7 @@ mermaid: true
 
 Given $v_1,\dots,v_m \in V$, define
 
-$$S: \mathbb{F}^m \to V, \qquad S(a_1,\dots,a_m) = a_1 v_1 + \cdots + a_m v_m \quad (\text{so } e_i \mapsto v_i).$$
+$$S: \mathbf{F}^m \to V, \qquad S(a_1,\dots,a_m) = a_1 v_1 + \dots + a_m v_m \quad (\text{so } e_i \mapsto v_i).$$
 
 Under this re-encoding:
 
@@ -198,7 +198,7 @@ Under this re-encoding:
 
 Both equivalences hold in **any** dimension — no finiteness needed.
 
-The dual map $S': V' \to (\mathbb{F}^m)' \cong \mathbb{F}^m$ is given by $S'(\varphi) = \varphi \circ S$, so its $i$-th coordinate is $(\varphi \circ S)(e_i) = \varphi(S e_i) = \varphi(v_i)$. That is,
+The dual map $S': V' \to (\mathbf{F}^m)' \cong \mathbf{F}^m$ is given by $S'(\varphi) = \varphi \circ S$, so its $i$-th coordinate is $(\varphi \circ S)(e_i) = \varphi(S e_i) = \varphi(v_i)$. That is,
 
 $$S'(\varphi) = \big(\varphi(v_1),\dots,\varphi(v_m)\big).$$
 
@@ -218,9 +218,9 @@ Now suppose $V$ is finite-dimensional, so the **dual-map theorem** applies: $T$ 
 
 The identical construction, with the base space changed from $V$ to $V'$. The list $\varphi_1,\dots,\varphi_m$ now lives in $V'$, so its encoding map is
 
-$$ R: \mathbb{F}^m \to V', \quad e_i \mapsto \varphi_i. $$
+$$ R: \mathbf{F}^m \to V', \quad e_i \mapsto \varphi_i. $$
 
-Its transpose is $R': V'' \to (\mathbb{F}^m)' \cong \mathbb{F}^m$. Under the canonical isomorphism $V \cong V''$, the element of $V''$ corresponding to $v \in V$ is evaluation-at-$v$, written $\hat v$ with $\hat v(\varphi) = \varphi(v)$; feeding that to $R'$ gives
+Its transpose is $R': V'' \to (\mathbf{F}^m)' \cong \mathbf{F}^m$. Under the canonical isomorphism $V \cong V''$, the element of $V''$ corresponding to $v \in V$ is evaluation-at-$v$, written $\hat v$ with $\hat v(\varphi) = \varphi(v)$; feeding that to $R'$ gives
 
 $$ R'(\hat v) = (\varphi_1(v),\dots,\varphi_m(v)). $$
 
@@ -235,7 +235,7 @@ $$ R'(\hat v) = (\varphi_1(v),\dots,\varphi_m(v)). $$
 
 The null space of $R'$ is the common null space of the functionals:
 
-$$ \operatorname{null} R' = \{v : \varphi_i(v) = 0 \ \forall i\} = \operatorname{null}\varphi_1 \cap \cdots \cap \operatorname{null}\varphi_m. $$
+$$ \operatorname{null} R' = \{v : \varphi_i(v) = 0 \ \forall i\} = \operatorname{null}\varphi_1 \cap \dots \cap \operatorname{null}\varphi_m. $$
 
 By the dual-map identity $\operatorname{null} T' = (\operatorname{range} T)^0$ applied to $T = R$, and since $\operatorname{range} R = \operatorname{span}(\varphi_i)$,
 
@@ -243,7 +243,7 @@ $$\operatorname{null}(R') = (\operatorname{range} R)^0 = \big(\operatorname{span
 
 Annihilating both sides yields
 
-$$\operatorname{span}(\varphi_i) = \big(\operatorname{null}\varphi_1 \cap \cdots \cap \operatorname{null}\varphi_m\big)^0.$$
+$$\operatorname{span}(\varphi_i) = \big(\operatorname{null}\varphi_1 \cap \dots \cap \operatorname{null}\varphi_m\big)^0.$$
 
 {: .prompt-info }
 > Suppose $V$ is finite-dimensional and $ \varphi_1, \dots, \varphi_n $ is a basis of $V'$. Then there exists a basis of $V$  whose dual basis is $ \varphi_1, \dots, \varphi_n $.
@@ -252,8 +252,8 @@ $$\operatorname{span}(\varphi_i) = \big(\operatorname{null}\varphi_1 \cap \cdots
 > Define
 >
 > $$
-> \Gamma:V\to\mathbb{F}^n,\qquad \Gamma(v)=\big(\varphi_1(v),\dots,\varphi_n(v)\big).
+> \Gamma:V\to\mathbf{F}^n,\qquad \Gamma(v)=\big(\varphi_1(v),\dots,\varphi_n(v)\big).
 > $$
 >
-> This is an isomorphism. Now set $v_k=\Gamma^{-1}(e_k)$, where $e_1,\dots,e_n$ is the standard basis of $\mathbb{F}^n$. These form a basis of $V$, and $\Gamma(v_k)=e_k$ unpacks to $\varphi_j(v_k)=\delta_{jk}$, as required.
+> This is an isomorphism. Now set $v_k=\Gamma^{-1}(e_k)$, where $e_1,\dots,e_n$ is the standard basis of $\mathbf{F}^n$. These form a basis of $V$, and $\Gamma(v_k)=e_k$ unpacks to $\varphi_j(v_k)=\delta_{jk}$, as required.
 > $\blacksquare$

@@ -152,7 +152,7 @@ $$
 Therefore,
 
 $$
-p(2) = p(3) = \cdots = 0.5
+p(2) = p(3) = \dots = 0.5
 $$
 
 Q.E.D.

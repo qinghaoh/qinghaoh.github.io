@@ -105,7 +105,7 @@ $$
 Evaluate these remainders:
 
 $$
-1 \bmod k, 11 \bmod k, \cdots, \underbrace{11\cdots1}_{k} \bmod k
+1 \bmod k, 11 \bmod k, \dots, \underbrace{11\dots1}_{k} \bmod k
 $$
 
 * If any remainder is 0, then the smallest number of them is the result

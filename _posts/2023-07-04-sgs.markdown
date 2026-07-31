@@ -1359,7 +1359,7 @@ $$
 由[Cayley–Hamilton 定理](https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem)，矩阵 $P$ 满足其特征多项式，从而存在 $L<\infty$ 和常数 $c_1,\dots,c_L$，使得对所有 $n\ge L$，$p_n$ 满足如下线性递推关系：
 
 $$
-p_n = c_1 p_{n-1} + \cdots + c_L p_{n-L}
+p_n = c_1 p_{n-1} + \dots + c_L p_{n-L}
 \quad (n \ge L)
 $$
 
@@ -1463,7 +1463,7 @@ $$
 > 0
 $$
 
-（注意 $\mathbb{P}(E_n^c)>0$，例如当 $X_1=\cdots=X_n=2$ 时，任意非空子集和都是偶数，不可能等于 $13$，所以 $E_n^c$ 必然发生），
+（注意 $\mathbb{P}(E_n^c)>0$，例如当 $X_1=\dots=X_n=2$ 时，任意非空子集和都是偶数，不可能等于 $13$，所以 $E_n^c$ 必然发生），
 
 因此
 
@@ -1585,13 +1585,13 @@ $$
 定义在总和不超过 $13$ 的约束下**最多可取的张数**
 
 $$
-K:=\max\{k\in\{1,2,3,4\}:A_1+\cdots+A_k\le 13\}
+K:=\max\{k\in\{1,2,3,4\}:A_1+\dots+A_k\le 13\}
 $$
 
 显然
 
 $$
-\mathbb P(K\ge k)=\mathbb P(A_1+\cdots+A_k\le 13)
+\mathbb P(K\ge k)=\mathbb P(A_1+\dots+A_k\le 13)
 $$
 
 并且
@@ -1609,7 +1609,7 @@ $$
 对任意大小为 $4$ 的多重集合
 
 $$
-M=\{1^{m_1}2^{m_2}\cdots 13^{m_{13}}\},\qquad \sum_{j=1}^{13}m_j=4
+M=\{1^{m_1}2^{m_2}\dots 13^{m_{13}}\},\qquad \sum_{j=1}^{13}m_j=4
 $$
 
 其中 $m_j$ 表示点数 $j$ 在多重集合中的**重数**（出现次数）。定义其对应单项式
@@ -1658,18 +1658,18 @@ $$
 $$
 \#\{(x_1,x_2,x_3,x_4):\mathcal P\}
 =
-\Big(\mathrm{Lab}_4(U_{\mathcal P})\Big)\Big|_{y_1=\cdots=y_{13}=1}
+\Big(\mathrm{Lab}_4(U_{\mathcal P})\Big)\Big|_{y_1=\dots=y_{13}=1}
 $$
 
 #### 构造 $K\ge k$ 的多重集合枚举多项式
 
 **按第 $k$ 小值分层**
 
-事件 $K\ge k$ 等价于 $A_1+A_2+\cdots+A_k\le 13$，这仅依赖多重集合结构。
+事件 $K\ge k$ 等价于 $A_1+A_2+\dots+A_k\le 13$，这仅依赖多重集合结构。
 
 按第 $k$ 小值 $A_k=c$ 进行分层。对于固定的 $c\in\{1,2,\dots,13\}$：
 
-- 前 $k$ 张牌满足 $A_1\le A_2\le \cdots \le A_k = c$，即都取自 $\{1,\dots,c\}$ 且最大值恰为 $c$
+- 前 $k$ 张牌满足 $A_1\le A_2\le \dots \le A_k = c$，即都取自 $\{1,\dots,c\}$ 且最大值恰为 $c$
 - 第 $k$ 张牌之后的牌（若有）满足 $\ge c$
 
 **生成函数构造**
@@ -1743,7 +1743,7 @@ $$
 $$
 \#(K\ge k)
 =
-\Big(\mathrm{Lab}_4(U_{\ge k})\Big)\Big|_{y_1=\cdots=y_{13}=1}
+\Big(\mathrm{Lab}_4(U_{\ge k})\Big)\Big|_{y_1=\dots=y_{13}=1}
 $$
 
 #### 代码及计算结果
@@ -2333,7 +2333,7 @@ $$
 令 $M_n=M_n^{\min}$，并约定若无法凑出 $13$ 则取 $M_n=0$。则序列 $\mathbb E[M_n]$ 是单峰的。更具体地，存在某个 $n^\*$ 使得
 
 $$
-\mathbb E[M_1]\le\cdots\le \mathbb E[M_{n^{*}}]\ge \mathbb E[M_{n^{*}+1}]\ge\cdots
+\mathbb E[M_1]\le\dots\le \mathbb E[M_{n^{*}}]\ge \mathbb E[M_{n^{*}+1}]\ge\dots
 $$
 
 并且在本文参数下峰值出现在 $n^\*=7$

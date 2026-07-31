@@ -25,11 +25,11 @@ Accordingly, we build one infinite list of vectors $v_1, v_2, \dots$ in $\mathbf
 
 Before constructing anything, let's record exactly what we must verify. For scalars $a_1, \dots, a_m$,
 
-$$a_1(v_1 + U) + \cdots + a_m(v_m + U) = (a_1 v_1 + \cdots + a_m v_m) + U,$$
+$$a_1(v_1 + U) + \dots + a_m(v_m + U) = (a_1 v_1 + \dots + a_m v_m) + U,$$
 
 and a coset $x + U$ is the zero element of $\mathbf{F}^\infty/U$ precisely when $x \in U$. Therefore
 
-$$v_1 + U, \dots, v_m + U \text{ are linearly independent} \iff \Big(\, a_1 v_1 + \cdots + a_m v_m \in U \ \Rightarrow\ a_1 = \cdots = a_m = 0 \,\Big). \tag{$\ast$}$$
+$$v_1 + U, \dots, v_m + U \text{ are linearly independent} \iff \Big(\, a_1 v_1 + \dots + a_m v_m \in U \ \Rightarrow\ a_1 = \dots = a_m = 0 \,\Big). \tag{$\ast$}$$
 
 Since $U$ is the set of sequences with only finitely many nonzero entries, the right-hand side says: *no nontrivial linear combination of the $v_j$ is finitely supported.* That is the property our vectors must have.
 
@@ -53,9 +53,9 @@ Each $v_j$ has infinitely many nonzero entries (one for each element of the infi
 
 Fix any $m$, and suppose some combination lies in $U$:
 
-$$w := a_1 v_1 + a_2 v_2 + \cdots + a_m v_m \in U.$$
+$$w := a_1 v_1 + a_2 v_2 + \dots + a_m v_m \in U.$$
 
-Here $w$ is itself a sequence in $\mathbf{F}^\infty$; write $w_n$ for its entry in slot $n$, so $w_n = a_1 (v_1)_n + \cdots + a_m (v_m)_n$.
+Here $w$ is itself a sequence in $\mathbf{F}^\infty$; write $w_n$ for its entry in slot $n$, so $w_n = a_1 (v_1)_n + \dots + a_m (v_m)_n$.
 
 **Each block carries a single coefficient.** Fix $j$ with $1 \le j \le m$ and let $n \in S_j$. Because the supports are disjoint, $n$ belongs to $S_j$ and to no other $S_i$; hence $(v_j)_n = 1$ while $(v_i)_n = 0$ for all $i \ne j$. The sum defining $w_n$ collapses to its single surviving term:
 
@@ -63,7 +63,7 @@ $$w_n = a_j \qquad \text{for every } n \in S_j. \tag{$\dagger$}$$
 
 **Membership in $U$ forces each coefficient to vanish.** Suppose, toward a contradiction, that $a_j \ne 0$ for some $j \le m$. By $(\dagger)$, $w_n = a_j \ne 0$ at *every* index $n \in S_j$. Since $S_j$ is infinite, $w$ then has infinitely many nonzero entries — contradicting $w \in U$. Hence $a_j = 0$, and as $j \le m$ was arbitrary,
 
-$$a_1 = a_2 = \cdots = a_m = 0.$$
+$$a_1 = a_2 = \dots = a_m = 0.$$
 
 By the criterion $(\ast)$, the cosets $v_1 + U, \dots, v_m + U$ are linearly independent.
 
@@ -84,10 +84,10 @@ Conceptually, $U$ is the subspace of sequences that eventually vanish, so passin
 {: .prompt-info }
 > 12\. Suppose $m$ is a nonnegative integer and $ p \in \mathcal{p}(\mathbb{C}) $ is such that there are distinct real numbers $ x_0, x_1, \dots, x_m $ with $ p(x_k) \in \mathbb{R} $ for each $ k = 0, 1, \dots, m $. Prove that all coefficients of $p$ are real.
 
-Write $p(z) = a_0 + a_1 z + \cdots + a_m z^m$ with $a_j \in \mathbf{C}$. Define its **coefficient-conjugate**
+Write $p(z) = a_0 + a_1 z + \dots + a_m z^m$ with $a_j \in \mathbb{C}$. Define its **coefficient-conjugate**
 
 $$
-\bar p(z) := \overline{a_0} + \overline{a_1} z + \cdots + \overline{a_m} z^m,
+\bar p(z) := \overline{a_0} + \overline{a_1} z + \dots + \overline{a_m} z^m,
 $$
 
 For any $z$,
@@ -99,10 +99,10 @@ $$
 Now specialize to a **real** input $x$, where $\overline{x} = x$:
 
 $$
-\bar p(x) = \overline{p(x)} \qquad \text{for every } x \in \mathbf{R}.
+\bar p(x) = \overline{p(x)} \qquad \text{for every } x \in \mathbb{R}.
 $$
 
-By assumption $p(x_k) \in \mathbf{R}$, which means $\overline{p(x_k)} = p(x_k)$. Feeding each real point $x_k$ into the identity above:
+By assumption $p(x_k) \in \mathbb{R}$, which means $\overline{p(x_k)} = p(x_k)$. Feeding each real point $x_k$ into the identity above:
 
 $$
 \bar p(x_k) = \overline{p(x_k)} = p(x_k) \qquad k = 0, 1, \dots, m.
@@ -110,7 +110,7 @@ $$
 
 So $p$ and $\bar p$ **agree at the $m+1$ distinct points** $x_0,\dots,x_m$.
 
-Consider the difference $q := p - \bar p$. It lies in $\mathcal{P}_m(\mathbf{C})$, so $\deg q \le m$. But $q(x_k) = 0$ for all $m+1$ distinct values $x_0,\dots,x_m$ — that's $m+1$ distinct zeros. By 4.8, a nonzero polynomial of degree $\le m$ has *at most $m$* zeros. Having $m+1$ is one too many, so the only escape is
+Consider the difference $q := p - \bar p$. It lies in $\mathcal{P}_m(\mathbb{C})$, so $\deg q \le m$. But $q(x_k) = 0$ for all $m+1$ distinct values $x_0,\dots,x_m$ — that's $m+1$ distinct zeros. By 4.8, a nonzero polynomial of degree $\le m$ has *at most $m$* zeros. Having $m+1$ is one too many, so the only escape is
 
 $$
 q = 0, \qquad\text{i.e.}\qquad p = \bar p.
@@ -123,7 +123,7 @@ Hence $a_j = \overline{a_j}$ for every $j$, so all coefficients of $p$ are real.
 ## 5D
 
 {: .prompt-info }
-> 16\. Suppose that $ T \in \mathcal{L}(V) $ is diagonalizable. Let $ \lambda_1, \cdots, \lambda_m $ denote the distinct eigenvalues of $ T $. Prove that a subspace $ U $ of $ V $ is invariant under $ T $ if and only if there exist subspaces 𝑈1,…,𝑈𝑚 of 𝑉 such that 𝑈𝑘 ⊆ 𝐸(𝜆𝑘,𝑇) for each $ k $ and $ U = U_1 \oplus \cdots \oplus U_m $.
+> 16\. Suppose that $ T \in \mathcal{L}(V) $ is diagonalizable. Let $ \lambda_1, \dots, \lambda_m $ denote the distinct eigenvalues of $ T $. Prove that a subspace $ U $ of $ V $ is invariant under $ T $ if and only if there exist subspaces 𝑈1,…,𝑈𝑚 of 𝑉 such that 𝑈𝑘 ⊆ 𝐸(𝜆𝑘,𝑇) for each $ k $ and $ U = U_1 \oplus \dots \oplus U_m $.
 
 {: .prompt-proof }
 > *($\Rightarrow$)*
@@ -152,23 +152,23 @@ Hence $a_j = \overline{a_j}$ for every $j$, so all coefficients of $p$ are real.
 >
 > Each $U_k$ is a subspace of $V$ (intersection of subspaces) with $U_k \subseteq E(\lambda_k,T)$, as required.
 >
-> *$U \subseteq U_1 + \cdots + U_m$.* Let $u \in U$. Since $T$ is diagonalizable, $V = E(\lambda_1,T) \oplus \cdots \oplus E(\lambda_m,T)$, so we may write
+> *$U \subseteq U_1 + \dots + U_m$.* Let $u \in U$. Since $T$ is diagonalizable, $V = E(\lambda_1,T) \oplus \dots \oplus E(\lambda_m,T)$, so we may write
 >
-> $$u = u_1 + \cdots + u_m, \qquad u_k \in E(\lambda_k, T).$$
+> $$u = u_1 + \dots + u_m, \qquad u_k \in E(\lambda_k, T).$$
 >
 > Apply $q_k$ and use Step 1:
 >
 > $$q_k u = \sum_{i=1}^m q_k u_i = c_k u_k .$$
 >
-> $U$ is invariant under every polynomial in $T$, so $q_k u \in U$; since $c_k \neq 0$, this gives $u_k = c_k^{-1} q_k u \in U$. As also $u_k \in E(\lambda_k,T)$, we conclude $u_k \in U_k$. Hence $u \in U_1 + \cdots + U_m$.
+> $U$ is invariant under every polynomial in $T$, so $q_k u \in U$; since $c_k \neq 0$, this gives $u_k = c_k^{-1} q_k u \in U$. As also $u_k \in E(\lambda_k,T)$, we conclude $u_k \in U_k$. Hence $u \in U_1 + \dots + U_m$.
 >
-> *$U_1 + \cdots + U_m \subseteq U$.* Each $U_k \subseteq U$ and $U$ is a subspace.
+> *$U_1 + \dots + U_m \subseteq U$.* Each $U_k \subseteq U$ and $U$ is a subspace.
 >
-> *The sum is direct.* Suppose $u_1 + \cdots + u_m = 0$ with $u_k \in U_k \subseteq E(\lambda_k, T)$. Directness of $E(\lambda_1,T) \oplus \cdots \oplus E(\lambda_m,T)$ forces every $u_k = 0$.
+> *The sum is direct.* Suppose $u_1 + \dots + u_m = 0$ with $u_k \in U_k \subseteq E(\lambda_k, T)$. Directness of $E(\lambda_1,T) \oplus \dots \oplus E(\lambda_m,T)$ forces every $u_k = 0$.
 >
-> Therefore $U = U_1 \oplus \cdots \oplus U_m$.
+> Therefore $U = U_1 \oplus \dots \oplus U_m$.
 >
-> *($\Leftarrow$)* If $U = U_1 \oplus \cdots \oplus U_m$ with $U_k \subseteq E(\lambda_k,T)$, take $u \in U$ and write $u = \sum u_k$; then $Tu = \sum \lambda_k u_k \in U_1 + \cdots + U_m = U$. $\blacksquare$
+> *($\Leftarrow$)* If $U = U_1 \oplus \dots \oplus U_m$ with $U_k \subseteq E(\lambda_k,T)$, take $u \in U$ and write $u = \sum u_k$; then $Tu = \sum \lambda_k u_k \in U_1 + \dots + U_m = U$. $\blacksquare$
 
 {: .prompt-tip }
 > The operator $q_k/c_k$ is the projection onto $E(\lambda_k,T)$ along the other eigenspaces, expressed as a *polynomial in $T$*. It's Lagrange interpolation in disguise: $p_k(x) = \prod_{j\neq k}\frac{x - \lambda_j}{\lambda_k - \lambda_j}$ is the polynomial with $p_k(\lambda_i) = \delta_{ik}$, and $p_k(T)$ is the projection.

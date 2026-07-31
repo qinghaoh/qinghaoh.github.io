@@ -103,7 +103,7 @@ $$U := \operatorname{span}(v_2 - v_1,\ v_3 - v_1,\ \dots,\ v_m - v_1).$$
 >
 > We claim $A = v_1 + U$.
 >
-> **$A \subseteq v_1 + U$.** Take $\lambda_1 v_1 + \cdots + \lambda_m v_m \in A$ with $\sum_i \lambda_i = 1$. Use $\lambda_1 = 1 - (\lambda_2 + \cdots + \lambda_m)$ to eliminate $\lambda_1$:
+> **$A \subseteq v_1 + U$.** Take $\lambda_1 v_1 + \dots + \lambda_m v_m \in A$ with $\sum_i \lambda_i = 1$. Use $\lambda_1 = 1 - (\lambda_2 + \dots + \lambda_m)$ to eliminate $\lambda_1$:
 >
 > $$\sum_{i=1}^m \lambda_i v_i = v_1 + \sum_{i=2}^m \lambda_i (v_i - v_1).$$
 >

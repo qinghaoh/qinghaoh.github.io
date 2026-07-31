@@ -18,14 +18,48 @@ mermaid: true
 >
 > is a basis of $V$, and $N^{m_i}v_i = 0$ for each $i$.
 >
-> Picture it as a ragged array — one column per chain:
+> Sort the lengths so $m_1 \ge m_2 \ge \dots \ge m_k$ and picture the chains as columns, **aligned at the bottom**:
 >
-> $$\begin{array}{cccc} v_1 & v_2 & \cdots & v_k \\ Nv_1 & Nv_2 & & Nv_k \\ \vdots & \vdots & & \vdots \\ N^{m_1-1}v_1 & N^{m_2-1}v_2 & & N^{m_k-1}v_k \end{array}$$
+> $$\begin{array}{cccc} v_1 & & & \\ Nv_1 & v_2 & & \\ \vdots & \vdots & \ddots & \\ N^{m_1-2}v_1 & N^{m_2-2}v_2 & & v_k \\ N^{m_1-1}v_1 & N^{m_2-1}v_2 & \cdots & N^{m_k-1}v_k \end{array}$$
 >
-> $N$ moves each entry one step down the column, and off the bottom to $0$.
+> $N$ moves each entry one step down its column, and off the bottom to $0$. The bottom row is exactly the chain bottoms, which is a basis of $\operatorname{null}N$.
 
 {: .prompt-tip }
-> The ragged array looks like a [Young diagram](https://en.wikipedia.org/wiki/Young_tableau#Diagrams) if columns descend in height.
+> Sorted into decreasing order, the chain lengths form a **partition** of $\dim V$:
+>
+> $$\lambda = (m_1 \ge m_2 \ge \dots \ge m_k), \qquad m_1 + \dots + m_k = \dim V.$$
+>
+> The individual $m_i$ are its **parts**. In the array above, each part is the height of one column, because one column is one chain.
+>
+> Now read the same boxes across instead of down. Row $j$ contains one box from every chain tall enough to reach it, so its width is
+>
+> $$\lambda'_j \;:=\; \#\{\,i : m_i \ge j\,\}.$$
+>
+> The sequence $\lambda' = (\lambda'_1, \lambda'_2, \dots)$ is again a partition of $\dim V$, called the **conjugate** of $\lambda$. It has $m_1$ parts, and conjugating twice returns $\lambda$.
+>
+> One set of boxes, two partitions: $\lambda$ counts down the columns, $\lambda'$ counts across the rows.
+
+{: .prompt-tip }
+> *Example.* Two chains, of lengths $3$ and $2$ — the running example of this post:
+>
+> $$\begin{array}{cc} x^2 & \\ 2x & xy \\ 2 & y \end{array}$$
+>
+> The columns have heights $3$ and $2$, so $\lambda = (3,2)$. The rows, read from the bottom up, have widths $2$, $2$, $1$, so $\lambda' = (2,2,1)$. Both sum to $5 = \dim V$, as they must — they count the same five boxes.
+>
+> Most references draw a partition with its parts as *rows*; the conventional [Young diagram](https://en.wikipedia.org/wiki/Young_tableau#Diagrams) of $\lambda$ is therefore this array reflected across a diagonal. Nothing below depends on the choice. Parts are columns here because $N$ acts down them.
+
+{: .prompt-tip }
+> Row $j$ is exactly **level** $j$: the vectors killed by $N^j$ but not by $N^{j-1}$. A chain of length $m_i$ contributes its entry $N^{m_i - j}v_i$ to row $j$ whenever $m_i \ge j$, and nothing above row $m_i$.
+>
+> That is what bottom alignment buys, and it is why $\lambda'$, not $\lambda$, is the sequence the rest of this post counts. Cumulatively, the boxes in the bottom $j$ rows are a basis of $\operatorname{null}N^j$:
+>
+> $$d_j \;:=\; \dim\operatorname{null}N^j \;=\; \lambda'_1 + \dots + \lambda'_j .$$
+>
+> So $d$ is the partial-sum sequence of $\lambda'$, and differencing recovers it:
+>
+> $$\lambda'_j = d_j - d_{j-1}.$$
+>
+> On the example: $\lambda' = (2,2,1)$ gives $(d_1,d_2,d_3) = (2,4,5)$, matching $\operatorname{null}N = \operatorname{span}(1,y)$, $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$, and $\operatorname{null}N^3 = V$.
 
 {: .prompt-info }
 > The span of one Jordan chain is one Jordan block. The whole space is the direct sum of the chain-spans.
@@ -41,33 +75,53 @@ mermaid: true
 >
 > And since $V = U_1\oplus\dots\oplus U_k$ with each $U_i$ invariant, the matrix of $N$ with respect to the concatenated basis is block diagonal:
 >
-> $$\mathcal{M}(N) = J_{m_1}(0) \oplus \cdots \oplus J_{m_k}(0).$$
+> $$\mathcal{M}(N) = J_{m_1}(0) \oplus \dots \oplus J_{m_k}(0).$$
 
 {: .prompt-info }
 > $\dim\operatorname{null}N^m = \sum_j \min(m, m_j)$.
 
 {: .prompt-proof }
-> Since $V = \bigoplus_j U_j$ with each $U_j$ invariant, $\operatorname{null}N^m = \bigoplus_j(\operatorname{null}N^m \cap U_j)$, so count one column at a time. In column $j$, take $x = \sum_{t=0}^{m_j-1} c_t N^tv_j$. Then
+> The chain vector $N^tv_i$ sits at level $m_i - t$, so $N^m$ kills it exactly when its level is at most $m$. Hence $\operatorname{null}N^m$ is spanned by the boxes in the bottom $m$ rows, and the claim is a count of that region.
 >
-> $$N^m x = \sum_{t=0}^{m_j-1} c_t N^{t+m}v_j.$$
+> Column $i$ contributes $\min(m, m_i)$ boxes to it. Whichever runs out first wins:
 >
-Terms with $t + m \ge m_j$ die on their own (they've fallen off the bottom); the rest are distinct basis vectors, hence independent. So $N^mx = 0$ forces $c_t = 0$ exactly for $t < m_j - m$, leaving
+> - **Short column** ($m_i \le m$): the reach of $N^m$ exceeds the column, so the *whole* column dies — $m_i$ boxes.
+> - **Tall column** ($m_i > m$): only the bottom $m$ die — $m$ boxes.
 >
-> $$t \in \{\max(0,\, m_j - m),\ \dots,\ m_j-1\}, \qquad \text{count } = m_j - \max(0, m_j-m) = \min(m, m_j).$$
->
-> $N^m$ annihilates the bottom $m$ entries of a column — but a column of height $m_j$ has only $m_j$ entries to give. Whichever runs out first wins:
->
-> - **Short column** ($m_j \le m$): the reach of $N^m$ exceeds the column, so the *whole* column dies — $m_j$ dimensions.
-> - **Tall column** ($m_j > m$): only the bottom $m$ entries die — $m$ dimensions.
->
->That's $\min(m, m_j)$, and summing over columns gives $\dim\operatorname{null}N^m$.$\blacksquare$
+> Summing over columns gives $\dim\operatorname{null}N^m = \sum_i \min(m,m_i)$. $\blacksquare$
 
 {: .prompt-tip }
-> Let $N$ be nilpotent on $V$ and $d_j = \dim\operatorname{null}N^j$. Every Jordan basis of $N$ decomposes $V$ into chains whose lengths form a multiset $\{m_1,\dots,m_k\}$ with
+> Let $N$ be nilpotent on $V$ and $d_j = \dim\operatorname{null}N^j$. Every Jordan basis of $N$ decomposes $V$ into chains whose lengths form a partition $\lambda$ of $\dim V$, and
 >
-> $$k = d_1, \qquad \#\{i : m_i \ge j\} = d_j - d_{j-1}, \qquad \#\{i : m_i = j\} = 2d_j - d_{j-1} - d_{j+1}.$$
+> $$\lambda'_j = d_j - d_{j-1}, \qquad \#\{i : m_i = j\} = \lambda'_j - \lambda'_{j+1} = 2d_j - d_{j-1} - d_{j+1}, \qquad k = \lambda'_1 = d_1.$$
 >
-> Since the $d_j$ are defined without reference to a basis, the multiset is an invariant of $N$ — a partition of $\dim V$, and a complete invariant up to similarity.
+> The first is differencing the partial sums. The second is "columns ending exactly at row $j$" = width of row $j$ minus width of row $j+1$. The third is the width of the bottom row.
+>
+> Since the $d_j$ are defined without reference to a basis, so is $\lambda'$, hence so is $\lambda$ — a complete invariant of $N$ up to similarity.
+
+{: .prompt-info }
+> Let $N$ be nilpotent on $V$. The partition $\lambda$ does not depend on which Jordan basis produced it, and two nilpotent operators are similar if and only if their partitions agree.
+
+{: .prompt-proof }
+> **Independence of the basis.** A Jordan basis fills in the diagram, and the diagram determines $\lambda'$ as its row widths. But those row widths are $d_j - d_{j-1}$, and $d_j = \dim\operatorname{null}N^j$ makes no reference to a basis. So $\lambda'$ is forced by $N$ alone, and therefore so is $\lambda$. Different Jordan bases genuinely differ — the vectors are choices, and Step 1 of the algorithm below makes them — but the shape they fill is fixed before any choice is made.
+>
+> **Similar operators agree.** If $N' = ANA^{-1}$ then $(N')^j = AN^jA^{-1}$, so $A$ restricts to an isomorphism $\operatorname{null}N^j \to \operatorname{null}(N')^j$. The two towers have equal dimensions, hence equal $\lambda'$, hence equal $\lambda$.
+>
+> **Agreeing operators are similar.** Each of $N$ and $N'$ admits a Jordan basis in which its matrix is $J_{m_1}(0)\oplus\dots\oplus J_{m_k}(0)$. Equal $\lambda$ means this is literally the same matrix, so each is similar to it and hence to the other. $\blacksquare$
+
+{: .prompt-tip }
+> A column ends at row $j$ exactly when it reaches row $j$ and fails to reach row $j+1$, so
+>
+> $$\#\{\,i : m_i = j\,\} \;=\; \lambda'_j - \lambda'_{j+1} \;=\; 2d_j - d_{j-1} - d_{j+1},$$
+>
+> with the convention $\lambda'_{p+1} = 0$. Together with $k = \lambda'_1 = d_1 = \dim\operatorname{null}N$ for the number of chains, this recovers $\lambda$ from the null-space tower by pure arithmetic.
+
+{: .prompt-tip }
+> Since $\\#\\{i : m_i = j\\} \ge 0$, the identity above says the sequence $(d_j)$ is **concave**:
+>
+> $$2d_j \ge d_{j-1} + d_{j+1}.$$
+>
+> Equivalently, its increments $\lambda'_j$ are non-increasing — the picture's "rows widen as you descend". A hand-computed tower violating this has an error in the tower itself, and it is worth checking before running the algorithm rather than after.
 
 {: .prompt-tip }
 > Any two Jordan bases of $N$ give matrices that differ only by a permutation of the diagonal blocks.
@@ -96,7 +150,7 @@ If $\lambda \neq 0$, with $A = J_m(\lambda) = \lambda I + N$, the two terms comm
 
 $$A^r = \sum_{t=0}^{\min(r,\,m-1)} \binom{r}{t}\lambda^{r-t}N^t.$$
 
-Rather than shifting a single band, this **fills the entire upper triangle**, with $\lambda^r$ on the diagonal, $r\lambda^{r-1}$ on the first superdiagonal, $\binom{r}{2}\lambda^{r-2}$ on the second, and so on — constant along each diagonal, i.e. upper triangular Toeplitz, exactly the commutant shape from earlier. For $m = 4$:
+Rather than shifting a single band, this **fills the entire upper triangle**, with $\lambda^r$ on the diagonal, $r\lambda^{r-1}$ on the first superdiagonal, $\binom{r}{2}\lambda^{r-2}$ on the second, and so on — constant along each diagonal, i.e. upper triangular Toeplitz. For $m = 4$:
 
 $$A^r = \begin{pmatrix} \lambda^r & r\lambda^{r-1} & \binom{r}{2}\lambda^{r-2} & \binom{r}{3}\lambda^{r-3}\\ & \lambda^r & r\lambda^{r-1} & \binom{r}{2}\lambda^{r-2}\\ & & \lambda^r & r\lambda^{r-1}\\ & & & \lambda^r \end{pmatrix}$$
 
@@ -109,13 +163,11 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > **Precompute.** The increasing chain of null spaces and their dimensions,
 >
-> $$\{0\} = K_0 \subsetneq K_1 \subsetneq \cdots \subsetneq K_p = V, \qquad K_j := \operatorname{null}N^j, \quad d_j := \dim K_j,$$
+> $$\{0\} = K_0 \subsetneq K_1 \subsetneq \dots \subsetneq K_p = V, \qquad K_j := \operatorname{null}N^j, \quad d_j := \dim K_j,$$
 >
 > where $p$ is the smallest exponent with $N^p = 0$. Keep an explicit basis of each $K_j$. Write
 >
-> $$\delta_j := d_j - d_{j-1}$$
->
-> for the jump in dimension at level $j$; it will turn out to be the number of chains of length $\ge j$.
+> Recall $\lambda'_j = d_j - d_{j-1}$, the width of row $j$ from the Jordan Basis section. The algorithm reconstructs the diagram row by row from the bottom up, so this is the number of vectors it must produce at level $j$.
 >
 > **State carried between levels.** As the loop runs it carries a list $H_j$ of vectors sitting in $K_j$, pushed down from the level above. It also outputs a list $T_j$ of *new chain tops* at each level.
 >
@@ -227,15 +279,11 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 > Do not run this bottom-up. Most vectors of $\operatorname{null}N$ are not in $\operatorname{range}N$, so choosing a basis of $\operatorname{null}N$ first and hunting for preimages typically fails. Top-down, low-level vectors are *manufactured* by pushing down, never guessed.
 
 {: .prompt-tip }
-> *Basis-free confirmation on the chain lengths*
+> *The algorithm's count is the diagram's count.*
 >
-> For *any* decomposition into chains of lengths $m_1,\dots,m_k$ we had $d_m = \sum_i \min(m,m_i)$, so
+> Level $j$ of the algorithm carries $\lvert H_j \cup T_j\rvert = d_j - d_{j-1}$ vectors, and row $j$ of the diagram has width $\lambda'_j = d_j - d_{j-1}$. They agree because both are the same dimension jump, computed once from the null-space tower and once from the chain lengths. Neither derivation assumed the other.
 >
-> $$ \delta_j = d_j - d_{j-1} = \sum_i \big[\min(j,m_i)-\min(j-1,m_i)\big] = \#\{i : m_i \ge j\}.$$
->
-> Injectivity gives
->
-> $$\delta_p \le \delta_{p-1} \le \cdots \le \delta_1.$$
+> The monotonicity $\lambda'_p \le \dots \le \lambda'_1$ then has two independent proofs: rows widen as you descend, and $\bar N_{j}$ is injective.
 
 **Worked example**
 
@@ -244,6 +292,8 @@ Let $V = \operatorname{span}(1,\, x,\, y,\, x^2,\, xy)$ and $N = \partial/\parti
 $$1 \mapsto 0,\quad x \mapsto 1,\quad y \mapsto 0,\quad x^2 \mapsto 2x,\quad xy \mapsto y.$$
 
 Precompute: $\operatorname{null}N = \operatorname{span}(1, y)$, $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$, $\operatorname{null}N^3 = V$. So $p = 3$ and $(d_0,d_1,d_2,d_3) = (0,2,4,5)$.
+
+So $\lambda' = (d_1 - d_0,\; d_2 - d_1,\; d_3 - d_2) = (2, 2, 1)$, whose conjugate is $\lambda = (3,2)$: one chain of length $3$ and one of length $2$. The algorithm below recovers exactly this, but the shape is already determined by the null-space tower alone.
 
 | $j$ | $H_j$ (pushed down) | need $d_j - d_{j-1}$ | new tops $T_j$ |
 | --- | ------------------- | -------------------- | -------------- |
@@ -314,9 +364,16 @@ $S$ commutes with $N$. Check on a basis vector $N^jv_i$:
 
 So the constraint is precisely what's needed at the *bottom* of each chain, and nowhere else. Conclusion:
 
-$$\{S : SN = NS\} \;\cong\; \operatorname{null}N^{m_1} \times \cdots \times \operatorname{null}N^{m_k}, \qquad S \mapsto (Sv_1,\dots,Sv_k),$$
+$$\{S : SN = NS\} \;\cong\; \operatorname{null}N^{m_1} \times \dots \times \operatorname{null}N^{m_k}, \qquad S \mapsto (Sv_1,\dots,Sv_k),$$
 
-$$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j).$$
+$$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j) = \sum_j \delta_j^2.$$
+
+{: .prompt-tip }
+> The same box counting evaluates the double sum. Writing $\min(m_i,m_j) = \\#\\{l : l \le m_i \text{ and } l \le m_j\\}$ turns it into a count of triples $(i,j,l)$:
+>
+> $$\sum_{i,j}\min(m_i,m_j) \;=\; \sum_{l \ge 1}\\#\\{i : m_i \ge l\\}\cdot\\#\\{j : m_j \ge l\\} \;=\; \sum_{l\ge1}\left(\lambda'_l\right)^2 ,$$
+>
+> the sum of squares of the row widths. So the commutant is large exactly when the diagram is short and wide — many chains of similar length — and smallest, of dimension $\dim V$, when the diagram is a single column.
 
 {: .prompt-info }
 > 1. Find a Jordan basis for $N$, with tops $v_1,\dots,v_k$ and lengths $m_1,\dots,m_k$.
@@ -365,11 +422,11 @@ $$S(xy) = 2x, \quad S(y) = N(2x) = 2.$$
 
 Spot-check: $SN(x^2) = S(2x) = y$ and $NS(x^2) = N(xy) = y$; also $SN(xy) = S(y) = 2$ and $NS(xy) = N(2x) = 2$.
 
-Dimension check: $\dim\operatorname{null}N^3 + \dim\operatorname{null}N^2 = 5 + 4 = 9$, agreeing with $\sum_{i,j}\min(m_i,m_j) = 3+2+2+2$, out of $25$ for all of $\mathcal{L}(V)$.
+Dimension check: $\dim\operatorname{null}N^3 + \dim\operatorname{null}N^2 = 5 + 4 = 9$, agreeing with $\sum_{i,j}\min(m_i,m_j) = 3+2+2+2$ and with $\sum_l(\lambda'_l)^2 = 4 + 4 + 1$, out of $25$ for all of $\mathcal{L}(V)$.
 
 The isomorphism also handles the **basis** of the commutant for free: run over a basis of $\operatorname{null}N^{m_i}$ for one index with the other $w$'s set to $0$. Here that gives $5 + 4 = 9$ explicit commuting operators spanning the commutant.
 
-**Excercise**
+**Exercise**
 
 {: .prompt-info }
 > Give an example of two commuting operators $S,T$ on $\mathbf{F}^4$ such that there is a subspace of $\mathbf{F}^4$ that is invariant under $S$ but not under $T$ and there is a subspace of $\mathbf{F}^4$ that is invariant under $T$ but not under $S$.
@@ -429,7 +486,7 @@ In the basis $(N^{m-1}v,\dots,Nv,v)$ this is the upper-triangular [Toeplitz matr
 
 **Worked example**
 
-Take $\mathbf{C}^3$ with chain $e_3 \to e_2 \to e_1 \to 0$; that is, $Ne_3 = e_2$, $Ne_2 = e_1$, $Ne_1 = 0$, so
+Take $\mathbb{C}^3$ with chain $e_3 \to e_2 \to e_1 \to 0$; that is, $Ne_3 = e_2$, $Ne_2 = e_1$, $Ne_1 = 0$, so
 
 $$N = \begin{pmatrix} 0&1&0\\ 0&0&1\\ 0&0&0\end{pmatrix}.$$
 
@@ -446,21 +503,61 @@ $$S = \begin{pmatrix} c&b&a\\ 0&c&b\\ 0&0&c\end{pmatrix} = cI + bN + aN^2.$$
 ## Invertibility
 
 {: .prompt-info }
-> Let $W$ be a finite-dimensional vector space, let $N \in \mathcal{L}(W)$ be nilpotent, and let $c \in \mathbb{F}$ with $c \neq 0$. Then $cI + N$ is invertible.
+> Let $W$ be a vector space over $\mathbf{F}$, let $N \in \mathcal{L}(W)$ be nilpotent with $N^p = 0$, and let $c \in \mathbf{F}$ with $c \neq 0$. Then $cI + N$ is invertible, and
+>
+> $$(cI+N)^{-1} \;=\; \sum_{t=0}^{p-1} \frac{(-1)^t}{c^{\,t+1}}\,N^t .$$
 
 {: .prompt-proof }
-> **Lemma** *Let $A \in \mathcal{L}(W)$, $c \in \mathbb{F}$, and set $B = cI + A$. If $\mu$ is an eigenvalue of $B$, then $\mu - c$ is an eigenvalue of $A$.*
+> Set $A = -c^{-1}N$. Since scalars commute with everything, $A^p = (-c^{-1})^pN^p = 0$, and
 >
-> *Proof.* Let $v \neq 0$ satisfy $Bv = \mu v$. Then
+> $$cI + N = c\left(I - A\right).$$
 >
-> $$Av = (B - cI)v = Bv - cv = \mu v - cv = (\mu - c)v ,$$
+> Let $G = \sum_{t=0}^{p-1}A^t$, a finite sum. Both products telescope:
 >
-> and $v \neq 0$, so $\mu - c$ is an eigenvalue of $A$. $\blacksquare$
+> $$(I-A)G \;=\; \sum_{t=0}^{p-1}A^t \;-\; \sum_{t=0}^{p-1}A^{t+1} \;=\; \sum_{t=0}^{p-1}A^t \;-\; \sum_{t=1}^{p}A^{t} \;=\; A^0 - A^p \;=\; I,$$
 >
-> **Proof of the Theorem.**
+> and the same computation with the factors reversed gives $G(I-A) = I$, since $A$ commutes with its own powers. So $I - A$ is invertible with inverse $G$, hence $cI + N = c(I-A)$ is invertible with inverse $c^{-1}G$. Expanding $A$:
 >
-> If $W = \{0\}$ the statement is trivial, so assume $W \neq \{0\}$.
+> $$c^{-1}G \;=\; c^{-1}\sum_{t=0}^{p-1}\left(-c^{-1}\right)^tN^t \;=\; \sum_{t=0}^{p-1}\frac{(-1)^t}{c^{\,t+1}}N^t. \qquad \blacksquare$$
+
+{: .prompt-tip }
+> Worth noting what the argument does **not** use: no finite-dimensionality, no eigenvalues, no assumption on $\mathbf{F}$, and no separate case for $W = \\{0\\}$. The single input is that the series terminates, which is exactly what nilpotency provides. Over $\mathbb{R}$ or $\mathbb{C}$ this is the Neumann series for $(I+A)^{-1}$, with the convergence hypothesis replaced by the stronger fact that all but finitely many terms are $0$.
 >
-> Now we prove $0$ is not an eigenvalue of $cI + N$. Suppose toward a contradiction that it is. Applying the Lemma with $A = N$, $B = cI + R$, and $\mu = 0$, we conclude that $0 - c = -c$ is an eigenvalue of $N$. The only eigenvalue of $N$ is $0$, hence $-c = 0$, i.e. $c = 0$ — contradicting the hypothesis $c \neq 0$.
+> Any $p$ with $N^p = 0$ works; the index of nilpotency is simply the smallest choice, and larger $p$ only appends zero terms.
+
+{: .prompt-tip }
+> The inverse is a polynomial in $N$ of degree $< p$, so
 >
-> Therefore, $cI + N$ is injective and thus invertible. $\blacksquare$
+> $$(cI+N)^{-1} \in \mathcal{P}(N) \subseteq \mathcal{C}(N).$$
+>
+> In particular anything commuting with $N$ commutes with $(cI+N)^{-1}$.
+
+{: .prompt-tip }
+> *Consistency with the block formula.*
+>
+> The Non-nilpotent Block section gives $A^r = \sum_{t}\binom{r}{t}\lambda^{r-t}N^t$ for $r \ge 0$. Read that at $r = -1$, where $\binom{-1}{t} = (-1)^t$:
+>
+> $$A^{-1} = \sum_{t=0}^{m-1}(-1)^t\lambda^{-1-t}N^t,$$
+>
+> which is the formula above with $c = \lambda$. So the upper-triangular Toeplitz picture extends to negative exponents, and the geometric series is what proves the case $r = -1$.
+
+{: .prompt-tip }
+> *The same proof gives more.* If $S$ is invertible, $N$ is nilpotent, and $SN = NS$, then $S + N$ is invertible with
+>
+> $$(S+N)^{-1} = \sum_{t=0}^{p-1}(-1)^t S^{-(t+1)}N^t.$$
+>
+> Take $A = -S^{-1}N$; commutativity is what lets the powers separate, giving $A^p = (-1)^pS^{-p}N^p = 0$, and the telescoping runs unchanged. The theorem is the case $S = cI$.
+>
+> Commutativity is not decoration. Without it $A^p$ does not collapse, and the conclusion genuinely fails: an invertible operator plus a nilpotent one need not be invertible.
+
+**Worked example**
+
+Take $N = J_3(0)$ on $\mathbf{F}^3$, so $p = 3$ and $cI + N = J_3(c)$:
+
+$$J_3(c)^{-1} = \frac{1}{c}I - \frac{1}{c^2}N + \frac{1}{c^3}N^2 = \begin{pmatrix} 1/c & -1/c^2 & 1/c^3 \\ 0 & 1/c & -1/c^2 \\ 0 & 0 & 1/c\end{pmatrix}.$$
+
+Multiplying out confirms it, with everything past $N^2$ killed:
+
+$$(cI+N)\left(\tfrac{1}{c}I - \tfrac{1}{c^2}N + \tfrac{1}{c^3}N^2\right) = I - \tfrac{1}{c}N + \tfrac{1}{c^2}N^2 + \tfrac{1}{c}N - \tfrac{1}{c^2}N^2 + \tfrac{1}{c^3}N^3 = I.$$
+
+The inverse is again upper-triangular Toeplitz, as the parametrization of the commutant predicts, with alternating signs and increasing powers of $1/c$ along successive diagonals.

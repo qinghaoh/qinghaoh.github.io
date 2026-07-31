@@ -26,14 +26,14 @@ mermaid: true
 > $ V/\operatorname{null} T \cong_\tilde{T} \operatorname{range} T $
 
 {: .prompt-info }
-> If a linear system with all coefficients and constants in $\mathbb{Q}$ has a solution in $\mathbb{F} \supseteq \mathbb{Q}$, it has a solution in $\mathbb{Q}$.
+> If a linear system with all coefficients and constants in $\mathbb{Q}$ has a solution in $\mathbf{F} \supseteq \mathbb{Q}$, it has a solution in $\mathbb{Q}$.
 
 {: .prompt-proof }
 > Row-reduce the augmented matrix. Gaussian elimination uses only addition, subtraction, multiplication, and division by nonzero pivots — so starting from rational entries, **every intermediate entry stays rational**, and the resulting echelon form $R$ is rational.
 >
-> The very same row operations are legitimate over $\mathbb{F}$ and produce the very same $R$. Now, if the system had no solution over $\mathbb{Q}$, the reduction would exhibit a row of the form $(0\;0\;\cdots\;0 \mid c)$ with $c \neq 0$ — but that row is equally an obstruction over $\mathbb{F}$, contradicting the existence of a solution there. So the reduction is consistent, and back-substitution (again only rational arithmetic) produces a solution with all $x_k \in \mathbb{Q}$. $\blacksquare$
+> The very same row operations are legitimate over $\mathbf{F}$ and produce the very same $R$. Now, if the system had no solution over $\mathbb{Q}$, the reduction would exhibit a row of the form $(0\;0\;\dots\;0 \mid c)$ with $c \neq 0$ — but that row is equally an obstruction over $\mathbf{F}$, contradicting the existence of a solution there. So the reduction is consistent, and back-substitution (again only rational arithmetic) produces a solution with all $x_k \in \mathbb{Q}$. $\blacksquare$
 
 {: .prompt-tip }
-> **Field-independent (determined over the small field $\mathbb{K}$):** minimal polynomial, characteristic polynomial. Whether you compute it over $\mathbb{K}$ or over a bigger $\mathbb{F}$, you get the identical polynomial.
+> **Field-independent (determined over the small field $\mathbb{K}$):** minimal polynomial, characteristic polynomial. Whether you compute it over $\mathbb{K}$ or over a bigger $\mathbf{F}$, you get the identical polynomial.
 >
 > **Field-dependent (can change when you enlarge):** eigenvalues, eigenvectors, diagonalizability. These are about *roots* of polynomials, and roots can require a bigger field to exist.

@@ -209,7 +209,7 @@ x^{n}=
   \end{cases}
 $$
 
-If we write $$ n $$ in binary as $$ b_{k}\cdots b_{0} $$, then this is equivalent to defining a sequence $$ r_{k+1}, \ldots, r_{0} $$ by letting $$ r_{k+1} = 1 $$ and then defining $$ r_{i}=r_{i+1}^{2}x^{b_{i}} $$ for $$ i = k, \ldots, 0 $$, where $$ r_{0} $$ will equal $$ x^{n} $$.
+If we write $$ n $$ in binary as $$ b_{k}\dots b_{0} $$, then this is equivalent to defining a sequence $$ r_{k+1}, \ldots, r_{0} $$ by letting $$ r_{k+1} = 1 $$ and then defining $$ r_{i}=r_{i+1}^{2}x^{b_{i}} $$ for $$ i = k, \ldots, 0 $$, where $$ r_{0} $$ will equal $$ x^{n} $$.
 
 [Pow(x, n)][powx-n]
 

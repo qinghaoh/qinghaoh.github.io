@@ -157,7 +157,7 @@ mermaid: true
 | ---------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Upper-triangularizable | $ Tv_k \in \operatorname{span}(v_1, \dots, v_k) $ for each $ k = 1, \dots, n $ | $ \operatorname{span}(v_1, \dots, v_k) $ is invariant under $T$ for each $ k = 1, \dots, n $ |                                       | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ (repetitions allowed)      |                                                                                         |
 | Lower-triangularizable | $ Tv_k \in \operatorname{span}(v_k, \dots, v_n) $ for each $ k = 1, \dots, n $ | $ \operatorname{span}(v_k, \dots, v_n) $ is invariant under $T$ for each $ k = 1, \dots, n $ |                                       | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ (repetitions allowed)      |                                                                                         |
-| Diagonalizable         | $\exists$ a basis of $V$ consisting of eigenvectors of $T$                     | $V = E(\lambda_1,T)\oplus\cdots\oplus E(\lambda_m,T)$                                        | $\sum_k \dim E(\lambda_k,T) = \dim V$ | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some list of _distinct_ numbers $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ | $ V = \operatorname{null} (T - \lambda I) \oplus \operatorname{range} (T - \lambda I) $ |
+| Diagonalizable         | $\exists$ a basis of $V$ consisting of eigenvectors of $T$                     | $V = E(\lambda_1,T)\oplus\dots\oplus E(\lambda_m,T)$                                         | $\sum_k \dim E(\lambda_k,T) = \dim V$ | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some list of _distinct_ numbers $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ | $ V = \operatorname{null} (T - \lambda I) \oplus \operatorname{range} (T - \lambda I) $ |
 
 {: .prompt-tip }
 > Diagonalizable means the eigenspaces are *as big as they can be* — big enough to fill $V$. Each column says "fill $V$" in a different dialect: enough eigenvectors for a basis, eigenspaces summing directly to $V$, dimensions adding to $\dim V$, and — the min poly one — no eigenvalue needing a repeated factor to be annihilated (a repeat is exactly the symptom of an eigenspace that came up short, like the $(0,1)$ vector that $(T-5I)$ couldn't kill in one step).
@@ -167,7 +167,7 @@ mermaid: true
 >
 > *($\Rightarrow$)* If $T$ is diagonalizable, a basis of eigenvectors of $T$ is also a basis of eigenvectors of $T - \lambda I$ (eigenvalue $\lambda_j - \lambda$), so $T - \lambda I$ is diagonalizable.
 >
-> *($\Leftarrow$)* Assume $V = \operatorname{null}(T-\lambda I) \oplus \operatorname{range}(T-\lambda I)$ for every $\lambda \in \mathbf{C}$. Fix $\lambda$ and write $S = T - \lambda I$.
+> *($\Leftarrow$)* Assume $V = \operatorname{null}(T-\lambda I) \oplus \operatorname{range}(T-\lambda I)$ for every $\lambda \in \mathbb{C}$. Fix $\lambda$ and write $S = T - \lambda I$.
 >
 > **Step 1: $\operatorname{null} S = \operatorname{null} S^2$.** The inclusion $\subseteq$ always holds. Conversely, if $v \in \operatorname{null} S^2$ then $S(Sv) = 0$, so $Sv \in \operatorname{null} S$; also $Sv \in \operatorname{range} S$. Directness of the sum forces $\operatorname{null} S \cap \operatorname{range} S = \{0\}$, so $Sv = 0$.
 >
@@ -177,11 +177,11 @@ mermaid: true
 >
 > **Step 3: conclude.** Let $\lambda_1, \dots, \lambda_m$ be the distinct eigenvalues of $T$ (there is at least one, as $V \neq \{0\}$ is complex; if $V = \{0\}$ the claim is trivial). The generalized eigenspace decomposition says
 >
-> $$V = G(\lambda_1, T) \oplus \cdots \oplus G(\lambda_m, T).$$
+> $$V = G(\lambda_1, T) \oplus \dots \oplus G(\lambda_m, T).$$
 >
 > By Step 2 each summand equals $E(\lambda_j, T)$, so
 >
-> $$V = E(\lambda_1, T) \oplus \cdots \oplus E(\lambda_m, T),$$
+> $$V = E(\lambda_1, T) \oplus \dots \oplus E(\lambda_m, T),$$
 >
 > which is one of the standard equivalent conditions for diagonalizability. Hence $T$ is diagonalizable. $\blacksquare$
 
@@ -189,20 +189,20 @@ mermaid: true
 > *Dense* for every $T \in \mathcal{L}(V)$ and every $\varepsilon > 0$ there is a diagonalizable $D$ with $\|T - D\| < \varepsilon$.
 
 {: .prompt-info }
-> Over $\mathbf{C}$, the diagonalizable operators are dense in $\mathcal{L}(V)$.
+> Over $\mathbb{C}$, the diagonalizable operators are dense in $\mathcal{L}(V)$.
 
 {: .prompt-proof }
-> Let $T \in \mathcal{L}(V)$, $n = \dim V$. Since $\mathbf{F} = \mathbf{C}$, there is a basis $v_1,\dots,v_n$ with respect to which $\mathcal{M}(T)$ is upper triangular, with diagonal entries $\lambda_1,\dots,\lambda_n$. Given $\varepsilon > 0$, choose $\varepsilon_1,\dots,\varepsilon_n \in \mathbf{C}$ with $|\varepsilon_j| < \varepsilon$ such that $\lambda_1 + \varepsilon_1, \dots, \lambda_n + \varepsilon_n$ are pairwise distinct — always possible, since each $\varepsilon_j$ needs only to avoid finitely many values, and any disc is infinite.
+> Let $T \in \mathcal{L}(V)$, $n = \dim V$. Since $\mathbf{F} = \mathbb{C}$, there is a basis $v_1,\dots,v_n$ with respect to which $\mathcal{M}(T)$ is upper triangular, with diagonal entries $\lambda_1,\dots,\lambda_n$. Given $\varepsilon > 0$, choose $\varepsilon_1,\dots,\varepsilon_n \in \mathbb{C}$ with $|\varepsilon_j| < \varepsilon$ such that $\lambda_1 + \varepsilon_1, \dots, \lambda_n + \varepsilon_n$ are pairwise distinct — always possible, since each $\varepsilon_j$ needs only to avoid finitely many values, and any disc is infinite.
 >
 > Define $D \in \mathcal{L}(V)$ by $Dv_j = \varepsilon_j v_j$. Then $\mathcal{M}(T + D)$ is upper triangular with the distinct entries $\lambda_j + \varepsilon_j$ on the diagonal. The diagonal of a triangular matrix lists the eigenvalues, so $T + D$ has $n$ distinct eigenvalues in a space of dimension $n$, hence is diagonalizable. And $D$ is small: in the norm making $v_1,\dots,v_n$ orthonormal, $\|D\| = \max_j |\varepsilon_j| < \varepsilon$. $\blacksquare$
 
 ## Nilpotent
 
 {: .prompt-info }
-> Let $W$ be a finite-dimensional vector space, let $R \in \mathcal{L}(W)$ be nilpotent, and let $c \in \mathbb{F}$ with $c \neq 0$. Then $cI + R$ is invertible.
+> Let $W$ be a finite-dimensional vector space, let $R \in \mathcal{L}(W)$ be nilpotent, and let $c \in \mathbf{F}$ with $c \neq 0$. Then $cI + R$ is invertible.
 
 {: .prompt-proof }
-> **Lemma** *Let $A \in \mathcal{L}(W)$, $c \in \mathbb{F}$, and set $B = cI + A$. If $\mu$ is an eigenvalue of $B$, then $\mu - c$ is an eigenvalue of $A$.*
+> **Lemma** *Let $A \in \mathcal{L}(W)$, $c \in \mathbf{F}$, and set $B = cI + A$. If $\mu$ is an eigenvalue of $B$, then $\mu - c$ is an eigenvalue of $A$.*
 >
 > *Proof.* Let $v \neq 0$ satisfy $Bv = \mu v$. Then
 >
@@ -244,13 +244,13 @@ mermaid: true
 {: .prompt-proof }
 > (a) Each $G(\lambda, T)$ is $T$-invariant, hence $p(T)$-invariant. On $G(\lambda, T)$, write $T = \lambda I + N$ where $N$ is nilpotent. Since $\lambda I$ and $N$ commute, the algebraic Taylor expansion of $p$ around $\lambda$ holds:
 >
-> $$p(T)\big|_{G(\lambda,T)} \;=\; \sum_{k=0}^{\deg p} \frac{p^{(k)}(\lambda)}{k!}\, N^k \;=\; p(\lambda)\,I \;+\; \underbrace{\Big(p'(\lambda)N + \tfrac{p''(\lambda)}{2}N^2 + \cdots\Big)}_{=:\,M}.$$
+> $$p(T)\big|_{G(\lambda,T)} \;=\; \sum_{k=0}^{\deg p} \frac{p^{(k)}(\lambda)}{k!}\, N^k \;=\; p(\lambda)\,I \;+\; \underbrace{\Big(p'(\lambda)N + \tfrac{p''(\lambda)}{2}N^2 + \dots\Big)}_{=:\,M}.$$
 >
 > The remainder $M$ is a polynomial in $N$ with **zero constant term**, so it's nilpotent. That means $p(T)$ acts on $G(\lambda, T)$ as $p(\lambda)I + (\text{nilpotent})$ — its *only* eigenvalue there is $p(\lambda)$, and the whole block sits inside $G(p(\lambda), p(T))$. Summing over all $\lambda$ with $p(\lambda) = \alpha$ and counting dimensions (both sides decompose $V$) upgrades the inclusion to equality.
 >
 > (b) Now zoom in from $G$ to $E$ inside a single block. The ordinary eigenspace of $p(T)$ for $\alpha = p(\lambda)$, intersected with $G(\lambda, T)$, is $\operatorname{null}(M)$, whereas $E(\lambda, T) = \operatorname{null}(N)$. Factor $M = N \cdot Q$ with
 >
-> $$Q = p'(\lambda) I + \tfrac{p''(\lambda)}{2}N + \cdots.$$
+> $$Q = p'(\lambda) I + \tfrac{p''(\lambda)}{2}N + \dots.$$
 >
 > Two cases:
 >
@@ -286,7 +286,7 @@ mermaid: true
 >
 > **Case 2: some $S \in \mathcal{E}$ is not a scalar multiple of $I$.** Since $S$ is diagonalizable with eigenvalues $\lambda_1,\dots,\lambda_m$,
 >
-> $$V = E(\lambda_1,S) \oplus \cdots \oplus E(\lambda_m,S),$$
+> $$V = E(\lambda_1,S) \oplus \dots \oplus E(\lambda_m,S),$$
 >
 > and $m \geq 2$ (otherwise $S = \lambda_1 I$). So each $E(\lambda_j, S)$ is a subspace of dimension strictly less than $n$.
 >
@@ -294,7 +294,7 @@ mermaid: true
 >
 > So $\mathcal{E}_j = \{\left. T\right\rvert_W : T \in \mathcal{E}\}$ is a commuting family of diagonalizable operators on a space of dimension $< n$. By the induction hypothesis there is a basis $\mathcal{B}_j$ of $W$ making *every* element of $\mathcal{E}_j$ diagonal — that is, every vector of $\mathcal{B}_j$ is an eigenvector of $T$ for every $T \in \mathcal{E}$ simultaneously.
 >
-> Now let $\mathcal{B} = \mathcal{B}_1 \cup \cdots \cup \mathcal{B}_m$. Because $V$ is the direct sum of the $E(\lambda_j,S)$, this is a basis of $V$, and each of its vectors is an eigenvector of every $T \in \mathcal{E}$. So every element of $\mathcal{E}$ has a diagonal matrix with respect to $\mathcal{B}$. $\blacksquare$
+> Now let $\mathcal{B} = \mathcal{B}_1 \cup \dots \cup \mathcal{B}_m$. Because $V$ is the direct sum of the $E(\lambda_j,S)$, this is a basis of $V$, and each of its vectors is an eigenvector of every $T \in \mathcal{E}$. So every element of $\mathcal{E}$ has a diagonal matrix with respect to $\mathcal{B}$. $\blacksquare$
 
 ![block diagonal to diagonal](../assets/img/math/block_diagonal_refinement_to_diagonal.png)
 
@@ -308,7 +308,7 @@ mermaid: true
 {: .prompt-info }
 > Suppose $\mathbf{F} = \mathbb{C}$ and $V = \bigoplus_{\lambda_k} G(\lambda_k, T)$.
 >
-> $ST = TS \iff G(\lambda_k,T) $ is invariant under $S$ **and** $\left. S \right\rvert_{G(\lambda_k,T)}$ commutes with $\left. (T-\lambda_k I) \right\rvert_{G(\lambda_k,T)}$ for each $ k = 1, \cdots, m $.
+> $ST = TS \iff G(\lambda_k,T) $ is invariant under $S$ **and** $\left. S \right\rvert_{G(\lambda_k,T)}$ commutes with $\left. (T-\lambda_k I) \right\rvert_{G(\lambda_k,T)}$ for each $ k = 1, \dots, m $.
 
 {: .prompt-info }
 > Suppose $T \in \mathcal{L}(V) $, $ p \in \mathcal{P}(\mathbf{F}) $.
@@ -336,3 +336,11 @@ so $S$ and $p(T)$ agree on a basis, hence $S = p(T)$.
 
 {: .prompt-proof }
 An operator with $\text{min} = \text{char}$ is called **nonderogatory** or **cyclic**.
+
+| $ T \in \mathcal{L}(V) $                             | $ G(\lambda, T) $                                           | $ E(\lambda, T) $                                           |
+| ---------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------- |
+| Definition                                           | $ \operatorname{null} (T - \lambda I)^{\dim V} $            | $ \operatorname{null} (T - \lambda I) $                     |
+| Distinct eigenvalues $ \lambda_1, \dots, \lambda_m $ | $ G(\lambda_k, T) $ is invariant under $T$                  | $ E(\lambda_k, T) $ is invariant under $T$                  |
+| Nilpotency                                           | $ \left. (T - \lambda I) \right\rvert_{G(\lambda_k, T)} $   | $ T - \lambda I $                                           |
+| Decomposition                                        | $ V = G(\lambda_1, T) \oplus \dots \oplus G(\lambda_m, T) $ | $ V = E(\lambda_1, T) \oplus \dots \oplus E(\lambda_m, T) $ |
+| Multiplicity of $\lambda$                            | Algebraic: $ \dim G(\lambda, T) $                           | Geometric: $ \dim E(\lambda, T) $                           |
