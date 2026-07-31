@@ -215,3 +215,23 @@ Hence $a_j = \overline{a_j}$ for every $j$, so all coefficients of $p$ are real.
 > and each $E_{j,j} \in \mathcal{B}$. So $\operatorname{span}\mathcal{B}$ contains all $n^2$ matrix units, hence equals $\mathcal{L}(V)$.
 >
 > **Step 3: conclude.** $\mathcal{B}$ is a spanning list of $\mathcal{L}(V)$ of length $n^2 = \dim\mathcal{L}(V)$, so it is a basis (a spanning list of the right length is automatically independent). Its elements are diagonalizable by Step 1. $\blacksquare$
+
+## 5E
+
+{: .prompt-info }
+> 6\. Suppose that $V$ is a nonzero finite-dimensional complex vector space and $S,T \in \mathcal{L}(V) $ commute. Prove that there exist $\alpha, \lambda \in \mathbb{C}$ such that
+>
+> $$ \operatorname{range}(S - \alpha I) + \operatorname{range}(T - \lambda I) \ne V. $$
+
+{: .prompt-proof }
+> $S'$ and $T'$ commute on $V'$, which is a nonzero finite-dimensional complex vector space. By the common-eigenvector theorem for commuting operators, there exist $\varphi \in V'$ with $\varphi \neq 0$ and scalars $\alpha, \lambda \in \mathbb{C}$ with
+>
+> $$S'\varphi = \alpha\varphi, \qquad T'\varphi = \lambda\varphi.$$
+>
+> Now for every $v \in V$,
+>
+> $$\varphi\big((S-\alpha I)v\big) = (S'\varphi)(v) - \alpha\varphi(v) = \alpha\varphi(v) - \alpha\varphi(v) = 0,$$
+>
+> so $\operatorname{range}(S - \alpha I) \subseteq \operatorname{null}\varphi$, and likewise $\operatorname{range}(T-\lambda I) \subseteq \operatorname{null}\varphi$. Since $\varphi \neq 0$, $\operatorname{null}\varphi$ has dimension $n-1$, so
+>
+> $$\operatorname{range}(S-\alpha I) + \operatorname{range}(T-\lambda I) \subseteq \operatorname{null}\varphi \neq V. \qquad \blacksquare$$

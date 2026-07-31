@@ -181,12 +181,12 @@ mermaid: true
 >
 > Consider the linear map $\Phi : \mathcal{P}(\mathbf{F}) \to \mathcal{L}(V)$, $\Phi(q) = q(T)$. Then $\operatorname{range}\Phi = \mathcal{E}$ and $\operatorname{null}\Phi = \{q : q(T) = 0\}$ — exactly the multiples of $p$. So $\mathcal{E} \cong \mathcal{P}(\mathbf{F})/\langle p\rangle$, and the quotient has the remainders of degree $< m$ as canonical representatives — $m$ dimensions' worth.
 
-## Smallest $T$-invariant Subspace Containing $v$
+## Local Minimal Polynomial
 
 {: .prompt-info }
 > Suppose $V$ is finite-dimensional, $ T \in \mathcal{L}(V) $, and $ v \in V $. Then
 >
-> $$\operatorname{span}(v, Tv, \dots, T^m v) = \operatorname{span}(v, Tv, \dots, T^{\dim V - 1}v). \qquad \blacksquare$$
+> $$\operatorname{span}(v, Tv, \dots, T^m v) = \operatorname{span}(v, Tv, \dots, T^{\dim V - 1}v)$$
 >
 > for all integers $ m \ge \dim V - 1 $.
 
@@ -233,15 +233,52 @@ mermaid: true
 
 {: .prompt-tip }
 > **$U_{n-1}$ is $T$-invariant.** Since $T(U_{n-1}) \subseteq U_n = U_{n-1}$. In fact $U_{n-1}$ is the *smallest* $T$-invariant subspace containing $v$ — any such subspace must contain all $T^jv$. So, closing $v$ up under $T$ never requires more than $\dim V$ terms.
->
-> **$k$ is the degree of the minimal polynomial of $T$ relative to $v$.** The dependence found in Claim 2, $T^kv = \sum_{j<k} a_j T^j v$, rearranges to $q(T)v = 0$ with $q(z) = z^k - a_{k-1}z^{k-1} - \cdots - a_0$ monic of degree $k$ — and minimality of $k$ makes $q$ the least-degree monic polynomial with $q(T)v = 0$.
 
 {: .prompt-info }
+> *Local minimal polynomial*
+>
 > Suppose $ V $ is finite-dimensional, $ T \in \mathcal{L}(V) $, and $ v \in V $. Then there exists a unique monic polynomial $ p_v $ of smallest degree such that $ p_v(T)v = 0 $.
 >
-> $ p_v $ is the minimal polynomial of the smallets $T$-invariant subspace $U$ containing $v$, and $ \deg p_v = \dim U $.
+> $ p_v $ is the minimal polynomial of the smallets $T$-invariant subspace $U$ containing $v$, and $ \deg p_v = k = \dim U $.
+
+{: .prompt-proof }
+> In Claim 2, $T^kv = \sum_{j<k} a_j T^j v$, rearranges to $q(T)v = 0$ with $q(z) = z^k - a_{k-1}z^{k-1} - \cdots - a_0$ monic of degree $k$ — and minimality of $k$ makes $q$ the least-degree monic polynomial with $q(T)v = 0$.
 
 {: .prompt-tip }
 > Suppose $ V $ is finite-dimensional, $ T \in \mathcal{L}(V) $, $ q \in \mathcal{P}(\mathbf{F}) $ and $ q(T) = 0 $, then
 >
 > $$ p_v \mid p_T \mid q. $$
+
+{: .prompt-tip }
+> If $p_u$ and $p_w$ are coprime, then $p_{u+w} = p_u p_w$.
+
+{: .prompt-proof }
+> First, $(p_up_w)(T)(u+w) = p_w(T)p_u(T)u + p_u(T)p_w(T)w = 0$, so $p_{u+w} \mid p_up_w$.
+>
+> Conversely suppose $r(T)(u+w) = 0$. Applying $p_w(T)$ and using $p_w(T)w = 0$:
+$$(p_w r)(T)u = p_w(T)r(T)u + p_w(T)r(T)w = p_w(T)r(T)(u+w) = 0,$$
+so $p_u \mid p_w r$, and coprimality gives $p_u \mid r$. Symmetrically $p_w \mid r$, hence $p_up_w \mid r$. Taking $r = p_{u+w}$ finishes it. $\square$
+
+{: .prompt-info }
+> There exists $v \in V$ with $p_v = p$.
+
+{: .prompt-proof }
+> Factor $p = q_1^{m_1}\cdots q_k^{m_k}$ into powers of distinct monic irreducibles. Fix $i$.
+>
+> Since $\deg(p/q_i) < \deg p$, minimality of $p$ gives $(p/q_i)(T) \neq 0$, so choose $u_i$ with $(p/q_i)(T)u_i \neq 0$. Set
+$$w_i = \big(p/q_i^{m_i}\big)(T)\,u_i.$$
+>
+> Then $q_i^{m_i}(T)w_i = p(T)u_i = 0$, so $p_{w_i} \mid q_i^{m_i}$; and $q_i^{m_i-1}(T)w_i = (p/q_i)(T)u_i \neq 0$, so $p_{w_i} \nmid q_i^{m_i-1}$. As $q_i$ is irreducible, the only possibility is $p_{w_i} = q_i^{m_i}$.
+>
+> The polynomials $q_1^{m_1},\dots,q_k^{m_k}$ are pairwise coprime, so $v = w_1 + \cdots + w_k$ gives
+>
+> $$p_v = p_{w_1}\cdots p_{w_k} = q_1^{m_1}\cdots q_k^{m_k} = p. \qquad \blacksquare$$
+
+{: .prompt-tip }
+> **Over $\mathbb{C}$ this is the Jordan statement in disguise.** There $q_i = z - \lambda_i$, and $\deg p = \sum m_i$ while $n = \sum \dim G(\lambda_i, T)$. Since always $m_i \le \dim G(\lambda_i,T)$, the hypothesis $\deg p = n$ forces $m_i = \dim G(\lambda_i,T)$ for every $i$ — that is, **one Jordan block per eigenvalue**. The $w_i$ above is precisely a vector at the *top* of the $i$-th block's chain, and $v$ is their sum.
+
+{: .prompt-info }
+> If $p_v = p$ and $\deg p = n$, then $v, Tv, \dots, T^{n-1}v$ is a basis.
+
+{: .prompt-proof }
+> Suppose $a_0 v + a_1 Tv + \cdots + a_{n-1}T^{n-1}v = 0$ with the $a_j$ not all zero. Then $q(z) = a_0 + a_1 z + \cdots + a_{n-1}z^{n-1}$ is a nonzero polynomial with $q(T)v = 0$, so $p_v \mid q$ — impossible, since $\deg q < n = \deg p_v$. So the list is linearly independent, and $n$ independent vectors in an $n$-dimensional space form a basis. $\square$

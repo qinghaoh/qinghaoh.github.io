@@ -72,7 +72,37 @@ Terms with $t + m \ge m_j$ die on their own (they've fallen off the bottom); the
 {: .prompt-tip }
 > Any two Jordan bases of $N$ give matrices that differ only by a permutation of the diagonal blocks.
 
-### Find a Jordan basis
+### Jordan Block
+
+#### Nilpotent Block
+
+Let $N = J_m(0)$. The band of $1$s migrates one step toward the upper right with each power, and loses one entry each time. With $m = 5$:
+
+$$N = \begin{pmatrix}0&1&0&0&0\\ &0&1&0&0\\ & &0&1&0\\ & & &0&1\\ & & & &0\end{pmatrix},\quad N^2 = \begin{pmatrix}0&0&1&0&0\\ &0&0&1&0\\ & &0&0&1\\ & & &0&0\\ & & & &0\end{pmatrix},\quad N^3 = \begin{pmatrix}0&0&0&1&0\\ &0&0&0&1\\ & &0&0&0\\ & & &0&0\\ & & & &0\end{pmatrix}$$
+
+Then $N^4$ has a single $1$ in the top-right corner, and $N^5 = 0$.
+
+In the bottom-to-top ordering $u_1 = N^{m-1}v, \dots, u_m = v$, we have $Nu_j = u_{j-1}$, hence $N^ru_j = u_{j-r}$, with $u_i := 0$ for $i \le 0$. Column $j$ therefore has its $1$ in row $j - r$, which is the $r$-th superdiagonal. The entries with $j - r \le 0$ fall off the top, leaving $m - r$ ones.
+
+The columns that vanish are $j \le r$, so
+
+$$\dim\operatorname{null}N^r = \min(r, m), \qquad \operatorname{rank}N^r = \max(0, m-r).$$
+
+That's the single-chain case of $\dim\operatorname{null}N^r = \sum_j\min(r,m_j)$, and the "band exits the corner" picture is the same statement as "$N^r$ annihilates the bottom $\min(r,m)$ entries of a column of height $m$."
+
+#### Non-nilpotent Block
+
+If $\lambda \neq 0$, with $A = J_m(\lambda) = \lambda I + N$, the two terms commute, so
+
+$$A^r = \sum_{t=0}^{\min(r,\,m-1)} \binom{r}{t}\lambda^{r-t}N^t.$$
+
+Rather than shifting a single band, this **fills the entire upper triangle**, with $\lambda^r$ on the diagonal, $r\lambda^{r-1}$ on the first superdiagonal, $\binom{r}{2}\lambda^{r-2}$ on the second, and so on — constant along each diagonal, i.e. upper triangular Toeplitz, exactly the commutant shape from earlier. For $m = 4$:
+
+$$A^r = \begin{pmatrix} \lambda^r & r\lambda^{r-1} & \binom{r}{2}\lambda^{r-2} & \binom{r}{3}\lambda^{r-3}\\ & \lambda^r & r\lambda^{r-1} & \binom{r}{2}\lambda^{r-2}\\ & & \lambda^r & r\lambda^{r-1}\\ & & & \lambda^r \end{pmatrix}$$
+
+Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \lambda^{rm} \neq 0$, so $J_m(\lambda)$ is invertible rather than nilpotent; and the shifting behaviour is recovered only through $A - \lambda I = N$, which is precisely why the general Jordan form is proved by subtracting $\lambda$ on each generalized eigenspace and working with the nilpotent part.
+
+### Find a Jordan Basis
 
 {: .prompt-info }
 > **Input.** A nilpotent $N \in \mathcal{L}(V)$.
@@ -253,28 +283,6 @@ giving $\mathcal{M}(N) = J_3(0)\oplus J_2(0)$. Checks: $\lvert T_3 \rvert = 1 = 
 > - Group 3 can be any spanning set of $\operatorname{null}N^j$; a basis is the convenient choice, and duplicates cost nothing since they simply fail to be pivots.
 > - The same elimination produces the null spaces in the first place, by solving $N^j x = 0$, so you can compute the entire tower $\operatorname{null}N, \dots, \operatorname{null}N^p$ with the same tool before the loop starts.
 
-## Invertibility
-
-{: .prompt-info }
-> Let $W$ be a finite-dimensional vector space, let $N \in \mathcal{L}(W)$ be nilpotent, and let $c \in \mathbb{F}$ with $c \neq 0$. Then $cI + N$ is invertible.
-
-{: .prompt-proof }
-> **Lemma** *Let $A \in \mathcal{L}(W)$, $c \in \mathbb{F}$, and set $B = cI + A$. If $\mu$ is an eigenvalue of $B$, then $\mu - c$ is an eigenvalue of $A$.*
->
-> *Proof.* Let $v \neq 0$ satisfy $Bv = \mu v$. Then
->
-> $$Av = (B - cI)v = Bv - cv = \mu v - cv = (\mu - c)v ,$$
->
-> and $v \neq 0$, so $\mu - c$ is an eigenvalue of $A$. $\blacksquare$
->
-> **Proof of the Theorem.**
->
-> If $W = \{0\}$ the statement is trivial, so assume $W \neq \{0\}$.
->
-> Now we prove $0$ is not an eigenvalue of $cI + N$. Suppose toward a contradiction that it is. Applying the Lemma with $A = N$, $B = cI + R$, and $\mu = 0$, we conclude that $0 - c = -c$ is an eigenvalue of $N$. The only eigenvalue of $N$ is $0$, hence $-c = 0$, i.e. $c = 0$ — contradicting the hypothesis $c \neq 0$.
->
-> Therefore, $cI + N$ is injective and thus invertible. $\blacksquare$
-
 ## Commuting Operators
 
 ### Parametrization
@@ -309,6 +317,11 @@ So the constraint is precisely what's needed at the *bottom* of each chain, and 
 $$\{S : SN = NS\} \;\cong\; \operatorname{null}N^{m_1} \times \cdots \times \operatorname{null}N^{m_k}, \qquad S \mapsto (Sv_1,\dots,Sv_k),$$
 
 $$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j).$$
+
+{: .prompt-info }
+> 1. Find a Jordan basis for $N$, with tops $v_1,\dots,v_k$ and lengths $m_1,\dots,m_k$.
+> 2. For each $i$, compute $\operatorname{null}N^{m_i}$ and choose any $w_i$ in it.
+> 3. Define $S(N^tv_i) := N^tw_i$ for $0 \le t \le m_i - 1$. Done: $S$ commutes with $N$, and every commuting operator is obtained this way.
 
 {: .prompt-warning }
 > Nothing above says $Sv_i$ has to lie in chain $i$. The reason is visible in the constraint itself: $\operatorname{null}N^{m_i}$ is not a subspace of chain $i$. It is spanned by the bottom $\min(m_i, m_j)$ vectors of **every** chain $j$, so it reaches across the whole array. In the extreme case where all lengths equal $p$, we get $\operatorname{null}N^{m_i} = \operatorname{null}N^p = V$ and there is no constraint whatsoever.
@@ -355,6 +368,20 @@ Spot-check: $SN(x^2) = S(2x) = y$ and $NS(x^2) = N(xy) = y$; also $SN(xy) = S(y)
 Dimension check: $\dim\operatorname{null}N^3 + \dim\operatorname{null}N^2 = 5 + 4 = 9$, agreeing with $\sum_{i,j}\min(m_i,m_j) = 3+2+2+2$, out of $25$ for all of $\mathcal{L}(V)$.
 
 The isomorphism also handles the **basis** of the commutant for free: run over a basis of $\operatorname{null}N^{m_i}$ for one index with the other $w$'s set to $0$. Here that gives $5 + 4 = 9$ explicit commuting operators spanning the commutant.
+
+**Excercise**
+
+{: .prompt-info }
+> Give an example of two commuting operators $S,T$ on $\mathbf{F}^4$ such that there is a subspace of $\mathbf{F}^4$ that is invariant under $S$ but not under $T$ and there is a subspace of $\mathbf{F}^4$ that is invariant under $T$ but not under $S$.
+
+Take $\mathbf{F}^4$ with $N e_2 = e_1$, $Ne_4 = e_3$, $Ne_1 = Ne_3 = 0$: two chains of length $2$, tops $e_2, e_4$. Both nulls are all of $\mathbf{F}^4$, so choose $w_1 = e_4$, $w_2 = e_2$, giving the chain swap
+
+$$S: e_2 \mapsto e_4,\ e_1 \mapsto e_3,\ e_4 \mapsto e_2,\ e_3 \mapsto e_1.$$
+
+Then $SN = NS$ by construction, and
+
+- $\operatorname{span}(e_1)$ is $N$-invariant, since $Ne_1 = 0$, but not $S$-invariant, since $Se_1 = e_3$;
+- $\operatorname{span}(e_2+e_4)$ is $S$-invariant, since $S(e_2+e_4) = e_2+e_4$, but not $N$-invariant, since $N(e_2+e_4) = e_1+e_3$.
 
 ### Single-chain Case
 
@@ -415,3 +442,25 @@ So $S$ is completely determined by the single vector $w$. Conversely, any $w$ wo
 Write $w = a e_1 + b e_2 + c e_3$. Then $Se_3 = ae_1+be_2+ce_3$, $Se_2 = be_1 + ce_2$, $Se_1 = ce_1$, so
 
 $$S = \begin{pmatrix} c&b&a\\ 0&c&b\\ 0&0&c\end{pmatrix} = cI + bN + aN^2.$$
+
+## Invertibility
+
+{: .prompt-info }
+> Let $W$ be a finite-dimensional vector space, let $N \in \mathcal{L}(W)$ be nilpotent, and let $c \in \mathbb{F}$ with $c \neq 0$. Then $cI + N$ is invertible.
+
+{: .prompt-proof }
+> **Lemma** *Let $A \in \mathcal{L}(W)$, $c \in \mathbb{F}$, and set $B = cI + A$. If $\mu$ is an eigenvalue of $B$, then $\mu - c$ is an eigenvalue of $A$.*
+>
+> *Proof.* Let $v \neq 0$ satisfy $Bv = \mu v$. Then
+>
+> $$Av = (B - cI)v = Bv - cv = \mu v - cv = (\mu - c)v ,$$
+>
+> and $v \neq 0$, so $\mu - c$ is an eigenvalue of $A$. $\blacksquare$
+>
+> **Proof of the Theorem.**
+>
+> If $W = \{0\}$ the statement is trivial, so assume $W \neq \{0\}$.
+>
+> Now we prove $0$ is not an eigenvalue of $cI + N$. Suppose toward a contradiction that it is. Applying the Lemma with $A = N$, $B = cI + R$, and $\mu = 0$, we conclude that $0 - c = -c$ is an eigenvalue of $N$. The only eigenvalue of $N$ is $0$, hence $-c = 0$, i.e. $c = 0$ — contradicting the hypothesis $c \neq 0$.
+>
+> Therefore, $cI + N$ is injective and thus invertible. $\blacksquare$

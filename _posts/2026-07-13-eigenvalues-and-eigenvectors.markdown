@@ -259,17 +259,7 @@ mermaid: true
 >
 > So the precise condition for strict growth of the ordinary eigenspace is: **$\lambda$ is a critical point of $p$ (i.e. $p'(\lambda)=0$) *and* $\lambda$ is a defective eigenvalue of $T$ (has a nontrivial Jordan block).**
 
-{: .prompt-tip }
-> *Jordan chains*: on a chain $v_k \mapsto v_{k-1} \mapsto \cdots \mapsto v_1 \mapsto 0$, the nilpotent operator $N$ pushes each basis vector one step *down* the chain, and drops the bottom one to $0$. Nothing gets rescaled — every vector is *displaced along the chain*. A vector could only be an eigenvector if this downshift landed it back on a multiple of itself, and the sole way that happens is the bottom vector going to $0 = 0 \cdot v_1$. Hence a nilpotent has eigenvalue $0$ only.
-
 ## Commuting Operators
-
-{: .prompt-info }
-> *simultaneous diagonalizability $\iff$ commutativity*
->
-> Suppose $ \mathcal{E} $ is a subset of $ \mathcal{L}(V) $ and every element of $ \mathcal{E} $ is diagonalizable.
->
-> There exists a basis of $ V $ with respect to which every element of $ \mathcal{E} $ has a diagonal matrix $\iff$ every pair of elements of $ \mathcal{E} $ commutes.
 
 {: .prompt-info }
 > Suppose $ S,T \in \mathcal{L}(V) $ are such that $ ST = TS $. Suppose $ p \in \mathcal{P}(\mathbf{F}) $. Then
@@ -283,12 +273,66 @@ mermaid: true
 > * $ p(z) = (z - \lambda)^{\dim V} $, then $ G(\lambda, S) $ is invariant under $ T $.
 
 {: .prompt-info }
+> *simultaneous diagonalizability $\iff$ commutativity*
+>
+> Suppose $ \mathcal{E} $ is a subset of $ \mathcal{L}(V) $ and every element of $ \mathcal{E} $ is diagonalizable.
+>
+> There exists a basis of $ V $ with respect to which every element of $ \mathcal{E} $ has a diagonal matrix $\iff$ every pair of elements of $ \mathcal{E} $ commutes.
+
+{: .prompt-proof }
+> ($\Leftarrow$) Suppose every pair in $\mathcal{E}$ commutes. Induct on $n = \dim V$.
+>
+> **Case 1: every $T \in \mathcal{E}$ is a scalar multiple of $I$.** Then every basis of $V$ works. (This covers $n = 1$, so the base case is free.)
+>
+> **Case 2: some $S \in \mathcal{E}$ is not a scalar multiple of $I$.** Since $S$ is diagonalizable with eigenvalues $\lambda_1,\dots,\lambda_m$,
+>
+> $$V = E(\lambda_1,S) \oplus \cdots \oplus E(\lambda_m,S),$$
+>
+> and $m \geq 2$ (otherwise $S = \lambda_1 I$). So each $E(\lambda_j, S)$ is a subspace of dimension strictly less than $n$.
+>
+> Fix $j$ and write $W = E(\lambda_j, S)$. $W$ is invariant under every $T \in \mathcal{E}$ and each $\left. T \right\rvert_W$ is diagonalizable, so the restricted family commutes: for $T, R \in \mathcal{E}$ and $w \in W$, invariance gives $(\left. T \right\rvert_W)(\left. R \right\rvert_W)w = T(Rw) = (TR)w = (RT)w = (\left. R \right\rvert_W)(\left. T \right\rvert_W)w$.
+>
+> So $\mathcal{E}_j = \{\left. T\right\rvert_W : T \in \mathcal{E}\}$ is a commuting family of diagonalizable operators on a space of dimension $< n$. By the induction hypothesis there is a basis $\mathcal{B}_j$ of $W$ making *every* element of $\mathcal{E}_j$ diagonal — that is, every vector of $\mathcal{B}_j$ is an eigenvector of $T$ for every $T \in \mathcal{E}$ simultaneously.
+>
+> Now let $\mathcal{B} = \mathcal{B}_1 \cup \cdots \cup \mathcal{B}_m$. Because $V$ is the direct sum of the $E(\lambda_j,S)$, this is a basis of $V$, and each of its vectors is an eigenvector of every $T \in \mathcal{E}$. So every element of $\mathcal{E}$ has a diagonal matrix with respect to $\mathcal{B}$. $\blacksquare$
+
+![block diagonal to diagonal](../assets/img/math/block_diagonal_refinement_to_diagonal.png)
+
+{: .prompt-info }
+> Suppose $V$ is a finite-dimensional nonzero *complex* vector space. Suppose that $ \mathcal{E} \subset \mathcal{L}(V) $ is such that $S$ and $T$ commute for all $S,T \in \mathcal{E}$.
+>
+> (a) There is a vector in $V$ that is an eigenvector for every element of $\mathcal{E}$.
+>
+> (b) There is a basis of $V$ with respect to which every element of $\mathcal{E}$ has an upper-triangular matrix.
+
+{: .prompt-info }
 > Suppose $\mathbf{F} = \mathbb{C}$ and $V = \bigoplus_{\lambda_k} G(\lambda_k, T)$.
 >
 > $ST = TS \iff G(\lambda_k,T) $ is invariant under $S$ **and** $\left. S \right\rvert_{G(\lambda_k,T)}$ commutes with $\left. (T-\lambda_k I) \right\rvert_{G(\lambda_k,T)}$ for each $ k = 1, \cdots, m $.
 
 {: .prompt-info }
-> For any $T$, the commutant equals $\mathbf{F}[T]$ precisely when the minimal and characteristic polynomials coincide.
+> Suppose $T \in \mathcal{L}(V) $, $ p \in \mathcal{P}(\mathbf{F}) $.
+>
+> $p(T)$ and $T$ commute $\iff$ the minimal and characteristic polynomials coincide.
 
 {: .prompt-info }
-> For a nilpotent operator $N$, the commutant equals $\mathbf{F}[N] \iff N $ has a single Jordan block.
+> Suppose a nilpotent operator $N \in \mathcal{L}(V) $, $ p \in \mathcal{P}(\mathbf{F}) $.
+>
+> $p(N)$ and $N$ commute $\iff$ N $ has a single Jordan block.
+
+{: .prompt-info }
+> $\mathcal{C}(T) = \\{S \in \mathcal{L}(V) : ST = TS\\}$ and $\mathcal{P}(T) = \\{p(T) : p \in \mathcal{P}(\mathbf{F})\\}$
+>
+> (a) $\mathcal{C}(T) = \mathcal{P}(T)$ $\iff$ the minimal and characteristic polynomials of $T$ coincide.
+>
+> (b) For $N$ nilpotent, $\mathcal{C}(N) = \mathcal{P}(N)$ $\iff$ $N$ has a single Jordan block.
+
+{: .prompt-proof }
+> ($\Leftarrow$) If $\deg(\text{min poly}) = n$, then $V$ is cyclic: there is $v$ with $v, Tv, \dots, T^{n-1}v$ a basis. Given $S \in \mathcal{C}(T)$, write $Sv = p(T)v$ for some polynomial $p$ (possible since that list spans $V$). Then for each $j$,
+$$S(T^j v) = T^j(Sv) = T^j p(T) v = p(T)(T^j v),$$
+so $S$ and $p(T)$ agree on a basis, hence $S = p(T)$.
+>
+> ($\Rightarrow$) Use $\dim \mathcal{P}(T) = \deg(\text{min poly})$ together with the standard fact $\dim \mathcal{C}(T) \geq n$, with equality exactly when $T$ is cyclic. If $\mathcal{C}(T) = \mathcal{P}(T)$ then $\deg(\text{min poly}) = \dim\mathcal{C}(T) \geq n$, and since the minimal polynomial always divides the characteristic one, degree $n$ forces them equal.
+
+{: .prompt-proof }
+An operator with $\text{min} = \text{char}$ is called **nonderogatory** or **cyclic**.
