@@ -80,6 +80,9 @@ mermaid: true
 {: .prompt-info }
 > $\dim\operatorname{null}N^m = \sum_j \min(m, m_j)$.
 
+{: .prompt-tip }
+> A $k \times m$ rectangle, bottom-aligned, and $d_m$ is the number of diagram boxes it covers.
+
 {: .prompt-proof }
 > Column $i$ contributes $\min(m, m_i)$ boxes to it. Whichever runs out first wins:
 >
@@ -87,9 +90,6 @@ mermaid: true
 > - **Tall column** ($m_i > m$): only the bottom $m$ die — $m$ boxes.
 >
 > Summing over columns gives $\dim\operatorname{null}N^m = \sum_i \min(m,m_i)$. $\blacksquare$
-
-{: .prompt-tip }
-> A $k \times m$ rectangle, bottom-aligned, and $d_m$ is the number of diagram boxes it covers.
 
 {: .prompt-info }
 > Let $N$ be nilpotent on $V$. The partition $\mu$ does not depend on which Jordan basis produced it, and two nilpotent operators are similar if and only if their partitions agree.
@@ -117,6 +117,62 @@ mermaid: true
 
 {: .prompt-tip }
 > Any two Jordan bases of $N$ give matrices that differ only by a permutation of the diagonal blocks.
+
+### Two Extremes
+
+Everything so far has been about a general shape. Two degenerate shapes are worth naming,
+because the whole framework collapses in opposite directions.
+
+{: .prompt-info }
+> **One column.** $\mu = (n)$, $\mu' = (1,\dots,1)$. A single chain of length $n$: one top, one bottom, $p = n$.
+>
+> **One level.** $\mu = (1,\dots,1)$, $\mu' = (n)$. $n$ chains of length $1$: every box is simultaneously a top and a bottom, $p = 1$.
+
+{: .prompt-tip }
+> These are conjugate to each other. Conjugation reflects the diagram, and a single column reflects to a single level, so the two extremes of the framework are one partition and its transpose. Anything proved by counting columns in one case is proved by counting levels in the other.
+>
+> They are also the only two shapes fixed by their own description in this way: every other $\mu$ has both a column of height $\ge 2$ and a level of size $\ge 2$.
+
+The two cases sit at opposite ends of every invariant in this post.
+
+|                               | one column     | one level             |
+| ----------------------------- | -------------- | --------------------- |
+| $\mu$                         | $(n)$          | $(1^n)$               |
+| $\mu'$                        | $(1^n)$        | $(n)$                 |
+| chains $k = \mu'_1$           | $1$            | $n$                   |
+| index of nilpotency $p = m_1$ | $n$            | $1$                   |
+| $d_j$                         | $\min(j, n)$   | $n$ for all $j \ge 1$ |
+| $\operatorname{rank}N^j$      | $\max(0, n-j)$ | $0$ for all $j \ge 1$ |
+| $\mathcal{M}(N)$              | $J_n(0)$       | the zero matrix       |
+| $\dim\mathcal{C}(N)$          | $n$            | $n^2$                 |
+| $\dim\mathcal{P}(N) = p$      | $n$            | $1$                   |
+
+The last two rows are the sharpest contrast. For a single chain the commutant is as small
+as it can be and consists entirely of polynomials in $N$; for $N = 0$ the commutant is
+everything and the polynomials are only the scalars. Both are computed in the
+[Commuting Operators](#commuting-operators) section; the bounds
+
+$$n \;\le\; \dim\mathcal{C}(N) \;\le\; n^2$$
+
+hold for every nilpotent $N$, with equality on the left exactly for one column and on the
+right exactly for one level.
+
+{: .prompt-tip }
+> The one-level case is the nilpotent shadow of diagonalizability. If $T$ has eigenvalue $\lambda$ and $N = \left. (T - \lambda I) \right\rvert_{G(\lambda,T)}$, then
+>
+> $$G(\lambda, T) = E(\lambda, T) \iff \operatorname{null}N = \operatorname{null}N^{\dim V} \iff N = 0 \iff \mu = (1,\dots,1),$$
+>
+> and the block for $\lambda$ is $\lambda I$ rather than a nontrivial Jordan form. Equivalently, the tallest column of $\lambda$'s diagram has height $1$ — which is where the criterion "$T$ is diagonalizable iff its minimal polynomial has no repeated roots" comes from, since that height is the exponent of $z - \lambda$ in the minimal polynomial. Note this diagonalizes one block only: $T$ itself is diagonalizable iff every eigenvalue has one-level shape.
+
+{: .prompt-tip }
+> *Uniqueness of the basis, at both ends.* The shape is forced, but how much freedom remains in choosing the basis is not uniform.
+>
+> For one level, $N = 0$ and *every* basis of $V$ is a Jordan basis, so the freedom is the full $n^2$-dimensional space of invertible operators. For one column, a Jordan basis is determined by its top $v$, which can be any vector outside $\operatorname{null}N^{n-1}$; the rest of the chain follows by applying $N$. The freedom is $n$-dimensional, matching $\dim\mathcal{C}(N) = n$.
+>
+> That is not a coincidence. The *invertible* elements of $\mathcal{C}(N)$ act simply transitively on the Jordan bases of a fixed shape: given two such bases, exactly one invertible operator commuting with $N$ carries the first to the second. So the choice available is measured by the invertible part of the commutant, which is why $\dim\mathcal{C}(N)$ is the right measure of how non-unique the basis is.
+
+{: .prompt-tip }
+> *Invariant subspaces.* For one level every subspace is invariant, since $N = 0$. For one column the invariant subspaces are exactly the $n+1$ subspaces $\operatorname{null}N^j$, $0 \le j \le n$ — a single chain of them, totally ordered by inclusion. Least possible structure and most possible structure, again at the two ends.
 
 ### Jordan Block
 
@@ -325,192 +381,25 @@ giving $\mathcal{M}(N) = J_3(0)\oplus J_2(0)$. Checks: $\lvert T_3 \rvert = 1 = 
 > - Group 3 can be any spanning set of $\operatorname{null}N^j$; a basis is the convenient choice, and duplicates cost nothing since they simply fail to be pivots.
 > - The same elimination produces the null spaces in the first place, by solving $N^j x = 0$, so you can compute the entire tower $\operatorname{null}N, \dots, \operatorname{null}N^p$ with the same tool before the loop starts.
 
-## Commuting Operators
-
-### Parametrization
-
-Suppose $SN = NS$. Then $SN^j = N^jS$ for all $j$, so for every basis vector
-
-$$S(N^j v_i) = N^j (S v_i).$$
-
-The left side is $S$ on an arbitrary *basis* vector; the right side only involves the $k$ vectors $Sv_1,\dots,Sv_k$. So a commuting $S$ is pinned down by its values on the $k$ tops.
-
-Write $w_i = Sv_i$. Since $N^{m_i}v_i = 0$,
-
-$$0 = S(N^{m_i}v_i) = N^{m_i}(Sv_i) = N^{m_i}w_i,$$
-
-so the constraint is
-
-$$\boxed{\,w_i \in \operatorname{null} N^{m_i}\,}$$
-
-Each top may be sent anywhere killed by $N^{m_i}$.
-
-Conversely, pick any $w_1,\dots,w_k$ with $w_i \in \operatorname{null}N^{m_i}$ and *define* $S$ on the basis by
-
-$$S(N^jv_i) := N^j w_i, \qquad 0 \le j \le m_i - 1.$$
-
-$S$ commutes with $N$. Check on a basis vector $N^jv_i$:
-
-- If $j < m_i - 1$: $\;SN(N^jv_i) = S(N^{j+1}v_i) = N^{j+1}w_i$, while $NS(N^jv_i) = N(N^jw_i) = N^{j+1}w_i$. Equal.
-- If $j = m_i-1$ (bottom of the chain): $\;SN(N^{m_i-1}v_i) = S(0) = 0$, while $NS(N^{m_i-1}v_i) = N^{m_i}w_i = 0$ by the constraint.
-
-So the constraint is precisely what's needed at the *bottom* of each chain, and nowhere else. Conclusion:
-
-$$\{S : SN = NS\} \;\cong\; \operatorname{null}N^{m_1} \times \dots \times \operatorname{null}N^{m_k}, \qquad S \mapsto (Sv_1,\dots,Sv_k),$$
-
-$$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j) = \sum_j \left(\mu'_j\right)^2.$$
-
-{: .prompt-tip }
-> The same box counting evaluates the double sum. Writing $\min(m_i,m_j) = \\#\\{l : l \le m_i \text{ and } l \le m_j\\}$ turns it into a count of triples $(i,j,l)$:
->
-> $$\sum_{i,j}\min(m_i,m_j) \;=\; \sum_{l \ge 1}\#\{i : m_i \ge l\}\cdot\#\{j : m_j \ge l\} \;=\; \sum_{l\ge1}\left(\mu'_l\right)^2 ,$$
->
-> the sum of squares of the level sizes. So the commutant is large exactly when the diagram is short and wide — many chains of similar length — and smallest, of dimension $\dim V$, when the diagram is a single column.
-
-{: .prompt-info }
-> 1. Find a Jordan basis for $N$, with tops $v_1,\dots,v_k$ and lengths $m_1,\dots,m_k$.
-> 2. For each $i$, compute $\operatorname{null}N^{m_i}$ and choose any $w_i$ in it.
-> 3. Define $S(N^tv_i) := N^tw_i$ for $0 \le t \le m_i - 1$. Done: $S$ commutes with $N$, and every commuting operator is obtained this way.
-
-{: .prompt-warning }
-> Nothing above says $Sv_i$ has to lie in chain $i$. The reason is visible in the constraint itself: $\operatorname{null}N^{m_i}$ is not a subspace of chain $i$. It is spanned by the bottom $\min(m_i, m_j)$ vectors of **every** chain $j$, so it reaches across the whole array. In the extreme case where all lengths equal $p$, we get $\operatorname{null}N^{m_i} = \operatorname{null}N^p = V$ and there is no constraint whatsoever.
->
-> Take $\mathbf{F}^4$ with two chains of length $2$:
->
-> $$e_2 \to e_1 \to 0, \qquad e_4 \to e_3 \to 0.$$
->
-> Here $N^2 = 0$, so both constraints read $w_i \in \mathbf{F}^4$ and any pair of tops is legal. Swapping the chains is the choice $w_1 = e_4$, $w_2 = e_2$, which forces
->
-> $$Se_2 = e_4, \quad Se_1 = Ne_4 = e_3, \qquad Se_4 = e_2, \quad Se_3 = Ne_2 = e_1.$$
->
-> No verification is needed, since the construction guarantees $SN = NS$, but as a spot-check: $SNe_2 = Se_1 = e_3$ and $NSe_2 = Ne_4 = e_3$. So $S$ commutes with $N$ while carrying chain $1$ onto chain $2$.
->
-> Shearing works the same way. Take $w_1 = e_2 + e_4$ and $w_2 = e_4$, giving
->
-> $$Se_2 = e_2 + e_4, \quad Se_1 = e_1 + e_3, \qquad Se_4 = e_4, \quad Se_3 = e_3.$$
->
-> This blends chain $1$ into chain $2$ without being a permutation of the basis.
->
-> The most extreme case is $N = 0$ on $\mathbf{F}^2$, two chains of length $1$. Every operator commutes, so the commutant is all of $\mathcal{L}(\mathbf{F}^2)$, of dimension $4$; the ones preserving $\operatorname{span}(e_1)$ are the upper triangular matrices, a proper subspace of dimension $3$. Preserving a chosen block is a genuine restriction that most commuting operators fail.
->
-> Unequal lengths are where the constraint bites. Take $\mathbb{C}^3$ with chains
->
-> $$e_2 \to e_1 \to 0, \qquad f \to 0,$$
->
-> so $m_1 = 2$ and $m_2 = 1$. The top of the long chain is unconstrained, since $\operatorname{null}N^2 = \mathbf{F}^3$, so $Se_2$ may be $f$. But the top of the short chain satisfies $Sf \in \operatorname{null}N = \operatorname{span}(e_1, f)$, so $Sf$ cannot be $e_2$: a short chain can only be sent into the bottom portion of a longer one, never onto its top. The freedom is **asymmetric**, and $\min(m_i, m_j)$ is exactly the bookkeeping for it.
-
-**Worked example**
-
-Take $N = \partial/\partial x$ on $V = \operatorname{span}(1,x,y,x^2,xy)$ again, with the Jordan basis found earlier: chain $x^2 \to 2x \to 2$ and chain $xy \to y$. So $v_1 = x^2$ with $m_1 = 3$, and $v_2 = xy$ with $m_2 = 2$.
-
-Constraints: $w_1 \in \operatorname{null}N^3 = V$, unrestricted; $w_2 \in \operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$.
-
-The asymmetry is visible: $w_1$ may be $xy$, but $w_2$ may **not** be $x^2$, since $N^2x^2 = 2 \neq 0$. The short chain cannot be sent to the top of the long one.
-
-Choose $w_1 = xy$ and $w_2 = 2x$. Then
-
-$$S(x^2) = xy, \quad S(2x) = N(xy) = y, \quad S(2) = N^2(xy) = 0,$$
-$$S(xy) = 2x, \quad S(y) = N(2x) = 2.$$
-
-Spot-check: $SN(x^2) = S(2x) = y$ and $NS(x^2) = N(xy) = y$; also $SN(xy) = S(y) = 2$ and $NS(xy) = N(2x) = 2$.
-
-Dimension check: $\dim\operatorname{null}N^3 + \dim\operatorname{null}N^2 = 5 + 4 = 9$, agreeing with $\sum_{i,j}\min(m_i,m_j) = 3+2+2+2$ and with $\sum_l(\mu'_l)^2 = 4 + 4 + 1$, out of $25$ for all of $\mathcal{L}(V)$.
-
-The isomorphism also handles the **basis** of the commutant for free: run over a basis of $\operatorname{null}N^{m_i}$ for one index with the other $w$'s set to $0$. Here that gives $5 + 4 = 9$ explicit commuting operators spanning the commutant.
-
-**Exercise**
-
-{: .prompt-info }
-> Give an example of two commuting operators $S,T$ on $\mathbf{F}^4$ such that there is a subspace of $\mathbf{F}^4$ that is invariant under $S$ but not under $T$ and there is a subspace of $\mathbf{F}^4$ that is invariant under $T$ but not under $S$.
-
-Take $\mathbf{F}^4$ with $N e_2 = e_1$, $Ne_4 = e_3$, $Ne_1 = Ne_3 = 0$: two chains of length $2$, tops $e_2, e_4$. Both nulls are all of $\mathbf{F}^4$, so choose $w_1 = e_4$, $w_2 = e_2$, giving the chain swap
-
-$$S: e_2 \mapsto e_4,\ e_1 \mapsto e_3,\ e_4 \mapsto e_2,\ e_3 \mapsto e_1.$$
-
-Then $SN = NS$ by construction, and
-
-- $\operatorname{span}(e_1)$ is $N$-invariant, since $Ne_1 = 0$, but not $S$-invariant, since $Se_1 = e_3$;
-- $\operatorname{span}(e_2+e_4)$ is $S$-invariant, since $S(e_2+e_4) = e_2+e_4$, but not $N$-invariant, since $N(e_2+e_4) = e_1+e_3$.
-
-### Single-chain Case
-
-If $k = 1$ with length $m$, then $\operatorname{null}N^m = V$, so there is **no constraint at all** and $S$ is determined by an arbitrary $w = Sv$. Since $k = 1$, the chain
-
-$$v,\; Nv,\; \dots,\; N^{m-1}v$$
-
-is a basis of $V$, so expand $w$ in it:
-
-$$w = c_0v + c_1Nv + \dots + c_{m-1}N^{m-1}v = q(N)v, \qquad q(z) = c_0 + c_1z + \dots + c_{m-1}z^{m-1}.$$
-
-Now compare $S$ with $q(N)$ on each basis vector $N^tv$, for $0 \le t \le m-1$:
-
-$$S(N^tv) \;=\; N^t(Sv) \;=\; N^t\big(q(N)v\big) \;=\; q(N)(N^tv).$$
-
-The first equality is $SN^t = N^tS$, from $SN = NS$. The second substitutes $Sv = w = q(N)v$. The third is $N^tq(N) = q(N)N^t$, since polynomials in $N$ commute with powers of $N$.
-
-So $S$ and $q(N)$ agree on a basis of $V$, hence are equal as operators:
-
-$$S = c_0I + c_1N + \dots + c_{m-1}N^{m-1}.$$
-
-In the basis $(N^{m-1}v,\dots,Nv,v)$ this is the upper-triangular [Toeplitz matrix](https://en.wikipedia.org/wiki/Toeplitz_matrix) with $c_0$ down the diagonal, $c_1$ on the next diagonal, and so on.
-
-{: .prompt-warning }
-> Polynomials in $N$ always commute with $N$, so $\{\text{polynomials in }N\} \subseteq \{S : SN = NS\}$ for every nilpotent $N$. What the one-chain case gives is *equality*, and that is what fails when $k \ge 2$: the inclusion becomes strict, so "commutes with $N$" is no longer the same condition as "is a polynomial in $N$".
-
-{: .prompt-proof }
-> Write $\mathcal{C}(N) = \\{S \in \mathcal{L}(V) : SN = NS\\}$ for the commutant of $N$, and $\mathcal{P}(N) = \\{q(N) : q is a polynomial with coefficients in \mathbf{F}\\}$ for the operators expressible as polynomials in $N$. Let $p = \max_i m_i$ be the index of nilpotency, so $N^p = 0$, and recall $\dim V = \sum_i m_i$.
->
-> **The inclusion always holds.** $N$ commutes with $I$ and with itself, hence with every polynomial in itself, so $\mathcal{P}(N) \subseteq \mathcal{C}(N)$. Only equality is at issue.
->
-> **$\dim\mathcal{P}(N) = p$.** Spanning: any term of degree $\ge p$ vanishes on substituting $N$, since writing $q(z) = z^pa(z) + r(z)$ with $\deg r < p$ gives $q(N) = r(N)$. So $I, N, \dots, N^{p-1}$ spans $\mathcal{P}(N)$. Independence: choose $i_0$ with $m_{i_0} = p$, so the chain of $v_{i_0}$ has exactly $p$ entries. If $\sum_{t<p} c_tN^t = 0$, applying it to $v_{i_0}$ gives $\sum_{t<p} c_tN^tv_{i_0} = 0$, a relation among $p$ distinct members of the Jordan basis, so every $c_t = 0$.
->
-> **$\dim\mathcal{C}(N) \ge \dim V$.** By the parametrization above, $\dim\mathcal{C}(N) = \sum_{i,j}\min(m_i,m_j)$. View that as a $k \times k$ table with entry $(i,j)$ equal to $\min(m_i,m_j)$. Its diagonal entries are $\min(m_i,m_i) = m_i$, summing to $\dim V$, and every remaining entry is positive. So the bound holds, with equality exactly when the table has no off-diagonal entries, i.e. when $k = 1$.
->
-> **Conclusion.** If $k \ge 2$, then $\dim V = \sum_i m_i > \max_i m_i = p$, since the omitted lengths are positive, so
->
-> $$\dim\mathcal{C}(N) \ \ge\ \dim V \ >\ p \ =\ \dim\mathcal{P}(N)$$
->
-> and the inclusion is strict. If $k = 1$, the double sum has the single term $\min(m_1,m_1) = m_1 = \dim V = p$, so both spaces have dimension $p$, and an inclusion of subspaces of equal finite dimension is an equality. Hence
->
-> $$\mathcal{C}(N) = \mathcal{P}(N) \iff k = 1,$$
->
-> that is, iff $N$ has a single Jordan block, equivalently $\dim\operatorname{null}N = 1$.
-
-**Worked example**
-
-Take $\mathbf{F}^3$ with chain $e_3 \to e_2 \to e_1 \to 0$; that is, $Ne_3 = e_2$, $Ne_2 = e_1$, $Ne_1 = 0$, so
-
-$$N = \begin{pmatrix} 0&1&0\\ 0&0&1\\ 0&0&0\end{pmatrix}.$$
-
-Suppose $SN = NS$. Whatever $S$ does to the top vector, say $Se_3 = w$, everything else is forced:
-
-$$Se_2 = S(Ne_3) = N(Se_3) = Nw, \qquad Se_1 = S(Ne_2) = N(Se_2) = N^2w.$$
-
-So $S$ is completely determined by the single vector $w$. Conversely, any $w$ works: the only condition left to check is $S(Ne_1) = N(Se_1)$, i.e. $0 = N^3w$, which is automatic.
-
-Write $w = a e_1 + b e_2 + c e_3$. Then $Se_3 = ae_1+be_2+ce_3$, $Se_2 = be_1 + ce_2$, $Se_1 = ce_1$, so
-
-$$S = \begin{pmatrix} c&b&a\\ 0&c&b\\ 0&0&c\end{pmatrix} = cI + bN + aN^2.$$
-
 ## Invertibility
 
 {: .prompt-info }
-> Let $W$ be a vector space over $\mathbf{F}$, let $N \in \mathcal{L}(W)$ be nilpotent with $N^p = 0$, and let $c \in \mathbf{F}$ with $c \neq 0$. Then $cI + N$ is invertible, and
+> Let $W$ be a vector space over $\mathbf{F}$, let $N \in \mathcal{L}(W)$ be nilpotent with $N^p = 0$, and let $\lambda \in \mathbf{F}$ with $\lambda \neq 0$. Then $\lambda I + N$ is invertible, and
 >
-> $$(cI+N)^{-1} \;=\; \sum_{t=0}^{p-1} \frac{(-1)^t}{c^{\,t+1}}\,N^t .$$
+> $$(\lambda I+N)^{-1} \;=\; \sum_{t=0}^{p-1} \frac{(-1)^t}{\lambda^{\,t+1}}\,N^t .$$
 
 {: .prompt-proof }
-> Set $A = -c^{-1}N$. Since scalars commute with everything, $A^p = (-c^{-1})^pN^p = 0$, and
+> Set $A = -\lambda^{-1}N$. Since scalars commute with everything, $A^p = (-\lambda^{-1})^pN^p = 0$, and
 >
-> $$cI + N = c\left(I - A\right).$$
+> $$\lambda I + N = \lambda\left(I - A\right).$$
 >
 > Let $G = \sum_{t=0}^{p-1}A^t$, a finite sum. Both products telescope:
 >
 > $$(I-A)G \;=\; \sum_{t=0}^{p-1}A^t \;-\; \sum_{t=0}^{p-1}A^{t+1} \;=\; \sum_{t=0}^{p-1}A^t \;-\; \sum_{t=1}^{p}A^{t} \;=\; A^0 - A^p \;=\; I,$$
 >
-> and the same computation with the factors reversed gives $G(I-A) = I$, since $A$ commutes with its own powers. So $I - A$ is invertible with inverse $G$, hence $cI + N = c(I-A)$ is invertible with inverse $c^{-1}G$. Expanding $A$:
+> and the same computation with the factors reversed gives $G(I-A) = I$, since $A$ commutes with its own powers. So $I - A$ is invertible with inverse $G$, hence $\lambda I + N = \lambda(I-A)$ is invertible with inverse $\lambda^{-1}G$. Expanding $A$:
 >
-> $$c^{-1}G \;=\; c^{-1}\sum_{t=0}^{p-1}\left(-c^{-1}\right)^tN^t \;=\; \sum_{t=0}^{p-1}\frac{(-1)^t}{c^{\,t+1}}N^t. \qquad \blacksquare$$
+> $$\lambda^{-1}G \;=\; \lambda^{-1}\sum_{t=0}^{p-1}\left(-\lambda^{-1}\right)^tN^t \;=\; \sum_{t=0}^{p-1}\frac{(-1)^t}{\lambda^{\,t+1}}N^t. \qquad \blacksquare$$
 
 {: .prompt-tip }
 > Worth noting what the argument does **not** use: no finite-dimensionality, no eigenvalues, no assumption on $\mathbf{F}$, and no separate case for $W = \\{0\\}$. The single input is that the series terminates, which is exactly what nilpotency provides. Over $\mathbb{R}$ or $\mathbb{C}$ this is the Neumann series for $(I+A)^{-1}$, with the convergence hypothesis replaced by the stronger fact that all but finitely many terms are $0$.
@@ -531,7 +420,7 @@ $$S = \begin{pmatrix} c&b&a\\ 0&c&b\\ 0&0&c\end{pmatrix} = cI + bN + aN^2.$$
 >
 > $$A^{-1} = \sum_{t=0}^{m-1}(-1)^t\lambda^{-1-t}N^t,$$
 >
-> which is the formula above with $c = \lambda$. So the upper-triangular Toeplitz picture extends to negative exponents, and the geometric series is what proves the case $r = -1$.
+> which is the formula above. So the upper-triangular Toeplitz picture extends to negative exponents, and the geometric series is what proves the case $r = -1$.
 
 {: .prompt-tip }
 > *The same proof gives more.* If $S$ is invertible, $N$ is nilpotent, and $SN = NS$, then $S + N$ is invertible with

@@ -196,28 +196,6 @@ mermaid: true
 >
 > Define $D \in \mathcal{L}(V)$ by $Dv_j = \varepsilon_j v_j$. Then $\mathcal{M}(T + D)$ is upper triangular with the distinct entries $\lambda_j + \varepsilon_j$ on the diagonal. The diagonal of a triangular matrix lists the eigenvalues, so $T + D$ has $n$ distinct eigenvalues in a space of dimension $n$, hence is diagonalizable. And $D$ is small: in the norm making $v_1,\dots,v_n$ orthonormal, $\|D\| = \max_j |\varepsilon_j| < \varepsilon$. $\blacksquare$
 
-## Nilpotent
-
-{: .prompt-info }
-> Let $W$ be a finite-dimensional vector space, let $R \in \mathcal{L}(W)$ be nilpotent, and let $c \in \mathbf{F}$ with $c \neq 0$. Then $cI + R$ is invertible.
-
-{: .prompt-proof }
-> **Lemma** *Let $A \in \mathcal{L}(W)$, $c \in \mathbf{F}$, and set $B = cI + A$. If $\mu$ is an eigenvalue of $B$, then $\mu - c$ is an eigenvalue of $A$.*
->
-> *Proof.* Let $v \neq 0$ satisfy $Bv = \mu v$. Then
->
-> $$Av = (B - cI)v = Bv - cv = \mu v - cv = (\mu - c)v ,$$
->
-> and $v \neq 0$, so $\mu - c$ is an eigenvalue of $A$. $\blacksquare$
->
-> **Proof of the Theorem.**
->
-> If $W = \{0\}$ the statement is trivial, so assume $W \neq \{0\}$.
->
-> Now we prove $0$ is not an eigenvalue of $cI + R$. Suppose toward a contradiction that it is. Applying the Lemma with $A = R$, $B = cI + R$, and $\mu = 0$, we conclude that $0 - c = -c$ is an eigenvalue of $R$. The only eigenvalue of $R$ is $0$, hence $-c = 0$, i.e. $c = 0$ — contradicting the hypothesis $c \neq 0$.
->
-> Therefore, $cI + R$ is injective and thus invertible. $\blacksquare$
-
 ## Eigenspace
 
 {: .prompt-info }
@@ -259,88 +237,24 @@ mermaid: true
 >
 > So the precise condition for strict growth of the ordinary eigenspace is: **$\lambda$ is a critical point of $p$ (i.e. $p'(\lambda)=0$) *and* $\lambda$ is a defective eigenvalue of $T$ (has a nontrivial Jordan block).**
 
-## Commuting Operators
-
-{: .prompt-info }
-> Suppose $ S,T \in \mathcal{L}(V) $ are such that $ ST = TS $. Suppose $ p \in \mathcal{P}(\mathbf{F}) $. Then
->
-> $ \operatorname{null} p(S) $ and $ \operatorname{range} p(S) $ are invariant under $ T $.
-
-{: .prompt-tip }
-> Special cases:
->
-> * $ p(z) = z - \lambda $, then $ E(\lambda, S) $ is invariant under $ T $.
-> * $ p(z) = (z - \lambda)^{\dim V} $, then $ G(\lambda, S) $ is invariant under $ T $.
-
-{: .prompt-info }
-> *simultaneous diagonalizability $\iff$ commutativity*
->
-> Suppose $ \mathcal{E} $ is a subset of $ \mathcal{L}(V) $ and every element of $ \mathcal{E} $ is diagonalizable.
->
-> There exists a basis of $ V $ with respect to which every element of $ \mathcal{E} $ has a diagonal matrix $\iff$ every pair of elements of $ \mathcal{E} $ commutes.
-
-{: .prompt-proof }
-> ($\Leftarrow$) Suppose every pair in $\mathcal{E}$ commutes. Induct on $n = \dim V$.
->
-> **Case 1: every $T \in \mathcal{E}$ is a scalar multiple of $I$.** Then every basis of $V$ works. (This covers $n = 1$, so the base case is free.)
->
-> **Case 2: some $S \in \mathcal{E}$ is not a scalar multiple of $I$.** Since $S$ is diagonalizable with eigenvalues $\lambda_1,\dots,\lambda_m$,
->
-> $$V = E(\lambda_1,S) \oplus \dots \oplus E(\lambda_m,S),$$
->
-> and $m \geq 2$ (otherwise $S = \lambda_1 I$). So each $E(\lambda_j, S)$ is a subspace of dimension strictly less than $n$.
->
-> Fix $j$ and write $W = E(\lambda_j, S)$. $W$ is invariant under every $T \in \mathcal{E}$ and each $\left. T \right\rvert_W$ is diagonalizable, so the restricted family commutes: for $T, R \in \mathcal{E}$ and $w \in W$, invariance gives $(\left. T \right\rvert_W)(\left. R \right\rvert_W)w = T(Rw) = (TR)w = (RT)w = (\left. R \right\rvert_W)(\left. T \right\rvert_W)w$.
->
-> So $\mathcal{E}_j = \{\left. T\right\rvert_W : T \in \mathcal{E}\}$ is a commuting family of diagonalizable operators on a space of dimension $< n$. By the induction hypothesis there is a basis $\mathcal{B}_j$ of $W$ making *every* element of $\mathcal{E}_j$ diagonal — that is, every vector of $\mathcal{B}_j$ is an eigenvector of $T$ for every $T \in \mathcal{E}$ simultaneously.
->
-> Now let $\mathcal{B} = \mathcal{B}_1 \cup \dots \cup \mathcal{B}_m$. Because $V$ is the direct sum of the $E(\lambda_j,S)$, this is a basis of $V$, and each of its vectors is an eigenvector of every $T \in \mathcal{E}$. So every element of $\mathcal{E}$ has a diagonal matrix with respect to $\mathcal{B}$. $\blacksquare$
-
-![block diagonal to diagonal](../assets/img/math/block_diagonal_refinement_to_diagonal.png)
-
-{: .prompt-info }
-> Suppose $V$ is a finite-dimensional nonzero *complex* vector space. Suppose that $ \mathcal{E} \subset \mathcal{L}(V) $ is such that $S$ and $T$ commute for all $S,T \in \mathcal{E}$.
->
-> (a) There is a vector in $V$ that is an eigenvector for every element of $\mathcal{E}$.
->
-> (b) There is a basis of $V$ with respect to which every element of $\mathcal{E}$ has an upper-triangular matrix.
-
-{: .prompt-info }
-> Suppose $\mathbf{F} = \mathbb{C}$ and $V = \bigoplus_{\lambda_k} G(\lambda_k, T)$.
->
-> $ST = TS \iff G(\lambda_k,T) $ is invariant under $S$ **and** $\left. S \right\rvert_{G(\lambda_k,T)}$ commutes with $\left. (T-\lambda_k I) \right\rvert_{G(\lambda_k,T)}$ for each $ k = 1, \dots, m $.
-
-{: .prompt-info }
-> Suppose $T \in \mathcal{L}(V) $, $ p \in \mathcal{P}(\mathbf{F}) $.
->
-> $p(T)$ and $T$ commute $\iff$ the minimal and characteristic polynomials coincide.
-
-{: .prompt-info }
-> Suppose a nilpotent operator $N \in \mathcal{L}(V) $, $ p \in \mathcal{P}(\mathbf{F}) $.
->
-> $p(N)$ and $N$ commute $\iff$ N $ has a single Jordan block.
-
-{: .prompt-info }
-> $\mathcal{C}(T) = \\{S \in \mathcal{L}(V) : ST = TS\\}$ and $\mathcal{P}(T) = \\{p(T) : p \in \mathcal{P}(\mathbf{F})\\}$
->
-> (a) $\mathcal{C}(T) = \mathcal{P}(T)$ $\iff$ the minimal and characteristic polynomials of $T$ coincide.
->
-> (b) For $N$ nilpotent, $\mathcal{C}(N) = \mathcal{P}(N)$ $\iff$ $N$ has a single Jordan block.
-
-{: .prompt-proof }
-> ($\Leftarrow$) If $\deg(\text{min poly}) = n$, then $V$ is cyclic: there is $v$ with $v, Tv, \dots, T^{n-1}v$ a basis. Given $S \in \mathcal{C}(T)$, write $Sv = p(T)v$ for some polynomial $p$ (possible since that list spans $V$). Then for each $j$,
-$$S(T^j v) = T^j(Sv) = T^j p(T) v = p(T)(T^j v),$$
-so $S$ and $p(T)$ agree on a basis, hence $S = p(T)$.
->
-> ($\Rightarrow$) Use $\dim \mathcal{P}(T) = \deg(\text{min poly})$ together with the standard fact $\dim \mathcal{C}(T) \geq n$, with equality exactly when $T$ is cyclic. If $\mathcal{C}(T) = \mathcal{P}(T)$ then $\deg(\text{min poly}) = \dim\mathcal{C}(T) \geq n$, and since the minimal polynomial always divides the characteristic one, degree $n$ forces them equal.
-
 {: .prompt-proof }
 An operator with $\text{min} = \text{char}$ is called **nonderogatory** or **cyclic**.
 
-| $ T \in \mathcal{L}(V) $                             | $ G(\lambda, T) $                                           | $ E(\lambda, T) $                                           |
-| ---------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------- |
-| Definition                                           | $ \operatorname{null} (T - \lambda I)^{\dim V} $            | $ \operatorname{null} (T - \lambda I) $                     |
-| Distinct eigenvalues $ \lambda_1, \dots, \lambda_m $ | $ G(\lambda_k, T) $ is invariant under $T$                  | $ E(\lambda_k, T) $ is invariant under $T$                  |
-| Nilpotency                                           | $ \left. (T - \lambda I) \right\rvert_{G(\lambda_k, T)} $   | $ T - \lambda I $                                           |
-| Decomposition                                        | $ V = G(\lambda_1, T) \oplus \dots \oplus G(\lambda_m, T) $ | $ V = E(\lambda_1, T) \oplus \dots \oplus E(\lambda_m, T) $ |
-| Multiplicity of $\lambda$                            | Algebraic: $ \dim G(\lambda, T) $                           | Geometric: $ \dim E(\lambda, T) $                           |
+For a single eigenvalue $\lambda$ with nilpotent diagram $\mu = (m_1 \ge \dots \ge m_k)$:
+
+|                     | reads off as                     | on the diagram               |
+| ------------------- | -------------------------------- | ---------------------------- |
+| char. poly exponent | $\dim G(\lambda,T) = \sum_i m_i$ | total boxes (area)           |
+| min. poly exponent  | $p = m_1$                        | height of the tallest column |
+| $\dim E(\lambda,T)$ | $k = \mu'_1$                     | size of the bottom level     |
+
+| $ T \in \mathcal{L}(V) $, Distinct eigenvalues $ \lambda_1, \dots, \lambda_m $ | $ G(\lambda, T) $                                           | $ E(\lambda, T) $                                           |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------- | ----------------------------------------------------------- |
+| Definition                                                                     | $ \operatorname{null} (T - \lambda I)^{\dim V} $            | $ \operatorname{null} (T - \lambda I) $                     |
+| Invariant                                                                      | $ G(\lambda_k, T) $ is invariant under $T$                  | $ E(\lambda_k, T) $ is invariant under $T$                  |
+| Nilpotency                                                                     | $ \left. (T - \lambda_k I) \right\rvert_{G(\lambda_k, T)} $ | $ T - \lambda I $                                           |
+| Decomposition                                                                  | $ V = G(\lambda_1, T) \oplus \dots \oplus G(\lambda_m, T) $ | $ V = E(\lambda_1, T) \oplus \dots \oplus E(\lambda_m, T) $ |
+| Multiplicity of $\lambda_k$: $d_k$                                             | Algebraic: $ \dim G(\lambda_k, T) $                         | Geometric: $ \dim E(\lambda_k, T) $                         |
+| Minimal Polynomial                                                             | $\prod_k (z-\lambda_k)^{\text{tallest column}_{\lambda_k}}$ | $\prod_k (z-\lambda_k)^{\text{tallest column}_{\lambda_k}}$ |
+| Characteristic Polynomial                                                      | $\prod_k (z-\lambda_k)^{d_k}$                               | $\prod_k (z-\lambda_k)^{d_k}$                               |
+
