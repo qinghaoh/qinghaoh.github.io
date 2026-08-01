@@ -22,7 +22,7 @@ mermaid: true
 >
 > $$\begin{array}{cccc} v_1 & & & \\ Nv_1 & v_2 & & \\ \vdots & \vdots & \ddots & \\ N^{m_1-2}v_1 & N^{m_2-2}v_2 & & v_k \\ N^{m_1-1}v_1 & N^{m_2-1}v_2 & \cdots & N^{m_k-1}v_k \end{array}$$
 >
-> $N$ moves each entry one step down its column, and off the bottom to $0$. The bottom row is exactly the chain bottoms, which is a basis of $\operatorname{null}N$.
+> $N$ moves each entry one step down its column, and off the bottom to $0$. The bottom level is exactly the chain bottoms, which is a basis of $\operatorname{null}N$.
 
 {: .prompt-tip }
 > Sorted into decreasing order, the chain lengths form a **partition** of $\dim V$:
@@ -31,27 +31,27 @@ mermaid: true
 >
 > The individual $m_i$ are its **parts**. In the array above, each part is the height of one column, because one column is one chain.
 >
-> Now read the same boxes across instead of down. Row $j$ contains one box from every chain tall enough to reach it, so its width is
+> Now read the same boxes across instead of down. Level $j$ contains one box from every chain tall enough to reach it, so its size is
 >
 > $$\mu'_j \;:=\; \#\{\,i : m_i \ge j\,\}.$$
 >
 > The sequence $\mu' = (\mu'_1, \mu'_2, \dots)$ is again a partition of $\dim V$, called the **conjugate** of $\mu$. It has $m_1$ parts, and conjugating twice returns $\mu$.
 >
-> One set of boxes, two partitions: $\mu$ counts down the columns, $\mu'$ counts across the rows.
+> One set of boxes, two partitions: $\mu$ counts down the columns, $\mu'$ counts across the levels.
 
 {: .prompt-tip }
 > *Example.* Two chains, of lengths $3$ and $2$ — the running example of this post:
 >
 > $$\begin{array}{cc} x^2 & \\ 2x & xy \\ 2 & y \end{array}$$
 >
-> The columns have heights $3$ and $2$, so $\mu = (3,2)$. The rows, read from the bottom up, have widths $2$, $2$, $1$, so $\mu' = (2,2,1)$. Both sum to $5 = \dim V$, as they must — they count the same five boxes.
+> The columns have heights $3$ and $2$, so $\mu = (3,2)$. The levels, read from the bottom up, have sizes $2$, $2$, $1$, so $\mu' = (2,2,1)$. Both sum to $5 = \dim V$, as they must — they count the same five boxes.
 >
 > Most references draw a partition with its parts as *rows*; the conventional [Young diagram](https://en.wikipedia.org/wiki/Young_tableau#Diagrams) of $\mu$ is therefore this array reflected across a diagonal. Nothing below depends on the choice. Parts are columns here because $N$ acts down them.
 
 {: .prompt-tip }
-> Row $j$ is exactly **level** $j$: the vectors killed by $N^j$ but not by $N^{j-1}$. A chain of length $m_i$ contributes its entry $N^{m_i - j}v_i$ to row $j$ whenever $m_i \ge j$, and nothing above row $m_i$.
+> **Level $j$** means the vectors killed by $N^j$ but not by $N^{j-1}$ — an algebraic condition that makes no reference to the picture. A chain of length $m_i$ contributes its entry $N^{m_i - j}v_i$ to level $j$ whenever $m_i \ge j$, and nothing beyond level $m_i$. In the bottom-aligned array the levels are therefore the horizontal slices, and $\mu'_j$ is the size of level $j$.
 >
-> That is what bottom alignment buys, and it is why $\mu'$, not $\mu$, is the sequence the rest of this post counts. Cumulatively, the boxes in the bottom $j$ rows are a basis of $\operatorname{null}N^j$:
+> That is what bottom alignment buys, and it is why $\mu'$, not $\mu$, is the sequence the rest of this post counts. Cumulatively, the boxes in the bottom $j$ levels are a basis of $\operatorname{null}N^j$:
 >
 > $$d_j \;:=\; \dim\operatorname{null}N^j \;=\; \mu'_1 + \dots + \mu'_j .$$
 >
@@ -88,18 +88,21 @@ mermaid: true
 >
 > Summing over columns gives $\dim\operatorname{null}N^m = \sum_i \min(m,m_i)$. $\blacksquare$
 
+{: .prompt-tip }
+> A $k \times m$ rectangle, bottom-aligned, and $d_m$ is the number of diagram boxes it covers.
+
 {: .prompt-info }
 > Let $N$ be nilpotent on $V$. The partition $\mu$ does not depend on which Jordan basis produced it, and two nilpotent operators are similar if and only if their partitions agree.
 
 {: .prompt-proof }
-> **Independence of the basis.** A Jordan basis fills in the diagram, and the diagram determines $\mu'$ as its row widths. But those row widths are $d_j - d_{j-1}$, and $d_j = \dim\operatorname{null}N^j$ makes no reference to a basis. So $\mu'$ is forced by $N$ alone, and therefore so is $\mu$. Different Jordan bases genuinely differ — the vectors are choices, and Step 1 of the algorithm below makes them — but the shape they fill is fixed before any choice is made.
+> **Independence of the basis.** A Jordan basis fills in the diagram, and the diagram determines $\mu'$ as its level sizes. But those level sizes are $d_j - d_{j-1}$, and $d_j = \dim\operatorname{null}N^j$ makes no reference to a basis. So $\mu'$ is forced by $N$ alone, and therefore so is $\mu$. Different Jordan bases genuinely differ — the vectors are choices, and Step 1 of the algorithm below makes them — but the shape they fill is fixed before any choice is made.
 >
 > **Similar operators agree.** If $N' = ANA^{-1}$ then $(N')^j = AN^jA^{-1}$, so $A$ restricts to an isomorphism $\operatorname{null}N^j \to \operatorname{null}(N')^j$. The two towers have equal dimensions, hence equal $\mu'$, hence equal $\mu$.
 >
 > **Agreeing operators are similar.** Each of $N$ and $N'$ admits a Jordan basis in which its matrix is $J_{m_1}(0)\oplus\dots\oplus J_{m_k}(0)$. Equal $\mu$ means this is literally the same matrix, so each is similar to it and hence to the other. $\blacksquare$
 
 {: .prompt-tip }
-> A column ends at row $j$ exactly when it reaches row $j$ and fails to reach row $j+1$, so
+> A column ends at level $j$ exactly when it reaches level $j$ and fails to reach level $j+1$, so
 >
 > $$\#\{\,i : m_i = j\,\} \;=\; \mu'_j - \mu'_{j+1} \;=\; 2d_j - d_{j-1} - d_{j+1},$$
 >
@@ -110,7 +113,7 @@ mermaid: true
 >
 > $$2d_j \ge d_{j-1} + d_{j+1}.$$
 >
-> Equivalently, its increments $\mu'_j$ are non-increasing — the picture's "rows widen as you descend". A hand-computed tower violating this has an error in the tower itself, and it is worth checking before running the algorithm rather than after.
+> Equivalently, its increments $\mu'_j$ are non-increasing — the picture's "levels widen as you descend". A hand-computed tower violating this has an error in the tower itself, and it is worth checking before running the algorithm rather than after.
 
 {: .prompt-tip }
 > Any two Jordan bases of $N$ give matrices that differ only by a permutation of the diagonal blocks.
@@ -156,7 +159,7 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > where $p$ is the smallest exponent with $N^p = 0$. Keep an explicit basis of each $K_j$.
 >
-> Recall $$\mu'_j = d_j - d_{j-1}$$, the width of row $j$ from the Jordan Basis section. The algorithm reconstructs the diagram row by row from the bottom up, so this is the number of vectors it must produce at level $j$.
+> Recall $$\mu'_j = d_j - d_{j-1}$$, the size of level $j$ from the Jordan Basis section. The algorithm reconstructs the diagram level by level from the bottom up, so this is the number of vectors it must produce at level $j$.
 >
 > **State carried between levels.** As the loop runs it carries a list $H_j$ of vectors sitting in $K_j$, pushed down from the level above. It also outputs a list $T_j$ of *new chain tops* at each level.
 >
@@ -270,9 +273,9 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 {: .prompt-tip }
 > *The algorithm's count is the diagram's count.*
 >
-> Level $j$ of the algorithm carries $\lvert H_j \cup T_j\rvert = d_j - d_{j-1}$ vectors, and row $j$ of the diagram has width $\mu'_j = d_j - d_{j-1}$. They agree because both are the same dimension jump, computed once from the null-space tower and once from the chain lengths. Neither derivation assumed the other.
+> Level $j$ of the algorithm carries $\lvert H_j \cup T_j\rvert = d_j - d_{j-1}$ vectors, and level $j$ of the diagram has size $\mu'_j = d_j - d_{j-1}$. They agree because both are the same dimension jump, computed once from the null-space tower and once from the chain lengths. Neither derivation assumed the other.
 >
-> The monotonicity $$\mu'_p \le \dots \le \mu'_1$$ then has two independent proofs: rows widen as you descend, and $\bar N_{j}$ is injective.
+> The monotonicity $$\mu'_p \le \dots \le \mu'_1$$ then has two independent proofs: levels widen as you descend, and $\bar N_{j}$ is injective.
 
 **Worked example**
 
@@ -290,7 +293,7 @@ So $\mu' = (d_1 - d_0,\; d_2 - d_1,\; d_3 - d_2) = (2, 2, 1)$, whose conjugate i
 | $2$ | $\{2x\}$            | $4-2 = 2$            | $\{xy\}$       |
 | $1$ | $\{2,\; y\}$        | $2-0 = 2$            | $\varnothing$  |
 
-Reading the rows:
+Reading the levels:
 
 - **$j=3$:** nothing carried in. Need $1$ vector of $\operatorname{null}N^3 = V$ outside $\operatorname{null}N^2$; take $x^2$. Push down: $H_2 = \{2x\}$.
 - **$j=2$:** carrying $2x$. Need $2$ vectors total independent modulo $\operatorname{null}N = \operatorname{span}(1,y)$; $2x$ supplies one, so add one more from $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$ — take $xy$. Push down: $H_1 = \{N(2x), N(xy)\} = \{2, y\}$.
@@ -355,14 +358,14 @@ So the constraint is precisely what's needed at the *bottom* of each chain, and 
 
 $$\{S : SN = NS\} \;\cong\; \operatorname{null}N^{m_1} \times \dots \times \operatorname{null}N^{m_k}, \qquad S \mapsto (Sv_1,\dots,Sv_k),$$
 
-$$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j) = \sum_j \mu'_{j^2}.$$
+$$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j) = \sum_j \left(\mu'_j\right)^2.$$
 
 {: .prompt-tip }
 > The same box counting evaluates the double sum. Writing $\min(m_i,m_j) = \\#\\{l : l \le m_i \text{ and } l \le m_j\\}$ turns it into a count of triples $(i,j,l)$:
 >
 > $$\sum_{i,j}\min(m_i,m_j) \;=\; \sum_{l \ge 1}\#\{i : m_i \ge l\}\cdot\#\{j : m_j \ge l\} \;=\; \sum_{l\ge1}\left(\mu'_l\right)^2 ,$$
 >
-> the sum of squares of the row widths. So the commutant is large exactly when the diagram is short and wide — many chains of similar length — and smallest, of dimension $\dim V$, when the diagram is a single column.
+> the sum of squares of the level sizes. So the commutant is large exactly when the diagram is short and wide — many chains of similar length — and smallest, of dimension $\dim V$, when the diagram is a single column.
 
 {: .prompt-info }
 > 1. Find a Jordan basis for $N$, with tops $v_1,\dots,v_k$ and lengths $m_1,\dots,m_k$.
@@ -372,11 +375,11 @@ $$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j) = \sum_j \mu'_{j^2}.$$
 {: .prompt-warning }
 > Nothing above says $Sv_i$ has to lie in chain $i$. The reason is visible in the constraint itself: $\operatorname{null}N^{m_i}$ is not a subspace of chain $i$. It is spanned by the bottom $\min(m_i, m_j)$ vectors of **every** chain $j$, so it reaches across the whole array. In the extreme case where all lengths equal $p$, we get $\operatorname{null}N^{m_i} = \operatorname{null}N^p = V$ and there is no constraint whatsoever.
 >
-> Take $\mathbb{C}^4$ with two chains of length $2$:
+> Take $\mathbf{F}^4$ with two chains of length $2$:
 >
 > $$e_2 \to e_1 \to 0, \qquad e_4 \to e_3 \to 0.$$
 >
-> Here $N^2 = 0$, so both constraints read $w_i \in \mathbb{C}^4$ and any pair of tops is legal. Swapping the chains is the choice $w_1 = e_4$, $w_2 = e_2$, which forces
+> Here $N^2 = 0$, so both constraints read $w_i \in \mathbf{F}^4$ and any pair of tops is legal. Swapping the chains is the choice $w_1 = e_4$, $w_2 = e_2$, which forces
 >
 > $$Se_2 = e_4, \quad Se_1 = Ne_4 = e_3, \qquad Se_4 = e_2, \quad Se_3 = Ne_2 = e_1.$$
 >
@@ -388,13 +391,13 @@ $$\dim\{S : SN = NS\} = \sum_{i,j}\min(m_i,m_j) = \sum_j \mu'_{j^2}.$$
 >
 > This blends chain $1$ into chain $2$ without being a permutation of the basis.
 >
-> The most extreme case is $N = 0$ on $\mathbb{C}^2$, two chains of length $1$. Every operator commutes, so the commutant is all of $\mathcal{L}(\mathbb{C}^2)$, of dimension $4$; the ones preserving $\operatorname{span}(e_1)$ are the upper triangular matrices, a proper subspace of dimension $3$. Preserving a chosen block is a genuine restriction that most commuting operators fail.
+> The most extreme case is $N = 0$ on $\mathbf{F}^2$, two chains of length $1$. Every operator commutes, so the commutant is all of $\mathcal{L}(\mathbf{F}^2)$, of dimension $4$; the ones preserving $\operatorname{span}(e_1)$ are the upper triangular matrices, a proper subspace of dimension $3$. Preserving a chosen block is a genuine restriction that most commuting operators fail.
 >
 > Unequal lengths are where the constraint bites. Take $\mathbb{C}^3$ with chains
 >
 > $$e_2 \to e_1 \to 0, \qquad f \to 0,$$
 >
-> so $m_1 = 2$ and $m_2 = 1$. The top of the long chain is unconstrained, since $\operatorname{null}N^2 = \mathbb{C}^3$, so $Se_2$ may be $f$. But the top of the short chain satisfies $Sf \in \operatorname{null}N = \operatorname{span}(e_1, f)$, so $Sf$ cannot be $e_2$: a short chain can only be sent into the bottom portion of a longer one, never onto its top. The freedom is **asymmetric**, and $\min(m_i, m_j)$ is exactly the bookkeeping for it.
+> so $m_1 = 2$ and $m_2 = 1$. The top of the long chain is unconstrained, since $\operatorname{null}N^2 = \mathbf{F}^3$, so $Se_2$ may be $f$. But the top of the short chain satisfies $Sf \in \operatorname{null}N = \operatorname{span}(e_1, f)$, so $Sf$ cannot be $e_2$: a short chain can only be sent into the bottom portion of a longer one, never onto its top. The freedom is **asymmetric**, and $\min(m_i, m_j)$ is exactly the bookkeeping for it.
 
 **Worked example**
 
@@ -455,7 +458,7 @@ In the basis $(N^{m-1}v,\dots,Nv,v)$ this is the upper-triangular [Toeplitz matr
 > Polynomials in $N$ always commute with $N$, so $\{\text{polynomials in }N\} \subseteq \{S : SN = NS\}$ for every nilpotent $N$. What the one-chain case gives is *equality*, and that is what fails when $k \ge 2$: the inclusion becomes strict, so "commutes with $N$" is no longer the same condition as "is a polynomial in $N$".
 
 {: .prompt-proof }
-> Write $\mathcal{C}(N) = \\{S \in \mathcal{L}(V) : SN = NS\\}$ for the commutant of $N$, and $\mathcal{P}(N) = \\{q(N) : q \in \mathcal{P}(\mathbf{F})\\}$ for the operators expressible as polynomials in $N$. Let $p = \max_i m_i$ be the index of nilpotency, so $N^p = 0$, and recall $\dim V = \sum_i m_i$.
+> Write $\mathcal{C}(N) = \\{S \in \mathcal{L}(V) : SN = NS\\}$ for the commutant of $N$, and $\mathcal{P}(N) = \\{q(N) : q is a polynomial with coefficients in \mathbf{F}\\}$ for the operators expressible as polynomials in $N$. Let $p = \max_i m_i$ be the index of nilpotency, so $N^p = 0$, and recall $\dim V = \sum_i m_i$.
 >
 > **The inclusion always holds.** $N$ commutes with $I$ and with itself, hence with every polynomial in itself, so $\mathcal{P}(N) \subseteq \mathcal{C}(N)$. Only equality is at issue.
 >
@@ -475,7 +478,7 @@ In the basis $(N^{m-1}v,\dots,Nv,v)$ this is the upper-triangular [Toeplitz matr
 
 **Worked example**
 
-Take $\mathbb{C}^3$ with chain $e_3 \to e_2 \to e_1 \to 0$; that is, $Ne_3 = e_2$, $Ne_2 = e_1$, $Ne_1 = 0$, so
+Take $\mathbf{F}^3$ with chain $e_3 \to e_2 \to e_1 \to 0$; that is, $Ne_3 = e_2$, $Ne_2 = e_1$, $Ne_1 = 0$, so
 
 $$N = \begin{pmatrix} 0&1&0\\ 0&0&1\\ 0&0&0\end{pmatrix}.$$
 
@@ -524,11 +527,11 @@ $$S = \begin{pmatrix} c&b&a\\ 0&c&b\\ 0&0&c\end{pmatrix} = cI + bN + aN^2.$$
 {: .prompt-tip }
 > *Consistency with the block formula.*
 >
-> The Non-nilpotent Block section gives $A^r = \sum_{t}\binom{r}{t}\mu^{r-t}N^t$ for $r \ge 0$. Read that at $r = -1$, where $\binom{-1}{t} = (-1)^t$:
+> The Non-nilpotent Block section gives $A^r = \sum_{t}\binom{r}{t}\lambda^{r-t}N^t$ for $r \ge 0$. Read that at $r = -1$, where $\binom{-1}{t} = (-1)^t$:
 >
 > $$A^{-1} = \sum_{t=0}^{m-1}(-1)^t\lambda^{-1-t}N^t,$$
 >
-> which is the formula above with $c = \mu$. So the upper-triangular Toeplitz picture extends to negative exponents, and the geometric series is what proves the case $r = -1$.
+> which is the formula above with $c = \lambda$. So the upper-triangular Toeplitz picture extends to negative exponents, and the geometric series is what proves the case $r = -1$.
 
 {: .prompt-tip }
 > *The same proof gives more.* If $S$ is invertible, $N$ is nilpotent, and $SN = NS$, then $S + N$ is invertible with
