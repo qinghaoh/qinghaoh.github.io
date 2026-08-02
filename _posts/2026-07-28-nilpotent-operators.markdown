@@ -3,7 +3,6 @@ title:  "Nilpotent Operators"
 category: math
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
-mermaid: true
 ---
 
 ## Jordan Basis
@@ -121,19 +120,90 @@ mermaid: true
 ### Two Extremes
 
 Everything so far has been about a general shape. Two degenerate shapes are worth naming,
-because the whole framework collapses in opposite directions.
+because the whole framework collapses in opposite directions: a diagram that is a single
+column, and a diagram that is a single level. Each is worth working out on its own before
+comparing them.
+
+One quantity below needs saying carefully first.
 
 {: .prompt-info }
-> **One column.** $\mu = (n)$, $\mu' = (1,\dots,1)$. A single chain of length $n$: one top, one bottom, $p = n$.
+> *Free parameters in a Jordan basis.* The shape of the diagram is forced by $N$, but the basis filling it is not. To compare how much choice is left in different cases, fix the following count.
 >
-> **One level.** $\mu = (1,\dots,1)$, $\mu' = (n)$. $n$ chains of length $1$: every box is simultaneously a top and a bottom, $p = 1$.
+> A Jordan basis is a list of $n$ vectors, so in coordinates it is $n^2$ scalars. Usually those scalars are not independent of each other: fixing some of them forces the rest. Write $r$ for how many can be chosen freely.
+>
+> A few choices always have to be thrown out. In the cases below it is the vectors $v$ with $N^{n-1}v = 0$, and the lists of $n$ vectors that fail to be a basis. Such choices are degenerate rather than numerous, and discarding them does not reduce $r$.
+>
+> The Jordan bases do not form a subspace of anything, so $r$ is not the dimension of a subspace. It is a count of independent choices.
+
+{: .prompt-warning }
+> That $r$ is well defined — that no cleverer parametrization uses fewer scalars — is not proved here, and is not obvious from either computation below. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) settles it: the invertible operators commuting with $N$ act simply transitively on the Jordan bases of a given shape, so the Jordan bases are always in bijection with the invertible part of $\mathcal{C}(N)$, and $r = \dim\mathcal{C}(N)$ in every case.
+>
+> Until then, read $r$ as the number of scalars the parametrization at hand happens to use.
+
+#### One Column: a Single Chain
+
+$\mu = (n)$ and $\mu' = (1,\dots,1)$. One chain of length $n$: a single top, a single bottom,
+and every level of size $1$.
+
+{: .prompt-info }
+> $$k = \mu'_1 = 1, \qquad p = m_1 = n, \qquad d_j = \min(j,n), \qquad \operatorname{rank}N^j = \max(0, n-j),$$
+>
+> and $\mathcal{M}(N) = J_n(0)$ is a single Jordan block.
+
+This is as far from the zero operator as a nilpotent operator gets: $N^{n-1} \neq 0$, so the
+tower
+
+$$\\{0\\} \subsetneq \operatorname{null}N \subsetneq \operatorname{null}N^2 \subsetneq \dots \subsetneq \operatorname{null}N^n = V$$
+
+climbs one dimension at a time, with no repeats and no jumps. Equivalently $d_j = j$ until it
+saturates, which is the only way a concave sequence of $n$ steps can rise as slowly as
+possible while still reaching $n$.
 
 {: .prompt-tip }
-> These are conjugate to each other. Conjugation reflects the diagram, and a single column reflects to a single level, so the two extremes of the framework are one partition and its transpose. Anything proved by counting columns in one case is proved by counting levels in the other.
->
-> They are also the only two shapes fixed by their own description in this way: every other $\mu$ has both a column of height $\ge 2$ and a level of size $\ge 2$.
+> *Free parameters.* A Jordan basis here is determined by its top $v$ alone: the rest of the chain is $Nv, N^2v, \dots$, forced. So the $n$ coordinates of $v$ specify the whole basis, subject to the single non-degeneracy condition $N^{n-1}v \neq 0$. That gives $r = n$: of the $n^2$ scalars a basis nominally carries, only $n$ are free.
 
-The two cases sit at opposite ends of every invariant in this post.
+{: .prompt-tip }
+> *Invariant subspaces.* The only subspaces invariant under $N$ are the $n+1$ subspaces $\operatorname{null}N^j$ for $0 \le j \le n$ — a single chain of them, totally ordered by inclusion. This is the most rigid an invariant-subspace lattice can be.
+>
+> The proof uses the geometric series from the [Invertibility](#invertibility) section. Let $W \ne \\{0\\}$ be invariant and let $s$ be smallest such that some $w \in W$ has a nonzero coefficient on $N^sv$; write $w = q(N)N^sv$ with $q(N) = c_sI + c_{s+1}N + \dots$ and $c_s \ne 0$. Then $q(N)$ is a nonzero scalar plus a nilpotent, hence invertible with inverse again a polynomial in $N$. Since $W$ is invariant it is closed under polynomials in $N$, so $N^sv = q(N)^{-1}w \in W$, and applying $N$ repeatedly gives $W \supseteq \operatorname{null}N^{\,n-s}$. Minimality of $s$ gives the reverse inclusion.
+
+{: .prompt-tip }
+> *nonderogatory/cyclic operator.* The minimal polynomial equals the characteristic polynomial.
+
+#### One Level: the Zero Operator
+
+$\mu = (1,\dots,1)$ and $\mu' = (n)$. Now there are $n$ chains, each of length $1$, so every
+box is simultaneously a top and a bottom.
+
+{: .prompt-info }
+> $$k = \mu'_1 = n, \qquad p = m_1 = 1, \qquad d_j = n \ \text{for all } j \ge 1, \qquad \operatorname{rank}N^j = 0,$$
+>
+> and $\mathcal{M}(N)$ is the zero matrix.
+
+Here $p = 1$ says $N^1 = 0$, so this shape *is* the zero operator. Every null space is already
+$V$ and the tower stops before it starts.
+
+{: .prompt-tip }
+> *Free parameters.* All of them. Since $N = 0$, the chain condition is vacuous and *every* basis of $V$ is a Jordan basis. The $n^2$ coordinates of the $n$ vectors range freely, subject only to the non-degeneracy condition that they be independent, so $r = n^2$ — the largest a Jordan basis count can be, since $n^2$ scalars is all a basis has.
+
+{: .prompt-tip }
+> *Invariant subspaces.* Every subspace of $V$ is invariant, again since $N = 0$. This is the least rigid an invariant-subspace lattice can be, and the exact opposite of the totally ordered chain above.
+
+{: .prompt-tip }
+> *The nilpotent shadow of diagonalizability.* If $T$ has eigenvalue $\lambda$ and $N = \left. (T - \lambda I) \right\rvert_{G(\lambda,T)}$, then
+>
+> $$G(\lambda, T) = E(\lambda, T) \iff N = 0 \iff \mu = (1,\dots,1),$$
+>
+> and the block for $\lambda$ is $\lambda I$ rather than a nontrivial Jordan form.
+
+#### Comparing the Ends
+
+{: .prompt-tip }
+> The two shapes are conjugate to each other. Conjugation reflects the diagram, and a single column reflects to a single level, so the two extremes of the framework are one partition and its transpose. Anything proved by counting columns in one case is proved by counting levels in the other.
+>
+> They are also the only two shapes that are extreme in this way: every other $\mu$ has both a column of height $\ge 2$ and a level of size $\ge 2$.
+
+Side by side, they bracket every invariant in this post.
 
 |                               | one column     | one level             |
 | ----------------------------- | -------------- | --------------------- |
@@ -144,37 +214,24 @@ The two cases sit at opposite ends of every invariant in this post.
 | $d_j$                         | $\min(j, n)$   | $n$ for all $j \ge 1$ |
 | $\operatorname{rank}N^j$      | $\max(0, n-j)$ | $0$ for all $j \ge 1$ |
 | $\mathcal{M}(N)$              | $J_n(0)$       | the zero matrix       |
-| $\dim\mathcal{C}(N)$          | $n$            | $n^2$                 |
-| $\dim\mathcal{P}(N) = p$      | $n$            | $1$                   |
+| invariant subspaces           | $n+1$, a chain | all of them           |
+| free parameters $r$           | $n$            | $n^2$                 |
 
-The last two rows are the sharpest contrast. For a single chain the commutant is as small
-as it can be and consists entirely of polynomials in $N$; for $N = 0$ the commutant is
-everything and the polynomials are only the scalars. Both are computed in the
-[Commuting Operators](#commuting-operators) section; the bounds
+The last two rows are the ones that do not obviously belong to the same story as the others,
+and they are the reason for the sequel. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) shows that the operators commuting
+with $N$ form a space of dimension $\sum_j (\mu'_j)^2$, which is $n$ for one column and $n^2$
+for one level — the smallest and largest values it can take, and exactly the two entries in
+the last row.
 
-$$n \;\le\; \dim\mathcal{C}(N) \;\le\; n^2$$
-
-hold for every nilpotent $N$, with equality on the left exactly for one column and on the
-right exactly for one level.
-
-{: .prompt-tip }
-> The one-level case is the nilpotent shadow of diagonalizability. If $T$ has eigenvalue $\lambda$ and $N = \left. (T - \lambda I) \right\rvert_{G(\lambda,T)}$, then
->
-> $$G(\lambda, T) = E(\lambda, T) \iff \operatorname{null}N = \operatorname{null}N^{\dim V} \iff N = 0 \iff \mu = (1,\dots,1),$$
->
-> and the block for $\lambda$ is $\lambda I$ rather than a nontrivial Jordan form. Equivalently, the tallest column of $\lambda$'s diagram has height $1$ — which is where the criterion "$T$ is diagonalizable iff its minimal polynomial has no repeated roots" comes from, since that height is the exponent of $z - \lambda$ in the minimal polynomial. Note this diagonalizes one block only: $T$ itself is diagonalizable iff every eigenvalue has one-level shape.
-
-{: .prompt-tip }
-> *Uniqueness of the basis, at both ends.* The shape is forced, but how much freedom remains in choosing the basis is not uniform.
->
-> For one level, $N = 0$ and *every* basis of $V$ is a Jordan basis, so the freedom is the full $n^2$-dimensional space of invertible operators. For one column, a Jordan basis is determined by its top $v$, which can be any vector outside $\operatorname{null}N^{n-1}$; the rest of the chain follows by applying $N$. The freedom is $n$-dimensional, matching $\dim\mathcal{C}(N) = n$.
->
-> That is not a coincidence. The *invertible* elements of $\mathcal{C}(N)$ act simply transitively on the Jordan bases of a fixed shape: given two such bases, exactly one invertible operator commuting with $N$ carries the first to the second. So the choice available is measured by the invertible part of the commutant, which is why $\dim\mathcal{C}(N)$ is the right measure of how non-unique the basis is.
-
-{: .prompt-tip }
-> *Invariant subspaces.* For one level every subspace is invariant, since $N = 0$. For one column the invariant subspaces are exactly the $n+1$ subspaces $\operatorname{null}N^j$, $0 \le j \le n$ — a single chain of them, totally ordered by inclusion. Least possible structure and most possible structure, again at the two ends.
+That is what makes the free-parameter count above legitimate rather than ad hoc. The two
+cases were counted by unrelated arguments here — one by parametrizing a single top vector,
+the other by observing that no condition applies at all — and they nonetheless landed on
+$\dim\mathcal{C}(N)$ both times. The sequel explains why they had to.
 
 ### Jordan Block
+
+{: .prompt-info }
+> $\dim E(0, J_s(\lambda)) = 1$
 
 #### Nilpotent Block
 
@@ -409,9 +466,9 @@ giving $\mathcal{M}(N) = J_3(0)\oplus J_2(0)$. Checks: $\lvert T_3 \rvert = 1 = 
 {: .prompt-tip }
 > The inverse is a polynomial in $N$ of degree $< p$, so
 >
-> $$(cI+N)^{-1} \in \mathcal{P}(N) \subseteq \mathcal{C}(N).$$
+> The inverse is a polynomial in $N$ of degree $< p$. In particular any operator commuting with $N$ also commutes with $(\lambda I+N)^{-1}$, and the inverse of a Jordan block is again a polynomial in the nilpotent part.
 >
-> In particular anything commuting with $N$ commutes with $(cI+N)^{-1}$.
+> [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) takes this further: for a single Jordan block, *every* operator commuting with $N$ is a polynomial in $N$, so the inverse being one is a special case rather than a coincidence.
 
 {: .prompt-tip }
 > *Consistency with the block formula.*
@@ -427,18 +484,25 @@ giving $\mathcal{M}(N) = J_3(0)\oplus J_2(0)$. Checks: $\lvert T_3 \rvert = 1 = 
 >
 > $$(S+N)^{-1} = \sum_{t=0}^{p-1}(-1)^t S^{-(t+1)}N^t.$$
 >
-> Take $A = -S^{-1}N$; commutativity is what lets the powers separate, giving $A^p = (-1)^pS^{-p}N^p = 0$, and the telescoping runs unchanged. The theorem is the case $S = cI$.
+> Take $A = -S^{-1}N$; commutativity is what lets the powers separate, giving $A^p = (-1)^pS^{-p}N^p = 0$, and the telescoping runs unchanged. The theorem is the case $S = \lambda I$.
 >
 > Commutativity is not decoration. Without it $A^p$ does not collapse, and the conclusion genuinely fails: an invertible operator plus a nilpotent one need not be invertible.
 
 **Worked example**
 
-Take $N = J_3(0)$ on $\mathbf{F}^3$, so $p = 3$ and $cI + N = J_3(c)$:
+Take $N = J_3(0)$ on $\mathbf{F}^3$, so $p = 3$ and $\lambda I + N = J_3(\lambda)$:
 
-$$J_3(c)^{-1} = \frac{1}{c}I - \frac{1}{c^2}N + \frac{1}{c^3}N^2 = \begin{pmatrix} 1/c & -1/c^2 & 1/c^3 \\ 0 & 1/c & -1/c^2 \\ 0 & 0 & 1/c\end{pmatrix}.$$
+$$J_3(\lambda)^{-1} = \frac{1}{\lambda}I - \frac{1}{\lambda^2}N + \frac{1}{\lambda^3}N^2 = \begin{pmatrix} 1/\lambda & -1/\lambda^2 & 1/\lambda^3 \\ 0 & 1/\lambda & -1/\lambda^2 \\ 0 & 0 & 1/\lambda\end{pmatrix}.$$
 
 Multiplying out confirms it, with everything past $N^2$ killed:
 
-$$(cI+N)\left(\tfrac{1}{c}I - \tfrac{1}{c^2}N + \tfrac{1}{c^3}N^2\right) = I - \tfrac{1}{c}N + \tfrac{1}{c^2}N^2 + \tfrac{1}{c}N - \tfrac{1}{c^2}N^2 + \tfrac{1}{c^3}N^3 = I.$$
+$$(\lambda I+N)\left(\tfrac{1}{\lambda}I - \tfrac{1}{\lambda^2}N + \tfrac{1}{\lambda^3}N^2\right) = I - \tfrac{1}{\lambda}N + \tfrac{1}{\lambda^2}N^2 + \tfrac{1}{\lambda}N - \tfrac{1}{\lambda^2}N^2 + \tfrac{1}{\lambda^3}N^3 = I.$$
 
-The inverse is again upper-triangular Toeplitz, as the parametrization of the commutant predicts, with alternating signs and increasing powers of $1/c$ along successive diagonals.
+The inverse is again upper-triangular Toeplitz, with alternating signs and increasing powers of $1/\lambda$ along successive diagonals. That shape is not an accident either: [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) shows that for a single chain the upper-triangular Toeplitz matrices are *exactly* the operators commuting with $N$.
+
+## What Next
+
+The diagram determines $N$ up to similarity, and this post read it in one direction: from
+$N$ to its shape. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) reads it in the other, showing that the same diagram
+controls which *other* operators commute with $N$ — with the two extremes above turning out
+to be the two extremes there as well.

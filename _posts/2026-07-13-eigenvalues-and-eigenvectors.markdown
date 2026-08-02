@@ -35,14 +35,7 @@ mermaid: true
 {: .prompt-tip }
 > "Every $k$-dimensional subspace is invariant" collapses to "every line is invariant" — i.e. all the way down to $k=1$ — because a line is recoverable as the intersection of the $k$-subspaces sitting above it.
 
-## Eigen-*
-
-{: .prompt-info }
-> Suppose $ T \in \mathcal{L}(V) $, then
->
-> $ E(0, T) \subseteq \operatorname{null} T $,
->
-> $ E(\lambda, T) \subseteq \operatorname{range} T $, where $ \lambda \ne 0 $.
+## Eigenvalues and Eigenvectors
 
 {: .prompt-info }
 > Suppose $ T \in \mathcal{L}(V) $. Then every list of eigenvectors of $ T $ corresponding to distinct eigenvalues of $ T $ is _linearly independent_.
@@ -143,22 +136,6 @@ mermaid: true
 >
 > $$ \left\lvert \lambda \right\rvert \le n \max\{\left\lvert \mathcal{M}(T, (v_1,\dots,v_n))_{j,k} \right\rvert : 1 \le j, k \le n \}. $$
 
-{: .prompt-info }
-> Sum of eigenspaces is a direct sum.
-
-{: .prompt-info }
-> In an upper-triangular matrix,
->
-> $$\{\text{distinct diagonal entries}\} = \{\text{zeros of min poly}\} = \{\text{eigenvalues}\}.$$
->
-> $$1 \le (\text{min-poly exponent of } \lambda) \le (\text{times } \lambda \text{ appears on the diagonal}) = \dim E{\lambda, T}. $$
-
-| $T \in \mathcal{L}(V)$ | Basis                                                                          | Subspaces                                                                                    | Dimensions                            | Minimal polynomial ($ m = \deg p \le \dim V $)                                                                             | Nullspace and range                                                                     |
-| ---------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Upper-triangularizable | $ Tv_k \in \operatorname{span}(v_1, \dots, v_k) $ for each $ k = 1, \dots, n $ | $ \operatorname{span}(v_1, \dots, v_k) $ is invariant under $T$ for each $ k = 1, \dots, n $ |                                       | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ (repetitions allowed)      |                                                                                         |
-| Lower-triangularizable | $ Tv_k \in \operatorname{span}(v_k, \dots, v_n) $ for each $ k = 1, \dots, n $ | $ \operatorname{span}(v_k, \dots, v_n) $ is invariant under $T$ for each $ k = 1, \dots, n $ |                                       | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ (repetitions allowed)      |                                                                                         |
-| Diagonalizable         | $\exists$ a basis of $V$ consisting of eigenvectors of $T$                     | $V = E(\lambda_1,T)\oplus\dots\oplus E(\lambda_m,T)$                                         | $\sum_k \dim E(\lambda_k,T) = \dim V$ | $ (z - \lambda_1)\dots(z - \lambda_m) $ for some list of _distinct_ numbers $ \lambda_1, \dots, \lambda_m \in \mathbf{F} $ | $ V = \operatorname{null} (T - \lambda I) \oplus \operatorname{range} (T - \lambda I) $ |
-
 {: .prompt-tip }
 > Diagonalizable means the eigenspaces are *as big as they can be* — big enough to fill $V$. Each column says "fill $V$" in a different dialect: enough eigenvectors for a basis, eigenspaces summing directly to $V$, dimensions adding to $\dim V$, and — the min poly one — no eigenvalue needing a repeated factor to be annihilated (a repeat is exactly the symptom of an eigenspace that came up short, like the $(0,1)$ vector that $(T-5I)$ couldn't kill in one step).
 
@@ -192,25 +169,11 @@ mermaid: true
 > Over $\mathbb{C}$, the diagonalizable operators are dense in $\mathcal{L}(V)$.
 
 {: .prompt-proof }
-> Let $T \in \mathcal{L}(V)$, $n = \dim V$. Since $\mathbf{F} = \mathbb{C}$, there is a basis $v_1,\dots,v_n$ with respect to which $\mathcal{M}(T)$ is upper triangular, with diagonal entries $\lambda_1,\dots,\lambda_n$. Given $\varepsilon > 0$, choose $\varepsilon_1,\dots,\varepsilon_n \in \mathbb{C}$ with $|\varepsilon_j| < \varepsilon$ such that $\lambda_1 + \varepsilon_1, \dots, \lambda_n + \varepsilon_n$ are pairwise distinct — always possible, since each $\varepsilon_j$ needs only to avoid finitely many values, and any disc is infinite.
+> Let $T \in \mathcal{L}(V)$, $n = \dim V$. Since $\mathbf{F} = \mathbb{C}$, there is a basis $v_1,\dots,v_n$ with respect to which $\mathcal{M}(T)$ is upper triangular, with diagonal entries $\lambda_1,\dots,\lambda_n$. Given $\varepsilon > 0$, choose $\varepsilon_1,\dots,\varepsilon_n \in \mathbb{C}$ with $\lvert \varepsilon_j \rvert < \varepsilon$ such that $\lambda_1 + \varepsilon_1, \dots, \lambda_n + \varepsilon_n$ are pairwise distinct — always possible, since each $\varepsilon_j$ needs only to avoid finitely many values, and any disc is infinite.
 >
-> Define $D \in \mathcal{L}(V)$ by $Dv_j = \varepsilon_j v_j$. Then $\mathcal{M}(T + D)$ is upper triangular with the distinct entries $\lambda_j + \varepsilon_j$ on the diagonal. The diagonal of a triangular matrix lists the eigenvalues, so $T + D$ has $n$ distinct eigenvalues in a space of dimension $n$, hence is diagonalizable. And $D$ is small: in the norm making $v_1,\dots,v_n$ orthonormal, $\|D\| = \max_j |\varepsilon_j| < \varepsilon$. $\blacksquare$
+> Define $D \in \mathcal{L}(V)$ by $Dv_j = \varepsilon_j v_j$. Then $\mathcal{M}(T + D)$ is upper triangular with the distinct entries $\lambda_j + \varepsilon_j$ on the diagonal. The diagonal of a triangular matrix lists the eigenvalues, so $T + D$ has $n$ distinct eigenvalues in a space of dimension $n$, hence is diagonalizable. And $D$ is small: in the norm making $v_1,\dots,v_n$ orthonormal, $\lvert D \rvert = \max_j \lvert \varepsilon_j \rvert < \varepsilon$. $\blacksquare$
 
 ## Eigenspace
-
-{: .prompt-info }
-> An eigenvalue $\lambda$ of $T$ is called **defective** when its **geometric multiplicity is strictly less than its algebraic multiplicity**:
->
-> $$\dim E(\lambda, T) \;<\; \dim G(\lambda, T).$$
-
-{: .prompt-tip }
-> $\lambda$ is defective exactly when
->
-> $$\operatorname{null}(T - \lambda I) \subsetneq \operatorname{null}(T - \lambda I)^2,$$
->
-> i.e. there exists a *generalized* eigenvector that is not an honest eigenvector. In Jordan-form > terms, $\lambda$ is defective iff at least one Jordan block for $\lambda$ has size $\geq 2$.
->
-> An operator with no defective eigenvalues is diagonalizable, and vice versa. So "defective" is precisely the local obstruction to diagonalizability — it flags the eigenvalues where the nilpotent part on that block is nonzero.
 
 {: .prompt-info }
 > Suppose $ \mathbf{F} = \mathbb{C}$, $ T \in \mathcal{L}(V) $, $ p \in \mathcal{P}(\mathbb{C}) $ is a nonconstant polynomial, and $ \alpha \in \mathbb{C} $, then
@@ -237,8 +200,7 @@ mermaid: true
 >
 > So the precise condition for strict growth of the ordinary eigenspace is: **$\lambda$ is a critical point of $p$ (i.e. $p'(\lambda)=0$) *and* $\lambda$ is a defective eigenvalue of $T$ (has a nontrivial Jordan block).**
 
-{: .prompt-proof }
-An operator with $\text{min} = \text{char}$ is called **nonderogatory** or **cyclic**.
+## Generalized Eigenspace
 
 For a single eigenvalue $\lambda$ with nilpotent diagram $\mu = (m_1 \ge \dots \ge m_k)$:
 
@@ -248,13 +210,47 @@ For a single eigenvalue $\lambda$ with nilpotent diagram $\mu = (m_1 \ge \dots \
 | min. poly exponent  | $p = m_1$                        | height of the tallest column |
 | $\dim E(\lambda,T)$ | $k = \mu'_1$                     | size of the bottom level     |
 
-| $ T \in \mathcal{L}(V) $, Distinct eigenvalues $ \lambda_1, \dots, \lambda_m $ | $ G(\lambda, T) $                                           | $ E(\lambda, T) $                                           |
-| ------------------------------------------------------------------------------ | ----------------------------------------------------------- | ----------------------------------------------------------- |
-| Definition                                                                     | $ \operatorname{null} (T - \lambda I)^{\dim V} $            | $ \operatorname{null} (T - \lambda I) $                     |
-| Invariant                                                                      | $ G(\lambda_k, T) $ is invariant under $T$                  | $ E(\lambda_k, T) $ is invariant under $T$                  |
-| Nilpotency                                                                     | $ \left. (T - \lambda_k I) \right\rvert_{G(\lambda_k, T)} $ | $ T - \lambda I $                                           |
-| Decomposition                                                                  | $ V = G(\lambda_1, T) \oplus \dots \oplus G(\lambda_m, T) $ | $ V = E(\lambda_1, T) \oplus \dots \oplus E(\lambda_m, T) $ |
-| Multiplicity of $\lambda_k$: $d_k$                                             | Algebraic: $ \dim G(\lambda_k, T) $                         | Geometric: $ \dim E(\lambda_k, T) $                         |
-| Minimal Polynomial                                                             | $\prod_k (z-\lambda_k)^{\text{tallest column}_{\lambda_k}}$ | $\prod_k (z-\lambda_k)^{\text{tallest column}_{\lambda_k}}$ |
-| Characteristic Polynomial                                                      | $\prod_k (z-\lambda_k)^{d_k}$                               | $\prod_k (z-\lambda_k)^{d_k}$                               |
+{: .prompt-info }
+> $\operatorname{rank}\big(\left.(T - \lambda I)\right\rvert_{G(\lambda,T)}\big) = \dim G(\lambda,T) - \dim E(\lambda,T)$
 
+{: .prompt-info }
+> An eigenvalue $\lambda$ of $T$ is called **defective** when $\dim E(\lambda, T) \;<\; \dim G(\lambda, T)$.
+
+{: .prompt-tip }
+> An operator with no defective eigenvalues is diagonalizable.
+
+Suppose $ T \in \mathcal{L}(V) $, and the distinct eigenvalues are $ \lambda_1, \dots, \lambda_m $.
+
+|                                  | $G(\lambda_k,T)$                                          | $E(\lambda_k,T)$                              |
+| -------------------------------- | --------------------------------------------------------- | --------------------------------------------- |
+| Definition                       | $\operatorname{null}(T-\lambda_k I)^{j}$, any $j \ge m_1$ | $\operatorname{null}(T-\lambda_k I)$          |
+| Containment                      | $E \subseteq G$                                           | —                                             |
+| Invariant                        | yes                                                       | yes                                           |
+| Restriction of $T - \lambda_k I$ | nilpotent, index exactly $m_1$                            | zero                                          |
+| Sum is direct                    | always                                                    | always                                        |
+| Sum is all of $V$                | iff char. poly splits (auto over $\mathbb{C}$)            | iff $T$ diagonalizable                        |
+| Multiplicity                     | algebraic $d_k = \dim G$                                  | geometric $g_k = \dim E$, $1 \le g_k \le d_k$ |
+| Min. polynomial                  | $\prod_k (z-\lambda_k)^{(m_1)_{\lambda_k}}$               | $\prod_k(z-\lambda_k)$ **iff diagonalizable** |
+| Char. polynomial                 | $\prod_k (z-\lambda_k)^{d_k}$                             | — (always uses $d_k$)                         |
+
+{: .prompt-info }
+> In an upper-triangular matrix,
+>
+> $$\{\text{distinct diagonal entries}\} = \{\text{zeros of min poly}\} = \{\text{eigenvalues}\}.$$
+>
+> $$1 \le (\text{min-poly exponent of } \lambda) \le (\text{times } \lambda \text{ appears on the diagonal}) = \dim G(\lambda, T). $$
+
+| $T \in \mathcal{L}(V)$ | Basis                                                                                                                                                  | Subspaces                                                                  | Dimensions                                                                                                                                               | Minimal polynomial                                                                  | Nullspace and range                                                                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Upper-triangularizable | $Tv_k \in \operatorname{span}(v_1,\dots,v_k)$ for each $k$                                                                                             | $\operatorname{span}(v_1,\dots,v_k)$ invariant for each $k$                | $\lambda_k$ occurs $\dim G(\lambda_k,T)$ times on the diagonal                                                                                           | $(z-\lambda_1)\cdots(z-\lambda_m)$, $\lambda_i \in \mathbf{F}$, repetitions allowed | —                                                                                                                          |
+| Lower-triangularizable | $Tv_k \in \operatorname{span}(v_k,\dots,v_n)$ for each $k$                                                                                             | $\operatorname{span}(v_k,\dots,v_n)$ invariant for each $k$                | same (reverse the basis)                                                                                                                                 | same                                                                                | —                                                                                                                          |
+| Primary decomposition  | basis is a concatenation of bases of the $G(\lambda_k,T)$; inside group $k$, $(T-\lambda_k I)v \in \operatorname{span}$(earlier vectors of that group) | $V = G(\lambda_1,T)\oplus\dots\oplus G(\lambda_m,T)$, $\lambda_k$ distinct | $\sum_k \dim G(\lambda_k,T) = \dim V$; block $k$ has size $d_k$                                                                                          | $\prod_k (z-\lambda_k)^{p_k}$, $\lambda_k$ **distinct**, $p_k \ge 1$                | $G(\lambda,T) = \operatorname{null}(T-\lambda I)^{\dim V}$                                                                 |
+| Jordan form            | basis is a disjoint union of chains $v,\,(T{-}\lambda)v,\dots,(T{-}\lambda)^{s-1}v$; equivalently $Tv_k - \lambda v_k \in \\{0,\,v_{k-1}\\}$           | $V = $ direct sum of **indecomposable** invariant subspaces, one per chain | blocks for $\lambda$: $\dim E(\lambda,T)$; blocks of size $\ge j$: $\dim\operatorname{null}(T{-}\lambda)^j - \dim\operatorname{null}(T{-}\lambda)^{j-1}$ | $\prod_k (z-\lambda_k)^{(m_1)_{\lambda_k}}$, exponent $=$ largest block size        | $\operatorname{rank}(T-\lambda)^j$ for all $j$ determines the entire diagram                                               |
+| Diagonalizable         | a basis of eigenvectors of $T$                                                                                                                         | $V = E(\lambda_1,T)\oplus\dots\oplus E(\lambda_m,T)$                       | $\sum_k \dim E(\lambda_k,T) = \dim V$                                                                                                                    | $(z-\lambda_1)\cdots(z-\lambda_m)$, $\lambda_k$ **distinct**                        | $V = \operatorname{null}(T{-}\lambda I) \oplus \operatorname{range}(T{-}\lambda I)$ **for every** $\lambda \in \mathbf{F}$ |
+
+![Hierarchy](../assets/img/math/upper_triangular_primary_jordan_hierarchy.png)
+
+{: .prompt-tip }
+> Moving right buys you finer blocks and pays for it in uniqueness. The $G(\lambda_k,T)$ are determined by $T$ alone — no choices. The individual Jordan blocks inside a $G$ are not: with $\mu = (2,1)$ there's a whole family of valid choices for the size-2 and size-1 summands, and only the multiset $\{2,1\}$ is forced.
+
+![matrix relationship](../assets/img/math/matrix_shapes_vs_operator_classes.png)
