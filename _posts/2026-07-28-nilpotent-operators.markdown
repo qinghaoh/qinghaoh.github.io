@@ -5,6 +5,13 @@ tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 ---
 
+## Properties
+
+{: .prompt-info }
+> Suppose $ T \in \mathcal{L}(V) $, then
+>
+> $ T $ is nilpotent $\iff \dim G(0,T) = \dim V $.
+
 ## Jordan Basis
 
 {: .prompt-info }

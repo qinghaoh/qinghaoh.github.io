@@ -126,7 +126,7 @@ $$\mathcal{C}(N) \;\cong\; \operatorname{null}N^{m_1} \times \dots \times \opera
 $$\dim\mathcal{C}(N) = \sum_{i,j}\min(m_i,m_j) = \sum_j \left(\mu'_j\right)^2.$$
 
 {: .prompt-tip }
-> Here are the window of $ \operatorname{null} N^{m_i} $ of $\mu = (3,2,1)$:
+> Here are the windows of $ \operatorname{null} N^{m_i} $ of $\mu = (3,2,1)$:
 
 ![w windows](../assets/img/math/null_n_mi_window_clipping_ragged_diagram.png)
 

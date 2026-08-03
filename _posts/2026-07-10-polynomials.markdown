@@ -8,43 +8,6 @@ mermaid: true
 
 ## Polynomials
 
-| $ T \in \mathcal{L}(V) $                                          | $ \ q \in \mathcal{P}(\mathbf{F}) $                                     | Minimal polynomial                                    |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- |
-| $ T/U $                                                           | $ q(T/U) = q(T)/U $                                                     | $ p_{T/U} \mid p_{T} $                                |
-| $ T                                                     \vert_U $ | $ q(T \vert_U) = q(T) \vert_U $                                         | $ p_{T \vert_U} \mid p_{T} $                          |
-|                                                                   |                                                                         | $ p_T \mid p_{T              \vert_U} \cdot p_{T/U} $ |
-| $ \mathbf{F} = \mathbb{R} $, $ T_{\mathbb{C}} $                   | $ q(T_{\mathbb{C}}) = (q(T))_{\mathbb{C}} $ ($q$ has real coefficients) | $ p_{T_{\mathbb{C}}} = p_T $                          |
-| $ T' $                                                            | $ q(T') = (q(T))' $                                                     | $ p_{T'} = p_T $                                      |
-| $ S \in \mathcal{L}(V) $ is invertible, $ STS^{-1} $              | $ q(STS^{-1}) = q(T) $                                                  | $ p_{STS^{-1}} = p_T $                                |
-
-{: .prompt-info }
-> _Complexification_
->
-> $V_{\mathbb{C}} = V \oplus iV$ with elements $u + iw$ ($u, w \in V$), and $T_{\mathbb{C}}(u + iw) = Tu + iTw$.
-
-{: .prompt-proof }
-> Write $p = p_T$ and $q = p_{T_{\mathbb{C}}}$.
->
-> **Direction 1: $q \mid p$**
->
-> $p$ has real coefficients and $p(T) = 0$, so $p(T_{\mathbb{C}}) = 0$. Thus $p$ annihilates $T_{\mathbb{C}}$, giving $q \mid p$. In particular $\deg q \le \deg p$.
->
-> **Direction 2: $p \mid q$**
->
->$q$ a priori has *complex* coefficients, so **split $q$ into real and imaginary parts.**
->
-> Write $q(z) = g(z) + i\,h(z)$, where $g, h \in \mathcal{P}(\mathbb{R})$ are obtained by taking the real and imaginary parts of each coefficient of $q$. Since $g, h$ have real coefficients:
->
-> $$0 = q(T_{\mathbb{C}}) = g(T_{\mathbb{C}}) + i\,h(T_{\mathbb{C}}) = (g(T))_{\mathbb{C}} + i\,(h(T))_{\mathbb{C}}.$$
->
-> Evaluate at $u + i\cdot 0 = u, \ \forall u \in V$: $$(g(T))_{\mathbb{C}}u = g(T)u \in V$$ and $i(h(T))_{\mathbb{C}}u = i\,h(T)u \in iV$. These lie in the complementary summands $V$ and $iV$, so both must vanish:
->
-> $$g(T)u = 0 \quad\text{and}\quad h(T)u = 0 \quad\text{for all } u,$$
->
-> i.e. $g(T) = 0$ and $h(T) = 0$.
->
-> Now $q$ is **monic**, so its leading coefficient is $1 = 1 + i\cdot 0$; hence $g$ is monic of degree $\deg q$, while $\deg h < \deg q$. Since $g(T) = 0$ and $g$ is a monic real annihilator of $T$, minimality gives $p \mid g. \blacksquare$
-
 {: .prompt-info }
 > _Bézout identity_
 >
@@ -148,26 +111,7 @@ mermaid: true
 > * https://mathworld.wolfram.com/CompanionMatrix.html
 
 {: .prompt-info }
-> For every polynomial $q$,
->
-> $$T\, q(ST) \;=\; q(TS)\, T.$$
-
-{: .prompt-proof }
-> First for monomials: $T(ST)^k = (TS)^k T$, by induction on $k$. The case $k=0$ is $T = T$. Assuming it for $k$,
->
-> $$T(ST)^{k+1} = \big(T S\big) T (ST)^{k} = (TS)\,(TS)^k T = (TS)^{k+1}T,$$
->
-> where the first step just regroups $T(ST)(ST)^k$. Both sides of the identity are linear in $q$, so it extends from monomials to all polynomials. $\square$
-
-{: .prompt-info }
-> If $q$ annihilates $ST$, then $z\,q(z)$ annihilates $TS$.
-
-{: .prompt-proof }
-> Suppose $q(ST) = 0$. By the identity, $q(TS)\,T = T\,q(ST) = 0$. Multiply on the right by $S$:
->
-> $$q(TS)\,TS = 0.$$
->
-> Since $q(TS)$ is a polynomial in $TS$, it commutes with $TS$, so this says exactly that the polynomial $z\,q(z)$ evaluated at $TS$ is zero. $\square$
+> Every monic polynomial is the characteristic polynomial of some operator.
 
 {: .prompt-info }
 > Suppose $ V$ is finite-dimensional and $ T \in \mathcal{L}(V) $. Let $ \mathcal{E} $ be the subspace of $ \mathcal{L}(V) $ defined by
@@ -282,3 +226,112 @@ $$w_i = \big(p/q_i^{m_i}\big)(T)\,u_i.$$
 
 {: .prompt-proof }
 > Suppose $a_0 v + a_1 Tv + \dots + a_{n-1}T^{n-1}v = 0$ with the $a_j$ not all zero. Then $q(z) = a_0 + a_1 z + \dots + a_{n-1}z^{n-1}$ is a nonzero polynomial with $q(T)v = 0$, so $p_v \mid q$ — impossible, since $\deg q < n = \deg p_v$. So the list is linearly independent, and $n$ independent vectors in an $n$-dimensional space form a basis. $\square$
+
+## Homomorphism gives divisibility; injectivity gives equality
+
+| $T \in \mathcal{L}(V)$                      | $q \in \mathcal{P}(\mathbf{F})$                 | Type of $\Phi$                                                                                          | $\Phi$ injective? | Minimal polynomial                    |
+| ------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------- | ------------------------------------- |
+| $T\vert_U$                                  | $q(T\vert_U) = q(T)\vert_U$                     | unital algebra hom. $\mathcal{L}(V) \to \mathcal{L}(U)$                                                 | no                | $p_{T\vert_U} \mid p_T$               |
+| $T/U$                                       | $q(T/U) = q(T)/U$                               | unital algebra hom. $\mathcal{L}(V) \to \mathcal{L}(V/U)$                                               | no                | $p_{T/U} \mid p_T$                    |
+|                                             |                                                 |                                                                                                         |                   | $p_T \mid p_{T\vert_U} \cdot p_{T/U}$ |
+| $\mathbf{F} = \mathbb{R}$, $T_{\mathbb{C}}$ | $q(T_\mathbb{C}) = (q(T))_\mathbb{C}$, $q$ real | unital $\mathbb{R}$-algebra hom. $$\mathcal{L}_\mathbb{R}(V) \to \mathcal{L}_\mathbb{C}(V_\mathbb{C})$$ | yes               | $p_{T_\mathbb{C}} = p_T$              |
+| $T'$                                        | $q(T') = (q(T))'$                               | unital **anti**-homomorphism $\mathcal{L}(V) \to \mathcal{L}(V')$                                       | yes               | $p_{T'} = p_T$                        |
+| $S$ invertible, $S^{-1}TS$                  | $q(S^{-1}TS) = S^{-1}q(T)S$                     | unital algebra **iso** $\mathcal{L}(V) \to \mathcal{L}(V)$                                              | yes (bijective)   | $p_{S^{-1}TS} = p_T$                  |
+
+{: .prompt-info }
+> $\Phi$ is a unital [algebra homomorphism](https://en.wikipedia.org/wiki/Algebra_over_a_field#Algebra_homomorphisms) $\mathcal{L}(V) \to \mathcal{L}(W)$ for the relevant $W$ $\implies$ $q(\Phi(T)) = \Phi(q(T))$.
+
+{: .prompt-tip }
+> The map preserves powers by multiplicativity, scalars by linearity and unitality, and sums by linearity.
+
+{: .prompt-tip }
+> Homomorphism $\Rightarrow$ divisibility; injective on top of that $\Rightarrow$ equality.** Because $p_{\Phi(T)} \mid p_T$ is just "$q(T) = 0 \Rightarrow q(\Phi(T)) = 0$", and injectivity supplies the converse.
+
+{: .prompt-info }
+> _Complexification_
+>
+> $V_{\mathbb{C}} = V \oplus iV$ with elements $u + iw$ ($u, w \in V$), and $T_{\mathbb{C}}(u + iw) = Tu + iTw$.
+
+{: .prompt-proof }
+> Write $p = p_T$ and $q = p_{T_{\mathbb{C}}}$.
+>
+> **Direction 1: $q \mid p$**
+>
+> $p$ has real coefficients and $p(T) = 0$, so $p(T_{\mathbb{C}}) = 0$. Thus $p$ annihilates $T_{\mathbb{C}}$, giving $q \mid p$. In particular $\deg q \le \deg p$.
+>
+> **Direction 2: $p \mid q$**
+>
+>$q$ a priori has *complex* coefficients, so **split $q$ into real and imaginary parts.**
+>
+> Write $q(z) = g(z) + i\,h(z)$, where $g, h \in \mathcal{P}(\mathbb{R})$ are obtained by taking the real and imaginary parts of each coefficient of $q$. Since $g, h$ have real coefficients:
+>
+> $$0 = q(T_{\mathbb{C}}) = g(T_{\mathbb{C}}) + i\,h(T_{\mathbb{C}}) = (g(T))_{\mathbb{C}} + i\,(h(T))_{\mathbb{C}}.$$
+>
+> Evaluate at $u + i\cdot 0 = u, \ \forall u \in V$: $$(g(T))_{\mathbb{C}}u = g(T)u \in V$$ and $i(h(T))_{\mathbb{C}}u = i\,h(T)u \in iV$. These lie in the complementary summands $V$ and $iV$, so both must vanish:
+>
+> $$g(T)u = 0 \quad\text{and}\quad h(T)u = 0 \quad\text{for all } u,$$
+>
+> i.e. $g(T) = 0$ and $h(T) = 0$.
+>
+> Now $q$ is **monic**, so its leading coefficient is $1 = 1 + i\cdot 0$; hence $g$ is monic of degree $\deg q$, while $\deg h < \deg q$. Since $g(T) = 0$ and $g$ is a monic real annihilator of $T$, minimality gives $p \mid g. \blacksquare$
+
+## $ST$ and $TS$: what transfers, and the cost of $z$
+
+{: .prompt-info }
+> *Commutation identity*
+>
+> For every polynomial $q$,
+>
+> $$T\, q(ST) \;=\; q(TS)\, T.$$
+
+{: .prompt-proof }
+> First for monomials: $T(ST)^k = (TS)^k T$, by induction on $k$. The case $k = 0$ is $T = T$. Assuming it for $k$,
+>
+> $$T(ST)^{k+1} = (TS)\,T\,(ST)^{k} = (TS)\,(TS)^k T = (TS)^{k+1}T,$$
+>
+> where the first step just regroups $T(ST)(ST)^k$. Both sides of the identity are linear in $q$, so it extends from monomials to all polynomials. $\blacksquare$
+
+The therom below is about annihilating polynomials transfer, at the cost of one factor of $z$.
+
+{: .prompt-info }
+> If $q$ annihilates $ST$, then $z\,q(z)$ annihilates $TS$. Consequently
+>
+> $$p_{TS} \;\big|\; z\,p_{ST} \qquad\text{and}\qquad p_{ST} \;\big|\; z\,p_{TS}.$$
+
+{: .prompt-proof }
+> Suppose $q(ST) = 0$. By the identity, $q(TS)\,T = T\,q(ST) = 0$. Multiply on the right by $S$:
+>
+> $$q(TS)\,TS = 0.$$
+>
+> Since $q(TS)$ is a polynomial in $TS$, this says exactly that $z\,q(z)$ evaluated at $TS$ is $0$. Applying this to $q = p_{ST}$ gives $p_{TS} \mid z\,p_{ST}$, since the minimal polynomial divides every annihilating polynomial. Swapping the roles of $S$ and $T$ gives the other divisibility. $\blacksquare$
+
+{: .prompt-warning }
+> The factor of $z$ cannot be dropped: $ST$ and $TS$ need **not** have the same minimal polynomial. See the example below, where $p_{ST} = z$ and $p_{TS} = z^2$.
+
+{: .prompt-tip }
+> $ST$ and $TS$ have the same nonzero eigenvalues.
+
+The following theorem is about nilpotency transfers.
+
+{: .prompt-info }
+> $ST$ is nilpotent $\iff$ $TS$ is nilpotent.
+>
+> Writing $i(\cdot)$ for the nilpotency index,
+>
+> $$\big|\, i(ST) - i(TS) \,\big| \;\le\; 1.$$
+
+{: .prompt-proof }
+> If $(ST)^k = 0$, $q = z^k$ annihilates $ST$: then $z^{k+1}$ annihilates $TS$, i.e. $(TS)^{k+1} = 0$. So $i(TS) \le i(ST) + 1$, and symmetrically $i(ST) \le i(TS) + 1$. $\blacksquare$
+
+{: .prompt-tip }
+> Unwound, the computation is one line:
+>
+> $$(TS)^{k+1} = \big((TS)^k T\big) S = \big(T (ST)^k\big) S = T \cdot 0 \cdot S = 0.$$
+
+{: .prompt-warning }
+> The bound is attained, so the indices genuinely need not be equal. Take
+>
+> $$S = \begin{pmatrix} 0 & 0 \\ 0 & 1\end{pmatrix}, \qquad
+>   T = \begin{pmatrix} 0 & 1 \\ 0 & 0\end{pmatrix}.$$
+>
+> Then $ST = 0$ with $i(ST) = 1$, while $$TS = \begin{pmatrix} 0 & 1 \\ 0 & 0\end{pmatrix} \ne 0$$ with $i(TS) = 2$.

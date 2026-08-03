@@ -106,6 +106,12 @@ Finite fields exist precisely for prime-power sizes $q = p^k$.
 
 A sum is a direct sum iff dimensions add up.
 
+### Decomposition
+
+* Suppose $T \in \mathcal{L}(V)$. $V = \dim \operatorname{null} T^m = \dim \operatorname{null} T^{m + 1} $.
+* Suppose $\mathbf{F} = \mathbb{C}$ and $T \in \mathcal{L}(V)$. $ V = \oplus G(\lambda, T)$.
+* Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$ and $T$ is diagonalizable. $ V = \oplus E(\lambda, T)$.
+
 {: .prompt-info }
 > If $v_1,\dots,v_n$ is a basis, then replacing $v_i$ by $v_i + c\,v_j$ for any $j \neq i$ and any scalar $c$ again gives a basis. (
 

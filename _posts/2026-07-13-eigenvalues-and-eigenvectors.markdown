@@ -35,6 +35,22 @@ mermaid: true
 {: .prompt-tip }
 > "Every $k$-dimensional subspace is invariant" collapses to "every line is invariant" — i.e. all the way down to $k=1$ — because a line is recoverable as the intersection of the $k$-subspaces sitting above it.
 
+## Nullspace Chain
+
+{: .prompt-info }
+> Suppose $ T \in \mathcal{L}(V) $.
+>
+> Stablization index = Nipotency index of $ \left. T \right\rvert_{G(0,T)} $.
+
+{: .prompt-info }
+> Suppose $ T \in \mathcal{L}(V) $ and $m$ is a nonnegative integer.
+>
+> $$ \operatorname{null} T^m = \operatorname{null} T^{m + 1} \iff \operatorname{range} T^m = \operatorname{range} T^{m + 1} $$
+
+{: .prompt-tip }
+> Suppose the vector space is finite-dimensional. The stablization index of a nullspace chain equals that of the range chain.
+
+{: .prompt-tip }
 ## Eigenvalues and Eigenvectors
 
 {: .prompt-info }
@@ -45,38 +61,15 @@ mermaid: true
 >
 > $ v_1, \dots, v_m \in V $ is linearly independent $ \iff \exists T \in \mathcal{L}(V) $ such that $ v_1, \dots, v_m \in V $ are eigenvectors of $ T $ corresponding to distinct eigenvalues.
 
-{: .prompt-tip }
-> Tight upper bounds of the number of _distinct_ eigenvalues:
->
-> * $ \dim V $
-> * $ 1 + \dim \operatorname{range} T $
-
-{: .prompt-proof }
-> $\operatorname{range} T$ contains $m$ linearly independent vectors, which forces
->
-> $$m \le \dim \operatorname{range} T.$$
->
-> The eigenvalues of $T$ are these $m$ nonzero ones, *plus possibly* $0$. Since $0$ is a single value, it adds at most $1$ to the count of distinct eigenvalues:
->
-> $$\#\{\text{distinct eigenvalues}\} \le m + 1 \le \dim \operatorname{range} T + 1. \qquad \blacksquare$$
-
-{: .prompt-tip }
-> Let $r = \dim \operatorname{range} T$ and $n = \dim V$. Rank-nullity: $\dim \operatorname{null} T = n - r$.
->
-> - If $0$ is **not** an eigenvalue: $T$ injective, $r = n$, so $1 + r = n + 1 > n = \dim V$. The range bound is the *weaker* (larger) one here — but it's still valid, just not as good as $\dim V$.
-> - If $0$ **is** an eigenvalue: $r \le n - 1$, so $1 + r \le n = \dim V$. Now the range bound is the *stronger* (smaller, better) one.
->
-> So the range bound $1 + r$ is the better bound exactly when $0$ is an eigenvalue — which is the whole point of the problem: it *improves* on $\dim V$ precisely in the non-injective case, by using the range to corral the nonzero eigenvalues and spending only "+1" on zero.
-
 {: .prompt-info }
 > For any invertible $T$ with minimal polynomial $p$ of degree $m$:
 >
 > $$p_{T^{-1}}(z) = \frac{z^m\, p(1/z)}{p(0)}.$$
 
 {: .prompt-tip }
-> $Tv = \lambda v \iff T^{-1}v = \lambda^{-1}v$
+> Suppose $T \in \mathcal{L}(V)$ is invertible. For all $\lambda \in \mathbf{F} $ with $\lambda \ne 0$,
 >
-> (a) The eigenvalues of $T^{-1}$ are exactly the reciprocals of those of $T$.
+> (a) $ G(\lambda, T) = G(\frac{1}{\lambda}, T^{-1}) $.
 >
 > (b) $ E(\lambda, T) = E(\frac{1}{\lambda}, T^{-1}) $.
 
@@ -239,6 +232,61 @@ Suppose $ T \in \mathcal{L}(V) $, and the distinct eigenvalues are $ \lambda_1, 
 > $$\{\text{distinct diagonal entries}\} = \{\text{zeros of min poly}\} = \{\text{eigenvalues}\}.$$
 >
 > $$1 \le (\text{min-poly exponent of } \lambda) \le (\text{times } \lambda \text{ appears on the diagonal}) = \dim G(\lambda, T). $$
+
+### Upper Bound on the Number of Distinct Eigenvalues
+
+{: .prompt-tip }
+> Tight upper bound on the number of _distinct_ eigenvalues:
+>
+> $$\#\{\text{distinct eigenvalues of } T\} \;\le\; \min\big(\dim V,\; 1 + \dim \operatorname{range} T\big)$$
+
+{: .prompt-proof }
+> Let $\lambda_1, \dots, \lambda_m$ be the distinct **nonzero** eigenvalues of $T$, with
+> corresponding eigenvectors $v_1, \dots, v_m$.
+>
+> Each $v_i$ lies in $\operatorname{range} T$, since $\lambda_i \ne 0$ lets us write
+>
+> $$v_i = T\left(\tfrac{1}{\lambda_i} v_i\right).$$
+>
+> Eigenvectors belonging to distinct eigenvalues are linearly independent, so
+> $\operatorname{range} T$ contains $m$ linearly independent vectors:
+>
+> $$m \le \dim \operatorname{range} T.$$
+>
+> The eigenvalues of $T$ are these $m$ nonzero ones, *plus possibly* $0$. Since $0$ is a
+> single value, it adds at most $1$:
+>
+> $$\#\{\text{distinct eigenvalues}\} \le m + 1 \le 1 + \dim \operatorname{range} T. \qquad \blacksquare$$
+>
+> The bound $\\#\\{\text{distinct eigenvalues}\\} \le \dim V$ is standard, and the minimum of
+> two valid bounds is valid.
+
+{: .prompt-tip }
+> **Which of the two bounds is better.** Let $r = \dim \operatorname{range} T$ and
+> $n = \dim V$, so rank–nullity gives $\dim \operatorname{null} T = n - r$. The comparison
+> turns entirely on whether $0$ is an eigenvalue — equivalently (all the same condition,
+> stated in different vocabulary) whether $\operatorname{null} T \ne \{0\}$, whether $T$
+> fails to be injective, whether $T$ fails to be invertible, whether $r < n$.
+>
+> - **$0$ is not an eigenvalue ($T$ is invertible).** Then $r = n$ and $1 + r = n + 1 > n$, so $\min$ selects
+>   $\dim V$. The range bound is valid but vacuous.
+> - **$0$ is an eigenvalue ($T$ is not invertible).** Then $r \le n - 1$ and $1 + r \le n$, so $\min$ selects
+>   $1 + r$: a strict improvement whenever $r < n - 1$.
+
+{: .prompt-warning }
+> This is about $0$ being **an** eigenvalue, not the **only** one — it is unrelated to
+> nilpotency. $\operatorname{diag}(0,1,2,3)$ is non-invertible and far from nilpotent.
+>
+> Nilpotency is in fact where the bound is *weakest*: for $J_n(0)$ the true count is $1$
+> while $r = n - 1$ gives a bound of $n$. The only nilpotent operator attaining the bound
+> is $T = 0$, where $r = 0$ and $1 + r = 1$.
+
+{: .prompt-tip }
+> **Equality.** $\\#\\{\text{distinct eigenvalues}\\} = 1 + r$ holds iff $T$ is diagonalizable,
+> $0$ is an eigenvalue, and every nonzero eigenvalue has multiplicity $1$ — i.e.
+> $T = \operatorname{diag}(0, \dots, 0, \lambda_1, \dots, \lambda_r)$ with the $\lambda_i$
+> distinct and nonzero. The other bound is attained by any
+> $\operatorname{diag}(\lambda_1, \dots, \lambda_n)$ with $n$ distinct nonzero entries.
 
 | $T \in \mathcal{L}(V)$ | Basis                                                                                                                                                  | Subspaces                                                                  | Dimensions                                                                                                                                               | Minimal polynomial                                                                  | Nullspace and range                                                                                                        |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
