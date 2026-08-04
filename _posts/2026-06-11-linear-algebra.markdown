@@ -50,16 +50,18 @@ flowchart LR
 * $ V_1 \cap \dots \cap V_m $
 * $ V_1 \cup V_2 $ ($ \Leftrightarrow V_1 \subseteq V_2 $ or $ V_1 \supseteq V_2 $)
 * $ V_1 + \dots + V_m $ (Smallest containing subspace)
-* $ E(\lambda, T) $
+
 
 Suppose $V$ is finite-dimensional and $ U $ is a subspace of $ V $:
 
-|               | $ \dim $                                  |
-| ------------- | ----------------------------------------- |
-| $ U $         | $ \leq \dim V $ ($ = \dim V \iff U = V $) |
-| $ V/U $       | $ \dim V - \dim U $                       |
-| $ U^0 $       | $ \dim V - \dim U $                       |
-| $ U^{\perp} $ | $ \dim V - \dim U $                       |
+|                   | $ \dim $                                  |
+| ----------------- | ----------------------------------------- |
+| $ U $             | $ \leq \dim V $ ($ = \dim V \iff U = V $) |
+| $ V/U $           | $ \dim V - \dim U $                       |
+| $ U^0 $           | $ \dim V - \dim U $                       |
+| $ U^{\perp} $     | $ \dim V - \dim U $                       |
+| $ E(\lambda, T) $ | algebraic multiplicity                    |
+| $ G(\lambda, T) $ | geometric multiplicity                    |
 
 ### Sum
 
@@ -106,11 +108,16 @@ Finite fields exist precisely for prime-power sizes $q = p^k$.
 
 A sum is a direct sum iff dimensions add up.
 
-### Decomposition
+### Direct Sum Decomposition
 
 * Suppose $T \in \mathcal{L}(V)$. $V = \dim \operatorname{null} T^m = \dim \operatorname{null} T^{m + 1} $.
 * Suppose $\mathbf{F} = \mathbb{C}$ and $T \in \mathcal{L}(V)$. $ V = \oplus G(\lambda, T)$.
 * Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$ and $T$ is diagonalizable. $ V = \oplus E(\lambda, T)$.
+
+{: .prompt-info }
+> Suppose $\mathbf{F} = \mathbb{C}$ and $T \in \mathcal{L}(V)$. Then
+>
+> There does not exist a direct sum decomposition of $V$ into two _nonzero_ subspaces _invariant_ under $T$ $iff$ the minimal polynomial of $T$ is of the form $(z - \lambda)^{\dim V}$ for some $\lambda \in \mathbb{C}$.
 
 {: .prompt-info }
 > If $v_1,\dots,v_n$ is a basis, then replacing $v_i$ by $v_i + c\,v_j$ for any $j \neq i$ and any scalar $c$ again gives a basis. (

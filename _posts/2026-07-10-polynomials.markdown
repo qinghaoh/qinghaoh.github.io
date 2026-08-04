@@ -247,34 +247,6 @@ $$w_i = \big(p/q_i^{m_i}\big)(T)\,u_i.$$
 {: .prompt-tip }
 > Homomorphism $\Rightarrow$ divisibility; injective on top of that $\Rightarrow$ equality.** Because $p_{\Phi(T)} \mid p_T$ is just "$q(T) = 0 \Rightarrow q(\Phi(T)) = 0$", and injectivity supplies the converse.
 
-{: .prompt-info }
-> _Complexification_
->
-> $V_{\mathbb{C}} = V \oplus iV$ with elements $u + iw$ ($u, w \in V$), and $T_{\mathbb{C}}(u + iw) = Tu + iTw$.
-
-{: .prompt-proof }
-> Write $p = p_T$ and $q = p_{T_{\mathbb{C}}}$.
->
-> **Direction 1: $q \mid p$**
->
-> $p$ has real coefficients and $p(T) = 0$, so $p(T_{\mathbb{C}}) = 0$. Thus $p$ annihilates $T_{\mathbb{C}}$, giving $q \mid p$. In particular $\deg q \le \deg p$.
->
-> **Direction 2: $p \mid q$**
->
->$q$ a priori has *complex* coefficients, so **split $q$ into real and imaginary parts.**
->
-> Write $q(z) = g(z) + i\,h(z)$, where $g, h \in \mathcal{P}(\mathbb{R})$ are obtained by taking the real and imaginary parts of each coefficient of $q$. Since $g, h$ have real coefficients:
->
-> $$0 = q(T_{\mathbb{C}}) = g(T_{\mathbb{C}}) + i\,h(T_{\mathbb{C}}) = (g(T))_{\mathbb{C}} + i\,(h(T))_{\mathbb{C}}.$$
->
-> Evaluate at $u + i\cdot 0 = u, \ \forall u \in V$: $$(g(T))_{\mathbb{C}}u = g(T)u \in V$$ and $i(h(T))_{\mathbb{C}}u = i\,h(T)u \in iV$. These lie in the complementary summands $V$ and $iV$, so both must vanish:
->
-> $$g(T)u = 0 \quad\text{and}\quad h(T)u = 0 \quad\text{for all } u,$$
->
-> i.e. $g(T) = 0$ and $h(T) = 0$.
->
-> Now $q$ is **monic**, so its leading coefficient is $1 = 1 + i\cdot 0$; hence $g$ is monic of degree $\deg q$, while $\deg h < \deg q$. Since $g(T) = 0$ and $g$ is a monic real annihilator of $T$, minimality gives $p \mid g. \blacksquare$
-
 ## $ST$ and $TS$: what transfers, and the cost of $z$
 
 {: .prompt-info }
