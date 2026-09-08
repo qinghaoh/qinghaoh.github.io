@@ -32,8 +32,6 @@ mermaid: true
 > * Addition acts **slot by slot**: $(u_1,v_1) + (u_2,v_2) = (u_1+u_2,\, v_1+v_2)$.
 > * Multiplication by a **real** $a$ also acts slot by slot: $a(u,v) = (au, av)$.
 > * Multiplication by $i$ **mixes** the slots: $i(u,v) = (-v, u)$.
->
-> Almost every argument below turns on which of these two behaviours is in play.
 
 {: .prompt-tip }
 > If $v_1, \dots, v_n$ is a basis of $V$, then $v_1, \dots, v_n$ is also a basis of the complexification $V_{\mathbb{C}}$.
@@ -56,12 +54,12 @@ mermaid: true
 > * $\dim_{\mathbb{C}} V_{\mathbb{C}} = \dim_{\mathbb{R}} V$
 > * $\dim_{\mathbb{R}} V_{\mathbb{C}} = 2\dim_{\mathbb{R}} V$, with real basis $v_1, \dots, v_n, iv_1, \dots, iv_n$.
 >
-> The same set $V \times V$ has dimension $n$ or $2n$ depending on which field one counts over. Always say which.
+> The same set $V \times V$ has dimension $n$ or $2n$ depending on which field one counts over.
 
 {: .prompt-tip }
 > $V_{\mathbb{C}} = V \oplus iV$, where $V$ is identified with $\\{u + i0 : u \in V\\}$ and $iV = \\{0 + iv : v \in V\\}$.
 >
-> This is a direct sum of **real** subspaces only: neither summand is closed under multiplication by $i$, which swaps them. Its use below is always the same and always elementary — an element of $V \times V$ is $0$ exactly when both components are.
+> This is a direct sum of **real** subspaces only: neither summand is closed under multiplication by $i$, which swaps them. An element of $V \times V$ is $0$ exactly when both components are.
 
 ## Linear Map
 
@@ -70,7 +68,7 @@ mermaid: true
 >
 > $$T_{\mathbb{C}}(u + iv) = Tu + iTv$$
 >
-> for all $u,v \in V$. In slot form: $T_{\mathbb{C}}(u,v) = (Tu, Tv)$ — apply $T$ to each component, with no cross-talk.
+> for all $u,v \in V$. In slot form: $T_{\mathbb{C}}(u,v) = (Tu, Tv)$.
 
 {: .prompt-tip }
 > $T_{\mathbb{C}} \in \mathcal{L}(V_{\mathbb{C}}, W_{\mathbb{C}})$; that is, $T_{\mathbb{C}}$ is linear over $\mathbb{C}$, not merely over $\mathbb{R}$.
@@ -87,17 +85,30 @@ mermaid: true
 > These agree, using only that $T$ is real-linear. $\blacksquare$
 
 {: .prompt-tip }
-> If $v_1, \dots, v_n$ is a basis of $V$ and $w_1, \dots, w_m$ a basis of $W$, then
+> Suppose $v_1, \dots, v_n$ is a basis of $V$ and $w_1, \dots, w_m$ is a basis of $W$. By the basis theorem, these same lists are bases of $V_{\mathbb{C}}$ and $W_{\mathbb{C}}$ over $\mathbb{C}$, so both matrices below are defined:
 >
-> $$\mathcal{M}(T_{\mathbb{C}}) = \mathcal{M}(T),$$
+> $$\mathcal{M}\big(T_{\mathbb{C}}, (v_1, \dots, v_n), (w_1, \dots, w_m)\big) = \mathcal{M}\big(T, (v_1, \dots, v_n), (w_1, \dots, w_m)\big).$$
 >
-> the matrices being taken with respect to these same lists viewed as complex bases. In particular the matrix of $T_{\mathbb{C}}$ can always be taken to have **real entries**.
+> In particular $\mathcal{M}(T_{\mathbb{C}})$ has **real entries** with respect to such a basis.
 
 {: .prompt-proof }
-> The $k$-th column of $\mathcal{M}(T_{\mathbb{C}})$ records the expansion of $T_{\mathbb{C}}v_k = Tv_k + i0$. Expanding $Tv_k$ over $\mathbb{R}$ in $w_1, \dots, w_m$ gives an expansion over $\mathbb{C}$ that happens to use real scalars, and expansions in a basis are unique. So the columns agree with those of $\mathcal{M}(T)$. $\blacksquare$
-
-{: .prompt-warning }
-> The real entries are a feature of *this* basis. An arbitrary complex basis of $V_{\mathbb{C}}$ (say $v_1 + iv_2, v_2, \dots$) will generally give complex entries. Basis-independent conclusions still hold, but the real-ness stops being visible — so when real-ness is the point, choose a basis of $V$.
+> Fix $k$. By definition of the matrix of $T$, the entries $A_{1k}, \dots, A_{mk}$ in the $k$-th column of $\mathcal{M}(T)$ are the unique **real** scalars with
+>
+> $$Tv_k = \sum_{j=1}^m A_{jk}\, w_j. \tag{1}$$
+>
+> By definition of the matrix of $T_{\mathbb{C}}$, the entries $B_{1k}, \dots, B_{mk}$ in the $k$-th column of $\mathcal{M}(T_{\mathbb{C}})$ are the unique **complex** scalars with
+>
+> $$T_{\mathbb{C}}v_k = \sum_{j=1}^m B_{jk}\, w_j. \tag{2}$$
+>
+> Here $v_k$ means $v_k + i0$, and the definition of $T_{\mathbb{C}}$ gives
+>
+> $$T_{\mathbb{C}}(v_k + i0) = Tv_k + i0,$$
+>
+> so (1) and (2) are two expansions of the same vector of $W_{\mathbb{C}}$ in the basis $w_1, \dots, w_m$. Equation (1) qualifies as an expansion over $\mathbb{C}$, since every real number is a complex number. Expansions in a basis are unique, so
+>
+> $$B_{jk} = A_{jk} \quad \text{for all } j.$$
+>
+> As $k$ was arbitrary, the two matrices agree column by column. $\blacksquare$
 
 ## Polynomial
 
@@ -107,9 +118,9 @@ mermaid: true
 > $$p(T_{\mathbb{C}}) = (p(T))_{\mathbb{C}}.$$
 
 {: .prompt-proof }
-> Complexification $S \mapsto S_{\mathbb{C}}$ preserves sums, products, and multiplication by **real** scalars. A polynomial in $T$ is built from exactly those three operations, so the whole construction passes through.
+> Complexification preserves sums, products, and multiplication by **real** scalars. A polynomial in $T$ is built from exactly those three operations, so the whole construction passes through.
 >
-> Throughout, recall the definition $T_{\mathbb{C}}(u + iv) = Tu + i\,Tv$, and let $u, v \in V$ be arbitrary.
+> Throughout, let $S, T \in \mathcal{L}(V)$ and let $u, v \in V$ be arbitrary; recall the definition $T_{\mathbb{C}}(u + iv) = Tu + i\,Tv$ (and likewise for $S$).
 >
 > **Sums.**
 >
@@ -130,13 +141,13 @@ mermaid: true
 > $$p(T_{\mathbb{C}}) = \sum_k a_k (T_{\mathbb{C}})^k = \sum_k a_k (T^k)_{\mathbb{C}} = \sum_k (a_k T^k)_{\mathbb{C}} = \Big(\sum_k a_k T^k\Big)_{\mathbb{C}} = (p(T))_{\mathbb{C}}. \qquad \blacksquare$$
 
 {: .prompt-warning }
-> The hypothesis $p \in \mathcal{P}(\mathbb{R})$ is not a technicality — without it the right-hand side is undefined. Evaluating $p(T)$ means forming $\sum a_k T^k$ inside $\mathcal{L}(V)$, which is a vector space over $\mathbb{R}$; there is no operator "$iT$" on a real space. In the proof, real-ness is used exactly once, at the step $a_k (T^k)_{\mathbb{C}} = (a_k T^k)_{\mathbb{C}}$.
+> The hypothesis $p \in \mathcal{P}(\mathbb{R})$ is not a technicality — without it the right-hand side is undefined. Evaluating $p(T)$ means forming $\sum a_k T^k$ inside $\mathcal{L}(V)$, a vector space over $\mathbb{R}$; there is no operator "$iT$" on a real space. In the proof, real-ness is used exactly once, at the step $$a_k (T^k)_{\mathbb{C}} = (a_k T^k)_{\mathbb{C}}.$$
 >
-> For a general $p \in \mathcal{P}(\mathbb{C})$, the most one can say is
+> For a general $p \in \mathcal{P}(\mathbb{C})$, split $p = g + ih$ with $g, h$ real. The Lemma applies to each part, giving
 >
 > $$p(T_{\mathbb{C}}) = (g(T))_{\mathbb{C}} + i\,(h(T))_{\mathbb{C}},$$
 >
-> where $p = g + ih$ with $g,h$ real. This is *not* the complexification of any single real operator: $i(S)_{\mathbb{C}}$ sends $u + i0 \mapsto 0 + iSu$, pushing the slice $V$ into $iV$, whereas every complexification maps $V$ into $V$. That is exactly why Step 2 of the theorem below has to split $q$ instead of applying the Lemma directly.
+> and this is as far as one can go: the sum is not $(\cdot)_{\mathbb{C}}$ of anything. Test it on $u + i0$. The first term returns $g(T)u + i0$, but the second returns $0 + i\,h(T)u$, which has first component $0$. A complexification always sends $u + i0$ to something of the form $(\text{vector}) + i0$, so unless $h(T) = 0$ the sum is not one.
 
 {: .prompt-tip }
 > **Theorem.** Suppose $\mathbf{F} = \mathbb{R}$, $V$ is finite-dimensional, and $T \in \mathcal{L}(V)$. Then the minimal polynomial of $T_{\mathbb{C}}$ equals the minimal polynomial of $T$.
@@ -228,8 +239,6 @@ Both results below rest on the standard characterization: for $\lambda \in \math
 > Suppose $ \mathbf{F} = \mathbb{R} $ and $ \lambda \in \mathbb{C} $. Then
 >
 > $\lambda$ is an eigenvalue of $T_{\mathbb{C}} \iff \bar{\lambda} $ is an eigenvalue of $ T_{\mathbb{C}} $.
->
-> Note this is a statement *internal* to $T_{\mathbb{C}}$ — a symmetry of its spectrum — not a transfer between two operators.
 
 {: .prompt-proof }
 > **Via the minimal polynomial.** Let $p$ be the minimal polynomial of $T$, which is also that of $T_\mathbb{C}$; crucially $p \in \mathcal{P}(\mathbb{R})$. Then
@@ -264,22 +273,88 @@ Both results below rest on the standard characterization: for $\lambda \in \math
 > The converse needs no new work: apply this to $\bar\lambda$ in place of $\lambda$ and use $\overline{\bar\lambda} = \lambda$. $\blacksquare$
 
 {: .prompt-tip }
+> **Lemma** If $U$ is a complex subspace of $V_{\mathbb{C}}$, then $\dim C(U) = \dim U$.
+
+{: .prompt-proof }
+> Let $x_1, \dots, x_d$ be a basis of $U$; we claim $Cx_1, \dots, Cx_d$ is a basis of $C(U)$.
+>
+> **Spanning.** Any element of $C(U)$ is $Cx$ with $x = \sum \alpha_k x_k \in U$, and
+> conjugate-linearity gives $Cx = \sum \overline{\alpha_k}\, Cx_k$.
+>
+> **Independence.** Suppose $\sum \beta_k\, Cx_k = 0$. Writing $\beta_k = \overline{\overline{\beta_k}}$
+> and pulling the scalars back through $C$, this says
+>
+> $$C\Big(\sum \overline{\beta_k}\, x_k\Big) = 0.$$
+>
+> Since $C$ is injective and $C0 = 0$, we get $\sum \overline{\beta_k}\, x_k = 0$, so each
+> $\overline{\beta_k} = 0$ by independence of $x_1, \dots, x_d$, hence each $\beta_k = 0$. $\blacksquare$
+
+{: .prompt-tip }
 > The second proof gives more than the statement: $C$ restricts to a bijection
 >
 > $$C\big(E(\lambda, T_{\mathbb{C}})\big) = E(\bar\lambda, T_{\mathbb{C}}),$$
 >
-> and a conjugate-linear bijection carries a complex basis to a complex basis (independence and spanning survive, with coefficients conjugated). Hence
+> and a conjugate-linear bijection carries a complex basis to a complex basis. Hence
 >
 > $$\dim E(\lambda, T_{\mathbb{C}}) = \dim E(\bar\lambda, T_{\mathbb{C}}).$$
->
+
+{: .prompt-tip }
 > The same argument upgrades to **generalized** eigenspaces. From conjugate-linearity and commuting, $C(T_{\mathbb{C}} - \lambda I) = (T_{\mathbb{C}} - \bar\lambda I)C$, so by induction $$C(T_{\mathbb{C}} - \lambda I)^k = (T_{\mathbb{C}} - \bar\lambda I)^k C$$ for every $k$. Therefore
 >
 > $$C\big(G(\lambda, T_{\mathbb{C}})\big) = G(\bar\lambda, T_{\mathbb{C}}), \qquad \dim G(\lambda, T_{\mathbb{C}}) = \dim G(\bar\lambda, T_{\mathbb{C}}).$$
+
+{: .prompt-proof }
+> By definition $$G(\lambda, T_{\mathbb{C}}) = \operatorname{null}(T_{\mathbb{C}} - \lambda I)^{n}$$ with
+> $n = \dim_{\mathbb{C}} V_{\mathbb{C}}$. If $w \in \operatorname{null}(T_{\mathbb{C}} - \lambda I)^{n}$, then
 >
-> Non-real eigenvalues of a real operator come in conjugate pairs with equal multiplicities, geometric **and** algebraic.
+> $$(T_{\mathbb{C}} - \bar\lambda I)^{n}(Cw) = C\big((T_{\mathbb{C}} - \lambda I)^{n} w\big) = C(0) = 0,$$
+>
+> so $Cw \in \operatorname{null}(T_{\mathbb{C}} - \bar\lambda I)^{n}$. That is,
+>
+> $$C\big(G(\lambda, T_{\mathbb{C}})\big) \subseteq G(\bar\lambda, T_{\mathbb{C}}).$$
+>
+> The same argument with $\bar\lambda$ in place of $\lambda$ gives
+>
+> $$C\big(G(\bar\lambda, T_{\mathbb{C}})\big) \subseteq G(\lambda, T_{\mathbb{C}}).$$
+>
+> Apply $C$ to both sides of this second inclusion. Since $C \circ C = I$ and
+> $\overline{\bar\lambda} = \lambda$, it becomes
+>
+> $$G(\bar\lambda, T_{\mathbb{C}}) \subseteq C\big(G(\lambda, T_{\mathbb{C}})\big),$$
+>
+> which is the reverse of the first inclusion. Hence
+>
+> $$C\big(G(\lambda, T_{\mathbb{C}})\big) = G(\bar\lambda, T_{\mathbb{C}}).$$
+>
+> A generalized eigenspace is the null space of a complex-linear operator, so it is a complex subspace, and the box above on $\dim C(U)$ applies to it:
+>
+> $$\dim G(\lambda, T_{\mathbb{C}}) = \dim G(\bar\lambda, T_{\mathbb{C}}).$$
 
 {: .prompt-tip }
-> **How the two results divide the work.** For $\lambda \in \mathbb{R}$ the conjugate-pair statement is vacuous, since $\bar\lambda = \lambda$; all its content is in the non-real case, which is precisely the case the first result cannot address. Together: real eigenvalues of $T_{\mathbb{C}}$ are inherited from $T$ and are literally the same objects, while non-real ones have no counterpart in $T$ at all but are forced to occur in $\lambda, \bar\lambda$ pairs.
+> Non-real eigenvalues of a real operator come in conjugate pairs with equal multiplicities, geometric **and** algebraic.
+
+```mermaid
+flowchart LR
+    subgraph CX["Eigenvalues of T_C  (scalars in C)"]
+        direction TB
+        A["real λ"]
+        B["non-real λ"]
+        C["conjugate λ-bar"]
+        B <== "conjugation" ==> C
+    end
+
+    subgraph RE["Eigenvalues of T  (scalars in R)"]
+        direction TB
+        D["λ"]
+        E["nothing"]
+    end
+
+    A <== "same scalar" ==> D
+    B -.-> E
+    C -.-> E
+
+    style E fill:none,stroke-dasharray:4 4
+```
 
 ## Application: odd dimension forces a real eigenvalue
 
@@ -303,8 +378,3 @@ Both results below rest on the standard characterization: for $\lambda \in \math
 > The parity is used only to rule out $N = 0$: the pairing makes the non-real contribution even, so an odd total cannot be accounted for by non-real eigenvalues alone. For even $n$ the argument collapses, as it must — rotation by $90°$ on $\mathbb{R}^2$ has eigenvalues $i, -i$, one conjugate pair, and no real eigenvalue.
 >
 > **The count must be by multiplicity.** It is tempting to argue "an odd-dimensional space cannot have its eigenvalues occur solely in conjugate pairs", but the *number of distinct* eigenvalues has no bearing on parity of the dimension — an operator on a $3$-dimensional space may have exactly two distinct eigenvalues. Ordinary eigenspaces are also not enough, since they need not fill $V_{\mathbb{C}}$ when $T_{\mathbb{C}}$ is not diagonalizable. Generalized eigenspaces are what make the sum come out to exactly $n$.
-
-{: .prompt-warning }
-> This is not how Axler first proves the result. In Chapter 5 he obtains it without complexification, from the factorization of real polynomials into linear and irreducible quadratic factors (equivalently, from the fact that every operator on a nonzero finite-dimensional real vector space has an invariant subspace of dimension $1$ or $2$). The complexification material sits much later in the book, so the proof above is best filed as a second look rather than the canonical one.
->
-> There is no circularity: the generalized eigenspace decomposition is proved for operators on **complex** vector spaces, using only that such an operator has an eigenvalue, and does not depend on the odd-dimensional real result.
