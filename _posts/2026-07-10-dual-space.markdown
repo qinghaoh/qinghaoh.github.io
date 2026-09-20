@@ -1,10 +1,14 @@
 ---
 title:  "Dual Space"
-category: math
+category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 mermaid: true
 ---
+
+## Notation
+
+{% include notation-table.md keys="V LVW dual_space dual_op double_dual Lambda annihilator" %}
 
 ## Dual Space and Dual Map
 

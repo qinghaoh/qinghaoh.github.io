@@ -1,9 +1,13 @@
 ---
 title:  "Nilpotent Operators"
-category: math
+category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 ---
+
+## Notation
+
+{% include notation-table.md keys="LV gen_eigenspace jordan_block partition conj_partition commutant MT" %}
 
 ## Properties
 

@@ -1,7 +1,7 @@
 ---
 title:  "Affine Geometry"
-category: math
-tags: math
+category: [math, "linear algebra"]
+tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 mermaid: true
 ---

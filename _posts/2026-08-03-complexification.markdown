@@ -1,10 +1,14 @@
 ---
 title:  "Complexification"
-category: math
+category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 mermaid: true
 ---
+
+## Notation
+
+{% include notation-table.md keys="V complexification_space complexification_op min_poly eigenspace gen_eigenspace" %}
 
 ## Vector Space
 

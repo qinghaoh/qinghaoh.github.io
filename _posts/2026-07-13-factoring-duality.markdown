@@ -1,10 +1,16 @@
 ---
 title:  "Extension and Lift: A Factoring Duality"
-category: math
+category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 mermaid: true
 ---
+
+The transpose identities used below — $\operatorname{null} T' = (\operatorname{range} T)^0$ and $\operatorname{range} T' = (\operatorname{null} T)^0$ — are proved in [Dual Space]({% post_url 2026-07-10-dual-space %}).
+
+## Notation
+
+{% include notation-table.md keys="LVW dual_space dual_op annihilator" %}
 
 ## Extension and Lift: A Factoring Duality
 

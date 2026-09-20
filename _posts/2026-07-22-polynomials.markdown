@@ -1,10 +1,14 @@
 ---
 title:  "Polynomials"
-category: math
+category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 mermaid: true
 ---
+
+## Notation
+
+{% include notation-table.md keys="F V LV PF min_poly dual_op quotient_op complexification_op" %}
 
 ## Polynomials
 

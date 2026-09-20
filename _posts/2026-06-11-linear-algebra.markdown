@@ -1,6 +1,6 @@
 ---
 title:  "Linear Algebra"
-category: math
+category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 mermaid: true

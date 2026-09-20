@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+<rect width="100%" height="100%" fill="white"/>
+<g font-family="DejaVu Sans, Arial, sans-serif" font-size="14" fill="#111">
+<line x1="76" y1="410.00" x2="606" y2="410.00" stroke="#d8d8d8" stroke-width="1"/>
+<text x="66" y="415.00" text-anchor="end">0.0</text>
+<line x1="76" y1="364.00" x2="606" y2="364.00" stroke="#d8d8d8" stroke-width="1"/>
+<text x="66" y="369.00" text-anchor="end">0.1</text>
+<line x1="76" y1="318.00" x2="606" y2="318.00" stroke="#d8d8d8" stroke-width="1"/>
+<text x="66" y="323.00" text-anchor="end">0.2</text>
+<line x1="76" y1="272.00" x2="606" y2="272.00" stroke="#d8d8d8" stroke-width="1"/>
+<text x="66" y="277.00" text-anchor="end">0.3</text>
+<line x1="76" y1="226.00" x2="606" y2="226.00" stroke="#d8d8d8" stroke-width="1"/>
+<text x="66" y="231.00" text-anchor="end">0.4</text>
+<line x1="76" y1="180.00" x2="606" y2="180.00" stroke="#d8d8d8" stroke-width="1"/>
+<text x="66" y="185.00" text-anchor="end">0.5</text>
+<line x1="76" y1="134.00" x2="606" y2="134.00" stroke="#d8d8d8" stroke-width="1"/>
+<text x="66" y="139.00" text-anchor="end">0.6</text>
+<line x1="76" y1="88.00" x2="606" y2="88.00" stroke="#d8d8d8" stroke-width="1"/>
+<text x="66" y="93.00" text-anchor="end">0.7</text>
+<line x1="76" y1="42.00" x2="606" y2="42.00" stroke="#d8d8d8" stroke-width="1"/>
+<text x="66" y="47.00" text-anchor="end">0.8</text>
+<line x1="76" y1="42" x2="76" y2="410" stroke="#111"/>
+<line x1="76" y1="410" x2="606" y2="410" stroke="#111"/>
+<line x1="103.69" y1="410" x2="103.69" y2="415" stroke="#111"/>
+<text x="103.69" y="434" text-anchor="middle">0</text>
+<line x1="182.79" y1="410" x2="182.79" y2="415" stroke="#111"/>
+<text x="182.79" y="434" text-anchor="middle">1</text>
+<line x1="261.90" y1="410" x2="261.90" y2="415" stroke="#111"/>
+<text x="261.90" y="434" text-anchor="middle">2</text>
+<line x1="341.00" y1="410" x2="341.00" y2="415" stroke="#111"/>
+<text x="341.00" y="434" text-anchor="middle">3</text>
+<line x1="420.10" y1="410" x2="420.10" y2="415" stroke="#111"/>
+<text x="420.10" y="434" text-anchor="middle">4</text>
+<line x1="499.21" y1="410" x2="499.21" y2="415" stroke="#111"/>
+<text x="499.21" y="434" text-anchor="middle">5</text>
+<line x1="578.31" y1="410" x2="578.31" y2="415" stroke="#111"/>
+<text x="578.31" y="434" text-anchor="middle">6</text>
+<text x="341.00" y="460" text-anchor="middle" font-style="italic">x</text>
+<text x="20" y="226.00" text-anchor="middle" transform="rotate(-90 20 226.00)">P(K ≥ 7 − x)</text>
+<line x1="103.69" y1="410" x2="103.69" y2="410.00" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="103.69" cy="410.00" r="5" fill="#1f77b4"><title>x=0, n=3, probability=0.000000</title></circle>
+<line x1="182.79" y1="410" x2="182.79" y2="410.00" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="182.79" cy="410.00" r="5" fill="#1f77b4"><title>x=1, n=3, probability=0.000000</title></circle>
+<line x1="261.90" y1="410" x2="261.90" y2="410.00" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="261.90" cy="410.00" r="5" fill="#1f77b4"><title>x=2, n=3, probability=0.000000</title></circle>
+<line x1="341.00" y1="410" x2="341.00" y2="410.00" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="341.00" cy="410.00" r="5" fill="#1f77b4"><title>x=3, n=3, probability=0.000000</title></circle>
+<line x1="420.10" y1="410" x2="420.10" y2="335.77" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="420.10" cy="335.77" r="5" fill="#1f77b4"><title>x=4, n=3, probability=0.161374</title></circle>
+<line x1="499.21" y1="410" x2="499.21" y2="225.44" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="499.21" cy="225.44" r="5" fill="#1f77b4"><title>x=5, n=3, probability=0.401211</title></circle>
+<line x1="578.31" y1="410" x2="578.31" y2="91.47" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="578.31" cy="91.47" r="5" fill="#1f77b4"><title>x=6, n=3, probability=0.692448</title></circle>
+<text x="590" y="68" text-anchor="end" font-size="13" fill="#555">n = 3</text>
+</g>
+</svg>

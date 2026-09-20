@@ -1,0 +1,84 @@
+# Shared notation reference for the linear algebra series.
+# Each post includes only the rows it needs via:
+#   {% include notation-table.md keys="F V LV" %}
+- key: F
+  symbol: '$\mathbf{F}$'
+  meaning: 'the field $\mathbb{R}$ or $\mathbb{C}$'
+- key: V
+  symbol: '$V$'
+  meaning: 'a vector space over $\mathbf{F}$ (nonzero, finite-dimensional unless stated)'
+- key: n
+  symbol: '$n = \dim V$'
+  meaning: 'dimension of $V$'
+- key: LV
+  symbol: '$\mathcal{L}(V)$'
+  meaning: 'linear operators $V \to V$'
+- key: LVW
+  symbol: '$\mathcal{L}(V,W)$'
+  meaning: 'linear maps $V \to W$'
+- key: PF
+  symbol: '$\mathcal{P}(\mathbf{F})$'
+  meaning: 'polynomials with coefficients in $\mathbf{F}$'
+- key: MT
+  symbol: '$\mathcal{M}(T)$'
+  meaning: 'matrix of $T$ with respect to a chosen basis'
+- key: dual_space
+  symbol: "$V'$"
+  meaning: 'dual space of $V$'
+- key: dual_op
+  symbol: "$T'$"
+  meaning: 'dual (transpose) operator of $T$'
+- key: double_dual
+  symbol: "$V''$"
+  meaning: "double dual space, $(V')'$"
+- key: Lambda
+  symbol: '$\Lambda$'
+  meaning: 'canonical map $V \to V'', (\Lambda v)(\varphi) = \varphi(v)$'
+- key: annihilator
+  symbol: '$U^0$'
+  meaning: 'annihilator of $U$: $\{\varphi \in V'' : \varphi(u) = 0\ \forall u \in U\}$'
+- key: quotient_space
+  symbol: '$V/U$'
+  meaning: 'quotient of $V$ by a subspace $U$'
+- key: quotient_op
+  symbol: '$T/U$'
+  meaning: 'quotient operator induced by $T$ on $V/U$'
+- key: eigenspace
+  symbol: '$E(\lambda,T) = \operatorname{null}(T - \lambda I)$'
+  meaning: 'eigenspace; $\lambda$ is an eigenvalue $\iff E(\lambda,T) \ne \{0\}$'
+- key: gen_eigenspace
+  symbol: '$G(\lambda,T) = \operatorname{null}(T - \lambda I)^n$'
+  meaning: 'generalized eigenspace'
+- key: geo_mult
+  symbol: '$g_\lambda = \dim E(\lambda,T)$'
+  meaning: 'geometric multiplicity'
+- key: alg_mult
+  symbol: '$d_\lambda = \dim G(\lambda,T)$'
+  meaning: 'algebraic multiplicity'
+- key: min_poly_exp
+  symbol: '$e_\lambda$'
+  meaning: 'exponent of $(z-\lambda)$ in the minimal polynomial'
+- key: jordan_block
+  symbol: '$J_s(\lambda)$'
+  meaning: 'Jordan block of size $s$ for $\lambda$'
+- key: min_poly
+  symbol: '$p_T$'
+  meaning: 'minimal polynomial of $T$'
+- key: partition
+  symbol: '$\mu = (m_1 \ge \dots \ge m_k)$'
+  meaning: 'Jordan chain lengths of a nilpotent operator, as a partition of $\dim V$'
+- key: conj_partition
+  symbol: "$\\mu'$"
+  meaning: "conjugate partition of $\\mu$; $\\mu'_j$ is the size of level $j$"
+- key: commutant
+  symbol: '$\mathcal{C}(T) = \{S \in \mathcal{L}(V) : ST = TS\}$'
+  meaning: 'commutant of $T$'
+- key: poly_alg
+  symbol: '$\mathcal{P}(T) = \{q(T) : q \in \mathcal{P}(\mathbf{F})\}$'
+  meaning: 'operators expressible as polynomials in $T$'
+- key: complexification_space
+  symbol: '$V_{\mathbb{C}}$'
+  meaning: 'complexification of a real vector space $V$'
+- key: complexification_op
+  symbol: '$T_{\mathbb{C}}$'
+  meaning: 'complexification of a real operator $T$'

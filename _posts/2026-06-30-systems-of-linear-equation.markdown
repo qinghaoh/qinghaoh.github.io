@@ -1,10 +1,14 @@
 ---
 title:  "System of linear equations"
-category: math
+category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 mermaid: true
 ---
+
+## Notation
+
+{% include notation-table.md keys="F LVW quotient_space" %}
 
 ## System of linear equations
 

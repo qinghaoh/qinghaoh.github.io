@@ -1,6 +1,6 @@
 ---
 title: "Eigenvalues and Eigenvectors"
-category: math
+category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 ---
@@ -16,18 +16,7 @@ Unless stated otherwise: $\mathbf{F}$ is $\mathbb{R}$ or $\mathbb{C}$, $V$ is a
 $n = \dim V$, and $T \in \mathcal{L}(V)$. Results that genuinely need
 $\mathbf{F} = \mathbb{C}$ say so explicitly.
 
-| Symbol                                                | Meaning                                                                |
-| ----------------------------------------------------- | ---------------------------------------------------------------------- |
-| $\mathcal{L}(V)$                                      | linear operators $V \to V$                                             |
-| $\mathcal{P}(\mathbf{F})$                             | polynomials with coefficients in $\mathbf{F}$                          |
-| $E(\lambda,T) = \operatorname{null}(T - \lambda I)$   | eigenspace; $\lambda$ is an eigenvalue $\iff E(\lambda,T) \ne \\{0\\}$ |
-| $G(\lambda,T) = \operatorname{null}(T - \lambda I)^n$ | generalized eigenspace                                                 |
-| $g_\lambda = \dim E(\lambda,T)$                       | geometric multiplicity                                                 |
-| $d_\lambda = \dim G(\lambda,T)$                       | algebraic multiplicity                                                 |
-| $e_\lambda$                                           | exponent of $(z-\lambda)$ in the minimal polynomial                    |
-| $J_s(\lambda)$                                        | Jordan block of size $s$ for $\lambda$                                 |
-| $T'$, $V'$                                            | dual operator, dual space                                              |
-| $T_{\mathbb{C}}$, $V_{\mathbb{C}}$                    | complexification (when $\mathbf{F} = \mathbb{R}$)                      |
+{% include notation-table.md keys="LV PF eigenspace gen_eigenspace geo_mult alg_mult min_poly_exp jordan_block dual_op dual_space complexification_op complexification_space" %}
 
 {: .prompt-tip }
 > Three numbers are attached to each eigenvalue and it pays to keep them apart:

@@ -1,10 +1,14 @@
 ---
 title:  "Quotient Spaces"
-category: math
+category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 mermaid: true
 ---
+
+## Notation
+
+{% include notation-table.md keys="V LV quotient_space quotient_op" %}
 
 ## Translate
 
