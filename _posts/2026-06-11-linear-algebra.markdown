@@ -307,6 +307,17 @@ $ C $ is a *basis* of the column space.
 >
 > $$ A = C^{-1}BC $$
 
+{: .prompt-info }
+> Similarity
+>
+> $ A, B \in \mathbf{F}^{n,n} $ are **similar** if $ A = C^{-1}BC $ for some invertible $ C \in \mathbf{F}^{n,n} $. Likewise $ S, T \in \mathcal{L}(V) $ are **similar** if $ S = C^{-1}TC $ for some invertible $ C \in \mathcal{L}(V) $.
+>
+> Change-of-basis is exactly what makes the two readings agree: $ S $ and $ T $ are similar $ \iff $ they have the same matrix with respect to some pair of bases,
+>
+> $$ \mathcal{M}(S,(u_1,\dots,u_n)) = \mathcal{M}(T,(v_1,\dots,v_n)). $$
+>
+> ($ \Rightarrow $) take $ (v_1,\dots,v_n) $ and set $ u_i = C^{-1}v_i $. ($ \Leftarrow $) let $ C $ be the invertible operator with $ Cu_i = v_i $.
+
 | $ T \in \mathcal{L}(V, W) $ | Inverse                                         | Dual Map                                 | Adjoint                                         |
 | --------------------------- | ----------------------------------------------- | ---------------------------------------- | ----------------------------------------------- |
 | Existence                   | _Inveritibility Triangle_                       |                                          |                                                 |

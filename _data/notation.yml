@@ -66,10 +66,13 @@
   meaning: 'minimal polynomial of $T$'
 - key: partition
   symbol: '$\mu = (m_1 \ge \dots \ge m_k)$'
-  meaning: 'Jordan chain lengths of a nilpotent operator, as a partition of $\dim V$'
+  meaning: 'Jordan chain lengths of a nilpotent operator, as a partition of $\dim V$; the **Segre characteristic**'
 - key: conj_partition
   symbol: "$\\mu'$"
-  meaning: "conjugate partition of $\\mu$; $\\mu'_j$ is the size of level $j$"
+  meaning: "conjugate partition of $\\mu$; $\\mu'_j$ is the size of level $j$; the **Weyr characteristic**"
+- key: index_nilpotency
+  symbol: '$p$'
+  meaning: 'index of nilpotency: the smallest exponent with $N^p = 0$, equal to $m_1$'
 - key: commutant
   symbol: '$\mathcal{C}(T) = \{S \in \mathcal{L}(V) : ST = TS\}$'
   meaning: 'commutant of $T$'

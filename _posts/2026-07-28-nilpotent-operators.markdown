@@ -7,7 +7,7 @@ mathjax_font: mathjax-pagella
 
 ## Notation
 
-{% include notation-table.md keys="LV gen_eigenspace jordan_block partition conj_partition commutant MT" %}
+{% include notation-table.md keys="n LV gen_eigenspace jordan_block partition conj_partition index_nilpotency commutant MT" %}
 
 ## Properties
 
@@ -32,7 +32,7 @@ mathjax_font: mathjax-pagella
 >
 > $$\begin{array}{cccc} v_1 & & & \\ Nv_1 & v_2 & & \\ \vdots & \vdots & \ddots & \\ N^{m_1-2}v_1 & N^{m_2-2}v_2 & & v_k \\ N^{m_1-1}v_1 & N^{m_2-1}v_2 & \cdots & N^{m_k-1}v_k \end{array}$$
 >
-> $N$ moves each entry one step down its column, and off the bottom to $0$. The bottom level is exactly the chain bottoms, which is a basis of $\operatorname{null}N$.
+> $N$ moves each entry one step down its column, and off the bottom to $0$.
 
 {: .prompt-tip }
 > Sorted into decreasing order, the chain lengths form a **partition** of $\dim V$:
@@ -41,35 +41,77 @@ mathjax_font: mathjax-pagella
 >
 > The individual $m_i$ are its **parts**. In the array above, each part is the height of one column, because one column is one chain.
 >
-> Now read the same boxes across instead of down. Level $j$ contains one box from every chain tall enough to reach it, so its size is
+> Now read the same boxes across instead of down, numbering rows from the bottom: the bottom row is **level $1$**, the row above it level $2$, and so on. Level $j$ contains one box from every chain tall enough to reach it, so its size is
 >
 > $$\mu'_j \;:=\; \#\{\,i : m_i \ge j\,\}.$$
 >
-> The sequence $\mu' = (\mu'_1, \mu'_2, \dots)$ is again a partition of $\dim V$, called the **conjugate** of $\mu$. It has $m_1$ parts, and conjugating twice returns $\mu$.
+> The sequence $\mu' = (\mu'_1, \mu'_2, \dots)$ is again a partition of $\dim V$, called the **conjugate** of $\mu$, and conjugating twice returns $\mu$. The count at its two ends gives
+>
+> $$\mu'_1 = k, \qquad \mu'_j = 0 \ \text{ for } j > m_1,$$
+>
+> since every chain reaches level $1$ and none reaches above level $m_1$. So $\mu'$ has exactly $m_1$ parts, and its first is the number of chains.
+>
+> The tallest column also fixes how long $N$ survives: $N^{m_1}$ kills every chain, while $N^{m_1-1}v_1 \neq 0$ is the bottom of the longest one. So the index of nilpotency is $p = m_1$.
 >
 > One set of boxes, two partitions: $\mu$ counts down the columns, $\mu'$ counts across the levels.
+>
+> $$\begin{array}{cccc|l} v_1 & & & & \mu'_{m_1}\\ Nv_1 & v_2 & & & \\ \vdots & \vdots & \ddots & & \vdots\\ N^{m_1-2}v_1 & N^{m_2-2}v_2 & & v_k & \mu'_2\\ N^{m_1-1}v_1 & N^{m_2-1}v_2 & \cdots & N^{m_k-1}v_k & \mu'_1\\ \hline m_1 & m_2 & \cdots & m_k & \end{array}$$
+
+{: .prompt-warning }
+> Most references draw a partition with its parts as *rows*: the conventional [Young diagram](https://en.wikipedia.org/wiki/Young_tableau#Diagrams) of $\mu$ puts $m_i$ boxes in row $i$, where this array puts them in column $i$. Parts are columns here because $N$ acts down them.
 
 {: .prompt-tip }
-> *Example.* Two chains, of lengths $3$ and $2$ — the running example of this post:
+> Level $j$ has an operator-theoretic meaning too: it is exactly the vectors killed by $N^j$ but not by $N^{j-1}$. Cumulatively, the boxes in the bottom $j$ levels are a basis of $\operatorname{null}N^j$. So the nested null spaces
 >
-> $$\begin{array}{cc} x^2 & \\ 2x & xy \\ 2 & y \end{array}$$
+> $$\{0\} \subseteq \operatorname{null}N \subseteq \operatorname{null}N^2 \subseteq \dots \subseteq V$$
 >
-> The columns have heights $3$ and $2$, so $\mu = (3,2)$. The levels, read from the bottom up, have sizes $2$, $2$, $1$, so $\mu' = (2,2,1)$. Both sum to $5 = \dim V$, as they must — they count the same five boxes.
+> have dimensions
 >
-> Most references draw a partition with its parts as *rows*; the conventional [Young diagram](https://en.wikipedia.org/wiki/Young_tableau#Diagrams) of $\mu$ is therefore this array reflected across a diagonal. Nothing below depends on the choice. Parts are columns here because $N$ acts down them.
+> $$d_j \;:=\; \dim\operatorname{null}N^j \;=\; \mu'_1 + \dots + \mu'_j, \qquad d_0 = 0.$$
+
+{: .prompt-warning }
+> From here the same $j$ numbers both a level and a power of $N$, and the two agree as long as levels last. Levels stop at $p$; powers do not. For $j > p$ there is no level $j$, while $\operatorname{null}N^j$ is already all of $V$, so $\mu'_j = 0$ and $d_j = \dim V$ there.
 
 {: .prompt-tip }
-> **Level $j$** means the vectors killed by $N^j$ but not by $N^{j-1}$ — an algebraic condition that makes no reference to the picture. A chain of length $m_i$ contributes its entry $N^{m_i - j}v_i$ to level $j$ whenever $m_i \ge j$, and nothing beyond level $m_i$. In the bottom-aligned array the levels are therefore the horizontal slices, and $\mu'_j$ is the size of level $j$.
->
-> That is what bottom alignment buys, and it is why $\mu'$, not $\mu$, is the sequence the rest of this post counts. Cumulatively, the boxes in the bottom $j$ levels are a basis of $\operatorname{null}N^j$:
->
-> $$d_j \;:=\; \dim\operatorname{null}N^j \;=\; \mu'_1 + \dots + \mu'_j .$$
->
-> So $d$ is the partial-sum sequence of $\mu'$, and differencing recovers it:
+> So $d$ is the partial-sum sequence of $\mu'$, and differencing recovers it, which is how the Weyr characteristic is usually defined:
 >
 > $$\mu'_j = d_j - d_{j-1}.$$
 >
-> On the example: $\mu' = (2,2,1)$ gives $(d_1,d_2,d_3) = (2,4,5)$, matching $\operatorname{null}N = \operatorname{span}(1,y)$, $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$, and $\operatorname{null}N^3 = V$.
+> Counting the same boxes by columns instead of by levels gives a second expression for $d_j$. Column $i$ occupies levels $1$ through $m_i$, so it puts $\min(j, m_i)$ boxes into the bottom $j$ levels, whichever runs out first:
+>
+> - **Short column** ($m_i \le j$): the reach of $N^j$ exceeds the column, so the *whole* column dies: $m_i$ boxes.
+> - **Tall column** ($m_i > j$): only its bottom $j$ boxes die: $j$ boxes.
+>
+> Summing over columns,
+>
+> $$d_j \;=\; \sum_i \min(j, m_i).$$
+>
+> The **range** is the complement, by the fundamental theorem of linear maps: of the $m_i$ boxes in column $i$ the bottom $\min(j, m_i)$ die and $\max(0, m_i - j)$ survive, so
+>
+> $$\dim\operatorname{range}N^j \;=\; \dim V - d_j \;=\; \sum_i \max(0, m_i - j),$$
+>
+> counting the boxes left above the bottom $j$ levels.
+>
+> A column ends at level $j$ exactly when it reaches level $j$ and fails to reach level $j+1$, so differencing twice counts the columns of each exact height:
+>
+> $$\#\{\,i : m_i = j\,\} \;=\; \mu'_j - \mu'_{j+1} \;=\; 2d_j - d_{j-1} - d_{j+1},$$
+>
+> which, with $\mu'_1 = d_1$ for the number of chains, recovers $\mu$ from the dimensions $d_j$ by pure arithmetic.
+>
+> Since that count is never negative, $(d_j)$ is **concave**:
+>
+> $$2d_j \ge d_{j-1} + d_{j+1}.$$
+>
+> A sequence is concave when its increments never increase, and the increments of $d$ are the parts of $\mu'$. So concavity and $\mu'_{j+1} \le \mu'_j$ are the same statement: in the diagram, no level is wider than the one below it.
+
+{: .prompt-tip }
+> *Example.* Two chains, of lengths $3$ and $2$ (this example recurs through the rest of the post):
+>
+> $$\begin{array}{cc} x^2 & \\ 2x & xy \\ 2 & y \end{array}$$
+>
+> The columns have heights $3$ and $2$, so $\mu = (3,2)$. The levels, read from the bottom up, have sizes $2$, $2$, $1$, so $\mu' = (2,2,1)$. Both sum to $5 = \dim V$, as they must, since they count the same five boxes.
+>
+> Partial sums give $(d_1,d_2,d_3) = (2,4,5)$, matching $\operatorname{null}N = \operatorname{span}(1,y)$, $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$, and $\operatorname{null}N^3 = V$.
 
 {: .prompt-info }
 > The span of one Jordan chain is one Jordan block. The whole space is the direct sum of the chain-spans.
@@ -79,54 +121,27 @@ mathjax_font: mathjax-pagella
 >
 > $$u_1 = N^{m_i-1}v_i,\quad u_2 = N^{m_i-2}v_i,\quad \dots,\quad u_{m_i} = v_i.$$
 >
-> Then $Nu_1 = N^{m_i}v_i = 0$ and $Nu_j = u_{j-1}$ for $j \ge 2$. Since column $j$ of a matrix records the image of the $j$-th basis vector, the $1$ from $Nu_j = u_{j-1}$ sits in row $j-1$, column $j$ — the superdiagonal:
+> Then $Nu_1 = N^{m_i}v_i = 0$ and $Nu_j = u_{j-1}$ for $j \ge 2$. Since column $j$ of a matrix records the image of the $j$-th basis vector, the $1$ from $Nu_j = u_{j-1}$ sits in row $j-1$, column $j$, the superdiagonal:
 >
-> $$\mathcal{M}(N|_{U_i}) = \begin{pmatrix} 0&1& & \\ &0&\ddots& \\ & &\ddots&1\\ & & &0\end{pmatrix} = J_{m_i}(0).$$
+> $$\mathcal{M}\big(N|_{U_i}, (u_1,\dots,u_{m_i})\big) = \begin{pmatrix} 0&1& & \\ &0&\ddots& \\ & &\ddots&1\\ & & &0\end{pmatrix} = J_{m_i}(0).$$
 >
-> And since $V = U_1\oplus\dots\oplus U_k$ with each $U_i$ invariant, the matrix of $N$ with respect to the concatenated basis is block diagonal:
+> And since $V = U_1\oplus\dots\oplus U_k$ with each $U_i$ invariant, the matrix of $N$ with respect to the basis formed by concatenating each chain's $(u_1,\dots,u_{m_i})$, in order $U_1,\dots,U_k$, is block diagonal:
 >
 > $$\mathcal{M}(N) = J_{m_1}(0) \oplus \dots \oplus J_{m_k}(0).$$
 
 {: .prompt-info }
-> $\dim\operatorname{null}N^m = \sum_j \min(m, m_j)$.
-
-{: .prompt-tip }
-> A $k \times m$ rectangle, bottom-aligned, and $d_m$ is the number of diagram boxes it covers.
+> Let $N$ be nilpotent on $V$. The partition $\mu$ does not depend on which Jordan basis produced it, and two nilpotent operators are [similar]({% post_url 2026-06-11-linear-algebra %}#matrices) if and only if their partitions agree.
 
 {: .prompt-proof }
-> Column $i$ contributes $\min(m, m_i)$ boxes to it. Whichever runs out first wins:
+> **Independence of the basis.** A Jordan basis fills in the diagram, and the diagram determines $\mu'$ as its level sizes. But those level sizes are $d_j - d_{j-1}$, and $d_j = \dim\operatorname{null}N^j$ makes no reference to a basis. So $\mu'$ is forced by $N$ alone, and therefore so is $\mu$. Different Jordan bases genuinely differ in their vectors, but the shape those vectors fill is fixed before any choice is made. In matrix terms, any two Jordan bases give the same block diagonal matrix up to the order of the blocks, and with the chains sorted as above, the very same matrix.
 >
-> - **Short column** ($m_i \le m$): the reach of $N^m$ exceeds the column, so the *whole* column dies — $m_i$ boxes.
-> - **Tall column** ($m_i > m$): only the bottom $m$ die — $m$ boxes.
+> **Similar operators agree.** If $N' = C^{-1}NC$, the inner factors telescope: $(N')^j = C^{-1}N^jC$. So for $v \in \operatorname{null}N^j$,
 >
-> Summing over columns gives $\dim\operatorname{null}N^m = \sum_i \min(m,m_i)$. $\blacksquare$
-
-{: .prompt-info }
-> Let $N$ be nilpotent on $V$. The partition $\mu$ does not depend on which Jordan basis produced it, and two nilpotent operators are similar if and only if their partitions agree.
-
-{: .prompt-proof }
-> **Independence of the basis.** A Jordan basis fills in the diagram, and the diagram determines $\mu'$ as its level sizes. But those level sizes are $d_j - d_{j-1}$, and $d_j = \dim\operatorname{null}N^j$ makes no reference to a basis. So $\mu'$ is forced by $N$ alone, and therefore so is $\mu$. Different Jordan bases genuinely differ — the vectors are choices, and Step 1 of the algorithm below makes them — but the shape they fill is fixed before any choice is made.
+> $$(N')^j\big(C^{-1}v\big) = C^{-1}N^jCC^{-1}v = C^{-1}N^jv = 0,$$
 >
-> **Similar operators agree.** If $N' = ANA^{-1}$ then $(N')^j = AN^jA^{-1}$, so $A$ restricts to an isomorphism $\operatorname{null}N^j \to \operatorname{null}(N')^j$. The two towers have equal dimensions, hence equal $\mu'$, hence equal $\mu$.
+> putting $C^{-1}v \in \operatorname{null}(N')^j$. So $C^{-1}$ maps $\operatorname{null}N^j$ into $\operatorname{null}(N')^j$, injectively because $C$ is invertible, and onto because $N = CN'C^{-1}$ runs the same argument backwards. Hence $d_j$ agrees for the two operators at every $j$, and differencing gives equal $\mu'$, conjugating equal $\mu$.
 >
-> **Agreeing operators are similar.** Each of $N$ and $N'$ admits a Jordan basis in which its matrix is $J_{m_1}(0)\oplus\dots\oplus J_{m_k}(0)$. Equal $\mu$ means this is literally the same matrix, so each is similar to it and hence to the other. $\blacksquare$
-
-{: .prompt-tip }
-> A column ends at level $j$ exactly when it reaches level $j$ and fails to reach level $j+1$, so
->
-> $$\#\{\,i : m_i = j\,\} \;=\; \mu'_j - \mu'_{j+1} \;=\; 2d_j - d_{j-1} - d_{j+1},$$
->
-> with the convention $\mu'_{p+1} = 0$. Together with $k = \mu'_1 = d_1 = \dim\operatorname{null}N$ for the number of chains, this recovers $\mu$ from the null-space tower by pure arithmetic.
-
-{: .prompt-tip }
-> Since $\\#\\{i : m_i = j\\} \ge 0$, the identity above says the sequence $(d_j)$ is **concave**:
->
-> $$2d_j \ge d_{j-1} + d_{j+1}.$$
->
-> Equivalently, its increments $\mu'_j$ are non-increasing — the picture's "levels widen as you descend". A hand-computed tower violating this has an error in the tower itself, and it is worth checking before running the algorithm rather than after.
-
-{: .prompt-tip }
-> Any two Jordan bases of $N$ give matrices that differ only by a permutation of the diagonal blocks.
+> **Agreeing operators are similar.** Each of $N$ and $N'$ admits a Jordan basis in which its matrix is $J_{m_1}(0)\oplus\dots\oplus J_{m_k}(0)$. Equal $\mu$ makes these literally the same matrix, so $N$ and $N'$ have equal matrices with respect to their two Jordan bases, which is similarity. $\blacksquare$
 
 ### Two Extremes
 
@@ -138,18 +153,7 @@ comparing them.
 One quantity below needs saying carefully first.
 
 {: .prompt-info }
-> *Free parameters in a Jordan basis.* The shape of the diagram is forced by $N$, but the basis filling it is not. To compare how much choice is left in different cases, fix the following count.
->
-> A Jordan basis is a list of $n$ vectors, so in coordinates it is $n^2$ scalars. Usually those scalars are not independent of each other: fixing some of them forces the rest. Write $r$ for how many can be chosen freely.
->
-> A few choices always have to be thrown out. In the cases below it is the vectors $v$ with $N^{n-1}v = 0$, and the lists of $n$ vectors that fail to be a basis. Such choices are degenerate rather than numerous, and discarding them does not reduce $r$.
->
-> The Jordan bases do not form a subspace of anything, so $r$ is not the dimension of a subspace. It is a count of independent choices.
-
-{: .prompt-warning }
-> That $r$ is well defined — that no cleverer parametrization uses fewer scalars — is not proved here, and is not obvious from either computation below. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) settles it: the invertible operators commuting with $N$ act simply transitively on the Jordan bases of a given shape, so the Jordan bases are always in bijection with the invertible part of $\mathcal{C}(N)$, and $r = \dim\mathcal{C}(N)$ in every case.
->
-> Until then, read $r$ as the number of scalars the parametrization at hand happens to use.
+> *How much choice is left in a Jordan basis.* The diagram's shape is forced by $N$; the basis filling it is not. A Jordan basis is an ordered list of $n$ vectors, so it lives in $V^n$ ($\dim V^n = n^2$). In each case below the Jordan bases turn out to be a nonempty open subset of a linear subspace of $V^n$. Write $r$ for that subspace's dimension.
 
 #### One Column: a Single Chain
 
@@ -157,26 +161,33 @@ $\mu = (n)$ and $\mu' = (1,\dots,1)$. One chain of length $n$: a single top, a s
 and every level of size $1$.
 
 {: .prompt-info }
-> $$k = \mu'_1 = 1, \qquad p = m_1 = n, \qquad d_j = \min(j,n), \qquad \operatorname{rank}N^j = \max(0, n-j),$$
+> $$k = \mu'_1 = 1, \qquad p = m_1 = n, \qquad d_j = \min(j,n), \qquad \dim\operatorname{range}N^j = \max(0, n-j),$$
 >
 > and $\mathcal{M}(N) = J_n(0)$ is a single Jordan block.
 
 This is as far from the zero operator as a nilpotent operator gets: $N^{n-1} \neq 0$, so the
-tower
+null spaces
 
-$$\\{0\\} \subsetneq \operatorname{null}N \subsetneq \operatorname{null}N^2 \subsetneq \dots \subsetneq \operatorname{null}N^n = V$$
+$$\{0\} \subsetneq \operatorname{null}N \subsetneq \operatorname{null}N^2 \subsetneq \dots \subsetneq \operatorname{null}N^n = V$$
 
-climbs one dimension at a time, with no repeats and no jumps. Equivalently $d_j = j$ until it
+climb one dimension at a time, with no repeats and no jumps. Equivalently $d_j = j$ until it
 saturates, which is the only way a concave sequence of $n$ steps can rise as slowly as
 possible while still reaching $n$.
 
 {: .prompt-tip }
-> *Free parameters.* A Jordan basis here is determined by its top $v$ alone: the rest of the chain is $Nv, N^2v, \dots$, forced. So the $n$ coordinates of $v$ specify the whole basis, subject to the single non-degeneracy condition $N^{n-1}v \neq 0$. That gives $r = n$: of the $n^2$ scalars a basis nominally carries, only $n$ are free.
+> *How much choice.* A Jordan basis here is determined by its top $v$ alone: the rest of the chain, $Nv, N^2v, \dots$, is forced. So $v \mapsto (N^{n-1}v, \dots, Nv, v)$ parametrizes the Jordan bases by the $v$ with $N^{n-1}v \neq 0$, giving $r = n$, against $n^2$ for an unconstrained list.
 
 {: .prompt-tip }
-> *Invariant subspaces.* The only subspaces invariant under $N$ are the $n+1$ subspaces $\operatorname{null}N^j$ for $0 \le j \le n$ — a single chain of them, totally ordered by inclusion. This is the most rigid an invariant-subspace lattice can be.
+> *Invariant subspaces.* The only subspaces invariant under $N$ are the $n+1$ subspaces $\operatorname{null}N^j$ for $0 \le j \le n$: a single chain of them, totally ordered by inclusion. This is the most rigid an invariant-subspace lattice can be.
+
+{: .prompt-proof }
+> Write $v$ for the top, so $v, Nv, \dots, N^{n-1}v$ is a basis of $V$ and $\operatorname{null}N = \operatorname{span}(N^{n-1}v)$ is a line, since $d_1 = \mu'_1 = k = 1$. Each $\operatorname{null}N^j$ is invariant, because $N^ju = 0$ gives $N^j(Nu) = N(N^ju) = 0$, and their dimensions $d_j = j$ are distinct, so these are $n+1$ different invariant subspaces. What needs proof is the converse, that every invariant $W$ is one of them.
 >
-> The proof uses the geometric series from the [Invertibility](#invertibility) section. Let $W \ne \\{0\\}$ be invariant and let $s$ be smallest such that some $w \in W$ has a nonzero coefficient on $N^sv$; write $w = q(N)N^sv$ with $q(N) = c_sI + c_{s+1}N + \dots$ and $c_s \ne 0$. Then $q(N)$ is a nonzero scalar plus a nilpotent, hence invertible with inverse again a polynomial in $N$. Since $W$ is invariant it is closed under polynomials in $N$, so $N^sv = q(N)^{-1}w \in W$, and applying $N$ repeatedly gives $W \supseteq \operatorname{null}N^{\,n-s}$. Minimality of $s$ gives the reverse inclusion.
+> Induct on $n$. For $n = 1$ the operator is $0$ on a line, whose only two subspaces are $\\{0\\} = \operatorname{null}N^0$ and $V = \operatorname{null}N^1$, the $n + 1 = 2$ the statement predicts. For $n \ge 2$, let $W \ne \\{0\\}$ be invariant and pick $0 \ne w \in W$. Take the largest $t$ with $N^tw \ne 0$. Then $N^tw \in W$ by invariance and $N(N^tw) = 0$, so $W \cap \operatorname{null}N \ne \\{0\\}$. Because $\operatorname{null}N$ is a line, this forces $\operatorname{null}N \subseteq W$, which makes $W/\operatorname{null}N$ a subspace of $\bar V := V/\operatorname{null}N$ with $W$ as its full preimage.
+>
+> On $\bar V$ the induced operator $\bar N(u + \operatorname{null}N) := Nu + \operatorname{null}N$ is well defined because $N$ kills $\operatorname{null}N$, and $W/\operatorname{null}N$ is $\bar N$-invariant because $Nu \in W$ whenever $u \in W$. It is again a single chain, of length $n-1$: the images of $v, Nv, \dots, N^{n-2}v$ span $\bar V$, which has dimension $n-1$, so they form a basis, and $\bar N^{\,n-2}\bar v \ne 0$ because $N^{n-2}v \notin \operatorname{null}N$, as $N(N^{n-2}v) = N^{n-1}v \ne 0$.
+>
+> So induction applies, giving $W/\operatorname{null}N = \operatorname{null}\bar N^{\,i}$ for some $0 \le i \le n-1$. Since $\bar N^{\,i}$ is induced by $N^i$, a coset lies in $\operatorname{null}\bar N^{\,i}$ exactly when $N^iu \in \operatorname{null}N$, that is when $N^{i+1}u = 0$. Passing back to preimages gives $W = \operatorname{null}N^{\,i+1}$. $\blacksquare$
 
 {: .prompt-tip }
 > *nonderogatory/cyclic operator.* The minimal polynomial equals the characteristic polynomial.
@@ -187,15 +198,15 @@ $\mu = (1,\dots,1)$ and $\mu' = (n)$. Now there are $n$ chains, each of length $
 box is simultaneously a top and a bottom.
 
 {: .prompt-info }
-> $$k = \mu'_1 = n, \qquad p = m_1 = 1, \qquad d_j = n \ \text{for all } j \ge 1, \qquad \operatorname{rank}N^j = 0,$$
+> $$k = \mu'_1 = n, \qquad p = m_1 = 1, \qquad d_j = n \ \text{for all } j \ge 1, \qquad \dim\operatorname{range}N^j = 0,$$
 >
 > and $\mathcal{M}(N)$ is the zero matrix.
 
 Here $p = 1$ says $N^1 = 0$, so this shape *is* the zero operator. Every null space is already
-$V$ and the tower stops before it starts.
+$V$, so the ascent stops before it starts.
 
 {: .prompt-tip }
-> *Free parameters.* All of them. Since $N = 0$, the chain condition is vacuous and *every* basis of $V$ is a Jordan basis. The $n^2$ coordinates of the $n$ vectors range freely, subject only to the non-degeneracy condition that they be independent, so $r = n^2$ — the largest a Jordan basis count can be, since $n^2$ scalars is all a basis has.
+> *How much choice.* All of it. Since $N = 0$ the chain condition is vacuous, so *every* basis of $V$ is a Jordan basis and the only condition left is independence. The subspace is all of $V^n$, giving $r = n^2$, the largest possible.
 
 {: .prompt-tip }
 > *Invariant subspaces.* Every subspace of $V$ is invariant, again since $N = 0$. This is the least rigid an invariant-subspace lattice can be, and the exact opposite of the totally ordered chain above.
@@ -209,11 +220,6 @@ $V$ and the tower stops before it starts.
 
 #### Comparing the Ends
 
-{: .prompt-tip }
-> The two shapes are conjugate to each other. Conjugation reflects the diagram, and a single column reflects to a single level, so the two extremes of the framework are one partition and its transpose. Anything proved by counting columns in one case is proved by counting levels in the other.
->
-> They are also the only two shapes that are extreme in this way: every other $\mu$ has both a column of height $\ge 2$ and a level of size $\ge 2$.
-
 Side by side, they bracket every invariant in this post.
 
 |                               | one column     | one level             |
@@ -223,21 +229,22 @@ Side by side, they bracket every invariant in this post.
 | chains $k = \mu'_1$           | $1$            | $n$                   |
 | index of nilpotency $p = m_1$ | $n$            | $1$                   |
 | $d_j$                         | $\min(j, n)$   | $n$ for all $j \ge 1$ |
-| $\operatorname{rank}N^j$      | $\max(0, n-j)$ | $0$ for all $j \ge 1$ |
+| $\dim\operatorname{range}N^j$      | $\max(0, n-j)$ | $0$ for all $j \ge 1$ |
 | $\mathcal{M}(N)$              | $J_n(0)$       | the zero matrix       |
 | invariant subspaces           | $n+1$, a chain | all of them           |
-| free parameters $r$           | $n$            | $n^2$                 |
+| Jordan-basis freedom $r$      | $n$            | $n^2$                 |
 
 The last two rows are the ones that do not obviously belong to the same story as the others,
-and they are the reason for the sequel. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) shows that the operators commuting
+and they are what [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) exists to explain. It shows that the operators commuting
 with $N$ form a space of dimension $\sum_j (\mu'_j)^2$, which is $n$ for one column and $n^2$
-for one level — the smallest and largest values it can take, and exactly the two entries in
+for one level, the smallest and largest values it can take, and exactly the two entries in
 the last row.
 
-That is what makes the free-parameter count above legitimate rather than ad hoc. The two
-cases were counted by unrelated arguments here — one by parametrizing a single top vector,
-the other by observing that no condition applies at all — and they nonetheless landed on
-$\dim\mathcal{C}(N)$ both times. The sequel explains why they had to.
+That is also what makes $r$ more than an ad hoc count. The two cases were computed by
+unrelated arguments here (one by parametrizing a single top vector, the other by observing
+that no condition applies at all), and they nonetheless landed on $\dim\mathcal{C}(N)$ both
+times. That post explains why they had to: the invertible operators commuting with $N$ act
+simply transitively on the Jordan bases, so $r = \dim\mathcal{C}(N)$ always.
 
 ### Jordan Block
 
@@ -256,9 +263,9 @@ In the bottom-to-top ordering $u_1 = N^{m-1}v, \dots, u_m = v$, we have $Nu_j = 
 
 The columns that vanish are $j \le r$, so
 
-$$\dim\operatorname{null}N^r = \min(r, m), \qquad \operatorname{rank}N^r = \max(0, m-r).$$
+$$\dim\operatorname{null}N^r = \min(r, m), \qquad \dim\operatorname{range}N^r = \max(0, m-r).$$
 
-That's the single-chain case of $\dim\operatorname{null}N^r = \sum_j\min(r,m_j)$, and the "band exits the corner" picture is the same statement as "$N^r$ annihilates the bottom $\min(r,m)$ entries of a column of height $m$."
+Both are the single-chain case of $\dim\operatorname{null}N^r = \sum_i\min(r,m_i)$ and $\dim\operatorname{range}N^r = \sum_i\max(0,m_i-r)$, and the "band exits the corner" picture is the same statement as "$N^r$ annihilates the bottom $\min(r,m)$ entries of a column of height $m$."
 
 #### Non-nilpotent Block
 
@@ -266,7 +273,7 @@ If $\lambda \neq 0$, with $A = J_m(\lambda) = \lambda I + N$, the two terms comm
 
 $$A^r = \sum_{t=0}^{\min(r,\,m-1)} \binom{r}{t}\lambda^{r-t}N^t.$$
 
-Rather than shifting a single band, this **fills the entire upper triangle**, with $\lambda^r$ on the diagonal, $r\lambda^{r-1}$ on the first superdiagonal, $\binom{r}{2}\lambda^{r-2}$ on the second, and so on — constant along each diagonal, i.e. upper triangular Toeplitz. For $m = 4$:
+Rather than shifting a single band, this **fills the entire upper triangle**, with $\lambda^r$ on the diagonal, $r\lambda^{r-1}$ on the first superdiagonal, $\binom{r}{2}\lambda^{r-2}$ on the second, and so on, constant along each diagonal, i.e. upper triangular Toeplitz. For $m = 4$:
 
 $$A^r = \begin{pmatrix} \lambda^r & r\lambda^{r-1} & \binom{r}{2}\lambda^{r-2} & \binom{r}{3}\lambda^{r-3}\\ & \lambda^r & r\lambda^{r-1} & \binom{r}{2}\lambda^{r-2}\\ & & \lambda^r & r\lambda^{r-1}\\ & & & \lambda^r \end{pmatrix}$$
 
@@ -281,7 +288,7 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 >
 > $$\{0\} = K_0 \subsetneq K_1 \subsetneq \dots \subsetneq K_p = V, \qquad K_j := \operatorname{null}N^j, \quad d_j := \dim K_j,$$
 >
-> where $p$ is the smallest exponent with $N^p = 0$. Keep an explicit basis of each $K_j$.
+> up to the index of nilpotency $p = m_1$. Keep an explicit basis of each $K_j$.
 >
 > Recall $$\mu'_j = d_j - d_{j-1}$$, the size of level $j$ from the Jordan Basis section. The algorithm reconstructs the diagram level by level from the bottom up, so this is the number of vectors it must produce at level $j$.
 >
@@ -397,7 +404,7 @@ Two structural differences worth noting: $A^r$ is never $0$, since $\det A^r = \
 {: .prompt-tip }
 > *The algorithm's count is the diagram's count.*
 >
-> Level $j$ of the algorithm carries $\lvert H_j \cup T_j\rvert = d_j - d_{j-1}$ vectors, and level $j$ of the diagram has size $\mu'_j = d_j - d_{j-1}$. They agree because both are the same dimension jump, computed once from the null-space tower and once from the chain lengths. Neither derivation assumed the other.
+> Level $j$ of the algorithm carries $\lvert H_j \cup T_j\rvert = d_j - d_{j-1}$ vectors, and level $j$ of the diagram has size $\mu'_j = d_j - d_{j-1}$. They agree because both are the same dimension jump, computed once from the null spaces and once from the chain lengths. Neither derivation assumed the other.
 >
 > The monotonicity $$\mu'_p \le \dots \le \mu'_1$$ then has two independent proofs: levels widen as you descend, and $\bar N_{j}$ is injective.
 
@@ -409,7 +416,7 @@ $$1 \mapsto 0,\quad x \mapsto 1,\quad y \mapsto 0,\quad x^2 \mapsto 2x,\quad xy 
 
 Precompute: $\operatorname{null}N = \operatorname{span}(1, y)$, $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$, $\operatorname{null}N^3 = V$. So $p = 3$ and $(d_0,d_1,d_2,d_3) = (0,2,4,5)$.
 
-So $\mu' = (d_1 - d_0,\; d_2 - d_1,\; d_3 - d_2) = (2, 2, 1)$, whose conjugate is $\mu = (3,2)$: one chain of length $3$ and one of length $2$. The algorithm above recovers exactly this, but the shape is already determined by the null-space tower alone.
+So $\mu' = (d_1 - d_0,\; d_2 - d_1,\; d_3 - d_2) = (2, 2, 1)$, whose conjugate is $\mu = (3,2)$: one chain of length $3$ and one of length $2$. The algorithm above recovers exactly this, but the shape is already determined by the dimensions $d_j$ alone.
 
 | $j$ | $H_j$ (pushed down) | need $d_j - d_{j-1}$ | new tops $T_j$ |
 | --- | ------------------- | -------------------- | -------------- |
@@ -420,7 +427,7 @@ So $\mu' = (d_1 - d_0,\; d_2 - d_1,\; d_3 - d_2) = (2, 2, 1)$, whose conjugate i
 Reading the levels:
 
 - **$j=3$:** nothing carried in. Need $1$ vector of $\operatorname{null}N^3 = V$ outside $\operatorname{null}N^2$; take $x^2$. Push down: $H_2 = \{2x\}$.
-- **$j=2$:** carrying $2x$. Need $2$ vectors total independent modulo $\operatorname{null}N = \operatorname{span}(1,y)$; $2x$ supplies one, so add one more from $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$ — take $xy$. Push down: $H_1 = \{N(2x), N(xy)\} = \{2, y\}$.
+- **$j=2$:** carrying $2x$. Need $2$ vectors total independent modulo $\operatorname{null}N = \operatorname{span}(1,y)$; $2x$ supplies one, so add one more from $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$; take $xy$. Push down: $H_1 = \{N(2x), N(xy)\} = \{2, y\}$.
 - **$j=1$:** carrying $\{2,y\}$, which is already a basis of the $2$-dimensional $\operatorname{null}N$. Nothing to add.
 
 Chains: $x^2 \to 2x \to 2 \to 0$ and $xy \to y \to 0$. Jordan basis (each chain bottom-to-top)
@@ -447,7 +454,7 @@ giving $\mathcal{M}(N) = J_3(0)\oplus J_2(0)$. Checks: $\lvert T_3 \rvert = 1 = 
 {: .prompt-tip }
 > - Full reduced echelon form is unnecessary. Forward elimination to echelon form already reveals the pivot positions, which is all you need.
 > - Group 3 can be any spanning set of $\operatorname{null}N^j$; a basis is the convenient choice, and duplicates cost nothing since they simply fail to be pivots.
-> - The same elimination produces the null spaces in the first place, by solving $N^j x = 0$, so you can compute the entire tower $\operatorname{null}N, \dots, \operatorname{null}N^p$ with the same tool before the loop starts.
+> - The same elimination produces the null spaces in the first place, by solving $N^j x = 0$, so you can compute all of $\operatorname{null}N, \dots, \operatorname{null}N^p$ with the same tool before the loop starts.
 
 ## Invertibility
 
@@ -515,5 +522,5 @@ The inverse is again upper-triangular Toeplitz, with alternating signs and incre
 
 The diagram determines $N$ up to similarity, and this post read it in one direction: from
 $N$ to its shape. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) reads it in the other, showing that the same diagram
-controls which *other* operators commute with $N$ — with the two extremes above turning out
+controls which *other* operators commute with $N$, with the two extremes above turning out
 to be the two extremes there as well.
