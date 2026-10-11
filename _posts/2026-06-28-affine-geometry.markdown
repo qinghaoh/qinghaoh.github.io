@@ -141,7 +141,7 @@ The coefficient sum also says how the two kinds of result combine:
 {: .prompt-proof }
 > *Proof by induction on $k$.*
 >
-> For $ k = 1 $, $ \lambda_1 = 1 $ gives $ a_1 \in A $. For the step, given $ \sum_{i=1}^{k}\lambda_i = 1 $ with $ k \ge 2 $, at least one coefficient — say $ \lambda_k $ — satisfies $ \lambda_k \neq 1 $. Set $ s = \lambda_1 + \dots + \lambda_{k-1} = 1 - \lambda_k \neq 0 $. Then
+> For $ k = 1 $, $ \lambda_1 = 1 $ gives $ a_1 \in A $. For the step, given $ \sum_{i=1}^{k}\lambda_i = 1 $ with $ k \ge 2 $, the coefficients cannot all equal 1, because then they would sum to $ k \neq 1 $. Reorder the points so that the last coefficient satisfies $ \lambda_k \neq 1 $. Set $ s = \lambda_1 + \dots + \lambda_{k-1} = 1 - \lambda_k \neq 0 $. Then
 >
 > $$\sum_{i=1}^k \lambda_i a_i = s\underbrace{\left(\sum_{i=1}^{k-1}\tfrac{\lambda_i}{s} a_i\right)}_{=:b} + \lambda_k a_k.$$
 >
@@ -154,7 +154,7 @@ The coefficient sum also says how the two kinds of result combine:
 >
 > ![The line through two points](/assets/img/math/sweep_1_line.png){: w="400" h="125" }
 >
-> **Step 2.** Add a third point $ a_3 $ off that line. The lines from $ a_3 $ to the points of the first line (blue) sweep out a plane.
+> **Step 2.** Add a third point $ a_3 $ off that line. The lines from $ a_3 $ to the points of the first line (blue) sweep out a plane. The dashed line is explained in the next box.
 >
 > ![Lines from a third point to a line sweep out a plane](/assets/img/math/sweep_2_plane.png){: w="400" h="250" }
 >
@@ -163,18 +163,36 @@ The coefficient sum also says how the two kinds of result combine:
 > ![Lines from a fourth point to a plane sweep out space](/assets/img/math/sweep_3_space.png){: w="400" h="270" }
 >
 > So a set that contains the line through any two of its points must also contain the whole plane through any three of them, the whole 3-dimensional affine subspace through any four, and so on.
+
+{: .prompt-tip }
+> *What a single sweep misses*
 >
-> The induction in the proof is this sweep. The point $ b $ lies in the affine subspace swept out by the first $ k - 1 $ points, and the last step draws the line through $ b $ and $ a_k $.
+> **The plane in step 2 is complete.** The set contains every point of it, including the dashed line. What the dashed line shows is only that the blue lines alone, the ones drawn from $ a_3 $, do not cover the whole plane: a line from $ a_3 $ parallel to the first line never meets the first line, so it is not one of the blue lines.
 >
-> One detail, shown dashed in step 2: the line through $ a_3 $ parallel to the first line is part of the plane, but the blue lines never reach it, because a line from $ a_3 $ in that direction does not meet the first line.
+> The points of the dashed line are in the set for a different reason: they lie on lines drawn from $ a_1 $ or $ a_2 $.
 >
-> In coordinates, a point of the plane is $ p = \lambda_1 a_1 + \lambda_2 a_2 + \lambda_3 a_3 $ with $ \lambda_1 + \lambda_2 + \lambda_3 = 1 $.
+> ![A point of the dashed line is reached by a line from another corner](/assets/img/math/sweep_2_plane_missed_line.png){: w="400" h="265" }
 >
-> - **Peeling off $ \lambda_3 $ means sweeping from $ a_3 $.** It writes $ p = s\,b + \lambda_3 a_3 $ with $ b $ on the first line and $ s = \lambda_1 + \lambda_2 $, which needs $ s \neq 0 $, that is $ \lambda_3 \neq 1 $.
+> Here $ p $ is a point of the dashed line. The line from $ a_1 $ through $ p $ crosses the line through $ a_2 $ and $ a_3 $ at a point $ b' $. Both $ a_1 $ and $ b' $ are in the set, so the whole line through them is, and $ p $ is on it.
+>
+> **In coordinates.** A point of the plane is $ p = \lambda_1 a_1 + \lambda_2 a_2 + \lambda_3 a_3 $ with $ \lambda_1 + \lambda_2 + \lambda_3 = 1 $.
+>
+> - **Sweeping from $ a_3 $ reaches $ p $ exactly when $ \lambda_3 \neq 1 $.** Then $ p = s\,b + \lambda_3 a_3 $ with $ b $ on the first line and $ s = \lambda_1 + \lambda_2 \neq 0 $.
 > - **The dashed line is exactly where $ \lambda_3 = 1 $.** Then $ \lambda_2 = -\lambda_1 $ and $ p = a_3 + \lambda_1 (a_1 - a_2) $: start at $ a_3 $ and move parallel to the first line.
-> - **Such a point is reached from another corner.** The three coefficients cannot all equal 1, since they sum to 1. If $ \lambda_1 \neq 1 $, peel off $ \lambda_1 $ instead: $ p $ lies on a line from $ a_1 $ to a point of the line through $ a_2 $ and $ a_3 $.
+> - **Such a point is reached from another corner.** The three coefficients cannot all equal 1, since they sum to 1. If $ \lambda_1 \neq 1 $, then $ p $ lies on a line from $ a_1 $ to a point $ b' $ of the line through $ a_2 $ and $ a_3 $, as in the figure.
 >
-> So choosing a coefficient $ \lambda_k \neq 1 $ in the proof is choosing a point to sweep from that can actually reach $ p $.
+> **For any number of points.** Let $ p = \sum_{i=1}^{k} \lambda_i a_i $ with $ \sum_i \lambda_i = 1 $ and suppose $ \lambda_k = 1 $. Then $ \lambda_1 + \dots + \lambda_{k-1} = 0 $, so subtracting $ \big(\sum_{i<k} \lambda_i\big) a_1 = 0 $ changes nothing:
+>
+> $$ p = a_k + \sum_{i=1}^{k-1} \lambda_i a_i = a_k + \sum_{i=2}^{k-1} \lambda_i (a_i - a_1). $$
+>
+> Let $ D = \operatorname{span}(a_2 - a_1, \dots, a_{k-1} - a_1) $, the subspace of all displacements built from the first $ k - 1 $ points.
+>
+> - The first $ k - 1 $ points sweep out $ a_1 + D $: start at $ a_1 $ and move by any displacement in $ D $. (This is proved under [Affine hull](#affine-hull) below.)
+> - The formula says $ p \in a_k + D $: start at $ a_k $ and move by a displacement in $ D $. Conversely, every point of $ a_k + D $ has $ \lambda_k = 1 $.
+>
+> So what the sweep from $ a_k $ misses is a translate of the same subspace $ D $, through $ a_k $ instead of $ a_1 $. That is what *parallel* means: $ a_k + D $ is a copy of $ a_1 + D $ shifted to pass through $ a_k $. For $ k = 4 $ it is the plane through $ a_4 $ parallel to the plane of step 3.
+>
+> **Back to the proof.** The formula in the proof is a single sweep from $ a_k $: the point $ b $ lies in the affine subspace swept out by the other $ k - 1 $ points, and $ p $ is on the line through $ b $ and $ a_k $. This works exactly when $ \lambda_k \neq 1 $. The step "reorder the points so that $ \lambda_k \neq 1 $" chooses, for each target $ p $ separately, a point to sweep from that can actually reach $ p $. Filling in the dashed line is the same formula with a different point in the last position.
 
 ### Direction and dimension
 
@@ -256,52 +274,37 @@ Separately, each single $ A $ is a copy of its direction: for any base point $ x
 - In $ \mathbb{R}^2 $ a hyperplane is a *line* (dimension 1).
 - In $ \mathbb{R}^3 $ a hyperplane is a *plane* (dimension 2).
 
-In coordinates, $ \varphi(v) = c $ is a single linear equation $ a_1 x_1 + \dots + a_n x_n = c $. Of the $ n $ free directions in $ V $, one equation removes exactly one, which is why a hyperplane has dimension $ n - 1 $.
+In coordinates, $ \varphi(v) = c $ is a single linear equation $ a_1 x_1 + \dots + a_n x_n = c $. Some coefficient is nonzero, say $ a_n \neq 0 $. Then $ x_1, \dots, x_{n-1} $ can be chosen freely, and the equation determines the last one:
 
-So each nonzero equation of a [system of linear equations]({% post_url 2026-06-30-systems-of-linear-equation %}) cuts out a hyperplane, and the solution set is their intersection. Each equation that is independent of the others removes one more direction, so the solution set is either empty or an affine subspace of dimension $ n - r $, where $ r $ is the number of independent equations.
+$$ x_n = \frac{c - a_1 x_1 - \dots - a_{n-1} x_{n-1}}{a_n}. $$
 
-### Affine maps
+So of the $ n $ free directions in $ V $, one equation removes exactly one: $ n - 1 $ coordinates stay free and one is forced. That is why a hyperplane has dimension $ n - 1 $.
 
-{: .prompt-tip }
-> *Affine map* = linear map plus a translation
->
-> A map $ f : V \to W $ is **affine** if there exist $ T \in \mathcal{L}(V, W) $ and $ b \in W $ such that $ f(x) = Tx + b $ for all $ x \in V $.
-
-{: .prompt-info }
-> *Affine maps are exactly the maps that preserve affine combinations*
->
-> A map $ f : V \to W $ is affine if and only if
->
-> $$ f\Big(\sum_i \lambda_i v_i\Big) = \sum_i \lambda_i f(v_i) \quad \text{whenever } \sum_i \lambda_i = 1. $$
-
-{: .prompt-proof }
-> ($\Rightarrow$) If $ f(x) = Tx + b $ and $ \sum_i \lambda_i = 1 $, then
->
-> $$ f\Big(\sum_i \lambda_i v_i\Big) = \sum_i \lambda_i T v_i + \Big(\sum_i \lambda_i\Big) b = \sum_i \lambda_i (T v_i + b). $$
->
-> ($\Leftarrow$) Let $ b := f(0) $ and $ Tv := f(v) - b $. We show $ T $ is linear.
->
-> *Scalar multiplication:* $ \lambda v = \lambda v + (1 - \lambda) 0 $ is an affine combination, so
->
-> $$ T(\lambda v) = \lambda f(v) + (1 - \lambda) b - b = \lambda (f(v) - b) = \lambda\, Tv. $$
->
-> *Addition:* $ v + w = v + w - 0 $ is an affine combination with coefficients $ 1, 1, -1 $, so
->
-> $$ T(v + w) = f(v) + f(w) - b - b = Tv + Tw. \quad \blacksquare $$
-
-{: .prompt-tip }
-> Affine maps send affine subspaces to affine subspaces, and parallel ones to parallel ones:
->
-> $$ f(x + U) = f(x) + T(U). $$
+Each nonzero equation of a [system of linear equations]({% post_url 2026-06-30-systems-of-linear-equation %}) therefore cuts out a hyperplane, and the solution set is their intersection. Each equation that is independent of the others removes one more direction, so the solution set is either empty or an affine subspace of dimension $ n - r $, where $ r $ is the number of independent equations.
 
 ## Affine hull
 
 {: .prompt-tip }
-> *Affine hull* (closed under *affine combinations*):
+> *Affine hull* (all *affine combinations*):
 >
 > The affine hull of $ v_1, \dots, v_m \in V $ is the set of all their affine combinations:
 >
 > $$ A = \{ \lambda_1 v_1 + \dots + \lambda_m v_m : \lambda_1, \dots, \lambda_m \in \mathbf{F} \ \text{and} \ \lambda_1 + \dots + \lambda_m = 1 \}. $$
+
+{: .prompt-tip }
+> *Geometric picture*
+>
+> The affine hull of some points is the smallest affine subspace that passes through all of them. It extends infinitely, beyond the points themselves.
+>
+> - 2 distinct points: the whole line through them.
+> - 3 points not on a line: the whole plane through them.
+> - 4 points not in a plane: the whole 3-dimensional affine subspace through them.
+>
+> It is what the [sweep](#affine-subspace) produces. Start with the points, draw the line through every pair, then the lines through every pair of points you now have, and keep going until nothing new appears. What you end up with is the affine hull.
+>
+> "Smallest" is relative to the given points. Larger affine subspaces contain them too: for 2 points in $ \mathbb{R}^3 $, every plane through their line does, and so does $ \mathbb{R}^3 $ itself. The affine hull is the one that contains only what the points force, so it lies inside all the others. To get a larger affine subspace, sweep from more points.
+>
+> Both claims, "affine subspace" and "smallest", are proved below.
 
 {: .prompt-info }
 > *An affine hull is a translate of a span*
@@ -324,13 +327,22 @@ So each nonzero equation of a [system of linear equations]({% post_url 2026-06-3
 {: .prompt-tip }
 > Corollary: The affine hull of $ v_1, \dots, v_m $ is an affine subspace of dimension at most $ m - 1 $.
 
+{: .prompt-tip }
+> *Degenerate cases*
+>
+> The dimension equals $ m - 1 $ exactly when the displacements $ v_2 - v_1, \dots, v_m - v_1 $ are linearly independent. The points are then called **affinely independent**. Otherwise the affine hull is smaller:
+>
+> - Three points on one line: the affine hull is that line (dimension 1, not 2).
+> - Four points in one plane: the affine hull is that plane (dimension 2, not 3).
+> - All points equal: the affine hull is a single point (dimension 0).
+
 {: .prompt-info }
 > The affine hull of $ v_1, \dots, v_m $ is the smallest affine subspace containing $ v_1, \dots, v_m $.
 
 {: .prompt-proof }
 > The affine hull contains each $ v_i $ (take $ \lambda_i = 1 $ and the other coefficients $ 0 $), and it is an affine subspace by the corollary. Conversely, an affine subspace containing $ v_1, \dots, v_m $ contains all their affine combinations, because affine subspaces are closed under finite affine combinations. $\blacksquare$
 
-## Hull
+### Hulls in general
 
 A "hull" is always a **closure operation toward a property**: given a set $S$ and a class of "nice" sets (subspaces, affine subspaces, convex sets...), the corresponding hull is
 
@@ -351,8 +363,80 @@ It's the tightest-fitting enclosure of $S$ from the chosen family:
 
 The unifying idea is that **"hull" names a closure operator**. Abstractly, any map $S \mapsto \overline{S}$ that is
 
-- *extensive* ($S \subseteq \overline{S}$ — it encloses),
+- *extensive* ($S \subseteq \overline{S}$: it encloses),
 - *monotone* ($S \subseteq T \Rightarrow \overline{S} \subseteq \overline{T}$), and
-- *idempotent* ($\overline{\overline{S}} = \overline{S}$ — re-enclosing an already-enclosed set adds nothing),
+- *idempotent* ($\overline{\overline{S}} = \overline{S}$: re-enclosing an already-enclosed set adds nothing),
 
 is called a **closure operator**. Every hull in the table is one.
+
+## Affine maps
+
+{: .prompt-tip }
+> *Affine map* = linear map plus a translation
+>
+> A map $ f : V \to W $ is **affine** if there exist $ T \in \mathcal{L}(V, W) $ and $ b \in W $ such that $ f(x) = Tx + b $ for all $ x \in V $.
+
+{: .prompt-info }
+> *Affine maps are exactly the maps that preserve affine combinations*
+>
+> A map $ f : V \to W $ is affine if and only if
+>
+> $$ f\Big(\sum_i \lambda_i v_i\Big) = \sum_i \lambda_i f(v_i) \quad \text{whenever } \sum_i \lambda_i = 1. $$
+
+{: .prompt-proof }
+> ($\Rightarrow$) If $ f(x) = Tx + b $ and $ \sum_i \lambda_i = 1 $, then
+>
+> $$ f\Big(\sum_i \lambda_i v_i\Big) = \sum_i \lambda_i T v_i + \Big(\sum_i \lambda_i\Big) b = \sum_i \lambda_i (T v_i + b). $$
+>
+> ($\Leftarrow$) Suppose $ f $ preserves affine combinations. Let $ b := f(0) $ and define $ T : V \to W $ by $ Tv := f(v) - b $. Then $ f(v) = Tv + b $ by construction, so it remains to show that $ T $ is linear.
+>
+> *Scalar multiplication:* $ \lambda v $ is an affine combination of the two points $ v $ and $ 0 $, with coefficients $ \lambda $ and $ 1 - \lambda $:
+>
+> $$ \lambda v = \lambda \cdot v + (1 - \lambda) \cdot 0. $$
+>
+> Since $ f $ preserves it, $ f(\lambda v) = \lambda f(v) + (1 - \lambda) f(0) = \lambda f(v) + (1 - \lambda) b $. Therefore
+>
+> $$ T(\lambda v) = f(\lambda v) - b = \lambda f(v) - \lambda b = \lambda (f(v) - b) = \lambda\, Tv. $$
+>
+> *Addition:* $ v + w $ is an affine combination of the three points $ v $, $ w $ and $ 0 $, with coefficients $ 1, 1, -1 $:
+>
+> $$ v + w = 1 \cdot v + 1 \cdot w + (-1) \cdot 0. $$
+>
+> Since $ f $ preserves it, $ f(v + w) = f(v) + f(w) - f(0) = f(v) + f(w) - b $. Therefore
+>
+> $$ T(v + w) = f(v + w) - b = (f(v) - b) + (f(w) - b) = Tv + Tw. \quad \blacksquare $$
+
+{: .prompt-tip }
+> *What $ T $ and $ b $ do*
+>
+> - **$ T $ acts on displacements, $ f $ acts on points.** For all $ x, y \in V $, the $ b $ cancels: $ f(x) - f(y) = T(x - y) $.
+> - **Images.** Apply $ f $ to each point $ x + u $ of an affine subspace $ x + U $: the result is $ f(x + u) = f(x) + Tu $. So the image of $ x + U $ is $ f(x) + T(U) $, where $ T(U) = \\{ Tu : u \in U \\} $ is a subspace of $ W $. That is again an affine subspace, with base point $ f(x) $ and direction $ T(U) $. Parallel affine subspaces share the same $ U $, so their images share the same $ T(U) $ and are parallel again.
+> - **Preimages.** The set of points that $ f $ sends to a given point $ y $ is empty or an affine subspace with direction $ \operatorname{null} T $. Indeed, if $ f(x_0) = y $ for some $ x_0 $, then by the first item
+>
+>   $$ f(x) = y \iff f(x) - f(x_0) = 0 \iff T(x - x_0) = 0 \iff x \in x_0 + \operatorname{null} T. $$
+
+{: .prompt-tip }
+> *Systems of linear equations*
+>
+> A [system of linear equations]({% post_url 2026-06-30-systems-of-linear-equation %}) $ Tx = c $ asks which points the affine map $ f(x) = Tx - c $ sends to $ 0 $. By the last item above, the solution set is empty or an affine subspace with direction $ \operatorname{null} T $: one particular solution plus all solutions of the homogeneous system $ Tx = 0 $. This is the same set that [Hyperplanes](#hyperplanes) describes as an intersection of hyperplanes, one per equation.
+
+## Summary
+
+Everything in this post is built from one notion, the affine combination.
+
+```mermaid
+flowchart TD
+	nComb["<b>Affine combination</b><br/>Σ λᵢvᵢ with Σ λᵢ = 1<br/>the same from every origin"]
+	nSub["<b>Affine subspace</b><br/>x + U"]
+	nHull["<b>Affine hull</b><br/>of v₁, …, vₘ"]
+	nMap["<b>Affine map</b><br/>f(x) = Tx + b"]
+	nComb -->|a set closed under them| nSub
+	nComb -->|all of them,<br/>for given points| nHull
+	nComb -->|a map that<br/>preserves them| nMap
+	nHull -->|is the smallest one<br/>containing the points| nSub
+	nMap -->|images and preimages<br/>are again| nSub
+```
+
+- **Affine subspace:** a nonempty set closed under affine combinations. Equivalently, a translate $ x + U $ of a subspace.
+- **Affine hull:** all affine combinations of given points. It is the smallest affine subspace containing them.
+- **Affine map:** a map that preserves affine combinations. Equivalently, $ f(x) = Tx + b $. It sends affine subspaces to affine subspaces, and the set of points it sends to a given point is empty or an affine subspace.
