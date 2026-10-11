@@ -28,28 +28,30 @@ mermaid: true
 >
 > Fixing an origin identifies each point $ p $ with the displacement $ p - 0 $, which is why a vector space does not distinguish the two. Forgetting the origin separates them again.
 
+Clock times are an everyday affine line. "3 pm + 5 pm" is meaningless, because it depends on what is called time zero. But "5 pm − 3 pm = 2 hours" and "the midpoint of 3 pm and 5 pm is 4 pm" are fine. Times are points; durations are the vectors underneath.
+
 ### What is lost
 
-Sums and scalar multiples of points. Measured from an origin $ o $, the points $ v $ and $ w $ are the arrows $ v - o $ and $ w - o $. Adding them gives another arrow, $ (v - o) + (w - o) $, and the "sum" of the two points is where that arrow lands when it starts at $ o $:
+Sums and scalar multiples of points. Measured from an origin $ o $, the points $ v $ and $ w $ are the displacements $ v - o $ and $ w - o $. Adding them gives another displacement, $ (v - o) + (w - o) $, and the "sum" of the two points is the point that displacement leads to from $ o $:
 
 $$ o + (v - o) + (w - o) = v + w - o. $$
 
-The leading $ o $ is what turns the arrow back into a point. Without it the expression is a displacement, not a location. In the picture, this point is the fourth corner of the parallelogram on $ o, v, w $.
+The leading $ o $ is what turns the displacement back into a point. Without it the expression is only a displacement, not a location. In the picture, this point is the fourth corner of the parallelogram on $ o, v, w $.
 
-Move the origin and the answer moves, even though $ v $ and $ w $ stay put. So "the sum of two points" is not a property of the points alone.
+Move the origin and the answer moves, even though $ v $ and $ w $ stay put. So "the sum of two points" is not a property of the points alone. The same happens to a scalar multiple: $ 2v $ becomes $ o + 2(v - o) = 2v - o $.
 
 ![The sum of two points depends on the origin](/assets/img/math/sum_depends_on_origin.png){: w="400" h="260" }
 
 ### What survives
 
-Measured from an origin $ o $, each point $ v_i $ is the vector $ v_i - o $, and the combination with coefficients $ \lambda_i $ is the vector
+Measured from an origin $ o $, each point $ v_i $ is the displacement $ v_i - o $, and the combination with coefficients $ \lambda_i $ is the displacement
 
 $$ \sum_i \lambda_i (v_i - o) = \sum_i \lambda_i v_i - \Big(\sum_i \lambda_i\Big)\, o. $$
 
 There are two ways for $ o $ to drop out.
 
-- **Coefficients sum to 0.** The vector itself does not involve $ o $. It is a displacement, the same from every origin. The basic example is the difference $ w - v $.
-- **Coefficients sum to 1.** The vector still involves $ o $, but the point it leads to from $ o $ does not:
+- **Coefficients sum to 0.** The result does not involve $ o $: it is the same displacement from every origin. The basic example is the difference $ w - v $.
+- **Coefficients sum to 1.** The displacement still involves $ o $, but the point it leads to from $ o $ does not:
 
   $$ o + \sum_i \lambda_i (v_i - o) = \sum_i \lambda_i v_i + \Big(1 - \sum_i \lambda_i\Big)\, o = \sum_i \lambda_i v_i. $$
 
@@ -57,11 +59,11 @@ There are two ways for $ o $ to drop out.
 
 For any other sum, $ o $ remains in both readings, so the result depends on the origin. That is the whole list.
 
-The midpoint, built the same way as the sum above: from each origin, halve the arrows to $ v $ and $ w $ (bold), then complete the parallelogram (dashed). The two constructions are different, but they land on the same point.
+The midpoint, built the same way as the sum above: from each origin, halve the displacements to $ v $ and $ w $ (bold), then complete the parallelogram (dashed). The two constructions are different, but they land on the same point.
 
 ![The midpoint does not depend on the origin](/assets/img/math/midpoint_ignores_origin.png){: w="400" h="238" }
 
-The point $ 2w - v $: from each origin, double the arrow to $ w $ (bold), then subtract the arrow to $ v $ (dashed). Again the two paths differ and the endpoint does not.
+The point $ 2w - v $: from each origin, double the displacement to $ w $ (bold), then subtract the displacement to $ v $ (dashed). Again the two paths differ and the endpoint does not.
 
 ![The point 2w - v does not depend on the origin](/assets/img/math/extrapolation_ignores_origin.png){: w="400" h="252" }
 
@@ -71,15 +73,6 @@ The coefficient sum also says how the two kinds of result combine:
 - point + displacement = point ($ 1 + 0 = 1 $), from any base point: $ u + (w - v) $ is a point for all points $ u, v, w $, not only when $ u = v $;
 - displacement + displacement = displacement ($ 0 + 0 = 0 $);
 - point + point is neither ($ 1 + 1 = 2 $).
-
-| Expression                  | Coefficient sum | Result                |
-| --------------------------- | --------------- | --------------------- |
-| $ w - v $                   | 0               | displacement          |
-| $ \tfrac12 v + \tfrac12 w $ | 1               | point                 |
-| $ 2w - v $                  | 1               | point                 |
-| $ u + w - v $               | 1               | point                 |
-| $ v + w $                   | 2               | depends on the origin |
-| $ 2v $                      | 2               | depends on the origin |
 
 {: .prompt-tip }
 > *In terms of translations*
@@ -96,14 +89,12 @@ The coefficient sum also says how the two kinds of result combine:
 >
 > Both views say the same thing: an affine combination keeps its position *relative to the points*. In the figures the points stay still, so it stays still. Here the points move by $ t $, so it moves by $ t $.
 
-Clock times are an everyday affine line. "3 pm + 5 pm" is meaningless, because it depends on what is called time zero. But "5 pm − 3 pm = 2 hours" and "the midpoint of 3 pm and 5 pm is 4 pm" are fine. Times are points; durations are the vectors underneath.
-
 ## Affine subspace
 
 {: .prompt-tip }
 > *Affine subspace* (closed under lines):
 >
-> A nonempty subset $ A $ of $ V $ such that for any two points of $ A $, the entire line through them lies in $ A $:
+> A nonempty subset $ A $ of $ V $ such that for any two points of $ A $, the entire line through them lies in $ A $. That is, $ A $ contains every affine combination of two of its points:
 >
 > $$ \lambda v + (1 - \lambda)w \in A \quad \text{for all } v, w \in A \text{ and all } \lambda \in \mathbf{F}. $$
 
@@ -119,29 +110,28 @@ Clock times are an everyday affine line. "3 pm + 5 pm" is meaningless, because i
 >
 > since $\lambda u_1 + (1-\lambda)u_2 \in U$.
 >
-> ($\Rightarrow$) Suppose $A$ is an affine subspace: $A \neq \emptyset$ and $\lambda v + (1-\lambda)w \in A$ for all $v, w \in A$, $\lambda \in \mathbf{F}$. Fix $p \in A$ and define $U := A - p$. We show $U$ is a subspace; then $A = p + U$.
+> ($\Rightarrow$) Suppose $A$ is an affine subspace: $A \neq \emptyset$ and $\lambda v + (1-\lambda)w \in A$ for all $v, w \in A$, $\lambda \in \mathbf{F}$. Fix $p \in A$ and let $U$ be the set of displacements from $p$ to points of $A$:
 >
-> *Zero:* $0 = p - p \in U$.
+> $$U := \{ u \in V : p + u \in A \}.$$
 >
-> *Scalar multiplication:* Let $a - p \in U$ (with $a \in A$) and $\mu \in \mathbf{F}$. Then
+> Then $A = p + U$ by definition, so it remains to show that $U$ is a subspace.
 >
-> $$\mu(a-p) + p = \mu a + (1-\mu)p \in A,$$
+> *Zero:* $p + 0 = p \in A$, so $0 \in U$.
 >
-> by the hypothesis applied to $a, p$ with $\lambda = \mu$. Hence $\mu(a - p) \in A - p = U$.
+> *Scalar multiplication:* Let $u \in U$ and $\lambda \in \mathbf{F}$. The points $p + u$ and $p$ are in $A$, so every point of the line through them is in $A$:
 >
-> *Addition:* Let $a_1 - p,\ a_2 - p \in U$. By the hypothesis with $\lambda = \tfrac12$, the point $c := \tfrac12 a_1 + \tfrac12 a_2 \in A$. By scalar closure just proved, $2(c - p) + p = 2c - p \in A$. Since $2c - p = a_1 + a_2 - p$,
+> $$p + \lambda u = \lambda(p + u) + (1-\lambda)p \in A.$$
 >
-> $$(a_1 - p) + (a_2 - p) = (a_1 + a_2 - p) - p \in A - p = U.$$
+> Hence $\lambda u \in U$.
 >
-> So $U$ is closed under addition and scalar multiplication and contains $0$: it is a subspace, and $A = p + U$. $\blacksquare$
+> *Addition:* Let $u_1, u_2 \in U$. The points $p + u_1$ and $p + u_2$ are in $A$, so their midpoint is in $A$:
+>
+> $$p + \tfrac12(u_1 + u_2) = \tfrac12(p + u_1) + \tfrac12(p + u_2) \in A.$$
+>
+> Hence $\tfrac12(u_1 + u_2) \in U$, and doubling it with the scalar step gives $u_1 + u_2 \in U$. $\blacksquare$
 
 {: .prompt-warning }
-> Two hypotheses are doing real work here.
->
-> - **Nonempty.** The empty set is closed under lines but is not a translate of any subspace.
-> - **$ 2 \neq 0 $ in $ \mathbf{F} $.** The addition step uses $ \lambda = \tfrac12 $. This holds for $ \mathbf{R} $ and $ \mathbf{C} $.
-
-In the language of [Quotient Spaces]({% post_url 2026-07-04-quotient-spaces %}), the affine subspaces of $ V $ are exactly the cosets $ x + U $ of its subspaces.
+> *Nonempty* is doing real work here: the empty set is closed under lines but is not a translate of any subspace.
 
 {: .prompt-info }
 > *An affine subspace is closed under every finite affine combination* ("Closed under lines" is the $ k = 2 $ case).
@@ -157,10 +147,41 @@ In the language of [Quotient Spaces]({% post_url 2026-07-04-quotient-spaces %}),
 >
 > The inner combination $b$ has coefficients $ \tfrac{\lambda_i}{s} $ summing to $ \tfrac{s}{s} = 1 $, so by induction $ b \in A $. Then $ s\,b + \lambda_k a_k $ is an affine combination of the two points $ b, a_k \in A $ (coefficients $ s + \lambda_k = 1 $), so it lies in $ A $ by the line condition. $\blacksquare$
 
+{: .prompt-tip }
+> *Geometric picture: a sweep, one dimension at a time*
+>
+> **Step 1.** Two points $ a_1, a_2 $ give a line.
+>
+> ![The line through two points](/assets/img/math/sweep_1_line.png){: w="400" h="125" }
+>
+> **Step 2.** Add a third point $ a_3 $ off that line. The lines from $ a_3 $ to the points of the first line (blue) sweep out a plane.
+>
+> ![Lines from a third point to a line sweep out a plane](/assets/img/math/sweep_2_plane.png){: w="400" h="250" }
+>
+> **Step 3.** Add a fourth point $ a_4 $ off that plane. The lines from $ a_4 $ to the points of the plane sweep out a 3-dimensional affine subspace.
+>
+> ![Lines from a fourth point to a plane sweep out space](/assets/img/math/sweep_3_space.png){: w="400" h="270" }
+>
+> So a set that contains the line through any two of its points must also contain the whole plane through any three of them, the whole 3-dimensional affine subspace through any four, and so on.
+>
+> The induction in the proof is this sweep. The point $ b $ lies in the affine subspace swept out by the first $ k - 1 $ points, and the last step draws the line through $ b $ and $ a_k $.
+>
+> One detail, shown dashed in step 2: the line through $ a_3 $ parallel to the first line is part of the plane, but the blue lines never reach it, because a line from $ a_3 $ in that direction does not meet the first line.
+>
+> In coordinates, a point of the plane is $ p = \lambda_1 a_1 + \lambda_2 a_2 + \lambda_3 a_3 $ with $ \lambda_1 + \lambda_2 + \lambda_3 = 1 $.
+>
+> - **Peeling off $ \lambda_3 $ means sweeping from $ a_3 $.** It writes $ p = s\,b + \lambda_3 a_3 $ with $ b $ on the first line and $ s = \lambda_1 + \lambda_2 $, which needs $ s \neq 0 $, that is $ \lambda_3 \neq 1 $.
+> - **The dashed line is exactly where $ \lambda_3 = 1 $.** Then $ \lambda_2 = -\lambda_1 $ and $ p = a_3 + \lambda_1 (a_1 - a_2) $: start at $ a_3 $ and move parallel to the first line.
+> - **Such a point is reached from another corner.** The three coefficients cannot all equal 1, since they sum to 1. If $ \lambda_1 \neq 1 $, peel off $ \lambda_1 $ instead: $ p $ lies on a line from $ a_1 $ to a point of the line through $ a_2 $ and $ a_3 $.
+>
+> So choosing a coefficient $ \lambda_k \neq 1 $ in the proof is choosing a point to sweep from that can actually reach $ p $.
+
 ### Direction and dimension
 
+An affine subspace can be written as $ A = x + U $ with many different base points $ x $. The subspace $ U $, however, is the same in every such expression. That is what allows it to be given a name.
+
 {: .prompt-info }
-> *The direction does not depend on the base point*
+> *The subspace is determined by the affine subspace*
 >
 > Suppose $ A = x + U $ for some $ x \in V $ and some subspace $ U $ of $ V $. Then
 >
@@ -171,16 +192,41 @@ In the language of [Quotient Spaces]({% post_url 2026-07-04-quotient-spaces %}),
 {: .prompt-proof }
 > If $ a = x + u_1 $ and $ b = x + u_2 $ with $ u_1, u_2 \in U $, then $ a - b = u_1 - u_2 \in U $. Conversely, each $ u \in U $ equals $ (x + u) - x $, a difference of two points of $ A $.
 >
-> For the last claim, let $ a = x + u_0 $ with $ u_0 \in U $. Then $ a + U = x + (u_0 + U) = x + U $. $\blacksquare$
+> For the last claim, let $ a = x + u_0 $ with $ u_0 \in U $. Because $ U $ is a subspace containing $ u_0 $, adding $ u_0 $ maps $ U $ onto itself: $ u_0 + u \in U $ for every $ u \in U $, and every $ u \in U $ equals $ u_0 + (u - u_0) $. So $ u_0 + U = U $, and therefore
+>
+> $$ a + U = x + (u_0 + U) = x + U = A. \quad \blacksquare $$
 
 {: .prompt-tip }
+> *Direction, dimension, parallel*
+>
 > Suppose $ A = x + U $ is an affine subspace of $ V $.
 >
-> - The **direction** of $ A $ is the subspace $ U $.
+> - The **direction** of $ A $ is the subspace $ U $: the set of all displacements between points of $ A $.
 > - The **dimension** of $ A $ is $ \dim U $.
 > - Two affine subspaces are **parallel** if they have the same direction.
->
-> Affine subspaces of dimension 0, 1 and 2 are *points*, *lines* and *planes*.
+
+### Example
+
+Let $ V = \mathbb{R}^2 $, $ U = \operatorname{span}((2,1)) $ and $ A = (0,1) + U $, a line that misses the origin. Take the points $ v = (-1, 0.5) $ and $ w = (1, 1.5) $ of $ A $.
+
+![An affine subspace and its direction](/assets/img/math/affine_subspace_and_direction.png){: w="400" h="260" }
+
+- **Direction.** $ w - v = (2, 1) \in U $. The line $ A $ is parallel to $ U $ and has dimension 1.
+- **Closed under affine combinations.** $ 2w - v = (3, 2.5) $ stays on $ A $.
+- **Not a subspace.** $ v + w = (0, 2) $ leaves $ A $, and $ 0 \notin A $.
+
+### Correspondence with subspaces
+
+The affine subspaces of $ V $ are exactly the translates $ x + U $ of its subspaces, but the correspondence between affine subspaces and subspaces is not one-to-one:
+
+- **$ A $ determines $ U $.** Every affine subspace has exactly one direction.
+- **$ U $ does not determine $ A $.** All the translates of $ U $ share the direction $ U $. To recover $ A $ you need $ U $ together with one point of $ A $.
+
+In the language of [Quotient Spaces]({% post_url 2026-07-04-quotient-spaces %}), the affine subspaces with direction $ U $ are the cosets of $ U $, that is, the elements of $ V/U $.
+
+Separately, each single $ A $ is a copy of its direction: for any base point $ x \in A $, the map $ u \mapsto x + u $ is a bijection from $ U $ onto $ A $. It depends on the choice of $ x $, which is the "origin forgotten" again.
+
+### Hyperplanes
 
 {: .prompt-info }
 > *Hyperplane*
@@ -192,26 +238,32 @@ In the language of [Quotient Spaces]({% post_url 2026-07-04-quotient-spaces %}),
 > for some nonzero linear functional $ \varphi $ on $ V $ and some $ c \in \mathbf{F} $.
 
 {: .prompt-proof }
-> ($\Leftarrow$) A nonzero linear functional is surjective, so $ \varphi(x_0) = c $ for some $ x_0 \in V $, and then $ H = x_0 + \operatorname{null} \varphi $. By the fundamental theorem of linear maps, $ \dim \operatorname{null} \varphi = \dim V - 1 $.
+> ($\Leftarrow$) A nonzero linear functional is surjective: pick $ v $ with $ \varphi(v) = a \neq 0 $; then $ \varphi\big(\tfrac{c}{a} v\big) = c $ for every $ c \in \mathbf{F} $. So $ \varphi(x_0) = c $ for some $ x_0 \in V $, and then $ H = x_0 + \operatorname{null} \varphi $. By the fundamental theorem of linear maps, $ \dim \operatorname{null} \varphi = \dim V - 1 $.
 >
-> ($\Rightarrow$) Suppose $ H = x + U $ with $ \dim U = \dim V - 1 $. Extend a basis of $ U $ by one vector $ w $ to a basis of $ V $, and define $ \varphi(u + \lambda w) = \lambda $ for $ u \in U $, $ \lambda \in \mathbf{F} $. Then $ \varphi \neq 0 $ and $ \operatorname{null} \varphi = U $, so $ H = \\{ v \in V : \varphi(v) = \varphi(x) \\} $. $\blacksquare$
+> ($\Rightarrow$) Suppose $ H = x + U $ with $ \dim U = \dim V - 1 $. Extend a basis of $ U $ by one vector $ w $ to a basis of $ V $. Then every vector of $ V $ can be written in exactly one way as $ u + \lambda w $ with $ u \in U $ and $ \lambda \in \mathbf{F} $, so
+>
+> $$ \varphi(u + \lambda w) := \lambda $$
+>
+> is a well-defined linear functional on $ V $. It is nonzero because $ \varphi(w) = 1 $, and $ \operatorname{null} \varphi = U $ because $ \varphi(u + \lambda w) = 0 $ exactly when $ \lambda = 0 $. Therefore, for $ v \in V $,
+>
+> $$ v \in H \iff v - x \in U \iff \varphi(v - x) = 0 \iff \varphi(v) = \varphi(x), $$
+>
+> which says $ H = \\{ v \in V : \varphi(v) = c \\} $ with $ c = \varphi(x) $. $\blacksquare$
 
-"Hyper" does not mean "high-dimensional": a hyperplane is one dimension short of the whole space. It is a line in $ \mathbf{R}^2 $ and a plane in $ \mathbf{R}^3 $. Each nonzero equation of a [system of linear equations]({% post_url 2026-06-30-systems-of-linear-equation %}) cuts out a hyperplane, and the solution set is their intersection.
+"Hyper" does not mean "high-dimensional": a hyperplane is one dimension short of the whole space.
 
-### Example
+- In $ \mathbb{R}^1 $ a hyperplane is a *point* (dimension 0).
+- In $ \mathbb{R}^2 $ a hyperplane is a *line* (dimension 1).
+- In $ \mathbb{R}^3 $ a hyperplane is a *plane* (dimension 2).
 
-Let $ V = \mathbf{R}^2 $, $ U = \operatorname{span}((2,1)) $ and $ A = (0,1) + U $, a line that misses the origin. Take the points $ v = (-1, 0.5) $ and $ w = (1, 1.5) $ of $ A $.
+In coordinates, $ \varphi(v) = c $ is a single linear equation $ a_1 x_1 + \dots + a_n x_n = c $. Of the $ n $ free directions in $ V $, one equation removes exactly one, which is why a hyperplane has dimension $ n - 1 $.
 
-![An affine subspace and its direction](/assets/img/math/affine_subspace_and_direction.png){: w="400" h="260" }
-
-- **Direction.** $ w - v = (2, 1) \in U $. The line $ A $ is parallel to $ U $ and has dimension 1.
-- **Coefficients sum to 1.** $ 2w - v = (3, 2.5) $ stays on $ A $.
-- **Coefficients do not sum to 1.** $ v + w = (0, 2) $ leaves $ A $. Adding two points of $ A $ depends on where the origin is; an affine combination does not.
+So each nonzero equation of a [system of linear equations]({% post_url 2026-06-30-systems-of-linear-equation %}) cuts out a hyperplane, and the solution set is their intersection. Each equation that is independent of the others removes one more direction, so the solution set is either empty or an affine subspace of dimension $ n - r $, where $ r $ is the number of independent equations.
 
 ### Affine maps
 
 {: .prompt-tip }
-> *affine map* = linear map plus a translation
+> *Affine map* = linear map plus a translation
 >
 > A map $ f : V \to W $ is **affine** if there exist $ T \in \mathcal{L}(V, W) $ and $ b \in W $ such that $ f(x) = Tx + b $ for all $ x \in V $.
 
