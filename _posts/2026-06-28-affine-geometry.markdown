@@ -15,79 +15,78 @@ mermaid: true
 {: .prompt-tip }
 > *Affine* = linear structure with the origin forgotten
 >
-> Keep everything about a vector space except the knowledge of which point is $ 0 $. A combination $ \sum_i \lambda_i v_i $ of points still gives the same result from every origin in exactly two cases:
+> The objects of affine geometry are still the elements of $ V $, that is, vectors. What changes is which constructions are allowed: only those whose result does not depend on which vector is called $ 0 $.
+
+There is a simple test for that. Moving the origin by $ -t $ has the same effect as leaving the origin alone and translating every vector by $ t $. So translate the whole picture and watch what the result does.
+
+### Translating the picture
+
+Take a combination $ \sum_i \lambda_i v_i $ and translate every $ v_i $ by the same $ t $:
+
+$$ \sum_i \lambda_i (v_i + t) = \sum_i \lambda_i v_i + \Big(\sum_i \lambda_i\Big)\, t. $$
+
+So the result moves by $ \big(\sum_i \lambda_i\big)\, t $. There are three cases.
+
+- **Sum 1.** The result moves by $ t $, exactly as the $ v_i $ do, so it keeps its position relative to them. For example, the midpoint of the translated vectors is the translated midpoint. Translating and then combining gives the same answer as combining and then translating, which is what "combining *commutes* with translation" means.
+- **Sum 0.** The result does not move at all. For example $ (w + t) - (v + t) = w - v $.
+- **Any other sum.** The result moves by some other multiple of $ t $, so it neither follows the picture nor stays fixed. For example $ v + w $ moves by $ 2t $.
+
+### Points and displacements
+
+The first two cases are the two ways an element of $ V $ can be used.
+
+{: .prompt-info }
+> *Point and displacement*
 >
-> - the coefficients sum to **1**, and the result is a **point**. This is called an **affine combination**;
-> - the coefficients sum to **0**, and the result is a **displacement** (a vector).
+> - A **point** is a vector used as a location. When the picture is translated by $ t $, it moves by $ t $. The $ v_i $ above are points, and so is every combination of points whose coefficients sum to **1**. Such a combination is called an **affine combination**.
+> - A **displacement** is a vector used as a difference between two locations. When the picture is translated, it does not change. Every combination of points whose coefficients sum to **0** is a displacement, and so is $ t $ itself.
+>
+> A combination of points with any other coefficient sum is neither. It has no meaning once the origin is forgotten.
 
 {: .prompt-warning }
 > *Point* and *displacement* are roles, not different kinds of object. Both are elements of $ V $.
 >
-> - A **point** is a location. If the whole picture is translated by $ t $, it moves by $ t $.
-> - A **displacement** is a difference between two locations. If the whole picture is translated, it does not change.
->
 > Fixing an origin identifies each point $ p $ with the displacement $ p - 0 $, which is why a vector space does not distinguish the two. Forgetting the origin separates them again.
 
-Clock times are an everyday affine line. "3 pm + 5 pm" is meaningless, because it depends on what is called time zero. But "5 pm − 3 pm = 2 hours" and "the midpoint of 3 pm and 5 pm is 4 pm" are fine. Times are points; durations are the vectors underneath.
-
-### What is lost
-
-Sums and scalar multiples of points. Measured from an origin $ o $, the points $ v $ and $ w $ are the displacements $ v - o $ and $ w - o $. Adding them gives another displacement, $ (v - o) + (w - o) $, and the "sum" of the two points is the point that displacement leads to from $ o $:
-
-$$ o + (v - o) + (w - o) = v + w - o. $$
-
-The leading $ o $ is what turns the displacement back into a point. Without it the expression is only a displacement, not a location. In the picture, this point is the fourth corner of the parallelogram on $ o, v, w $.
-
-Move the origin and the answer moves, even though $ v $ and $ w $ stay put. So "the sum of two points" is not a property of the points alone. The same happens to a scalar multiple: $ 2v $ becomes $ o + 2(v - o) = 2v - o $.
-
-![The sum of two points depends on the origin](/assets/img/math/sum_depends_on_origin.png){: w="400" h="260" }
-
-### What survives
-
-Measured from an origin $ o $, each point $ v_i $ is the displacement $ v_i - o $, and the combination with coefficients $ \lambda_i $ is the displacement
-
-$$ \sum_i \lambda_i (v_i - o) = \sum_i \lambda_i v_i - \Big(\sum_i \lambda_i\Big)\, o. $$
-
-There are two ways for $ o $ to drop out.
-
-- **Coefficients sum to 0.** The result does not involve $ o $: it is the same displacement from every origin. The basic example is the difference $ w - v $.
-- **Coefficients sum to 1.** The displacement still involves $ o $, but the point it leads to from $ o $ does not:
-
-  $$ o + \sum_i \lambda_i (v_i - o) = \sum_i \lambda_i v_i + \Big(1 - \sum_i \lambda_i\Big)\, o = \sum_i \lambda_i v_i. $$
-
-  Examples are the midpoint $ \tfrac12 v + \tfrac12 w $ and the point $ 2w - v $.
-
-For any other sum, $ o $ remains in both readings, so the result depends on the origin. That is the whole list.
-
-The midpoint, built the same way as the sum above: from each origin, halve the displacements to $ v $ and $ w $ (bold), then complete the parallelogram (dashed). The two constructions are different, but they land on the same point.
-
-![The midpoint does not depend on the origin](/assets/img/math/midpoint_ignores_origin.png){: w="400" h="238" }
-
-The point $ 2w - v $: from each origin, double the displacement to $ w $ (bold), then subtract the displacement to $ v $ (dashed). Again the two paths differ and the endpoint does not.
-
-![The point 2w - v does not depend on the origin](/assets/img/math/extrapolation_ignores_origin.png){: w="400" h="252" }
-
-The coefficient sum also says how the two kinds of result combine:
+The coefficient sum also says how the two roles combine:
 
 - point − point = displacement ($ 1 - 1 = 0 $);
 - point + displacement = point ($ 1 + 0 = 1 $), from any base point: $ u + (w - v) $ is a point for all points $ u, v, w $, not only when $ u = v $;
 - displacement + displacement = displacement ($ 0 + 0 = 0 $);
 - point + point is neither ($ 1 + 1 = 2 $).
 
-{: .prompt-tip }
-> *In terms of translations*
->
-> The figures keep the points fixed and move the origin. The opposite view keeps the origin fixed and translates every point by $ t $:
->
-> $$ \sum_i \lambda_i (v_i + t) = \sum_i \lambda_i v_i + \Big(\sum_i \lambda_i\Big)\, t. $$
->
-> So the result moves by $ \big(\sum_i \lambda_i\big)\, t $.
->
-> - Sum 1: the result moves by $ t $, as a point does. For example, the midpoint of the translated points is the translated midpoint. Translating and then combining gives the same answer as combining and then translating, which is what "combining *commutes* with translation" means.
-> - Sum 0: the result does not move, as a displacement does not.
-> - Any other sum: the result moves by some other multiple of $ t $, so it is neither. For example $ v + w $ moves by $ 2t $.
->
-> Both views say the same thing: an affine combination keeps its position *relative to the points*. In the figures the points stay still, so it stays still. Here the points move by $ t $, so it moves by $ t $.
+Clock times are an everyday affine line. "3 pm + 5 pm" is meaningless, because it depends on what is called time zero. But "5 pm − 3 pm = 2 hours" and "the midpoint of 3 pm and 5 pm is 4 pm" are fine. Times are points; durations are displacements.
+
+### Moving the origin instead
+
+The same classification appears when the points stay fixed and the origin moves. Measured from an origin $ o $, each point $ v_i $ is the displacement $ v_i - o $, and the combination with coefficients $ \lambda_i $ is the displacement
+
+$$ \sum_i \lambda_i (v_i - o) = \sum_i \lambda_i v_i - \Big(\sum_i \lambda_i\Big)\, o. $$
+
+- **Sum 0.** The result does not involve $ o $: it is the same displacement from every origin.
+- **Sum 1.** The displacement still involves $ o $, but the point it leads to from $ o $ does not:
+
+  $$ o + \sum_i \lambda_i (v_i - o) = \sum_i \lambda_i v_i + \Big(1 - \sum_i \lambda_i\Big)\, o = \sum_i \lambda_i v_i. $$
+
+- **Any other sum.** $ o $ remains in both readings, so the result depends on the origin.
+
+**The sum of two points depends on the origin.** Measured from $ o $, the points $ v $ and $ w $ are the displacements $ v - o $ and $ w - o $. Adding them gives another displacement, $ (v - o) + (w - o) $, and the "sum" of the two points is the point that displacement leads to from $ o $:
+
+$$ o + (v - o) + (w - o) = v + w - o. $$
+
+The leading $ o $ is what turns the displacement back into a point. Without it the expression is only a displacement, not a location. In the picture, this point is the fourth corner of the parallelogram on $ o, v, w $. Move the origin and the answer moves, even though $ v $ and $ w $ stay put. The same happens to a scalar multiple: $ 2v $ becomes $ o + 2(v - o) = 2v - o $.
+
+![The sum of two points depends on the origin](/assets/img/math/sum_depends_on_origin.png){: w="400" h="260" }
+
+**The midpoint does not.** Build $ \tfrac12 v + \tfrac12 w $ the same way: from each origin, halve the displacements to $ v $ and $ w $ (bold), then complete the parallelogram (dashed). The two constructions are different, but they land on the same point.
+
+![The midpoint does not depend on the origin](/assets/img/math/midpoint_ignores_origin.png){: w="400" h="238" }
+
+**Neither does $ 2w - v $.** From each origin, double the displacement to $ w $ (bold), then subtract the displacement to $ v $ (dashed). Again the two paths differ and the endpoint does not.
+
+![The point 2w - v does not depend on the origin](/assets/img/math/extrapolation_ignores_origin.png){: w="400" h="252" }
+
+Both views say the same thing: an affine combination keeps its position *relative to the points*. In these figures the points stay still, so it stays still. Under a translation the points move by $ t $, so it moves by $ t $.
 
 ## Affine subspace
 
