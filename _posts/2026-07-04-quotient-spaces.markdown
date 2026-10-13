@@ -21,7 +21,7 @@ mermaid: true
 >
 > In the language of groups, $ v + U $ is the **coset** of the subgroup $ U $ in the additive group $ (V, +) $.
 
-For example, let $ V = \mathbb{R}^2 $ and $ U = \operatorname{span}((1,1)) $. The translates of $ U $ are the lines of slope 1.
+For example, let $ V = \mathbb{R}^2 $, with vectors written $ (a, b) $, and $ U = \operatorname{span}((1,1)) $. The translates of $ U $ are the lines of slope 1. Each one is the set of vectors with a fixed value $ c $ of $ a - b $, and the figure labels five of them by $ c $.
 
 ![Translates of a subspace](/assets/img/math/translates_of_a_subspace.png){: w="400" h="270" }
 
@@ -63,7 +63,7 @@ $$ \{ x \in V : Tx = Tv \} = v + U. $$
 
 The translates of $ U $ are exactly the nonempty level sets of $ T $. Read as a statement about the equation $ Tx = c $, this is the [structure of the solution set]({% post_url 2026-06-30-systems-of-linear-equation %}#the-solution-set) of a linear system: one particular solution plus the solution set of the homogeneous system.
 
-In the example, each line is a level set of $ T(a, b) = a - b $, whose null space is $ U $, and the numbers in the figure are the values $ c = a - b $ of $ T $ on each line. This $ T $ is a single nonzero linear functional, so its level sets are [hyperplanes]({% post_url 2026-06-28-affine-geometry %}#hyperplanes). In general, each coordinate of $ T $ is a linear functional, so a level set of $ T $ is an intersection of hyperplanes.
+In the example, each line is a level set of $ T(a, b) = a - b $, whose null space is $ U $, and the labels in the figure are the values of $ T $ on each line. This $ T $ is a single nonzero linear functional, so its level sets are [hyperplanes]({% post_url 2026-06-28-affine-geometry %}#hyperplanes). In general, each coordinate of $ T $ is a linear functional, so a level set of $ T $ is an intersection of hyperplanes.
 
 ### Properties
 
@@ -128,9 +128,7 @@ Each translate, a whole subset of $ V $, is a single vector of $ V/U $. Both ope
 >
 > By [Equal or disjoint](#properties), $ (v + w) + U = (v' + w') + U $ and $ \lambda v + U = \lambda v' + U $. The vector space axioms hold in $ V/U $ because they hold for the representatives in $ V $. $\blacksquare$
 
-The second membership is where closure of $ U $ under scalar multiplication is used.
-
-In the example, adding the lines $ a - b = c $ and $ a - b = c' $ gives the line $ a - b = c + c' $, and $ \lambda $ times the line $ a - b = c $ is the line $ a - b = \lambda c $. So $ V/U $ behaves like the number line of the values $ c $.
+In the example, each translate is the line of vectors $ (a, b) $ with $ a - b = c $, labelled $ c $ in the first figure. Adding the lines labelled $ c $ and $ c' $ gives the line labelled $ c + c' $, and $ \lambda $ times the line labelled $ c $ is the line labelled $ \lambda c $. So $ V/U $ behaves like the number line of the labels.
 
 {: .prompt-info }
 > *Quotient map*
@@ -223,7 +221,7 @@ $$ x \in v + U \implies Tx \in Tv + U. $$
 
 ![The quotient operator moves translates to translates](/assets/img/math/quotient_operator.png){: w="400" h="270" }
 
-In the figure, $ v $ and $ x $ start on the same translate, and $ Tv $ and $ Tx $ land on the same translate. The operator $ T/U $ records only which translate goes to which, shown on the bottom line, where each translate is a single point. In terms of the quotient map, $ (T/U) \circ \pi = \pi \circ T $: applying $ T $ and then reading off the translate gives the same result as reading off the translate and then applying $ T/U $.
+Invariance is a statement about $ U $ itself, the translate through the origin: in the figure, $ u \in U $ is sent to $ Tu \in U $. The other translates need not be mapped to themselves. The blue translate $ v + U $ is moved to a different one, the orange translate $ Tv + U $, but it is moved as a whole: $ v $ and $ x $ start on the same translate, and $ Tv $ and $ Tx $ land on the same translate. The operator $ T/U $ records only which translate goes to which, shown on the bottom line, where each translate is a single point. In terms of the quotient map, $ (T/U) \circ \pi = \pi \circ T $: applying $ T $ and then reading off the translate gives the same result as reading off the translate and then applying $ T/U $.
 
 ### Block Matrix
 
@@ -286,11 +284,53 @@ $$ Tu = 3u + 0x, \qquad Tx = 0u + 1x, \qquad \mathcal{M}(T) = \begin{pmatrix} 3 
 
 In both matrices the diagonal entries are $ \mathcal{M}(T\vert_U) = 3 $ and $ \mathcal{M}(T/U) = 1 $. Only the top right entry changes with the lift: it records how far $ T $ moves the chosen representative along $ U $, which is $ u $ for $ w $ and $ 0 $ for $ x $.
 
+### Eigenvalues
+
+{: .prompt-info }
+> *Eigenvalues of $ T $*
+>
+> Suppose $ V $ is finite-dimensional, $ T \in \mathcal{L}(V) $, and $ U $ is a subspace of $ V $ invariant under $ T $. Then $ \lambda $ is an eigenvalue of $ T $ if and only if it is an eigenvalue of $ T\vert_U $ or of $ T/U $.
+
+{: .prompt-proof }
+> Let $ S = T - \lambda I $. Then $ U $ is invariant under $ S $, with $ S\vert_U = T\vert_U - \lambda I $ and $ S/U = T/U - \lambda I $. An operator on a finite-dimensional space has eigenvalue $ \lambda $ exactly when subtracting $ \lambda I $ makes it not injective, so the claim is:
+>
+> $$ S \text{ is injective} \iff S\vert_U \text{ and } S/U \text{ are both injective.} $$
+>
+> ($\Leftarrow$) Suppose $ Sv = 0 $. Then $ (S/U)(v + U) = Sv + U = U $, the zero vector of $ V/U $, so $ v + U = U $ because $ S/U $ is injective. That is, $ v \in U $. Then $ S\vert_U v = 0 $, so $ v = 0 $ because $ S\vert_U $ is injective.
+>
+> ($\Rightarrow$) Suppose $ S $ is injective. Then its restriction $ S\vert_U $ is injective, and since $ U $ is finite-dimensional, $ S\vert_U $ is also surjective onto $ U $. Now suppose $ (S/U)(v + U) = U $, that is, $ Sv \in U $. By surjectivity of $ S\vert_U $, $ Sv = Su $ for some $ u \in U $. Then $ S(v - u) = 0 $, so $ v = u \in U $ and $ v + U = U $. So $ S/U $ is injective. $\blacksquare$
+
+In matrix terms, $ \mathcal{M}(T - \lambda I) $ is block upper-triangular with diagonal blocks $ \mathcal{M}(T\vert_U) - \lambda I $ and $ \mathcal{M}(T/U) - \lambda I $, and the proof shows that such a matrix is invertible exactly when both diagonal blocks are. In the example, the eigenvalues of $ T $ are $ 3 $, from $ T\vert_U $, and $ 1 $, from $ T/U $.
+
 {: .prompt-tip }
-> *What $ T $ inherits*
+> *Polynomials*
 >
-> Suppose $ V $ is finite-dimensional. The operator $ T $ is assembled from the two smaller operators $ T\vert_U $ and $ T/U $.
+> $ q(T/U) = q(T)/U $ for every polynomial $ q $ (see [Polynomials]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality)). So the minimal polynomial of $ T/U $ divides the minimal polynomial of $ T $.
+
+### Induction on Dimension
+
+When $ U \ne \\{0\\} $ and $ V $ is finite-dimensional, $ V/U $ has smaller dimension than $ V $. This gives a standard way to prove a statement about all operators by induction on $ \dim V $:
+
+1. find a nonzero invariant subspace $ U $ on which $ T $ is understood;
+2. apply the induction hypothesis to $ T/U $, an operator on a smaller space;
+3. reassemble the two with the block matrix.
+
+The existence of an upper-triangular matrix is the model case.
+
+{: .prompt-info }
+> *Upper-triangular matrix*
 >
-> - **Eigenvalues.** $ \lambda $ is an eigenvalue of $ T $ if and only if it is an eigenvalue of $ T\vert_U $ or of $ T/U $. The matrix of $ T - \lambda I $ has diagonal blocks $ \mathcal{M}(T\vert_U - \lambda I) $ and $ \mathcal{M}(T/U - \lambda I) $, and a block upper-triangular matrix is invertible exactly when both diagonal blocks are.
-> - **Polynomials.** $ q(T/U) = q(T)/U $ for every polynomial $ q $ (see [Polynomials]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality)). So the minimal polynomial of $ T/U $ divides the minimal polynomial of $ T $.
-> - **Induction.** $ V/U $ has smaller dimension than $ V $ when $ U \ne \\{0\\} $. A result known for $ T\vert_U $ and $ T/U $ can then be assembled into a result for $ T $, which is how the existence of an upper-triangular matrix over $ \mathbb{C} $ can be proved.
+> Suppose $ V $ is a finite-dimensional complex vector space and $ T \in \mathcal{L}(V) $. Then $ T $ has an upper-triangular matrix with respect to some basis of $ V $.
+
+{: .prompt-proof }
+> Induction on $ n = \dim V $. If $ n = 1 $, every $ 1 \times 1 $ matrix is upper-triangular. Suppose $ n > 1 $ and the result holds for all complex vector spaces of dimension less than $ n $.
+>
+> 1. Over $ \mathbb{C} $, $ T $ has an eigenvalue $ \lambda $. Let $ u $ be a corresponding eigenvector and $ U = \operatorname{span}(u) $. Then $ U $ is invariant under $ T $, and $ \mathcal{M}(T\vert_U) = \begin{pmatrix} \lambda \end{pmatrix} $ with respect to the basis $ u $.
+> 2. $ \dim V/U = n - 1 $, so by the induction hypothesis there is a basis $ v_1 + U, \dots, v_{n-1} + U $ of $ V/U $ with respect to which $ \mathcal{M}(T/U) $ is upper-triangular.
+> 3. By [Block upper-triangular form](#block-matrix), $ u, v_1, \dots, v_{n-1} $ is a basis of $ V $, and with respect to it
+>
+>    $$ \mathcal{M}(T) = \begin{pmatrix} \lambda & \ast \\ 0 & \mathcal{M}(T/U) \end{pmatrix}. $$
+>
+>    The entries below the diagonal are those of the $ 0 $ block and those below the diagonal of $ \mathcal{M}(T/U) $, and all of them are $ 0 $. So $ \mathcal{M}(T) $ is upper-triangular. $\blacksquare$
+
+The proof never needs to know the block $ \ast $, so it does not matter which representatives $ v_k $ are chosen. The quotient is what makes step 2 possible: a complement $ W $ of $ U $ need not be invariant under $ T $, so $ T $ does not restrict to an operator on $ W $, but it always induces an operator on $ V/U $.
