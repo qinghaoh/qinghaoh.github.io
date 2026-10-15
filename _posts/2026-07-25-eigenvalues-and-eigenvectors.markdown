@@ -20,8 +20,11 @@ $\mathbf{F} = \mathbb{C}$ say so explicitly.
 
 {: .prompt-tip }
 > Three numbers are attached to each eigenvalue and it pays to keep them apart:
-> $g_\lambda \le e_\lambda \le d_\lambda$, with $g_\lambda = d_\lambda$ exactly when
-> $\lambda$ is not defective.
+> $1 \le g_\lambda \le d_\lambda$ and $1 \le e_\lambda \le d_\lambda$, with $g_\lambda = d_\lambda$
+> exactly when $\lambda$ is not defective. There is no general inequality between $g_\lambda$
+> and $e_\lambda$: for $T = 0$ on $\mathbf{F}^3$, $g_0 = 3$ but $e_0 = 1$. What does hold is
+> $g_\lambda + e_\lambda - 1 \le d_\lambda$, since one Jordan block has size $e_\lambda$ and
+> each of the other $g_\lambda - 1$ blocks has size at least $1$.
 
 ## Invariant Subspaces
 
@@ -215,21 +218,7 @@ subspace is exactly the span of an eigenvector.
 {: .prompt-info }
 > An eigenvalue $\lambda$ of $T$ is called **defective** when $\dim E(\lambda, T) \;<\; \dim G(\lambda, T)$, i.e. $g_\lambda < d_\lambda$.
 
-{: .prompt-info }
-> $\operatorname{rank}\big(\left.(T - \lambda I)\right\rvert_{G(\lambda,T)}\big) = \dim G(\lambda,T) - \dim E(\lambda,T)$
-
-For a single eigenvalue $\lambda$, let $\mu = (m_1 \ge \dots \ge m_k)$ be the sizes of its
-Jordan blocks (the *nilpotent diagram* of $\left.(T-\lambda I)\right\rvert_{G(\lambda,T)}$),
-drawn as columns of boxes:
-
-|                                   | reads off as                     | on the diagram               |
-| --------------------------------- | -------------------------------- | ---------------------------- |
-| $d_\lambda$ (char. poly exponent) | $\dim G(\lambda,T) = \sum_i m_i$ | total boxes (area)           |
-| $e_\lambda$ (min. poly exponent)  | $m_1$                            | height of the tallest column |
-| $g_\lambda$                       | $k = \mu'_1$                     | size of the bottom level     |
-
-{: .prompt-tip }
-> $g_\lambda = d_\lambda \iff$ every column has height $1 \iff \lambda$ is not defective. An operator with no defective eigenvalues is diagonalizable.
+How $g_\lambda$, $d_\lambda$ and $e_\lambda$ are read off the Jordan block sizes of $\lambda$, and why $\lambda$ is not defective exactly when all of those blocks have size $1$, is worked out in [Nilpotent Operators]({% post_url 2026-07-28-nilpotent-operators %}#generalized-eigenspaces).
 
 Suppose the distinct eigenvalues of $T$ are $ \lambda_1, \dots, \lambda_m $.
 
