@@ -147,7 +147,7 @@ $$\dim\mathcal{C}(N) = \sum_{i,j}\min(m_i,m_j) = \sum_j \left(\mu'_j\right)^2.$$
 >
 > Take $\mathbf{F}^4$ with two chains of length $2$:
 >
-> $$e_2 \to e_1 \to 0, \qquad e_4 \to e_3 \to 0.$$
+> $$e_2 \mapsto e_1 \mapsto 0, \qquad e_4 \mapsto e_3 \mapsto 0.$$
 >
 > Here $N^2 = 0$, so both constraints read $w_i \in \mathbf{F}^4$ and any pair of tops is legal. Swapping the chains is the choice $w_1 = e_4$, $w_2 = e_2$, which forces
 >
@@ -165,13 +165,13 @@ $$\dim\mathcal{C}(N) = \sum_{i,j}\min(m_i,m_j) = \sum_j \left(\mu'_j\right)^2.$$
 >
 > Unequal lengths are where the constraint bites. Take $\mathbf{F}^3$ with chains
 >
-> $$e_2 \to e_1 \to 0, \qquad f \to 0,$$
+> $$e_2 \mapsto e_1 \mapsto 0, \qquad f \mapsto 0,$$
 >
 > so $m_1 = 2$ and $m_2 = 1$. The top of the long chain is unconstrained, since $\operatorname{null}N^2 = \mathbf{F}^3$, so $Se_2$ may be $f$. But the top of the short chain satisfies $Sf \in \operatorname{null}N = \operatorname{span}(e_1, f)$, so $Sf$ cannot be $e_2$: a short chain can only be sent into the bottom portion of a longer one, never onto its top. The freedom is **asymmetric**, and $\min(m_i, m_j)$ is exactly the bookkeeping for it.
 
 **Worked example**
 
-Take $N = \partial/\partial x$ on $V = \operatorname{span}(1,x,y,x^2,xy)$ again, with the Jordan basis found earlier: chain $x^2 \to 2x \to 2$ and chain $xy \to y$. So $v_1 = x^2$ with $m_1 = 3$, and $v_2 = xy$ with $m_2 = 2$.
+Take $N = \partial/\partial x$ on $V = \operatorname{span}(1,x,y,x^2,xy)$ again, with the Jordan basis found earlier: chain $x^2 \mapsto 2x \mapsto 2$ and chain $xy \mapsto y$. So $v_1 = x^2$ with $m_1 = 3$, and $v_2 = xy$ with $m_2 = 2$.
 
 Constraints: $w_1 \in \operatorname{null}N^3 = V$, unrestricted; $w_2 \in \operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$.
 
@@ -271,7 +271,7 @@ That turns out to characterize this shape.
 
 **Worked example**
 
-Take the one-column case, $n = 3$: $e_3 \to e_2 \to e_1 \to 0$; that is, $Ne_3 = e_2$, $Ne_2 = e_1$, $Ne_1 = 0$, so
+Take the one-column case, $n = 3$: $e_3 \mapsto e_2 \mapsto e_1 \mapsto 0$; that is, $Ne_3 = e_2$, $Ne_2 = e_1$, $Ne_1 = 0$, so
 
 $$N = \begin{pmatrix} 0&1&0\\ 0&0&1\\ 0&0&0\end{pmatrix}.$$
 

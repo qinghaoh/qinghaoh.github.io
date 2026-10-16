@@ -146,6 +146,25 @@ In the example, each translate is the line of vectors $ (a, b) $ with $ a - b = 
 
 So every subspace $ U $ is the null space of a linear map, and the [fiber view](#fiber-view) always applies with $ T = \pi $: the translates of $ U $ are the level sets of $ \pi $.
 
+{: .prompt-info }
+> *Subspaces containing $ U $*
+>
+> Suppose $ U $ is a subspace of $ V $. For a subspace $ S $ of $ V/U $, write
+>
+> $$ \pi^{-1}(S) = \{ v \in V : \pi(v) \in S \} $$
+>
+> for its preimage. This is a set, not the value of an inverse map: $ \pi $ is not injective unless $ U = \\{0\\} $. Then
+>
+> $$ W \mapsto \pi(W), \qquad S \mapsto \pi^{-1}(S) $$
+>
+> are inverse bijections between the subspaces $ W $ of $ V $ with $ U \subseteq W $ and the subspaces $ S $ of $ V/U $.
+
+{: .prompt-proof }
+> Images and preimages of subspaces under a linear map are subspaces, and $ \pi^{-1}(S) $ contains $ \pi^{-1}(\\{0\\}) = \operatorname{null} \pi = U $. So both maps land where claimed, and it remains to show that they undo each other.
+>
+> - $ \pi(\pi^{-1}(S)) = S $, because $ \pi $ is surjective: every element of $ S $ is $ \pi(v) $ for some $ v \in V $, and that $ v $ lies in $ \pi^{-1}(S) $.
+> - $ \pi^{-1}(\pi(W)) = W $ when $ U \subseteq W $. Clearly $ W \subseteq \pi^{-1}(\pi(W)) $. Conversely, if $ \pi(v) \in \pi(W) $, then $ v + U = w + U $ for some $ w \in W $, so $ v - w \in U \subseteq W $ by [Equal or disjoint](#properties), and $ v \in W $. $\blacksquare$
+
 ### Complements and Bases
 
 {: .prompt-info }

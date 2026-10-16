@@ -7,7 +7,7 @@ mathjax_font: mathjax-pagella
 
 ## Notation
 
-{% include notation-table.md keys="n LV eigenspace gen_eigenspace geo_mult alg_mult min_poly_exp jordan_block partition conj_partition index_nilpotency commutant MT" %}
+{% include notation-table.md keys="n LV quotient_space quotient_op eigenspace gen_eigenspace geo_mult alg_mult min_poly_exp jordan_block partition conj_partition index_nilpotency commutant MT" %}
 
 ## Properties
 
@@ -97,7 +97,7 @@ Let $V = \operatorname{span}(1,\, x,\, y,\, x^2,\, xy)$ and $N = \partial/\parti
 
 $$1 \mapsto 0,\quad x \mapsto 1,\quad y \mapsto 0,\quad x^2 \mapsto 2x,\quad xy \mapsto y.$$
 
-The chains $x^2 \to 2x \to 2$ and $xy \to y$ form a Jordan basis (this example recurs through the rest of the post):
+The chains $x^2 \mapsto 2x \mapsto 2$ and $xy \mapsto y$ form a Jordan basis (this example recurs through the rest of the post):
 
 $$\begin{array}{cc} x^2 & \\ 2x & xy \\ 2 & y \end{array}$$
 
@@ -279,7 +279,7 @@ Reading the levels:
 - **$j=2$:** carrying $2x$. Need $2$ vectors total, independent modulo $\operatorname{null}N = \operatorname{span}(1,y)$; $2x$ supplies one, so add one more from $\operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$; take $xy$. Push down: $H_1 = \{N(2x), N(xy)\} = \{2, y\}$.
 - **$j=1$:** carrying $\{2,y\}$, which is already a basis of the $2$-dimensional $\operatorname{null}N$. Nothing to add.
 
-Chains: $x^2 \to 2x \to 2 \to 0$ and $xy \to y \to 0$. Ordering each chain bottom to top gives the Jordan basis
+Chains: $x^2 \mapsto 2x \mapsto 2 \mapsto 0$ and $xy \mapsto y \mapsto 0$. Ordering each chain bottom to top gives the Jordan basis
 
 $$(2,\; 2x,\; x^2,\; y,\; xy),$$
 
@@ -367,13 +367,31 @@ climb one dimension at a time. For any nilpotent $N$, each increment $\mu'_j$ wi
 > *Invariant subspaces.* The only subspaces invariant under $N$ are the $n+1$ subspaces $\operatorname{null}N^j$ for $0 \le j \le n$: a single chain of them, totally ordered by inclusion. This is the most rigid an invariant-subspace lattice can be.
 
 {: .prompt-proof }
-> Write $v$ for the top, so $v, Nv, \dots, N^{n-1}v$ is a basis of $V$ and $\operatorname{null}N = \operatorname{span}(N^{n-1}v)$ is a line, since $d_1 = 1$. Each $\operatorname{null}N^j$ is invariant, and their dimensions $d_j = j$ are distinct, so these are $n+1$ different invariant subspaces. It remains to show that every invariant $W$ is one of them.
+> We prove by induction on $n$: for every nilpotent operator $N$ on an $n$-dimensional space $V$ whose diagram is a single column, the invariant subspaces are exactly $\operatorname{null}N^0, \operatorname{null}N^1, \dots, \operatorname{null}N^n$. These $n+1$ subspaces are invariant, and they are distinct because $d_j = j$; what needs proof is that there are no others.
 >
-> Induct on $n$. For $n = 1$ the operator is $0$ on a line, whose only two subspaces are $\\{0\\} = \operatorname{null}N^0$ and $V = \operatorname{null}N^1$. For $n \ge 2$, let $W \ne \\{0\\}$ be invariant and pick $0 \ne w \in W$. Take the largest $t$ with $N^tw \ne 0$. Then $N^tw \in W$ by invariance and $N(N^tw) = 0$, so $W \cap \operatorname{null}N \ne \\{0\\}$. Because $\operatorname{null}N$ is a line, this forces $\operatorname{null}N \subseteq W$, so $W/\operatorname{null}N$ is a subspace of $\bar V := V/\operatorname{null}N$ whose full preimage is $W$.
+> For $n = 1$, $N$ is $0$ on a line, whose only subspaces are $\\{0\\} = \operatorname{null}N^0$ and $V = \operatorname{null}N^1$.
 >
-> On $\bar V$ the induced operator $\bar N(u + \operatorname{null}N) := Nu + \operatorname{null}N$ is well defined because $N$ kills $\operatorname{null}N$, and $W/\operatorname{null}N$ is $\bar N$-invariant because $Nu \in W$ whenever $u \in W$. It is again a single chain, of length $n-1$: the images of $v, Nv, \dots, N^{n-2}v$ span $\bar V$, which has dimension $n-1$, so they form a basis, and $\bar N^{\,n-2}\bar v \ne 0$ because $N(N^{n-2}v) = N^{n-1}v \ne 0$ shows $N^{n-2}v \notin \operatorname{null}N$.
+> Let $n \ge 2$, and let $W$ be invariant under $N$. If $W = \\{0\\}$, then $W = \operatorname{null}N^0$, so assume $W \ne \\{0\\}$. Write $v$ for the top, so $v, Nv, \dots, N^{n-1}v$ is a basis of $V$, and let
 >
-> By induction, $W/\operatorname{null}N = \operatorname{null}\bar N^{\,i}$ for some $0 \le i \le n-1$. Since $\bar N^{\,i}$ is induced by $N^i$, a coset $u + \operatorname{null}N$ lies in $\operatorname{null}\bar N^{\,i}$ exactly when $N^iu \in \operatorname{null}N$, that is when $N^{i+1}u = 0$. Passing back to preimages gives $W = \operatorname{null}N^{\,i+1}$. $\blacksquare$
+> $$U := \operatorname{null}N = \operatorname{span}(N^{n-1}v),$$
+>
+> a line since $d_1 = 1$. Let $\pi : V \to V/U$ be the quotient map. As in [Subspaces containing $U$]({% post_url 2026-07-04-quotient-spaces %}#quotient-space), $\pi^{-1}(\cdot)$ denotes a preimage, not an inverse map: $\pi$ is not invertible, since $\operatorname{null}\pi = U \ne \\{0\\}$. The plan: show $U \subseteq W$, apply the induction hypothesis to $\pi(W)$, and recover $W$ as the preimage $\pi^{-1}(\pi(W))$.
+>
+> **Step 1: $U \subseteq W$.** Pick $0 \ne w \in W$ and take the largest $t$ with $N^tw \ne 0$. Then $N^tw \in W$ by invariance and $N(N^tw) = 0$, so $W \cap U \ne \\{0\\}$. Since $U$ is a line, $U \subseteq W$.
+>
+> **Step 2: $N/U$ is a single column of height $n-1$.** $U$ is invariant under $N$, so the [quotient operator]({% post_url 2026-07-04-quotient-spaces %}#quotient-operator) $N/U \in \mathcal{L}(V/U)$ is defined, and applying its definition $j$ times gives $(N/U)^j(x + U) = N^jx + U$. The quotient map is linear and surjective, so it sends the basis $v, Nv, \dots, N^{n-1}v$ of $V$ to a spanning list $v + U, Nv + U, \dots, N^{n-1}v + U$ of $V/U$. Its last vector is $N^{n-1}v + U = (N/U)^{n-1}(v + U)$, which is $0$ because $N^{n-1}v \in U$. Dropping it leaves the spanning list $v + U, \dots, N^{n-2}v + U$ of $n - 1 = \dim V/U$ vectors, which is therefore a basis. So $v + U$ is the top of a single chain of length $n-1$ for $N/U$.
+>
+> **Step 3: $\pi(W)$ is a null space of a power of $N/U$.** $\pi(W)$ is invariant under $N/U$: each of its elements is $w + U$ with $w \in W$, and $(N/U)(w + U) = Nw + U$ with $Nw \in W$. By Step 2, the induction hypothesis applies to $N/U$ on the $(n-1)$-dimensional space $V/U$, so
+>
+> $$\pi(W) = \operatorname{null}(N/U)^i \qquad \text{for some } 0 \le i \le n-1.$$
+>
+> **Step 4: take preimages.** For every $x \in V$,
+>
+> $$x \in \pi^{-1}\big(\operatorname{null}(N/U)^i\big) \iff N^ix + U = U \iff N^ix \in U = \operatorname{null}N \iff N^{i+1}x = 0,$$
+>
+> so $\pi^{-1}\big(\operatorname{null}(N/U)^i\big) = \operatorname{null}N^{i+1}$. Since $U \subseteq W$ by Step 1, [Subspaces containing $U$]({% post_url 2026-07-04-quotient-spaces %}#quotient-space) gives $W = \pi^{-1}(\pi(W))$. Combining with Step 3,
+>
+> $$W = \pi^{-1}(\pi(W)) = \pi^{-1}\big(\operatorname{null}(N/U)^i\big) = \operatorname{null}N^{i+1}. \qquad \blacksquare$$
 
 {: .prompt-tip }
 > *Cyclic operators.* An operator like this one, for which some vector $v$ makes $v, Nv, \dots, N^{n-1}v$ a basis of $V$, is called **cyclic** (or **nonderogatory**). Equivalently, its minimal polynomial ($z^n$ here) equals its characteristic polynomial.
