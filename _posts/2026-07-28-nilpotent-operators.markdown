@@ -375,23 +375,23 @@ climb one dimension at a time. For any nilpotent $N$, each increment $\mu'_j$ wi
 >
 > $$U := \operatorname{null}N = \operatorname{span}(N^{n-1}v),$$
 >
-> a line since $d_1 = 1$. Let $\pi : V \to V/U$ be the quotient map. As in [Subspaces containing $U$]({% post_url 2026-07-04-quotient-spaces %}#quotient-space), $\pi^{-1}(\cdot)$ denotes a preimage, not an inverse map: $\pi$ is not invertible, since $\operatorname{null}\pi = U \ne \\{0\\}$. The plan: show $U \subseteq W$, apply the induction hypothesis to $\pi(W)$, and recover $W$ as the preimage $\pi^{-1}(\pi(W))$.
+> a line since $d_1 = 1$. Let $\pi : V \to V/U$ be the quotient map. As in [Subspaces containing $U$]({% post_url 2026-07-04-quotient-spaces %}#quotient-space), $\pi^{-1}(\cdot)$ denotes a preimage, not an inverse map: $\pi$ is not invertible, since $\operatorname{null}\pi = U \ne \\{0\\}$. The plan: show $U \subseteq W$, apply the induction hypothesis to $W/U$, and recover $W$ as the preimage $\pi^{-1}(W/U)$.
 >
 > **Step 1: $U \subseteq W$.** Pick $0 \ne w \in W$ and take the largest $t$ with $N^tw \ne 0$. Then $N^tw \in W$ by invariance and $N(N^tw) = 0$, so $W \cap U \ne \\{0\\}$. Since $U$ is a line, $U \subseteq W$.
 >
 > **Step 2: $N/U$ is a single column of height $n-1$.** $U$ is invariant under $N$, so the [quotient operator]({% post_url 2026-07-04-quotient-spaces %}#quotient-operator) $N/U \in \mathcal{L}(V/U)$ is defined, and applying its definition $j$ times gives $(N/U)^j(x + U) = N^jx + U$. The quotient map is linear and surjective, so it sends the basis $v, Nv, \dots, N^{n-1}v$ of $V$ to a spanning list $v + U, Nv + U, \dots, N^{n-1}v + U$ of $V/U$. Its last vector is $N^{n-1}v + U = (N/U)^{n-1}(v + U)$, which is $0$ because $N^{n-1}v \in U$. Dropping it leaves the spanning list $v + U, \dots, N^{n-2}v + U$ of $n - 1 = \dim V/U$ vectors, which is therefore a basis. So $v + U$ is the top of a single chain of length $n-1$ for $N/U$.
 >
-> **Step 3: $\pi(W)$ is a null space of a power of $N/U$.** $\pi(W)$ is invariant under $N/U$: each of its elements is $w + U$ with $w \in W$, and $(N/U)(w + U) = Nw + U$ with $Nw \in W$. By Step 2, the induction hypothesis applies to $N/U$ on the $(n-1)$-dimensional space $V/U$, so
+> **Step 3: $W/U$ is a null space of a power of $N/U$.** $W/U$ is invariant under $N/U$: each of its elements is $w + U$ with $w \in W$, and $(N/U)(w + U) = Nw + U$ with $Nw \in W$. By Step 2, the induction hypothesis applies to $N/U$ on the $(n-1)$-dimensional space $V/U$, so
 >
-> $$\pi(W) = \operatorname{null}(N/U)^i \qquad \text{for some } 0 \le i \le n-1.$$
+> $$W/U = \operatorname{null}(N/U)^i \qquad \text{for some } 0 \le i \le n-1.$$
 >
 > **Step 4: take preimages.** For every $x \in V$,
 >
 > $$x \in \pi^{-1}\big(\operatorname{null}(N/U)^i\big) \iff N^ix + U = U \iff N^ix \in U = \operatorname{null}N \iff N^{i+1}x = 0,$$
 >
-> so $\pi^{-1}\big(\operatorname{null}(N/U)^i\big) = \operatorname{null}N^{i+1}$. Since $U \subseteq W$ by Step 1, [Subspaces containing $U$]({% post_url 2026-07-04-quotient-spaces %}#quotient-space) gives $W = \pi^{-1}(\pi(W))$. Combining with Step 3,
+> so $\pi^{-1}\big(\operatorname{null}(N/U)^i\big) = \operatorname{null}N^{i+1}$. Since $U \subseteq W$ by Step 1, [Subspaces containing $U$]({% post_url 2026-07-04-quotient-spaces %}#quotient-space) gives $W = \pi^{-1}(W/U)$. Combining with Step 3,
 >
-> $$W = \pi^{-1}(\pi(W)) = \pi^{-1}\big(\operatorname{null}(N/U)^i\big) = \operatorname{null}N^{i+1}. \qquad \blacksquare$$
+> $$W = \pi^{-1}(W/U) = \pi^{-1}\big(\operatorname{null}(N/U)^i\big) = \operatorname{null}N^{i+1}. \qquad \blacksquare$$
 
 {: .prompt-tip }
 > *Cyclic operators.* An operator like this one, for which some vector $v$ makes $v, Nv, \dots, N^{n-1}v$ a basis of $V$, is called **cyclic** (or **nonderogatory**). Equivalently, its minimal polynomial ($z^n$ here) equals its characteristic polynomial.

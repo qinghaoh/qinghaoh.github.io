@@ -153,17 +153,29 @@ So every subspace $ U $ is the null space of a linear map, and the [fiber view](
 >
 > $$ \pi^{-1}(S) = \{ v \in V : \pi(v) \in S \} $$
 >
-> for its preimage. This is a set, not the value of an inverse map: $ \pi $ is not injective unless $ U = \\{0\\} $. Then
+> for its preimage. This is a set, not the value of an inverse map: $ \pi $ is not injective unless $ U = \\{0\\} $. For a subspace $ W $ of $ V $ with $ U \subseteq W $, the quotient space
 >
-> $$ W \mapsto \pi(W), \qquad S \mapsto \pi^{-1}(S) $$
+> $$ W/U = \{ w + U : w \in W \} = \pi(W) $$
+>
+> is a subset of $ V/U $, with the same operations. Then
+>
+> $$ W \mapsto W/U, \qquad S \mapsto \pi^{-1}(S) $$
 >
 > are inverse bijections between the subspaces $ W $ of $ V $ with $ U \subseteq W $ and the subspaces $ S $ of $ V/U $.
 
 {: .prompt-proof }
-> Images and preimages of subspaces under a linear map are subspaces, and $ \pi^{-1}(S) $ contains $ \pi^{-1}(\\{0\\}) = \operatorname{null} \pi = U $. So both maps land where claimed, and it remains to show that they undo each other.
+> **Both maps land where claimed.** $ W/U $ is a subspace of $ V/U $ because $ (w + U) + (w' + U) = (w + w') + U $ and $ \lambda (w + U) = \lambda w + U $. Since $ \pi $ is linear, $ \pi^{-1}(S) $ is a subspace of $ V $, and it contains $ U = \operatorname{null} \pi $ because $ \pi $ sends $ U $ to $ 0 \in S $.
 >
-> - $ \pi(\pi^{-1}(S)) = S $, because $ \pi $ is surjective: every element of $ S $ is $ \pi(v) $ for some $ v \in V $, and that $ v $ lies in $ \pi^{-1}(S) $.
-> - $ \pi^{-1}(\pi(W)) = W $ when $ U \subseteq W $. Clearly $ W \subseteq \pi^{-1}(\pi(W)) $. Conversely, if $ \pi(v) \in \pi(W) $, then $ v + U = w + U $ for some $ w \in W $, so $ v - w \in U \subseteq W $ by [Equal or disjoint](#properties), and $ v \in W $. $\blacksquare$
+> **They undo each other.**
+>
+> - $ \pi^{-1}(S)/U = S $, because $ \pi $ is surjective: every element of $ S $ is $ v + U $ for some $ v \in V $, and that $ v $ lies in $ \pi^{-1}(S) $.
+> - $ \pi^{-1}(W/U) = W $. Clearly $ W \subseteq \pi^{-1}(W/U) $. Conversely, if $ \pi(v) \in W/U $, then $ v + U = w + U $ for some $ w \in W $, so $ v - w \in U \subseteq W $ , and $ v \in W $. $\blacksquare$
+
+Geometrically, take $ V = \mathbb{R}^3 $ with $ U $ a vertical line, and picture $ V/U $ as the floor: $ \pi $ slides each vertical line, a translate of $ U $, down to the single point where it meets the floor. A subspace $ W $ containing $ U $ is made of whole vertical lines, because $ w + U \subseteq W $ for every $ w \in W $. So $ \pi $ collapses $ W $ to the line $ W/U $ without losing anything: the vertical lines through the points of $ W/U $ rebuild $ W $, which is the identity $ \pi^{-1}(W/U) = W $. The two extreme cases are $ W = U $, which collapses to the point $ 0 $, and $ W = V $, which collapses to the whole floor.
+
+![Subspaces containing U correspond to subspaces of V/U](/assets/img/math/subspaces_containing_U.png){: w="400" h="270" }
+
+A subspace that does not contain $ U $ cuts across the vertical lines instead of being made of them, and the correspondence breaks. A tilted plane through $ 0 $ meets every vertical line, so $ \pi $ sends it onto the whole floor, the same image as $ V $.
 
 ### Complements and Bases
 
