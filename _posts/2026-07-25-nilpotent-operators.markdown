@@ -155,7 +155,7 @@ If $\lambda \neq 0$, write $A = J_m(\lambda) = \lambda I + N$. The two terms com
 
 $$A^j = \sum_{t=0}^{\min(j,\,m-1)} \binom{j}{t}\lambda^{j-t}N^t.$$
 
-Rather than shifting a single band, this **fills the entire upper triangle**, with $\lambda^j$ on the diagonal, $j\lambda^{j-1}$ on the first superdiagonal, $\binom{j}{2}\lambda^{j-2}$ on the second, and so on. Each diagonal is constant, so $A^j$ is upper triangular Toeplitz. For $m = 4$:
+Rather than shifting a single band, this **fills the entire upper triangle**, with $\lambda^j$ on the diagonal, $j\lambda^{j-1}$ on the first superdiagonal, $\binom{j}{2}\lambda^{j-2}$ on the second, and so on. Each diagonal is constant, so $A^j$ is upper triangular [Toeplitz](https://en.wikipedia.org/wiki/Toeplitz_matrix). For $m = 4$:
 
 $$A^j = \begin{pmatrix} \lambda^j & j\lambda^{j-1} & \binom{j}{2}\lambda^{j-2} & \binom{j}{3}\lambda^{j-3}\\ & \lambda^j & j\lambda^{j-1} & \binom{j}{2}\lambda^{j-2}\\ & & \lambda^j & j\lambda^{j-1}\\ & & & \lambda^j \end{pmatrix}$$
 
@@ -182,16 +182,14 @@ Two structural differences from the nilpotent case: $A^j$ is never $0$, since $\
 > $$\lambda^{-1}Q \;=\; \lambda^{-1}\sum_{t=0}^{p-1}\left(-\lambda^{-1}\right)^tN^t \;=\; \sum_{t=0}^{p-1}\frac{(-1)^t}{\lambda^{\,t+1}}N^t. \qquad \blacksquare$$
 
 {: .prompt-tip }
-> The argument uses no finite-dimensionality, no eigenvalues, no assumption on $\mathbf{F}$, and no separate case for $W = \\{0\\}$. Its single input is that the series terminates, which is exactly what nilpotency provides. Over $\mathbb{R}$ or $\mathbb{C}$ it is the Neumann series for $(I-B)^{-1}$, with the convergence hypothesis replaced by the stronger fact that all but finitely many terms are $0$.
->
-> Any $p$ with $N^p = 0$ works; the index of nilpotency is the smallest choice, and a larger $p$ only appends zero terms.
+> The same computation, run as an infinite series, is the [Neumann series](https://en.wikipedia.org/wiki/Neumann_series): in a normed setting, such as operators on a finite-dimensional space over $\mathbb{R}$ or $\mathbb{C}$, $I - B$ is invertible with inverse $\sum_{t \ge 0} B^t$ whenever this series converges, for example when $\lVert B \rVert < 1$. Here no convergence is needed, because $B^t = 0$ for $t \ge p$: the series is a finite sum, which makes sense over any field and for any size of $B$.
 
 {: .prompt-tip }
-> *Consistency with the power formula.* For $A = J_m(\lambda)$, the formula $A^j = \sum_{t}\binom{j}{t}\lambda^{j-t}N^t$ above was derived for $j \ge 0$. Read it at $j = -1$, where $\binom{-1}{t} = (-1)^t$ and the sum runs over all $t \le m-1$:
+> *Consistency with the power formula.* For $A = J_m(\lambda)$, the formula $A^j = \sum_{t}\binom{j}{t}\lambda^{j-t}N^t$ above comes from the binomial theorem, so it is proved only for $j \ge 0$. Substituting $j = -1$ anyway, with [$\binom{-1}{t} = (-1)^t$](https://en.wikipedia.org/wiki/Binomial_coefficient#Generalization_to_negative_integers_n) and the sum running over $t \le m-1$ because $N^t = 0$ for $t \ge m$, predicts
 >
-> $$A^{-1} = \sum_{t=0}^{m-1}(-1)^t\lambda^{-1-t}N^t,$$
+> $$A^{-1} = \sum_{t=0}^{m-1}(-1)^t\lambda^{-1-t}N^t.$$
 >
-> which is the theorem with $p = m$. So the upper-triangular Toeplitz picture extends to negative exponents, and the terminating geometric series is what proves the case $j = -1$.
+> This prediction is exactly the theorem above with $p = m$, so it is correct. In matrix terms, $A^{-1}$ is upper-triangular Toeplitz like the nonnegative powers, with $(-1)^t\lambda^{-1-t}$ on the $t$-th superdiagonal.
 
 **Worked example**
 
@@ -298,7 +296,7 @@ The inverse is again upper-triangular Toeplitz, with alternating signs and incre
 > of dimension $$\mu'_j - \mu'_{j+1} = \lvert T_j\rvert$$. Level $j+1$ sends $$\mu'_{j+1}$$ independent directions down into level $j$, level $j$ has $$\mu'_j$$ directions to fill, and the new tops fill the shortfall: the cokernel is the part of level $j$ that nothing above it reaches. At $j = p$ there is no level above, so read $\operatorname{range}\bar N_{p+1} = \{0\}$.
 
 {: .prompt-warning }
-> Do not run this bottom-up. Most vectors of $\operatorname{null}N$ are not in $\operatorname{range}N$, so choosing a basis of $\operatorname{null}N$ first and hunting for preimages typically fails. Top-down, low-level vectors are *manufactured* by pushing down, never guessed.
+> Do not start from an arbitrary basis of $\operatorname{null}N$ and solve upward. Most vectors of $\operatorname{null}N$ are not in $\operatorname{range}N$, so their preimages may not exist. A bottom-up method works only if the bottom of each chain of length $j$ is chosen inside $\operatorname{null}N \cap \operatorname{range}N^{j-1}$, which requires computing ranges as well. Top-down avoids this: low-level vectors are *manufactured* by pushing down, never guessed.
 
 **Worked example**
 
