@@ -16,7 +16,7 @@ Unless stated otherwise: $\mathbf{F}$ is $\mathbb{R}$ or $\mathbb{C}$, $V$ is a
 $n = \dim V$, and $T \in \mathcal{L}(V)$. Results that genuinely need
 $\mathbf{F} = \mathbb{C}$ say so explicitly.
 
-{% include notation-table.md keys="LV PF eigenspace gen_eigenspace geo_mult alg_mult min_poly_exp jordan_block dual_op dual_space complexification_op complexification_space" %}
+{% include notation-table.md keys="LV PF eigenspace gen_eigenspace geo_mult alg_mult min_poly_exp jordan_block partition conj_partition index_nilpotency dual_op dual_space complexification_op complexification_space" %}
 
 {: .prompt-tip }
 > Three numbers are attached to each eigenvalue and it pays to keep them apart:
@@ -36,6 +36,9 @@ $\mathbf{F} = \mathbb{C}$ say so explicitly.
 
 {: .prompt-info }
 > An arbitrary intersection of $T$-invariant subspaces is $T$-invariant.
+
+{: .prompt-info }
+> Null space and range of $p(T)$ are invariant under $T$.
 
 ### Every Line Invariant
 
@@ -199,7 +202,7 @@ subspace is exactly the span of an eigenvector.
 > The stabilization index equals the nilpotency index of $ \left. T \right\rvert_{G(0,T)} $.
 
 {: .prompt-tip }
-> The chains always stabilize by $m = n$, which is why $G(\lambda,T) = \operatorname{null}(T-\lambda I)^n$ is a safe uniform definition — but the true stabilization index is usually much smaller, namely $e_\lambda$.
+> The chains always stabilize by $m = n$, which is why $G(\lambda,T) = \operatorname{null}(T-\lambda I)^n$ is a safe uniform definition — but the true stabilization index is usually much smaller, namely $e_\lambda$ (proved in [The Nilpotent Part](#the-nilpotent-part) below).
 
 {: .prompt-info }
 > Suppose $V_1,\dots,V_m$ are nonzero subspaces of $V$ with $V = \bigoplus_{k=1}^m V_k$, each $V_k$ invariant under $T$, and write $n_k = \dim V_k$. Then for every $\lambda \in \mathbf{F}$,
@@ -218,7 +221,7 @@ subspace is exactly the span of an eigenvector.
 {: .prompt-info }
 > An eigenvalue $\lambda$ of $T$ is called **defective** when $\dim E(\lambda, T) \;<\; \dim G(\lambda, T)$, i.e. $g_\lambda < d_\lambda$.
 
-How $g_\lambda$, $d_\lambda$ and $e_\lambda$ are read off the Jordan block sizes of $\lambda$, and why $\lambda$ is not defective exactly when all of those blocks have size $1$, is worked out in [Nilpotent Operators]({% post_url 2026-07-28-nilpotent-operators %}#generalized-eigenspaces).
+How $g_\lambda$, $d_\lambda$ and $e_\lambda$ are read off the Jordan block sizes of $\lambda$, and why $\lambda$ is not defective exactly when all of those blocks have size $1$, is worked out in [The Nilpotent Part](#the-nilpotent-part) below.
 
 Suppose the distinct eigenvalues of $T$ are $ \lambda_1, \dots, \lambda_m $.
 
@@ -234,12 +237,62 @@ Suppose the distinct eigenvalues of $T$ are $ \lambda_1, \dots, \lambda_m $.
 | Min. polynomial                  | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$                                                    | $\prod_k(z-\lambda_k)$ **iff diagonalizable** |
 | Char. polynomial                 | $\prod_k (z-\lambda_k)^{d_k}$                                                              | — (always uses $d_k$)                         |
 
+Over $\mathbb{C}$, every operator has an upper-triangular matrix with respect to some basis; see [Quotient Spaces]({% post_url 2026-07-04-quotient-spaces %}#induction-on-dimension).
+
 {: .prompt-info }
 > In an upper-triangular matrix,
 >
 > $$\{\text{distinct diagonal entries}\} = \{\text{zeros of min poly}\} = \{\text{eigenvalues}\}.$$
 >
 > $$1 \le e_\lambda \le (\text{times } \lambda \text{ appears on the diagonal}) = \dim G(\lambda, T). $$
+
+### The Nilpotent Part
+
+Every eigenvalue produces a nilpotent operator. If $\lambda$ is an eigenvalue of $T$, then $G(\lambda,T)$ is invariant under $T$, and
+
+$$N := \left.(T - \lambda I)\right\rvert_{G(\lambda,T)}$$
+
+is nilpotent. So everything in [Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}) applies to this $N$, acting on the space $G(\lambda,T)$ of dimension $d_\lambda$: it has a Jordan basis and a diagram, with parts $m_1 \ge \dots \ge m_k$, conjugate partition $\mu'$, index of nilpotency $p = m_1$, and $d_j = \dim\operatorname{null}N^j$. The parts are the sizes of the Jordan blocks of $T$ for $\lambda$.
+
+{: .prompt-info }
+> $T$ is nilpotent $\iff \dim G(0,T) = \dim V$.
+
+If $T$ is nilpotent, then $T^n = 0$ by [Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}), so $G(0,T) = \operatorname{null}T^n = V$. Conversely, $G(0,T) = V$ means $T^n = 0$.
+
+{: .prompt-warning }
+> Two notations meet here. The algebraic multiplicity $d_\lambda = \dim G(\lambda,T)$ is indexed by an eigenvalue; $d_j = \dim\operatorname{null}N^j$ is indexed by a power. They are compatible: $d_j = d_\lambda$ for every $j \ge p$.
+
+{: .prompt-info }
+> $\dim\operatorname{range}\big(\left.(T - \lambda I)\right\rvert_{G(\lambda,T)}\big) = \dim G(\lambda,T) - \dim E(\lambda,T)$.
+
+On the diagram, $\dim\operatorname{range}N$ counts the boxes above the bottom level. The three numbers attached to $\lambda$ are read off the same picture:
+
+|                                   | reads off as                     | on the diagram               |
+| --------------------------------- | -------------------------------- | ---------------------------- |
+| $d_\lambda$ (char. poly exponent) | $\dim G(\lambda,T) = \sum_i m_i$ | total boxes (area)           |
+| $e_\lambda$ (min. poly exponent)  | $p = m_1$                        | height of the tallest column |
+| $g_\lambda$                       | $d_1 = \mu'_1 = k$               | size of the bottom level     |
+
+The first row holds because the boxes form a basis of $G(\lambda,T)$, and the third because $g_\lambda = \dim\operatorname{null}N$. The second row needs a proof.
+
+{: .prompt-info }
+> $e_\lambda = p$: the exponent of $z - \lambda$ in the minimal polynomial of $T$ is the index of nilpotency of $N$.
+
+{: .prompt-proof }
+> Write $S = T - \lambda I$, $G = G(\lambda,T) = \operatorname{null}S^n$, $R = \operatorname{range}S^n$, and $p_T(z) = (z-\lambda)^{e_\lambda}q(z)$ with $q(\lambda) \ne 0$. Then $V = G \oplus R$, both summands are invariant under every polynomial in $T$, and $S\vert_G = N$.
+>
+> **$p \le e_\lambda$.** Since $(T\vert_G - \lambda I)^p = N^p = 0$, the minimal polynomial of $T\vert_G$ divides $(z-\lambda)^p$, so it is $(z-\lambda)^j$ for some $j \le p$. Then $N^j = (T\vert_G - \lambda I)^j = 0$, which forces $j = p$. So the minimal polynomial of $T\vert_G$ is $(z-\lambda)^p$, and it [divides $p_T$]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality). Write $(z-\lambda)^{e_\lambda}q = h\,(z-\lambda)^p$. If $p > e_\lambda$, cancelling $(z-\lambda)^{e_\lambda}$ gives $q = h\,(z-\lambda)^{p-e_\lambda}$, so $q(\lambda) = 0$, a contradiction. Hence $p \le e_\lambda$.
+>
+> **$e_\lambda \le p$.** $S\vert_R$ is injective, because $\operatorname{null}S \subseteq G$ and $G \cap R = \\{0\\}$, so it is invertible. Restricting $p_T(T) = 0$ to $R$ gives $(S\vert_R)^{e_\lambda}\,q(T)\vert_R = 0$, so $q(T)\vert_R = 0$. Now $f = (z-\lambda)^pq$ satisfies $f(T)\vert_G = q(T)\vert_G\,N^p = 0$ and $f(T)\vert_R = (S\vert_R)^p\,q(T)\vert_R = 0$, so $f(T) = 0$ on $V = G \oplus R$. The minimal polynomial divides every polynomial that annihilates $T$, so $f = h\,p_T$ for some polynomial $h$, that is, $(z-\lambda)^pq = h\,(z-\lambda)^{e_\lambda}q$. Cancelling $q$ and comparing degrees gives $p = \deg h + e_\lambda \ge e_\lambda$. $\blacksquare$
+
+Since $\operatorname{null}(T - \lambda I)^j \subseteq G(\lambda,T)$ for every $j$, these null spaces are exactly the $\operatorname{null}N^j$, which grow strictly until $j = p$ and are constant after. So the [stabilization index](#null-space-and-range-chains) of $T - \lambda I$ is $p = e_\lambda$.
+
+{: .prompt-info }
+> *The nilpotent shadow of diagonalizability.*
+>
+> $$g_\lambda = d_\lambda \iff \mu = (1,\dots,1) \iff N = 0 \iff G(\lambda,T) = E(\lambda,T).$$
+>
+> That is, $\lambda$ is not defective, meaning $g_\lambda = d_\lambda$, exactly when every column has height $1$, and then $T$ acts on $G(\lambda,T)$ as $\lambda I$ rather than through a nontrivial Jordan form. If the generalized eigenspaces of $T$ sum to $V$ (automatic over $\mathbb{C}$) and no eigenvalue is defective, $T$ is diagonalizable.
 
 ## Eigenspaces of $p(T)$
 

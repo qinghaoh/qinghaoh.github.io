@@ -6,10 +6,10 @@ mathjax_font: mathjax-pagella
 mermaid: true
 ---
 
-This post continues [Nilpotent Operators]({% post_url 2026-07-28-nilpotent-operators %}). It has two halves. The first collects what can be said
+This post continues [Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}). It has two halves. The first collects what can be said
 about commuting operators in general, and ends with a reduction: for a complex vector space,
 the whole question collapses to the case of a **nilpotent** operator. The second half answers
-that case completely, using the Young diagram from [Nilpotent Operators]({% post_url 2026-07-28-nilpotent-operators %}).
+that case completely, using the Young diagram from [Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}).
 
 ## Notation
 
@@ -73,6 +73,21 @@ Nothing in this section assumes nilpotency.
 > (a) There is a vector in $V$ that is an eigenvector for every element of $\mathcal{E}$.
 >
 > (b) There is a basis of $V$ with respect to which every element of $\mathcal{E}$ has an upper-triangular matrix.
+
+{: .prompt-info }
+> Suppose $S \in \mathcal{L}(V)$ is invertible, $N \in \mathcal{L}(V)$ is nilpotent with $N^p = 0$, and $SN = NS$. Then $S + N$ is invertible, and
+>
+> $$(S+N)^{-1} = \sum_{t=0}^{p-1}(-1)^t S^{-(t+1)}N^t.$$
+
+{: .prompt-proof }
+> Multiplying $SN = NS$ by $S^{-1}$ on both sides gives $NS^{-1} = S^{-1}N$, so $S^{-1}$ also commutes with $N$. Let $B = -S^{-1}N$. Commutativity lets the powers separate: $B^t = (-1)^tS^{-t}N^t$, so $B^p = 0$. The [geometric-series argument]({% post_url 2026-07-25-nilpotent-operators %}#inverse-of-a-jordan-block) then shows that $I - B$ is invertible with inverse $\sum_{t=0}^{p-1}B^t$. Since $S + N = S(I - B)$,
+>
+> $$(S+N)^{-1} = (I-B)^{-1}S^{-1} = \sum_{t=0}^{p-1}(-1)^tS^{-t}N^tS^{-1} = \sum_{t=0}^{p-1}(-1)^tS^{-(t+1)}N^t. \qquad \blacksquare$$
+
+The case $S = \lambda I$ is the [inverse of $\lambda I + N$]({% post_url 2026-07-25-nilpotent-operators %}#inverse-of-a-jordan-block) from Nilpotent Operators.
+
+{: .prompt-warning }
+> Commutativity is essential. On $\mathbf{F}^2$, the invertible $$S = \begin{pmatrix}0&1\\1&0\end{pmatrix}$$ and the nilpotent $$N = \begin{pmatrix}0&0\\-1&0\end{pmatrix}$$ do not commute, and $$S + N = \begin{pmatrix}0&1\\0&0\end{pmatrix}$$ is not invertible.
 
 ### Reduction to the Nilpotent Case
 
@@ -204,7 +219,7 @@ Then $SN = NS$ by construction, and
 
 ## Two Extremes
 
-[Nilpotent Operators]({% post_url 2026-07-28-nilpotent-operators %}) singles out two shapes. **One column**, $\mu = (n)$ and $\mu' = (1^n)$, is a single
+[Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}) singles out two shapes. **One column**, $\mu = (n)$ and $\mu' = (1^n)$, is a single
 chain. **One level**, $\mu = (1^n)$ and $\mu' = (n)$, is the zero operator. They are conjugate
 partitions, and the commutant sees them as opposite too — one as small as it can be, the other
 as large. Each is worth working out on its own before comparing them.
@@ -339,7 +354,7 @@ smallest and largest values $\dim\mathcal{C}(N)$ can take.
 > The invertible elements of $\mathcal{C}(N)$ act simply transitively on the Jordan bases of a
 > fixed shape: given two of them, exactly one invertible operator commuting with $N$ carries
 > the first to the second. So $\dim\mathcal{C}(N)$ is the dimension of the choice available,
-> which is where the counts in [Nilpotent Operators]({% post_url 2026-07-28-nilpotent-operators %}) came from — every basis of $V$ when $N = 0$
+> which is where the counts in [Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}) came from — every basis of $V$ when $N = 0$
 > ($n^2$ worth of freedom), and only the choice of a top when $k = 1$ ($n$ worth).
 >
 > The complementary count is just as clean. The operators similar to $N$ form a set of dimension

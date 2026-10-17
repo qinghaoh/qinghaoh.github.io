@@ -123,7 +123,7 @@ Hence $a_j = \overline{a_j}$ for every $j$, so all coefficients of $p$ are real.
 ## 5D
 
 {: .prompt-info }
-> 16\. Suppose that $ T \in \mathcal{L}(V) $ is diagonalizable. Let $ \lambda_1, \dots, \lambda_m $ denote the distinct eigenvalues of $ T $. Prove that a subspace $ U $ of $ V $ is invariant under $ T $ if and only if there exist subspaces 𝑈1,…,𝑈𝑚 of 𝑉 such that 𝑈𝑘 ⊆ 𝐸(𝜆𝑘,𝑇) for each $ k $ and $ U = U_1 \oplus \dots \oplus U_m $.
+> 16\. Suppose that $ T \in \mathcal{L}(V) $ is diagonalizable. Let $ \lambda_1, \dots, \lambda_m $ denote the distinct eigenvalues of $ T $. Prove that a subspace $ U $ of $ V $ is invariant under $ T $ if and only if there exist subspaces $U_1, \dots U_m $ of $V$ such that $U_k \subset E(\lambda k, T) $ for each $ k $ and $ U = U_1 \oplus \dots \oplus U_m $.
 
 {: .prompt-proof }
 > *($\Rightarrow$)*

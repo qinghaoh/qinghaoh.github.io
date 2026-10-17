@@ -7,14 +7,7 @@ mathjax_font: mathjax-pagella
 
 ## Notation
 
-{% include notation-table.md keys="n LV quotient_space quotient_op eigenspace gen_eigenspace geo_mult alg_mult min_poly_exp jordan_block partition conj_partition index_nilpotency commutant MT" %}
-
-## Properties
-
-{: .prompt-info }
-> Suppose $ T \in \mathcal{L}(V) $, then
->
-> $ T $ is nilpotent $\iff \dim G(0,T) = \dim V $.
+{% include notation-table.md keys="n LV quotient_space quotient_op jordan_block partition conj_partition index_nilpotency commutant MT" %}
 
 ## Jordan Basis
 
@@ -49,7 +42,7 @@ $$\mu'_1 = k, \qquad \mu'_j = 0 \ \text{ for } j > m_1.$$
 
 Thus $\mu'$ has exactly $m_1$ parts, and its first part is the number of chains.
 
-The tallest column also gives the index of nilpotency: $N^{m_1}$ kills every chain, while $N^{m_1-1}v_1 \neq 0$ is the bottom of the longest one. So $p = m_1$.
+The tallest column also gives the index of nilpotency: $N^{m_1}$ kills every chain, while $N^{m_1-1}v_1 \neq 0$ is the bottom of the longest one. So $p = m_1$. In particular $p \le \dim V$, so $N^{\dim V} = 0$.
 
 {: .prompt-warning }
 > Most references draw a partition with its parts as *rows*: the conventional [Young diagram](https://en.wikipedia.org/wiki/Young_tableau#Diagrams) of $\mu$ puts $m_i$ boxes in row $i$, where this array puts them in column $i$. Parts are columns here because $N$ acts down them.
@@ -138,9 +131,9 @@ Partial sums give $(d_1,d_2,d_3) = (2,4,5)$, matching $\operatorname{null}N = \o
 ### Jordan Block
 
 {: .prompt-info }
-> $\dim E(\lambda, J_m(\lambda)) = 1$.
+> $\dim\operatorname{null}\big(J_m(\lambda) - \lambda I\big) = 1$.
 
-Indeed $E(\lambda, J_m(\lambda)) = \operatorname{null}\big(J_m(\lambda) - \lambda I\big) = \operatorname{null}J_m(0)$, and $J_m(0)$ is a single chain, so its null space has dimension $d_1 = \mu'_1 = 1$.
+Indeed $\operatorname{null}\big(J_m(\lambda) - \lambda I\big) = \operatorname{null}J_m(0)$, and $J_m(0)$ is a single chain, so its null space has dimension $d_1 = \mu'_1 = 1$.
 
 #### Nilpotent Block
 
@@ -167,6 +160,50 @@ Rather than shifting a single band, this **fills the entire upper triangle**, wi
 $$A^j = \begin{pmatrix} \lambda^j & j\lambda^{j-1} & \binom{j}{2}\lambda^{j-2} & \binom{j}{3}\lambda^{j-3}\\ & \lambda^j & j\lambda^{j-1} & \binom{j}{2}\lambda^{j-2}\\ & & \lambda^j & j\lambda^{j-1}\\ & & & \lambda^j \end{pmatrix}$$
 
 Two structural differences from the nilpotent case: $A^j$ is never $0$, since $\det A^j = \lambda^{jm} \neq 0$, so $J_m(\lambda)$ is invertible rather than nilpotent; and the shifting behaviour is recovered only through $A - \lambda I = N$. This is why the general Jordan form is proved by subtracting $\lambda$ on each generalized eigenspace and working with the nilpotent part.
+
+#### Inverse of a Jordan Block
+
+{: .prompt-info }
+> Let $W$ be a vector space over $\mathbf{F}$, let $N \in \mathcal{L}(W)$ be nilpotent with $N^p = 0$, and let $\lambda \in \mathbf{F}$ with $\lambda \neq 0$. Then $\lambda I + N$ is invertible, and
+>
+> $$(\lambda I+N)^{-1} \;=\; \sum_{t=0}^{p-1} \frac{(-1)^t}{\lambda^{\,t+1}}\,N^t .$$
+
+{: .prompt-proof }
+> Set $B = -\lambda^{-1}N$. Since scalars commute with everything, $B^p = (-\lambda^{-1})^pN^p = 0$, and
+>
+> $$\lambda I + N = \lambda\left(I - B\right).$$
+>
+> Let $Q = \sum_{t=0}^{p-1}B^t$, a finite sum. The product telescopes:
+>
+> $$(I-B)Q \;=\; \sum_{t=0}^{p-1}B^t \;-\; \sum_{t=0}^{p-1}B^{t+1} \;=\; \sum_{t=0}^{p-1}B^t \;-\; \sum_{t=1}^{p}B^{t} \;=\; B^0 - B^p \;=\; I,$$
+>
+> and the same computation with the factors reversed gives $Q(I-B) = I$, since $B$ commutes with its own powers. So $I - B$ is invertible with inverse $Q$, hence $\lambda I + N = \lambda(I-B)$ is invertible with inverse $\lambda^{-1}Q$. Expanding $B$:
+>
+> $$\lambda^{-1}Q \;=\; \lambda^{-1}\sum_{t=0}^{p-1}\left(-\lambda^{-1}\right)^tN^t \;=\; \sum_{t=0}^{p-1}\frac{(-1)^t}{\lambda^{\,t+1}}N^t. \qquad \blacksquare$$
+
+{: .prompt-tip }
+> The argument uses no finite-dimensionality, no eigenvalues, no assumption on $\mathbf{F}$, and no separate case for $W = \\{0\\}$. Its single input is that the series terminates, which is exactly what nilpotency provides. Over $\mathbb{R}$ or $\mathbb{C}$ it is the Neumann series for $(I-B)^{-1}$, with the convergence hypothesis replaced by the stronger fact that all but finitely many terms are $0$.
+>
+> Any $p$ with $N^p = 0$ works; the index of nilpotency is the smallest choice, and a larger $p$ only appends zero terms.
+
+{: .prompt-tip }
+> *Consistency with the power formula.* For $A = J_m(\lambda)$, the formula $A^j = \sum_{t}\binom{j}{t}\lambda^{j-t}N^t$ above was derived for $j \ge 0$. Read it at $j = -1$, where $\binom{-1}{t} = (-1)^t$ and the sum runs over all $t \le m-1$:
+>
+> $$A^{-1} = \sum_{t=0}^{m-1}(-1)^t\lambda^{-1-t}N^t,$$
+>
+> which is the theorem with $p = m$. So the upper-triangular Toeplitz picture extends to negative exponents, and the terminating geometric series is what proves the case $j = -1$.
+
+**Worked example**
+
+Take $N = J_3(0)$ on $\mathbf{F}^3$, so $p = 3$ and $\lambda I + N = J_3(\lambda)$:
+
+$$J_3(\lambda)^{-1} = \frac{1}{\lambda}I - \frac{1}{\lambda^2}N + \frac{1}{\lambda^3}N^2 = \begin{pmatrix} 1/\lambda & -1/\lambda^2 & 1/\lambda^3 \\ 0 & 1/\lambda & -1/\lambda^2 \\ 0 & 0 & 1/\lambda\end{pmatrix}.$$
+
+Multiplying out confirms it, with $N^3 = 0$:
+
+$$(\lambda I+N)\left(\tfrac{1}{\lambda}I - \tfrac{1}{\lambda^2}N + \tfrac{1}{\lambda^3}N^2\right) = I - \tfrac{1}{\lambda}N + \tfrac{1}{\lambda^2}N^2 + \tfrac{1}{\lambda}N - \tfrac{1}{\lambda^2}N^2 + \tfrac{1}{\lambda^3}N^3 = I.$$
+
+The inverse is again upper-triangular Toeplitz, with alternating signs and increasing powers of $1/\lambda$ along successive diagonals.
 
 ### Find a Jordan Basis
 
@@ -304,40 +341,6 @@ which matches what was found by hand. The count check holds: $\lvert H_2\rvert +
 > - Group 3 can be any spanning set of $\operatorname{null}N^j$; a basis is the convenient choice, and duplicates cost nothing since they simply fail to be pivots.
 > - The same elimination produces the null spaces in the first place, by solving $N^j x = 0$, so you can compute all of $\operatorname{null}N, \dots, \operatorname{null}N^p$ with the same tool before the loop starts.
 
-### Generalized Eigenspaces
-
-Everything so far concerns a bare nilpotent operator, but every operator produces one. If $\lambda$ is an eigenvalue of $T \in \mathcal{L}(V)$, then $G(\lambda,T)$ is invariant under $T$, and
-
-$$N := \left.(T - \lambda I)\right\rvert_{G(\lambda,T)}$$
-
-is nilpotent. Apply the diagram to this $N$, acting on the space $G(\lambda,T)$ of dimension $d_\lambda$. Its parts $m_1 \ge \dots \ge m_k$ are the sizes of the Jordan blocks of $T$ for $\lambda$.
-
-{: .prompt-warning }
-> Two notations meet here. The algebraic multiplicity $d_\lambda = \dim G(\lambda,T)$ is indexed by an eigenvalue; $d_j = \dim\operatorname{null}N^j$ is indexed by a power. They are compatible: $d_j = d_\lambda$ for every $j \ge p$.
-
-{: .prompt-info }
-> $\operatorname{rank}\big(\left.(T - \lambda I)\right\rvert_{G(\lambda,T)}\big) = \dim G(\lambda,T) - \dim E(\lambda,T)$.
-
-{: .prompt-proof }
-> Since $E(\lambda,T) \subseteq G(\lambda,T)$, the null space of $N$ is $E(\lambda,T)$. The fundamental theorem of linear maps on $G(\lambda,T)$ gives $\operatorname{rank}N = d_\lambda - g_\lambda$. $\blacksquare$
-
-On the diagram, $\operatorname{rank}N$ counts the boxes above the bottom level. The three numbers attached to $\lambda$ are read off the same picture:
-
-|                                   | reads off as                     | on the diagram               |
-| --------------------------------- | -------------------------------- | ---------------------------- |
-| $d_\lambda$ (char. poly exponent) | $\dim G(\lambda,T) = \sum_i m_i$ | total boxes (area)           |
-| $e_\lambda$ (min. poly exponent)  | $p = m_1$                        | height of the tallest column |
-| $g_\lambda$                       | $d_1 = \mu'_1 = k$               | size of the bottom level     |
-
-The first row holds because the boxes form a basis of $G(\lambda,T)$. The second holds because $e_\lambda$ is the [stabilization index]({% post_url 2026-07-25-eigenvalues-and-eigenvectors %}#null-space-and-range-chains) of $T - \lambda I$, which equals the index of nilpotency of $N$. The third holds because $g_\lambda = \dim\operatorname{null}N$.
-
-{: .prompt-info }
-> *The nilpotent shadow of diagonalizability.*
->
-> $$g_\lambda = d_\lambda \iff \mu = (1,\dots,1) \iff N = 0 \iff G(\lambda,T) = E(\lambda,T).$$
->
-> That is, $\lambda$ is not defective exactly when every column has height $1$, and then $T$ acts on $G(\lambda,T)$ as $\lambda I$ rather than through a nontrivial Jordan form. If the generalized eigenspaces of $T$ sum to $V$ (automatic over $\mathbb{C}$) and no eigenvalue is defective, $T$ is diagonalizable.
-
 ### Two Extremes
 
 Two degenerate shapes sit at opposite ends: a diagram that is a single column, and a diagram that is a single level. Before working them out, one more quantity is needed.
@@ -412,7 +415,7 @@ Here $p = 1$ says $N = 0$: this shape *is* the zero operator, and every null spa
 
 Every subspace of $V$ is invariant, again since $N = 0$. This is the least rigid an invariant-subspace lattice can be, the opposite of the totally ordered chain above.
 
-This is the shape of an eigenvalue $\lambda$ of $T$ exactly when $\lambda$ is not defective; see [Generalized Eigenspaces](#generalized-eigenspaces).
+This is the shape of an eigenvalue $\lambda$ of $T$ exactly when $\lambda$ is not defective; see [Eigenvalues and Eigenvectors]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#the-nilpotent-part).
 
 #### Comparing the Ends
 
@@ -430,64 +433,8 @@ This is the shape of an eigenvalue $\lambda$ of $T$ exactly when $\lambda$ is no
 
 The two values of $r$ came from unrelated arguments, one parametrizing a single top vector, the other observing that no condition applies at all. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) explains why they belong to one story. The operators commuting with $N$ form a space $\mathcal{C}(N)$ of dimension $\sum_j (\mu'_j)^2$, which is $n$ for one column and $n^2$ for one level, the smallest and largest values it can take. The invertible elements of $\mathcal{C}(N)$ act simply transitively on the Jordan bases, so $r = \dim\mathcal{C}(N)$ always.
 
-## Invertibility
-
-{: .prompt-info }
-> Let $W$ be a vector space over $\mathbf{F}$, let $N \in \mathcal{L}(W)$ be nilpotent with $N^p = 0$, and let $\lambda \in \mathbf{F}$ with $\lambda \neq 0$. Then $\lambda I + N$ is invertible, and
->
-> $$(\lambda I+N)^{-1} \;=\; \sum_{t=0}^{p-1} \frac{(-1)^t}{\lambda^{\,t+1}}\,N^t .$$
-
-{: .prompt-proof }
-> Set $A = -\lambda^{-1}N$. Since scalars commute with everything, $A^p = (-\lambda^{-1})^pN^p = 0$, and
->
-> $$\lambda I + N = \lambda\left(I - A\right).$$
->
-> Let $G = \sum_{t=0}^{p-1}A^t$, a finite sum. The product telescopes:
->
-> $$(I-A)G \;=\; \sum_{t=0}^{p-1}A^t \;-\; \sum_{t=0}^{p-1}A^{t+1} \;=\; \sum_{t=0}^{p-1}A^t \;-\; \sum_{t=1}^{p}A^{t} \;=\; A^0 - A^p \;=\; I,$$
->
-> and the same computation with the factors reversed gives $G(I-A) = I$, since $A$ commutes with its own powers. So $I - A$ is invertible with inverse $G$, hence $\lambda I + N = \lambda(I-A)$ is invertible with inverse $\lambda^{-1}G$. Expanding $A$:
->
-> $$\lambda^{-1}G \;=\; \lambda^{-1}\sum_{t=0}^{p-1}\left(-\lambda^{-1}\right)^tN^t \;=\; \sum_{t=0}^{p-1}\frac{(-1)^t}{\lambda^{\,t+1}}N^t. \qquad \blacksquare$$
-
-{: .prompt-tip }
-> The argument uses no finite-dimensionality, no eigenvalues, no assumption on $\mathbf{F}$, and no separate case for $W = \\{0\\}$. Its single input is that the series terminates, which is exactly what nilpotency provides. Over $\mathbb{R}$ or $\mathbb{C}$ it is the Neumann series for $(I-A)^{-1}$, with the convergence hypothesis replaced by the stronger fact that all but finitely many terms are $0$.
->
-> Any $p$ with $N^p = 0$ works; the index of nilpotency is the smallest choice, and a larger $p$ only appends zero terms.
-
-{: .prompt-tip }
-> The inverse is a polynomial in $N$ of degree $< p$. In particular any operator commuting with $N$ also commutes with $(\lambda I+N)^{-1}$, and the inverse of a Jordan block is again a polynomial in its nilpotent part.
->
-> [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) goes further: for a single Jordan block, *every* operator commuting with $N$ is a polynomial in $N$, equivalently an upper-triangular Toeplitz matrix, so the inverse being one is a special case rather than a coincidence.
-
-{: .prompt-tip }
-> *Consistency with the block formula.* The [Non-nilpotent Block](#non-nilpotent-block) section gives $A^j = \sum_{t}\binom{j}{t}\lambda^{j-t}N^t$ for $j \ge 0$. Read it at $j = -1$, where $\binom{-1}{t} = (-1)^t$ and the sum runs over all $t \le m-1$:
->
-> $$A^{-1} = \sum_{t=0}^{m-1}(-1)^t\lambda^{-1-t}N^t,$$
->
-> which is the formula above. So the upper-triangular Toeplitz picture extends to negative exponents, and the terminating geometric series is what proves the case $j = -1$.
-
-{: .prompt-tip }
-> *The same proof gives more.* If $S$ is invertible, $N$ is nilpotent, and $SN = NS$, then $S + N$ is invertible with
->
-> $$(S+N)^{-1} = \sum_{t=0}^{p-1}(-1)^t S^{-(t+1)}N^t.$$
->
-> Take $A = -S^{-1}N$. Commutativity lets the powers separate, giving $A^p = (-1)^pS^{-p}N^p = 0$, and the telescoping runs unchanged. The theorem is the case $S = \lambda I$.
->
-> Commutativity is essential. On $\mathbf{F}^2$, the invertible $$S = \begin{pmatrix}0&1\\1&0\end{pmatrix}$$ and the nilpotent $$N = \begin{pmatrix}0&0\\-1&0\end{pmatrix}$$ do not commute, and $$S + N = \begin{pmatrix}0&1\\0&0\end{pmatrix}$$ is not invertible.
-
-**Worked example**
-
-Take $N = J_3(0)$ on $\mathbf{F}^3$, so $p = 3$ and $\lambda I + N = J_3(\lambda)$:
-
-$$J_3(\lambda)^{-1} = \frac{1}{\lambda}I - \frac{1}{\lambda^2}N + \frac{1}{\lambda^3}N^2 = \begin{pmatrix} 1/\lambda & -1/\lambda^2 & 1/\lambda^3 \\ 0 & 1/\lambda & -1/\lambda^2 \\ 0 & 0 & 1/\lambda\end{pmatrix}.$$
-
-Multiplying out confirms it, with $N^3 = 0$:
-
-$$(\lambda I+N)\left(\tfrac{1}{\lambda}I - \tfrac{1}{\lambda^2}N + \tfrac{1}{\lambda^3}N^2\right) = I - \tfrac{1}{\lambda}N + \tfrac{1}{\lambda^2}N^2 + \tfrac{1}{\lambda}N - \tfrac{1}{\lambda^2}N^2 + \tfrac{1}{\lambda^3}N^3 = I.$$
-
-The inverse is again upper-triangular Toeplitz, with alternating signs and increasing powers of $1/\lambda$ along successive diagonals.
-
 ## What Next
+
+[Eigenvalues and Eigenvectors]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#the-nilpotent-part) applies the diagram to an arbitrary operator $T$, one generalized eigenspace at a time: for each eigenvalue $\lambda$, the nilpotent operator is $T - \lambda I$ restricted to $G(\lambda,T)$.
 
 This post extracted from $N$ its diagram, which determines $N$ up to similarity. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) shows that the same diagram controls which *other* operators commute with $N$, and the two extremes above are the two extremes there as well.

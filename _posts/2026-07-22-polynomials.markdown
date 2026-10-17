@@ -223,7 +223,7 @@ $$w_i = \big(p/q_i^{m_i}\big)(T)\,u_i.$$
 > $$p_v = p_{w_1}\dots p_{w_k} = q_1^{m_1}\dots q_k^{m_k} = p. \qquad \blacksquare$$
 
 {: .prompt-tip }
-> **Over $\mathbb{C}$ this is the Jordan statement in disguise.** There $q_i = z - \lambda_i$, and $\deg p = \sum m_i$ while $n = \sum \dim G(\lambda_i, T)$. Since always $m_i \le \dim G(\lambda_i,T)$, the hypothesis $\deg p = n$ forces $m_i = \dim G(\lambda_i,T)$ for every $i$ — that is, **one Jordan block per eigenvalue**. The $w_i$ above is precisely a vector at the *top* of the $i$-th block's chain, and $v$ is their sum.
+> **Over $\mathbb{C}$ this is the Jordan statement in disguise.** This looks ahead to [Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}) and [Eigenvalues and Eigenvectors]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#the-nilpotent-part), where Jordan blocks and generalized eigenspaces are developed. There $q_i = z - \lambda_i$, and $\deg p = \sum m_i$ while $n = \sum \dim G(\lambda_i, T)$. Since always $m_i \le \dim G(\lambda_i,T)$, the hypothesis $\deg p = n$ forces $m_i = \dim G(\lambda_i,T)$ for every $i$ — that is, **one Jordan block per eigenvalue**. The $w_i$ above is precisely a vector at the *top* of the $i$-th block's chain, and $v$ is their sum.
 
 {: .prompt-info }
 > If $p_v = p$ and $\deg p = n$, then $v, Tv, \dots, T^{n-1}v$ is a basis.

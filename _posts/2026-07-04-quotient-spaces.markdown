@@ -164,12 +164,10 @@ So every subspace $ U $ is the null space of a linear map, and the [fiber view](
 > are inverse bijections between the subspaces $ W $ of $ V $ with $ U \subseteq W $ and the subspaces $ S $ of $ V/U $.
 
 {: .prompt-proof }
-> **Both maps land where claimed.** $ W/U $ is a subspace of $ V/U $ because $ (w + U) + (w' + U) = (w + w') + U $ and $ \lambda (w + U) = \lambda w + U $. Since $ \pi $ is linear, $ \pi^{-1}(S) $ is a subspace of $ V $, and it contains $ U = \operatorname{null} \pi $ because $ \pi $ sends $ U $ to $ 0 \in S $.
+> For each map, check that it lands in the claimed collection, and that following it with the other map returns the starting subspace.
 >
-> **They undo each other.**
->
-> - $ \pi^{-1}(S)/U = S $, because $ \pi $ is surjective: every element of $ S $ is $ v + U $ for some $ v \in V $, and that $ v $ lies in $ \pi^{-1}(S) $.
-> - $ \pi^{-1}(W/U) = W $. Clearly $ W \subseteq \pi^{-1}(W/U) $. Conversely, if $ \pi(v) \in W/U $, then $ v + U = w + U $ for some $ w \in W $, so $ v - w \in U \subseteq W $ , and $ v \in W $. $\blacksquare$
+> - **$ S \mapsto \pi^{-1}(S) $.** The preimage $ \pi^{-1}(S) $ is a subspace of $ V $: it contains $ 0 $ because $ \pi(0) = 0 \in S $, and if $ u, v \in \pi^{-1}(S) $ and $ a, b \in \mathbf{F} $, then $ \pi(au + bv) = a\pi(u) + b\pi(v) \in S $, because $ \pi $ is linear and $ S $ is a subspace. It contains $ U $: each $ u \in U $ has $ \pi(u) = u + U = U $, the zero vector of $ V/U $, which lies in $ S $. So $ \pi^{-1}(S)/U $ is defined, and it equals $ S $ because $ \pi $ is surjective: every element of $ S $ is $ v + U $ for some $ v \in V $, and that $ v $ lies in $ \pi^{-1}(S) $.
+> - **$ W \mapsto W/U $.** $ W/U $ is a subspace of $ V/U $, because $ (w + U) + (w' + U) = (w + w') + U $ and $ \lambda (w + U) = \lambda w + U $. Its preimage is $ \pi^{-1}(W/U) = W $. Clearly $ W \subseteq \pi^{-1}(W/U) $. Conversely, if $ \pi(v) \in W/U $, then $ v + U = w + U $ for some $ w \in W $, so $ v - w \in U \subseteq W $, and $ v \in W $. $\blacksquare$
 
 Geometrically, take $ V = \mathbb{R}^3 $ with $ U $ a vertical line, and picture $ V/U $ as the floor: $ \pi $ slides each vertical line, a translate of $ U $, down to the single point where it meets the floor. A subspace $ W $ containing $ U $ is made of whole vertical lines, because $ w + U \subseteq W $ for every $ w \in W $. So $ \pi $ collapses $ W $ to the line $ W/U $ without losing anything: the vertical lines through the points of $ W/U $ rebuild $ W $, which is the identity $ \pi^{-1}(W/U) = W $. The two extreme cases are $ W = U $, which collapses to the point $ 0 $, and $ W = V $, which collapses to the whole floor.
 

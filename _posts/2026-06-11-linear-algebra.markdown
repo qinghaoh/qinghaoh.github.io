@@ -60,8 +60,8 @@ Suppose $V$ is finite-dimensional and $ U $ is a subspace of $ V $:
 | $ V/U $           | $ \dim V - \dim U $                       |
 | $ U^0 $           | $ \dim V - \dim U $                       |
 | $ U^{\perp} $     | $ \dim V - \dim U $                       |
-| $ E(\lambda, T) $ | algebraic multiplicity                    |
-| $ G(\lambda, T) $ | geometric multiplicity                    |
+| $ E(\lambda, T) $ | geometric multiplicity                    |
+| $ G(\lambda, T) $ | algebraic multiplicity                    |
 
 ### Sum
 
@@ -110,7 +110,7 @@ A sum is a direct sum iff dimensions add up.
 
 ### Direct Sum Decomposition
 
-* Suppose $T \in \mathcal{L}(V)$. $V = \dim \operatorname{null} T^m = \dim \operatorname{null} T^{m + 1} $.
+* Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$ and $n = \dim V$. $ V = \operatorname{null} T^n \oplus \operatorname{range} T^n $.
 * Suppose $\mathbf{F} = \mathbb{C}$ and $T \in \mathcal{L}(V)$. $ V = \oplus G(\lambda, T)$.
 * Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$ and $T$ is diagonalizable. $ V = \oplus E(\lambda, T)$.
 
