@@ -110,7 +110,7 @@ A sum is a direct sum iff dimensions add up.
 
 ### Direct Sum Decomposition
 
-* Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$ and $n = \dim V$. $ V = \operatorname{null} T^n \oplus \operatorname{range} T^n $.
+* Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$ and $n = \dim V$. $ V = \operatorname{null} T^n \oplus \operatorname{range} T^n $ ([more generally]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#null-space-and-range-chains), for every power at least the index of $T$).
 * Suppose $\mathbf{F} = \mathbb{C}$ and $T \in \mathcal{L}(V)$. $ V = \oplus G(\lambda, T)$.
 * Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$ and $T$ is diagonalizable. $ V = \oplus E(\lambda, T)$.
 

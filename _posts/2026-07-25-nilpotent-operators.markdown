@@ -44,6 +44,19 @@ Thus $\mu'$ has exactly $m_1$ parts, and its first part is the number of chains.
 
 The tallest column also gives the index of nilpotency: $N^{m_1}$ kills every chain, while $N^{m_1-1}v_1 \neq 0$ is the bottom of the longest one. So $p = m_1$. In particular $p \le \dim V$, so $N^{\dim V} = 0$.
 
+{: .prompt-info }
+> Write $n = \dim V$. The number of chains $k$, the index of nilpotency $p$, and $n$ satisfy
+>
+> $$1 \le k \le n, \qquad 1 \le p \le n, \qquad k + p - 1 \le n,$$
+>
+> with $k + p - 1 = n$ exactly when the diagram is a **hook**: one column of any height, all others of height $1$.
+
+{: .prompt-proof }
+> Count boxes. There are $n$ in total, $k$ columns each with at least one, and a tallest column with $p$. That column and one box from each of the other $k - 1$ columns are $p + k - 1$ distinct boxes, with equality exactly when the other columns have no further boxes. $\blacksquare$
+
+{: .prompt-tip }
+> There is no inequality between $k$ and $p$ alone: the two hooks $k = 1, p = n$ (a single column) and $k = n, p = 1$ (a single level) are the [two extremes](#two-extremes) below.
+
 {: .prompt-warning }
 > Most references draw a partition with its parts as *rows*: the conventional [Young diagram](https://en.wikipedia.org/wiki/Young_tableau#Diagrams) of $\mu$ puts $m_i$ boxes in row $i$, where this array puts them in column $i$. Parts are columns here because $N$ acts down them.
 

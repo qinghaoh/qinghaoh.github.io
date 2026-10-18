@@ -129,16 +129,6 @@ mermaid: true
 >
 > Consider the linear map $\Phi : \mathcal{P}(\mathbf{F}) \to \mathcal{L}(V)$, $\Phi(q) = q(T)$. Then $\operatorname{range}\Phi = \mathcal{E}$ and $\operatorname{null}\Phi = \{q : q(T) = 0\}$ — exactly the multiples of $p$. So $\mathcal{E} \cong \mathcal{P}(\mathbf{F})/\langle p\rangle$, and the quotient has the remainders of degree $< m$ as canonical representatives — $m$ dimensions' worth.
 
-### Inverse
-
-{: .prompt-info }
-> Suppose $ V $ is finite-dimensional and $ T \in \mathcal{L}(V) $ is invertible with minimal polynomial $ p_T $ of degree $ m $. Then $ p_T(0) \ne 0 $ and
->
-> $$p_{T^{-1}}(z) = \frac{z^m\, p_T(1/z)}{p_T(0)}.$$
-
-{: .prompt-tip }
-> $ p_T(0) \ne 0 $ is exactly the statement that $0$ is not an eigenvalue. The right-hand side is the *reversal* of $p_T$ (coefficients read backwards), rescaled to stay monic.
-
 ## Local Minimal Polynomial
 
 {: .prompt-info }
@@ -251,6 +241,7 @@ $$w_i = \big(p/q_i^{m_i}\big)(T)\,u_i.$$
 | $\mathbf{F} = \mathbb{R}$, $T_{\mathbb{C}}$ | $q(T_\mathbb{C}) = (q(T))_\mathbb{C}$, $q$ real | unital $\mathbb{R}$-algebra hom. $$\mathcal{L}_\mathbb{R}(V) \to \mathcal{L}_\mathbb{C}(V_\mathbb{C})$$ | yes               | $p_{T_\mathbb{C}} = p_T$              |
 | $T'$                                        | $q(T') = (q(T))'$                               | unital **anti**-homomorphism $\mathcal{L}(V) \to \mathcal{L}(V')$                                       | yes               | $p_{T'} = p_T$                        |
 | $S$ invertible, $S^{-1}TS$                  | $q(S^{-1}TS) = S^{-1}q(T)S$                     | unital algebra **iso** $\mathcal{L}(V) \to \mathcal{L}(V)$                                              | yes (bijective)   | $p_{S^{-1}TS} = p_T$                  |
+| $T$ invertible, $T^{-1}$                    | $q^{\mathrm{rev}}(T^{-1}) = T^{-\deg q}\,q(T)$  | none: the reversal $q \mapsto q^{\mathrm{rev}}$ intertwines instead                                      | —                 | $p_{T^{-1}} = p_T^{\mathrm{rev}}/p_T(0)$ |
 
 {: .prompt-info }
 > $\Phi$ is a unital [algebra homomorphism](https://en.wikipedia.org/wiki/Algebra_over_a_field#Algebra_homomorphisms) $\mathcal{L}(V) \to \mathcal{L}(W)$ for the relevant $W$ $\implies$ $q(\Phi(T)) = \Phi(q(T))$.
@@ -260,6 +251,21 @@ $$w_i = \big(p/q_i^{m_i}\big)(T)\,u_i.$$
 
 {: .prompt-tip }
 > Homomorphism $\Rightarrow$ divisibility; injective on top of that $\Rightarrow$ equality.** Because $p_{\Phi(T)} \mid p_T$ is just "$q(T) = 0 \Rightarrow q(\Phi(T)) = 0$", and injectivity supplies the converse.
+
+### Inverse: Reversal Instead of a Homomorphism
+
+No algebra homomorphism sends $T$ to $T^{-1}$: it would force $q(T) = 0 \Rightarrow q(T^{-1}) = 0$, which fails already for $T = 2I$ and $q = z - 2$. The substitute is the **reversal** $q^{\mathrm{rev}}(z) = z^{\deg q}\,q(1/z)$, which is $q$ with its coefficients read backwards.
+
+{: .prompt-info }
+> Suppose $ V $ is finite-dimensional and $ T \in \mathcal{L}(V) $ is invertible. Then $ p_T(0) \ne 0 $ and
+>
+> $$p_{T^{-1}} = \frac{p_T^{\mathrm{rev}}}{p_T(0)}.$$
+
+{: .prompt-proof }
+> For $q = \sum_{k=0}^d a_k z^k$ of degree $d$, $q^{\mathrm{rev}}(T^{-1}) = \sum_k a_k T^{k-d} = T^{-d}q(T)$, so $q(T) = 0 \iff q^{\mathrm{rev}}(T^{-1}) = 0$. If $p_T(0) = 0$, then $p_T = zh$ and $T\,h(T) = 0$ gives $h(T) = 0$, contradicting minimality. So $p_T^{\mathrm{rev}}$ has degree $\deg p_T$ and leading coefficient $p_T(0)$, and $p_T^{\mathrm{rev}}/p_T(0)$ is a monic annihilator of $T^{-1}$; hence $\deg p_{T^{-1}} \le \deg p_T$. Swapping $T$ and $T^{-1}$ gives the reverse inequality, so the monic $p_{T^{-1}}$ divides a monic polynomial of the same degree, and they are equal. $\blacksquare$
+
+{: .prompt-tip }
+> $ p_T(0) \ne 0 $ is exactly the statement that $0$ is not an eigenvalue. Taking $q = (z - \lambda)^j$ with $\lambda \ne 0$, the reversal is $(1 - \lambda z)^j = (-\lambda)^j (z - \tfrac{1}{\lambda})^j$, so the identity reads $(T^{-1} - \tfrac{1}{\lambda}I)^j = (-\lambda)^{-j}\,T^{-j}(T - \lambda I)^j$. The two sides have the same null space, so [$E$ and $G$]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#generalized-eigenspaces) of $T^{-1}$ at $\tfrac{1}{\lambda}$ equal those of $T$ at $\lambda$ ($j = 1$ and $j = \dim V$).
 
 ## $ST$ and $TS$: what transfers, and the cost of $z$
 

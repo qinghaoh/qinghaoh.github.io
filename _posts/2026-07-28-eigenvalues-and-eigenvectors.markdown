@@ -79,12 +79,19 @@ The converse of the last box: if enough subspaces are invariant, $T$ is a scalar
 > So the null-space chain and the range chain stabilize at the *same* step; this common step is the **index** of $T$ (in operator theory, the *ascent* and *descent*, which are equal here). Before it, $\dim\operatorname{null}T^m$ grows by at least $1$ at each step, so the chains have stabilized by $m = n$. This is why $G(\lambda,T) = \operatorname{null}(T-\lambda I)^n$ is a safe uniform definition. The true index of $T - \lambda I$ is usually much smaller, namely $e_\lambda$ (proved in [The Nilpotent Part](#the-nilpotent-part) below).
 
 {: .prompt-info }
-> $V = \operatorname{null}T \oplus \operatorname{range}T \iff \operatorname{null}T = \operatorname{null}T^2$, i.e. the index of $T$ is at most $1$.
+> For every $k \ge 1$,
+>
+> $$V = \operatorname{null}T^k \oplus \operatorname{range}T^k \iff k \ge \text{the index of } T.$$
+>
+> In particular $V = \operatorname{null}T^n \oplus \operatorname{range}T^n$ always, and $V = \operatorname{null}T \oplus \operatorname{range}T$ iff the index is at most $1$.
 
 {: .prompt-proof }
-> *($\Rightarrow$)* If $v \in \operatorname{null}T^2$, then $Tv \in \operatorname{null}T \cap \operatorname{range}T = \\{0\\}$, so $v \in \operatorname{null}T$.
+> First, for any operator $S$: $V = \operatorname{null}S \oplus \operatorname{range}S \iff \operatorname{null}S = \operatorname{null}S^2$.
 >
-> *($\Leftarrow$)* If $Tu \in \operatorname{null}T$, then $u \in \operatorname{null}T^2 = \operatorname{null}T$, so $Tu = 0$. Hence $\operatorname{null}T \cap \operatorname{range}T = \\{0\\}$, and the dimensions add up to $n$ by rank–nullity. $\blacksquare$
+> - *($\Rightarrow$)* If $v \in \operatorname{null}S^2$, then $Sv \in \operatorname{null}S \cap \operatorname{range}S = \\{0\\}$, so $v \in \operatorname{null}S$.
+> - *($\Leftarrow$)* If $Su \in \operatorname{null}S$, then $u \in \operatorname{null}S^2 = \operatorname{null}S$, so $Su = 0$. Hence $\operatorname{null}S \cap \operatorname{range}S = \\{0\\}$, and the dimensions add up to $n$ by rank–nullity.
+>
+> Apply this to $S = T^k$. Since $\operatorname{null}T^k \subseteq \operatorname{null}T^{k+1} \subseteq \operatorname{null}T^{2k}$, the condition $\operatorname{null}T^k = \operatorname{null}T^{2k}$ holds iff the chain has stopped growing by step $k$, i.e. $k \ge$ the index. The index is at most $n$. $\blacksquare$
 
 ## Generalized Eigenspaces
 
@@ -150,28 +157,20 @@ the number of boxes above the bottom level. The second row needs a proof.
 {: .prompt-proof }
 > **Index $= p$.** Since $\operatorname{null}(T - \lambda I)^j \subseteq G(\lambda,T)$ for every $j$, these null spaces are exactly the $\operatorname{null}N^j$, which grow strictly until $j = p$ and are constant after.
 >
-> **$e_\lambda = p$.** Write $S = T - \lambda I$, $G = G(\lambda,T) = \operatorname{null}S^n$, $R = \operatorname{range}S^n$, and $p_T(z) = (z-\lambda)^{e_\lambda}q(z)$ with $q(\lambda) \ne 0$. Then $V = G \oplus R$, both summands are invariant under every polynomial in $T$, and $S\vert_G = N$.
+> **$e_\lambda = p$.** Write $S = T - \lambda I$, $G = G(\lambda,T) = \operatorname{null}S^n$, $R = \operatorname{range}S^n$, and $p_T(z) = (z-\lambda)^{e_\lambda}q(z)$ with $q(\lambda) \ne 0$. Then $V = G \oplus R$ by the [null–range decomposition](#null-space-and-range-chains), both summands are invariant under every polynomial in $T$, and $S\vert_G = N$.
 >
 > *$p \le e_\lambda$.* Since $(T\vert_G - \lambda I)^p = N^p = 0$, the minimal polynomial of $T\vert_G$ divides $(z-\lambda)^p$, so it is $(z-\lambda)^j$ for some $j \le p$. Then $N^j = (T\vert_G - \lambda I)^j = 0$, which forces $j = p$. So the minimal polynomial of $T\vert_G$ is $(z-\lambda)^p$, and it [divides $p_T$]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality). Write $(z-\lambda)^{e_\lambda}q = h\,(z-\lambda)^p$. If $p > e_\lambda$, cancelling $(z-\lambda)^{e_\lambda}$ gives $q = h\,(z-\lambda)^{p-e_\lambda}$, so $q(\lambda) = 0$, a contradiction. Hence $p \le e_\lambda$.
 >
 > *$e_\lambda \le p$.* $S\vert_R$ is injective, because $\operatorname{null}S \subseteq G$ and $G \cap R = \\{0\\}$, so it is invertible. Restricting $p_T(T) = 0$ to $R$ gives $(S\vert_R)^{e_\lambda}\,q(T)\vert_R = 0$, so $q(T)\vert_R = 0$. Now $f = (z-\lambda)^pq$ satisfies $f(T)\vert_G = q(T)\vert_G\,N^p = 0$ and $f(T)\vert_R = (S\vert_R)^p\,q(T)\vert_R = 0$, so $f(T) = 0$ on $V = G \oplus R$. The minimal polynomial divides every polynomial that annihilates $T$, so $f = h\,p_T$ for some polynomial $h$, that is, $(z-\lambda)^pq = h\,(z-\lambda)^{e_\lambda}q$. Cancelling $q$ and comparing degrees gives $p = \deg h + e_\lambda \ge e_\lambda$. $\blacksquare$
 
-{: .prompt-tip }
-> Keep the three numbers apart: $1 \le g_\lambda \le d_\lambda$ and $1 \le e_\lambda \le d_\lambda$, but there is no general inequality between $g_\lambda$ and $e_\lambda$: for $T = 0$ on $\mathbf{F}^3$, $g_0 = 3$ but $e_0 = 1$, while for $J_3(0)$, $g_0 = 1$ but $e_0 = 3$. What does hold is
-> $g_\lambda + e_\lambda - 1 \le d_\lambda$, since one Jordan block has size $e_\lambda$ and
-> each of the other $g_\lambda - 1$ blocks has size at least $1$.
+So $d_\lambda$, $e_\lambda$, $g_\lambda$ are $n$, $p$, $k$ for $N$, and all relations among them are [those of $n$, $p$, $k$]({% post_url 2026-07-25-nilpotent-operators %}#jordan-basis): $1 \le g_\lambda, e_\lambda \le d_\lambda$ and $g_\lambda + e_\lambda - 1 \le d_\lambda$, with no inequality between $g_\lambda$ and $e_\lambda$ alone.
 
 {: .prompt-info }
-> *The nilpotent shadow of diagonalizability.*
->
-> $$g_\lambda = d_\lambda \iff \mu = (1,\dots,1) \iff N = 0 \iff G(\lambda,T) = E(\lambda,T) \iff V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I).$$
->
-> That is, $\lambda$ is not defective exactly when every column has height $1$, and then $T$ acts on $G(\lambda,T)$ as $\lambda I$ rather than through a nontrivial Jordan form. The last equivalence holds because both sides say the index of $T - \lambda I$, which is $e_\lambda = p$, is at most $1$ (and it holds trivially when $\lambda$ is not an eigenvalue). If the generalized eigenspaces of $T$ sum to $V$ and no eigenvalue is defective, $T$ is diagonalizable. So over $\mathbb{C}$,
+> *The nilpotent shadow of diagonalizability.* $\lambda$ is not defective ($g_\lambda = d_\lambda$, i.e. $k = n$ for $N$) iff $N$ is the [one-level extreme]({% post_url 2026-07-25-nilpotent-operators %}#one-level-the-zero-operator) $N = 0$, i.e. $G(\lambda,T) = E(\lambda,T)$ and $e_\lambda = 1$. By the [null–range decomposition](#null-space-and-range-chains) this says $V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I)$, which holds trivially when $\lambda \notin \sigma(T)$. So over $\mathbb{C}$,
 >
 > $$T \text{ is diagonalizable} \iff V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I) \text{ for every } \lambda \in \mathbb{C}.$$
-
-{: .prompt-warning }
-> The hypothesis $\mathbf{F} = \mathbb{C}$ is needed. Rotation by $\pi/2$ on $\mathbb{R}^2$ has no real eigenvalues, so $T - \lambda I$ is invertible and the decomposition holds trivially for every $\lambda \in \mathbb{R}$, yet $T$ is not diagonalizable over $\mathbb{R}$.
+>
+> Over $\mathbb{R}$ the right side also holds when $\sigma(T) = \varnothing$ (see [existence](#existence-of-eigenvalues)), so it no longer implies diagonalizability.
 
 ### Existence of Eigenvalues
 
@@ -208,11 +207,11 @@ Everything here rests on one fact: $\sigma(T)$ is exactly the set of zeros of $p
 > (d) $\lvert \sigma(T) \rvert \le \min(n,\; 1 + r)$, and over $\mathbb{C}$ also $\lvert \sigma(T) \rvert \ge 1$ by [existence](#existence-of-eigenvalues).
 
 {: .prompt-proof }
-> (a) The sum of the $G(\lambda,T)$ is direct and lies in $V$, and it is all of $V$ iff the minimal polynomial splits. Over $\mathbb{C}$ the equality is also visible in an [upper-triangular matrix]({% post_url 2026-07-04-quotient-spaces %}#induction-on-dimension) of $T$, whose $n$ diagonal entries list each eigenvalue $\lambda$ exactly $d_\lambda$ times. Over $\mathbb{R}$, the sum is the part of $n = \sum d_\lambda(T_{\mathbb{C}})$ coming from real eigenvalues; the non-real eigenvalues of $T_{\mathbb{C}}$ come in conjugate pairs with equal multiplicities ([Complexification]({% post_url 2026-08-03-complexification %})), so they contribute an even number.
+> (a) The sum of the $G(\lambda,T)$ is direct and lies in $V$, and it is all of $V$ iff the minimal polynomial [splits](https://en.wikipedia.org/wiki/Splitting_field). Over $\mathbb{C}$ the equality is also visible in an [upper-triangular matrix]({% post_url 2026-07-04-quotient-spaces %}#induction-on-dimension) of $T$, whose $n$ diagonal entries list each eigenvalue $\lambda$ exactly $d_\lambda$ times. Over $\mathbb{R}$, the sum is the part of $n = \sum d_\lambda(T_{\mathbb{C}})$ coming from real eigenvalues; the non-real eigenvalues of $T_{\mathbb{C}}$ come in conjugate pairs with equal multiplicities ([Complexification]({% post_url 2026-08-03-complexification %})), so they contribute an even number.
 >
 > (b) $E(\lambda,T) \subseteq G(\lambda,T)$ gives $g_\lambda \le d_\lambda$. The sum of the $E(\lambda,T)$ is direct, and it is all of $V$ iff $T$ is diagonalizable.
 >
-> (c) For $\lambda \ne 0$, $\left.T\right\rvert_{G(\lambda,T)}$ is invertible (see [The Nilpotent Part](#the-nilpotent-part)), so $G(\lambda,T) = T^n\big(G(\lambda,T)\big) \subseteq \operatorname{range}T^n$. Hence $\bigoplus_{\lambda \ne 0} G(\lambda,T) \subseteq \operatorname{range}T^n$. Since $V = \operatorname{null}T^n \oplus \operatorname{range}T^n = G(0,T) \oplus \operatorname{range}T^n$, we get $\dim\operatorname{range}T^n = n - d_0$, and $\operatorname{range}T^n \subseteq \operatorname{range}T$.
+> (c) For $\lambda \ne 0$, $\left.T\right\rvert_{G(\lambda,T)}$ is invertible (see [The Nilpotent Part](#the-nilpotent-part)), so $G(\lambda,T) = T^n\big(G(\lambda,T)\big) \subseteq \operatorname{range}T^n$. Hence $\bigoplus_{\lambda \ne 0} G(\lambda,T) \subseteq \operatorname{range}T^n$. Since $V = \operatorname{null}T^n \oplus \operatorname{range}T^n = G(0,T) \oplus \operatorname{range}T^n$ by the [null–range decomposition](#null-space-and-range-chains), we get $\dim\operatorname{range}T^n = n - d_0$, and $\operatorname{range}T^n \subseteq \operatorname{range}T$.
 >
 > (d) Each eigenvalue has $d_\lambda \ge 1$, so $\lvert \sigma(T) \rvert \le \sum_{\lambda \in \sigma(T)} d_\lambda \le n$ by (a), and $\lvert \sigma(T) \setminus \\{0\\} \rvert \le \sum_{\lambda \in \sigma(T) \setminus \\{0\\}} d_\lambda \le r$ by (c). The value $0$ adds at most one more. $\blacksquare$
 
@@ -220,34 +219,19 @@ Everything here rests on one fact: $\sigma(T)$ is exactly the set of zeros of $p
 > Adding $d_0$ to both sides of (c) gives back (a). So once repetitions are counted, the range bound is never sharper than $n$. The improvement $1 + r$ in (d) comes entirely from $0$ contributing a single distinct value however large $d_0$ is.
 
 {: .prompt-tip }
-> **Which bound in (d) is better.** The comparison
-> turns entirely on whether $0$ is an eigenvalue, i.e. whether $T$ fails to be invertible, i.e. whether $r < n$.
+> **Which bound in (d) applies, and when it is attained** (matrices in some basis).
 >
-> - **$0$ is not an eigenvalue ($T$ is invertible).** Then $r = n$ and $1 + r = n + 1 > n$, so $\min$ selects
->   $\dim V$. The range bound is valid but vacuous.
-> - **$0$ is an eigenvalue ($T$ is not invertible).** Then $r \le n - 1$ and $1 + r \le n$, so $\min$ selects
->   $1 + r$: a strict improvement whenever $r < n - 1$.
-
-{: .prompt-warning }
-> This is about $0$ being **an** eigenvalue, not the **only** one, so it is unrelated to
-> nilpotency. $\operatorname{diag}(0,1,2,3)$ is non-invertible and far from nilpotent.
->
-> Nilpotency is in fact where the bound is *weakest*: for $J_n(0)$ the true count is $1$
-> while $r = n - 1$ gives a bound of $n$. The only nilpotent operator attaining the bound
-> is $T = 0$, where $r = 0$ and $1 + r = 1$.
+> - **$T$ invertible** ($r = n$): the bound is $n$, attained iff $T = \operatorname{diag}(\lambda_1, \dots, \lambda_n)$ with the $\lambda_i$ distinct.
+> - **$T$ not invertible** ($r < n$, so $1 + r \le n$): the bound is $1 + r$, attained iff $T = \operatorname{diag}(0, \dots, 0, \lambda_1, \dots, \lambda_r)$ with the $\lambda_i$ distinct and nonzero.
 
 {: .prompt-tip }
-> **Equality in (d).**
+> **The gap in $1 + r$.** Over $\mathbb{C}$, when $0$ is an eigenvalue, rank–nullity gives $r = n - g_0$, and $\sum_\lambda d_\lambda = n$, so the gap between the bound and the true count is
 >
-> - $\lvert \sigma(T) \rvert = 1 + r$ holds iff, in some basis,
->   $T = \operatorname{diag}(0, \dots, 0, \lambda_1, \dots, \lambda_r)$ with $r < n$ and the $\lambda_i$
->   distinct and nonzero. Equivalently: $T$ is diagonalizable, $0$ is an eigenvalue, and
->   every nonzero eigenvalue has geometric multiplicity $1$.
-> - $\lvert \sigma(T) \rvert = n$ holds iff
->   $T = \operatorname{diag}(\lambda_1, \dots, \lambda_n)$ in some basis
->   with the $\lambda_i$ distinct. One of them is allowed to be $0$.
+> $$(1 + r) - \lvert \sigma(T) \rvert = (d_0 - g_0) + \sum_{\lambda \in \sigma(T) \setminus \\{0\\}} (d_\lambda - 1).$$
+>
+> Each term is a defect, so equality holds exactly when $0$ is not defective and every nonzero eigenvalue is simple, which is the diagonal form above. For nilpotent $T$ the gap is $d_0 - g_0 = n - k$, the number of boxes above the bottom level: $n - 1$ for a single column $J_n(0)$ and $0$ for a single level $T = 0$, the [two extremes]({% post_url 2026-07-25-nilpotent-operators %}#two-extremes) of the diagram.
 
-## Eigenspaces of $p(T)$ and $T^{-1}$
+## Eigenspaces of $p(T)$
 
 {: .prompt-info }
 > Suppose $ \mathbf{F} = \mathbb{C}$, $ p \in \mathcal{P}(\mathbb{C}) $, and $ \alpha \in \mathbb{C} $. Then
@@ -279,16 +263,6 @@ Everything here rests on one fact: $\sigma(T)$ is exactly the set of zeros of $p
 > - **If $p'(\lambda) = 0$**, then $M$ starts at $N^2$ or higher, so $\operatorname{null}M \supseteq \operatorname{null}N^2$; and $\operatorname{null}N^2 \supsetneq \operatorname{null}N$ exactly when $N \ne 0$, i.e. when $\lambda$ is defective.
 >
 > So the ordinary eigenspace grows strictly exactly when some $\lambda$ in the fiber is **both a critical point of $p$ and a defective eigenvalue of $T$**. $\blacksquare$
-
-{: .prompt-info }
-> Suppose $ T $ is invertible. For all nonzero $\lambda \in \mathbf{F} $,
->
-> (a) $ G(\lambda, T) = G(\frac{1}{\lambda}, T^{-1}) $.
->
-> (b) $ E(\lambda, T) = E(\frac{1}{\lambda}, T^{-1}) $.
-
-{: .prompt-proof }
-> $T - \lambda I = -\lambda T\big(T^{-1} - \tfrac{1}{\lambda} I\big)$, and the two factors commute, so $(T - \lambda I)^j = (-\lambda T)^j\big(T^{-1} - \tfrac{1}{\lambda} I\big)^j$ for every $j$. Since $-\lambda T$ is invertible, both sides have the same null space. Take $j = n$ for (a) and $j = 1$ for (b). $\blacksquare$
 
 ## The Hierarchy of Normal Forms
 
