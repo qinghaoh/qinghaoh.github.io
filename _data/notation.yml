@@ -61,6 +61,9 @@
 - key: jordan_block
   symbol: '$J_s(\lambda)$'
   meaning: 'Jordan block of size $s$ for $\lambda$'
+- key: spectrum
+  symbol: '$\sigma(T)$'
+  meaning: 'spectrum: the set of eigenvalues of $T$; $\lvert \sigma(T) \rvert$ is the number of distinct eigenvalues'
 - key: min_poly
   symbol: '$p_T$'
   meaning: 'minimal polynomial of $T$'

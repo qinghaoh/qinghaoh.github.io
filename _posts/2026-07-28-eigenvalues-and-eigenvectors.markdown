@@ -11,143 +11,60 @@ decomposition $\to$ Jordan $\to$ diagonal.
 
 ## Notation and Standing Assumptions
 
-Unless stated otherwise: $\mathbf{F}$ is $\mathbb{R}$ or $\mathbb{C}$, $V$ is a
-**nonzero finite-dimensional** vector space over $\mathbf{F}$ with
-$n = \dim V$, and $T \in \mathcal{L}(V)$. Results that genuinely need
+Unless stated otherwise, $T \in \mathcal{L}(V)$. Results that genuinely need
 $\mathbf{F} = \mathbb{C}$ say so explicitly.
 
-{% include notation-table.md keys="LV PF eigenspace gen_eigenspace geo_mult alg_mult min_poly min_poly_exp jordan_block partition conj_partition index_nilpotency dual_op dual_space" %}
+{% include notation-table.md keys="F V n LV PF eigenspace gen_eigenspace geo_mult alg_mult spectrum min_poly min_poly_exp jordan_block partition conj_partition index_nilpotency" %}
 
 ## Invariant Subspaces
 
 {: .prompt-info }
-> Suppose $ U $ is a subspace of $ V $ invariant under $ T $. Then $ U $ is invariant under $ p(T) $ for every polynomial $ p \in \mathcal{P}(\mathbf{F}) $.
+> Sums and arbitrary intersections of $T$-invariant subspaces are $T$-invariant.
 
 {: .prompt-info }
-> The null space and range of $p(T)$ are invariant under $T$, for every $p \in \mathcal{P}(\mathbf{F})$.
-
-{: .prompt-info }
-> Every subspace of an eigenspace is invariant.
-
-{: .prompt-info }
-> An arbitrary intersection of $T$-invariant subspaces is $T$-invariant.
-
-### Every Line Invariant
-
-A $1$-dimensional invariant subspace is exactly the span of an eigenvector, so
-"every line is invariant" means "every nonzero vector is an eigenvector".
-
-{: .prompt-info }
-> Suppose every nonzero vector in $ V $ is an eigenvector of $ T $. Then $ T $ is a scalar multiple of the identity operator.
+> A $T$-invariant subspace is invariant under $p(T)$ for every $p \in \mathcal{P}(\mathbf{F})$.
 
 {: .prompt-proof }
-> Write $\lambda_u$ for the eigenvalue attached to a nonzero $u$, so $Tu = \lambda_u u$. Fix nonzero $u, w \in V$.
+> The operators leaving the subspace invariant are closed under sums, products and scalar multiples, and contain $I$ and $T$, so they contain every $p(T)$. $\blacksquare$
+
+{: .prompt-info }
+> $\operatorname{null}p(T)$ and $\operatorname{range}p(T)$ are $T$-invariant for every $p \in \mathcal{P}(\mathbf{F})$. In particular $E(\lambda,T)$ and $G(\lambda,T)$ are $T$-invariant.
+
+{: .prompt-proof }
+> $p(T)$ commutes with $T$. If $p(T)v = 0$ then $p(T)(Tv) = T\,p(T)v = 0$; and $T\,p(T)v = p(T)(Tv) \in \operatorname{range}p(T)$. The same argument works for any operator commuting with $T$; see [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}). $\blacksquare$
+
+{: .prompt-info }
+> **Invariant direct sums.** Suppose $V = V_1 \oplus \dots \oplus V_m$ with each $V_k$ invariant under $T$, and write $T_k = \left.T\right\rvert_{V_k}$. Then for every $p \in \mathcal{P}(\mathbf{F})$:
 >
-> If $w = cu$ for some $c \ne 0$, then $\lambda_w w = Tw = c\,Tu = c\lambda_u u = \lambda_u w$, so $\lambda_w = \lambda_u$.
+> (a) $\operatorname{null}p(T) = \bigoplus_k \operatorname{null}p(T_k)$ and $\operatorname{range}p(T) = \bigoplus_k \operatorname{range}p(T_k)$.
 >
-> If $u, w$ are independent, then $u + w \ne 0$ and
->
-> $$\lambda_{u+w} u + \lambda_{u+w} w = T(u+w) = \lambda_u u + \lambda_w w.$$
->
-> Independence forces $\lambda_u = \lambda_{u+w} = \lambda_w$. So $\lambda_u$ is the same scalar $\lambda$ for every nonzero $u$, i.e. $T = \lambda I$. $\blacksquare$
+> (b) The minimal polynomial of $T$ is the lcm of those of the $T_k$.
+
+{: .prompt-proof }
+> Each $V_k$ is invariant under $p(T)$ by the box above, and $\left.p(T)\right\rvert_{V_k} = p(T_k)$. So writing $v = \sum_k v_k$ with $v_k \in V_k$, we get $p(T)v = \sum_k p(T_k)v_k$ with $p(T_k)v_k \in V_k$. By directness, $p(T)v = 0$ iff every $p(T_k)v_k = 0$, which is the null-space formula, and the range formula is read off the same expression. For (b), by (a) $p(T) = 0$ iff every $p(T_k) = 0$, i.e. iff the minimal polynomial of every $T_k$ divides $p$, i.e. iff their lcm divides $p$. $\blacksquare$
+
+{: .prompt-info }
+> Every subspace of an eigenspace $E(\lambda,T)$ is invariant, since $T$ acts on it as $\lambda I$.
 
 ### Every $k$-Dimensional Subspace Invariant
 
+The converse of the last box: if enough subspaces are invariant, $T$ is a scalar. A $1$-dimensional invariant subspace is exactly the span of an eigenvector, so for $k = 1$ the hypothesis says every nonzero vector is an eigenvector.
+
 {: .prompt-info }
-> **Lemma.** Suppose $ k \in \\{ 1, \dots, n - 1 \\} $ and $ v \in V $ is nonzero. Then
->
-> $$ \bigcap \{U \subseteq V : \dim U = k,\ v \in U\} = \operatorname{span}(v). $$
+> Suppose $ k \in \\{ 1, \dots, n - 1 \\} $ and every subspace of $ V $ of dimension $ k $ is invariant under $ T $. Then $ T $ is a scalar multiple of the identity operator.
 
 {: .prompt-proof }
-> The $\supseteq$ direction is trivial ($v$ is in each such $U$). For $\subseteq$, I show that any $w \notin \operatorname{span}(v)$ is *excluded* by some $k$-dimensional subspace through $v$, so $w$ is not in the intersection.
+> **Every nonzero $v$ is an eigenvector.** Suppose not: $v, Tv$ are independent for some $v$. Extend them to a basis $v, Tv, x_3, \dots, x_n$. Since $k + 1 \le n$, the subspace
 >
-> Suppose $w \notin \operatorname{span}(v)$. Then $v, w$ are independent, so extend them to a basis
+> $$U = \operatorname{span}(v,\ x_3,\ \dots,\ x_{k+1})$$
 >
-> $$v,\ w,\ x_3,\ \dots,\ x_n.$$
+> (just $\operatorname{span}(v)$ when $k = 1$) has dimension $k$ and contains $v$, but not $Tv$. This contradicts the invariance of $U$.
 >
-> Since $k + 1 \le n$, the vectors $x_3, \dots, x_{k+1}$ exist (an empty list when $k = 1$), and we may set
+> **All the eigenvalues agree.** Write $Tu = \lambda_u u$ for nonzero $u$. If $w = cu$, then $Tw = c\lambda_u u = \lambda_u w$, so $\lambda_w = \lambda_u$. If $u, w$ are independent, then
 >
-> $$U = \operatorname{span}(v,\ x_3,\ \dots,\ x_{k+1}).$$
+> $$\lambda_{u+w} u + \lambda_{u+w} w = T(u+w) = \lambda_u u + \lambda_w w$$
 >
-> Then $\dim U = k$ and $v \in U$. But $w \notin U$, because $v, x_3, \dots, x_{k+1}, w$ are part of a basis, hence independent. $\blacksquare$
-
-{: .prompt-info }
-> **Theorem.** Suppose $ k \in \\{ 1, \dots, n - 1 \\} $ and every subspace of $ V $ of dimension $ k $ is invariant under $ T $. Then $ T $ is a scalar multiple of the identity operator.
-
-{: .prompt-proof }
-> Let $v \in V$ be nonzero. By the lemma, $\operatorname{span}(v)$ is an intersection of $k$-dimensional subspaces, each invariant by hypothesis, so $\operatorname{span}(v)$ is invariant. Hence $Tv \in \operatorname{span}(v)$, i.e. $v$ is an eigenvector. As every nonzero vector is an eigenvector, $T$ is a scalar multiple of $I$. $\blacksquare$
-
-{: .prompt-tip }
-> "Every $k$-dimensional subspace is invariant" collapses all the way down to "every line is invariant", because a line is recoverable as the intersection of the $k$-dimensional subspaces sitting above it.
-
-## Eigenvalues and Eigenvectors
-
-{: .prompt-info }
-> Every list of eigenvectors of $ T $ corresponding to distinct eigenvalues of $ T $ is _linearly independent_.
-
-{: .prompt-info }
-> Suppose $ v_1, \dots, v_m \in V $. Then
->
-> $ v_1, \dots, v_m $ is linearly independent $ \iff \exists\, T \in \mathcal{L}(V) $ such that $ v_1, \dots, v_m $ are eigenvectors of $ T $ corresponding to distinct eigenvalues.
-
-{: .prompt-info }
-> Suppose $ \lambda $ is an eigenvalue of $ T $ and $ v_1, \dots, v_n $ is any basis of $ V $. Then
->
-> $$ \left\lvert \lambda \right\rvert \le n \max\{\left\lvert \mathcal{M}(T, (v_1,\dots,v_n))_{j,k} \right\rvert : 1 \le j, k \le n \}. $$
-
-### Upper Bound on the Number of Distinct Eigenvalues
-
-{: .prompt-info }
-> Tight upper bound on the number of _distinct_ eigenvalues:
->
-> $$\#\{\text{distinct eigenvalues of } T\} \;\le\; \min\big(\dim V,\; 1 + \dim \operatorname{range} T\big)$$
-
-{: .prompt-proof }
-> The bound $\dim V$ follows from linear independence of eigenvectors with distinct eigenvalues. For the other bound, let $\lambda_1, \dots, \lambda_m$ be the distinct **nonzero** eigenvalues of $T$, with
-> corresponding eigenvectors $v_1, \dots, v_m$.
->
-> Each $v_i$ lies in $\operatorname{range} T$, since $\lambda_i \ne 0$ lets us write
->
-> $$v_i = T\left(\tfrac{1}{\lambda_i} v_i\right).$$
->
-> These $v_i$ are linearly independent, so $m \le \dim \operatorname{range} T$. The eigenvalues of $T$ are these $m$ nonzero ones, *plus possibly* $0$, so
->
-> $$\#\{\text{distinct eigenvalues}\} \le m + 1 \le 1 + \dim \operatorname{range} T. \qquad \blacksquare$$
-
-{: .prompt-tip }
-> **Which of the two bounds is better.** Let $r = \dim \operatorname{range} T$. The comparison
-> turns entirely on whether $0$ is an eigenvalue, i.e. whether $T$ fails to be invertible, i.e. whether $r < n$.
->
-> - **$0$ is not an eigenvalue ($T$ is invertible).** Then $r = n$ and $1 + r = n + 1 > n$, so $\min$ selects
->   $\dim V$. The range bound is valid but vacuous.
-> - **$0$ is an eigenvalue ($T$ is not invertible).** Then $r \le n - 1$ and $1 + r \le n$, so $\min$ selects
->   $1 + r$: a strict improvement whenever $r < n - 1$.
-
-{: .prompt-warning }
-> This is about $0$ being **an** eigenvalue, not the **only** one, so it is unrelated to
-> nilpotency. $\operatorname{diag}(0,1,2,3)$ is non-invertible and far from nilpotent.
->
-> Nilpotency is in fact where the bound is *weakest*: for $J_n(0)$ the true count is $1$
-> while $r = n - 1$ gives a bound of $n$. The only nilpotent operator attaining the bound
-> is $T = 0$, where $r = 0$ and $1 + r = 1$.
-
-{: .prompt-tip }
-> **Equality.**
->
-> - $\\#\\{\text{distinct eigenvalues}\\} = 1 + r$ holds iff, in some basis,
->   $T = \operatorname{diag}(0, \dots, 0, \lambda_1, \dots, \lambda_r)$ with $r < n$ and the $\lambda_i$
->   distinct and nonzero. Equivalently: $T$ is diagonalizable, $0$ is an eigenvalue, and
->   every nonzero eigenvalue has geometric multiplicity $1$.
-> - $\\#\\{\text{distinct eigenvalues}\\} = \dim V$ holds iff
->   $T = \operatorname{diag}(\lambda_1, \dots, \lambda_n)$ in some basis
->   with the $\lambda_i$ distinct. One of them is allowed to be $0$.
-
-### Duals
-
-{: .prompt-info }
-> Suppose $ \lambda \in \mathbf{F} $. Then
->
-> $\lambda$ is an eigenvalue of $T \iff \lambda$ is an eigenvalue of the dual operator $ T' \in \mathcal{L}(V'). $
+> forces $\lambda_u = \lambda_{u+w} = \lambda_w$. So $T = \lambda I$ for a single $\lambda$. $\blacksquare$
 
 ## Null Space and Range Chains
 
@@ -159,53 +76,43 @@ A $1$-dimensional invariant subspace is exactly the span of an eigenvector, so
 > and once either holds at $m$, it holds at every $m' \ge m$.
 
 {: .prompt-tip }
-> So the null-space chain and the range chain stabilize at the *same* index; call it the **stabilization index**. Before it, $\dim\operatorname{null}T^m$ grows by at least $1$ at each step, so the chains have stabilized by $m = n$. This is why $G(\lambda,T) = \operatorname{null}(T-\lambda I)^n$ is a safe uniform definition. The true stabilization index of $T - \lambda I$ is usually much smaller, namely $e_\lambda$ (proved in [The Nilpotent Part](#the-nilpotent-part) below).
+> So the null-space chain and the range chain stabilize at the *same* step; this common step is the **index** of $T$ (in operator theory, the *ascent* and *descent*, which are equal here). Before it, $\dim\operatorname{null}T^m$ grows by at least $1$ at each step, so the chains have stabilized by $m = n$. This is why $G(\lambda,T) = \operatorname{null}(T-\lambda I)^n$ is a safe uniform definition. The true index of $T - \lambda I$ is usually much smaller, namely $e_\lambda$ (proved in [The Nilpotent Part](#the-nilpotent-part) below).
 
 {: .prompt-info }
-> Suppose $V_1,\dots,V_m$ are nonzero subspaces of $V$ with $V = \bigoplus_{k=1}^m V_k$, each $V_k$ invariant under $T$. Then for every $\lambda \in \mathbf{F}$,
->
-> $$\operatorname{null}(T-\lambda I)^j = \bigoplus_{k=1}^m \operatorname{null}\big(\left.T\right\rvert_{V_k}-\lambda I\big)^j \qquad \text{for every } j \ge 0,$$
->
-> and likewise $\operatorname{range}(T-\lambda I)^j = \bigoplus_k \operatorname{range}(\left.T\right\rvert_{V_k}-\lambda I)^j$.
->
-> Taking $j = 1$ gives $E(\lambda, T) = \bigoplus_k E(\lambda, \left.T\right\rvert_{V_k})$; taking $j = n$ gives $G(\lambda, T) = \bigoplus_k G(\lambda, \left.T\right\rvert_{V_k})$.
+> $V = \operatorname{null}T \oplus \operatorname{range}T \iff \operatorname{null}T = \operatorname{null}T^2$, i.e. the index of $T$ is at most $1$.
 
-{: .prompt-tip }
-> Everything in this post is therefore computed blockwise. Immediately: $g_\lambda$ and $d_\lambda$ add across the blocks, the stabilization index of $T - \lambda I$ is $\max_k$ of the blockwise ones (so $e_\lambda = \max_k e_\lambda^{(k)}$, i.e. the minimal polynomial is the **lcm** of the blocks'), and the characteristic polynomial is their **product**. This is the engine behind both the primary decomposition and the Jordan form: choose the $V_k$ well and each block becomes trivial to read.
+{: .prompt-proof }
+> *($\Rightarrow$)* If $v \in \operatorname{null}T^2$, then $Tv \in \operatorname{null}T \cap \operatorname{range}T = \\{0\\}$, so $v \in \operatorname{null}T$.
+>
+> *($\Leftarrow$)* If $Tu \in \operatorname{null}T$, then $u \in \operatorname{null}T^2 = \operatorname{null}T$, so $Tu = 0$. Hence $\operatorname{null}T \cap \operatorname{range}T = \\{0\\}$, and the dimensions add up to $n$ by rank–nullity. $\blacksquare$
 
 ## Generalized Eigenspaces
+
+Suppose the distinct eigenvalues of $T$ are $ \lambda_1, \dots, \lambda_m $.
+
+|                                  | $G(\lambda_k,T)$                                                                           | $E(\lambda_k,T)$                                                            |
+| -------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| Definition                       | $\operatorname{null}(T-\lambda_k I)^{j}$, any $j \ge e_{\lambda_k}$ ($j = n$ always works) | $\operatorname{null}(T-\lambda_k I)$                                        |
+| Containment                      | $E \subseteq G$                                                                            | —                                                                           |
+| Restriction of $T - \lambda_k I$ | nilpotent, index exactly $e_{\lambda_k}$                                                   | zero                                                                        |
+| Sum is direct                    | always                                                                                     | always                                                                      |
+| Sum is all of $V$                | iff the minimal polynomial splits over $\mathbf{F}$ (automatic over $\mathbb{C}$)          | iff $T$ diagonalizable                                                      |
+| Multiplicity                     | algebraic $d_{\lambda_k} = \dim G$                                                         | geometric $g_{\lambda_k} = \dim E$, $1 \le g_{\lambda_k} \le d_{\lambda_k}$ |
+| Min. polynomial                  | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$                                                    | $\prod_k(z-\lambda_k)$ **iff diagonalizable**                               |
+| Char. polynomial                 | $\prod_k (z-\lambda_k)^{d_{\lambda_k}}$                                                    | — (always uses $d_{\lambda_k}$)                                             |
 
 {: .prompt-info }
 > An eigenvalue $\lambda$ of $T$ is called **defective** when $\dim E(\lambda, T) \;<\; \dim G(\lambda, T)$, i.e. $g_\lambda < d_\lambda$.
 
-Suppose the distinct eigenvalues of $T$ are $ \lambda_1, \dots, \lambda_m $.
+{: .prompt-tip }
+> Directness of the sum of eigenspaces says eigenvectors with distinct eigenvalues are linearly independent. Conversely, every linearly independent list $v_1, \dots, v_m$ arises this way: extend it to a basis $v_1, \dots, v_n$ and define $T$ by $Tv_k = kv_k$ for $k \le m$ and $Tv_k = 0$ for $k > m$.
 
-|                                  | $G(\lambda_k,T)$                                                                           | $E(\lambda_k,T)$                                                |
-| -------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| Definition                       | $\operatorname{null}(T-\lambda_k I)^{j}$, any $j \ge e_{\lambda_k}$ ($j = n$ always works) | $\operatorname{null}(T-\lambda_k I)$                            |
-| Containment                      | $E \subseteq G$                                                                            | —                                                               |
-| Invariant                        | yes                                                                                        | yes                                                             |
-| Restriction of $T - \lambda_k I$ | nilpotent, index exactly $e_{\lambda_k}$                                                   | zero                                                            |
-| Sum is direct                    | always                                                                                     | always                                                          |
-| Sum is all of $V$                | iff the minimal polynomial splits over $\mathbf{F}$ (automatic over $\mathbb{C}$)          | iff $T$ diagonalizable                                          |
-| Multiplicity                     | algebraic $d_{\lambda_k} = \dim G$                                                         | geometric $g_{\lambda_k} = \dim E$, $1 \le g_{\lambda_k} \le d_{\lambda_k}$ |
-| Min. polynomial                  | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$                                                    | $\prod_k(z-\lambda_k)$ **iff diagonalizable**                   |
-| Char. polynomial                 | $\prod_k (z-\lambda_k)^{d_{\lambda_k}}$                                                    | — (always uses $d_{\lambda_k}$)                                 |
-
-Over $\mathbb{C}$, every operator has an upper-triangular matrix with respect to some basis; see [Quotient Spaces]({% post_url 2026-07-04-quotient-spaces %}#induction-on-dimension).
-
-{: .prompt-info }
-> In an upper-triangular matrix of $T$,
->
-> $$\{\text{distinct diagonal entries}\} = \{\text{zeros of } p_T\} = \{\text{eigenvalues}\},$$
->
-> and for each eigenvalue $\lambda$,
->
-> $$1 \le e_\lambda \le (\text{number of times } \lambda \text{ appears on the diagonal}) = d_\lambda. $$
+{: .prompt-tip }
+> **Blockwise computation.** For $V = V_1 \oplus \dots \oplus V_m$ with each $V_k$ invariant, [invariant direct sums](#invariant-subspaces) with $p = (z - \lambda)^j$ give $\operatorname{null}(T - \lambda I)^j = \bigoplus_k \operatorname{null}(T_k - \lambda I)^j$ for every $j$. Taking $j = 1$ and $j = n$ (the chains of $T_k - \lambda I$ stabilize by $\dim V_k \le n$): $E(\lambda,T) = \bigoplus_k E(\lambda,T_k)$ and $G(\lambda,T) = \bigoplus_k G(\lambda,T_k)$. So $g_\lambda$ and $d_\lambda$ add across the blocks, the index of $T - \lambda I$ is the max of the blockwise ones (so $e_\lambda = \max_k e_\lambda^{(k)}$, matching the lcm), and the characteristic polynomial is the **product** of the blocks'. This is the engine behind both the primary decomposition and the Jordan form: choose the $V_k$ well and each block becomes trivial to read.
 
 ### The Nilpotent Part
 
-Every eigenvalue produces a nilpotent operator. If $\lambda$ is an eigenvalue of $T$, then $G(\lambda,T)$ is invariant under $T$, and
+Every eigenvalue produces a nilpotent operator. If $\lambda$ is an eigenvalue of $T$, then $G(\lambda,T)$ is [invariant](#invariant-subspaces) under $T$, and
 
 $$N := \left.(T - \lambda I)\right\rvert_{G(\lambda,T)}$$
 
@@ -221,11 +128,7 @@ is nilpotent. So everything in [Nilpotent Operators]({% post_url 2026-07-25-nilp
 >
 > is invertible, by [Inverse of a Jordan Block]({% post_url 2026-07-25-nilpotent-operators %}#inverse-of-a-jordan-block). So $\lambda$ is the only eigenvalue of $\left.T\right\rvert_{G(\lambda,T)}$, and taking $\alpha = 0$, $\left.T\right\rvert_{G(\lambda,T)}$ is invertible when $\lambda \ne 0$.
 
-{: .prompt-info }
-> $T$ is nilpotent $\iff G(0,T) = V$.
-
-{: .prompt-proof }
-> If $T$ is nilpotent, then $T^n = 0$ by [Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}), so $G(0,T) = \operatorname{null}T^n = V$. Conversely, $G(0,T) = V$ means $T^n = 0$. $\blacksquare$
+At the other extreme, $T$ is nilpotent iff $G(0,T) = \operatorname{null}T^n = V$, since a nilpotent operator satisfies $T^n = 0$.
 
 The three numbers attached to $\lambda$ are read off the diagram of $N$:
 
@@ -242,20 +145,16 @@ $$\dim\operatorname{range}N = d_\lambda - g_\lambda,$$
 the number of boxes above the bottom level. The second row needs a proof.
 
 {: .prompt-info }
-> $e_\lambda = p$: the exponent of $z - \lambda$ in the minimal polynomial of $T$ is the index of nilpotency of $N$.
+> The [index](#null-space-and-range-chains) of $T - \lambda I$, the index of nilpotency $p$ of $N$, and the exponent $e_\lambda$ of $z - \lambda$ in the minimal polynomial of $T$ are all equal.
 
 {: .prompt-proof }
-> Write $S = T - \lambda I$, $G = G(\lambda,T) = \operatorname{null}S^n$, $R = \operatorname{range}S^n$, and $p_T(z) = (z-\lambda)^{e_\lambda}q(z)$ with $q(\lambda) \ne 0$. Then $V = G \oplus R$, both summands are invariant under every polynomial in $T$, and $S\vert_G = N$.
+> **Index $= p$.** Since $\operatorname{null}(T - \lambda I)^j \subseteq G(\lambda,T)$ for every $j$, these null spaces are exactly the $\operatorname{null}N^j$, which grow strictly until $j = p$ and are constant after.
 >
-> **$p \le e_\lambda$.** Since $(T\vert_G - \lambda I)^p = N^p = 0$, the minimal polynomial of $T\vert_G$ divides $(z-\lambda)^p$, so it is $(z-\lambda)^j$ for some $j \le p$. Then $N^j = (T\vert_G - \lambda I)^j = 0$, which forces $j = p$. So the minimal polynomial of $T\vert_G$ is $(z-\lambda)^p$, and it [divides $p_T$]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality). Write $(z-\lambda)^{e_\lambda}q = h\,(z-\lambda)^p$. If $p > e_\lambda$, cancelling $(z-\lambda)^{e_\lambda}$ gives $q = h\,(z-\lambda)^{p-e_\lambda}$, so $q(\lambda) = 0$, a contradiction. Hence $p \le e_\lambda$.
+> **$e_\lambda = p$.** Write $S = T - \lambda I$, $G = G(\lambda,T) = \operatorname{null}S^n$, $R = \operatorname{range}S^n$, and $p_T(z) = (z-\lambda)^{e_\lambda}q(z)$ with $q(\lambda) \ne 0$. Then $V = G \oplus R$, both summands are invariant under every polynomial in $T$, and $S\vert_G = N$.
 >
-> **$e_\lambda \le p$.** $S\vert_R$ is injective, because $\operatorname{null}S \subseteq G$ and $G \cap R = \\{0\\}$, so it is invertible. Restricting $p_T(T) = 0$ to $R$ gives $(S\vert_R)^{e_\lambda}\,q(T)\vert_R = 0$, so $q(T)\vert_R = 0$. Now $f = (z-\lambda)^pq$ satisfies $f(T)\vert_G = q(T)\vert_G\,N^p = 0$ and $f(T)\vert_R = (S\vert_R)^p\,q(T)\vert_R = 0$, so $f(T) = 0$ on $V = G \oplus R$. The minimal polynomial divides every polynomial that annihilates $T$, so $f = h\,p_T$ for some polynomial $h$, that is, $(z-\lambda)^pq = h\,(z-\lambda)^{e_\lambda}q$. Cancelling $q$ and comparing degrees gives $p = \deg h + e_\lambda \ge e_\lambda$. $\blacksquare$
-
-{: .prompt-info }
-> The stabilization index of $T - \lambda I$ is $e_\lambda$.
-
-{: .prompt-proof }
-> Since $\operatorname{null}(T - \lambda I)^j \subseteq G(\lambda,T)$ for every $j$, these null spaces are exactly the $\operatorname{null}N^j$, which grow strictly until $j = p$ and are constant after. So the [stabilization index](#null-space-and-range-chains) is $p = e_\lambda$. $\blacksquare$
+> *$p \le e_\lambda$.* Since $(T\vert_G - \lambda I)^p = N^p = 0$, the minimal polynomial of $T\vert_G$ divides $(z-\lambda)^p$, so it is $(z-\lambda)^j$ for some $j \le p$. Then $N^j = (T\vert_G - \lambda I)^j = 0$, which forces $j = p$. So the minimal polynomial of $T\vert_G$ is $(z-\lambda)^p$, and it [divides $p_T$]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality). Write $(z-\lambda)^{e_\lambda}q = h\,(z-\lambda)^p$. If $p > e_\lambda$, cancelling $(z-\lambda)^{e_\lambda}$ gives $q = h\,(z-\lambda)^{p-e_\lambda}$, so $q(\lambda) = 0$, a contradiction. Hence $p \le e_\lambda$.
+>
+> *$e_\lambda \le p$.* $S\vert_R$ is injective, because $\operatorname{null}S \subseteq G$ and $G \cap R = \\{0\\}$, so it is invertible. Restricting $p_T(T) = 0$ to $R$ gives $(S\vert_R)^{e_\lambda}\,q(T)\vert_R = 0$, so $q(T)\vert_R = 0$. Now $f = (z-\lambda)^pq$ satisfies $f(T)\vert_G = q(T)\vert_G\,N^p = 0$ and $f(T)\vert_R = (S\vert_R)^p\,q(T)\vert_R = 0$, so $f(T) = 0$ on $V = G \oplus R$. The minimal polynomial divides every polynomial that annihilates $T$, so $f = h\,p_T$ for some polynomial $h$, that is, $(z-\lambda)^pq = h\,(z-\lambda)^{e_\lambda}q$. Cancelling $q$ and comparing degrees gives $p = \deg h + e_\lambda \ge e_\lambda$. $\blacksquare$
 
 {: .prompt-tip }
 > Keep the three numbers apart: $1 \le g_\lambda \le d_\lambda$ and $1 \le e_\lambda \le d_\lambda$, but there is no general inequality between $g_\lambda$ and $e_\lambda$: for $T = 0$ on $\mathbf{F}^3$, $g_0 = 3$ but $e_0 = 1$, while for $J_3(0)$, $g_0 = 1$ but $e_0 = 3$. What does hold is
@@ -265,13 +164,90 @@ the number of boxes above the bottom level. The second row needs a proof.
 {: .prompt-info }
 > *The nilpotent shadow of diagonalizability.*
 >
-> $$g_\lambda = d_\lambda \iff \mu = (1,\dots,1) \iff N = 0 \iff G(\lambda,T) = E(\lambda,T).$$
+> $$g_\lambda = d_\lambda \iff \mu = (1,\dots,1) \iff N = 0 \iff G(\lambda,T) = E(\lambda,T) \iff V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I).$$
 >
-> That is, $\lambda$ is not defective exactly when every column has height $1$, and then $T$ acts on $G(\lambda,T)$ as $\lambda I$ rather than through a nontrivial Jordan form. If the generalized eigenspaces of $T$ sum to $V$ (automatic over $\mathbb{C}$) and no eigenvalue is defective, $T$ is diagonalizable.
+> That is, $\lambda$ is not defective exactly when every column has height $1$, and then $T$ acts on $G(\lambda,T)$ as $\lambda I$ rather than through a nontrivial Jordan form. The last equivalence holds because both sides say the index of $T - \lambda I$, which is $e_\lambda = p$, is at most $1$ (and it holds trivially when $\lambda$ is not an eigenvalue). If the generalized eigenspaces of $T$ sum to $V$ and no eigenvalue is defective, $T$ is diagonalizable. So over $\mathbb{C}$,
+>
+> $$T \text{ is diagonalizable} \iff V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I) \text{ for every } \lambda \in \mathbb{C}.$$
 
-## Polynomials and Inverses of $T$
+{: .prompt-warning }
+> The hypothesis $\mathbf{F} = \mathbb{C}$ is needed. Rotation by $\pi/2$ on $\mathbb{R}^2$ has no real eigenvalues, so $T - \lambda I$ is invertible and the decomposition holds trivially for every $\lambda \in \mathbb{R}$, yet $T$ is not diagonalizable over $\mathbb{R}$.
 
-### Eigenspaces of $p(T)$
+### Existence of Eigenvalues
+
+Everything here rests on one fact: $\sigma(T)$ is exactly the set of zeros of $p_T$ in $\mathbf{F}$. So whether $T$ has eigenvalues depends on how $p_T$ factors over $\mathbf{F}$.
+
+{: .prompt-info }
+> (a) Over $\mathbb{C}$, $\sigma(T) \ne \varnothing$.
+>
+> (b) Over $\mathbb{R}$, $\sigma(T) = \varnothing$ exactly when $p_T$ has no real zero, as for rotation by $\pi/2$ on $\mathbb{R}^2$, with $p_T = z^2 + 1$. This cannot happen when $n$ is odd.
+>
+> (c) Over $\mathbb{R}$, $T$ always has an invariant subspace of dimension $1$ or $2$.
+
+{: .prompt-proof }
+> (a) $p_T$ has degree at least $1$ since $V \ne \\{0\\}$, so it has a complex zero.
+>
+> (b) The first claim is the fact above. For odd $n$, see [Complexification]({% post_url 2026-08-03-complexification %}#application-odd-dimension-forces-a-real-eigenvalue).
+>
+> (c) Let $q$ be an irreducible factor of $p_T$, so $\deg q \in \\{1, 2\\}$, and write $p_T = qh$. By minimality $h(T) \ne 0$, so $w = h(T)v \ne 0$ for some $v$, and $q(T)w = p_T(T)v = 0$. Then $T^{\deg q}w \in \operatorname{span}(w, \dots, T^{\deg q - 1}w)$, so this span is invariant, nonzero, and of dimension at most $\deg q \le 2$. $\blacksquare$
+
+{: .prompt-tip }
+> Over $\mathbb{R}$ the role of an eigenvector is played by an invariant plane on which $T$ acts as a rotation-scaling with a conjugate pair of eigenvalues of $T_{\mathbb{C}}$. This is why the hierarchy of normal forms below assumes the minimal polynomial splits: without it, even the upper-triangular form fails.
+
+### Counting Eigenvalues
+
+{: .prompt-info }
+> Let $r = \dim\operatorname{range}T$.
+>
+> (a) $\sum_{\lambda \in \sigma(T)} d_\lambda \le n$, with equality iff the minimal polynomial of $T$ splits over $\mathbf{F}$ (automatic over $\mathbb{C}$). Over $\mathbb{R}$, $\sum_{\lambda \in \sigma(T)} d_\lambda \equiv n \pmod 2$.
+>
+> (b) $\sum_{\lambda \in \sigma(T)} g_\lambda \le \sum_{\lambda \in \sigma(T)} d_\lambda$, so $\sum_{\lambda \in \sigma(T)} g_\lambda \le n$, with equality iff $T$ is diagonalizable.
+>
+> (c) $\sum_{\lambda \in \sigma(T) \setminus \\{0\\}} d_\lambda \le n - d_0 \le r$, where $d_0 = \dim G(0,T)$ (which is $0$ when $0$ is not an eigenvalue).
+>
+> (d) $\lvert \sigma(T) \rvert \le \min(n,\; 1 + r)$, and over $\mathbb{C}$ also $\lvert \sigma(T) \rvert \ge 1$ by [existence](#existence-of-eigenvalues).
+
+{: .prompt-proof }
+> (a) The sum of the $G(\lambda,T)$ is direct and lies in $V$, and it is all of $V$ iff the minimal polynomial splits. Over $\mathbb{C}$ the equality is also visible in an [upper-triangular matrix]({% post_url 2026-07-04-quotient-spaces %}#induction-on-dimension) of $T$, whose $n$ diagonal entries list each eigenvalue $\lambda$ exactly $d_\lambda$ times. Over $\mathbb{R}$, the sum is the part of $n = \sum d_\lambda(T_{\mathbb{C}})$ coming from real eigenvalues; the non-real eigenvalues of $T_{\mathbb{C}}$ come in conjugate pairs with equal multiplicities ([Complexification]({% post_url 2026-08-03-complexification %})), so they contribute an even number.
+>
+> (b) $E(\lambda,T) \subseteq G(\lambda,T)$ gives $g_\lambda \le d_\lambda$. The sum of the $E(\lambda,T)$ is direct, and it is all of $V$ iff $T$ is diagonalizable.
+>
+> (c) For $\lambda \ne 0$, $\left.T\right\rvert_{G(\lambda,T)}$ is invertible (see [The Nilpotent Part](#the-nilpotent-part)), so $G(\lambda,T) = T^n\big(G(\lambda,T)\big) \subseteq \operatorname{range}T^n$. Hence $\bigoplus_{\lambda \ne 0} G(\lambda,T) \subseteq \operatorname{range}T^n$. Since $V = \operatorname{null}T^n \oplus \operatorname{range}T^n = G(0,T) \oplus \operatorname{range}T^n$, we get $\dim\operatorname{range}T^n = n - d_0$, and $\operatorname{range}T^n \subseteq \operatorname{range}T$.
+>
+> (d) Each eigenvalue has $d_\lambda \ge 1$, so $\lvert \sigma(T) \rvert \le \sum_{\lambda \in \sigma(T)} d_\lambda \le n$ by (a), and $\lvert \sigma(T) \setminus \\{0\\} \rvert \le \sum_{\lambda \in \sigma(T) \setminus \\{0\\}} d_\lambda \le r$ by (c). The value $0$ adds at most one more. $\blacksquare$
+
+{: .prompt-tip }
+> Adding $d_0$ to both sides of (c) gives back (a). So once repetitions are counted, the range bound is never sharper than $n$. The improvement $1 + r$ in (d) comes entirely from $0$ contributing a single distinct value however large $d_0$ is.
+
+{: .prompt-tip }
+> **Which bound in (d) is better.** The comparison
+> turns entirely on whether $0$ is an eigenvalue, i.e. whether $T$ fails to be invertible, i.e. whether $r < n$.
+>
+> - **$0$ is not an eigenvalue ($T$ is invertible).** Then $r = n$ and $1 + r = n + 1 > n$, so $\min$ selects
+>   $\dim V$. The range bound is valid but vacuous.
+> - **$0$ is an eigenvalue ($T$ is not invertible).** Then $r \le n - 1$ and $1 + r \le n$, so $\min$ selects
+>   $1 + r$: a strict improvement whenever $r < n - 1$.
+
+{: .prompt-warning }
+> This is about $0$ being **an** eigenvalue, not the **only** one, so it is unrelated to
+> nilpotency. $\operatorname{diag}(0,1,2,3)$ is non-invertible and far from nilpotent.
+>
+> Nilpotency is in fact where the bound is *weakest*: for $J_n(0)$ the true count is $1$
+> while $r = n - 1$ gives a bound of $n$. The only nilpotent operator attaining the bound
+> is $T = 0$, where $r = 0$ and $1 + r = 1$.
+
+{: .prompt-tip }
+> **Equality in (d).**
+>
+> - $\lvert \sigma(T) \rvert = 1 + r$ holds iff, in some basis,
+>   $T = \operatorname{diag}(0, \dots, 0, \lambda_1, \dots, \lambda_r)$ with $r < n$ and the $\lambda_i$
+>   distinct and nonzero. Equivalently: $T$ is diagonalizable, $0$ is an eigenvalue, and
+>   every nonzero eigenvalue has geometric multiplicity $1$.
+> - $\lvert \sigma(T) \rvert = n$ holds iff
+>   $T = \operatorname{diag}(\lambda_1, \dots, \lambda_n)$ in some basis
+>   with the $\lambda_i$ distinct. One of them is allowed to be $0$.
+
+## Eigenspaces of $p(T)$ and $T^{-1}$
 
 {: .prompt-info }
 > Suppose $ \mathbf{F} = \mathbb{C}$, $ p \in \mathcal{P}(\mathbb{C}) $, and $ \alpha \in \mathbb{C} $. Then
@@ -281,13 +257,19 @@ the number of boxes above the bottom level. The second row needs a proof.
 > (b) $E(\alpha, p(T)) \;\supseteq\; \bigoplus_{\lambda:\,p(\lambda)=\alpha} E(\lambda, T)$, with equality iff $p'(\lambda) \neq 0$ for every defective $\lambda$ in that fiber.
 
 {: .prompt-proof }
-> (a) Each $G(\lambda, T)$ is $T$-invariant, hence $p(T)$-invariant. On $G(\lambda, T)$, write $T = \lambda I + N$ where $N$ is nilpotent. Since $\lambda I$ and $N$ commute, the algebraic Taylor expansion of $p$ around $\lambda$ holds:
+> Over $\mathbb{C}$, $V = \bigoplus_{\lambda \in \sigma(T)} G(\lambda,T)$ with each summand $T$-invariant; write $T_\lambda = \left.T\right\rvert_{G(\lambda,T)}$. For each $j$, $(p(T) - \alpha I)^j$ is $q(T)$ with $q = (p - \alpha)^j$, so [invariant direct sums](#invariant-subspaces) gives
 >
-> $$p(T)\big\rvert_{G(\lambda,T)} \;=\; \sum_{j=0}^{\deg p} \frac{p^{(j)}(\lambda)}{j!}\, N^j \;=\; p(\lambda)\,I \;+\; \underbrace{\Big(p'(\lambda)N + \tfrac{p''(\lambda)}{2}N^2 + \dots\Big)}_{=:\,M}.$$
+> $$\operatorname{null}\big(p(T) - \alpha I\big)^j = \bigoplus_{\lambda \in \sigma(T)} \operatorname{null}\big(p(T_\lambda) - \alpha I\big)^j.$$
 >
-> The remainder $M$ is a polynomial in $N$ with **zero constant term**, so it is nilpotent. So $p(T)$ acts on $G(\lambda, T)$ as $p(\lambda)I + (\text{nilpotent})$, and $G(\lambda,T) \subseteq G(p(\lambda), p(T))$. Hence the right side of (a) is contained in the left for every $\alpha$. Summing over $\alpha$, the right sides add up to $V$ and the left sides form a direct sum inside $V$, so dimensions force equality for each $\alpha$.
+> On each block, $T_\lambda = \lambda I + N$ with $N$ nilpotent. Since $\lambda I$ and $N$ commute, the algebraic Taylor expansion of $p$ around $\lambda$ holds:
 >
-> (b) By the blockwise result, $E(\alpha, p(T))$ is the direct sum of its intersections with the $G(\lambda,T)$; the intersection is $\\{0\\}$ when $p(\lambda) \ne \alpha$ and $\operatorname{null}M$ when $p(\lambda) = \alpha$, whereas $E(\lambda, T) = \operatorname{null}N$. Factor $M = NQ$ with
+> $$p(T_\lambda) \;=\; \sum_{t=0}^{\deg p} \frac{p^{(t)}(\lambda)}{t!}\, N^t \;=\; p(\lambda)\,I \;+\; \underbrace{\Big(p'(\lambda)N + \tfrac{p''(\lambda)}{2}N^2 + \dots\Big)}_{=:\,M}.$$
+>
+> $M$ is a polynomial in $N$ with **zero constant term**, so it is nilpotent. Hence $p(T_\lambda) - \alpha I = (p(\lambda) - \alpha)I + M$ is invertible when $p(\lambda) \ne \alpha$, and equals $M$ when $p(\lambda) = \alpha$. So only the blocks with $p(\lambda) = \alpha$ contribute, and they contribute $\operatorname{null}M^j$.
+>
+> (a) Take $j = n$: $M^n = 0$, so each such block contributes all of $G(\lambda,T)$.
+>
+> (b) Take $j = 1$: each such block contributes $\operatorname{null}M$, while $E(\lambda, T) = \operatorname{null}N$. Factor $M = NQ$ with
 >
 > $$Q = p'(\lambda) I + \tfrac{p''(\lambda)}{2}N + \dots.$$
 >
@@ -298,16 +280,6 @@ the number of boxes above the bottom level. The second row needs a proof.
 >
 > So the ordinary eigenspace grows strictly exactly when some $\lambda$ in the fiber is **both a critical point of $p$ and a defective eigenvalue of $T$**. $\blacksquare$
 
-### Inverses
-
-{: .prompt-info }
-> Suppose $ T $ is invertible with minimal polynomial $ p_T $ of degree $ m $. Then $ p_T(0) \ne 0 $ and
->
-> $$p_{T^{-1}}(z) = \frac{z^m\, p_T(1/z)}{p_T(0)}.$$
-
-{: .prompt-tip }
-> $ p_T(0) \ne 0 $ is exactly the statement that $0$ is not an eigenvalue. The right-hand side is the *reversal* of $p_T$ (coefficients read backwards), rescaled to stay monic.
-
 {: .prompt-info }
 > Suppose $ T $ is invertible. For all nonzero $\lambda \in \mathbf{F} $,
 >
@@ -315,56 +287,17 @@ the number of boxes above the bottom level. The second row needs a proof.
 >
 > (b) $ E(\lambda, T) = E(\frac{1}{\lambda}, T^{-1}) $.
 
-## Diagonalizability
-
-{: .prompt-info }
-> Suppose $ \mathbf{F} = \mathbb{C} $ and $\lambda_1, \dots, \lambda_m$ are the distinct eigenvalues of $T$. The following are equivalent.
->
-> (a) $T$ is diagonalizable.
->
-> (b) $V$ has a basis consisting of eigenvectors of $T$.
->
-> (c) $V = E(\lambda_1,T) \oplus \dots \oplus E(\lambda_m,T)$.
->
-> (d) $\sum_k \dim E(\lambda_k, T) = \dim V$.
->
-> (e) The minimal polynomial of $T$ is $(z-\lambda_1)\cdots(z-\lambda_m)$, i.e. it has no repeated roots.
->
-> (f) $ V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I) $ for **every** $ \lambda \in \mathbb{C} $.
-
-{: .prompt-tip }
-> Diagonalizable means the eigenspaces are big enough to fill $V$. Conditions (b) to (e) each say "fill $V$" in a different dialect, the min-poly one saying that no eigenvalue needs a repeated factor to be annihilated. A repeated factor is exactly the symptom of an eigenspace that came up short: for
->
-> $$T = \begin{pmatrix} 5 & 1 \\\\ 0 & 5 \end{pmatrix},$$
->
-> $(T - 5I)$ kills $(1,0)$ but only maps $(0,1) \mapsto (1,0)$; it takes a second application to finish the job, so $(z-5)^2$ is the minimal polynomial and $\dim E(5,T) = 1 < 2 = \dim G(5,T)$.
-
-{: .prompt-warning }
-> The hypothesis $\mathbf{F} = \mathbb{C}$ is needed for (f). Rotation by $\pi/2$ on $\mathbb{R}^2$ has no real eigenvalues, so $T - \lambda I$ is invertible and (f) holds trivially for every $\lambda \in \mathbb{R}$, yet $T$ is not diagonalizable over $\mathbb{R}$.
-
 {: .prompt-proof }
-> Proof of (a) $\iff$ (f).
->
-> *($\Rightarrow$)* A basis of eigenvectors of $T$ is also a basis of eigenvectors of $T - \lambda I$, with eigenvalues $\lambda_j - \lambda$. The basis vectors with eigenvalue $0$ span $\operatorname{null}(T - \lambda I)$, and the rest span $\operatorname{range}(T - \lambda I)$, so $V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I)$.
->
-> *($\Leftarrow$)* Fix $\lambda$ and write $S = T - \lambda I$.
->
-> **Step 1: $\operatorname{null} S = \operatorname{null} S^2$.** The inclusion $\subseteq$ always holds. Conversely, if $v \in \operatorname{null} S^2$ then $Sv \in \operatorname{null} S \cap \operatorname{range} S = \\{0\\}$, so $Sv = 0$.
->
-> **Step 2: $G(\lambda, T) = E(\lambda, T)$.** By the [stabilization](#null-space-and-range-chains) of the null-space chain, Step 1 gives $\operatorname{null} S = \operatorname{null} S^j$ for every $j \geq 1$. Taking $j = n$:
->
-> $$G(\lambda, T) = \operatorname{null} S^{n} = \operatorname{null} S = E(\lambda, T).$$
->
-> **Step 3: conclude.** Over $\mathbb{C}$, $V = G(\lambda_1, T) \oplus \dots \oplus G(\lambda_m, T)$. By Step 2 each summand equals $E(\lambda_k, T)$, which is condition (c). $\blacksquare$
+> $T - \lambda I = -\lambda T\big(T^{-1} - \tfrac{1}{\lambda} I\big)$, and the two factors commute, so $(T - \lambda I)^j = (-\lambda T)^j\big(T^{-1} - \tfrac{1}{\lambda} I\big)^j$ for every $j$. Since $-\lambda T$ is invertible, both sides have the same null space. Take $j = n$ for (a) and $j = 1$ for (b). $\blacksquare$
 
 ## The Hierarchy of Normal Forms
 
-| $T \in \mathcal{L}(V)$ | Basis                                                                                                                                                  | Subspaces                                                                  | Dimensions                                                                                                                                                         | Minimal polynomial                                                                       | Nullspace and range                                                                                                        |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Upper-triangularizable | $Tv_k \in \operatorname{span}(v_1,\dots,v_k)$ for each $k$                                                                                             | $\operatorname{span}(v_1,\dots,v_k)$ invariant for each $k$                | $\lambda_k$ occurs $\dim G(\lambda_k,T)$ times on the diagonal                                                                                                     | $(z-\lambda_1)\cdots(z-\lambda_m)$, $\lambda_i \in \mathbf{F}$, repetitions allowed      | —                                                                                                                          |
-| Lower-triangularizable | $Tv_k \in \operatorname{span}(v_k,\dots,v_n)$ for each $k$                                                                                             | $\operatorname{span}(v_k,\dots,v_n)$ invariant for each $k$                | same (reverse the basis)                                                                                                                                           | same                                                                                     | —                                                                                                                          |
-| Primary decomposition  | basis is a concatenation of bases of the $G(\lambda_k,T)$; inside group $k$, $(T-\lambda_k I)v \in \operatorname{span}$(earlier vectors of that group) | $V = G(\lambda_1,T)\oplus\dots\oplus G(\lambda_m,T)$, $\lambda_k$ distinct | $\sum_k \dim G(\lambda_k,T) = \dim V$; block $k$ has size $d_{\lambda_k}$                                                                                          | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$, $\lambda_k$ **distinct**, $e_{\lambda_k} \ge 1$ | $G(\lambda,T) = \operatorname{null}(T-\lambda I)^{\dim V}$                                                                 |
-| Jordan form            | basis is a disjoint union of chains $v,\,(T{-}\lambda)v,\dots,(T{-}\lambda)^{s-1}v$; equivalently $Tv_k - \lambda v_k \in \\{0,\,v_{k-1}\\}$           | $V = $ direct sum of **indecomposable** invariant subspaces, one per chain | number of blocks for $\lambda$: $\dim E(\lambda,T)$; blocks of size $\ge j$: $\dim\operatorname{null}(T{-}\lambda)^j - \dim\operatorname{null}(T{-}\lambda)^{j-1}$ | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$, exponent $=$ largest block size                 | $\operatorname{rank}(T-\lambda)^j$ for all $j$ determines the entire diagram                                               |
+| $T \in \mathcal{L}(V)$ | Basis                                                                                                                                                  | Subspaces                                                                  | Dimensions                                                                                                                                                         | Minimal polynomial                                                                       | Nullspace and range                                                                                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Upper-triangularizable | $Tv_k \in \operatorname{span}(v_1,\dots,v_k)$ for each $k$                                                                                             | $\operatorname{span}(v_1,\dots,v_k)$ invariant for each $k$                | $\lambda_k$ occurs $\dim G(\lambda_k,T)$ times on the diagonal                                                                                                     | $(z-\lambda_1)\cdots(z-\lambda_m)$, $\lambda_i \in \mathbf{F}$, repetitions allowed      | —                                                                                                                                                                              |
+| Lower-triangularizable | $Tv_k \in \operatorname{span}(v_k,\dots,v_n)$ for each $k$                                                                                             | $\operatorname{span}(v_k,\dots,v_n)$ invariant for each $k$                | same (reverse the basis)                                                                                                                                           | same                                                                                     | —                                                                                                                                                                              |
+| Primary decomposition  | basis is a concatenation of bases of the $G(\lambda_k,T)$; inside group $k$, $(T-\lambda_k I)v \in \operatorname{span}$(earlier vectors of that group) | $V = G(\lambda_1,T)\oplus\dots\oplus G(\lambda_m,T)$, $\lambda_k$ distinct | $\sum_k \dim G(\lambda_k,T) = \dim V$; block $k$ has size $d_{\lambda_k}$                                                                                          | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$, $\lambda_k$ **distinct**, $e_{\lambda_k} \ge 1$ | $G(\lambda,T) = \operatorname{null}(T-\lambda I)^{\dim V}$                                                                                                                     |
+| Jordan form            | basis is a disjoint union of chains $v,\,(T{-}\lambda)v,\dots,(T{-}\lambda)^{s-1}v$; equivalently $Tv_k - \lambda v_k \in \\{0,\,v_{k-1}\\}$           | $V = $ direct sum of **indecomposable** invariant subspaces, one per chain | number of blocks for $\lambda$: $\dim E(\lambda,T)$; blocks of size $\ge j$: $\dim\operatorname{null}(T{-}\lambda)^j - \dim\operatorname{null}(T{-}\lambda)^{j-1}$ | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$, exponent $=$ largest block size                 | $\operatorname{rank}(T-\lambda)^j$ for all $j$ determines the entire diagram                                                                                                   |
 | Diagonalizable         | a basis of eigenvectors of $T$                                                                                                                         | $V = E(\lambda_1,T)\oplus\dots\oplus E(\lambda_m,T)$                       | $\sum_k \dim E(\lambda_k,T) = \dim V$                                                                                                                              | $(z-\lambda_1)\cdots(z-\lambda_m)$, $\lambda_k$ **distinct**                             | $V = \operatorname{null}(T{-}\lambda I) \oplus \operatorname{range}(T{-}\lambda I)$ **for every** $\lambda \in \mathbf{F}$ (a characterization when $\mathbf{F} = \mathbb{C}$) |
 
 ![Hierarchy of upper-triangular, primary decomposition, and Jordan form](/assets/img/math/upper_triangular_primary_jordan_hierarchy.png)
@@ -376,7 +309,26 @@ _Each step refines the previous one._
 ![Matrix shapes versus operator classes](/assets/img/math/matrix_shapes_vs_operator_classes.png)
 _Matrix shapes against the operator classes that realize them._
 
-## Density of Diagonalizable Operators
+## Norms and Eigenvalues
+
+### Size of Eigenvalues
+
+{: .prompt-info }
+> Suppose $ \lambda $ is an eigenvalue of $ T $, $ v_1, \dots, v_n $ is any basis of $ V $, and $ A = \mathcal{M}(T, (v_1,\dots,v_n)) $. Then
+>
+> $$ \lvert \lambda \rvert \;\le\; \max_j \sum_k \lvert A_{j,k} \rvert \;\le\; n \max_{j,k} \lvert A_{j,k} \rvert. $$
+
+{: .prompt-proof }
+> Let $x$ be the coordinate vector of an eigenvector for $\lambda$, and pick $j$ with $\lvert x_j \rvert$ maximal, so $x_j \ne 0$. Row $j$ of $Ax = \lambda x$ reads $\lambda x_j = \sum_k A_{j,k}x_k$, so
+>
+> $$\lvert \lambda \rvert\,\lvert x_j \rvert \le \sum_k \lvert A_{j,k} \rvert\,\lvert x_k \rvert \le \Big(\sum_k \lvert A_{j,k} \rvert\Big)\lvert x_j \rvert.$$
+>
+> Dividing by $\lvert x_j \rvert$ gives the first bound, and each of the $n$ terms is at most $\max_{j,k}\lvert A_{j,k}\rvert$. $\blacksquare$
+
+{: .prompt-tip }
+> The middle quantity is the operator norm of $A$ induced by the max-norm on coordinates, so this is the special case "$\lvert\lambda\rvert \le \lVert T \rVert$ for every induced norm". Running the same argument only on the off-diagonal terms gives the [Gershgorin circle theorem](https://en.wikipedia.org/wiki/Gershgorin_circle_theorem): $\lambda$ lies in some disc $\lvert z - A_{j,j}\rvert \le \sum_{k \ne j}\lvert A_{j,k}\rvert$. The left side does not depend on the basis, so the bound can be minimized over all bases. And since nearby operators have bounded entries, their eigenvalues stay bounded, which is the first step toward eigenvalues depending continuously on $T$.
+
+### Density of Diagonalizable Operators
 
 {: .prompt-info }
 > A subset $S \subseteq \mathcal{L}(V)$ is **dense** if for every $ T \in \mathcal{L}(V) $ and every $ \varepsilon > 0 $ there is $ D \in S $ with $ \lVert T - D \rVert < \varepsilon $.

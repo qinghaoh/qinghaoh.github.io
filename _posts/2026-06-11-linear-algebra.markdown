@@ -330,7 +330,7 @@ $ C $ is a *basis* of the column space.
 | ----------------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | Polynomial factorization (_unique_)                   | $ p(z) = c(z - \lambda_1)\dots(z - \lambda_m) $ | $ p(x) = c(x - \lambda_1)\dots(x - \lambda_m)(x^2 + b_1x + c_1)\dots(x^2 + b_Mx + c_M) $ |
 | \#{zeros of a polynomial} (counted with multiplicity) | $ m = \deg p $                                  | $ \le \deg p $                                                                           |
-| Existence of eigenvalues ($ \forall T $)              | Nonzero complex vector space                    | Odd-dimension real vector space                                                          |
+| [Existence of eigenvalues]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#existence-of-eigenvalues) ($ \forall T $) | Nonzero complex vector space                    | Odd-dimension real vector space                                                          |
 
 | $ T \in \mathcal{L}(V, W) $ | null space                           | range                               | $ \dim \operatorname{null} $                     | $ \dim \operatorname{range} $   | norm                           |
 | --------------------------- | ------------------------------------ | ----------------------------------- | ------------------------------------------------ | ------------------------------- |

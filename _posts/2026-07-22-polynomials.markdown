@@ -129,6 +129,16 @@ mermaid: true
 >
 > Consider the linear map $\Phi : \mathcal{P}(\mathbf{F}) \to \mathcal{L}(V)$, $\Phi(q) = q(T)$. Then $\operatorname{range}\Phi = \mathcal{E}$ and $\operatorname{null}\Phi = \{q : q(T) = 0\}$ — exactly the multiples of $p$. So $\mathcal{E} \cong \mathcal{P}(\mathbf{F})/\langle p\rangle$, and the quotient has the remainders of degree $< m$ as canonical representatives — $m$ dimensions' worth.
 
+### Inverse
+
+{: .prompt-info }
+> Suppose $ V $ is finite-dimensional and $ T \in \mathcal{L}(V) $ is invertible with minimal polynomial $ p_T $ of degree $ m $. Then $ p_T(0) \ne 0 $ and
+>
+> $$p_{T^{-1}}(z) = \frac{z^m\, p_T(1/z)}{p_T(0)}.$$
+
+{: .prompt-tip }
+> $ p_T(0) \ne 0 $ is exactly the statement that $0$ is not an eigenvalue. The right-hand side is the *reversal* of $p_T$ (coefficients read backwards), rescaled to stay monic.
+
 ## Local Minimal Polynomial
 
 {: .prompt-info }

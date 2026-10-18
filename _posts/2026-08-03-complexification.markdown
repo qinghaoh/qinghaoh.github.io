@@ -382,3 +382,6 @@ flowchart LR
 > The parity is used only to rule out $N = 0$: the pairing makes the non-real contribution even, so an odd total cannot be accounted for by non-real eigenvalues alone. For even $n$ the argument collapses, as it must — rotation by $90°$ on $\mathbb{R}^2$ has eigenvalues $i, -i$, one conjugate pair, and no real eigenvalue.
 >
 > **The count must be by multiplicity.** It is tempting to argue "an odd-dimensional space cannot have its eigenvalues occur solely in conjugate pairs", but the *number of distinct* eigenvalues has no bearing on parity of the dimension — an operator on a $3$-dimensional space may have exactly two distinct eigenvalues. Ordinary eigenspaces are also not enough, since they need not fill $V_{\mathbb{C}}$ when $T_{\mathbb{C}}$ is not diagonalizable. Generalized eigenspaces are what make the sum come out to exactly $n$.
+
+{: .prompt-tip }
+> For even $n$ a real eigenvalue may not exist, but an invariant subspace of dimension $1$ or $2$ always does; see [Existence of Eigenvalues]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#existence-of-eigenvalues).
