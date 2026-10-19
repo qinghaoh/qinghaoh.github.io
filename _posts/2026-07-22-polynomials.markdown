@@ -70,6 +70,16 @@ mermaid: true
 > "no common zeros" is the $\mathbb{C}[z]$-analogue of "coprime," and $rp + sq = 1$ is exactly the statement that the gcd is a unit.
 
 {: .prompt-info }
+> _Bézout for several polynomials_
+>
+> Suppose $ p_1, \dots, p_m \in \mathcal{P}(\mathbb{C}) $ have no zero common to all of them. Then there exist $ r_1, \dots, r_m \in \mathcal{P}(\mathbb{C}) $ such that
+>
+> $$ r_1p_1 + \dots + r_mp_m = 1. $$
+
+{: .prompt-proof }
+> Induction on $m$. For $m = 1$, $p_1$ has no zeros, so it is a nonzero constant and $r_1 = 1/p_1$. For $m \ge 2$, let $d$ be the monic gcd of $p_2, \dots, p_m$. The quotients $p_2/d, \dots, p_m/d$ have no common zero (a common zero $z_0$ would make $(z - z_0)d$ a larger common divisor), so by induction $\sum_{i \ge 2} s_i\,(p_i/d) = 1$, i.e. $\sum_{i \ge 2} s_i p_i = d$. A common zero of $p_1$ and $d$ would be common to all the $p_i$, so $p_1$ and $d$ have none. If either is constant, $p_1 \cdot \tfrac{1}{p_1} = 1$ or $d = 1$ finishes it; otherwise the two-polynomial Bézout gives $rp_1 + sd = 1$. Substituting $d = \sum_{i\ge2} s_ip_i$ gives the result. $\blacksquare$
+
+{: .prompt-info }
 > Suppose $ p \in \mathcal{P}(\mathbb{C}) $ has degree $ m $.
 >
 > $ p $ has $ m $ distinct zeros $ \iff p $ and its derivative $ p' $ have no zeros in common $ \iff $ The greatest common divisor of $ p $ and $ p' $ is the constant polynomial $1$.

@@ -41,30 +41,39 @@ $\mathbf{F} = \mathbb{C}$ say so explicitly.
 > (b) The minimal polynomial of $T$ is the lcm of those of the $T_k$.
 
 {: .prompt-proof }
-> Each $V_k$ is invariant under $p(T)$ by the box above, and $\left.p(T)\right\rvert_{V_k} = p(T_k)$. So writing $v = \sum_k v_k$ with $v_k \in V_k$, we get $p(T)v = \sum_k p(T_k)v_k$ with $p(T_k)v_k \in V_k$. By directness, $p(T)v = 0$ iff every $p(T_k)v_k = 0$, which is the null-space formula, and the range formula is read off the same expression. For (b), by (a) $p(T) = 0$ iff every $p(T_k) = 0$, i.e. iff the minimal polynomial of every $T_k$ divides $p$, i.e. iff their lcm divides $p$. $\blacksquare$
+> Each $V_k$ is invariant under $p(T)$, and $\left.p(T)\right\rvert_{V_k} = p(T_k)$. So writing $v = \sum_k v_k$ with $v_k \in V_k$, we get $p(T)v = \sum_k p(T_k)v_k$ with $p(T_k)v_k \in V_k$. So the $p(T_k)v_k$ are the components of $p(T)v$ in $V = \bigoplus_k V_k$, and since components are unique, $p(T)v = 0$ iff every $p(T_k)v_k = 0$. That is the null-space formula. For the range, the same expression shows $\operatorname{range}p(T) = \sum_k \operatorname{range}p(T_k)$, and this sum is direct because $\operatorname{range}p(T_k) \subseteq V_k$. For (b), by (a) $p(T) = 0$ iff every $p(T_k) = 0$, i.e. iff the minimal polynomial of every $T_k$ divides $p$, i.e. iff their lcm divides $p$. $\blacksquare$
 
 {: .prompt-info }
-> Every subspace of an eigenspace $E(\lambda,T)$ is invariant, since $T$ acts on it as $\lambda I$.
-
-### Every $k$-Dimensional Subspace Invariant
-
-The converse of the last box: if enough subspaces are invariant, $T$ is a scalar. A $1$-dimensional invariant subspace is exactly the span of an eigenvector, so for $k = 1$ the hypothesis says every nonzero vector is an eigenvector.
+> Every subspace $U$ of an eigenspace $E(\lambda,T)$ is $T$-invariant: for $u \in U$, $Tu = \lambda u \in U$.
 
 {: .prompt-info }
-> Suppose $ k \in \\{ 1, \dots, n - 1 \\} $ and every subspace of $ V $ of dimension $ k $ is invariant under $ T $. Then $ T $ is a scalar multiple of the identity operator.
+> Suppose $ k \in \\{ 1, \dots, n - 1 \\} $. The following are equivalent:
+>
+> (a) $T$ is a scalar multiple of $I$.
+>
+> (b) Every subspace of $V$ is $T$-invariant.
+>
+> (c) Every $k$-dimensional subspace of $V$ is $T$-invariant.
 
 {: .prompt-proof }
-> **Every nonzero $v$ is an eigenvector.** Suppose not: $v, Tv$ are independent for some $v$. Extend them to a basis $v, Tv, x_3, \dots, x_n$. Since $k + 1 \le n$, the subspace
+> **(a) $\Rightarrow$ (b).** If $T = \lambda I$, then $E(\lambda,T) = V$; apply the box above.
 >
-> $$U = \operatorname{span}(v,\ x_3,\ \dots,\ x_{k+1})$$
+> **(b) $\Rightarrow$ (c).** Immediate.
 >
-> (just $\operatorname{span}(v)$ when $k = 1$) has dimension $k$ and contains $v$, but not $Tv$. This contradicts the invariance of $U$.
+> **(c) $\Rightarrow$ (a).** Two steps.
 >
-> **All the eigenvalues agree.** Write $Tu = \lambda_u u$ for nonzero $u$. If $w = cu$, then $Tw = c\lambda_u u = \lambda_u w$, so $\lambda_w = \lambda_u$. If $u, w$ are independent, then
+> *Step 1: every nonzero vector is an eigenvector.* Let $v \ne 0$ and suppose $Tv \notin \operatorname{span}(v)$. Then $v, Tv$ are linearly independent, so extend them to a basis $v, Tv, x_3, \dots, x_n$. Since $k \le n - 1$, the list $v, x_3, \dots, x_{k+1}$ exists (it is just $v$ when $k = 1$). Its span $U$ is a $k$-dimensional subspace that contains $v$ but not $Tv$, so $U$ is not invariant, contradicting (c).
 >
-> $$\lambda_{u+w} u + \lambda_{u+w} w = T(u+w) = \lambda_u u + \lambda_w w$$
+> *Step 2: all eigenvectors share one eigenvalue.* By Step 1, every nonzero $u$ has a scalar $\lambda_u$ with $Tu = \lambda_u u$. Let $u, w$ be nonzero.
 >
-> forces $\lambda_u = \lambda_{u+w} = \lambda_w$. So $T = \lambda I$ for a single $\lambda$. $\blacksquare$
+> - If $w = cu$, then $Tw = c\,Tu = \lambda_u w$, so $\lambda_w = \lambda_u$.
+> - If $u, w$ are independent, then $u + w \ne 0$, and comparing coefficients in
+>
+>   $$\lambda_{u+w} u + \lambda_{u+w} w = T(u+w) = \lambda_u u + \lambda_w w$$
+>
+>   gives $\lambda_u = \lambda_{u+w} = \lambda_w$.
+>
+> So $\lambda_u$ is a single scalar $\lambda$, and $T = \lambda I$. $\blacksquare$
 
 ## Null Space and Range Chains
 
@@ -102,6 +111,7 @@ Suppose the distinct eigenvalues of $T$ are $ \lambda_1, \dots, \lambda_m $.
 | Definition                       | $\operatorname{null}(T-\lambda_k I)^{j}$, any $j \ge e_{\lambda_k}$ ($j = n$ always works) | $\operatorname{null}(T-\lambda_k I)$                                        |
 | Containment                      | $E \subseteq G$                                                                            | —                                                                           |
 | Restriction of $T - \lambda_k I$ | nilpotent, index exactly $e_{\lambda_k}$                                                   | zero                                                                        |
+| Every subspace $T$-invariant      | iff $G = E$ ([see below](#the-nilpotent-part))                         | always                                                                      |
 | Sum is direct                    | always                                                                                     | always                                                                      |
 | Sum is all of $V$                | iff the minimal polynomial splits over $\mathbf{F}$ (automatic over $\mathbb{C}$)          | iff $T$ diagonalizable                                                      |
 | Multiplicity                     | algebraic $d_{\lambda_k} = \dim G$                                                         | geometric $g_{\lambda_k} = \dim E$, $1 \le g_{\lambda_k} \le d_{\lambda_k}$ |
@@ -115,7 +125,7 @@ Suppose the distinct eigenvalues of $T$ are $ \lambda_1, \dots, \lambda_m $.
 > Directness of the sum of eigenspaces says eigenvectors with distinct eigenvalues are linearly independent. Conversely, every linearly independent list $v_1, \dots, v_m$ arises this way: extend it to a basis $v_1, \dots, v_n$ and define $T$ by $Tv_k = kv_k$ for $k \le m$ and $Tv_k = 0$ for $k > m$.
 
 {: .prompt-tip }
-> **Blockwise computation.** For $V = V_1 \oplus \dots \oplus V_m$ with each $V_k$ invariant, [invariant direct sums](#invariant-subspaces) with $p = (z - \lambda)^j$ give $\operatorname{null}(T - \lambda I)^j = \bigoplus_k \operatorname{null}(T_k - \lambda I)^j$ for every $j$. Taking $j = 1$ and $j = n$ (the chains of $T_k - \lambda I$ stabilize by $\dim V_k \le n$): $E(\lambda,T) = \bigoplus_k E(\lambda,T_k)$ and $G(\lambda,T) = \bigoplus_k G(\lambda,T_k)$. So $g_\lambda$ and $d_\lambda$ add across the blocks, the index of $T - \lambda I$ is the max of the blockwise ones (so $e_\lambda = \max_k e_\lambda^{(k)}$, matching the lcm), and the characteristic polynomial is the **product** of the blocks'. This is the engine behind both the primary decomposition and the Jordan form: choose the $V_k$ well and each block becomes trivial to read.
+> **Blockwise computation.** For $V = V_1 \oplus \dots \oplus V_m$ with each $V_k$ invariant, [invariant direct sums](#invariant-subspaces) with $p = (z - \lambda)^j$ give $\operatorname{null}(T - \lambda I)^j = \bigoplus_k \operatorname{null}(T_k - \lambda I)^j$ for every $j$. Taking $j = 1$ and $j = n$ (the chains of $T_k - \lambda I$ stabilize by $\dim V_k \le n$): $E(\lambda,T) = \bigoplus_k E(\lambda,T_k)$ and $G(\lambda,T) = \bigoplus_k G(\lambda,T_k)$. So $g_\lambda$ and $d_\lambda$ add across the blocks, the index of $T - \lambda I$ is the max of the blockwise ones (so $e_\lambda = \max_k e_\lambda^{(k)}$, matching the lcm), and the characteristic polynomial is the **product** of the blocks'.
 
 ### The Nilpotent Part
 
@@ -164,6 +174,20 @@ the number of boxes above the bottom level. The second row needs a proof.
 > *$e_\lambda \le p$.* $S\vert_R$ is injective, because $\operatorname{null}S \subseteq G$ and $G \cap R = \\{0\\}$, so it is invertible. Restricting $p_T(T) = 0$ to $R$ gives $(S\vert_R)^{e_\lambda}\,q(T)\vert_R = 0$, so $q(T)\vert_R = 0$. Now $f = (z-\lambda)^pq$ satisfies $f(T)\vert_G = q(T)\vert_G\,N^p = 0$ and $f(T)\vert_R = (S\vert_R)^p\,q(T)\vert_R = 0$, so $f(T) = 0$ on $V = G \oplus R$. The minimal polynomial divides every polynomial that annihilates $T$, so $f = h\,p_T$ for some polynomial $h$, that is, $(z-\lambda)^pq = h\,(z-\lambda)^{e_\lambda}q$. Cancelling $q$ and comparing degrees gives $p = \deg h + e_\lambda \ge e_\lambda$. $\blacksquare$
 
 So $d_\lambda$, $e_\lambda$, $g_\lambda$ are $n$, $p$, $k$ for $N$, and all relations among them are [those of $n$, $p$, $k$]({% post_url 2026-07-25-nilpotent-operators %}#jordan-basis): $1 \le g_\lambda, e_\lambda \le d_\lambda$ and $g_\lambda + e_\lambda - 1 \le d_\lambda$, with no inequality between $g_\lambda$ and $e_\lambda$ alone.
+
+{: .prompt-info }
+> **Invariant subspaces and $G(\lambda,T)$.**
+>
+> (a) A subspace $U \subseteq G(\lambda,T)$ is $T$-invariant iff it is $N$-invariant, since $T = \lambda I + N$ on $G(\lambda,T)$ and $\lambda I$ preserves every subspace.
+>
+> (b) Every subspace of $G(\lambda,T)$ is $T$-invariant iff $N = 0$, i.e. $G(\lambda,T) = E(\lambda,T)$. If $N$ is a single Jordan block, the $T$-invariant subspaces of $G(\lambda,T)$ are exactly the $\operatorname{null}(T - \lambda I)^j$, $0 \le j \le d_\lambda$. These are the [one-level]({% post_url 2026-07-25-nilpotent-operators %}#one-level-the-zero-operator) and [one-column]({% post_url 2026-07-25-nilpotent-operators %}#one-column-a-single-chain) extremes, respectively.
+>
+> (c) Over $\mathbb{C}$, the $T$-invariant subspaces of $V$ are exactly the sums $\bigoplus_{\lambda \in \sigma(T)} U_\lambda$ with each $U_\lambda \subseteq G(\lambda,T)$ invariant under the nilpotent part of $\lambda$. Given $U$, the pieces are $U_\lambda = U \cap G(\lambda,T)$.
+
+{: .prompt-proof }
+> (b) If every subspace is $N$-invariant, the [scalar criterion](#invariant-subspaces), (b) $\Rightarrow$ (a), makes $N$ a scalar, and a nilpotent scalar is $0$ (when $d_\lambda = 1$, $N = 0$ anyway). The single-block case is proved in Nilpotent Operators.
+>
+> (c) Write $p_T = \prod_{\mu \in \sigma(T)} (z - \mu)^{e_\mu}$ and $h_\mu = p_T/(z - \mu)^{e_\mu}$. The $h_\mu$ have no common zero, so by [Bézout for several polynomials]({% post_url 2026-07-22-polynomials %}#polynomials) there are polynomials $a_\mu$ with $\sum_\mu a_\mu h_\mu = 1$. Let $P_\mu = (a_\mu h_\mu)(T)$. For $\nu \ne \mu$, $h_\mu$ contains the factor $(z - \nu)^{e_\nu}$, which kills $G(\nu,T)$ because the index of $T - \nu I$ is $e_\nu$; so $P_\mu$ is $0$ on $G(\nu,T)$, and $P_\mu = I - \sum_{\nu \ne \mu}P_\nu$ is the identity on $G(\mu,T)$. Thus $P_\mu$ is the projection onto $G(\mu,T)$ along the others, and it is a polynomial in $T$, so $P_\mu U \subseteq U$. Every $u \in U$ is $\sum_\mu P_\mu u$ with $P_\mu u \in U \cap G(\mu,T)$, and the sum is direct because the $G(\mu,T)$ are independent; each piece is invariant under the nilpotent part by (a). Conversely, a sum of $T$-invariant subspaces is $T$-invariant. $\blacksquare$
 
 {: .prompt-info }
 > *The nilpotent shadow of diagonalizability.* $\lambda$ is not defective ($g_\lambda = d_\lambda$, i.e. $k = n$ for $N$) iff $N$ is the [one-level extreme]({% post_url 2026-07-25-nilpotent-operators %}#one-level-the-zero-operator) $N = 0$, i.e. $G(\lambda,T) = E(\lambda,T)$ and $e_\lambda = 1$. By the [null–range decomposition](#null-space-and-range-chains) this says $V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I)$, which holds trivially when $\lambda \notin \sigma(T)$. So over $\mathbb{C}$,
@@ -278,7 +302,7 @@ Everything here rests on one fact: $\sigma(T)$ is exactly the set of zeros of $p
 _Each step refines the previous one._
 
 {: .prompt-tip }
-> Each refinement buys finer blocks and pays for it in uniqueness. The $G(\lambda_k,T)$ are determined by $T$ alone, with no choices. The individual Jordan blocks inside a $G$ are not: with $\mu = (2,1)$ there's a whole family of valid choices for the size-2 and size-1 summands, and only the multiset $\\{2,1\\}$ is forced.
+> Each row is read off [blockwise](#generalized-eigenspaces): the primary decomposition takes the $V_k$ to be the $G(\lambda_k,T)$, and the Jordan form splits each of those further into chains. Each refinement buys finer blocks and pays for it in uniqueness. The $G(\lambda_k,T)$ are determined by $T$ alone, with no choices. The individual Jordan blocks inside a $G$ are not: with $\mu = (2,1)$ there's a whole family of valid choices for the size-2 and size-1 summands, and only the multiset $\\{2,1\\}$ is forced.
 
 ![Matrix shapes versus operator classes](/assets/img/math/matrix_shapes_vs_operator_classes.png)
 _Matrix shapes against the operator classes that realize them._
