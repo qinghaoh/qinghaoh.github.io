@@ -9,13 +9,13 @@ tags: graph
 
 ```f(n) = g(n) + h(n)```
 
-where 
+where
 * `n` is the next node on the path
 * `g(n)` is the cost of the path from the start node to `n`
 * `h(n)` is a heuristic function that estimates the cost of the cheapest path from `n` to the goal
   * problem-specific
   * admissible: it never overestimates the cost of reaching the goal - A* is guaranteed to return a least-cost path
-  * monotone/consistent: its estimate is always less than or equal to the estimated distance from any neighbouring vertex to the goal, plus the cost of reaching that neighbour - A* is guaranteed to find an optimal path without processing any node more than once and A* is equivalent to running Dijkstra's algorithm with the reduced cost `d'(x, y) = d(x, y) + h(y) − h(x)`
+  * monotone/consistent: its estimate is always less than or equal to the estimated distance from any neighboring vertex to the goal, plus the cost of reaching that neighbor - A* is guaranteed to find an optimal path without processing any node more than once and A* is equivalent to running Dijkstra's algorithm with the reduced cost `d'(x, y) = d(x, y) + h(y) − h(x)`
 
 [Shortest Path in Binary Matrix][shortest-path-in-binary-matrix]
 
@@ -56,7 +56,7 @@ public int shortestPathBinaryMatrix(int[][] grid) {
         for (int[] d : DIRECTIONS) {
             int g = node[2] + 1;
 
-            // h(n) is a heuristic function that 
+            // h(n) is a heuristic function that
             // estimates the cost of the cheapest path from node to the goal
             // here h(n) = diagonal distance (max norm)
             int h = Math.max(Math.abs(m - 1 - r), Math.abs(n - 1 - c));

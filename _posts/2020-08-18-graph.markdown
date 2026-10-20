@@ -401,11 +401,11 @@ private double getPathWeight(String start, String end, Set<String> visited) {
 
     // dfs
     visited.add(start);
-    for (Map.Entry<String, Double> neighbour : graph.get(start).entrySet()) {
-        if (!visited.contains(neighbour.getKey())) {
-            double productWeight = getPathWeight(neighbour.getKey(), end, visited);
+    for (Map.Entry<String, Double> neighbor : graph.get(start).entrySet()) {
+        if (!visited.contains(neighbor.getKey())) {
+            double productWeight = getPathWeight(neighbor.getKey(), end, visited);
             if (productWeight != -1.0) {
-                return neighbour.getValue() * productWeight;
+                return neighbor.getValue() * productWeight;
             }
         }
     }
