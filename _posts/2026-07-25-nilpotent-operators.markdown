@@ -333,6 +333,13 @@ $$(2,\; 2x,\; x^2,\; y,\; xy),$$
 
 with $\mathcal{M}(N) = J_3(0)\oplus J_2(0)$. Checks: $\lvert T_3 \rvert = 1 = 2(5)-4-5$, $\lvert T_2 \rvert = 1 = 2(4)-2-5$, $\lvert T_1 \rvert = 0 = 2(2)-0-4$, and $3 + 2 = 5 = \dim V$.
 
+{: .prompt-tip }
+> *The free choices.* Up to scaling, the top at $j = 3$ can be any $x^2 + q$ with $q \in \operatorname{null}N^2$, and the new top at $j = 2$ any $xy + cx + r$ with $c \in \mathbf{F}$ and $r \in \operatorname{null}N$. The chains become
+>
+> $$x^2 + q \mapsto 2x + Nq \mapsto 2 \qquad\text{and}\qquad xy + cx + r \mapsto y + c.$$
+>
+> So not only the basis moves but the invariant subspaces spanned by the chains: for $c \ne 0$, the second chain spans $\operatorname{span}(xy + cx + r,\, y + c) \ne \operatorname{span}(xy, y)$. Only the shape $(3,2)$ is forced.
+
 **Row reduction at level $j = 2$**
 
 Coordinates are with respect to the ordered basis $(1, x, y, x^2, xy)$.

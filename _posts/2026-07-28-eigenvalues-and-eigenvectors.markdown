@@ -75,6 +75,23 @@ $\mathbf{F} = \mathbb{C}$ say so explicitly.
 >
 > So $\lambda_u$ is a single scalar $\lambda$, and $T = \lambda I$. $\blacksquare$
 
+## Eigenvalues and the Minimal Polynomial
+
+{: .prompt-info }
+> $\sigma(T)$ is exactly the set of zeros of $p_T$ in $\mathbf{F}$.
+
+{: .prompt-proof }
+> If $Tv = \lambda v$ with $v \ne 0$, then $0 = p_T(T)v = p_T(\lambda)v$, so $p_T(\lambda) = 0$. Conversely, if $p_T(\lambda) = 0$, write $p_T = (z - \lambda)q$. Then $q(T) \ne 0$ by minimality, so $v = q(T)w \ne 0$ for some $w$, and $(T - \lambda I)v = p_T(T)w = 0$. So $v$ is an eigenvector for $\lambda$. $\blacksquare$
+
+{: .prompt-tip }
+> The factorization of $p_T$ matches the structure of $T$ in three increasingly detailed ways, and the rest of the post fills them in:
+>
+> 1. the zeros of $p_T$ are the eigenvalues (the box above);
+> 2. the exponent $e_\lambda$ of $z - \lambda$ is the index of $T - \lambda I$ ([The Nilpotent Part](#the-nilpotent-part));
+> 3. the coprime factors $(z - \lambda)^{e_\lambda}$ cut $V$ into the direct sum of the $G(\lambda,T)$.
+>
+> Item 3 is the split case of the **primary decomposition**, which holds over any field: if $p_T = q_1^{r_1}\cdots q_s^{r_s}$ with distinct monic irreducible $q_i$, then $V = \bigoplus_i \operatorname{null}q_i(T)^{r_i}$, each summand $T$-invariant. The proof is the Bézout projection argument of [invariant subspaces (c)](#the-nilpotent-part) with $q_i^{r_i}$ in place of $(z - \lambda_i)^{e_i}$. Over $\mathbb{R}$ with $p_T = (z - 1)(z^2 + 1)$, it gives $V = \operatorname{null}(T - I) \oplus \operatorname{null}(T^2 + I)$, the second summand a rotation plane with no eigenvalues.
+
 ## Null Space and Range Chains
 
 {: .prompt-info }
@@ -182,23 +199,31 @@ So $d_\lambda$, $e_\lambda$, $g_\lambda$ are $n$, $p$, $k$ for $N$, and all rela
 >
 > (b) Every subspace of $G(\lambda,T)$ is $T$-invariant iff $N = 0$, i.e. $G(\lambda,T) = E(\lambda,T)$. If $N$ is a single Jordan block, the $T$-invariant subspaces of $G(\lambda,T)$ are exactly the $\operatorname{null}(T - \lambda I)^j$, $0 \le j \le d_\lambda$. These are the [one-level]({% post_url 2026-07-25-nilpotent-operators %}#one-level-the-zero-operator) and [one-column]({% post_url 2026-07-25-nilpotent-operators %}#one-column-a-single-chain) extremes, respectively.
 >
-> (c) Over $\mathbb{C}$, the $T$-invariant subspaces of $V$ are exactly the sums $\bigoplus_{\lambda \in \sigma(T)} U_\lambda$ with each $U_\lambda \subseteq G(\lambda,T)$ invariant under the nilpotent part of $\lambda$. Given $U$, the pieces are $U_\lambda = U \cap G(\lambda,T)$.
+> (c) Over $\mathbb{C}$, write $\sigma(T) = \\{\lambda_1, \dots, \lambda_m\\}$, $G_i = G(\lambda_i,T)$, and $N_i$ for the nilpotent part of $\lambda_i$. A subspace $U \subseteq V$ is $T$-invariant iff
+>
+> $$U = U_1 \oplus \dots \oplus U_m \qquad \text{with each } U_i \subseteq G_i \text{ invariant under } N_i,$$
+>
+> and then $U_i = U \cap G_i$. So the $T$-invariant subspaces correspond one-to-one to tuples $(U_1, \dots, U_m)$ of independently chosen $N_i$-invariant subspaces. For example, if $T = \operatorname{diag}(1,2,3)$, each $G_i$ is a line with the two invariant subspaces $\\{0\\}$ and $G_i$, so $T$ has $2^3 = 8$ invariant subspaces.
 
 {: .prompt-proof }
 > (b) If every subspace is $N$-invariant, the [scalar criterion](#invariant-subspaces), (b) $\Rightarrow$ (a), makes $N$ a scalar, and a nilpotent scalar is $0$ (when $d_\lambda = 1$, $N = 0$ anyway). The single-block case is proved in Nilpotent Operators.
 >
-> (c) Write $p_T = \prod_{\mu \in \sigma(T)} (z - \mu)^{e_\mu}$ and $h_\mu = p_T/(z - \mu)^{e_\mu}$. The $h_\mu$ have no common zero, so by [Bézout for several polynomials]({% post_url 2026-07-22-polynomials %}#polynomials) there are polynomials $a_\mu$ with $\sum_\mu a_\mu h_\mu = 1$. Let $P_\mu = (a_\mu h_\mu)(T)$. For $\nu \ne \mu$, $h_\mu$ contains the factor $(z - \nu)^{e_\nu}$, which kills $G(\nu,T)$ because the index of $T - \nu I$ is $e_\nu$; so $P_\mu$ is $0$ on $G(\nu,T)$, and $P_\mu = I - \sum_{\nu \ne \mu}P_\nu$ is the identity on $G(\mu,T)$. Thus $P_\mu$ is the projection onto $G(\mu,T)$ along the others, and it is a polynomial in $T$, so $P_\mu U \subseteq U$. Every $u \in U$ is $\sum_\mu P_\mu u$ with $P_\mu u \in U \cap G(\mu,T)$, and the sum is direct because the $G(\mu,T)$ are independent; each piece is invariant under the nilpotent part by (a). Conversely, a sum of $T$-invariant subspaces is $T$-invariant. $\blacksquare$
+> (c) *The projections onto the $G_i$ are polynomials in $T$.* Write $p_T = \prod_i (z - \lambda_i)^{e_i}$ with $e_i = e_{\lambda_i}$, and $h_i = p_T/(z - \lambda_i)^{e_i}$. The zeros of $h_i$ are the $\lambda_j$ with $j \ne i$, so $h_1, \dots, h_m$ have no common zero, and [Bézout for several polynomials]({% post_url 2026-07-22-polynomials %}#polynomials) gives polynomials $a_i$ with $\sum_i a_i h_i = 1$. Set $P_i = (a_ih_i)(T)$, so $\sum_i P_i = I$. For $j \ne i$, $h_i$ contains the factor $(z - \lambda_j)^{e_j}$, which is $0$ on $G_j$ because the index of $T - \lambda_j I$ is $e_j$; so $P_i = 0$ on $G_j$. Then $\sum_i P_i = I$ forces $P_i = I$ on $G_i$. So $P_i$ is the projection of $V = G_1 \oplus \dots \oplus G_m$ onto $G_i$.
+>
+> *($\Rightarrow$)* Each $P_i$ is a polynomial in $T$, so $P_iU \subseteq U$. Every $u \in U$ is $u = \sum_i P_iu$ with $P_iu \in U \cap G_i$, so $U = \bigoplus_i (U \cap G_i)$; the sum is direct because the $G_i$ are. Each $U \cap G_i$ is $T$-invariant as an intersection of $T$-invariant subspaces, hence $N_i$-invariant by (a).
+>
+> *($\Leftarrow$)* If each $U_i \subseteq G_i$ is $N_i$-invariant, it is $T$-invariant by (a), so $U = \bigoplus_i U_i$ is $T$-invariant. Since $U_i \subseteq G_i$ and the $G_i$ are independent, $U \cap G_i = U_i$. $\blacksquare$
 
 {: .prompt-info }
-> *The nilpotent shadow of diagonalizability.* $\lambda$ is not defective ($g_\lambda = d_\lambda$, i.e. $k = n$ for $N$) iff $N$ is the [one-level extreme]({% post_url 2026-07-25-nilpotent-operators %}#one-level-the-zero-operator) $N = 0$, i.e. $G(\lambda,T) = E(\lambda,T)$ and $e_\lambda = 1$. By the [null–range decomposition](#null-space-and-range-chains) this says $V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I)$, which holds trivially when $\lambda \notin \sigma(T)$. So over $\mathbb{C}$,
+> *The nilpotent shadow of diagonalizability.* $\lambda$ is not defective ($g_\lambda = d_\lambda$, i.e. $k = n$ for $N$) iff $N$ is the [one-level extreme]({% post_url 2026-07-25-nilpotent-operators %}#one-level-the-zero-operator) $N = 0$, i.e. $G(\lambda,T) = E(\lambda,T)$ and $e_\lambda = 1$. By the [null–range decomposition](#null-space-and-range-chains) this says $V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I)$, which holds trivially when $\lambda \notin \sigma(T)$. Since $T$ is diagonalizable iff the $G(\lambda,T)$ fill $V$ and each equals $E(\lambda,T)$,
 >
-> $$T \text{ is diagonalizable} \iff V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I) \text{ for every } \lambda \in \mathbb{C}.$$
+> $$T \text{ is diagonalizable} \iff p_T \text{ splits and } V = \operatorname{null}(T - \lambda I) \oplus \operatorname{range}(T - \lambda I) \text{ for every } \lambda \in \mathbf{F}.$$
 >
-> Over $\mathbb{R}$ the right side also holds when $\sigma(T) = \varnothing$ (see [existence](#existence-of-eigenvalues)), so it no longer implies diagonalizability.
+> Over $\mathbb{C}$ splitting is automatic. Over $\mathbb{R}$ it is not redundant: a rotation by $\pi/2$ satisfies the second condition trivially, since $\sigma(T) = \varnothing$.
 
 ### Existence of Eigenvalues
 
-Everything here rests on one fact: $\sigma(T)$ is exactly the set of zeros of $p_T$ in $\mathbf{F}$. So whether $T$ has eigenvalues depends on how $p_T$ factors over $\mathbf{F}$.
+Since $\sigma(T)$ is the [set of zeros of $p_T$](#eigenvalues-and-the-minimal-polynomial) in $\mathbf{F}$, whether $T$ has eigenvalues depends on how $p_T$ factors over $\mathbf{F}$.
 
 {: .prompt-info }
 > (a) Over $\mathbb{C}$, $\sigma(T) \ne \varnothing$.
@@ -255,6 +280,46 @@ Everything here rests on one fact: $\sigma(T)$ is exactly the set of zeros of $p
 >
 > Each term is a defect, so equality holds exactly when $0$ is not defective and every nonzero eigenvalue is simple, which is the diagonal form above. For nilpotent $T$ the gap is $d_0 - g_0 = n - k$, the number of boxes above the bottom level: $n - 1$ for a single column $J_n(0)$ and $0$ for a single level $T = 0$, the [two extremes]({% post_url 2026-07-25-nilpotent-operators %}#two-extremes) of the diagram.
 
+## The Hierarchy of Normal Forms
+
+{: .prompt-info }
+> $T$ has an upper-triangular matrix with respect to some basis of $V$ $\iff$ $p_T$ splits over $\mathbf{F}$.
+
+{: .prompt-proof }
+> *($\Rightarrow$)* If $\mathcal{M}(T, (v_1, \dots, v_n))$ is upper triangular with diagonal $a_{11}, \dots, a_{nn}$, then $T - a_{kk}I$ maps $\operatorname{span}(v_1, \dots, v_k)$ into $\operatorname{span}(v_1, \dots, v_{k-1})$, so $(T - a_{11}I)\cdots(T - a_{nn}I) = 0$. Hence $p_T$ divides $(z - a_{11})\cdots(z - a_{nn})$, which splits.
+>
+> *($\Leftarrow$)* Run the [induction in Quotient Spaces]({% post_url 2026-07-04-quotient-spaces %}#induction-on-dimension), which only needs an eigenvalue at each stage. A zero of the split $p_T$ is an eigenvalue of $T$, giving an invariant line $U$; the minimal polynomial of $T/U$ divides $p_T$, so it splits too, and the induction continues. $\blacksquare$
+
+{: .prompt-warning }
+> One eigenvalue is not enough. On $\mathbb{R}^3$, rotation by $\pi/2$ in the $xy$-plane together with $1$ on the $z$-axis has the eigenvalue $1$, but $p_T = (z - 1)(z^2 + 1)$ does not split, so $T$ is not upper-triangularizable.
+
+| $T \in \mathcal{L}(V)$ | Basis                                                                                                                                                  | Subspaces                                                                  | Dimensions                                                                                                                                                         | Minimal polynomial                                                                       | Nullspace and range                                                                                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Upper-triangularizable | $Tv_k \in \operatorname{span}(v_1,\dots,v_k)$ for each $k$                                                                                             | $\operatorname{span}(v_1,\dots,v_k)$ invariant for each $k$                | $\lambda_k$ occurs $\dim G(\lambda_k,T)$ times on the diagonal                                                                                                     | $(z-\lambda_1)\cdots(z-\lambda_m)$, $\lambda_i \in \mathbf{F}$, repetitions allowed      | —                                                                                                                                                                              |
+| Lower-triangularizable | $Tv_k \in \operatorname{span}(v_k,\dots,v_n)$ for each $k$                                                                                             | $\operatorname{span}(v_k,\dots,v_n)$ invariant for each $k$                | same (reverse the basis)                                                                                                                                           | same                                                                                     | —                                                                                                                                                                              |
+| Primary decomposition (split case) | basis is a concatenation of bases of the $G(\lambda_k,T)$; inside group $k$, $(T-\lambda_k I)v \in \operatorname{span}$(earlier vectors of that group) | $V = G(\lambda_1,T)\oplus\dots\oplus G(\lambda_m,T)$, $\lambda_k$ distinct | $\sum_k \dim G(\lambda_k,T) = \dim V$; block $k$ has size $d_{\lambda_k}$                                                                                          | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$, $\lambda_k$ **distinct**, $e_{\lambda_k} \ge 1$ | $G(\lambda,T) = \operatorname{null}(T-\lambda I)^{\dim V}$                                                                                                                     |
+| Jordan form            | basis is a disjoint union of chains $v,\,(T{-}\lambda)v,\dots,(T{-}\lambda)^{s-1}v$; equivalently $Tv_k - \lambda v_k \in \\{0,\,v_{k-1}\\}$           | $V = $ direct sum of **indecomposable** invariant subspaces, one per chain | number of blocks for $\lambda$: $\dim E(\lambda,T)$; blocks of size $\ge j$: $\dim\operatorname{null}(T{-}\lambda)^j - \dim\operatorname{null}(T{-}\lambda)^{j-1}$ | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$, exponent $=$ largest block size                 | $\operatorname{rank}(T-\lambda)^j$ for all $j$ determines the entire diagram                                                                                                   |
+| Diagonalizable         | a basis of eigenvectors of $T$                                                                                                                         | $V = E(\lambda_1,T)\oplus\dots\oplus E(\lambda_m,T)$                       | $\sum_k \dim E(\lambda_k,T) = \dim V$                                                                                                                              | $(z-\lambda_1)\cdots(z-\lambda_m)$, $\lambda_k$ **distinct**                             | $V = \operatorname{null}(T{-}\lambda I) \oplus \operatorname{range}(T{-}\lambda I)$ **for every** $\lambda \in \mathbf{F}$ (a characterization when $\mathbf{F} = \mathbb{C}$) |
+
+The first four rows describe the same operators, those whose $p_T$ splits (the box above); they differ only in how fine a normal form they give. Only Diagonalizable is a strictly smaller class: within the split operators, $T$ is diagonalizable iff no eigenvalue is defective, i.e. every $e_\lambda = 1$, i.e. $p_T$ is a product of distinct linear factors.
+
+![Hierarchy of upper-triangular, primary decomposition, and Jordan form](/assets/img/math/upper_triangular_primary_jordan_hierarchy.png)
+_Each step refines the previous one._
+
+{: .prompt-tip }
+> Each row is read off [blockwise](#generalized-eigenspaces): the primary decomposition takes the $V_k$ to be the $G(\lambda_k,T)$, and the Jordan form splits each of those further into chains. Each refinement buys finer blocks and pays for it in uniqueness. The $G(\lambda_k,T)$ are determined by $T$ alone, with no choices. The individual Jordan blocks inside a $G$ are not: the invariant subspaces themselves (not just their bases) can be chosen in many ways, through the [free choices of tops]({% post_url 2026-07-25-nilpotent-operators %}#find-a-jordan-basis) in the Jordan basis algorithm, and only the multiset of sizes is forced. For $\mu = (2,1)$, with $Ne_2 = e_1$ and $Ne_1 = Ne_3 = 0$ on $\mathbf{F}^3$, every choice of scalars $a, b$ gives a valid decomposition $\operatorname{span}(e_2 + ae_3,\, e_1) \oplus \operatorname{span}(e_3 + be_1)$.
+
+![Matrix shapes inside the upper-triangular ones](/assets/img/math/matrix_shapes_venn.png)
+_Matrix shapes inside the upper-triangular ones._
+
+{: .prompt-tip }
+> Jordan and Diagonal stick out of Primary only because a Primary matrix groups equal eigenvalues together, while the other two shapes allow any order:
+>
+> - Diagonal but not Primary: $\operatorname{diag}(1, 2, 1)$.
+> - Jordan but not Primary: $J_2(1) \oplus J_1(2) \oplus J_1(1) = \begin{pmatrix} 1&1&&\\\\ &1&&\\\\ &&2&\\\\ &&&1 \end{pmatrix}$.
+>
+> Reordering the basis to bring the equal eigenvalues together puts both into Primary, so as operator classes nothing is lost.
+
 ## Eigenspaces of $p(T)$
 
 {: .prompt-info }
@@ -262,7 +327,7 @@ Everything here rests on one fact: $\sigma(T)$ is exactly the set of zeros of $p
 >
 > (a) $G(\alpha,\, p(T)) \;=\; \bigoplus_{\lambda:\, p(\lambda) = \alpha} G(\lambda,\, T).$
 >
-> (b) $E(\alpha, p(T)) \;\supseteq\; \bigoplus_{\lambda:\,p(\lambda)=\alpha} E(\lambda, T)$, with equality iff $p'(\lambda) \neq 0$ for every defective $\lambda$ in that fiber.
+> (b) $E(\alpha, p(T)) \;\supseteq\; \bigoplus_{\lambda:\,p(\lambda)=\alpha} E(\lambda, T)$, with equality iff $p'(\lambda) \neq 0$ for every defective $\lambda \in \sigma(T)$ with $p(\lambda) = \alpha$.
 
 {: .prompt-proof }
 > Over $\mathbb{C}$, $V = \bigoplus_{\lambda \in \sigma(T)} G(\lambda,T)$ with each summand $T$-invariant; write $T_\lambda = \left.T\right\rvert_{G(\lambda,T)}$. For each $j$, $(p(T) - \alpha I)^j$ is $q(T)$ with $q = (p - \alpha)^j$, so [invariant direct sums](#invariant-subspaces) gives
@@ -286,26 +351,17 @@ Everything here rests on one fact: $\sigma(T)$ is exactly the set of zeros of $p
 > - **If $p'(\lambda) \neq 0$**, then $Q$ is (nonzero scalar) $+$ (nilpotent), hence invertible, so $\operatorname{null}M = \operatorname{null}N$.
 > - **If $p'(\lambda) = 0$**, then $M$ starts at $N^2$ or higher, so $\operatorname{null}M \supseteq \operatorname{null}N^2$; and $\operatorname{null}N^2 \supsetneq \operatorname{null}N$ exactly when $N \ne 0$, i.e. when $\lambda$ is defective.
 >
-> So the ordinary eigenspace grows strictly exactly when some $\lambda$ in the fiber is **both a critical point of $p$ and a defective eigenvalue of $T$**. $\blacksquare$
-
-## The Hierarchy of Normal Forms
-
-| $T \in \mathcal{L}(V)$ | Basis                                                                                                                                                  | Subspaces                                                                  | Dimensions                                                                                                                                                         | Minimal polynomial                                                                       | Nullspace and range                                                                                                                                                            |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Upper-triangularizable | $Tv_k \in \operatorname{span}(v_1,\dots,v_k)$ for each $k$                                                                                             | $\operatorname{span}(v_1,\dots,v_k)$ invariant for each $k$                | $\lambda_k$ occurs $\dim G(\lambda_k,T)$ times on the diagonal                                                                                                     | $(z-\lambda_1)\cdots(z-\lambda_m)$, $\lambda_i \in \mathbf{F}$, repetitions allowed      | —                                                                                                                                                                              |
-| Lower-triangularizable | $Tv_k \in \operatorname{span}(v_k,\dots,v_n)$ for each $k$                                                                                             | $\operatorname{span}(v_k,\dots,v_n)$ invariant for each $k$                | same (reverse the basis)                                                                                                                                           | same                                                                                     | —                                                                                                                                                                              |
-| Primary decomposition  | basis is a concatenation of bases of the $G(\lambda_k,T)$; inside group $k$, $(T-\lambda_k I)v \in \operatorname{span}$(earlier vectors of that group) | $V = G(\lambda_1,T)\oplus\dots\oplus G(\lambda_m,T)$, $\lambda_k$ distinct | $\sum_k \dim G(\lambda_k,T) = \dim V$; block $k$ has size $d_{\lambda_k}$                                                                                          | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$, $\lambda_k$ **distinct**, $e_{\lambda_k} \ge 1$ | $G(\lambda,T) = \operatorname{null}(T-\lambda I)^{\dim V}$                                                                                                                     |
-| Jordan form            | basis is a disjoint union of chains $v,\,(T{-}\lambda)v,\dots,(T{-}\lambda)^{s-1}v$; equivalently $Tv_k - \lambda v_k \in \\{0,\,v_{k-1}\\}$           | $V = $ direct sum of **indecomposable** invariant subspaces, one per chain | number of blocks for $\lambda$: $\dim E(\lambda,T)$; blocks of size $\ge j$: $\dim\operatorname{null}(T{-}\lambda)^j - \dim\operatorname{null}(T{-}\lambda)^{j-1}$ | $\prod_k (z-\lambda_k)^{e_{\lambda_k}}$, exponent $=$ largest block size                 | $\operatorname{rank}(T-\lambda)^j$ for all $j$ determines the entire diagram                                                                                                   |
-| Diagonalizable         | a basis of eigenvectors of $T$                                                                                                                         | $V = E(\lambda_1,T)\oplus\dots\oplus E(\lambda_m,T)$                       | $\sum_k \dim E(\lambda_k,T) = \dim V$                                                                                                                              | $(z-\lambda_1)\cdots(z-\lambda_m)$, $\lambda_k$ **distinct**                             | $V = \operatorname{null}(T{-}\lambda I) \oplus \operatorname{range}(T{-}\lambda I)$ **for every** $\lambda \in \mathbf{F}$ (a characterization when $\mathbf{F} = \mathbb{C}$) |
-
-![Hierarchy of upper-triangular, primary decomposition, and Jordan form](/assets/img/math/upper_triangular_primary_jordan_hierarchy.png)
-_Each step refines the previous one._
+> So the ordinary eigenspace grows strictly exactly when some $\lambda$ with $p(\lambda) = \alpha$ is **both a critical point of $p$ and a defective eigenvalue of $T$**. $\blacksquare$
 
 {: .prompt-tip }
-> Each row is read off [blockwise](#generalized-eigenspaces): the primary decomposition takes the $V_k$ to be the $G(\lambda_k,T)$, and the Jordan form splits each of those further into chains. Each refinement buys finer blocks and pays for it in uniqueness. The $G(\lambda_k,T)$ are determined by $T$ alone, with no choices. The individual Jordan blocks inside a $G$ are not: with $\mu = (2,1)$ there's a whole family of valid choices for the size-2 and size-1 summands, and only the multiset $\\{2,1\\}$ is forced.
+> **What $p$ does to the diagrams.** Part (a) says $p$ relabels each block $G(\lambda,T)$ as $p(\lambda)$ and merges the blocks that receive the same label; in particular $\sigma(p(T)) = p(\sigma(T))$. Inside a block, suppose $p$ is nonconstant and let $r \ge 1$ be the order of the first nonzero derivative of $p$ at $\lambda$. Then $M = N^r Q$ with $Q$ invertible and commuting with $N$, so $\operatorname{null}M^j = \operatorname{null}N^{rj}$ for every $j$: $M$ has the diagram of $N^r$. On a chain of length $m$, $N^r$ jumps $r$ boxes at a time, so it splits the chain into the $r$ subchains of boxes congruent mod $r$. Hence
+>
+> $$p\big(J_m(\lambda)\big) \;\sim\; \min(r, m) \text{ Jordan blocks of sizes } \lceil m/r \rceil \text{ and } \lfloor m/r \rfloor, \text{ eigenvalue } p(\lambda).$$
+>
+> At a simple point ($r = 1$, $p'(\lambda) \ne 0$) chains survive intact; at a critical point they split, and the extra chains are the extra eigenvectors in (b). This is the matrix version of a map folding $r$-to-$1$ near a critical point, like $z \mapsto z^r$ near $0$. The smallest example is $T = J_2(0)$, $p = z^2$: $p(T) = 0$.
 
-![Matrix shapes versus operator classes](/assets/img/math/matrix_shapes_vs_operator_classes.png)
-_Matrix shapes against the operator classes that realize them._
+![Relabel and merge across eigenvalues; split chains at a critical point](/assets/img/math/eigenspaces_of_p_of_T.svg)
+_Left: blocks with the same image merge. Right: at a critical point of order $2$, a chain of length $5$ splits into its odd and even boxes._
 
 ## Norms and Eigenvalues
 
