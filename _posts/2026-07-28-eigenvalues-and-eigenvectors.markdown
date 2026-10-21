@@ -3,11 +3,37 @@ title: "Eigenvalues and Eigenvectors"
 category: [math, "linear algebra"]
 tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
+mermaid: true
 ---
 
-Notes on eigenvalues, eigenspaces, generalized eigenspaces, and the ladder of
-normal forms that sits on top of them: upper-triangular $\to$ primary
-decomposition $\to$ Jordan $\to$ diagonal.
+Notes on eigenvalues, eigenspaces, and generalized eigenspaces, organized around
+one theme: how the factorization of the minimal polynomial determines the
+structure of an operator. Along the way: invariant subspaces, the normal forms
+(triangular, primary, Jordan, diagonal), eigenspaces of $p(T)$, and a few
+analytic facts.
+
+A map of the post:
+
+```mermaid
+flowchart TD
+    A[Linear map T] --> P[Minimal polynomial p_T<br/>zeros = eigenvalues]
+    P --> B{p_T splits over F?}
+    B -->|Yes| C[Upper-triangularizable]
+    C --> D[Primary decomposition<br/>V = ⊕ G of λ,T]
+    D --> E[Jordan form]
+    E --> F{Any eigenvalue defective?}
+    F -->|No| G[Diagonalizable]
+    F -->|Yes| G2[Some Jordan block of size ≥ 2]
+    B -->|No: only over R| H[Irreducible quadratic factor:<br/>no triangular form, maybe no eigenvalues,<br/>invariant plane; general primary decomposition]
+    D -.- I[Generalized eigenspaces G of λ,T]
+    I -.->|N = T − λI restricted to G| J[Nilpotent N]
+    J --> K[Jordan basis] --> L[Jordan chains] --> M[Jordan blocks]
+    M -.-> E
+    I -.- N2[Eigenspace E of λ,T ⊆ G]
+    I -->|d_λ = dim G| O[Count multiplicities]
+    N2 -->|g_λ = dim E| O
+    L -->|e_λ = tallest chain| O
+```
 
 ## Notation and Standing Assumptions
 
@@ -31,7 +57,7 @@ $\mathbf{F} = \mathbb{C}$ say so explicitly.
 > $\operatorname{null}p(T)$ and $\operatorname{range}p(T)$ are $T$-invariant for every $p \in \mathcal{P}(\mathbf{F})$. In particular $E(\lambda,T)$ and $G(\lambda,T)$ are $T$-invariant.
 
 {: .prompt-proof }
-> $p(T)$ commutes with $T$. If $p(T)v = 0$ then $p(T)(Tv) = T\,p(T)v = 0$; and $T\,p(T)v = p(T)(Tv) \in \operatorname{range}p(T)$. The same argument works for any operator commuting with $T$; see [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}). $\blacksquare$
+> $p(T)$ commutes with $T$. If $p(T)v = 0$ then $p(T)(Tv) = T\,p(T)v = 0$; and $T\,p(T)v = p(T)(Tv) \in \operatorname{range}p(T)$. The same argument works for any operator commuting with $T$; see [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}#invariant-subspaces). $\blacksquare$
 
 {: .prompt-info }
 > **Invariant direct sums.** Suppose $V = V_1 \oplus \dots \oplus V_m$ with each $V_k$ invariant under $T$, and write $T_k = \left.T\right\rvert_{V_k}$. Then for every $p \in \mathcal{P}(\mathbf{F})$:
@@ -212,6 +238,15 @@ the number of boxes above the bottom level. The second row needs a proof.
 > *$e_\lambda \le p$.* $S\vert_R$ is injective, because $\operatorname{null}S \subseteq G$ and $G \cap R = \\{0\\}$, so it is invertible. Restricting $p_T(T) = 0$ to $R$ gives $(S\vert_R)^{e_\lambda}\,q(T)\vert_R = 0$, so $q(T)\vert_R = 0$. Now $f = (z-\lambda)^pq$ satisfies $f(T)\vert_G = q(T)\vert_G\,N^p = 0$ and $f(T)\vert_R = (S\vert_R)^p\,q(T)\vert_R = 0$, so $f(T) = 0$ on $V = G \oplus R$. The minimal polynomial divides every polynomial that annihilates $T$, so $f = h\,p_T$ for some polynomial $h$, that is, $(z-\lambda)^pq = h\,(z-\lambda)^{e_\lambda}q$. Cancelling $q$ and comparing degrees gives $p = \deg h + e_\lambda \ge e_\lambda$. $\blacksquare$
 
 So $d_\lambda$, $e_\lambda$, $g_\lambda$ are $n$, $p$, $k$ for $N$, and all relations among them are [those of $n$, $p$, $k$]({% post_url 2026-07-25-nilpotent-operators %}#jordan-basis): $1 \le g_\lambda, e_\lambda \le d_\lambda$ and $g_\lambda + e_\lambda - 1 \le d_\lambda$, with no inequality between $g_\lambda$ and $e_\lambda$ alone.
+
+{: .prompt-tip }
+> *What the polynomials miss.* $d_\lambda$ and $e_\lambda$ are the exponents in the characteristic and minimal polynomials, so between them the two polynomials see the total number of boxes and the height of the tallest column of each diagram, and nothing else. That is not enough to pin down the shape. The smallest example is a nilpotent operator on a $4$-dimensional space:
+>
+> $$\mu = (2,2) \qquad\text{and}\qquad \mu = (2,1,1)$$
+>
+> both have characteristic polynomial $z^4$ and minimal polynomial $z^2$, yet $\mu' = (2,2)$ against $(3,1)$, so $g_0 = \dim\operatorname{null}N$ is $2$ against $3$ and the operators are not similar. Their [commutants]({% post_url 2026-08-01-commuting-operators %}#dimension) differ too, of dimension $8$ against $10$.
+>
+> The diagram is the complete invariant; the two polynomials are its two most easily computed shadows.
 
 {: .prompt-info }
 > **Invariant subspaces and $G(\lambda,T)$.**

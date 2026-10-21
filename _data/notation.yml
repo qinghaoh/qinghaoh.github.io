@@ -78,10 +78,10 @@
   meaning: 'index of nilpotency: the smallest exponent with $N^p = 0$, equal to $m_1$'
 - key: commutant
   symbol: '$\mathcal{C}(T) = \{S \in \mathcal{L}(V) : ST = TS\}$'
-  meaning: 'commutant of $T$'
+  meaning: 'commutant (or centralizer) of $T$; the operator-algebra notation $\{T\}^{\prime}$ is avoided here since $T^{\prime}$ is the dual map'
 - key: poly_alg
-  symbol: '$\mathcal{P}(T) = \{q(T) : q \in \mathcal{P}(\mathbf{F})\}$'
-  meaning: 'operators expressible as polynomials in $T$'
+  symbol: '$\mathbf{F}[T] = \{q(T) : q \in \mathcal{P}(\mathbf{F})\}$'
+  meaning: 'the algebra of polynomials in $T$: the operators expressible as $q(T)$'
 - key: complexification_space
   symbol: '$V_{\mathbb{C}}$'
   meaning: 'complexification of a real vector space $V$'
