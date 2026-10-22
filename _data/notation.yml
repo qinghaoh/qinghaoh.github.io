@@ -5,11 +5,11 @@
   symbol: '$\mathbf{F}$'
   meaning: 'the field $\mathbb{R}$ or $\mathbb{C}$'
 - key: V
-  symbol: '$V$'
+  symbol: "$V$"
   meaning: 'a vector space over $\mathbf{F}$ (nonzero, finite-dimensional unless stated)'
 - key: n
   symbol: '$n = \dim V$'
-  meaning: 'dimension of $V$'
+  meaning: "dimension of $V$"
 - key: LV
   symbol: '$\mathcal{L}(V)$'
   meaning: 'linear operators $V \to V$'
@@ -21,13 +21,13 @@
   meaning: 'polynomials with coefficients in $\mathbf{F}$'
 - key: MT
   symbol: '$\mathcal{M}(T)$'
-  meaning: 'matrix of $T$ with respect to a chosen basis'
+  meaning: "matrix of $T$ with respect to a chosen basis"
 - key: dual_space
   symbol: "$V'$"
-  meaning: 'dual space of $V$'
+  meaning: "dual space of $V$"
 - key: dual_op
   symbol: "$T'$"
-  meaning: 'dual (transpose) operator of $T$'
+  meaning: "dual (transpose) operator of $T$"
 - key: double_dual
   symbol: "$V''$"
   meaning: "double dual space, $(V')'$"
@@ -35,26 +35,26 @@
   symbol: '$\Lambda$'
   meaning: 'canonical map $V \to V'', (\Lambda v)(\varphi) = \varphi(v)$'
 - key: annihilator
-  symbol: '$U^0$'
+  symbol: "$U^0$"
   meaning: 'annihilator of $U$: $\{\varphi \in V'' : \varphi(u) = 0\ \forall u \in U\}$'
 - key: quotient_space
-  symbol: '$V/U$'
-  meaning: 'quotient of $V$ by a subspace $U$'
+  symbol: "$V/U$"
+  meaning: "quotient of $V$ by a subspace $U$"
 - key: quotient_op
-  symbol: '$T/U$'
-  meaning: 'quotient operator induced by $T$ on $V/U$'
+  symbol: "$T/U$"
+  meaning: "quotient operator induced by $T$ on $V/U$"
 - key: eigenspace
   symbol: '$E(\lambda,T) = \operatorname{null}(T - \lambda I)$'
   meaning: 'eigenspace; $\lambda$ is an eigenvalue $\iff E(\lambda,T) \ne \{0\}$'
 - key: gen_eigenspace
   symbol: '$G(\lambda,T) = \operatorname{null}(T - \lambda I)^n$'
-  meaning: 'generalized eigenspace'
+  meaning: "generalized eigenspace"
 - key: geo_mult
   symbol: '$g_\lambda = \dim E(\lambda,T)$'
-  meaning: 'geometric multiplicity'
+  meaning: "geometric multiplicity"
 - key: alg_mult
   symbol: '$d_\lambda = \dim G(\lambda,T)$'
-  meaning: 'algebraic multiplicity'
+  meaning: "algebraic multiplicity"
 - key: min_poly_exp
   symbol: '$e_\lambda$'
   meaning: 'exponent of $(z-\lambda)$ in the minimal polynomial'
@@ -65,8 +65,8 @@
   symbol: '$\sigma(T)$'
   meaning: 'spectrum: the set of eigenvalues of $T$; $\lvert \sigma(T) \rvert$ is the number of distinct eigenvalues'
 - key: min_poly
-  symbol: '$p_T$'
-  meaning: 'minimal polynomial of $T$'
+  symbol: "$p_T$"
+  meaning: "minimal polynomial of $T$"
 - key: partition
   symbol: '$\mu = (m_1 \ge \dots \ge m_k)$'
   meaning: 'Jordan chain lengths of a nilpotent operator, as a partition of $\dim V$; the **Segre characteristic**'
@@ -74,17 +74,17 @@
   symbol: "$\\mu'$"
   meaning: "conjugate partition of $\\mu$; $\\mu'_j$ is the size of level $j$; the **Weyr characteristic**"
 - key: index_nilpotency
-  symbol: '$p$'
-  meaning: 'index of nilpotency: the smallest exponent with $N^p = 0$, equal to $m_1$'
+  symbol: "$p$"
+  meaning: "index of nilpotency: the smallest exponent with $N^p = 0$, equal to $m_1$"
 - key: commutant
-  symbol: '$\mathcal{C}(T) = \{S \in \mathcal{L}(V) : ST = TS\}$'
+  symbol: '$$\mathcal{C}(T) = \{S \in \mathcal{L}(V) : ST = TS\}$$'
   meaning: 'commutant (or centralizer) of $T$; the operator-algebra notation $\{T\}^{\prime}$ is avoided here since $T^{\prime}$ is the dual map'
 - key: poly_alg
-  symbol: '$\mathbf{F}[T] = \{q(T) : q \in \mathcal{P}(\mathbf{F})\}$'
-  meaning: 'the algebra of polynomials in $T$: the operators expressible as $q(T)$'
+  symbol: '$$\mathbf{F}[T] = \{q(T) : q \in \mathcal{P}(\mathbf{F})\}$$'
+  meaning: "the [algebra](https://en.wikipedia.org/wiki/Algebra_over_a_field) of polynomials in $T$: the operators expressible as $q(T)$"
 - key: complexification_space
   symbol: '$V_{\mathbb{C}}$'
-  meaning: 'complexification of a real vector space $V$'
+  meaning: "complexification of a real vector space $V$"
 - key: complexification_op
   symbol: '$T_{\mathbb{C}}$'
-  meaning: 'complexification of a real operator $T$'
+  meaning: "complexification of a real operator $T$"

@@ -11,7 +11,7 @@ This post continues [Nilpotent Operators]({% post_url 2026-07-25-nilpotent-opera
 
 {% include notation-table.md keys="n LV PF eigenspace gen_eigenspace min_poly commutant poly_alg partition conj_partition index_nilpotency" %}
 
-Both $\mathcal{C}(T)$ and $\mathbf{F}[T]$ are subspaces of $\mathcal{L}(V)$, and in fact subalgebras: they are closed under composition.
+Both $\mathcal{C}(T)$ and $\mathbf{F}[T]$ are subspaces of $\mathcal{L}(V)$, and in fact [subalgebras](https://en.wikipedia.org/wiki/Subalgebra): they are closed under composition.
 
 {: .prompt-warning }
 > $\mathbf{F}[T] \subseteq \mathcal{C}(T)$ always, since $T$ commutes with $I$ and with itself, hence with every polynomial in itself. That direction is free, and it is not the interesting one. The question this post answers is the **converse**: when is every operator commuting with $T$ a polynomial in $T$?
@@ -24,12 +24,7 @@ The smaller of the two spaces has a dimension that is easy to read off.
 {: .prompt-proof }
 > Let $d = \deg p_T$. *Spanning:* for $q \in \mathcal{P}(\mathbf{F})$, division gives $q = a\,p_T + r$ with $\deg r < d$, so $q(T) = r(T)$ and $I, T, \dots, T^{d-1}$ span $\mathbf{F}[T]$. *Independence:* a nontrivial relation $\sum_{t<d} c_tT^t = 0$ would be a nonzero polynomial of degree less than $d$ annihilating $T$, contradicting the minimality of $p_T$. $\blacksquare$
 
-{: .prompt-tip }
-> *Notation recall.* A nilpotent $N \in \mathcal{L}(V)$ splits $V$ into Jordan chains with tops $v_1,\dots,v_k$ and lengths $m_1 \ge \dots \ge m_k$, forming a partition $\mu$ of $\dim V$ drawn as a bottom-aligned array of boxes with the chains as columns. Its conjugate $\mu'$ has $\mu'_j = \\#\\{i : m_i \ge j\\}$, the size of level $j$, and $d_j = \dim\operatorname{null}N^j = \mu'_1 + \dots + \mu'_j$. Throughout, $p = m_1$ is the index of nilpotency and $n = \dim V$.
-
-## Commuting Operators in General
-
-Nothing in this section assumes nilpotency.
+## Two Commuting Operators
 
 ### Invariant Subspaces
 
@@ -46,54 +41,6 @@ Nothing in this section assumes nilpotency.
 >
 > * $ q(z) = z - \lambda $, then $ E(\lambda, S) $ is invariant under $ T $.
 > * $ q(z) = (z - \lambda)^{\dim V} $, then $ G(\lambda, S) $ is invariant under $ T $.
-
-### Simultaneous Diagonalization
-
-{: .prompt-info }
-> *simultaneous diagonalizability $\iff$ commutativity*
->
-> Suppose $ \mathcal{E} $ is a subset of $ \mathcal{L}(V) $ and every element of $ \mathcal{E} $ is diagonalizable.
->
-> There exists a basis of $ V $ with respect to which every element of $ \mathcal{E} $ has a diagonal matrix $\iff$ every pair of elements of $ \mathcal{E} $ commutes.
-
-{: .prompt-proof }
-> ($\Rightarrow$) Diagonal matrices commute, and $\mathcal{M}(ST) = \mathcal{M}(S)\mathcal{M}(T)$, so any two elements of $\mathcal{E}$ commute.
->
-> ($\Leftarrow$) Suppose every pair in $\mathcal{E}$ commutes. Induct on $n = \dim V$.
->
-> **Case 1: every $T \in \mathcal{E}$ is a scalar multiple of $I$.** Then every basis of $V$ works. (This covers $n = 1$, so the base case is free.)
->
-> **Case 2: some $S \in \mathcal{E}$ is not a scalar multiple of $I$.** Since $S$ is diagonalizable with eigenvalues $\lambda_1,\dots,\lambda_m$,
->
-> $$V = E(\lambda_1,S) \oplus \dots \oplus E(\lambda_m,S),$$
->
-> and $m \geq 2$ (otherwise $S = \lambda_1 I$). So each $E(\lambda_j, S)$ is a subspace of dimension strictly less than $n$.
->
-> Fix $j$ and write $W = E(\lambda_j, S)$. By [Invariant Subspaces](#invariant-subspaces), $W$ is invariant under every $T \in \mathcal{E}$. Each $\left. T \right\rvert_W$ is diagonalizable: its minimal polynomial divides $p_T$, which is a [product of distinct linear factors]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#generalized-eigenspaces) because $T$ is diagonalizable, so it is one too. The restricted family also commutes: for $T, R \in \mathcal{E}$ and $w \in W$, invariance gives $(\left. T \right\rvert_W)(\left. R \right\rvert_W)w = T(Rw) = (TR)w = (RT)w = (\left. R \right\rvert_W)(\left. T \right\rvert_W)w$.
->
-> So $\mathcal{E}_j = \{\left. T\right\rvert_W : T \in \mathcal{E}\}$ is a commuting family of diagonalizable operators on a space of dimension $< n$. By the induction hypothesis there is a basis $\mathcal{B}_j$ of $W$ making *every* element of $\mathcal{E}_j$ diagonal. That is, every vector of $\mathcal{B}_j$ is an eigenvector of $T$ for every $T \in \mathcal{E}$ simultaneously.
->
-> Now let $\mathcal{B} = \mathcal{B}_1 \cup \dots \cup \mathcal{B}_m$. Because $V$ is the direct sum of the $E(\lambda_j,S)$, this is a basis of $V$, and each of its vectors is an eigenvector of every $T \in \mathcal{E}$. So every element of $\mathcal{E}$ has a diagonal matrix with respect to $\mathcal{B}$. $\blacksquare$
-
-![block diagonal to diagonal](/assets/img/math/block_diagonal_refinement_to_diagonal.png)
-
-### Simultaneous Upper Triangularization
-
-Without diagonalizability, commuting operators over $\mathbb{C}$ can still be triangularized together.
-
-{: .prompt-info }
-> Suppose $V$ is a finite-dimensional nonzero *complex* vector space. Suppose that $ \mathcal{E} \subseteq \mathcal{L}(V) $ is such that $S$ and $T$ commute for all $S,T \in \mathcal{E}$.
->
-> (a) There is a vector in $V$ that is an eigenvector for every element of $\mathcal{E}$.
->
-> (b) There is a basis of $V$ with respect to which every element of $\mathcal{E}$ has an upper-triangular matrix.
-
-{: .prompt-proof }
-> Both parts induct on $n = \dim V$, and both are trivial for $n = 1$.
->
-> (a) If every element of $\mathcal{E}$ is a scalar multiple of $I$, any nonzero vector works. Otherwise pick $S \in \mathcal{E}$ that is not. Over $\mathbb{C}$, $S$ has an eigenvalue $\lambda$, and $W = E(\lambda, S)$ is nonzero and, since $S \ne \lambda I$, not all of $V$. As in the previous proof, $W$ is invariant under every element of $\mathcal{E}$ and the restrictions to $W$ commute. By the induction hypothesis some $w \in W$ is an eigenvector of every restriction, hence of every element of $\mathcal{E}$.
->
-> (b) By (a) pick a common eigenvector $v_1$ and let $U = \operatorname{span}(v_1)$, which is invariant under every $T \in \mathcal{E}$. The [quotient operators]({% post_url 2026-07-04-quotient-spaces %}#quotient-operator) $T/U$ commute, since $(T/U)(R/U)(x + U) = TRx + U = RTx + U = (R/U)(T/U)(x+U)$. By the induction hypothesis, $V/U$ has a basis $v_2 + U, \dots, v_n + U$ making every $T/U$ upper triangular, i.e. $Tv_j \in \operatorname{span}(v_2,\dots,v_j) + U$ for $j \ge 2$. Then $v_1, \dots, v_n$ is a basis of $V$ with $Tv_j \in \operatorname{span}(v_1, \dots, v_j)$ for every $j$ and every $T \in \mathcal{E}$. $\blacksquare$
 
 ### Invertible Plus Nilpotent
 
@@ -112,9 +59,82 @@ The case $S = \lambda I$ is the [inverse of $\lambda I + N$]({% post_url 2026-07
 {: .prompt-warning }
 > Commutativity is essential. On $\mathbf{F}^2$, the invertible $$S = \begin{pmatrix}0&1\\1&0\end{pmatrix}$$ and the nilpotent $$N = \begin{pmatrix}0&0\\-1&0\end{pmatrix}$$ do not commute, and $$S + N = \begin{pmatrix}0&1\\0&0\end{pmatrix}$$ is not invertible.
 
-### Reduction to the Nilpotent Case
+## Commuting Families
 
-The results above describe commuting *families*. To describe the commutant of a single
+Call a subset $\mathcal{E} \subseteq \mathcal{L}(V)$ a **commuting family** if $ST = TS$ for all $S, T \in \mathcal{E}$. The family may be infinite.
+
+### Restrictions and Quotients
+
+Once a subspace is invariant under a whole commuting family, the family can be cut down to it, or to the quotient by it, without losing anything the proofs below need.
+
+{: .prompt-info }
+> Suppose $\mathcal{E} \subseteq \mathcal{L}(V)$ is a commuting family and $U$ is invariant under every element of $\mathcal{E}$. Then the restrictions $\left.T\right\rvert_U$ and the [quotient operators]({% post_url 2026-07-04-quotient-spaces %}#quotient-operator) $T/U$, for $T \in \mathcal{E}$, form commuting families, and the minimal polynomials of $\left.T\right\rvert_U$ and $T/U$ divide $p_T$.
+
+{: .prompt-proof }
+> For $T, R \in \mathcal{E}$, $u \in U$ and $x \in V$,
+>
+> $$(\left.T\right\rvert_U)(\left.R\right\rvert_U)u = TRu = RTu = (\left.R\right\rvert_U)(\left.T\right\rvert_U)u, \qquad (T/U)(R/U)(x+U) = TRx + U = RTx + U = (R/U)(T/U)(x+U).$$
+>
+> For every polynomial $q$, $q(\left.T\right\rvert_U) = \left.q(T)\right\rvert_U$ and $q(T/U)(x + U) = q(T)x + U$, so $p_T$ annihilates both operators, and a polynomial annihilating an operator is a [multiple of its minimal polynomial]({% post_url 2026-07-22-polynomials %}#minimal-polynomial). $\blacksquare$
+
+So restricting or passing to the quotient keeps a commuting family commuting, keeps split minimal polynomials split, and keeps diagonalizable operators diagonalizable, since the divisors of a product of distinct linear factors are again such products.
+
+### Simultaneous Diagonalization
+
+A subset $\mathcal{E} \subseteq \mathcal{L}(V)$ is **simultaneously diagonalizable** if there is a basis of $V$ with respect to which every element of $\mathcal{E}$ has a diagonal matrix.
+
+{: .prompt-info }
+> Suppose every element of $\mathcal{E} \subseteq \mathcal{L}(V)$ is diagonalizable. Then $\mathcal{E}$ is simultaneously diagonalizable $\iff$ $\mathcal{E}$ is a commuting family.
+
+{: .prompt-proof }
+> ($\Rightarrow$) For $R, T \in \mathcal{E}$, the matrices $\mathcal{M}(R)$ and $\mathcal{M}(T)$ with respect to the common basis are diagonal, and diagonal matrices commute, so $\mathcal{M}(RT) = \mathcal{M}(R)\mathcal{M}(T) = \mathcal{M}(T)\mathcal{M}(R) = \mathcal{M}(TR)$ and $RT = TR$.
+>
+> ($\Leftarrow$) Suppose $\mathcal{E}$ is a commuting family. Induct on $n = \dim V$.
+>
+> **Case 1: every element of $\mathcal{E}$ is a scalar multiple of $I$.** Then every basis of $V$ works. (This covers $n = 1$, so the base case is free.)
+>
+> **Case 2: some $S \in \mathcal{E}$ is not a scalar multiple of $I$.** Since $S$ is diagonalizable with eigenvalues $\lambda_1,\dots,\lambda_m$,
+>
+> $$V = E(\lambda_1,S) \oplus \dots \oplus E(\lambda_m,S),$$
+>
+> and $m \geq 2$ (otherwise $S = \lambda_1 I$). So each $E(\lambda_j, S)$ is a subspace of dimension strictly less than $n$.
+>
+> Fix $j$ and write $W = E(\lambda_j, S)$. By [Invariant Subspaces](#invariant-subspaces), $W$ is invariant under every $T \in \mathcal{E}$. By [Restrictions and Quotients](#restrictions-and-quotients), the restrictions $\left. T\right\rvert_W$ form a commuting family of operators that are still diagonalizable, since a diagonalizable operator's minimal polynomial is a [product of distinct linear factors]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#generalized-eigenspaces). As $\dim W < n$, the induction hypothesis gives a basis $\mathcal{B}_j$ of $W$ making every $\left. T\right\rvert_W$ diagonal. That is, every vector of $\mathcal{B}_j$ is an eigenvector of $T$ for every $T \in \mathcal{E}$ simultaneously.
+>
+> Now let $\mathcal{B} = \mathcal{B}_1 \cup \dots \cup \mathcal{B}_m$. Because $V$ is the direct sum of the $E(\lambda_j,S)$, this is a basis of $V$, and each of its vectors is an eigenvector of every $T \in \mathcal{E}$. So every element of $\mathcal{E}$ has a diagonal matrix with respect to $\mathcal{B}$. $\blacksquare$
+
+### Simultaneous Upper Triangularization
+
+Without diagonalizability, commuting operators can still be triangularized together, as long as each one can be triangularized on its own.
+
+{: .prompt-info }
+> Suppose $V$ is nonzero, $ \mathcal{E} \subseteq \mathcal{L}(V) $ is a commuting family, and the minimal polynomial of every element of $\mathcal{E}$ splits over $\mathbf{F}$ (automatic when $\mathbf{F} = \mathbb{C}$). Then there is a basis of $V$ with respect to which every element of $\mathcal{E}$ has an upper-triangular matrix.
+
+{: .prompt-proof }
+> Induct on $n = \dim V$; the case $n = 1$ is trivial. By [Restrictions and Quotients](#restrictions-and-quotients), restricting to a subspace invariant under all of $\mathcal{E}$, or passing to the quotient by one, gives a commuting family whose minimal polynomials still split, so the induction hypothesis applies to it.
+>
+> *A common eigenvector.* If every element of $\mathcal{E}$ is a scalar multiple of $I$, any nonzero $v_1$ is an eigenvector of all of them. Otherwise pick $S \in \mathcal{E}$ that is not. Its minimal polynomial splits and has positive degree, so $S$ has an eigenvalue $\lambda$, and $W = E(\lambda, S)$ is nonzero, not all of $V$ since $S \ne \lambda I$, and invariant under every element of $\mathcal{E}$. By the induction hypothesis, $W$ has a basis making every restriction to $W$ upper triangular. Its first vector $v_1$ is an eigenvector of every restriction, since the first column of an upper-triangular matrix is zero below the diagonal, hence of every element of $\mathcal{E}$.
+>
+> *The remaining vectors.* Let $U = \operatorname{span}(v_1)$, which is invariant under every $T \in \mathcal{E}$. By the induction hypothesis, $V/U$ has a basis $v_2 + U, \dots, v_n + U$ making every $T/U$ upper triangular, i.e. $Tv_j \in \operatorname{span}(v_2,\dots,v_j) + U$ for $j \ge 2$. Then $v_1, \dots, v_n$ is a basis of $V$ with $Tv_j \in \operatorname{span}(v_1, \dots, v_j)$ for every $j$ and every $T \in \mathcal{E}$. $\blacksquare$
+
+A single operator is upper-triangularizable [iff its minimal polynomial splits]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#the-hierarchy-of-normal-forms), so the hypothesis cannot be weakened: a commuting family can be triangularized together iff each member can be triangularized on its own.
+
+In particular, a commuting family with split minimal polynomials has a **common eigenvector**: the first vector of such a basis, since $Tv_1 \in \operatorname{span}(v_1)$ for every $T \in \mathcal{E}$.
+
+{: .prompt-tip }
+> *The common picture.* Both theorems are shadows of one decomposition. Under the hypotheses of the triangularization theorem, $V$ is the direct sum of the *joint generalized eigenspaces*
+>
+> $$V_\alpha = \bigcap_{T \in \mathcal{E}} G(\alpha(T), T),$$
+>
+> one for each way $\alpha$ of choosing an eigenvalue $\alpha(T)$ of every $T \in \mathcal{E}$ that makes the intersection nonzero. Each $V_\alpha$ is invariant under all of $\mathcal{E}$, and on it every $T$ is $\alpha(T)I$ plus a nilpotent. For a single operator this is the primary decomposition. A diagonalizable $T$ has zero nilpotent part, so when every element of $\mathcal{E}$ is diagonalizable, each one is a scalar on each $V_\alpha$; the induction in [Simultaneous Diagonalization](#simultaneous-diagonalization) is what builds the $V_\alpha$.
+>
+> Only diagonalization comes with a converse. Diagonal matrices commute, so a common diagonal basis forces commuting; upper-triangular matrices generally do not commute, so a common triangular basis forces nothing.
+>
+> Jordan form does not pass to commuting families. Let $N$ be a single chain on $\mathbf{F}^3$, which commutes with $N^2$. The only Jordan form of $N$ is $J_3(0)$, so any Jordan basis $b_1, b_2, b_3$ for $N$ has $Nb_3 = b_2$, $Nb_2 = b_1$, $Nb_1 = 0$. In it $N^2b_3 = b_1$, a $1$ in the top-right corner, which is not a Jordan matrix. So $N$ and $N^2$ have no common Jordan basis.
+
+## Reduction to the Nilpotent Case
+
+The results above concern pairs and families of commuting operators. To describe the commutant of a single
 operator, the first move is to break $V$ into generalized eigenspaces, on each of which the
 operator is a scalar plus a nilpotent.
 
@@ -332,11 +352,11 @@ most extreme: $n^2$ against $1$.
 
 ### Comparing the Ends
 
-|                                    | one column | one level          |
-| ---------------------------------- | ---------- | ------------------ |
-| $\mu$                              | $(n)$      | $(1^n)$            |
-| $\mu'$                             | $(1^n)$    | $(n)$              |
-| $\dim\mathcal{C}(N)$               | $n$        | $n^2$              |
+|                                   | one column | one level          |
+| --------------------------------- | ---------- | ------------------ |
+| $\mu$                             | $(n)$      | $(1^n)$            |
+| $\mu'$                            | $(1^n)$    | $(n)$              |
+| $\dim\mathcal{C}(N)$              | $n$        | $n^2$              |
 | $\dim\mathbf{F}[N] = p$           | $n$        | $1$                |
 | $\mathcal{C}(N) = \mathbf{F}[N]$? | yes        | no, unless $n = 1$ |
 
