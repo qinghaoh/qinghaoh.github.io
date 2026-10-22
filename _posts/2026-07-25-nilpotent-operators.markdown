@@ -216,6 +216,25 @@ $$(\lambda I+N)\left(\tfrac{1}{\lambda}I - \tfrac{1}{\lambda^2}N + \tfrac{1}{\la
 
 The inverse is again upper-triangular Toeplitz, with alternating signs and increasing powers of $1/\lambda$ along successive diagonals.
 
+#### Invertible Plus Nilpotent
+
+The scalar $\lambda I$ can be replaced by any invertible operator that commutes with $N$.
+
+{: .prompt-info }
+> Suppose $N^p = 0$ and $S \in \mathcal{C}(N)$ is invertible. Then $S + N$ is invertible, and
+>
+> $$(S+N)^{-1} = \sum_{t=0}^{p-1}(-1)^t S^{-(t+1)}N^t.$$
+
+{: .prompt-proof }
+> Multiplying $SN = NS$ by $S^{-1}$ on both sides gives $NS^{-1} = S^{-1}N$, so $S^{-1}$ also commutes with $N$. Let $B = -S^{-1}N$. Commutativity lets the powers separate: $B^t = (-1)^tS^{-t}N^t$, so $B^p = 0$. The [geometric-series argument](#inverse-of-a-jordan-block) then shows that $I - B$ is invertible with inverse $\sum_{t=0}^{p-1}B^t$. Since $S + N = S(I - B)$,
+>
+> $$(S+N)^{-1} = (I-B)^{-1}S^{-1} = \sum_{t=0}^{p-1}(-1)^tS^{-t}N^tS^{-1} = \sum_{t=0}^{p-1}(-1)^tS^{-(t+1)}N^t. \qquad \blacksquare$$
+
+The case $S = \lambda I$ is the [inverse of $\lambda I + N$](#inverse-of-a-jordan-block) above.
+
+{: .prompt-warning }
+> Commutativity is essential. On $\mathbf{F}^2$, the invertible $$S = \begin{pmatrix}0&1\\1&0\end{pmatrix}$$ and the nilpotent $$N = \begin{pmatrix}0&0\\-1&0\end{pmatrix}$$ do not commute, and $$S + N = \begin{pmatrix}0&1\\0&0\end{pmatrix}$$ is not invertible.
+
 ### Find a Jordan Basis
 
 {: .prompt-info }
