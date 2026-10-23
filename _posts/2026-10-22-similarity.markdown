@@ -140,7 +140,7 @@ For operators this says $T$ and its [dual map]({% post_url 2026-07-10-dual-space
 
 ## Real Operators
 
-Over $\mathbb{R}$ the minimal polynomial need not split, and rotations have no Jordan form. [Complexification]({% post_url 2026-08-03-complexification %}) resolves this: it does not change whether two real operators are similar.
+Over $\mathbb{R}$ the minimal polynomial need not split, and rotations have no Jordan form. [Complexification]({% post_url 2026-07-30-complexification %}) resolves this: it does not change whether two real operators are similar.
 
 {: .prompt-info }
 > Suppose $A, B \in \mathbb{R}^{n,n}$. If $A$ and $B$ are similar over $\mathbb{C}$, they are similar over $\mathbb{R}$.
@@ -150,10 +150,10 @@ Over $\mathbb{R}$ the minimal polynomial need not split, and rotations have no J
 >
 > It remains to make $X + tY$ invertible for some real $t$. The function $f(t) = \det(X + tY)$ is a polynomial in $t$, and $f(i) = \det P \ne 0$, so $f$ is not the zero polynomial and has finitely many zeros. Choose a real $t_0$ that is not one of them. Then $Q = X + t_0Y$ is real and invertible with $QA = BQ$, so $A = Q^{-1}BQ$. $\blacksquare$
 
-With respect to a basis of $V$, a real operator $T$ and its complexification $T_{\mathbb{C}}$ have the [same matrix]({% post_url 2026-08-03-complexification %}#linear-map). So two real operators are similar iff their complexifications are, and the classification above, applied over $\mathbb{C}$, decides it: compare the eigenvalues of $S_{\mathbb{C}}$ and $T_{\mathbb{C}}$, now possibly non-real, and their diagrams.
+With respect to a basis of $V$, a real operator $T$ and its complexification $T_{\mathbb{C}}$ have the [same matrix]({% post_url 2026-07-30-complexification %}#linear-map). So two real operators are similar iff their complexifications are, and the classification above, applied over $\mathbb{C}$, decides it: compare the eigenvalues of $S_{\mathbb{C}}$ and $T_{\mathbb{C}}$, now possibly non-real, and their diagrams.
 
 {: .prompt-tip }
-> For a real $T$, the complex Jordan form is symmetric under conjugation. Conjugation on $V_{\mathbb{C}}$ satisfies $C(T_{\mathbb{C}} - \lambda I)^j = (T_{\mathbb{C}} - \bar\lambda I)^jC$, as in [Complexification]({% post_url 2026-08-03-complexification %}#eigenvalue), so it carries each $\operatorname{null}(T_{\mathbb{C}} - \lambda I)^j$ onto $\operatorname{null}(T_{\mathbb{C}} - \bar\lambda I)^j$ and the diagrams at $\lambda$ and $\bar\lambda$ agree. Pairing each block $J_m(\lambda)$ with its conjugate $J_m(\bar\lambda)$ and choosing real bases of the paired spaces gives the **real Jordan form**, where each pair becomes a $2m \times 2m$ block built from rotation-scaling $2 \times 2$ blocks.
+> For a real $T$, the complex Jordan form is symmetric under conjugation. Conjugation on $V_{\mathbb{C}}$ satisfies $C(T_{\mathbb{C}} - \lambda I)^j = (T_{\mathbb{C}} - \bar\lambda I)^jC$, as in [Complexification]({% post_url 2026-07-30-complexification %}#eigenvalue), so it carries each $\operatorname{null}(T_{\mathbb{C}} - \lambda I)^j$ onto $\operatorname{null}(T_{\mathbb{C}} - \bar\lambda I)^j$ and the diagrams at $\lambda$ and $\bar\lambda$ agree. Pairing each block $J_m(\lambda)$ with its conjugate $J_m(\bar\lambda)$ and choosing real bases of the paired spaces gives the **real Jordan form**, where each pair becomes a $2m \times 2m$ block built from rotation-scaling $2 \times 2$ blocks.
 
 ## Other Fields
 

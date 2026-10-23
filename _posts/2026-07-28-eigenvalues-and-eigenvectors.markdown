@@ -132,7 +132,7 @@ Since $\sigma(T)$ is the [set of zeros of $p_T$](#eigenvalues-and-the-minimal-po
 {: .prompt-proof }
 > (a) $p_T$ has degree at least $1$ since $V \ne \\{0\\}$, so it has a complex zero.
 >
-> (b) The first claim is the fact above. For odd $n$, see [Complexification]({% post_url 2026-08-03-complexification %}#application-odd-dimension-forces-a-real-eigenvalue).
+> (b) The first claim is the fact above. For odd $n$, see [Complexification]({% post_url 2026-07-30-complexification %}#application-odd-dimension-forces-a-real-eigenvalue).
 >
 > (c) Let $q$ be an irreducible factor of $p_T$, so $\deg q \in \\{1, 2\\}$, and write $p_T = qh$. By minimality $h(T) \ne 0$, so $w = h(T)v \ne 0$ for some $v$, and $q(T)w = p_T(T)v = 0$. Then $T^{\deg q}w \in \operatorname{span}(w, \dots, T^{\deg q - 1}w)$, so this span is invariant, nonzero, and of dimension at most $\deg q \le 2$. $\blacksquare$
 
@@ -291,7 +291,7 @@ So $d_\lambda$, $e_\lambda$, $g_\lambda$ are $n$, $p$, $k$ for $N$, and all rela
 > (d) $\lvert \sigma(T) \rvert \le \min(n,\; 1 + r)$, and over $\mathbb{C}$ also $\lvert \sigma(T) \rvert \ge 1$ by [existence](#existence-of-eigenvalues).
 
 {: .prompt-proof }
-> (a) The sum of the $G(\lambda,T)$ is direct and lies in $V$, and it is all of $V$ iff the minimal polynomial [splits](https://en.wikipedia.org/wiki/Splitting_field). Over $\mathbb{C}$ the equality is also visible in an [upper-triangular matrix]({% post_url 2026-07-04-quotient-spaces %}#induction-on-dimension) of $T$, whose $n$ diagonal entries list each eigenvalue $\lambda$ exactly $d_\lambda$ times. Over $\mathbb{R}$, the sum is the part of $n = \sum d_\lambda(T_{\mathbb{C}})$ coming from real eigenvalues; the non-real eigenvalues of $T_{\mathbb{C}}$ come in conjugate pairs with equal multiplicities ([Complexification]({% post_url 2026-08-03-complexification %})), so they contribute an even number.
+> (a) The sum of the $G(\lambda,T)$ is direct and lies in $V$, and it is all of $V$ iff the minimal polynomial [splits](https://en.wikipedia.org/wiki/Splitting_field). Over $\mathbb{C}$ the equality is also visible in an [upper-triangular matrix]({% post_url 2026-07-04-quotient-spaces %}#induction-on-dimension) of $T$, whose $n$ diagonal entries list each eigenvalue $\lambda$ exactly $d_\lambda$ times. Over $\mathbb{R}$, the sum is the part of $n = \sum d_\lambda(T_{\mathbb{C}})$ coming from real eigenvalues; the non-real eigenvalues of $T_{\mathbb{C}}$ come in conjugate pairs with equal multiplicities ([Complexification]({% post_url 2026-07-30-complexification %})), so they contribute an even number.
 >
 > (b) $E(\lambda,T) \subseteq G(\lambda,T)$ gives $g_\lambda \le d_\lambda$. The sum of the $E(\lambda,T)$ is direct, and it is all of $V$ iff $T$ is diagonalizable.
 >
