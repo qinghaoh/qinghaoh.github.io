@@ -56,7 +56,7 @@ Shifting an operator by a scalar changes neither space.
 > For every $\lambda \in \mathbf{F}$, $\mathcal{C}(T + \lambda I) = \mathcal{C}(T)$ and $\mathbf{F}[T + \lambda I] = \mathbf{F}[T]$.
 
 {: .prompt-proof }
-> $S(T + \lambda I) - (T + \lambda I)S = ST - TS$, so $S$ commutes with $T + \lambda I$ iff it commutes with $T$. For the second, $q(T + \lambda I) = r(T)$ with $r(z) = q(z + \lambda)$, and conversely $r(T) = q(T + \lambda I)$ with $q(z) = r(z - \lambda)$. $\blacksquare$
+> $S(T + \lambda I) - (T + \lambda I)S = ST - TS$, so $S$ commutes with $T + \lambda I$ iff it commutes with $T$. For the second, $q(T + \lambda I) = r(T)$ for the polynomial $r(z) := q(z + \lambda)$, so $\mathbf{F}[T + \lambda I] \subseteq \mathbf{F}[T]$; the same with $-\lambda$ gives the reverse inclusion. $\blacksquare$
 
 ## Commuting Families
 
@@ -78,21 +78,15 @@ Call a subset $\mathcal{E} \subseteq \mathcal{L}(V)$ a **commuting family** if $
 > * $ q(z) = z - \lambda $, then $ E(\lambda, S) $ is invariant under $ T $.
 > * $ q(z) = (z - \lambda)^{\dim V} $, then $ G(\lambda, S) $ is invariant under $ T $.
 
+{: .prompt-warning }
+> Commuting operators share the subspaces $\operatorname{null}q(S)$ and $\operatorname{range}q(S)$, but **not invariant subspaces in general**. On $\mathbf{F}^4$, let $N$ send $e_2 \mapsto e_1 \mapsto 0$ and $e_4 \mapsto e_3 \mapsto 0$, and let $S$ swap $e_1 \leftrightarrow e_3$ and $e_2 \leftrightarrow e_4$. Then $SN = NS$: both send $e_2 \mapsto e_3$, $e_4 \mapsto e_1$, and $e_1, e_3 \mapsto 0$. But
+>
+> - $\operatorname{span}(e_1)$ is invariant under $N$, since $Ne_1 = 0$, but not under $S$, since $Se_1 = e_3$;
+> - $\operatorname{span}(e_2 + e_4)$ is invariant under $S$, since $S(e_2 + e_4) = e_2 + e_4$, but not under $N$, since $N(e_2 + e_4) = e_1 + e_3$.
+
 ### Restrictions and Quotients
 
-Once a subspace is invariant under a whole commuting family, the family can be cut down to it, or to the quotient by it, without losing anything the proofs below need.
-
-{: .prompt-info }
-> Suppose $\mathcal{E} \subseteq \mathcal{L}(V)$ is a commuting family and $U$ is invariant under every element of $\mathcal{E}$. Then the restrictions $\left.T\right\rvert_U$ and the [quotient operators]({% post_url 2026-07-04-quotient-spaces %}#quotient-operator) $T/U$, for $T \in \mathcal{E}$, form commuting families, and the minimal polynomials of $\left.T\right\rvert_U$ and $T/U$ divide $p_T$.
-
-{: .prompt-proof }
-> For $T, R \in \mathcal{E}$, $u \in U$ and $x \in V$,
->
-> $$(\left.T\right\rvert_U)(\left.R\right\rvert_U)u = TRu = RTu = (\left.R\right\rvert_U)(\left.T\right\rvert_U)u, \qquad (T/U)(R/U)(x+U) = TRx + U = RTx + U = (R/U)(T/U)(x+U).$$
->
-> For every polynomial $q$, $q(\left.T\right\rvert_U) = \left.q(T)\right\rvert_U$ and $q(T/U)(x + U) = q(T)x + U$, so $p_T$ annihilates both operators, and a polynomial annihilating an operator is a [multiple of its minimal polynomial]({% post_url 2026-07-22-polynomials %}#minimal-polynomial). $\blacksquare$
-
-So restricting or passing to the quotient keeps a commuting family commuting, keeps split minimal polynomials split, and keeps diagonalizable operators diagonalizable, since the divisors of a product of distinct linear factors are again such products.
+Suppose $U$ is invariant under every element of a commuting family $\mathcal{E}$. On the operators leaving $U$ invariant, restriction $T \mapsto \left.T\right\rvert_U$ and passage to the [quotient operator]({% post_url 2026-07-04-quotient-spaces %}#quotient-operator) $T \mapsto T/U$ are [unital algebra homomorphisms]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality). So the restrictions, and likewise the quotient operators, again form a commuting family, and the minimal polynomials of $\left.T\right\rvert_U$ and $T/U$ divide $p_T$. In particular, restricting or passing to the quotient keeps split minimal polynomials split.
 
 ### Joint Generalized Eigenspaces
 
@@ -107,20 +101,28 @@ The primary decomposition extends from one operator to a commuting family. Simul
 >
 > $$V = \bigoplus_\alpha V_\alpha.$$
 >
-> Each $V_\alpha$ is invariant under every element of $\mathcal{E}$, and on it each $T \in \mathcal{E}$ is $\alpha(T)I$ plus a nilpotent operator.
+> Each $V_\alpha$ is invariant under every element of $\mathcal{E}$, and $\left.T\right\rvert_{V_\alpha} - \alpha(T)I$ is nilpotent for each $T \in \mathcal{E}$.
 
 {: .prompt-proof }
-> *Refine.* Call a nonzero subspace invariant under every element of $\mathcal{E}$ a **block**. Start from the single block $V$. While some $S \in \mathcal{E}$ has two or more eigenvalues on some block $P$, replace $P$ by the generalized eigenspaces of $\left.S\right\rvert_P$ for those eigenvalues. They add up to $P$ because the minimal polynomial of $\left.S\right\rvert_P$ splits ([Restrictions and Quotients](#restrictions-and-quotients)), and each is a block by [Invariant Subspaces](#invariant-subspaces) applied to the commuting family of restrictions to $P$. Each step increases the number of blocks, which cannot exceed $\dim V$, so the process stops with
+> Two claims follow directly from the definition. Each $G(\mu, T)$ is invariant under every element of $\mathcal{E}$ by [Invariant Subspaces](#invariant-subspaces), hence so is the intersection $V_\alpha$. And $V_\alpha \subseteq G(\alpha(T), T)$, so $\left.T\right\rvert_{V_\alpha} - \alpha(T)I$ is nilpotent (vacuously when $V_\alpha = \\{0\\}$, which happens whenever some $\alpha(T)$ is not an eigenvalue of $T$).
 >
-> $$V = \bigoplus_{i=1}^r P_i,$$
+> It remains to show $V = \bigoplus_\alpha V_\alpha$ with finitely many nonzero terms. Induct on $\dim V$.
 >
-> where every $T \in \mathcal{E}$ has exactly one eigenvalue on each $P_i$; call it $\beta_i(T)$. The minimal polynomial of $\left.T\right\rvert_{P_i}$ splits with the single zero $\beta_i(T)$, so $\left.T\right\rvert_{P_i} - \beta_i(T)I$ is nilpotent.
+> **Case 1: every $T \in \mathcal{E}$ has a single eigenvalue $\beta(T)$.** Its minimal polynomial splits with the single zero $\beta(T)$, so $G(\beta(T), T) = V$ for every $T$, and $V_\beta = V$. For $\alpha \ne \beta$, some $T$ has $\alpha(T) \ne \beta(T)$. Then $\alpha(T)$ is not an eigenvalue of $T$, so $G(\alpha(T), T) = \\{0\\}$ and $V_\alpha = \\{0\\}$.
 >
-> *Identify.* Fix $\alpha$ and $T$. On $P_i$, $\left.T\right\rvert_{P_i} - \alpha(T)I = (\beta_i(T) - \alpha(T))I + (\text{nilpotent})$ is nilpotent if $\beta_i(T) = \alpha(T)$ and [invertible]({% post_url 2026-07-25-nilpotent-operators %}#inverse-of-a-jordan-block) otherwise. So by the [blockwise computation]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#generalized-eigenspaces), a vector $x = \sum_i x_i$ with $x_i \in P_i$ lies in $G(\alpha(T), T)$ iff $x_i = 0$ for every $i$ with $\beta_i(T) \ne \alpha(T)$. Requiring this for every $T$ gives
+> **Case 2: some $S \in \mathcal{E}$ has distinct eigenvalues $\lambda_1, \dots, \lambda_m$ with $m \ge 2$.** Then $V = \bigoplus_{j=1}^m G_j$ with $G_j = G(\lambda_j, S)$, each a proper subspace invariant under every element of $\mathcal{E}$, and by [Restrictions and Quotients](#restrictions-and-quotients) the restrictions $\left.T\right\rvert_{G_j}$, for $T \in \mathcal{E}$, form a commuting family with split minimal polynomials. Since $\dim G_j < \dim V$, the induction hypothesis applies to this family on $G_j$ and gives
 >
-> $$V_\alpha = \bigoplus_{i \,:\, \beta_i = \alpha} P_i.$$
+> $$G_j = \bigoplus_\alpha \bigcap_{T \in \mathcal{E}} G\big(\alpha(T), \left.T\right\rvert_{G_j}\big).$$
 >
-> So $V_\alpha \ne \\{0\\}$ only when $\alpha$ is one of the finitely many $\beta_i$, each $P_i$ lies in exactly one $V_\alpha$, and $V = \bigoplus_\alpha V_\alpha$. Each $V_\alpha$ is invariant as a sum of blocks, and $T - \alpha(T)I$ is nilpotent on it because it is nilpotent on each of its $P_i$. $\blacksquare$
+> For each $T \in \mathcal{E}$ and scalar $\mu$, $G(\mu, \left.T\right\rvert_{G_j}) = G_j \cap G(\mu, T)$, since both consist of the vectors of $G_j$ killed by a power of $T - \mu I$. Intersecting over all $T \in \mathcal{E}$ turns each summand into $G_j \cap V_\alpha$, so
+>
+> $$G_j = \bigoplus_\alpha \big(G_j \cap V_\alpha\big).$$
+>
+> Now $V_\alpha \subseteq G(\alpha(S), S)$, which is $G_j$ if $\alpha(S) = \lambda_j$ and $\\{0\\}$ if $\alpha(S)$ is not an eigenvalue of $S$. Since distinct $G_j$ meet only in $0$, $G_j \cap V_\alpha$ is $V_\alpha$ when $\alpha(S) = \lambda_j$ and $\\{0\\}$ otherwise, and
+>
+> $$V = \bigoplus_{j=1}^m G_j = \bigoplus_{j=1}^m \bigoplus_{\alpha \,:\, \alpha(S) = \lambda_j} V_\alpha = \bigoplus_\alpha V_\alpha,$$
+>
+> with finitely many nonzero terms because each $G_j$ has finitely many. $\blacksquare$
 
 For a single operator this is the primary decomposition $V = \bigoplus_{\lambda \in \sigma(T)} G(\lambda, T)$.
 
@@ -129,26 +131,26 @@ For a single operator this is the primary decomposition $V = \bigoplus_{\lambda 
 A subset $\mathcal{E} \subseteq \mathcal{L}(V)$ is **simultaneously diagonalizable** if there is a basis of $V$ with respect to which every element of $\mathcal{E}$ has a diagonal matrix.
 
 {: .prompt-info }
-> Suppose every element of $\mathcal{E} \subseteq \mathcal{L}(V)$ is diagonalizable. Then $\mathcal{E}$ is simultaneously diagonalizable $\iff$ $\mathcal{E}$ is a commuting family.
+> Suppose every element of $\mathcal{E} \subseteq \mathcal{L}(V)$ is diagonalizable. Then $\mathcal{E}$ is a commuting family $\iff$ $\mathcal{E}$ is simultaneously diagonalizable.
 
 {: .prompt-proof }
-> ($\Rightarrow$) For $R, T \in \mathcal{E}$, the matrices $\mathcal{M}(R)$ and $\mathcal{M}(T)$ with respect to the common basis are diagonal, and diagonal matrices commute, so $\mathcal{M}(RT) = \mathcal{M}(R)\mathcal{M}(T) = \mathcal{M}(T)\mathcal{M}(R) = \mathcal{M}(TR)$ and $RT = TR$.
+> ($\Rightarrow$) Suppose $\mathcal{E}$ is a commuting family. A diagonalizable operator's minimal polynomial is a [product of distinct linear factors]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#generalized-eigenspaces), so it splits, and [Joint Generalized Eigenspaces](#joint-generalized-eigenspaces) gives $V = \bigoplus_\alpha V_\alpha$. Each $T \in \mathcal{E}$ is diagonalizable, so none of its eigenvalues is [defective]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#the-nilpotent-part): $G(\lambda, T) = E(\lambda, T)$ for every $\lambda$. Hence $V_\alpha \subseteq G(\alpha(T), T) = E(\alpha(T), T)$, that is, $\left.T\right\rvert_{V_\alpha} = \alpha(T)I$.
 >
-> ($\Leftarrow$) Suppose $\mathcal{E}$ is a commuting family. A diagonalizable operator's minimal polynomial is a [product of distinct linear factors]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#generalized-eigenspaces), so it splits, and [Joint Generalized Eigenspaces](#joint-generalized-eigenspaces) gives $V = \bigoplus_\alpha V_\alpha$. Fix $\alpha$ with $V_\alpha \ne \\{0\\}$ and $T \in \mathcal{E}$. By [Restrictions and Quotients](#restrictions-and-quotients), the minimal polynomial of $\left.T\right\rvert_{V_\alpha}$ divides $p_T$, so it is again a product of distinct linear factors. Its zeros are the eigenvalues of $\left.T\right\rvert_{V_\alpha}$, and the only one is $\alpha(T)$, since $\left.T\right\rvert_{V_\alpha} - \alpha(T)I$ is nilpotent. So the minimal polynomial is $z - \alpha(T)$, and $\left.T\right\rvert_{V_\alpha} = \alpha(T)I$.
+> So every nonzero vector of $V_\alpha$ is an eigenvector of every element of $\mathcal{E}$. Concatenating bases of the nonzero $V_\alpha$ gives a basis of $V$ made of common eigenvectors, with respect to which every element of $\mathcal{E}$ has a diagonal matrix.
 >
-> So every nonzero vector of $V_\alpha$ is an eigenvector of every element of $\mathcal{E}$. Concatenating bases of the nonzero $V_\alpha$ gives a basis of $V$ made of common eigenvectors, with respect to which every element of $\mathcal{E}$ has a diagonal matrix. $\blacksquare$
+> ($\Leftarrow$) For $R, T \in \mathcal{E}$, the matrices $\mathcal{M}(R)$ and $\mathcal{M}(T)$ with respect to the common basis are diagonal, and diagonal matrices commute, so $\mathcal{M}(RT) = \mathcal{M}(R)\mathcal{M}(T) = \mathcal{M}(T)\mathcal{M}(R) = \mathcal{M}(TR)$ and $RT = TR$. $\blacksquare$
 
 ### Simultaneous Upper Triangularization
 
 Without diagonalizability, commuting operators can still be triangularized together, as long as each one can be triangularized on its own. A subset $\mathcal{E} \subseteq \mathcal{L}(V)$ is **simultaneously upper-triangularizable** if there is a basis of $V$ with respect to which every element of $\mathcal{E}$ has an upper-triangular matrix.
 
 {: .prompt-info }
-> Suppose $V$ is nonzero and $\mathcal{E} \subseteq \mathcal{L}(V)$ is a commuting family whose minimal polynomials all split over $\mathbf{F}$ (automatic when $\mathbf{F} = \mathbb{C}$). Then $\mathcal{E}$ is simultaneously upper-triangularizable.
+> Suppose every element of $\mathcal{E} \subseteq \mathcal{L}(V)$ is upper-triangularizable (automatic when $\mathbf{F} = \mathbb{C}$). Then $\mathcal{E}$ is a commuting family $\implies$ $\mathcal{E}$ is simultaneously upper-triangularizable.
 
 {: .prompt-proof }
-> Induct on $n = \dim V$; the case $n = 1$ is trivial. By [Restrictions and Quotients](#restrictions-and-quotients), restricting to a subspace invariant under all of $\mathcal{E}$, or passing to the quotient by one, gives a commuting family whose minimal polynomials still split, so the induction hypothesis applies to it.
+> An operator is upper-triangularizable [iff its minimal polynomial splits]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#the-hierarchy-of-normal-forms), so every minimal polynomial in $\mathcal{E}$ splits. Suppose $\mathcal{E}$ is a commuting family, and induct on $n = \dim V$; the cases $n \le 1$ are trivial. By [Restrictions and Quotients](#restrictions-and-quotients), the induction hypothesis applies to the restrictions to, and quotients by, any subspace invariant under all of $\mathcal{E}$.
 >
-> *A common eigenvector.* Like the refinement in [Joint Generalized Eigenspaces](#joint-generalized-eigenspaces), this step splits off an eigenspace of a non-scalar $S$, but keeps only one of them. If every element of $\mathcal{E}$ is a scalar multiple of $I$, any nonzero $v_1$ is an eigenvector of all of them. Otherwise pick $S \in \mathcal{E}$ that is not. Its minimal polynomial splits and has positive degree, so $S$ has an eigenvalue $\lambda$, and $W = E(\lambda, S)$ is nonzero, not all of $V$ since $S \ne \lambda I$, and invariant under every element of $\mathcal{E}$ by [Invariant Subspaces](#invariant-subspaces), since each element commutes with $S$. By the induction hypothesis, $W$ has a basis making every restriction to $W$ upper triangular. Its first vector $v_1$ is an eigenvector of every restriction, since the first column of an upper-triangular matrix is zero below the diagonal, hence of every element of $\mathcal{E}$.
+> *A common eigenvector.* If every element of $\mathcal{E}$ is a scalar multiple of $I$, any nonzero $v_1$ is an eigenvector of all of them. Otherwise pick $S \in \mathcal{E}$ that is not. Its minimal polynomial splits and has positive degree, so $S$ has an eigenvalue $\lambda$, and $W = E(\lambda, S)$ is nonzero, not all of $V$ since $S \ne \lambda I$, and invariant under every element of $\mathcal{E}$ by [Invariant Subspaces](#invariant-subspaces), since each element commutes with $S$. By the induction hypothesis, $W$ has a basis making every restriction to $W$ upper triangular. Its first vector $v_1$ is an eigenvector of every restriction, since the first column of an upper-triangular matrix is zero below the diagonal, hence of every element of $\mathcal{E}$.
 >
 > *The remaining vectors.* Let $U = \operatorname{span}(v_1)$, which is invariant under every $T \in \mathcal{E}$. By the induction hypothesis, $V/U$ has a basis $v_2 + U, \dots, v_n + U$ making every $T/U$ upper triangular. Each $v_j + U$ is nonzero, so $v_j \notin U = \operatorname{span}(v_1)$ for $j \ge 2$; by [Block Matrix]({% post_url 2026-07-04-quotient-spaces %}#block-matrix), the whole list $v_1, v_2, \dots, v_n$ is a basis of $V$, and with respect to it every $T \in \mathcal{E}$ has matrix
 >
@@ -156,9 +158,7 @@ Without diagonalizability, commuting operators can still be triangularized toget
 >
 > where $\mathcal{M}(\left.T\right\rvert_U) = (c_T)$ is $1 \times 1$ because $Tv_1 = c_Tv_1$. Since $\mathcal{M}(T/U)$ is upper triangular, so is $\mathcal{M}(T)$. $\blacksquare$
 
-A single operator is upper-triangularizable [iff its minimal polynomial splits]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#the-hierarchy-of-normal-forms), so the hypothesis cannot be weakened: a commuting family is simultaneously upper-triangularizable iff each member is upper-triangularizable on its own.
-
-In particular, a commuting family with split minimal polynomials has a **common eigenvector**: the first vector of such a basis, since $Tv_1 \in \operatorname{span}(v_1)$ for every $T \in \mathcal{E}$.
+In particular, a commuting family of upper-triangularizable operators on a nonzero $V$ has a **common eigenvector**: the first vector of such a basis, since $Tv_1 \in \operatorname{span}(v_1)$ for every $T \in \mathcal{E}$.
 
 {: .prompt-tip }
 > Only diagonalization comes with a converse. Diagonal matrices commute, so a common diagonal basis forces commuting; upper-triangular matrices generally do not commute, so a common triangular basis forces nothing.
@@ -207,7 +207,7 @@ From here on $N \in \mathcal{L}(V)$ is nilpotent, with a Jordan basis of tops $v
 
 ### Description of the Commutant
 
-Unlike the generalized eigenspaces in the [reduction](#reduction-to-the-nilpotent-case), the Jordan chains are not preserved by commuting operators (see [below](#commuting-operators-need-not-preserve-chains)), so the commutant cannot be split chain by chain. Instead, a commuting operator is pinned down by where it sends the $k$ tops, and each top may go anywhere killed by the right power of $N$.
+Unlike the generalized eigenspaces in the [reduction](#reduction-to-the-nilpotent-case), the Jordan chains are not preserved by commuting operators (see the warning below), so the commutant cannot be split chain by chain. Instead, a commuting operator is pinned down by where it sends the $k$ tops, and each top may go anywhere killed by the right power of $N$.
 
 {: .prompt-info }
 > The map
@@ -235,6 +235,15 @@ Unlike the generalized eigenspaces in the [reduction](#reduction-to-the-nilpoten
 In practice: find a Jordan basis, choose each $w_i$ in $\operatorname{null}N^{m_i}$, and extend by $S_w(N^jv_i) := N^jw_i$. Every commuting operator arises this way, exactly once.
 
 The invertible elements of $\mathcal{C}(N)$ stay invertible when $N$ is added, with an explicit inverse; see [Invertible Plus Nilpotent]({% post_url 2026-07-25-nilpotent-operators %}#invertible-plus-nilpotent).
+
+{: .prompt-warning }
+> Nothing in the description of the commutant says $Sv_i$ has to lie in chain $i$. The constraint space $\operatorname{null}N^{m_i}$ is not a subspace of chain $i$: it is spanned by the bottom $\min(m_i, m_j)$ vectors of **every** chain $j$, so it reaches across the whole array. When all lengths equal $p$, $\operatorname{null}N^{m_i} = \operatorname{null}N^p = V$ and there is no constraint whatsoever; the swap $S$ in [Invariant Subspaces](#invariant-subspaces) is such an operator, carrying one chain of $N$ onto the other.
+>
+> With unequal lengths the constraint bites. Take $\mathbf{F}^3$ with chains
+>
+> $$e_2 \mapsto e_1 \mapsto 0, \qquad f \mapsto 0,$$
+>
+> so $m_1 = 2$ and $m_2 = 1$. The top of the long chain is unconstrained, since $\operatorname{null}N^2 = \mathbf{F}^3$, so $Se_2$ may be $f$. But the top of the short chain satisfies $Sf \in \operatorname{null}N = \operatorname{span}(e_1, f)$, so $Sf$ cannot be $e_2$: a short chain can only be sent into the bottom portion of a longer one, never onto its top. The freedom is **asymmetric**, and $\min(m_i, m_j)$ is exactly the bookkeeping for it.
 
 ### Dimension
 
@@ -272,42 +281,11 @@ So $\dim\mathcal{C}(N)$ is the sum of squares of the level sizes: the commutant 
 >
 > with equality iff only one term is nonzero, i.e. $p = 1$ and $N = 0$. $\blacksquare$
 
-The [two extremes](#two-extremes) are worked out below.
-
-### Commuting Operators Need Not Preserve Chains
-
-{: .prompt-warning }
-> Nothing in the description of the commutant says $Sv_i$ has to lie in chain $i$. The constraint space $\operatorname{null}N^{m_i}$ is not a subspace of chain $i$: it is spanned by the bottom $\min(m_i, m_j)$ vectors of **every** chain $j$, so it reaches across the whole array. When all lengths equal $p$, $\operatorname{null}N^{m_i} = \operatorname{null}N^p = V$ and there is no constraint whatsoever.
-
-**Swapping chains.** Take $\mathbf{F}^4$ with two chains of length $2$:
-
-$$e_2 \mapsto e_1 \mapsto 0, \qquad e_4 \mapsto e_3 \mapsto 0.$$
-
-Here $N^2 = 0$, so both constraints read $w_i \in \mathbf{F}^4$ and any pair of tops is legal. Swapping the chains is the choice $w_1 = e_4$, $w_2 = e_2$, which forces
-
-$$Se_2 = e_4, \quad Se_1 = Ne_4 = e_3, \qquad Se_4 = e_2, \quad Se_3 = Ne_2 = e_1.$$
-
-The construction guarantees $SN = NS$; as a spot-check, $SNe_2 = Se_1 = e_3$ and $NSe_2 = Ne_4 = e_3$. So $S$ commutes with $N$ while carrying chain $1$ onto chain $2$.
-
-**Shearing.** Take $w_1 = e_2 + e_4$ and $w_2 = e_4$ instead, giving
-
-$$Se_2 = e_2 + e_4, \quad Se_1 = e_1 + e_3, \qquad Se_4 = e_4, \quad Se_3 = e_3.$$
-
-This blends chain $1$ into chain $2$ without being a permutation of the basis.
-
-**No constraint at all.** For $N = 0$ on $\mathbf{F}^2$, two chains of length $1$, every operator commutes, so the commutant is all of $\mathcal{L}(\mathbf{F}^2)$, of dimension $4$. The ones preserving the chain $\operatorname{span}(e_1)$ are the upper triangular matrices, a proper subspace of dimension $3$. Preserving a chosen chain is a genuine restriction that most commuting operators fail.
-
-**Unequal lengths.** This is where the constraint bites. Take $\mathbf{F}^3$ with chains
-
-$$e_2 \mapsto e_1 \mapsto 0, \qquad f \mapsto 0,$$
-
-so $m_1 = 2$ and $m_2 = 1$. The top of the long chain is unconstrained, since $\operatorname{null}N^2 = \mathbf{F}^3$, so $Se_2$ may be $f$. But the top of the short chain satisfies $Sf \in \operatorname{null}N = \operatorname{span}(e_1, f)$, so $Sf$ cannot be $e_2$: a short chain can only be sent into the bottom portion of a longer one, never onto its top. The freedom is **asymmetric**, and $\min(m_i, m_j)$ is exactly the bookkeeping for it.
-
 **Worked example**
 
 Take $N = \partial/\partial x$ on $V = \operatorname{span}(1,x,y,x^2,xy)$, with the Jordan basis [found in Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}#find-a-jordan-basis): chain $x^2 \mapsto 2x \mapsto 2$ and chain $xy \mapsto y$. So $v_1 = x^2$ with $m_1 = 3$, and $v_2 = xy$ with $m_2 = 2$.
 
-Constraints: $w_1 \in \operatorname{null}N^3 = V$, unrestricted; $w_2 \in \operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$. The asymmetry is visible: $w_1$ may be $xy$, but $w_2$ may **not** be $x^2$, since $N^2x^2 = 2 \neq 0$.
+Constraints: $w_1 \in \operatorname{null}N^3 = V$, unrestricted; $w_2 \in \operatorname{null}N^2 = \operatorname{span}(1,y,x,xy)$. The asymmetry from the warning is visible: $w_1$ may be $xy$, but $w_2$ may **not** be $x^2$, since $N^2x^2 = 2 \neq 0$.
 
 Choose $w_1 = xy$ and $w_2 = 2x$. Then
 
@@ -320,17 +298,32 @@ Dimension check: $\dim\operatorname{null}N^3 + \dim\operatorname{null}N^2 = 5 + 
 
 The isomorphism also gives a **basis** of the commutant for free: run over a basis of $\operatorname{null}N^{m_i}$ for one index with the other $w$'s set to $0$. Here that gives $5 + 4 = 9$ explicit commuting operators spanning the commutant.
 
-**Exercise**
+The [two extremes](#two-extremes) are worked out below.
+
+### Freedom in a Jordan Basis
+
+[Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}#two-extremes) measures how far a Jordan basis is from unique by a number $r$: listed in a fixed order, a Jordan basis is a point of $V^n$, and $r$ is the dimension of a linear subspace of $V^n$ in which the Jordan bases form a nonempty open subset. It finds $r = n$ for one column and $r = n^2$ for one level by direct arguments. The description of the commutant gives $r$ for every shape.
 
 {: .prompt-info }
-> Give an example of two commuting operators $S,T$ on $\mathbf{F}^4$ such that there is a subspace of $\mathbf{F}^4$ that is invariant under $S$ but not under $T$ and there is a subspace of $\mathbf{F}^4$ that is invariant under $T$ but not under $S$.
+> Fix a Jordan basis of $N$ with tops $v_1, \dots, v_k$. Then $S \mapsto \big(S(N^jv_i)\big)$ is a one-to-one correspondence between the invertible elements of $\mathcal{C}(N)$ and the Jordan bases of the same shape. Consequently
+>
+> $$r = \dim\mathcal{C}(N) = \sum_j (\mu'_j)^2.$$
 
-Take the two chains of length $2$ and the chain swap $S$ from [Swapping chains](#commuting-operators-need-not-preserve-chains) above, so $SN = NS$. Then
+{: .prompt-proof }
+> A Jordan basis of the same shape is a list $(N^jw_i)$, with $w = (w_1, \dots, w_k) \in \prod_i \operatorname{null}N^{m_i}$, that is a basis of $V$. For such $w$, the [description of the commutant](#description-of-the-commutant) gives $S_w \in \mathcal{C}(N)$ with $S_w(N^jv_i) = N^jw_i$, so the list is the image of the fixed basis under $S_w$, and it is a basis iff $S_w$ is invertible. Since $\Phi$ is an isomorphism, $S \leftrightarrow \Phi(S)$ matches the invertible elements of $\mathcal{C}(N)$ one-to-one with these Jordan bases.
+>
+> For $r$: the linear map $w \mapsto (N^jw_i)$ from $\prod_i \operatorname{null}N^{m_i}$ into $V^n$ is injective (take $j = 0$), so its image is a linear subspace of dimension $\dim\mathcal{C}(N)$. Inside it, the Jordan bases are the points where $\det S_w \ne 0$. This determinant is a polynomial in the coordinates of $w$, and it is nonzero at $w = (v_1, \dots, v_k)$, where $S_w = I$. So the Jordan bases form a nonempty open subset of this subspace, and $r = \dim\mathcal{C}(N)$. $\blacksquare$
 
-- $\operatorname{span}(e_1)$ is $N$-invariant, since $Ne_1 = 0$, but not $S$-invariant, since $Se_1 = e_3$;
-- $\operatorname{span}(e_2+e_4)$ is $S$-invariant, since $S(e_2+e_4) = e_2+e_4$, but not $N$-invariant, since $N(e_2+e_4) = e_1+e_3$.
+For one column this gives $r = n$, and for one level $r = n^2$, the two values found directly in Nilpotent Operators. In group language, the invertible elements of $\mathcal{C}(N)$ form a group under composition, and the theorem says it acts *simply transitively* on the Jordan bases of a given shape.
 
-Contrast [Invariant Subspaces](#invariant-subspaces): commuting operators share every subspace of the form $\operatorname{null}q(S)$ or $\operatorname{range}q(S)$, but not invariant subspaces in general.
+{: .prompt-tip }
+> *The similarity class.* The operators similar to $N$, called the **nilpotent orbit** of $N$ in Lie theory, form a set of dimension
+>
+> $$\dim\mathcal{L}(V) - \dim\mathcal{C}(N) \;=\; n^2 - \sum_j (\mu'_j)^2 .$$
+>
+> This is a dimension count, in the spirit of rank–nullity. The map $C \mapsto CNC^{-1}$, defined on the invertible $C \in \mathcal{L}(V)$ (the changes of basis, a nonempty open subset of $\mathcal{L}(V)$, so of dimension $n^2$), sends them onto the similarity class of $N$, and $CNC^{-1} = DND^{-1}$ exactly when $D^{-1}C \in \mathcal{C}(N)$. So the operators giving any one output form a copy of the invertible elements of $\mathcal{C}(N)$, which by the same determinant argument are a nonempty open subset of $\mathcal{C}(N)$, of dimension $\dim\mathcal{C}(N)$. Subtracting this redundancy leaves $n^2 - \dim\mathcal{C}(N)$. Here the dimension of an open set means its dimension as a manifold over $\mathbb{R}$ or $\mathbb{C}$, or as an algebraic variety over a general field; making the count rigorous takes the orbit–stabilizer theorem for Lie groups or its algebraic-geometry analogue, since the map is not linear.
+>
+> Freedom in the basis and size of the similarity class always sum to $n^2$. For $N = 0$ the class is a single point, since nothing is similar to the zero operator but itself; for a single chain it is $n^2 - n$, as large as a nilpotent operator's class can be.
 
 ### Two Extremes
 
@@ -341,23 +334,15 @@ is as small as it can be, the other as large.
 
 #### One Column: a Single Chain
 
-If $k = 1$, the single chain has length $m_1 = n$, so $\operatorname{null}N^n = V$, so there is no constraint at all and $S$ is determined by an arbitrary $w = Sv$. Since $k = 1$, the chain
-
-$$v,\; Nv,\; \dots,\; N^{n-1}v$$
-
-is a basis of $V$, so expand $w$ in it:
+If $k = 1$, the single chain $v, Nv, \dots, N^{n-1}v$ is a basis of $V$, and $\operatorname{null}N^n = V$, so $w = Sv$ is arbitrary. Expand it in the chain:
 
 $$w = c_0v + c_1Nv + \dots + c_{n-1}N^{n-1}v = q(N)v, \qquad q(z) = c_0 + c_1z + \dots + c_{n-1}z^{n-1}.$$
 
-Now compare $S$ with $q(N)$ on each basis vector $N^tv$, for $0 \le t \le n-1$:
+Then on each basis vector, using $SN^t = N^tS$ and the fact that $q(N)$ commutes with $N^t$,
 
-$$S(N^tv) \;=\; N^t(Sv) \;=\; N^t\big(q(N)v\big) \;=\; q(N)(N^tv).$$
+$$S(N^tv) \;=\; N^t(Sv) \;=\; N^tq(N)v \;=\; q(N)(N^tv),$$
 
-The first equality is $SN^t = N^tS$, from $SN = NS$. The second substitutes $Sv = w = q(N)v$. The third is $N^tq(N) = q(N)N^t$, since polynomials in $N$ commute with powers of $N$.
-
-So $S$ and $q(N)$ agree on a basis of $V$, hence are equal as operators:
-
-$$S = c_0I + c_1N + \dots + c_{n-1}N^{n-1}.$$
+so $S = q(N) = c_0I + c_1N + \dots + c_{n-1}N^{n-1}$.
 
 In the basis $(N^{n-1}v,\dots,Nv,v)$, $N$ is $J_n(0)$ and $N^t$ is the band of $1$s on the $t$-th superdiagonal ([Nilpotent Block]({% post_url 2026-07-25-nilpotent-operators %}#nilpotent-block)), so $S$ has $c_t$ on the $t$-th superdiagonal: upper-triangular Toeplitz, the same shape as the powers of $J_n(\lambda)$ in [Non-nilpotent Block]({% post_url 2026-07-25-nilpotent-operators %}#non-nilpotent-block). For $n = 3$, with $e_3 \mapsto e_2 \mapsto e_1 \mapsto 0$ and $Se_3 = w = ae_1 + be_2 + ce_3$,
 
@@ -395,28 +380,9 @@ most extreme: $n^2$ against $1$.
 
 |                                   | one column | one level          |
 | --------------------------------- | ---------- | ------------------ |
-| $\mu$                             | $(n)$      | $(1^n)$            |
-| $\mu'$                            | $(1^n)$    | $(n)$              |
 | $\dim\mathcal{C}(N)$              | $n$        | $n^2$              |
 | $\dim\mathbf{F}[N] = p$           | $n$        | $1$                |
 | $\mathcal{C}(N) = \mathbf{F}[N]$? | yes        | no, unless $n = 1$ |
-
-{: .prompt-tip }
-> *Why the commutant measures how non-unique a Jordan basis is.*
->
-> Fix a Jordan basis with tops $v_i$, and take another Jordan basis of the same shape, with tops $v'_i$. Each $v'_i$ lies in $\operatorname{null}N^{m_i}$, so the [description of the commutant](#description-of-the-commutant) gives $S = S_w \in \mathcal{C}(N)$ for $w = (v'_1, \dots, v'_k)$, with $S(N^jv_i) = N^jv'_i$. So $S$ carries the first basis onto the second, and because it maps a basis onto a basis, it is invertible. It is the only element of $\mathcal{C}(N)$ doing so, since $\Phi$ is injective.
->
-> Conversely, take any invertible $S \in \mathcal{C}(N)$. Then $S(N^jv_i) = N^j(Sv_i)$, so $S$ sends the chains of the first basis to chains with tops $Sv_i$ and the same lengths, and these form a basis because $S$ is invertible: another Jordan basis of the same shape. A non-invertible element of $\mathcal{C}(N)$ would send the basis to a dependent list instead, so invertibility is exactly the condition needed.
->
-> So, once one Jordan basis is fixed, the Jordan bases of that shape correspond one-to-one to the invertible elements of $\mathcal{C}(N)$. (In group language, these invertible elements form a group under composition that acts *simply transitively* on the Jordan bases of the shape.) The invertible elements are the points of $\mathcal{C}(N)$ where the determinant does not vanish, a nonempty open subset, so they have dimension $\dim\mathcal{C}(N)$. That is the dimension of the choice available, and it is where the counts in [Nilpotent Operators]({% post_url 2026-07-25-nilpotent-operators %}#two-extremes) came from: every basis of $V$ when $N = 0$ ($n^2$ worth of freedom), and only the choice of a top when $k = 1$ ($n$ worth).
->
-> The complementary count is just as clean. The operators similar to $N$ form a set of dimension
->
-> $$\dim\mathcal{L}(V) - \dim\mathcal{C}(N) \;=\; n^2 - \sum_j (\mu'_j)^2 .$$
->
-> Freedom in the basis and size of the similarity class always sum to $n^2$. For $N = 0$ the
-> class is a single point, since nothing is similar to the zero operator but itself; for a
-> single chain it is $n^2 - n$, as large as a nilpotent operator's class can be.
 
 ## Back to Arbitrary Operators
 

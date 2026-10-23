@@ -45,6 +45,12 @@ Thus $\mu'$ has exactly $m_1$ parts, and its first part is the number of chains.
 The tallest column also gives the index of nilpotency: $N^{m_1}$ kills every chain, while $N^{m_1-1}v_1 \neq 0$ is the bottom of the longest one. So $p = m_1$. In particular $p \le \dim V$, so $N^{\dim V} = 0$.
 
 {: .prompt-info }
+> If $V \ne \\{0\\}$, the only eigenvalue of $N$ is $0$. Consequently, for every $\lambda \in \mathbf{F}$, the only eigenvalue of $\lambda I + N$ is $\lambda$.
+
+{: .prompt-proof }
+> The bottom of any chain is a nonzero vector killed by $N$, so $0$ is an eigenvalue. If $Nv = \mu v$ with $v \ne 0$, then $0 = N^pv = \mu^pv$, so $\mu = 0$. For the second claim, $(\lambda I + N)v = \lambda v + Nv$, so $(\lambda I + N)v = \nu v$ iff $Nv = (\nu - \lambda)v$. Hence $\nu$ is an eigenvalue of $\lambda I + N$ iff $\nu - \lambda$ is an eigenvalue of $N$, i.e. iff $\nu - \lambda = 0$. $\blacksquare$
+
+{: .prompt-info }
 > Write $n = \dim V$. The number of chains $k$, the index of nilpotency $p$, and $n$ satisfy
 >
 > $$1 \le k \le n, \qquad 1 \le p \le n, \qquad k + p - 1 \le n,$$
@@ -128,7 +134,7 @@ Partial sums give $(d_1,d_2,d_3) = (2,4,5)$, matching $\operatorname{null}N = \o
 > With respect to the basis formed by concatenating these ordered chains, in the order $U_1,\dots,U_k$, the matrix of $N$ is therefore block diagonal with blocks $J_{m_1}(0), \dots, J_{m_k}(0)$. $\blacksquare$
 
 {: .prompt-info }
-> Let $N$ be nilpotent on $V$. The partition $\mu$ does not depend on which Jordan basis produced it, and two nilpotent operators are [similar]({% post_url 2026-06-11-linear-algebra %}#matrices) if and only if their partitions agree.
+> Let $N$ be nilpotent on $V$. The partition $\mu$ does not depend on which Jordan basis produced it, and two nilpotent operators are [similar]({% post_url 2026-10-22-similarity %}#change-of-basis-and-similarity) if and only if their partitions agree.
 
 {: .prompt-proof }
 > **Independence of the basis.** The level sizes of the diagram are $$\mu'_j = d_j - d_{j-1}$$, and $$d_j = \dim\operatorname{null}N^j$$ makes no reference to a basis. So $\mu'$ is determined by $N$ alone, and therefore so is its conjugate $\mu$. Different Jordan bases genuinely differ in their vectors, but the shape those vectors fill is fixed before any choice is made. In matrix terms, any two Jordan bases give the same block diagonal matrix up to the order of the blocks, and with the chains sorted as above, the very same matrix.
@@ -140,6 +146,8 @@ Partial sums give $(d_1,d_2,d_3) = (2,4,5)$, matching $\operatorname{null}N = \o
 > putting $C^{-1}v \in \operatorname{null}(N')^j$. So $C^{-1}$ maps $\operatorname{null}N^j$ into $\operatorname{null}(N')^j$, injectively because $C$ is invertible, and onto because $N = CN'C^{-1}$ runs the same argument backwards. Hence the two operators have the same $d_j$ for every $j$, so the same $\mu'$, so the same $\mu$.
 >
 > **Agreeing operators are similar.** Each of $N$ and $N'$ has a Jordan basis in which its matrix is $J_{m_1}(0)\oplus\dots\oplus J_{m_k}(0)$. Equal $\mu$ makes these the same matrix, so $N$ and $N'$ have equal matrices with respect to their two Jordan bases, which is similarity. $\blacksquare$
+
+[Similarity]({% post_url 2026-10-22-similarity %}#classification-when-the-minimal-polynomial-splits) extends this classification to every operator whose minimal polynomial splits, one generalized eigenspace at a time.
 
 ### Jordan Block
 
@@ -468,7 +476,7 @@ This is the shape of an eigenvalue $\lambda$ of $T$ exactly when $\lambda$ is no
 | invariant subspaces           | $n+1$, a chain | all of them           |
 | Jordan-basis freedom $r$      | $n$            | $n^2$                 |
 
-The two values of $r$ came from unrelated arguments, one parametrizing a single top vector, the other observing that no condition applies at all. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) explains why they belong to one story. The operators commuting with $N$ form a space $\mathcal{C}(N)$ of dimension $\sum_j (\mu'_j)^2$, which is $n$ for one column and $n^2$ for one level, the smallest and largest values it can take. The invertible elements of $\mathcal{C}(N)$ act simply transitively on the Jordan bases, so $r = \dim\mathcal{C}(N)$ always.
+The two values of $r$ came from unrelated arguments, one parametrizing a single top vector, the other observing that no condition applies at all. [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}) explains why they belong to one story. The operators commuting with $N$ form a space $\mathcal{C}(N)$ of dimension $\sum_j (\mu'_j)^2$, which is $n$ for one column and $n^2$ for one level, the smallest and largest values it can take. And [$r = \dim\mathcal{C}(N)$ for every shape]({% post_url 2026-08-01-commuting-operators %}#freedom-in-a-jordan-basis), since a Jordan basis of a given shape is the image of a fixed one under exactly one invertible operator commuting with $N$.
 
 ## What Next
 

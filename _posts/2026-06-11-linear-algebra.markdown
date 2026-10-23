@@ -298,25 +298,7 @@ $ C $ is a *basis* of the column space.
 {: .prompt-tip }
 > $ A \mapsto A^T $ is a linear map
 
-{: .prompt-info }
-> Change-of-basis
->
-> $$ \mathcal{M}(I,(u_1,\dots,u_n),(v_1,\dots,v_n))\mathcal{M}(I,(v_1,\dots,v_n),(u_1,\dots,u_n)) = I $$
->
-> $ T \in \mathcal{L}(V) $, $ A = \mathcal{M}(T,(u_1,\dots,u_n)), B = \mathcal{M}(T,(v_1,\dots,v_n)), C = \mathcal{M}(I,(u_1,\dots,u_n),(v_1,\dots,v_n))$:
->
-> $$ A = C^{-1}BC $$
-
-{: .prompt-info }
-> Similarity
->
-> $ A, B \in \mathbf{F}^{n,n} $ are **similar** if $ A = C^{-1}BC $ for some invertible $ C \in \mathbf{F}^{n,n} $. Likewise $ S, T \in \mathcal{L}(V) $ are **similar** if $ S = C^{-1}TC $ for some invertible $ C \in \mathcal{L}(V) $.
->
-> Change-of-basis is exactly what makes the two readings agree: $ S $ and $ T $ are similar $ \iff $ they have the same matrix with respect to some pair of bases,
->
-> $$ \mathcal{M}(S,(u_1,\dots,u_n)) = \mathcal{M}(T,(v_1,\dots,v_n)). $$
->
-> ($ \Rightarrow $) take $ (v_1,\dots,v_n) $ and set $ u_i = C^{-1}v_i $. ($ \Leftarrow $) let $ C $ be the invertible operator with $ Cu_i = v_i $.
+Change of basis and similarity are covered in [Similarity]({% post_url 2026-10-22-similarity %}#change-of-basis-and-similarity).
 
 | $ T \in \mathcal{L}(V, W) $ | Inverse                                         | Dual Map                                 | Adjoint                                         |
 | --------------------------- | ----------------------------------------------- | ---------------------------------------- | ----------------------------------------------- |
