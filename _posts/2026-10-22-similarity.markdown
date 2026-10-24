@@ -57,7 +57,7 @@ A quantity attached to operators is a **similarity invariant** if similar operat
 > $$\dim\operatorname{null}(S - \lambda I)^j = \dim\operatorname{null}(T - \lambda I)^j.$$
 
 {: .prompt-proof }
-> (a) is the [conjugation row]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality) of the table in Polynomials: $T \mapsto C^{-1}TC$ is an algebra isomorphism, so it commutes with substituting into $q$, and $q(S) = 0$ iff $q(T) = 0$.
+> (a) is the [conjugation row]({% post_url 2026-07-22-polynomials %}#algebra-homomorphisms) of the table in Polynomials: $T \mapsto C^{-1}TC$ is an algebra isomorphism, so it commutes with substituting into $q$, and $q(S) = 0$ iff $q(T) = 0$.
 >
 > (b) By (a) with $q(z) = (z - \lambda)^j$, $(S - \lambda I)^j = C^{-1}(T - \lambda I)^jC$. So $(S - \lambda I)^jx = 0$ iff $(T - \lambda I)^j(Cx) = 0$, that is, $x \in \operatorname{null}(S - \lambda I)^j$ iff $Cx \in \operatorname{null}(T - \lambda I)^j$. Hence $C^{-1}$ maps the second null space onto the first, injectively since $C^{-1}$ is invertible. $\blacksquare$
 
@@ -71,7 +71,7 @@ Every invariant met so far in the series is read off from (a) and (b):
 | minimal polynomial $p_T$ and its exponents $e_\lambda$ | (a) | [Polynomials]({% post_url 2026-07-22-polynomials %}#minimal-polynomial) |
 | characteristic polynomial $\prod_\lambda (z - \lambda)^{d_\lambda}$ (split case) | the $d_\lambda$ | [Generalized Eigenspaces]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#generalized-eigenspaces) |
 | diagram $\mu^{(\lambda)}$ of the nilpotent part at each $\lambda$ | all $j$: $\mu^{(\lambda)\prime}_j$ is the jump from $j-1$ to $j$ | [The Nilpotent Part]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#the-nilpotent-part) |
-| $\dim\mathbf{F}[T] = \deg p_T$ | (a) | [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}#basic-facts) |
+| $\dim\mathbf{F}[T] = \deg p_T$ | (a) | [Polynomials]({% post_url 2026-07-22-polynomials %}#minimal-polynomial) |
 | $\dim\mathcal{C}(T)$ | $\mathcal{C}(C^{-1}TC) = C^{-1}\mathcal{C}(T)C$ | [Commuting Operators]({% post_url 2026-08-01-commuting-operators %}#back-to-arbitrary-operators) |
 
 The diagram row is the finest: every other row in the split case is computed from the eigenvalues and their diagrams. The diagram of the nilpotent part $N_\lambda$ is determined by $\dim\operatorname{null}N_\lambda^j$, and $\operatorname{null}N_\lambda^j = \operatorname{null}(T - \lambda I)^j$ because these null spaces already lie in $G(\lambda, T)$.

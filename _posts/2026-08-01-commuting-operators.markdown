@@ -42,13 +42,7 @@ Both $\mathcal{C}(T)$ and $\mathbf{F}[T]$ are subspaces of $\mathcal{L}(V)$, and
 
 ## Basic Facts
 
-The smaller of the two spaces has a dimension that is easy to read off.
-
-{: .prompt-info }
-> $\dim\mathbf{F}[T] = \deg p_T$.
-
-{: .prompt-proof }
-> Let $d = \deg p_T$. *Spanning:* for $q \in \mathcal{P}(\mathbf{F})$, division gives $q = a\,p_T + r$ with $\deg r < d$, so $q(T) = r(T)$ and $I, T, \dots, T^{d-1}$ span $\mathbf{F}[T]$. *Independence:* a nontrivial relation $\sum_{t<d} c_tT^t = 0$ would be a nonzero polynomial of degree less than $d$ annihilating $T$, contradicting the minimality of $p_T$. $\blacksquare$
+The smaller of the two spaces has a dimension that is easy to read off: $I, T, \dots, T^{\deg p_T - 1}$ is a basis of $\mathbf{F}[T]$, so [$\dim\mathbf{F}[T] = \deg p_T$]({% post_url 2026-07-22-polynomials %}#minimal-polynomial).
 
 Shifting an operator by a scalar changes neither space.
 
@@ -86,7 +80,7 @@ Call a subset $\mathcal{E} \subseteq \mathcal{L}(V)$ a **commuting family** if $
 
 ### Restrictions and Quotients
 
-Suppose $U$ is invariant under every element of a commuting family $\mathcal{E}$. On the operators leaving $U$ invariant, restriction $T \mapsto \left.T\right\rvert_U$ and passage to the [quotient operator]({% post_url 2026-07-04-quotient-spaces %}#quotient-operator) $T \mapsto T/U$ are [unital algebra homomorphisms]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality). So the restrictions, and likewise the quotient operators, again form a commuting family, and the minimal polynomials of $\left.T\right\rvert_U$ and $T/U$ divide $p_T$. In particular, restricting or passing to the quotient keeps split minimal polynomials split.
+Suppose $U$ is invariant under every element of a commuting family $\mathcal{E}$. On the operators leaving $U$ invariant, restriction $T \mapsto \left.T\right\rvert_U$ and passage to the [quotient operator]({% post_url 2026-07-04-quotient-spaces %}#quotient-operator) $T \mapsto T/U$ are [unital algebra homomorphisms]({% post_url 2026-07-22-polynomials %}#algebra-homomorphisms). So the restrictions, and likewise the quotient operators, again form a commuting family, and the minimal polynomials of $\left.T\right\rvert_U$ and $T/U$ divide $p_T$. In particular, restricting or passing to the quotient keeps split minimal polynomials split.
 
 ### Joint Generalized Eigenspaces
 

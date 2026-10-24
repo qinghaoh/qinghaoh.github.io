@@ -308,10 +308,10 @@ Change of basis and similarity are covered in [Similarity]({% post_url 2026-10-2
 | Involution                  | $ (T^{-1})^{-1} = T $                           |                                          | $ (T^{\*})^{\*} = T $                           |
 | Anti-homomorphism           | $ (ST)^{-1} = T^{-1}S^{-1} $                    | $ (ST)' = T'S' $                         | $ (ST)^{\*} = T^{\*}S^{\*} $                    |
 
-|                                                       | $ \mathbb{C} $                                  | $ \mathbb{R} $                                                                           |
-| ----------------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Polynomial factorization (_unique_)                   | $ p(z) = c(z - \lambda_1)\dots(z - \lambda_m) $ | $ p(x) = c(x - \lambda_1)\dots(x - \lambda_m)(x^2 + b_1x + c_1)\dots(x^2 + b_Mx + c_M) $ |
-| \#{zeros of a polynomial} (counted with multiplicity) | $ m = \deg p $                                  | $ \le \deg p $                                                                           |
+|                                                                                                                             | $ \mathbb{C} $                                  | $ \mathbb{R} $                                                                           |
+| --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Polynomial factorization (_unique_)                                                                                         | $ p(z) = c(z - \lambda_1)\dots(z - \lambda_m) $ | $ p(x) = c(x - \lambda_1)\dots(x - \lambda_m)(x^2 + b_1x + c_1)\dots(x^2 + b_Mx + c_M) $ |
+| \#{zeros of a polynomial} (counted with multiplicity)                                                                       | $ m = \deg p $                                  | $ \le \deg p $                                                                           |
 | [Existence of eigenvalues]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#existence-of-eigenvalues) ($ \forall T $) | Nonzero complex vector space                    | Odd-dimension real vector space                                                          |
 
 | $ T \in \mathcal{L}(V, W) $ | null space                           | range                               | $ \dim \operatorname{null} $                     | $ \dim \operatorname{range} $   | norm                           |
@@ -319,3 +319,8 @@ Change of basis and similarity are covered in [Similarity]({% post_url 2026-10-2
 | $ T' $                      | $ (\operatorname{range} T)^0 $       | $ (\operatorname{null} T)^0 $       | $ \dim \operatorname{null} T + \dim W - \dim V $ | $ \dim \operatorname{range} T $ |                                |
 | $ T^{\*} $                  | $ (\operatorname{range} T)^{\perp} $ | $ (\operatorname{null} T)^{\perp} $ |                                                  |                                 | $ \left\lVert T \right\rVert $ |
 | $ T^{\*}T $                 | $ \operatorname{null} T $            | $ \operatorname{range} T^{\*} $     |                                                  | $ \dim T = \dim T^{\*} $        |                                |
+
+## Inner Product
+
+- Over $\mathbb{R}$: positive-definite symmetric bilinear.
+- Over $\mathbb{C}$: positive-definite Hermitian form.

@@ -334,7 +334,7 @@ In matrix terms, $ \mathcal{M}(T - \lambda I) $ is block upper-triangular with d
 {: .prompt-tip }
 > *Polynomials*
 >
-> $ q(T/U) = q(T)/U $ for every polynomial $ q $ (see [Polynomials]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality)). So the minimal polynomial of $ T/U $ divides the minimal polynomial of $ T $.
+> $ q(T/U) = q(T)/U $ for every polynomial $ q $ (see [Polynomials]({% post_url 2026-07-22-polynomials %}#algebra-homomorphisms)). So the minimal polynomial of $ T/U $ divides the minimal polynomial of $ T $.
 
 ### Induction on Dimension
 

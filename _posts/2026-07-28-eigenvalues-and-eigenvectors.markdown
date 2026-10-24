@@ -141,6 +141,28 @@ Since $\sigma(T)$ is the [set of zeros of $p_T$](#eigenvalues-and-the-minimal-po
 
 ## Null Space and Range Chains
 
+Several chains of subspaces in these notes are built the same way: each term is obtained from the previous one by a fixed rule. Such a chain stops for good the first time it stalls.
+
+{: .prompt-info }
+> *Stabilizing chains*
+>
+> Let $U_0, U_1, U_2, \dots$ be subspaces of $V$ with $U_{m+1} = F(U_m)$ for a fixed rule $F$ taking subspaces to subspaces.
+>
+> (a) If $U_k = U_{k+1}$, then $U_m = U_k$ for every $m \ge k$.
+>
+> (b) If the chain is increasing ($U_m \subseteq U_{m+1}$) or decreasing ($U_m \supseteq U_{m+1}$), then $U_k = U_{k+1}$ for some $k \le n$, and before that step the dimension changes by at least $1$ at each step.
+
+{: .prompt-proof }
+> (a) $U_{k+2} = F(U_{k+1}) = F(U_k) = U_{k+1}$; induction does the rest.
+>
+> (b) While $U_m \ne U_{m+1}$, one contains the other properly, so the dimensions differ by at least $1$. The dimensions stay in $\\{0, \dots, n\\}$, so there are at most $n$ such steps. $\blacksquare$
+
+| Chain | Rule $F$ | Stalls at |
+| --- | --- | --- |
+| $\operatorname{null}T^m$ (increasing) | $U \mapsto T^{-1}(U)$, the preimage | the index of $T$ |
+| $\operatorname{range}T^m$ (decreasing) | $U \mapsto T(U)$ | the index of $T$ |
+| Krylov subspaces $\operatorname{span}(v, Tv, \dots, T^mv)$ (increasing) | $U \mapsto \operatorname{span}(v) + T(U)$ | $\deg p_v - 1$, see [Polynomials]({% post_url 2026-07-22-polynomials %}#local-minimal-polynomial) |
+
 {: .prompt-info }
 > Suppose $m$ is a nonnegative integer. Then
 >
@@ -148,8 +170,11 @@ Since $\sigma(T)$ is the [set of zeros of $p_T$](#eigenvalues-and-the-minimal-po
 >
 > and once either holds at $m$, it holds at every $m' \ge m$.
 
+{: .prompt-proof }
+> $\operatorname{null}T^m \subseteq \operatorname{null}T^{m+1}$ and $\operatorname{range}T^m \supseteq \operatorname{range}T^{m+1}$, so each equality holds iff the dimensions agree. By rank–nullity, $\dim\operatorname{null}T^m + \dim\operatorname{range}T^m = n$ for every $m$, so the null spaces have equal dimension iff the ranges do. The second claim is (a) of the lemma, with the rules in the table. $\blacksquare$
+
 {: .prompt-tip }
-> So the null-space chain and the range chain stabilize at the *same* step; this common step is the **index** of $T$ (in operator theory, the *ascent* and *descent*, which are equal here). Before it, $\dim\operatorname{null}T^m$ grows by at least $1$ at each step, so the chains have stabilized by $m = n$. This is why $G(\lambda,T) = \operatorname{null}(T-\lambda I)^n$ is a safe uniform definition. The true index of $T - \lambda I$ is usually much smaller, namely $e_\lambda$ (proved in [The Nilpotent Part](#the-nilpotent-part) below).
+> So the null-space chain and the range chain stabilize at the *same* step; this common step is the **index** of $T$ (in operator theory, the *ascent* and *descent*, which are equal here). By (b) of the lemma, the chains have stabilized by $m = n$. This is why $G(\lambda,T) = \operatorname{null}(T-\lambda I)^n$ is a safe uniform definition. The true index of $T - \lambda I$ is usually much smaller, namely $e_\lambda$ (proved in [The Nilpotent Part](#the-nilpotent-part) below).
 
 {: .prompt-info }
 > For every $k \ge 1$,
@@ -233,7 +258,7 @@ the number of boxes above the bottom level. The second row needs a proof.
 >
 > **$e_\lambda = p$.** Write $S = T - \lambda I$, $G = G(\lambda,T) = \operatorname{null}S^n$, $R = \operatorname{range}S^n$, and $p_T(z) = (z-\lambda)^{e_\lambda}q(z)$ with $q(\lambda) \ne 0$. Then $V = G \oplus R$ by the [null–range decomposition](#null-space-and-range-chains), both summands are invariant under every polynomial in $T$, and $S\vert_G = N$.
 >
-> *$p \le e_\lambda$.* Since $(T\vert_G - \lambda I)^p = N^p = 0$, the minimal polynomial of $T\vert_G$ divides $(z-\lambda)^p$, so it is $(z-\lambda)^j$ for some $j \le p$. Then $N^j = (T\vert_G - \lambda I)^j = 0$, which forces $j = p$. So the minimal polynomial of $T\vert_G$ is $(z-\lambda)^p$, and it [divides $p_T$]({% post_url 2026-07-22-polynomials %}#homomorphism-gives-divisibility-injectivity-gives-equality). Write $(z-\lambda)^{e_\lambda}q = h\,(z-\lambda)^p$. If $p > e_\lambda$, cancelling $(z-\lambda)^{e_\lambda}$ gives $q = h\,(z-\lambda)^{p-e_\lambda}$, so $q(\lambda) = 0$, a contradiction. Hence $p \le e_\lambda$.
+> *$p \le e_\lambda$.* Since $(T\vert_G - \lambda I)^p = N^p = 0$, the minimal polynomial of $T\vert_G$ divides $(z-\lambda)^p$, so it is $(z-\lambda)^j$ for some $j \le p$. Then $N^j = (T\vert_G - \lambda I)^j = 0$, which forces $j = p$. So the minimal polynomial of $T\vert_G$ is $(z-\lambda)^p$, and it [divides $p_T$]({% post_url 2026-07-22-polynomials %}#algebra-homomorphisms). Write $(z-\lambda)^{e_\lambda}q = h\,(z-\lambda)^p$. If $p > e_\lambda$, cancelling $(z-\lambda)^{e_\lambda}$ gives $q = h\,(z-\lambda)^{p-e_\lambda}$, so $q(\lambda) = 0$, a contradiction. Hence $p \le e_\lambda$.
 >
 > *$e_\lambda \le p$.* $S\vert_R$ is injective, because $\operatorname{null}S \subseteq G$ and $G \cap R = \\{0\\}$, so it is invertible. Restricting $p_T(T) = 0$ to $R$ gives $(S\vert_R)^{e_\lambda}\,q(T)\vert_R = 0$, so $q(T)\vert_R = 0$. Now $f = (z-\lambda)^pq$ satisfies $f(T)\vert_G = q(T)\vert_G\,N^p = 0$ and $f(T)\vert_R = (S\vert_R)^p\,q(T)\vert_R = 0$, so $f(T) = 0$ on $V = G \oplus R$. The minimal polynomial divides every polynomial that annihilates $T$, so $f = h\,p_T$ for some polynomial $h$, that is, $(z-\lambda)^pq = h\,(z-\lambda)^{e_\lambda}q$. Cancelling $q$ and comparing degrees gives $p = \deg h + e_\lambda \ge e_\lambda$. $\blacksquare$
 
