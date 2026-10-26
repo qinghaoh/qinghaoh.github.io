@@ -322,5 +322,4 @@ Change of basis and similarity are covered in [Similarity]({% post_url 2026-10-2
 
 ## Inner Product
 
-- Over $\mathbb{R}$: positive-definite symmetric bilinear.
-- Over $\mathbb{C}$: positive-definite Hermitian form.
+Covered in [Inner Product Spaces]({% post_url 2026-10-25-inner-product-spaces %}).

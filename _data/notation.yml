@@ -33,10 +33,10 @@
   meaning: "double dual space, $(V')'$"
 - key: Lambda
   symbol: '$\Lambda$'
-  meaning: 'canonical map $V \to V'', (\Lambda v)(\varphi) = \varphi(v)$'
+  meaning: 'canonical map $V \to V'''', (\Lambda v)(\varphi) = \varphi(v)$'
 - key: annihilator
   symbol: "$U^0$"
-  meaning: 'annihilator of $U$: $\{\varphi \in V'' : \varphi(u) = 0\ \forall u \in U\}$'
+  meaning: 'annihilator of $U \subseteq V$: $\{\varphi \in V'' : \varphi(u) = 0\ \forall u \in U\}$'
 - key: quotient_space
   symbol: "$V/U$"
   meaning: "quotient of $V$ by a subspace $U$"

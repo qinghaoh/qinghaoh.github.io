@@ -69,7 +69,7 @@ The transpose identities used below — $\operatorname{null} T' = (\operatorname
 
 The two laws are one statement seen through the dual map $M \mapsto M'$. Transpose the Extension data — $S : V \to W_1$ and $T : V \to W_2$, sharing the domain $V$ — to get $S' : W_1' \to V'$ and $T' : W_2' \to V'$, now sharing the *codomain* $V'$, which is a Lift configuration. The conclusion transposes with it, $T = ES \mapsto T' = S'E'$, turning "$T$ factors through $S$ on the left" into "$T'$ factors through $S'$ on the right."
 
-And the hypotheses correspond: since $\operatorname{range} M' = (\operatorname{null} M)^0$, and since $U \mapsto U^0$ is an inclusion-reversing **bijection** on subspaces (its inverse is $U^0 \mapsto U^{00} = U$, the double-annihilator identity), $$ \operatorname{null} S \subseteq \operatorname{null} T \iff (\operatorname{null} T)^0 \subseteq (\operatorname{null} S)^0 \iff \operatorname{range} T' \subseteq \operatorname{range} S'. $$ So the Extension problem for $(S, T)$ is exactly the Lift problem for its transposes $(T', S')$.
+And the hypotheses correspond: since $\operatorname{range} M' = (\operatorname{null} M)^0$, and since $U \mapsto U^0$ is an inclusion-reversing **bijection** on subspaces (its inverse is the pre-annihilator, $(U^0)_0 = U$), $$ \operatorname{null} S \subseteq \operatorname{null} T \iff (\operatorname{null} T)^0 \subseteq (\operatorname{null} S)^0 \iff \operatorname{range} T' \subseteq \operatorname{range} S'. $$ So the Extension problem for $(S, T)$ is exactly the Lift problem for its transposes $(T', S')$.
 
 ### Freedom in $E$
 
