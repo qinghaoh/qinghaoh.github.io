@@ -65,6 +65,22 @@ mermaid: true
 >
 > This is a direct sum of **real** subspaces only: neither summand is closed under multiplication by $i$, which swaps them. An element of $V \times V$ is $0$ exactly when both components are.
 
+## Inner Product
+
+{: .prompt-info }
+> Suppose $V$ is a real [inner product space]({% post_url 2026-10-25-inner-product-spaces %}#inner-products). For $u, v, w, x \in V$, define
+>
+> $$\langle u + iv,\, w + ix \rangle_{\mathbb{C}} = \langle u, w \rangle + \langle v, x \rangle + \big(\langle v, w \rangle - \langle u, x \rangle\big)i.$$
+>
+> (a) $\langle \cdot, \cdot \rangle_{\mathbb{C}}$ makes $V_{\mathbb{C}}$ into a complex inner product space.
+>
+> (b) For $u, v \in V$,
+>
+> $$\langle u, v \rangle_{\mathbb{C}} = \langle u, v \rangle \qquad\text{and}\qquad \lVert u + iv \rVert_{\mathbb{C}}^2 = \lVert u \rVert^2 + \lVert v \rVert^2.$$
+
+{: .prompt-tip }
+> The formula is what expanding $\langle u + iv, w + ix \rangle$ forces, if it is to be linear in the first slot and conjugate-linear in the second: $\langle u, w \rangle + \langle iv, ix \rangle + \langle iv, w \rangle + \langle u, ix \rangle$ with $\langle iv, ix \rangle = i\overline{i}\langle v, x \rangle = \langle v, x \rangle$ and $\langle u, ix \rangle = \overline{i}\langle u, x \rangle = -i\langle u, x \rangle$.
+
 ## Linear Map
 
 {: .prompt-info }

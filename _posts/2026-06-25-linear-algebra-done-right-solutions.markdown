@@ -123,7 +123,7 @@ Hence $a_j = \overline{a_j}$ for every $j$, so all coefficients of $p$ are real.
 ## 5D
 
 {: .prompt-info }
-> 16\. Suppose that $ T \in \mathcal{L}(V) $ is diagonalizable. Let $ \lambda_1, \dots, \lambda_m $ denote the distinct eigenvalues of $ T $. Prove that a subspace $ U $ of $ V $ is invariant under $ T $ if and only if there exist subspaces $U_1, \dots U_m $ of $V$ such that $U_k \subset E(\lambda k, T) $ for each $ k $ and $ U = U_1 \oplus \dots \oplus U_m $.
+> 16\. Suppose that $ T \in \mathcal{L}(V) $ is diagonalizable. Let $ \lambda_1, \dots, \lambda_m $ denote the distinct eigenvalues of $ T $. Prove that a subspace $ U $ of $ V $ is invariant under $ T $ if and only if there exist subspaces $U_1, \dots U_m $ of $V$ such that $U_k \subset E(\lambda_k, T) $ for each $ k $ and $ U = U_1 \oplus \dots \oplus U_m $.
 
 {: .prompt-proof }
 > *($\Rightarrow$)*
@@ -235,3 +235,54 @@ Hence $a_j = \overline{a_j}$ for every $j$, so all coefficients of $p$ are real.
 > so $\operatorname{range}(S - \alpha I) \subseteq \operatorname{null}\varphi$, and likewise $\operatorname{range}(T-\lambda I) \subseteq \operatorname{null}\varphi$. Since $\varphi \neq 0$, $\operatorname{null}\varphi$ has dimension $n-1$, so
 >
 > $$\operatorname{range}(S-\alpha I) + \operatorname{range}(T-\lambda I) \subseteq \operatorname{null}\varphi \neq V. \qquad \blacksquare$$
+
+## 6A
+
+{: .prompt-info }
+> 32\. Fix a positive integer $n$. The *Laplacian* $\Delta p$ of a twice differentiable real-valued function $p$ on $\mathbb{R}^n$ is the function on $\mathbb{R}^n$ defined by
+>
+> $$ \Delta p = \frac{\partial^2 p}{\partial x_1^2} + \cdots + \frac{\partial^2 p}{\partial x_n^2}. $$
+>
+> The function $p$ is called *harmonic* if $\Delta p = 0$.
+>
+> A *polynomial* on $\mathbb{R}^n$ is a linear combination (with coefficients in $\mathbb{R}$) of functions of the form $x_1^{m_1} \cdots x_n^{m_n}$, where $m_1, \dots, m_n$ are nonnegative integers.
+>
+> Suppose $q$ is a polynomial on $\mathbb{R}^n$. Prove that there exists a harmonic polynomial $p$ on $\mathbb{R}^n$ such that $p(x) = q(x)$ for every $x \in \mathbb{R}^n$ with $\\|x\\| = 1$.
+>
+> *The only fact about harmonic functions that you need for this exercise is that if $p$ is a harmonic function on $\mathbb{R}^n$ and $p(x) = 0$ for all $x \in \mathbb{R}^n$ with $\\|x\\| = 1$, then $p = 0$.*
+>
+> *Hint: A reasonable guess is that the desired harmonic polynomial $p$ is of the form $q + (1 - \\|x\\|^2)r$ for some polynomial $r$. Prove that there is a polynomial $r$ on $\mathbb{R}^n$ such that $q + (1 - \\|x\\|^2)r$ is harmonic by defining an operator $T$ on a suitable vector space by*
+>
+> $$ Tr = \Delta\big((1 - \|x\|^2) r\big) $$
+>
+> *and then showing that $T$ is injective and hence surjective.*
+
+{: .prompt-tip }
+> *Why the given fact is believable.* For $n = 1$, $\Delta p = p''$, so a harmonic $p$ is a line $ax + b$, and the "unit sphere" is the two points $\pm 1$. A line vanishing at both is $0$.
+>
+> In general, $\Delta p = 0$ means that $p$ at each point equals the average of its values on any small sphere around that point, so a harmonic function has no peaks or valleys inside a region. If $p = 0$ on the unit sphere, it cannot rise above or fall below $0$ inside the ball, so $p = 0$ there, and then $p = 0$ everywhere.
+>
+> Two examples on $\mathbb{R}^2$:
+> - $x^2 - y^2$ is harmonic ($\Delta = 2 - 2 = 0$) and not identically $0$, so it cannot vanish on the whole unit circle. Indeed it equals $1$ at $(1, 0)$.
+> - $1 - x^2 - y^2$ vanishes on the unit circle and is not identically $0$, so it cannot be harmonic. Indeed $\Delta = -4$, and it has a peak at the origin.
+
+{: .prompt-proof }
+> Let $m = \deg q$, and let $V$ be the vector space of polynomials on $\mathbb{R}^n$ of degree at most $m$. $V$ is finite-dimensional, since it is spanned by the monomials $x_1^{m_1} \cdots x_n^{m_n}$ with $m_1 + \cdots + m_n \le m$. Define $T \colon V \to V$ by
+>
+> $$
+> Tr = \Delta\big((1 - \|x\|^2)\, r\big).
+> $$
+>
+> **$T$ is a linear map from $V$ to $V$.** If $\deg r \le m$, then $(1 - \\|x\\|^2)r$ has degree at most $m + 2$, and $\Delta$ lowers the degree by at least $2$, so $Tr \in V$. $T$ is linear because it is the composition of the linear maps $r \mapsto (1 - \\|x\\|^2)r$ and $\Delta$.
+>
+> **$T$ is injective.** Suppose $Tr = 0$, and let $s = (1 - \\|x\\|^2)r$. Then $\Delta s = Tr = 0$, so $s$ is harmonic. If $\\|x\\| = 1$, then $1 - \\|x\\|^2 = 0$, so $s(x) = 0$. By the fact about harmonic functions given in the problem, $s = 0$. Hence $r(x) = 0$ whenever $\\|x\\| \ne 1$. Since $r$ is continuous and the set $\\{x : \\|x\\| \ne 1\\}$ is dense in $\mathbb{R}^n$, $r = 0$.
+>
+> **$T$ is surjective.** $T$ is an injective operator on the finite-dimensional space $V$, so $T$ is surjective.
+>
+> **Constructing $p$.** $\Delta q$ has degree at most $m - 2$, so $\Delta q \in V$, and there is $r \in V$ with $Tr = -\Delta q$. Let $p = q + (1 - \\|x\\|^2)r$. Then
+>
+> $$
+> \Delta p = \Delta q + Tr = 0,
+> $$
+>
+> so $p$ is harmonic. If $\\|x\\| = 1$, then $1 - \\|x\\|^2 = 0$, so $p(x) = q(x)$. $\blacksquare$
