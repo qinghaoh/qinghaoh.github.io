@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 260" width="412" height="260">
+<rect width="412" height="260" fill="#ffffff"/>
+<line x1="110" y1="230" x2="150" y2="170" stroke="#c4c4c4" stroke-width="1.1"/>
+<line x1="230" y1="235" x2="150" y2="170" stroke="#d97706" stroke-width="1.1" stroke-opacity="0.4"/>
+<line x1="110" y1="230" x2="390" y2="30" stroke="#222222" stroke-width="2.4"/>
+<line x1="390" y1="30" x2="350" y2="90" stroke="#222222" stroke-width="2" stroke-dasharray="7 5"/>
+<line x1="230" y1="235" x2="270" y2="25" stroke="#d97706" stroke-width="2.4"/>
+<line x1="270" y1="25" x2="350" y2="90" stroke="#d97706" stroke-width="2" stroke-dasharray="7 5"/>
+<circle cx="390" cy="30" r="2.6" fill="#222222"/>
+<circle cx="270" cy="25" r="2.6" fill="#d97706"/>
+<circle cx="110" cy="230" r="3.3" fill="#222222"/>
+<circle cx="230" cy="235" r="3.3" fill="#d97706"/>
+<circle cx="150" cy="170" r="3.8" fill="#2563eb"/>
+<circle cx="250" cy="130" r="3.8" fill="#2563eb"/>
+<circle cx="350" cy="90" r="4.4" fill="#2563eb"/>
+<text x="98" y="248" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="15" fill="#222222" text-anchor="middle" font-style="italic">o</text>
+<text x="244" y="255" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="15" fill="#d97706" text-anchor="middle" font-style="italic">o′</text>
+<text x="137" y="164" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="15" fill="#2563eb" text-anchor="middle" font-style="italic">v</text>
+<text x="267" y="148" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="15" fill="#2563eb" text-anchor="middle" font-style="italic">w</text>
+<text x="350" y="115" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="15" fill="#2563eb" text-anchor="middle" font-style="italic">2w − v</text>
+<text x="408" y="17" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="13" fill="#222222" text-anchor="end" font-style="italic">o + 2(w − o)</text>
+<text x="270" y="14" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="13" fill="#d97706" text-anchor="middle" font-style="italic">o′ + 2(w − o′)</text>
+</svg>

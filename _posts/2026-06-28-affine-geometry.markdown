@@ -76,15 +76,15 @@ $$ o + (v - o) + (w - o) = v + w - o. $$
 
 The leading $ o $ is what turns the displacement back into a point. Without it the expression is only a displacement, not a location. In the picture, this point is the fourth corner of the parallelogram on $ o, v, w $. Move the origin and the answer moves, even though $ v $ and $ w $ stay put. The same happens to a scalar multiple: $ 2v $ becomes $ o + 2(v - o) = 2v - o $.
 
-![The sum of two points depends on the origin](/assets/img/math/sum_depends_on_origin.png){: w="400" h="260" }
+![The sum of two points depends on the origin](/assets/img/math/sum_depends_on_origin.svg){: w="400" h="260" }
 
 **The midpoint does not.** Build $ \tfrac12 v + \tfrac12 w $ the same way: from each origin, halve the displacements to $ v $ and $ w $ (bold), then complete the parallelogram (dashed). The two constructions are different, but they land on the same point.
 
-![The midpoint does not depend on the origin](/assets/img/math/midpoint_ignores_origin.png){: w="400" h="238" }
+![The midpoint does not depend on the origin](/assets/img/math/midpoint_ignores_origin.svg){: w="400" h="238" }
 
 **Neither does $ 2w - v $.** From each origin, double the displacement to $ w $ (bold), then subtract the displacement to $ v $ (dashed). Again the two paths differ and the endpoint does not.
 
-![The point 2w - v does not depend on the origin](/assets/img/math/extrapolation_ignores_origin.png){: w="400" h="252" }
+![The point 2w - v does not depend on the origin](/assets/img/math/extrapolation_ignores_origin.svg){: w="400" h="252" }
 
 Both views say the same thing: an affine combination keeps its position *relative to the points*. In these figures the points stay still, so it stays still. Under a translation the points move by $ t $, so it moves by $ t $.
 
@@ -151,15 +151,15 @@ Both views say the same thing: an affine combination keeps its position *relativ
 >
 > **Step 1.** Two points $ a_1, a_2 $ give a line.
 >
-> ![The line through two points](/assets/img/math/sweep_1_line.png){: w="400" h="125" }
+> ![The line through two points](/assets/img/math/sweep_1_line.svg){: w="400" h="125" }
 >
 > **Step 2.** Add a third point $ a_3 $ off that line. The lines from $ a_3 $ to the points of the first line (blue) sweep out a plane. The dashed line is explained in the next box.
 >
-> ![Lines from a third point to a line sweep out a plane](/assets/img/math/sweep_2_plane.png){: w="400" h="250" }
+> ![Lines from a third point to a line sweep out a plane](/assets/img/math/sweep_2_plane.svg){: w="400" h="250" }
 >
 > **Step 3.** Add a fourth point $ a_4 $ off that plane. The lines from $ a_4 $ to the points of the plane sweep out a 3-dimensional affine subspace.
 >
-> ![Lines from a fourth point to a plane sweep out space](/assets/img/math/sweep_3_space.png){: w="400" h="270" }
+> ![Lines from a fourth point to a plane sweep out space](/assets/img/math/sweep_3_space.svg){: w="400" h="270" }
 >
 > So a set that contains the line through any two of its points must also contain the whole plane through any three of them, the whole 3-dimensional affine subspace through any four, and so on.
 
@@ -170,7 +170,7 @@ Both views say the same thing: an affine combination keeps its position *relativ
 >
 > The points of the dashed line are in the set for a different reason: they lie on lines drawn from $ a_1 $ or $ a_2 $.
 >
-> ![A point of the dashed line is reached by a line from another corner](/assets/img/math/sweep_2_plane_missed_line.png){: w="400" h="265" }
+> ![A point of the dashed line is reached by a line from another corner](/assets/img/math/sweep_2_plane_missed_line.svg){: w="400" h="265" }
 >
 > Here $ p $ is a point of the dashed line. The line from $ a_1 $ through $ p $ crosses the line through $ a_2 $ and $ a_3 $ at a point $ b' $. Both $ a_1 $ and $ b' $ are in the set, so the whole line through them is, and $ p $ is on it.
 >
@@ -226,7 +226,7 @@ An affine subspace can be written as $ A = x + U $ with many different base poin
 
 Let $ V = \mathbb{R}^2 $, $ U = \operatorname{span}((2,1)) $ and $ A = (0,1) + U $, a line that misses the origin. Take the points $ v = (-1, 0.5) $ and $ w = (1, 1.5) $ of $ A $.
 
-![An affine subspace and its direction](/assets/img/math/affine_subspace_and_direction.png){: w="400" h="260" }
+![An affine subspace and its direction](/assets/img/math/affine_subspace_and_direction.svg){: w="400" h="260" }
 
 - **Direction.** $ w - v = (2, 1) \in U $. The line $ A $ is parallel to $ U $ and has dimension 1.
 - **Closed under affine combinations.** $ 2w - v = (3, 2.5) $ stays on $ A $.
@@ -279,7 +279,14 @@ $$ x_n = \frac{c - a_1 x_1 - \dots - a_{n-1} x_{n-1}}{a_n}. $$
 
 So of the $ n $ free directions in $ V $, one equation removes exactly one: $ n - 1 $ coordinates stay free and one is forced. That is why a hyperplane has dimension $ n - 1 $.
 
-Each nonzero equation of a [system of linear equations]({% post_url 2026-06-30-systems-of-linear-equation %}) therefore cuts out a hyperplane, and the solution set is their intersection. Each equation that is independent of the others removes one more direction, so the solution set is either empty or an affine subspace of dimension $ n - r $, where $ r $ is the number of independent equations.
+A system of linear equations is the intersection of such hyperplanes, one for each nonzero equation; see the [row view]({% post_url 2026-06-30-systems-of-linear-equation %}#the-affine-view).
+
+{: .prompt-tip }
+> *One functional, a family of parallel hyperplanes*
+>
+> Fixing $ \varphi $ and letting $ c $ vary gives a family of level sets. This is the case $ T = \varphi $ of the [map view]({% post_url 2026-06-30-systems-of-linear-equation %}#the-affine-view): they are parallel with direction $ \operatorname{null} \varphi $, and $ c = 0 $ gives $ \operatorname{null} \varphi $ itself. Because $ \varphi $ is onto, every $ c \in \mathbf{F} $ gives a hyperplane, so $ \varphi $ is a stack of parallel sheets, one for each value of $ c $. For example, in $ \mathbb{R}^3 $ the equations $ 2x - y + 3z = c $ give every plane parallel to $ 2x - y + 3z = 0 $.
+>
+> A hyperplane does not determine its pair: $ (a\varphi, ac) $ cuts out the same $ H $ for every nonzero $ a \in \mathbf{F} $, which is why the theorem says "some" and not "unique".
 
 ## Affine hull
 

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 380" width="360" height="380">
+<defs><marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker></defs>
+<rect width="360" height="380" fill="#ffffff"/>
+<!-- Grid, axes and ticks -->
+<line x1="126" y1="318" x2="126" y2="22" stroke="#e5e7eb" stroke-width="1"/>
+<line x1="46" y1="238" x2="342" y2="238" stroke="#e5e7eb" stroke-width="1"/>
+<line x1="206" y1="318" x2="206" y2="22" stroke="#e5e7eb" stroke-width="1"/>
+<line x1="46" y1="158" x2="342" y2="158" stroke="#e5e7eb" stroke-width="1"/>
+<line x1="286" y1="318" x2="286" y2="22" stroke="#e5e7eb" stroke-width="1"/>
+<line x1="46" y1="78" x2="342" y2="78" stroke="#e5e7eb" stroke-width="1"/>
+<line x1="46" y1="318" x2="342" y2="318" stroke="#9ca3af" stroke-width="1.2"/>
+<line x1="46" y1="318" x2="46" y2="22" stroke="#9ca3af" stroke-width="1.2"/>
+<line x1="126" y1="318" x2="126" y2="323" stroke="#9ca3af" stroke-width="1.2"/>
+<line x1="46" y1="238" x2="41" y2="238" stroke="#9ca3af" stroke-width="1.2"/>
+<text x="126" y="340" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="13" fill="#6b7280" text-anchor="middle">1</text>
+<text x="36" y="242.5" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="13" fill="#6b7280" text-anchor="end">1</text>
+<line x1="206" y1="318" x2="206" y2="323" stroke="#9ca3af" stroke-width="1.2"/>
+<line x1="46" y1="158" x2="41" y2="158" stroke="#9ca3af" stroke-width="1.2"/>
+<text x="206" y="340" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="13" fill="#6b7280" text-anchor="middle">2</text>
+<text x="36" y="162.5" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="13" fill="#6b7280" text-anchor="end">2</text>
+<line x1="286" y1="318" x2="286" y2="323" stroke="#9ca3af" stroke-width="1.2"/>
+<line x1="46" y1="78" x2="41" y2="78" stroke="#9ca3af" stroke-width="1.2"/>
+<text x="286" y="340" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="13" fill="#6b7280" text-anchor="middle">3</text>
+<text x="36" y="82.5" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="13" fill="#6b7280" text-anchor="end">3</text>
+<text x="342" y="309" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="16" fill="#6b7280" text-anchor="end"><tspan font-style="italic">x</tspan><tspan font-size="70%" baseline-shift="sub">1</tspan></text>
+<text x="54" y="20" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="16" fill="#6b7280" text-anchor="start"><tspan font-style="italic">x</tspan><tspan font-size="70%" baseline-shift="sub">2</tspan></text>
+<!-- Diagonal -->
+<line x1="46" y1="318" x2="326" y2="38" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="6 5"/>
+<text x="286" y="44.4" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="14" fill="#6b7280" text-anchor="end">diagonal</text>
+<!-- a, its projection onto the diagonal, and the angle -->
+<line x1="46" y1="318" x2="206" y2="158" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+<line x1="126" y1="78" x2="206" y2="158" stroke="#222222" stroke-width="1.1" stroke-dasharray="4 3"/>
+<polyline points="198.2,165.8 190.4,158 198.2,150.2" fill="none" stroke="#222222" stroke-width="1.2"/>
+<line x1="46" y1="318" x2="125.5" y2="79.5" stroke="#2563eb" stroke-width="2.6" marker-end="url(#head)"/>
+<path d="M74.3,289.7 A40,40 0 0 0 58.6,280.1" fill="none" stroke="#222222" stroke-width="1.2"/>
+<text x="75.4" y="276.4" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="18" fill="#222222" text-anchor="middle" font-style="italic">θ</text>
+<circle cx="206" cy="158" r="4.5" fill="#d97706"/>
+<circle cx="46" cy="318" r="4" fill="#222222"/>
+<!-- Labels. The radical in each √2 is drawn as a path, so it looks right in any font. -->
+<text x="138" y="70" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="18" fill="#222222" text-anchor="start"><tspan font-style="italic">a</tspan> = (<tspan font-style="italic">a</tspan><tspan font-size="70%" baseline-shift="sub">1</tspan>, <tspan font-style="italic">a</tspan><tspan font-size="70%" baseline-shift="sub">2</tspan>)</text>
+<text x="220" y="184" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="18" fill="#222222" text-anchor="start">(AM, AM)</text>
+<g transform="rotate(-71.6 72.4 139.6)"><path d="M46.08,132.8 L48.12,131.61 L51.01,140.28 L55.6,124.3 L66.65,124.3" fill="none" stroke="#2563eb" stroke-width="1.02" stroke-linejoin="round" stroke-linecap="round"/><text x="56.96" y="139.6" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="17" fill="#2563eb">2 QM</text></g>
+<g transform="rotate(-45 154.8 268.4)"><path d="M128.58,261.6 L130.62,260.41 L133.51,269.08 L138.1,253.1 L149.15,253.1" fill="none" stroke="#d97706" stroke-width="1.02" stroke-linejoin="round" stroke-linecap="round"/><text x="139.46" y="268.4" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="17" fill="#d97706">2 AM</text></g>
+<text x="194" y="370" font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="20" fill="#222222" text-anchor="middle">cos <tspan font-style="italic">θ</tspan> = AM / QM</text>
+</svg>

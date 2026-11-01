@@ -23,7 +23,7 @@ mermaid: true
 
 For example, let $ V = \mathbb{R}^2 $, with vectors written $ (a, b) $, and $ U = \operatorname{span}((1,1)) $. The translates of $ U $ are the lines of slope 1. Each one is the set of vectors with a fixed value $ c $ of $ a - b $, and the figure labels five of them by $ c $.
 
-![Translates of a subspace](/assets/img/math/translates_of_a_subspace.png){: w="400" h="270" }
+![Translates of a subspace](/assets/img/math/translates_of_a_subspace.svg){: w="400" h="270" }
 
 There are three ways to see the same object.
 
@@ -83,7 +83,7 @@ Each property is stated once as a formula and then read in the three views.
 
 A translate has no preferred base point: any of its points can name it. So two translates of the same subspace cannot cross: if they share a point, re-basing both at that point makes them the same set.
 
-![Translates are equal or disjoint](/assets/img/math/translates_equal_or_disjoint.png){: w="400" h="270" }
+![Translates are equal or disjoint](/assets/img/math/translates_equal_or_disjoint.svg){: w="400" h="270" }
 
 - **Geometric.** A line is determined by its direction and any one point on it, so parallel lines either coincide or never meet. They coincide exactly when the displacement $ v - w $ points along $ U $ (left); otherwise it carries $ w $ off its line onto a different parallel copy (right). The copy through the origin is $ U $ itself.
 - **Algebraic.** Any member of an equivalence class represents the class, two classes are equal or disjoint, and $ U $ is the class of $ 0 $.
@@ -98,7 +98,7 @@ A translate has no preferred base point: any of its points can name it. So two t
 
 Translates of different subspaces can cross, and where they do, the crossing is again a translate.
 
-![Intersection of two translates](/assets/img/math/intersection_of_translates.png){: w="400" h="270" }
+![Intersection of two translates](/assets/img/math/intersection_of_translates.svg){: w="400" h="270" }
 
 - **Geometric.** Re-base both at a common point $ x $. A step away from $ x $ stays in both exactly when it lies in both directions. In the figure, two non-parallel planes in $ \mathbb{R}^3 $ meet in a line whose direction is the intersection of their directions. Two distinct parallel planes do not meet at all.
 - **Algebraic.** Being equal up to $ U_1 $ and also equal up to $ U_2 $ is the same as being equal up to $ U_1 \cap U_2 $.
@@ -171,7 +171,7 @@ So every subspace $ U $ is the null space of a linear map, and the [fiber view](
 
 Geometrically, take $ V = \mathbb{R}^3 $ with $ U $ a vertical line, and picture $ V/U $ as the floor: $ \pi $ slides each vertical line, a translate of $ U $, down to the single point where it meets the floor. A subspace $ W $ containing $ U $ is made of whole vertical lines, because $ w + U \subseteq W $ for every $ w \in W $. So $ \pi $ collapses $ W $ to the line $ W/U $ without losing anything: the vertical lines through the points of $ W/U $ rebuild $ W $, which is the identity $ \pi^{-1}(W/U) = W $. The two extreme cases are $ W = U $, which collapses to the point $ 0 $, and $ W = V $, which collapses to the whole floor.
 
-![Subspaces containing U correspond to subspaces of V/U](/assets/img/math/subspaces_containing_U.png){: w="400" h="270" }
+![Subspaces containing U correspond to subspaces of V/U](/assets/img/math/subspaces_containing_U.svg){: w="400" h="270" }
 
 A subspace that does not contain $ U $ cuts across the vertical lines instead of being made of them, and the correspondence breaks. A tilted plane through $ 0 $ meets every vertical line, so $ \pi $ sends it onto the whole floor, the same image as $ V $.
 
@@ -190,7 +190,7 @@ A subspace that does not contain $ U $ cuts across the vertical lines instead of
 
 Geometrically, $ W $ is a complement of $ U $ exactly when it crosses every translate of $ U $ exactly once. The crossing point is the one vector of $ W $ that $ \pi $ sends to that translate. In the example, $ W = \operatorname{span}((1,0)) $ crosses the line $ a - b = c $ at $ (c, 0) $.
 
-![Two complements crossing each translate once](/assets/img/math/complements_cross_each_translate_once.png){: w="400" h="270" }
+![Two complements crossing each translate once](/assets/img/math/complements_cross_each_translate_once.svg){: w="400" h="270" }
 
 The isomorphism carries bases in both directions: a basis of a complement projects to a basis of $ V/U $, and a basis of $ V/U $ lifts to a basis of a complement.
 
@@ -248,7 +248,7 @@ Geometrically, invariance means that $ T $ sends all the vectors of one translat
 
 $$ x \in v + U \implies Tx \in Tv + U. $$
 
-![The quotient operator moves translates to translates](/assets/img/math/quotient_operator.png){: w="400" h="270" }
+![The quotient operator moves translates to translates](/assets/img/math/quotient_operator.svg){: w="400" h="270" }
 
 Invariance is a statement about $ U $ itself, the translate through the origin: in the figure, $ u \in U $ is sent to $ Tu \in U $. The other translates need not be mapped to themselves. The blue translate $ v + U $ is moved to a different one, the orange translate $ Tv + U $, but it is moved as a whole: $ v $ and $ x $ start on the same translate, and $ Tv $ and $ Tx $ land on the same translate. The operator $ T/U $ records only which translate goes to which, shown on the bottom line, where each translate is a single point. In terms of the quotient map, $ (T/U) \circ \pi = \pi \circ T $: applying $ T $ and then reading off the translate gives the same result as reading off the translate and then applying $ T/U $.
 
@@ -283,7 +283,7 @@ Let $ V = \mathbb{R}^2 $ and $ U = \operatorname{span}(u) $ with $ u = (1,1) $, 
 
 $$ T(a, b) = (2a + b, \; a + 2b). $$
 
-![The quotient operator in the example](/assets/img/math/quotient_operator_example.png){: w="400" h="270" }
+![The quotient operator in the example](/assets/img/math/quotient_operator_example.svg){: w="400" h="270" }
 
 **Invariance.** $ Tu = (3,3) = 3u $. Every vector of $ U $ is a multiple $ tu $, and $ T(tu) = 3tu \in U $, so $ U $ is invariant under $ T $. The operator $ T\vert_U $ is multiplication by $ 3 $, so with respect to the basis $ u $ of $ U $,
 

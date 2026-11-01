@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="70 105 260 155" width="260" height="155">
+  <rect x="70" y="105" width="260" height="155" fill="#ffffff"/>
+  <line x1="150" y1="170" x2="250" y2="130" stroke="#2563eb" stroke-width="1.2" opacity="0.5"/>
+  <g fill="none" stroke="#222222">
+    <g stroke-width="1" opacity="0.3"><line x1="110" y1="230" x2="150" y2="170"/><line x1="110" y1="230" x2="250" y2="130"/></g>
+    <g stroke-width="2"><line x1="110" y1="230" x2="130" y2="200"/><line x1="110" y1="230" x2="180" y2="180"/></g>
+    <g stroke-width="1.5" stroke-dasharray="5 4"><line x1="130" y1="200" x2="200" y2="150"/><line x1="180" y1="180" x2="200" y2="150"/></g>
+  </g>
+  <g fill="none" stroke="#d97706">
+    <g stroke-width="1" opacity="0.4"><line x1="230" y1="235" x2="150" y2="170"/><line x1="230" y1="235" x2="250" y2="130"/></g>
+    <g stroke-width="2"><line x1="230" y1="235" x2="190" y2="202.5"/><line x1="230" y1="235" x2="240" y2="182.5"/></g>
+    <g stroke-width="1.5" stroke-dasharray="5 4"><line x1="190" y1="202.5" x2="200" y2="150"/><line x1="240" y1="182.5" x2="200" y2="150"/></g>
+  </g>
+  <circle cx="110" cy="230" r="3.5" fill="#222222"/>
+  <circle cx="230" cy="235" r="3.5" fill="#d97706"/>
+  <g fill="#2563eb"><circle cx="150" cy="170" r="4"/><circle cx="250" cy="130" r="4"/><circle cx="200" cy="150" r="4.5"/></g>
+  <g font-family="TeX Gyre Pagella, Palatino, Palatino Linotype, Book Antiqua, serif" font-size="14" font-style="italic" fill="#2563eb">
+    <text x="101" y="246" text-anchor="end" fill="#222222">o</text>
+    <text x="239" y="251" fill="#d97706">o′</text>
+    <text x="141" y="167" text-anchor="end">v</text>
+    <text x="259" y="134">w</text>
+    <text x="198" y="134" text-anchor="end"><tspan font-style="normal">½</tspan>v + <tspan font-style="normal">½</tspan>w</text>
+  </g>
+</svg>

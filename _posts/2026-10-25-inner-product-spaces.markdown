@@ -5,11 +5,11 @@ tags: [math, linear algebra]
 mathjax_font: mathjax-pagella
 ---
 
-Notes on inner products: the definition over $\mathbb{R}$ and $\mathbb{C}$, the parallelogram equality and which norms come from an inner product, and two applications of the Cauchy–Schwarz inequality: the classical mean inequalities and a bound on eigenvalues.
+Notes on inner products: the definition over $\mathbb{R}$ and $\mathbb{C}$, the parallelogram equality and which norms come from an inner product, and two applications of the Cauchy–Schwarz inequality: the classical mean inequalities and a bound on eigenvalues, a characterization of orthonormal lists by norms, and the Riesz representation theorem.
 
 ## Notation
 
-{% include notation-table.md keys="F V n LV MT" %}
+{% include notation-table.md keys="F V n LV MT dual_space" %}
 
 ## Inner Products
 
@@ -109,6 +109,27 @@ A norm **comes from an inner product** if there is an inner product $\langle \cd
 {: .prompt-tip }
 > The last inequality, AM $\le$ QM, is Cauchy–Schwarz in $\mathbb{R}^n$ applied to $(a_1, \dots, a_n)$ and $(1, \dots, 1)$: $\sum_i a_i \le \sqrt{n}\,\big(\sum_i a_i^2\big)^{1/2}$. The equality case is $(a_1, \dots, a_n)$ being a multiple of $(1, \dots, 1)$.
 
+Each inequality in the chain also has a geometric picture.
+
+**AM $\le$ QM: the angle to the diagonal.** Let $a = (a_1, \dots, a_n)$ and $d = (1, \dots, 1)$. Then $\langle a, d \rangle = n \cdot \mathrm{AM}$, $\lVert a \rVert = \sqrt{n} \cdot \mathrm{QM}$ and $\lVert d \rVert = \sqrt{n}$, so the angle $\theta$ between $a$ and the diagonal satisfies
+
+$$\cos \theta = \frac{\langle a, d \rangle}{\lVert a \rVert\,\lVert d \rVert} = \frac{\mathrm{AM}}{\mathrm{QM}}.$$
+
+The foot of the perpendicular from $a$ to the diagonal is $(\mathrm{AM}, \dots, \mathrm{AM})$, so AM and QM are the leg and the hypotenuse of a right triangle, each scaled by $\sqrt{n}$. AM $\le$ QM says $\cos \theta \le 1$, and the gap between the two means measures how far $a$ points away from the diagonal.
+
+![The angle between a and the diagonal](/assets/img/math/mean_inequalities_angle_to_diagonal.svg){: w="360" h="380" }
+
+**All four means in one semicircle ($n = 2$).** Put segments of lengths $a$ and $b$ end to end to form the diameter of a semicircle with center $O$, and let $P$ be the point where they meet. Then $OP = \lvert a - b \rvert / 2$, and:
+
+- AM is the radius: $OQ = OR = (a + b)/2$, where $R$ is the top of the semicircle.
+- GM is the perpendicular from $P$ up to the semicircle: $PQ = \sqrt{ab}$, the altitude of the right triangle inscribed in the semicircle.
+- HM is the projection of $PQ$ onto the radius $OQ$: with $H$ the foot of the perpendicular from $P$ to $OQ$, $HQ = PQ^2 / OQ = 2ab/(a + b)$.
+- QM is $PR = \sqrt{OR^2 + OP^2} = \sqrt{(a^2 + b^2)/2}$.
+
+Each inequality is a leg of a right triangle being shorter than its hypotenuse: HM $\le$ GM in triangle $PHQ$, GM $\le$ AM in triangle $OPQ$, and AM $\le$ QM in triangle $OPR$. When $a = b$, $P$ moves to $O$, all three triangles collapse, and the four lengths are equal.
+
+![The four means in a semicircle](/assets/img/math/mean_inequalities_semicircle.svg){: w="440" h="340" }
+
 ### Eigenvalues and the Euclidean Norm
 
 The [size of eigenvalues]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}#size-of-eigenvalues) bound uses the max-norm on coordinates. Using the Euclidean norm on $\mathbf{F}^n$ instead gives a bound in terms of all the entries at once.
@@ -131,3 +152,101 @@ The [size of eigenvalues]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}
 > The right side is the squared Frobenius norm of $A$, which is at least the squared operator norm induced by the Euclidean norm. So this is another case of "$\lvert\lambda\rvert \le \lVert T \rVert$ for every induced norm", made weaker, by up to a factor of $\sqrt{n}$ (for $A = I$, the Frobenius norm is $\sqrt{n}$ and the operator norm is $1$).
 >
 > - **Comparison with row sums.** Since $\sum_{j,k}\lvert A_{j,k}\rvert^2 \le n^2 \max_{j,k}\lvert A_{j,k}\rvert^2$, this bound also gives $\lvert\lambda\rvert \le n\max_{j,k}\lvert A_{j,k}\rvert$. Neither it nor the max row sum bound always wins: the identity gives $1$ for row sums vs. $\sqrt{n}$ here, and a matrix whose only nonzero row is all ones gives $n$ vs. $\sqrt{n}$.
+
+## Orthonormal Lists
+
+{: .prompt-info }
+> A list $e_1, \dots, e_m$ of vectors in $V$ is orthonormal if and only if
+>
+> $$\lVert a_1 e_1 + \cdots + a_m e_m \rVert^2 = \lvert a_1 \rvert^2 + \cdots + \lvert a_m \rvert^2$$
+>
+> for all $a_1, \dots, a_m \in \mathbf{F}$.
+
+{: .prompt-proof }
+> *($\Rightarrow$)* This direction is proved in LADR.
+>
+> *($\Leftarrow$)* Define the linear map $T : \mathbf{F}^m \to V$ by $T(a_1, \dots, a_m) = a_1 e_1 + \cdots + a_m e_m$. The identity says $\lVert Ta \rVert = \lVert a \rVert$ for every $a \in \mathbf{F}^m$, where $\mathbf{F}^m$ has the Euclidean inner product. By the polarization identities, $\langle a, b \rangle$ is determined by the norms of $a \pm b$ (and $a \pm ib$ over $\mathbb{C}$), and $\langle Ta, Tb \rangle$ by the norms of $Ta \pm Tb$ (and $Ta \pm iTb$). Since $T$ is linear, $Ta \pm Tb = T(a \pm b)$ and $Ta \pm iTb = T(a \pm ib)$, so these norms agree, and $\langle Ta, Tb \rangle = \langle a, b \rangle$ for all $a, b \in \mathbf{F}^m$. Let $\varepsilon_1, \dots, \varepsilon_m$ be the standard basis of $\mathbf{F}^m$, which is orthonormal for the Euclidean inner product. Since $T\varepsilon_j = e_j$,
+>
+> $$\langle e_j, e_k \rangle = \langle T\varepsilon_j, T\varepsilon_k \rangle = \langle \varepsilon_j, \varepsilon_k \rangle = \begin{cases} 1 & j = k, \\ 0 & j \neq k. \end{cases}$$
+>
+> So $e_1, \dots, e_m$ is orthonormal. $\blacksquare$
+
+## The Riesz Representation Theorem
+
+{: .prompt-info }
+> *Riesz representation theorem*
+>
+> Suppose $V$ is finite-dimensional and $\varphi$ is a linear functional on $V$. Then there is a unique vector $v \in V$ such that
+>
+> $$\varphi(u) = \langle u, v \rangle$$
+>
+> for every $u \in V$.
+>
+> Specifically, for any orthonormal basis $e_1, \dots, e_n$ of $V$,
+>
+> $$v = \overline{\varphi(e_1)}\,e_1 + \cdots + \overline{\varphi(e_n)}\,e_n.$$
+
+{: .prompt-tip }
+> The [dual space]({% post_url 2026-07-10-dual-space %}#dual-space) post notes that an isomorphism $V \to V'$ generally requires choosing a basis. An inner product gives the bijection $v \mapsto \langle \cdot, v \rangle$ from $V$ onto $V'$ with no basis chosen. Over $\mathbb{C}$, this map is conjugate-linear, so it is a bijection but not a linear isomorphism.
+
+### Geometric Picture
+
+Suppose $\mathbf{F} = \mathbb{R}$, $\varphi \neq 0$, and $v$ is the vector of the theorem. Then $v \neq 0$, since $v = 0$ would give $\varphi(u) = \langle u, 0 \rangle = 0$ for every $u$. For each $c \in \mathbb{R}$ let
+
+$$H_c = \{ u \in V : \varphi(u) = c \}.$$
+
+These level sets are a [family of parallel hyperplanes]({% post_url 2026-06-28-affine-geometry %}#hyperplanes), all with direction $\operatorname{null} \varphi$, and $H_0 = \operatorname{null} \varphi$ is the one through the origin. The vector $v$ describes this family completely: its direction gives the orientation of the hyperplanes, and its length gives their spacing. Write $n = v / \lVert v \rVert$ for the unit vector in the direction of $v$.
+
+![Level sets of a functional, its Riesz vector v, and the splitting u = t n + w](/assets/img/math/riesz_level_sets.svg){: w="440" h="303" }
+
+**1. $v$ is normal to every $H_c$.** A vector is **normal** to an affine subspace if it is orthogonal to every vector in the subspace's direction, that is, to the displacement between any two of its points. The direction of each $H_c$ is $\operatorname{null} \varphi$. Write
+
+$$v^\perp = \{ w \in V : \langle w, v \rangle = 0 \}$$
+
+for the set of vectors orthogonal to $v$. Since $\langle w, v \rangle = \varphi(w)$ for every $w \in V$,
+
+$$v^\perp = \operatorname{null} \varphi = H_0.$$
+
+So the vectors orthogonal to $v$ form the hyperplane through the origin, every $H_c$ is a translate of it, and $v$ is normal to every $H_c$.
+
+Normal is *weaker* than orthogonal to the points themselves. For $u \in H_c$, $\langle u, v \rangle = \varphi(u) = c$, which is nonzero unless $c = 0$. So $v$ is orthogonal to the differences of points of $H_c$, but not to the points.
+
+Conversely, every hyperplane arises this way. By the [hyperplane theorem]({% post_url 2026-06-28-affine-geometry %}#hyperplanes), a hyperplane $H$ of $V$ is $\\{ u \in V : \psi(u) = c \\}$ for some nonzero linear functional $\psi$ and some $c \in \mathbb{R}$. The Riesz representation theorem gives a vector $v$, nonzero as above, with $\psi(u) = \langle u, v \rangle$, so
+
+$$H = \{ u \in V : \langle u, v \rangle = c \}.$$
+
+This is the familiar normal equation of a hyperplane. For example, in $\mathbb{R}^3$ with the dot product, the plane through $p$ with normal vector $v$ is $\langle u, v \rangle = \langle p, v \rangle$. In particular, the hyperplanes through the origin are exactly the sets $v^\perp$ with $v \neq 0$. More generally, the vectors orthogonal to every vector of a subspace $U$ form the *orthogonal complement* $U^\perp$, and $v^\perp$ is the case $U = \operatorname{span}(v)$.
+
+**2. $\lVert v \rVert$ sets the spacing.** Every $u \in V$ splits into a part along $n$ and a part in $v^\perp$:
+
+$$u = t\,n + w, \qquad t = \langle u, n \rangle, \qquad w = u - t\,n \in v^\perp.$$
+
+Geometrically, $V$ splits into the line through $v$ and the hyperplane $v^\perp$.
+
+The number $t$ is the signed distance from $u$ to $H_0$, measured along $n$. Since $\langle w, v \rangle = 0$,
+
+$$\varphi(u) = \langle t\,n + w, v \rangle = t \lVert v \rVert.$$
+
+So $\varphi(u)$ depends only on $t$, and $u \in H_c$ exactly when $t = c / \lVert v \rVert$. That is, $H_c = \tfrac{c}{\lVert v \rVert}\,n + v^\perp$, the translate of $v^\perp$ at signed distance $c / \lVert v \rVert$ from the origin, and $H_c$ and $H_{c+1}$ are $1 / \lVert v \rVert$ apart. A longer $v$ packs the hyperplanes more closely.
+
+**3. $\varphi$ increases fastest along $v$.** Start at any $u \in V$ and move a distance $s$ in the direction of a unit vector $e$. By linearity,
+
+$$\varphi(u + s\,e) - \varphi(u) = s\,\varphi(e),$$
+
+so $\varphi$ changes at the constant rate $\varphi(e)$ per unit distance, whatever the starting point. Call $\varphi(e)$ the **rate of increase of $\varphi$ in the direction $e$**. By the Cauchy–Schwarz inequality,
+
+$$\varphi(e) = \langle e, v \rangle \le \lVert e \rVert\,\lVert v \rVert = \lVert v \rVert,$$
+
+with equality exactly when $e = n$. So the largest rate is $\lVert v \rVert$, reached in the direction of $v$. The rate is $0$ exactly for $e \in v^\perp$, the directions inside the hyperplanes. This agrees with step 2: moving along $n$ crosses the hyperplanes head on, passing one every $1 / \lVert v \rVert$, so $\varphi$ grows by $1$ every $1 / \lVert v \rVert$, a rate of $\lVert v \rVert$.
+
+For example, take $\varphi(x, y, z) = 2x - y + 3z$ from the affine geometry post, with the dot product on $\mathbb{R}^3$. Then $v = (2, -1, 3)$, the normal vector read off from the coefficients of the plane equations $2x - y + 3z = c$. Consecutive planes are $1 / \lVert v \rVert = 1 / \sqrt{14}$ apart, and $\varphi$ grows fastest in the direction $(2, -1, 3) / \sqrt{14}$, at rate $\sqrt{14}$.
+
+{: .prompt-tip }
+> *Why the conjugate.* Over $\mathbb{C}$, the case $V = \mathbb{C}$ shows where the bars in the formula come from. Every linear functional on $\mathbb{C}$ is $\varphi(u) = au$ for some $a \in \mathbb{C}$: it scales by $\lvert a \rvert$ and rotates by $\arg a$. The inner product $\langle u, v \rangle = u\overline{v}$ scales by $\lvert v \rvert$ and rotates *backward* by $\arg v$, since it measures $u$ relative to the direction of $v$. To rotate forward by $\arg a$, $v$ must point at angle $-\arg a$, so $v = \overline{a}$, the reflection of $a$ across the real axis. This is the formula with the orthonormal basis $e_1 = 1$: $v = \overline{\varphi(1)} = \overline{a}$.
+
+{: .prompt-tip }
+> *The gradient.* Suppose $f : \mathbb{R}^n \to \mathbb{R}$ is differentiable at $p$. The directional derivative $u \mapsto D_u f(p)$ is a linear functional on $\mathbb{R}^n$, and its vector under the dot product is the gradient:
+>
+> $$D_u f(p) = \langle u, \nabla f(p) \rangle.$$
+>
+> Steps 1 and 3 become the familiar facts from calculus: $\nabla f(p)$ is perpendicular to the level set of $f$ through $p$ (more precisely, to its tangent hyperplane), and $f$ increases fastest in the direction of $\nabla f(p)$, at rate $\lVert \nabla f(p) \rVert$.
