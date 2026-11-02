@@ -187,7 +187,7 @@ The [size of eigenvalues]({% post_url 2026-07-28-eigenvalues-and-eigenvectors %}
 > $$v = \overline{\varphi(e_1)}\,e_1 + \cdots + \overline{\varphi(e_n)}\,e_n.$$
 
 {: .prompt-tip }
-> The [dual space]({% post_url 2026-07-10-dual-space %}#dual-space) post notes that an isomorphism $V \to V'$ generally requires choosing a basis. An inner product gives the bijection $v \mapsto \langle \cdot, v \rangle$ from $V$ onto $V'$ with no basis chosen. Over $\mathbb{C}$, this map is conjugate-linear, so it is a bijection but not a linear isomorphism.
+> Equivalently, writing $\varphi_v(u) = \langle u, v \rangle$, the map $v \mapsto \varphi_v$ is one-to-one from $V$ onto $V'$. The [dual space]({% post_url 2026-07-10-dual-space %}#dual-space) post notes that an isomorphism $V \to V'$ generally requires choosing a basis, but this bijection needs no basis, only the inner product. It is linear if $\mathbf{F} = \mathbb{R}$. If $\mathbf{F} = \mathbb{C}$ it is not, because $\varphi_{\lambda v} = \overline{\lambda}\,\varphi_v$, so it is a bijection but not a linear isomorphism.
 
 ### Geometric Picture
 
@@ -195,39 +195,49 @@ Suppose $\mathbf{F} = \mathbb{R}$, $\varphi \neq 0$, and $v$ is the vector of th
 
 $$H_c = \{ u \in V : \varphi(u) = c \}.$$
 
-These level sets are a [family of parallel hyperplanes]({% post_url 2026-06-28-affine-geometry %}#hyperplanes), all with direction $\operatorname{null} \varphi$, and $H_0 = \operatorname{null} \varphi$ is the one through the origin. The vector $v$ describes this family completely: its direction gives the orientation of the hyperplanes, and its length gives their spacing. Write $n = v / \lVert v \rVert$ for the unit vector in the direction of $v$.
+These level sets are a [family of parallel hyperplanes]({% post_url 2026-06-28-affine-geometry %}#hyperplanes), all with direction $\operatorname{null} \varphi$, and $H_0 = \operatorname{null} \varphi$ is the one through the origin. The vector $v$ describes this family completely: its direction gives the orientation of the hyperplanes, and its length gives their spacing.
 
 ![Level sets of a functional, its Riesz vector v, and the splitting u = t n + w](/assets/img/math/riesz_level_sets.svg){: w="440" h="303" }
 
-**1. $v$ is normal to every $H_c$.** A vector is **normal** to an affine subspace if it is orthogonal to every vector in the subspace's direction, that is, to the displacement between any two of its points. The direction of each $H_c$ is $\operatorname{null} \varphi$. Write
+**1. $v$ is normal to every $H_c$.** A vector is **normal** to an affine subspace if it is orthogonal to the subspace's direction, that is, to the displacement between any two of its points. This is weaker than being orthogonal to the points themselves: for $u \in H_c$, $\langle u, v \rangle = c$, so $v$ is orthogonal to the points of $H_c$ only when $c = 0$.
 
-$$v^\perp = \{ w \in V : \langle w, v \rangle = 0 \}$$
+Since $\langle u, v \rangle = \varphi(u)$ for every $u \in V$, a vector is orthogonal to $v$ exactly when $\varphi$ sends it to $0$:
 
-for the set of vectors orthogonal to $v$. Since $\langle w, v \rangle = \varphi(w)$ for every $w \in V$,
+$$v^\perp = \operatorname{null} \varphi = H_0,$$
 
-$$v^\perp = \operatorname{null} \varphi = H_0.$$
-
-So the vectors orthogonal to $v$ form the hyperplane through the origin, every $H_c$ is a translate of it, and $v$ is normal to every $H_c$.
-
-Normal is *weaker* than orthogonal to the points themselves. For $u \in H_c$, $\langle u, v \rangle = \varphi(u) = c$, which is nonzero unless $c = 0$. So $v$ is orthogonal to the differences of points of $H_c$, but not to the points.
+where $v^\perp$ means $\\{ v \\}^\perp$. So $v$ is orthogonal to $\operatorname{null} \varphi$, the common direction of the $H_c$, and each $H_c$ is a translate of the hyperplane $v^\perp$. Taking orthogonal complements gives $(\operatorname{null} \varphi)^\perp = \operatorname{span}(v)$. The normal vectors therefore form a single line, so $\operatorname{null} \varphi$ determines $v$ up to a scalar, which step 2 pins down.
 
 Conversely, every hyperplane arises this way. By the [hyperplane theorem]({% post_url 2026-06-28-affine-geometry %}#hyperplanes), a hyperplane $H$ of $V$ is $\\{ u \in V : \psi(u) = c \\}$ for some nonzero linear functional $\psi$ and some $c \in \mathbb{R}$. The Riesz representation theorem gives a vector $v$, nonzero as above, with $\psi(u) = \langle u, v \rangle$, so
 
 $$H = \{ u \in V : \langle u, v \rangle = c \}.$$
 
-This is the familiar normal equation of a hyperplane. For example, in $\mathbb{R}^3$ with the dot product, the plane through $p$ with normal vector $v$ is $\langle u, v \rangle = \langle p, v \rangle$. In particular, the hyperplanes through the origin are exactly the sets $v^\perp$ with $v \neq 0$. More generally, the vectors orthogonal to every vector of a subspace $U$ form the *orthogonal complement* $U^\perp$, and $v^\perp$ is the case $U = \operatorname{span}(v)$.
+If $p$ is any point of $H$, then $c = \langle p, v \rangle$, so
 
-**2. $\lVert v \rVert$ sets the spacing.** Every $u \in V$ splits into a part along $n$ and a part in $v^\perp$:
+$$H = \{ u \in V : \langle u - p, v \rangle = 0 \},$$
 
-$$u = t\,n + w, \qquad t = \langle u, n \rangle, \qquad w = u - t\,n \in v^\perp.$$
+the points whose displacement from $p$ is orthogonal to $v$. This is the point-normal equation of a plane familiar from $\mathbb{R}^3$, now valid in any finite-dimensional real inner product space. Taking $c = 0$, the hyperplanes through the origin are exactly the sets $v^\perp$ with $v \neq 0$.
 
-Geometrically, $V$ splits into the line through $v$ and the hyperplane $v^\perp$.
+**2. $\lVert v \rVert$ sets the spacing.** Let $n = v / \lVert v \rVert$ be the unit vector in the direction of $v$. Since $V = \operatorname{span}(v) \oplus v^\perp$, every $u \in V$ splits as
+
+$$u = t\,n + w, \qquad t = \langle u, n \rangle, \qquad w \in v^\perp,$$
+
+where $t\,n$ is the orthogonal projection of $u$ onto $\operatorname{span}(v)$.
 
 The number $t$ is the signed distance from $u$ to $H_0$, measured along $n$. Since $\langle w, v \rangle = 0$,
 
 $$\varphi(u) = \langle t\,n + w, v \rangle = t \lVert v \rVert.$$
 
-So $\varphi(u)$ depends only on $t$, and $u \in H_c$ exactly when $t = c / \lVert v \rVert$. That is, $H_c = \tfrac{c}{\lVert v \rVert}\,n + v^\perp$, the translate of $v^\perp$ at signed distance $c / \lVert v \rVert$ from the origin, and $H_c$ and $H_{c+1}$ are $1 / \lVert v \rVert$ apart. A longer $v$ packs the hyperplanes more closely.
+The vector $v$ was fixed by $\varphi$, so $\varphi(u)$ depends on $u$ only through $t$, and $u \in H_c$ exactly when $t = c / \lVert v \rVert$. That is, $H_c = \tfrac{c}{\lVert v \rVert}\,n + v^\perp$, the translate of $v^\perp$ at signed distance $c / \lVert v \rVert$ from the origin, and $H_c$ and $H_{c+1}$ are $1 / \lVert v \rVert$ apart. A longer $v$ packs the hyperplanes more closely.
+
+Taking $u = n$ gives $\varphi(n) = \lVert v \rVert$, that is, $n \in H_{\lVert v \rVert}$:
+
+![The unit vector n ends on the level set H at height the norm of v](/assets/img/math/riesz_unit_normal.svg){: w="440" h="303" }
+
+This fixes the scalar left open in step 1:
+
+$$v = \varphi(n)\,n$$
+
+for either unit vector $n$ in the line $(\operatorname{null} \varphi)^\perp$, since replacing $n$ by $-n$ changes neither side. So $v$ can be built from the geometry of $\varphi$ alone: $\operatorname{null} \varphi$ gives the line, and the value of $\varphi$ on a unit vector of that line gives the length.
 
 **3. $\varphi$ increases fastest along $v$.** Start at any $u \in V$ and move a distance $s$ in the direction of a unit vector $e$. By linearity,
 
@@ -242,7 +252,13 @@ with equality exactly when $e = n$. So the largest rate is $\lVert v \rVert$, re
 For example, take $\varphi(x, y, z) = 2x - y + 3z$ from the affine geometry post, with the dot product on $\mathbb{R}^3$. Then $v = (2, -1, 3)$, the normal vector read off from the coefficients of the plane equations $2x - y + 3z = c$. Consecutive planes are $1 / \lVert v \rVert = 1 / \sqrt{14}$ apart, and $\varphi$ grows fastest in the direction $(2, -1, 3) / \sqrt{14}$, at rate $\sqrt{14}$.
 
 {: .prompt-tip }
-> *Why the conjugate.* Over $\mathbb{C}$, the case $V = \mathbb{C}$ shows where the bars in the formula come from. Every linear functional on $\mathbb{C}$ is $\varphi(u) = au$ for some $a \in \mathbb{C}$: it scales by $\lvert a \rvert$ and rotates by $\arg a$. The inner product $\langle u, v \rangle = u\overline{v}$ scales by $\lvert v \rvert$ and rotates *backward* by $\arg v$, since it measures $u$ relative to the direction of $v$. To rotate forward by $\arg a$, $v$ must point at angle $-\arg a$, so $v = \overline{a}$, the reflection of $a$ across the real axis. This is the formula with the orthonormal basis $e_1 = 1$: $v = \overline{\varphi(1)} = \overline{a}$.
+> *Why the conjugate.* The bars in the formula are easiest to see in one dimension, $V = \mathbb{C}$, where everything happens in the complex plane. The Euclidean inner product on $\mathbb{C}^n$ with $n = 1$ is $\langle u, v \rangle = u\overline{v}$. Recall that multiplying by a complex number scales by its absolute value and rotates by its argument.
+>
+> Every linear functional on $\mathbb{C}$ is multiplication by a number $a = \varphi(1)$, since $\varphi(u) = u\,\varphi(1)$, so it rotates by $\arg a$. The functional $u \mapsto \langle u, v \rangle$ is multiplication by $\overline{v}$, so it rotates by $\arg \overline{v} = -\arg v$. For the two to agree we need $\overline{v} = a$, that is, $v = \overline{a}$, the reflection of $a$ across the real axis. This is the theorem's formula with the orthonormal basis $e_1 = 1$: $v = \overline{\varphi(1)}$.
+>
+> ![a = φ(1) at angle α and its reflection v at angle −α](/assets/img/math/riesz_conjugate.svg){: w="400" h="300" }
+>
+> In $\mathbb{C}^n$ the same happens coordinate by coordinate: the $k$-th coordinate of $v$ in the orthonormal basis $e_1, \dots, e_n$ is $\overline{\varphi(e_k)}$.
 
 {: .prompt-tip }
 > *The gradient.* Suppose $f : \mathbb{R}^n \to \mathbb{R}$ is differentiable at $p$. The directional derivative $u \mapsto D_u f(p)$ is a linear functional on $\mathbb{R}^n$, and its vector under the dot product is the gradient:
